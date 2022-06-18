@@ -123,7 +123,7 @@ export default class PaymentAgentStore {
                     urls: payment_agent?.urls || payment_agent?.url,
                     withdrawal_commission: payment_agent.withdrawal_commission,
                 });
-                if (payment_agent.supported_banks) {
+                if (payment_agent.supported_payment_methods) {
                     const supported_banks_array = payment_agent?.supported_payment_methods
                         ? payment_agent.supported_payment_methods.map(bank => bank.payment_method)
                         : payment_agent.supported_banks.split(',');
@@ -132,6 +132,7 @@ export default class PaymentAgentStore {
                     });
                 }
             });
+            shuffleArray(this.list);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(e);
@@ -157,7 +158,7 @@ export default class PaymentAgentStore {
                 }
             });
         } else {
-            this.filtered_list = shuffleArray(this.list);
+            this.filtered_list = this.list;
         }
         if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             common.routeTo(routes.cashier_deposit);

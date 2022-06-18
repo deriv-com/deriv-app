@@ -59,7 +59,7 @@ const CompareAccountsModal2 = ({
                             toggleModal={toggleCompareAccounts2}
                             type='button'
                             height='696px'
-                            width='903px'
+                            width='1200px'
                         >
                             <ModalContent2 />
                             <Modal.Footer>

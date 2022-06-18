@@ -331,7 +331,7 @@ const ModalConent2 = () => {
                     )}
                 </div>
             </div>
-            <Text as='p' align='center' size='m' line_height='m' className='cfd-jurisdiction-card__footnote'>
+            <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
                 <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
             </Text>
         </>

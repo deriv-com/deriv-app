@@ -453,10 +453,6 @@
         margin: 0 1.6rem;
     }
 
-    &__footnote {
-        margin-top: 2.4rem;
-    }
-
     &--selected {
         border: solid 1px blue;
         border-radius: 4px;
@@ -464,22 +460,22 @@
 
     &__verification-status {
         text-align: center;
-        margin: 0 5px;
+        min-height: 2.4rem;
+        margin: 0 0.8rem 0.8rem 0.8rem;
         margin-top: auto;
-        margin-bottom: 0.5rem;
 
         &--pending {
             background-color: #ffad3a;
             color: #333333;
-            padding: 4px 8px;
-            border-radius: 5px;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
         }
 
         &--verified {
             background-color: #4bb4b3;
             color: #fff;
-            padding: 4px 8px;
-            border-radius: 5px;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
         }
     }
 
@@ -496,8 +492,14 @@
         font-size: 10px;
         line-height: 14px;
         color: #333333;
-        margin-left: 0.5rem;
+        margin: 0 0.8rem 0.8rem 0.8rem;
         margin-top: auto;
+        text-align: center;
+    }
+
+    &__footnote {
+        margin-top: 2.4rem;
+        color: #333333;
     }
 
     &__over-header {

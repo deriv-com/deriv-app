@@ -36,6 +36,7 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
                         const normalized_payment_method = getNormalizedPaymentMethod(supported_bank.payment_method);
                         return normalized_payment_method ? (
                             <Icon
+                                data_testid='dt_payment_method_icon'
                                 key={idx}
                                 icon={`IcCashier${normalized_payment_method}${is_dark_mode_on ? 'Dark' : 'Light'}`}
                             />

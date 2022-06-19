@@ -41,6 +41,7 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
+    @observable newMT5List = [];
     @observable pre_switch_broadcast = false;
     @observable switched = '';
     @observable is_switching = false;
@@ -1317,6 +1318,7 @@ export default class ClientStore extends BaseStore {
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
+            WS.newMT5API().then(res => (this.newMT5List = res));
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
             this.responseStatement(

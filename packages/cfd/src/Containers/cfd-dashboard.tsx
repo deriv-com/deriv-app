@@ -98,6 +98,7 @@ type TCFDDashboardProps = {
     is_accounts_switcher_on: boolean;
     is_dark_mode_on: boolean;
     is_eu: boolean;
+    newMT5List: Array<any>;
     is_eu_country: boolean;
     is_fully_authenticated: boolean;
     is_loading: boolean;
@@ -487,6 +488,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             )}
                                             <CFDRealAccountDisplay
                                                 is_eu={is_eu}
+                                                newMT5List={props.newMT5List}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
@@ -503,10 +505,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 account_status={account_status}
                                                 has_cfd_account={has_cfd_account}
                                                 onSelectAccount={createCFDAccount}
-                                                account_settings={account_settings}
-                                                landing_companies={landing_companies}
-                                                is_pending_authentication={is_pending_authentication}
-                                                is_fully_authenticated={is_fully_authenticated}
                                                 is_virtual={is_virtual}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
@@ -520,7 +518,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                                 residence={residence}
-                                                residence_list={residence_list}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -544,7 +541,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             is_loading={is_loading}
                                             isSyntheticCardVisible={isSyntheticCardVisible}
                                             isFinancialCardVisible={isFinancialCardVisible}
-                                            isFinancialStpCardVisible={isFinancialStpCardVisible}
                                             has_cfd_account={has_cfd_account}
                                             current_list={current_list}
                                             onSelectAccount={createCFDAccount}
@@ -695,6 +691,7 @@ export default withRouter(
         client_email: client.email_address,
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
+        newMT5List: client.newMT5List,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,

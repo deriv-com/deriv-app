@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
@@ -30,17 +30,13 @@ type TCFDRealAccountDisplayProps = {
     has_malta_account: boolean;
     has_maltainvest_account: boolean;
     has_cfd_account_error: boolean;
-    is_fully_authenticated: boolean;
-    account_settings: GetSettings;
     openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
     standpoint: TStandPoint;
     is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
-    is_pending_authentication: boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
-    landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
@@ -59,44 +55,27 @@ type TCFDRealAccountDisplayProps = {
     toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
     can_have_more_real_synthetic_mt5: boolean;
     residence: string;
-    residence_list: ResidenceList;
     account_status?: object;
-};
-
-const getRealFinancialStpBtnLbl = (
-    is_fully_authenticated: boolean,
-    is_pending_authentication: boolean,
-    has_required_credentials: boolean
-) => {
-    if (is_fully_authenticated && has_required_credentials) {
-        return <Localize i18n_default_text='Set your password' />;
-    } else if (is_pending_authentication) {
-        return <Localize i18n_default_text='Pending verification' />;
-    }
-
-    return <Localize i18n_default_text='Add real account' />;
+    newMT5List: Array<any>;
 };
 
 const CFDRealAccountDisplay = ({
     has_real_account,
     is_eu,
+    newMT5List,
     is_eu_country,
     has_malta_account,
     has_maltainvest_account,
     has_cfd_account_error,
-    is_fully_authenticated,
-    is_pending_authentication,
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    landing_companies,
     onSelectAccount,
     openAccountTransfer,
     isAccountOfTypeDisabled,
     current_list,
     has_cfd_account,
     openPasswordManager,
-    account_settings,
     openAccountNeededModal,
     platform,
     standpoint,
@@ -105,8 +84,8 @@ const CFDRealAccountDisplay = ({
     toggleShouldShowRealAccountsList,
     can_have_more_real_synthetic_mt5,
     residence,
-    residence_list,
 }: TCFDRealAccountDisplayProps) => {
+    console.log(newMT5List);
     const should_show_trade_servers =
         is_logged_in &&
         !is_eu &&
@@ -114,28 +93,6 @@ const CFDRealAccountDisplay = ({
         can_have_more_real_synthetic_mt5 &&
         platform === CFD_PLATFORMS.MT5;
     const [active_hover, setActiveHover] = React.useState(0);
-
-    const has_required_credentials = React.useMemo(() => {
-        const { citizen, tax_identification_number, tax_residence } = account_settings;
-
-        if (citizen && tax_identification_number && tax_residence) return true;
-
-        if (citizen && tax_residence) {
-            const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
-            return (
-                is_tin_required ||
-                !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length
-            );
-        }
-
-        return false;
-    }, [account_settings, residence_list, landing_companies]) as boolean;
-
-    const button_label = getRealFinancialStpBtnLbl(
-        is_fully_authenticated,
-        is_pending_authentication,
-        has_required_credentials
-    );
 
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 

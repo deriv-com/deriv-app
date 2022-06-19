@@ -32,7 +32,6 @@ type TCFDDemoAccountDisplayProps = {
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     isFinancialCardVisible: () => boolean;
-    isFinancialStpCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
@@ -59,7 +58,6 @@ const CFDDemoAccountDisplay = ({
     is_logged_in,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    isFinancialStpCardVisible,
     onSelectAccount,
     openAccountTransfer,
     platform,

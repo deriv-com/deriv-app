@@ -349,6 +349,12 @@ const BinarySocketBase = (() => {
 
     const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
+    const newMT5API = () =>
+        deriv_api.send({
+            trading_platform_available_accounts: 1,
+            platform: 'mt5',
+        });
+
     const tradingPlatformAccountsList = platform =>
         deriv_api.send({
             trading_platform_accounts: 1,
@@ -462,6 +468,7 @@ const BinarySocketBase = (() => {
         tradingPlatformNewAccount,
         triggerMt5DryRun,
         changeEmail,
+        newMT5API,
     };
 })();
 

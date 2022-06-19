@@ -353,28 +353,7 @@ const CFDAccountCard = ({
                         <Text size='xxl' className='cfd-account-card--heading'>
                             {title}
                         </Text>
-<<<<<<< HEAD
                         <p className='cfd-account-card--paragraph'>{descriptor}</p>
-=======
-                        {(!existing_data || !is_logged_in) && (
-                            <p className='cfd-account-card--paragraph'>{descriptor}</p>
-                        )}
-                        {existing_data?.display_balance && is_logged_in && (
-                            <Text size='xxl' className='cfd-account-card--balance'>
-                                <Money
-                                    amount={existing_data.display_balance}
-                                    currency={existing_data.currency}
-                                    has_sign={existing_data.balance ? existing_data.balance < 0 : false}
-                                    show_currency
-                                />
-                            </Text>
-                        )}
-                        {(existing_data as TTradingPlatformAccounts)?.display_login && is_logged_in && (
-                            <Text color='less-prominent' size='xxxs' line_height='s'>
-                                {(existing_data as TTradingPlatformAccounts)?.display_login}
-                            </Text>
-                        )}
->>>>>>> 9db1289cb658c35489b7f6e618ef3bf4274595c4
                     </div>
                 </div>
                 {existing_data && <div className='cfd-account-card__divider' />}

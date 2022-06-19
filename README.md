@@ -288,7 +288,3 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
     1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
     2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
     3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).
-
-6. How can I install/update/remove a package?
-
-    We should run `npm run bootstrap:dev` to install/update/remove a package, so that it updates the same in package-lock.json file.

@@ -83,3 +83,5 @@ For example:
 ```sh
 npm uninstall commitizen
 ```
+
+**Note:** If you are updating/installing/removing a package, you should run `npm run bootstrap:dev`, so that it updates the same in `package-lock.json` file.

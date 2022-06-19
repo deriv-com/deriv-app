@@ -486,7 +486,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 />
                                             )}
                                             <CFDRealAccountDisplay
-                                                is_accounts_switcher_on={is_accounts_switcher_on}
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
@@ -511,10 +510,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_virtual={is_virtual}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
-                                                isFinancialStpCardVisible={isFinancialStpCardVisible}
                                                 openAccountTransfer={openAccountTransfer}
                                                 openPasswordManager={togglePasswordManagerModal}
-                                                openPasswordModal={openRealPasswordModal}
                                                 platform={platform}
                                                 isAccountOfTypeDisabled={isAccountOfTypeDisabled}
                                                 has_real_account={has_real_account}

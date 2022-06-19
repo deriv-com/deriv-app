@@ -470,6 +470,7 @@
         width: 90%;
         background-color: var(--general-section-1);
         border-radius: 8px;
+        margin-bottom: 1.6rem;
 
         &--banner {
             position: absolute;
@@ -830,16 +831,16 @@
     &__manage {
         display: flex;
         width: 100%;
-        margin-left: 0.8rem;
+        margin-left: 0.6rem;
         padding-top: 1.8rem;
 
         .dc-btn {
-            width: 100%;
+            min-width: 12rem;
             margin-bottom: 1.6rem;
             height: 4rem;
 
             &:not(:last-child) {
-                margin-right: 1.6rem;
+                margin-right: 0.6rem;
             }
         }
     }

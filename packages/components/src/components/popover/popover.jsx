@@ -131,11 +131,11 @@ const Popover = ({
                               },
                           }
                         : { containerStyle: { zIndex } })}
-                    content={({ position, targetRect, popoverRect }) => {
+                    content={({ position, childRect, popoverRect }) => {
                         return (
                             <ArrowContainer
                                 position={position}
-                                targetRect={targetRect}
+                                childRect={childRect}
                                 popoverRect={popoverRect}
                                 arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                 arrowSize={5}

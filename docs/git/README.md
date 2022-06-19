@@ -42,13 +42,29 @@ Do you know what S from [SOLID](https://en.wikipedia.org/wiki/SOLID) stands for?
 
 This practice helps when digging into the codebase, like when using `git log` or `git blame`.
 
-### Know the tool. Don’t be afraid of using it
+### Commit message guidelines
 
-As I said, git is powerful. There are tons of commands. You can learn new tricks reading [git docs](https://git-scm.com/doc) on the web or using the man pages. By running `git help -a`, you can check the most useful ones.
+We have a precise rules over how our git commit messages can be formatted. This leads to more **readable messages** that are easy to follow when looking through the **project history**.
 
-Here is a list of the ones I use very often:
+Each commit message will consists of **type** and **subject**:
 
--   `git cherry-pick`
--   `git diff` and `git apply`
--   `git stash`
--   `git bisect`
+```sh
+<type>|<...other_types>: <subject>
+```
+
+#### Commit Type
+
+Must be one of the following:
+
+-   **build**: Changes that affect the build system or external dependencies (example scopes: gatsby config, gatsby browser, gatsby node, or gatsby ssr)
+-   **chores**: Add or Changes on packages or external dependencies
+-   **ci**: Changes to our CI configuration files and scripts (example scopes: Docker, nginx conf)
+-   **docs**: Documentation only changes
+-   **feat**: A new feature
+-   **fix**: A bug fix
+-   **perf**: A code change that improves performance
+-   **refactor**: A code change that neither fixes a bug nor adds a feature
+-   **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+-   **text**: Adding text or updating text only
+-   **empty**: Rare cases for re-deploying when deployment server is down
+-   **revert**: A commit reverts a previous commit

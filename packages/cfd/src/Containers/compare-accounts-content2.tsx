@@ -12,6 +12,10 @@ const ModalConent2 = () => {
     const [selected_card_Labuan, setSelectedLabuanCard] = React.useState(false);
     const [selected_card_SVG, setSelectedSVGCard] = React.useState(false);
 
+    const Checkmark = () => (
+        <Icon icon='IcCheckmark' className='cfd-jurisdiction-card__bullet-wrapper--checkmark' color='green' size={16} />
+    );
+
     return (
         <>
             <div className='cfd-jurisdiction-card__wrapper'>
@@ -30,43 +34,23 @@ const ModalConent2 = () => {
                         <Localize i18n_default_text='British Virgin Islands' />
                     </h1>
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Registered with the Financial Commission' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Registered with the Financial Commission' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='170+ assets: forex (standard/micro), stocks, stock indices, commodities, basket indices, and cryptocurrencies' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='170+ assets: forex (standard/micro), stocks, stock indices, commodities, basket indices, and cryptocurrencies' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Leverage up to 1:1000' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Leverage up to 1:1000' />
                     </div>
                     {verification_status === 'not_submitted' && (
                         <div className='cfd-jurisdiction-card__footer'>
@@ -105,43 +89,22 @@ const ModalConent2 = () => {
                         <Localize i18n_default_text='Vanuatu' />
                     </h1>
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Regulated by the Vanuatu Financial Services Commission' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Regulated by the Vanuatu Financial Services Commission' />
+                    </div>
+                    <div className='cfd-jurisdiction-card__bullet-wrapper'>
+                        <Checkmark />
+                        <Localize i18n_default_text='Registered with the Financial Commission' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Registered with the Financial Commission' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='30+ assets: forex and commodities' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='30+ assets: forex and commodities' />
-                        </span>
-                    </div>
-
-                    <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Leverage up to 1:1000' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Leverage up to 1:1000' />
                     </div>
                     {verification_status2 === 'not_submitted' && (
                         <div className='cfd-jurisdiction-card__footer'>
@@ -179,53 +142,28 @@ const ModalConent2 = () => {
                     </div>
                     <h1>Labuan</h1>
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Regulated by the Labuan Financial Services Authority (licence no. MB/18/0024)' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Regulated by the Labuan Financial Services Authority (licence no. MB/18/0024)' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Registered with the Financial Commission' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Registered with the Financial Commission' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='80+ assets: forex and cryptocurrencies' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='80+ assets: forex and cryptocurrencies' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Leverage up to 1:100' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Leverage up to 1:100' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Straight through processing' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Straight through processing' />
                     </div>
                     {verification_status3 === 'not_submitted' && (
                         <div className='cfd-jurisdiction-card__footer'>
@@ -260,53 +198,28 @@ const ModalConent2 = () => {
                         <Localize i18n_default_text='St. Vincent & Grenadines' />
                     </h1>
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Regulated by the Labuan Financial Services Authority (licence no. MB/18/0024)' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Regulated by the Labuan Financial Services Authority (licence no. MB/18/0024)' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Registered with the Financial Commission' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Registered with the Financial Commission' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='80+ assets: forex and cryptocurrencies' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='80+ assets: forex and cryptocurrencies' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Leverage up to 1:100' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Leverage up to 1:100' />
                     </div>
 
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <span className='cfd-jurisdiction-card__bullet--checkmark'>
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_stem' />
-                            <div className='cfd-jurisdiction-card__bullet--checkmark_kick' />
-                        </span>
-                        <span>
-                            <Localize i18n_default_text='Straight through processing' />
-                        </span>
+                        <Checkmark />
+                        <Localize i18n_default_text='Straight through processing' />
                     </div>
                     {verification_status3 === 'not_submitted' && (
                         <div className='cfd-jurisdiction-card__footer'>

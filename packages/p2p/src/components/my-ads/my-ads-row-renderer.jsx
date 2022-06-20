@@ -36,22 +36,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
-
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
-    // let effective_rate = 0;
-    // let display_effective_rate = 0;
-
-    // if (rate_type === ad_type.FIXED) {
-    //     effective_rate = price_display;
-    //     display_effective_rate = formatMoney(local_currency, effective_rate, true);
-    // } else {
-    //     effective_rate = parseFloat(floating_rate_store.exchange_rate * (1 + rate_display / 100));
-    //     display_effective_rate = removeTrailingZeros(
-    //         formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
-    //     );
-    // }
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,

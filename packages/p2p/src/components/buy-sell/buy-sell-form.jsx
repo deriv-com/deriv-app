@@ -45,19 +45,6 @@ const BuySellForm = props => {
         cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
 
-    // let effective_rate = 0;
-    // let display_effective_rate = 0;
-
-    // if (rate_type === ad_type.FIXED) {
-    //     effective_rate = price;
-    //     display_effective_rate = formatMoney(local_currency, effective_rate, true);
-    // } else {
-    //     effective_rate = parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
-    //     display_effective_rate = removeTrailingZeros(
-    //         formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
-    //     );
-    // }
-
     const { effective_rate, display_effective_rate } = generateEffectiveRate({
         price,
         rate_type,

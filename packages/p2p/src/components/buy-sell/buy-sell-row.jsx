@@ -49,20 +49,6 @@ const BuySellRow = ({ row: advert }) => {
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
-
-    // let effective_rate = 0;
-    // let display_effective_rate = 0;
-
-    // if (rate_type === ad_type.FIXED) {
-    //     effective_rate = price_display;
-    //     display_effective_rate = formatMoney(local_currency, effective_rate, true);
-    // } else {
-    //     effective_rate = parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
-    //     display_effective_rate = removeTrailingZeros(
-    //         formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
-    //     );
-    // }
-
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,

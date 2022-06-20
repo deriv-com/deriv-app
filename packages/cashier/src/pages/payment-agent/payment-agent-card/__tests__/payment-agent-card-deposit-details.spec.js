@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import PaymentAgentCardDetails from '../paymen-agent-card-details';
+import PaymentAgentCardDepositDetails from '../paymen-agent-card-deposit-details';
 
-describe('<PaymentAgentCardDetails />', () => {
+describe('<PaymentAgentCardDepositDetails />', () => {
     const mocked_payment_agent = {
         currency: 'USD',
         deposit_commission: '10',
@@ -14,7 +14,7 @@ describe('<PaymentAgentCardDetails />', () => {
     };
 
     it('should show proper payment agent deposit details', () => {
-        render(<PaymentAgentCardDetails payment_agent={mocked_payment_agent} />);
+        render(<PaymentAgentCardDepositDetails payment_agent={mocked_payment_agent} />);
 
         expect(screen.getByText('Phone number')).toBeInTheDocument();
         expect(screen.getByText('+12345678')).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('<PaymentAgentCardDetails />', () => {
 
     it('should handle/show payment agent phones array', () => {
         render(
-            <PaymentAgentCardDetails
+            <PaymentAgentCardDepositDetails
                 payment_agent={{
                     ...mocked_payment_agent,
                     phones: [{ phone_number: '+12345678' }, { phone_number: '+87654321' }],

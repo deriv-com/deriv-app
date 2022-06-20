@@ -60,7 +60,7 @@ Detail.propTypes = {
     title: PropTypes.string,
 };
 
-const PaymentAgentCardDetails = ({ payment_agent }) => {
+const PaymentAgentCardDepositDetails = ({ payment_agent }) => {
     const payment_agent_phones = toJS(payment_agent.phones);
     const detail_titles = {
         email: localize('Email'),
@@ -124,8 +124,8 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     );
 };
 
-PaymentAgentCardDetails.propTypes = {
+PaymentAgentCardDepositDetails.propTypes = {
     payment_agent: PropTypes.object,
 };
 
-export default PaymentAgentCardDetails;
+export default PaymentAgentCardDepositDetails;

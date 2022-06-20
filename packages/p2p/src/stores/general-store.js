@@ -12,6 +12,7 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable balance;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_blocked = false;
@@ -45,7 +46,7 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get client() {
-        return this.props?.client || {};
+        return { ...this.props?.client } || {};
     }
 
     @computed
@@ -240,6 +241,9 @@ export default class GeneralStore extends BaseStore {
             this.setIsLoading(false);
 
             const { sendbird_store } = this.root_store;
+
+            this.setP2PConfig();
+
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -256,6 +260,15 @@ export default class GeneralStore extends BaseStore {
                         limit: this.list_item_limit,
                     },
                     [this.setP2pOrderList]
+                ),
+                exchange_rate_subscription: subscribeWS(
+                    {
+                        exchange_rates: 1,
+                        base_currency: this.client.currency,
+                        subscribe: 1,
+                        target_currency: this.client.local_currency_config?.currency,
+                    },
+                    [this.root_store.floating_rate_store.fetchExchangeRate]
                 ),
             };
 
@@ -311,6 +324,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setActiveNotificationCount(active_notification_count) {
         this.active_notification_count = active_notification_count;
+    }
+
+    @action.bound
+    setAccountBalance(value) {
+        this.balance = value;
     }
 
     @action.bound
@@ -386,6 +404,7 @@ export default class GeneralStore extends BaseStore {
         this.order_table_type = order_table_type;
     }
 
+    @action.bound
     setOrderTimeOut(time) {
         this.order_timeout = time;
     }

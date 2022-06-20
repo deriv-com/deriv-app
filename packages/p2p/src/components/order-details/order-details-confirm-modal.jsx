@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Loading, Modal, Text } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { getRoundedNumber, useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/form/error.jsx';
@@ -47,7 +47,7 @@ const OrderDetailsConfirmModal = ({
 
     const getConfirmButtonText = () => {
         if (is_buy_order_for_user) {
-            return <Localize i18n_default_text="I've paid" />;
+            return <Localize i18n_default_text='Confirm' />;
         } else if (is_process_request) {
             return <Loading is_fullscreen={false} />;
         }
@@ -70,11 +70,11 @@ const OrderDetailsConfirmModal = ({
             has_close_icon
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size='s' weight='bold'>
-                    {is_buy_order_for_user ? (
-                        <Localize i18n_default_text='Confirm payment?' />
-                    ) : (
-                        <Localize i18n_default_text='Have you received payment?' />
-                    )}
+                    <Localize
+                        i18n_default_text={
+                            is_buy_order_for_user ? 'Payment confirmation' : 'Have you received payment?'
+                        }
+                    />
                 </Text>
             )}
             width='440px'
@@ -83,9 +83,9 @@ const OrderDetailsConfirmModal = ({
                 <Text color='general' line-height='m' size='xs'>
                     {is_buy_order_for_user ? (
                         <Localize
-                            i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}."
+                            i18n_default_text='Have you paid {{amount}} {{currency}} to {{other_user_name}}?'
                             values={{
-                                amount: Number(amount * rate).toFixed(2),
+                                amount: Number(amount * getRoundedNumber(rate)).toFixed(2),
                                 currency: local_currency,
                                 other_user_name: other_user_details.name,
                             }}
@@ -101,18 +101,12 @@ const OrderDetailsConfirmModal = ({
                     defaultChecked={is_checkbox_checked}
                     label={
                         is_buy_order_for_user ? (
-                            <Localize
-                                i18n_default_text='I have paid {{amount}} {{currency}}'
-                                values={{
-                                    amount: Number(amount * rate).toFixed(2),
-                                    currency: local_currency,
-                                }}
-                            />
+                            <Localize i18n_default_text="Yes, I've paid" />
                         ) : (
                             <Localize
-                                i18n_default_text='I have received {{amount}} {{currency}}'
+                                i18n_default_text="I've received {{amount}} {{currency}}"
                                 values={{
-                                    amount: Number(amount * rate).toFixed(2),
+                                    amount: Number(amount * getRoundedNumber(rate)).toFixed(2),
                                     currency: local_currency,
                                 }}
                             />

@@ -34,7 +34,7 @@ const AdSwitchHintBox = () => {
         ) : (
             <Localize
                 i18n_default_text={
-                    'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}'
+                    'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}.'
                 }
                 values={{
                     local_currency: general_store.client.local_currency_config.currency || '',
@@ -49,7 +49,7 @@ const AdSwitchHintBox = () => {
     ) : (
         <Localize
             i18n_default_text={
-                'Fixed rates are enabled for {{local_currency}}. Ads with floating rates will be deactivated. Switch to fixed rates by {{end_date}}'
+                'Fixed rates are enabled for {{local_currency}}. Ads with floating rates will be deactivated. Switch to fixed rates by {{end_date}}.'
             }
             values={{
                 local_currency: general_store.client.local_currency_config.currency || '',

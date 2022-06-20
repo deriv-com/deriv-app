@@ -237,7 +237,7 @@ export default class ExtendedOrderDetails {
 
         if (this.is_buyer_confirmed_order) {
             const confirm_payment = localize('Confirm payment');
-            const wait_for_release = localize('Wait for release');
+            const wait_for_release = localize('Waiting for the seller to confirm');
 
             if (this.is_my_ad) {
                 return this.is_buy_order ? confirm_payment : wait_for_release;

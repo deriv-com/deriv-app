@@ -24,6 +24,8 @@ const P2PCashier = ({
     residence,
     setNotificationCount,
     setCurrentFocus,
+    balance,
+    setOnRemount,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
     const server_time = {
@@ -76,6 +78,7 @@ const P2PCashier = ({
     return (
         <P2P
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            balance={balance}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}
@@ -91,11 +94,13 @@ const P2PCashier = ({
             websocket_api={WS}
             current_focus={current_focus}
             setCurrentFocus={setCurrentFocus}
+            setOnRemount={setOnRemount}
         />
     );
 };
 
 P2PCashier.propTypes = {
+    balance: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     history: PropTypes.object,
@@ -114,6 +119,7 @@ P2PCashier.propTypes = {
 
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
+        balance: client.balance,
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
@@ -126,5 +132,6 @@ export default withRouter(
         is_mobile: ui.is_mobile,
         setCurrentFocus: ui.setCurrentFocus,
         current_focus: ui.current_focus,
+        setOnRemount: modules.cashier.general_store.setOnRemount,
     }))(P2PCashier)
 );

@@ -44,6 +44,7 @@ const getTranslatableFiles = () => {
         'trader',
         'bot-skeleton',
         'reports',
+        'shared',
     ];
     const globs = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/xml/*.xml'];
     const file_paths = [];

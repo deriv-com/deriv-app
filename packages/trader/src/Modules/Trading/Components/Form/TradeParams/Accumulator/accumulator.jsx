@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
+import AccumulatorsInfo from './accumulators-info.jsx';
 
 const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
     return (
@@ -15,6 +16,11 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
                 onChange={onChange}
                 selected_number={growth_rate}
                 should_show_in_percents
+            />
+            <AccumulatorsInfo
+                className='trade-container__accumulators-trade-info'
+                barriers_distance={0.1}
+                max_duration={10}
             />
         </Fieldset>
     );

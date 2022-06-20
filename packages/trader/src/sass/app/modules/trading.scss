@@ -461,7 +461,8 @@
             }
         }
     }
-    &__multipliers-trade-info {
+    &__multipliers-trade-info,
+    &__accumulators-trade-info {
         display: flex;
         justify-content: space-around;
         gap: 2.8rem;
@@ -477,6 +478,9 @@
                 border-bottom: 1px dotted var(--text-general);
             }
         }
+    }
+    &__accumulators-trade-info {
+        gap: unset;
     }
     &__popover {
         /* postcss-bem-linter: ignore */

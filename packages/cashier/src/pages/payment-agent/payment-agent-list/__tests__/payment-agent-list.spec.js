@@ -77,7 +77,7 @@ describe('<PaymentAgentList />', () => {
         expect(screen.getByText('The email has been sent!')).toBeInTheDocument();
     });
 
-    it('should show "Payment agent withdraw form" message in Withdrawal tab', () => {
+    it('should show "Payment agent deposit withdraw container" message in Withdrawal tab', () => {
         renderWithRouter(
             <PaymentAgentList
                 {...props}
@@ -88,6 +88,6 @@ describe('<PaymentAgentList />', () => {
             />
         );
 
-        expect(screen.getByText('Payment agent withdraw form')).toBeInTheDocument();
+        expect(screen.getByText('Payment agent deposit withdraw container')).toBeInTheDocument();
     });
 });

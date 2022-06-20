@@ -170,7 +170,7 @@ const Withdrawal = ({
     return (
         <>
             <WithdrawalVerificationEmail />
-            <WithdrawalSideNote currency={currency} is_mobile />
+            {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );
 };

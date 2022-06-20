@@ -223,8 +223,7 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { account_prompt_dialog, withdraw } = modules.cashier;
-
+            const { account_prompt_dialog, payment_agent, withdraw } = modules.cashier;
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
 
@@ -233,6 +232,7 @@ export default class GeneralStore extends BaseStore {
                 account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();
+                    payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();

@@ -295,7 +295,6 @@ Chart.propTypes = {
 
 const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     const trade = modules.trade;
-    // const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
     const allow_scroll_to_epoch =

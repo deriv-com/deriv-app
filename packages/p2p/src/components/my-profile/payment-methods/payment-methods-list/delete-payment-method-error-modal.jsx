@@ -9,7 +9,7 @@ const DeletePaymentMethodErrorModal = () => {
 
     return (
         <Modal
-            is_open={my_profile_store.is_delete_error_modal_open}
+            is_open={my_profile_store.is_delete_payment_method_error_modal_open}
             small
             has_close_icon={false}
             title={localize("Something's not right")}
@@ -25,7 +25,7 @@ const DeletePaymentMethodErrorModal = () => {
                 <Button
                     has_effect
                     text={localize('Ok')}
-                    onClick={() => my_profile_store.setIsDeleteErrorModalOpen(false)}
+                    onClick={() => my_profile_store.setIsDeletePaymentMethodErrorModalOpen(false)}
                     primary
                     large
                 />

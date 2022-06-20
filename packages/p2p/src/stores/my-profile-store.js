@@ -23,7 +23,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_cancel_add_payment_method_modal_open = false;
     @observable is_cancel_edit_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
-    @observable is_delete_error_modal_open = false;
+    @observable is_delete_payment_method_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
@@ -353,7 +353,7 @@ export default class MyProfileStore extends BaseStore {
                 this.setDeleteErrorMessage(response.error.message);
                 await when(
                     () => !this.root_store.general_store.is_modal_open,
-                    () => this.setIsDeleteErrorModalOpen(true)
+                    () => this.setIsDeletePaymentMethodErrorModalOpen(true)
                 );
             }
         });
@@ -511,8 +511,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
-        this.is_delete_error_modal_open = is_delete_error_modal_open;
+    setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
+        this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
     @action.bound

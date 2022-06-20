@@ -29,7 +29,6 @@ describe('CFDDashboardContainer', () => {
         expect(
             screen.getByText(/The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista/i)
         ).toBeInTheDocument();
-        expect(screen.getByTestId(/dt_mt5_text/i)).toBeInTheDocument();
     });
     it('should show the proper icons for the MT5 platform ', () => {
         render(<CFDDashboardContainer {...mock_props} />);
@@ -72,7 +71,6 @@ describe('CFDDashboardContainer', () => {
         render(<CFDDashboardContainer {...mock_props} platform='dxtrade' is_dark_mode_on='true' />);
         expect(screen.getByText(/Run Deriv X on your browser or download the mobile app/i)).toBeInTheDocument();
         expect(screen.getByText(/Web terminal/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/dt_dxtrade_desktop_download/i)).toBeInTheDocument();
     });
     it('should render the correct icons for the Deriv X platform', () => {
         render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
@@ -103,5 +101,9 @@ describe('CFDDashboardContainer', () => {
             'href',
             'https://apps.apple.com/us/app/deriv-x/id1563337503'
         );
+    });
+    it('should render demo account dashboard and the demo link for web terminal ', () => {
+        render(<CFDDashboardContainer {...mock_props} active_index='1' platform='dxtrade' />);
+        expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx-demo.deriv.com/');
     });
 });

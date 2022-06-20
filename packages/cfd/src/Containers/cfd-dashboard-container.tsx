@@ -45,10 +45,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                             )}
                         </div>
                         {platform === CFD_PLATFORMS.DXTRADE && (
-                            <div
-                                className='cfd-dashboard__download-center-options--desktop-download'
-                                data-testid='dt_dxtrade_desktop_download'
-                            >
+                            <div className='cfd-dashboard__download-center-options--desktop-download'>
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
                                     href={getDXTradeWebTerminalLink(active_index === 0 ? 'real' : 'demo')}
@@ -90,13 +87,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                     )}
                 </div>
                 {platform === CFD_PLATFORMS.MT5 && (
-                    <Text
-                        as='p'
-                        align='center'
-                        size='xxxs'
-                        className='cfd-dashboard__download-center--hint'
-                        data-testid='dt_mt5_text'
-                    >
+                    <Text as='p' align='center' size='xxxs' className='cfd-dashboard__download-center--hint'>
                         <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                     </Text>
                 )}

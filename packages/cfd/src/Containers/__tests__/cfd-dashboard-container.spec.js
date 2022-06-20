@@ -67,12 +67,7 @@ describe('CFDDashboardContainer', () => {
         );
     });
 
-    it('should render correct text according to the platform (DerivX)', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' is_dark_mode_on='true' />);
-        expect(screen.getByText(/Run Deriv X on your browser or download the mobile app/i)).toBeInTheDocument();
-        expect(screen.getByText(/Web terminal/i)).toBeInTheDocument();
-    });
-    it('should render the correct icons for the Deriv X platform', () => {
+    it('should render the correct icons and text for the Deriv X platform', () => {
         render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
         expect(screen.getByText(/IcDxtradeDeviceDesktop/i)).toBeInTheDocument();
         expect(screen.getByText(/IcDxtradeDeviceLaptop/i)).toBeInTheDocument();
@@ -81,6 +76,8 @@ describe('CFDDashboardContainer', () => {
         expect(screen.getByText(/IcDxtradeDevicePhone/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationApple/i)).toBeInTheDocument();
+        expect(screen.getByText(/Run Deriv X on your browser or download the mobile app/i)).toBeInTheDocument();
+        expect(screen.getByText(/Web terminal/i)).toBeInTheDocument();
     });
     it('should render the correct icons if dark mode is on for DerivX', () => {
         render(<CFDDashboardContainer {...mock_props} platform='dxtrade' is_dark_mode_on='true' />);
@@ -102,8 +99,12 @@ describe('CFDDashboardContainer', () => {
             'https://apps.apple.com/us/app/deriv-x/id1563337503'
         );
     });
-    it('should render demo account dashboard and the demo link for web terminal ', () => {
+    it('should render demo account dashboard and the demo link for derivx web terminal if active_index is 1 ', () => {
         render(<CFDDashboardContainer {...mock_props} active_index='1' platform='dxtrade' />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx-demo.deriv.com/');
+    });
+    it('should render the real account link for web terminal if active_index is 0', () => {
+        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
+        expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
     });
 });

@@ -3,7 +3,7 @@ import ClosingAccountSteps from './closing-account-steps.jsx';
 import ClosingAccountReason from './closing-account-reason.jsx';
 
 const ClosingAccount = () => {
-    const [render_deactivate_account_reason, setRenderCloseAccountReason] = useState(false);
+    const [render_close_account_reason, setRenderCloseAccountReason] = useState(false);
     const redirectToReasons = () => {
         setRenderCloseAccountReason(true);
     };
@@ -13,7 +13,7 @@ const ClosingAccount = () => {
 
     return (
         <div className='closing-account'>
-            {render_deactivate_account_reason ? (
+            {render_close_account_reason ? (
                 <ClosingAccountReason onBackClick={() => redirectToSteps()} />
             ) : (
                 <ClosingAccountSteps redirectToReasons={() => redirectToReasons()} />

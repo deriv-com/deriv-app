@@ -3,7 +3,6 @@ import { localize, Localize } from '@deriv/translations';
 import { Button, Text, StaticUrl } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
-import { connect } from 'Stores/connect';
 
 const ClosingAccountSteps = ({ redirectToReasons }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -43,17 +42,28 @@ const ClosingAccountSteps = ({ redirectToReasons }) => {
                     />
                 </Text>
             </div>
-            <Button
-                className={classNames('closing-account__button', {
-                    'closing-account__button--dashboard': is_appstore,
-                })}
-                large
-                onClick={() => redirectToReasons()}
-                primary
-            >
-                <Localize i18n_default_text='Continue to account closure' />
-            </Button>
+            <div className='closing-account__buttons-container'>
+                <Button
+                    className={classNames('closing-account__button--cancel', {
+                        'closing-account__button--dashboard': is_appstore,
+                    })}
+                    large
+                    secondary
+                >
+                    <Localize i18n_default_text='Cancel' />
+                </Button>
+                <Button
+                    className={classNames('closing-account__button--close-account', {
+                        'closing-account__button--dashboard': is_appstore,
+                    })}
+                    large
+                    onClick={() => redirectToReasons()}
+                    primary
+                >
+                    <Localize i18n_default_text='Close my account' />
+                </Button>
+            </div>
         </div>
     );
 };
-export default connect(({ client }) => ({ is_dxtrade_allowed: client.is_dxtrade_allowed }))(ClosingAccountSteps);
+export default ClosingAccountSteps;

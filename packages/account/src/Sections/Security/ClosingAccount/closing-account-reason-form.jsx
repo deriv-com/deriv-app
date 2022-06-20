@@ -145,7 +145,7 @@ const ClosingAccountReasonFrom = ({
                                 disabled={is_checkbox_disabled && !values[field.name]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
-                                label={localize('I’m deactivating my account for other reasons.')}
+                                label={localize('I’m closing my account for other reasons.')}
                                 onChange={() => {
                                     onChangeCheckbox(values, field.name, setFieldValue);
                                 }}

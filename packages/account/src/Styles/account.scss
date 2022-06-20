@@ -2055,15 +2055,37 @@ $MIN_HEIGHT_FLOATING: calc(
         font-weight: bold;
         text-decoration: none;
     }
+    &__buttons-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        align-self: flex-end;
+        background-color: transparent;
+    }
     &__button {
-        margin-top: 2.4rem;
-        float: right;
+        &--cancel {
+            margin-top: 2.4rem;
+            margin-right: 10px;
+            float: right;
 
-        @include mobile {
-            float: none;
-            margin: 2.4rem auto 3.2rem;
-            &--dashboard {
-                width: 100%;
+            @include mobile {
+                float: none;
+                margin: 2.4rem auto 3.2rem;
+                &--dashboard {
+                    width: 100%;
+                }
+            }
+        }
+        &--close-account {
+            margin-top: 2.4rem;
+            float: right;
+
+            @include mobile {
+                float: none;
+                margin: 2.4rem auto 3.2rem;
+                &--dashboard {
+                    width: 100%;
+                }
             }
         }
     }

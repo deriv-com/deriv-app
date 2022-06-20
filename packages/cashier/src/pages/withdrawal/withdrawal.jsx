@@ -38,7 +38,15 @@ const WithdrawalSideNote = ({ is_mobile, currency }) => {
     const side_note_title =
         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
-    return <SideNote has_bullets is_mobile={is_mobile} notes={notes} title={side_note_title} />;
+    return (
+        <SideNote
+            has_bullets
+            is_mobile={is_mobile}
+            side_notes={notes}
+            title={side_note_title}
+            className='outside-wrapper'
+        />
+    );
 };
 
 const Withdrawal = ({
@@ -158,7 +166,13 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <WithdrawalVerificationEmail />;
+
+    return (
+        <>
+            <WithdrawalVerificationEmail />
+            <WithdrawalSideNote currency={currency} is_mobile />
+        </>
+    );
 };
 
 Withdrawal.propTypes = {

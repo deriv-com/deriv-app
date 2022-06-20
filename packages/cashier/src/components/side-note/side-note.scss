@@ -6,8 +6,13 @@
         color: var(--text-general);
         font-size: var(--text-size-xxs);
         line-height: 1.5;
-        margin-bottom: 2.4rem;
+        margin: 2.4rem 0;
         width: auto;
+        text-align: left;
+
+        &.outside-wrapper {
+            margin: 2.4rem;
+        }
     }
 
     &__text {
@@ -25,6 +30,10 @@
         &-wrapper {
             display: flex;
             margin-bottom: 1.1rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 }

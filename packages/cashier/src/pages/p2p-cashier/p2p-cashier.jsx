@@ -25,6 +25,7 @@ const P2PCashier = ({
     setNotificationCount,
     setCurrentFocus,
     balance,
+    setOnRemount,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
     const server_time = {
@@ -93,6 +94,7 @@ const P2PCashier = ({
             websocket_api={WS}
             current_focus={current_focus}
             setCurrentFocus={setCurrentFocus}
+            setOnRemount={setOnRemount}
         />
     );
 };
@@ -130,5 +132,6 @@ export default withRouter(
         is_mobile: ui.is_mobile,
         setCurrentFocus: ui.setCurrentFocus,
         current_focus: ui.current_focus,
+        setOnRemount: modules.cashier.general_store.setOnRemount,
     }))(P2PCashier)
 );

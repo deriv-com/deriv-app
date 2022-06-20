@@ -241,6 +241,9 @@ export default class GeneralStore extends BaseStore {
             this.setIsLoading(false);
 
             const { sendbird_store } = this.root_store;
+
+            this.setP2PConfig();
+
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -257,6 +260,15 @@ export default class GeneralStore extends BaseStore {
                         limit: this.list_item_limit,
                     },
                     [this.setP2pOrderList]
+                ),
+                exchange_rate_subscription: subscribeWS(
+                    {
+                        exchange_rates: 1,
+                        base_currency: this.client.currency,
+                        subscribe: 1,
+                        target_currency: this.client.local_currency_config?.currency,
+                    },
+                    [this.root_store.floating_rate_store.fetchExchangeRate]
                 ),
             };
 

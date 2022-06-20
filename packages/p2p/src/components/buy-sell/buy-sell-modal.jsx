@@ -186,7 +186,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 }
             >
                 {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                {error_message && <BuySellFormError />}
+                {!!error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                 ) : (
@@ -218,7 +218,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                     <Modal.Body className='buy-sell__modal--layout'>
                         {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                        {error_message && <BuySellFormError />}
+                        {!!error_message && <BuySellFormError />}
                         {my_profile_store.should_show_add_payment_method_form ? (
                             <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
                         ) : (

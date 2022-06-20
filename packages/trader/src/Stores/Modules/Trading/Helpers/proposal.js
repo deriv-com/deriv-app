@@ -45,7 +45,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     if (store.contract_type === 'accumulator') {
         // dummy proposal info for accumulators:
         return {
-            distance_from_barriers: '+0.100%',
+            tick_size_barrier: 0.058602,
             max_duration_ticks: 10,
             max_payout: '20000.00',
             error_code: undefined,
@@ -120,7 +120,12 @@ const setProposalMultiplier = (store, obj_multiplier) => {
     }
 };
 
+const setProposalAccumulator = (store, obj_accumulator) => {
+    obj_accumulator.growth_rate = store.growth_rate;
+};
+
 const createProposalRequestForContract = (store, type_of_contract) => {
+    const obj_accumulator = {};
     const obj_expiry = {};
     const obj_multiplier = {};
 
@@ -131,6 +136,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
 
     if (store.contract_type === 'multiplier') {
         setProposalMultiplier(store, obj_multiplier);
+    }
+
+    if (store.contract_type === 'accumulator') {
+        setProposalAccumulator(store, obj_accumulator);
     }
 
     return {
@@ -152,6 +161,7 @@ const createProposalRequestForContract = (store, type_of_contract) => {
             barrier: store.barrier_1 || store.last_digit,
         }),
         ...(store.barrier_count === 2 && { barrier2: store.barrier_2 }),
+        ...obj_accumulator,
         ...obj_multiplier,
     };
 };

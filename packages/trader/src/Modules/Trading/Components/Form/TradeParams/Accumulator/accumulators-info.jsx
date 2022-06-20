@@ -6,22 +6,22 @@ import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const AccumulatorsInfo = ({
-    barriers_distance = 0,
-    barriers_distance_text_size,
     className,
-    max_duration = 0,
+    max_duration_ticks,
     max_duration_text_size,
+    tick_size_barrier,
+    tick_size_barrier_text_size,
 }) => {
     const info_blocks = [
         {
-            custom_size: barriers_distance_text_size,
-            i18n_default_text: 'Distance from barriers <0>±{{barriers_distance}}%</0>',
-            values: { barriers_distance: barriers_distance.toFixed(3) },
+            custom_size: tick_size_barrier_text_size,
+            i18n_default_text: 'Distance from barriers <0>±{{tick_size_barrier}}%</0>',
+            values: { tick_size_barrier: Math.round((tick_size_barrier + Number.EPSILON) * 1000) / 1000 },
         },
         {
             custom_size: max_duration_text_size,
-            i18n_default_text: 'Maximum duration ticks <0>{{max_duration}}</0>',
-            values: { max_duration },
+            i18n_default_text: 'Maximum duration ticks <0>{{max_duration_ticks}}</0>',
+            values: { max_duration_ticks },
         },
     ];
 
@@ -50,13 +50,13 @@ const AccumulatorsInfo = ({
 
 AccumulatorsInfo.propTypes = {
     className: PropTypes.string,
-    barriers_distance_text_size: PropTypes.string,
-    is_tooltip_relative: PropTypes.bool,
-    should_show_tooltip: PropTypes.bool,
+    max_duration_ticks: PropTypes.number,
     max_duration_text_size: PropTypes.string,
+    tick_size_barrier: PropTypes.number,
+    tick_size_barrier_text_size: PropTypes.string,
 };
 
-export default connect(({ modules }, props) => ({
-    barriers_distance: props.barriers_distance ?? modules.trade.barriers_distance,
-    max_duration: props.max_duration ?? modules.trade.max_duration,
+export default connect(({ modules }) => ({
+    max_duration_ticks: modules.trade.max_duration_ticks,
+    tick_size_barrier: modules.trade.tick_size_barrier,
 }))(AccumulatorsInfo);

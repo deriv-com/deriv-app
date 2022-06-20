@@ -116,6 +116,8 @@ export default class TradeStore extends BaseStore {
     // Accumulator trade params
     @observable accumulator_rates_list = [];
     @observable growth_rate;
+    @observable max_duration_ticks = 0;
+    @observable tick_size_barrier = 0;
 
     // Multiplier trade params
     @observable multiplier;
@@ -576,16 +578,12 @@ export default class TradeStore extends BaseStore {
         }
         const { contract_type, barrier, barrier2, high_barrier, low_barrier } = proposal_info;
 
-        const dummy_contract_type = contract_type || (proposal_info.symbol === 'R_100' && 'ACC');
-
-        if (isBarrierSupported(dummy_contract_type)) {
+        if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            const dummy_accumulator_high_barrier = dummy_contract_type === 'ACC' && '+0.30';
-            const dummy_accumulator_low_barrier = dummy_contract_type === 'ACC' && '-0.30';
             this.main_barrier = new ChartBarrierStore(
-                high_barrier || barrier || dummy_accumulator_high_barrier,
-                low_barrier || barrier2 || dummy_accumulator_low_barrier,
+                barrier || high_barrier,
+                barrier2 || low_barrier,
                 this.onChartBarrierChange,
                 {
                     color,
@@ -954,6 +952,16 @@ export default class TradeStore extends BaseStore {
                 this.cancellation_price = cancellation.ask_price;
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
+        }
+
+        if (this.is_accumulator && this.proposal_info && this.proposal_info.ACC) {
+            const { tick_size_barrier, max_duration_ticks } = this.proposal_info.ACC;
+            if (tick_size_barrier) {
+                this.tick_size_barrier = tick_size_barrier;
+            }
+            if (max_duration_ticks) {
+                this.max_duration_ticks = max_duration_ticks;
+            }
         }
 
         if (!this.main_barrier || this.main_barrier.shade) {

@@ -139,8 +139,8 @@ const PaymentMethodsList = () => {
                         my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
                         my_profile_store?.payment_method_to_delete?.fields?.account?.value,
                 })}
-                onMount={() => general_store.setModalOpenState(true)}
-                onUnmount={() => general_store.setModalOpenState(false)}
+                onMount={() => general_store.setIsModalOpen(true)}
+                onUnmount={() => general_store.setIsModalOpen(false)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>

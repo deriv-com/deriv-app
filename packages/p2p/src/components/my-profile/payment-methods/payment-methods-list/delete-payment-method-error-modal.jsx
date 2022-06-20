@@ -13,8 +13,8 @@ const DeletePaymentMethodErrorModal = () => {
             small
             has_close_icon={false}
             title={localize("Something's not right")}
-            onMount={() => general_store.setModalOpenState(true)}
-            onUnmount={() => general_store.setModalOpenState(false)}
+            onMount={() => general_store.setIsModalOpen(true)}
+            onUnmount={() => general_store.setIsModalOpen(false)}
         >
             <Modal.Body>
                 <Text as='p' size='xs' color='prominent'>

@@ -355,7 +355,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setModalOpenState(is_modal_open) {
+    setIsModalOpen(is_modal_open) {
         this.is_modal_open = is_modal_open;
     }
 

@@ -13,7 +13,9 @@ jest.mock('Stores/connect', () => ({
 jest.mock('Pages/payment-agent/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
 jest.mock('Components/verification-email', () => () => <div>The email has been sent!</div>);
 jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
-jest.mock('Pages/payment-agent/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
+jest.mock('Pages/payment-agent/payment-agent-deposit-withdraw-container', () => () => (
+    <div>Payment agent deposit withdraw container</div>
+));
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -44,7 +46,7 @@ describe('<PaymentAgentList />', () => {
     it('should show proper messages', () => {
         renderWithRouter(<PaymentAgentList {...props} />);
 
-        expect(screen.getByText('Payment agent deposit')).toBeInTheDocument();
+        expect(screen.getByText('Payment agent deposit withdraw container')).toBeInTheDocument();
         expect(screen.getByText('DISCLAIMER')).toBeInTheDocument();
         expect(
             screen.getByText(

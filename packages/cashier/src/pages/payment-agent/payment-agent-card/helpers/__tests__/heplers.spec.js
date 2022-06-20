@@ -7,5 +7,6 @@ describe('Heplers', () => {
         expect(getNormalizedPaymentMethod('Localbank Transfer')).toBe('BankTransfer');
         expect(getNormalizedPaymentMethod('crypto-currencies')).toBe('Crypto');
         expect(getNormalizedPaymentMethod('WeAcceptCrypto')).toBe('Crypto');
+        expect(getNormalizedPaymentMethod('Fake method')).toBe('');
     });
 });

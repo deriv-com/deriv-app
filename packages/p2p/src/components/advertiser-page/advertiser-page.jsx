@@ -108,10 +108,17 @@ const AdvertiserPage = () => {
                                         </Text>
                                         &nbsp;
                                         <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            <Localize
-                                                i18n_default_text='({{number_of_ratings}} ratings)'
-                                                values={{ number_of_ratings: rating_count }}
-                                            />
+                                            {rating_count === 1 ? (
+                                                <Localize
+                                                    i18n_default_text='({{number_of_ratings}} rating)'
+                                                    values={{ number_of_ratings: rating_count }}
+                                                />
+                                            ) : (
+                                                <Localize
+                                                    i18n_default_text='({{number_of_ratings}} ratings)'
+                                                    values={{ number_of_ratings: rating_count }}
+                                                />
+                                            )}
                                         </Text>
                                     </React.Fragment>
                                 ) : (

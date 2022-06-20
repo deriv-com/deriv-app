@@ -17,7 +17,7 @@ const StarRating = ({
     number_of_stars,
     onClick,
     rtl = false,
-    should_allow_half_icon = false,
+    should_allow_half_icon = true,
     should_allow_hover_effect = true,
     star_size,
 }) => {

@@ -35,7 +35,6 @@ const SideNote = ({ children, side_notes, title, has_bullets = true, is_mobile, 
                         {children && <>{children}</>}
 
                         {!children &&
-                            side_notes?.length &&
                             side_notes.map((note, i) =>
                                 has_bullets ? (
                                     <SideNoteBullet key={i}>{note}</SideNoteBullet>

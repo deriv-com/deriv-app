@@ -1,4 +1,15 @@
 .side-note {
+    &--mobile {
+        background-color: var(--general-section-1);
+        border-radius: 8px;
+        padding: 1.6rem 2.4rem;
+        color: var(--text-general);
+        font-size: var(--text-size-xxs);
+        line-height: 1.5;
+        margin-bottom: 2.4rem;
+        width: auto;
+    }
+
     &__text {
         margin-bottom: 0.8rem;
     }

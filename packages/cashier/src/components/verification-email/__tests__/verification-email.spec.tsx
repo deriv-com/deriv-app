@@ -1,15 +1,14 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
-import VerificationEmail from '../verification-email';
+import VerificationEmail from '../verification-email.tsx';
 
 describe('<VerificationEmail />', () => {
     const resendVerificationEmail = jest.fn();
     const setIsResendClicked = jest.fn();
 
     it('component should be rendered', () => {
-        const { container } = render(<VerificationEmail />);
+        render(<VerificationEmail />);
 
-        expect(container.querySelector('.verification-email')).toBeInTheDocument();
         expect(screen.getByText("We've sent you an email.")).toBeInTheDocument();
         expect(
             screen.getByText('Please check your email for the verification link to complete the process.')
@@ -17,18 +16,19 @@ describe('<VerificationEmail />', () => {
     });
 
     it("React.Fragment should be rendered if 'is_resend_clicked' prop is true", () => {
-        const { container } = render(<VerificationEmail is_resend_clicked />);
+        render(<VerificationEmail is_resend_clicked />);
+        const btn = screen.getByRole('button');
 
         expect(screen.getByText("Didn't receive the email?")).toBeInTheDocument();
         expect(
             screen.getByText("Check your spam or junk folder. If it's not there, try resending the email.")
         ).toBeInTheDocument();
-        expect(container.querySelector('.verification-email__resend-button')).toBeInTheDocument();
+        expect(btn).toHaveClass('verification-email__resend-button');
     });
 
     it("resendVerificationEmail func should not be triggered when 'resend_timeout' prop is less than 60", () => {
         const resend_timeout = 59;
-        const { container } = render(
+        render(
             <VerificationEmail
                 is_resend_clicked
                 resend_timeout={resend_timeout}
@@ -36,7 +36,7 @@ describe('<VerificationEmail />', () => {
             />
         );
 
-        const btn = container.querySelector('.verification-email__resend-button');
+        const btn = screen.getByRole('button', { name: 'Resend email in 59s' });
         fireEvent.click(btn);
 
         expect(resendVerificationEmail).toHaveBeenCalledTimes(0);
@@ -44,7 +44,7 @@ describe('<VerificationEmail />', () => {
 
     it("resendVerificationEmail func should be triggered when 'resend_timeout' prop is more or equal 60", () => {
         const resend_timeout = 60;
-        const { container } = render(
+        render(
             <VerificationEmail
                 is_resend_clicked
                 resend_timeout={resend_timeout}
@@ -52,7 +52,7 @@ describe('<VerificationEmail />', () => {
             />
         );
 
-        const btn = container.querySelector('.verification-email__resend-button');
+        const btn = screen.getByRole('button', { name: 'Resend email' });
         fireEvent.click(btn);
 
         expect(resendVerificationEmail).toHaveBeenCalledTimes(1);

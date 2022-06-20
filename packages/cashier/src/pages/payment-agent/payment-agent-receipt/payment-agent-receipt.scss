@@ -1,0 +1,77 @@
+.payment-agent-receipt {
+    @include mobile {
+        margin: 0 1.6rem;
+        width: calc(100% - 3.2rem);
+
+        .cashier {
+            &__done-button {
+                width: 100%;
+            }
+            &__transferred-amount {
+                margin-top: 1.6rem;
+                margin-bottom: 0;
+            }
+            &__transferred-details-wrapper {
+                display: none;
+            }
+            &__success {
+                width: 100%;
+                margin: 0 auto;
+                background-color: var(--general-main-1);
+            }
+        }
+        .payment-agent-receipt {
+            &__explanation {
+                padding-left: 0;
+            }
+            &__transferred-contact {
+                margin: 0.8rem;
+
+                &-wrapper {
+                    margin: 0.8rem;
+                }
+                .payment-agent__contact {
+                    padding-left: 0;
+                }
+            }
+            &__paragraph {
+                padding-left: 0;
+            }
+        }
+    }
+
+    & .cashier__form-submit {
+        text-align: center;
+        justify-content: center;
+        flex-flow: row;
+        margin: 2.4rem 0 3.2rem;
+
+        &-button {
+            margin: 0;
+            max-width: 18rem;
+
+            &:first-child {
+                margin-right: 0.4rem;
+            }
+            &:last-child {
+                margin-left: 0.4rem;
+            }
+        }
+    }
+    &__transferred-contact {
+        margin: 0.8rem 0;
+
+        &-wrapper {
+            margin: 2.4rem 0;
+        }
+    }
+    &__explanation {
+        margin-top: 0.8rem;
+    }
+    &__paragraph {
+        align-self: flex-start;
+    }
+    &__text--end {
+        align-self: flex-end;
+    }
+}

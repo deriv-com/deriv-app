@@ -199,6 +199,10 @@ export default class ExtendedOrderDetails {
         return this.is_pending_order || this.is_ongoing_order;
     }
 
+    get should_show_lost_funds_banner() {
+        return this.is_pending_order || this.is_buyer_confirmed_order;
+    }
+
     get status_string() {
         // Finalised orders, should take precedence over is_expired_order/has_timer_expired.
         if (this.is_completed_order || this.is_dispute_completed_order) {

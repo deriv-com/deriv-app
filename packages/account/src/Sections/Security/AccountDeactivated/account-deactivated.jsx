@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 const AccountDeactivated = ({ logout }) => {
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         window.history.pushState(null, null, '/');
@@ -16,15 +16,16 @@ const AccountDeactivated = ({ logout }) => {
         return () => {
             if (handleInterval) clearInterval(handleInterval);
         };
-    }, [timer, is_modal_open]);
+    }, [timer, is_modal_open, logout, counter]);
 
-    const counter = () => {
+    const counter = React.useCallback(() => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
-            window.location.href = getStaticUrl('/', { is_dashboard });
+            window.location.href = getStaticUrl('/', { is_appstore });
         }
-    };
+    }, [is_appstore, timer]);
+
     return (
         <Modal
             is_open={is_modal_open}

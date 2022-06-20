@@ -13,13 +13,11 @@ const MobileDialog = props => {
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (footer_ref.current && !footer_height) {
             setHeight(footer_ref.current.offsetHeight);
-        } else {
-            footer_ref.current = true;
         }
-    }, [footer]);
+    }, [footer, footer_height]);
 
     const checkVisibility = () => {
         if (props.visible) {
@@ -58,6 +56,7 @@ const MobileDialog = props => {
     if (!document.getElementById(portal_element_id)) return null;
     return ReactDOM.createPortal(
         <CSSTransition
+            appear
             in={visible}
             timeout={250}
             classNames={{

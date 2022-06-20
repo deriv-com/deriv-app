@@ -74,7 +74,7 @@ const rules = (is_test_env = false) => [
         },
     },
     {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use: js_loaders,
@@ -123,19 +123,14 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = ({ base, is_test_env, env }) => {
-    let is_dashboard = false;
     let is_qawolf = false;
 
-    if (env.IS_DASHBOARD) {
-        is_dashboard = !!JSON.parse(env.IS_DASHBOARD);
-    }
     if (env.IS_QAWOLF) {
         is_qawolf = !!JSON.parse(env.IS_QAWOLF);
     }
 
     return [
         new DefinePlugin({
-            'process.env.IS_DASHBOARD': is_dashboard,
             'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),

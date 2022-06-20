@@ -1,8 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
-import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
-// eslint-disable-next-line import/extensions
+import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, LocalStore, isMobile } from '@deriv/shared';
 
 const InputField = props => {
     return (
@@ -26,12 +25,14 @@ const InputField = props => {
 // doesn't need localization as it's for internal use
 const Endpoint = () => {
     const platform_store = React.useContext(PlatformContext);
+    const dbot_dashboard_storage = LocalStore.get('show_dbot_dashboard');
     return (
         <Formik
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
-                is_dashboard_enabled: platform_store.is_dashboard,
+                is_appstore_enabled: platform_store.is_appstore,
+                show_dbot_dashboard: dbot_dashboard_storage !== undefined && dbot_dashboard_storage !== 'false',
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
             validate={values => {
@@ -53,14 +54,15 @@ const Endpoint = () => {
             onSubmit={values => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
-                localStorage.setItem(platform_store.DERIV_DASHBOARD_KEY, values.is_dashboard_enabled);
+                localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
+                LocalStore.set('show_dbot_dashboard', values.show_dbot_dashboard);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
-                platform_store.setDerivDashboard(values.is_dashboard_enabled);
+                platform_store.setIsAppStore(values.is_appstore_enabled);
                 location.reload();
             }}
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
-                <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
+                <Form style={{ width: '30vw', minWidth: '300px', margin: isMobile() ? 'auto' : '20vh auto' }}>
                     <div
                         style={{
                             marginBottom: '1.6rem',
@@ -89,16 +91,31 @@ const Endpoint = () => {
                             </React.Fragment>
                         }
                     />
-                    <Field name='is_dashboard_enabled'>
+                    <Field name='is_appstore_enabled'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
                                 <Checkbox
                                     {...field}
-                                    label='Enable Dashboard'
-                                    value={values.is_dashboard_enabled}
+                                    label='Enable Appstore'
+                                    value={values.is_appstore_enabled}
                                     onChange={e => {
                                         handleChange(e);
-                                        setFieldTouched('is_dashboard_enabled', true);
+                                        setFieldTouched('is_appstore_enabled', true);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </Field>
+                    <Field name='show_dbot_dashboard'>
+                        {({ field }) => (
+                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                                <Checkbox
+                                    {...field}
+                                    label='Show Dbot Dashboard'
+                                    value={values.show_dbot_dashboard}
+                                    onChange={e => {
+                                        handleChange(e);
+                                        setFieldTouched('show_dbot_dashboard', true);
                                     }}
                                 />
                             </div>
@@ -125,7 +142,8 @@ const Endpoint = () => {
                             !!(
                                 (!touched.server &&
                                     !touched.app_id &&
-                                    !touched.is_dashboard_enabled &&
+                                    !touched.is_appstore_enabled &&
+                                    !touched.show_dbot_dashboard &&
                                     !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||
                                 !values.app_id ||

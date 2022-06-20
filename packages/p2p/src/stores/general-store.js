@@ -17,12 +17,14 @@ export default class GeneralStore extends BaseStore {
     @observable is_blocked = false;
     @observable is_listed = false;
     @observable is_loading = false;
+    @observable is_p2p_blocked_for_pa = false;
     @observable is_restricted = false;
     @observable nickname = null;
     @observable nickname_error = '';
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
+    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -64,12 +66,6 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_my_profile_tab_visible() {
         return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
-    }
-
-    @computed
-    get is_unsupported_account() {
-        const allowed_currency = 'USD';
-        return this.client?.is_virtual || this.client?.currency !== allowed_currency;
     }
 
     @computed
@@ -175,6 +171,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsLoading(true);
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
+        this.setIsP2pBlockedForPa(false);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -191,9 +188,15 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            if (!error && get_account_status.risk_classification === 'high') {
-                const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
+            const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
+            const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+
+            if (error) {
+                this.setIsHighRiskFullyAuthedWithoutFa(false);
+                this.setIsBlocked(false);
+                this.setIsP2pBlockedForPa(false);
+            } else if (get_account_status.risk_classification === 'high') {
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
 
                 const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
@@ -202,8 +205,6 @@ export default class GeneralStore extends BaseStore {
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
                 const is_fully_authed_but_needs_fa =
                     is_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
-                const is_fully_authed_and_does_not_need_fa =
-                    is_fully_authenticated && !hasStatuses(['financial_assessment_not_complete']);
 
                 const is_not_fully_authenticated_and_fa_not_completed =
                     is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
@@ -211,8 +212,6 @@ export default class GeneralStore extends BaseStore {
                 if (is_fully_authed_but_needs_fa) {
                     // First priority: Send user to Financial Assessment if they have to submit it.
                     this.setIsHighRiskFullyAuthedWithoutFa(true);
-                    this.setIsLoading(false);
-                    return;
                 } else if (
                     is_cashier_locked ||
                     is_not_fully_authenticated ||
@@ -221,18 +220,16 @@ export default class GeneralStore extends BaseStore {
                 ) {
                     // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
-                    this.setIsLoading(false);
-                } else if (is_fully_authed_and_does_not_need_fa) {
-                    this.setIsLoading(false);
                 }
-            } else if (error) {
-                this.setIsHighRiskFullyAuthedWithoutFa(false);
-                this.setIsBlocked(false);
-                this.setIsLoading(false);
             }
 
-            const { sendbird_store } = this.root_store;
+            if (is_blocked_for_pa) {
+                this.setIsP2pBlockedForPa(true);
+            }
 
+            this.setIsLoading(false);
+
+            const { sendbird_store } = this.root_store;
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -347,6 +344,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsP2pBlockedForPa(is_p2p_blocked_for_pa) {
+        this.is_p2p_blocked_for_pa = is_p2p_blocked_for_pa;
+    }
+
+    @action.bound
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
     }
@@ -372,6 +374,21 @@ export default class GeneralStore extends BaseStore {
 
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
+    }
+
+    @action.bound
+    setOrderTimeOut(time) {
+        this.order_timeout = time;
+    }
+
+    @action.bound
+    setP2PConfig() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response && !response.error) {
+                const { order_payment_period } = response.website_status?.p2p_config;
+                this.setOrderTimeOut(order_payment_period);
+            }
+        });
     }
 
     @action.bound
@@ -445,17 +462,14 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     updateAdvertiserInfo(response) {
         const { p2p_advertiser_info } = response;
-
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
-            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
-
             if (response.error.code === 'RestrictedCountry') {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {

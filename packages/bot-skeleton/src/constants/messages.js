@@ -16,6 +16,8 @@ export const unrecoverable_errors = [
     'InvalidToken',
     'DailyLossLimitExceeded',
     'InputValidationFailed',
+    'ClientUnwelcome',
+    'PriceMoved',
 ];
 
 export const message_types = Object.freeze({

@@ -19,6 +19,7 @@ import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
+import { getDurationPeriod, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
 
 const ContractReplay = ({
     contract_id,
@@ -53,6 +54,7 @@ const ContractReplay = ({
             setIsVisible(false);
             onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_id, location, onMount, onUnmount]);
 
     const onClickClose = () => {
@@ -235,12 +237,15 @@ const Chart = props => {
             scrollToEpoch={props.scroll_to_epoch}
             stateChangeListener={props.chartStateChange}
             symbol={props.symbol}
+            allTicks={props.all_ticks}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
             isStaticChart={false}
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
+            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
+            contractInfo={props.contract_info}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker
@@ -271,10 +276,13 @@ Chart.propTypes = {
     settings: PropTypes.object,
     start_epoch: PropTypes.number,
     symbol: PropTypes.string,
+    contract_info: PropTypes.object,
+    all_ticks: PropTypes.array,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
     wsSubscribe: PropTypes.func,
+    shouldFetchTickHistory: PropTypes.bool,
 };
 
 const ReplayChart = connect(({ modules, ui, common }) => {
@@ -318,6 +326,10 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         barriers_array: contract_store.barriers_array,
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
+        contract_info: contract_store.contract_info,
+        all_ticks: contract_store.contract_info.audit_details
+            ? contract_store.contract_info.audit_details.all_ticks
+            : [],
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,

@@ -29,11 +29,11 @@ const DeactivateAccountReasonFrom = ({
     remaining_characters,
     onBackClick,
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <Formik initialValues={initial_form} validate={validateFields} onSubmit={onSubmit}>
-            {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
+            {({ values, setFieldValue, errors, handleChange, handleSubmit, dirty }) => (
                 <form onSubmit={handleSubmit}>
                     <Field name='financial-priorities'>
                         {({ field }) => (
@@ -201,7 +201,7 @@ const DeactivateAccountReasonFrom = ({
                                         as='p'
                                         weight='bold'
                                         size='xs'
-                                        color={is_dashboard ? 'blue' : 'loss-danger'}
+                                        color={is_appstore ? 'blue' : 'loss-danger'}
                                         className='deactivate-account-reasons__error'
                                         key={key}
                                     >
@@ -212,7 +212,7 @@ const DeactivateAccountReasonFrom = ({
                         <FormSubmitButton
                             is_disabled={
                                 // eslint-disable-next-line no-unused-vars
-                                Object.keys(errors).length > 0
+                                !dirty || Object.keys(errors).length > 0
                             }
                             label={localize('Continue')}
                             has_cancel

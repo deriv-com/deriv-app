@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { toTitleCase, WS } from '@deriv/shared';
+import { getBrandWebsiteName, getPlatformSettings, toTitleCase, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
@@ -21,6 +21,11 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
     };
 
     const capitalized_identifier = social_identity_provider ? toTitleCase(social_identity_provider) : '';
+    const brand_website_name = getBrandWebsiteName();
+    const platform_name_dbot = getPlatformSettings('dbot').name;
+    const platform_name_go = getPlatformSettings('go').name;
+    const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
+    const platform_name_trader = getPlatformSettings('trader').name;
 
     return (
         <React.Fragment>
@@ -28,7 +33,17 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
             <div className='account__passwords-wrapper'>
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize i18n_default_text='Your Deriv password is for logging in to your Deriv account.' />
+                        <Localize
+                            i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.'
+                            components={[<strong key={0} />]}
+                            values={{
+                                brand_website_name,
+                                platform_name_trader,
+                                platform_name_dbot,
+                                platform_name_smarttrader,
+                                platform_name_go,
+                            }}
+                        />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                         <Localize i18n_default_text='Apps you can use with your Deriv login:' />
@@ -36,20 +51,20 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                     <div className='passwords-platform__logo-container'>
                         <DerivComLogo className='passwords-platform__single-icon' />
                         <Text line_height='l' size='xs' weight='bold'>
-                            Deriv.com
+                            {brand_website_name}
                         </Text>
                     </div>
                     <div className='passwords-platform__icons'>
-                        <Popover alignment='bottom' message='DTrader'>
-                            <Icon icon='IcBrandDtrader' size={32} />
+                        <Popover alignment='bottom' message={platform_name_trader}>
+                            <Icon icon={getPlatformSettings('trader').icon} size={32} />
                         </Popover>
-                        <Popover alignment='bottom' message='DBot'>
-                            <Icon icon='IcBrandDbot' size={32} />
+                        <Popover alignment='bottom' message={platform_name_dbot}>
+                            <Icon icon={getPlatformSettings('dbot').icon} size={32} />
                         </Popover>
-                        <Popover alignment='bottom' message='SmartTrader'>
-                            <Icon icon='IcBrandSmarttrader' size={32} />
+                        <Popover alignment='bottom' message={platform_name_smarttrader}>
+                            <Icon icon={getPlatformSettings('smarttrader').icon} size={32} />
                         </Popover>
-                        <Popover alignment='bottom' message='Deriv Go'>
+                        <Popover alignment='bottom' message={platform_name_go}>
                             {is_dark_mode_on ? <DerivGoDark /> : <DerivGoLight />}
                         </Popover>
                     </div>
@@ -132,6 +147,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}
+                    is_modal_when_mobile={true}
                 />
             </div>
         </React.Fragment>

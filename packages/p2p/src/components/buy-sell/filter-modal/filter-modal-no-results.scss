@@ -1,0 +1,17 @@
+.filter-modal-no-result {
+    display: flex;
+    flex-direction: column;
+    padding: 50% 0.8rem;
+    justify-content: center;
+    align-content: center;
+
+    &__title {
+        line-height: 1.43;
+        letter-spacing: normal;
+        margin-bottom: 0.8rem;
+    }
+    &__subtitle {
+        letter-spacing: normal;
+        margin: 0;
+    }
+}

@@ -6,7 +6,20 @@ import * as icons_manifest from './icons-manifest';
 
 const Icon = React.forwardRef(
     (
-        { className, color, custom_color, height, icon, id, onClick, onMouseEnter, onMouseLeave, size = 16, width },
+        {
+            className,
+            color,
+            custom_color,
+            data_testid,
+            height,
+            icon,
+            id,
+            onClick,
+            onMouseEnter,
+            onMouseLeave,
+            size = 16,
+            width,
+        },
         ref
     ) => {
         if (!icon) return null;
@@ -37,6 +50,7 @@ const Icon = React.forwardRef(
                     'dc-icon--black': color === 'black',
                     'dc-icon--orange': color === 'orange',
                 })}
+                data-testid={data_testid}
                 height={height || size}
                 id={id}
                 width={width || size}
@@ -64,6 +78,7 @@ Icon.propTypes = {
     className: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     color: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     custom_color: PropTypes.string,
+    data_testid: PropTypes.string,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     icon: PropTypes.string,
     onClick: PropTypes.func,

@@ -210,7 +210,7 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockDisableStack = function (block) {
+Blockly.ContextMenu.blockDisableOption = function (block) {
     const checkAreSomeEnabled = (block_, enabledArr = []) => {
         enabledArr.push(!block_.disabled);
         return block_.nextConnection?.targetConnection
@@ -243,8 +243,11 @@ Blockly.ContextMenu.blockDisableStack = function (block) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockEnableStack = function (block) {
+Blockly.ContextMenu.blockEnableOption = function (block) {
     const checkAreSomeDisabled = (block_, disabledArr = []) => {
+        if (block_.restricted_parents && !block_.restricted_parents?.includes(block_.getTopParent()?.type)) {
+            return false;
+        }
         disabledArr.push(block_.disabled);
         return block_.nextConnection?.targetConnection
             ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
@@ -253,7 +256,9 @@ Blockly.ContextMenu.blockEnableStack = function (block) {
     const enabled = checkAreSomeDisabled(block);
 
     const enableBlocksRecursively = block_ => {
-        block_.setDisabled(false);
+        if (!block_.restricted_parents || block_.restricted_parents.includes(block_.getTopParent()?.type)) {
+            block_.setDisabled(false);
+        }
         if (block_.nextConnection?.targetConnection) {
             enableBlocksRecursively(block_.nextConnection?.targetConnection.sourceBlock_);
         }

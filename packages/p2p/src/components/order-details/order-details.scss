@@ -1,5 +1,5 @@
 /** @define order-details; weak */
-$card-height: 512px;
+$card-height: 650px;
 $card-width: 456px;
 
 .order-details {
@@ -10,6 +10,30 @@ $card-width: 456px;
     @include tablet-up {
         min-height: $card-height;
         max-height: $card-height;
+        margin-bottom: 3rem;
+    }
+
+    &--body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &--warning {
+        margin-bottom: 1.6rem;
+
+        @include mobile {
+            margin: 1rem 2rem;
+        }
+
+        .dc-hint-box {
+            &__icon {
+                @include mobile {
+                    align-self: flex-start;
+                    min-width: 16px;
+                    min-height: 16px;
+                }
+            }
+        }
     }
 }
 
@@ -17,6 +41,7 @@ $card-width: 456px;
     background-color: var(--general-main-1);
     display: flex;
     flex-direction: column;
+    height: fit-content;
 
     @include tablet-up {
         border-radius: 4px;
@@ -27,6 +52,45 @@ $card-width: 456px;
     @include mobile {
         height: 100%;
         width: 100%;
+    }
+
+    &--padding {
+        padding: 1rem 2.4rem;
+
+        &:last-of-type {
+            margin-bottom: unset;
+            padding-bottom: unset;
+        }
+    }
+
+    &__accordion {
+        &-column {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1.6rem;
+        }
+        &-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        &-title {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 2rem;
+        }
+
+        .dc-accordion__item {
+            border: none;
+        }
+
+        .dc-accordion__item-header {
+            align-items: center;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     &__header {
@@ -109,15 +173,16 @@ $card-width: 456px;
             word-break: break-word;
         }
     }
+
     &__info {
         @include tablet-up {
-            padding: 1.6rem 2.4rem;
+            padding: 1.6rem 0;
         }
 
         @include mobile {
             flex: 1;
             min-height: 0;
-            padding: 1.6rem;
+            padding: 1.6rem 0;
         }
 
         &-block {
@@ -132,10 +197,13 @@ $card-width: 456px;
                 word-break: break-word;
             }
         }
+
         &-columns {
             display: flex;
             flex-flow: row nowrap;
+            padding: 0 2.4rem;
         }
+
         &--right,
         &--left {
             display: flex;
@@ -151,24 +219,27 @@ $card-width: 456px;
         line-height: 1.43;
         color: var(--text-general);
         padding: 1.6rem 2.4rem;
-        height: 7.2rem;
 
         @include mobile {
             width: 100%;
-            padding: 1.6rem;
+            padding: unset;
         }
         @include tablet-up {
             width: 100%;
-            padding: 1.6rem;
+            padding: 0 1.6rem 1.6rem;
         }
 
-        &--left {
-            margin-right: auto;
-        }
         &--right {
             margin-left: auto;
         }
     }
+
+    &--line {
+        margin: 0;
+        padding: 0;
+        width: $card-width;
+    }
+
     &__message {
         font-size: var(--text-size-xs);
         line-height: 2rem;

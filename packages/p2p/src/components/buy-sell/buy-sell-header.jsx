@@ -1,13 +1,14 @@
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
-import { reaction } from 'mobx';
-import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
+import debounce from 'lodash.debounce';
+import { ButtonToggle, Icon } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
-import SearchBox from 'Components/buy-sell/search-box.jsx';
+import SearchBox from 'Components/search-box';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
 import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
@@ -26,22 +27,36 @@ const getBuySellFilters = () => [
 
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     const { buy_sell_store } = useStores();
-    const [is_no_match_tooltip_open, setIsNoMatchTooltipOpen] = React.useState(false);
 
     const onChangeTableType = event => setTableType(event.target.value);
+
+    const returnedFunction = debounce(() => {
+        buy_sell_store.loadMoreItems({ startIndex: 0 });
+    }, 1000);
+
+    const onClear = () => {
+        buy_sell_store.setSearchTerm('');
+        buy_sell_store.setSearchResults([]);
+    };
+
+    const onSearch = search => {
+        buy_sell_store.setSearchTerm(search.trim());
+
+        if (!search.trim()) {
+            buy_sell_store.setSearchResults([]);
+            return;
+        }
+
+        buy_sell_store.setIsLoading(true);
+        returnedFunction();
+    };
 
     React.useEffect(
         () => {
             buy_sell_store.setSearchTerm('');
-            return reaction(
-                () => buy_sell_store.should_use_client_limits,
-                () => {
-                    buy_sell_store.setItems([]);
-                    buy_sell_store.setIsLoading(true);
-                    buy_sell_store.loadMoreItems({ startIndex: 0 });
-                },
-                { fireImmediately: true }
-            );
+            buy_sell_store.setItems([]);
+            buy_sell_store.setIsLoading(true);
+            buy_sell_store.loadMoreItems({ startIndex: 0 });
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -68,26 +83,19 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                     </ToggleContainer>
                 </AnimationWrapper>
                 <div className='buy-sell__header-row'>
-                    <SearchBox />
+                    <SearchBox
+                        onClear={onClear}
+                        onSearch={onSearch}
+                        placeholder={isDesktop() ? localize('Search by nickname') : localize('Search')}
+                    />
                     <SortDropdown />
+                    <Icon
+                        className='buy-sell__header-row--filter'
+                        icon='IcFilter'
+                        onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
+                        size={40}
+                    />
                 </div>
-            </div>
-            <div className='buy-sell__header-match-ads'>
-                <Checkbox
-                    label={localize('Show the matching ads')}
-                    onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
-                    value={buy_sell_store.should_use_client_limits}
-                />
-                <PopoverMobile
-                    desktop_alignment='right'
-                    button_text={localize('Got it')}
-                    className='buy-sell__header-match-ads__popover'
-                    is_open={is_no_match_tooltip_open}
-                    message={localize('See the ads that match your Deriv P2P balance and limit.')}
-                    setIsOpen={setIsNoMatchTooltipOpen}
-                >
-                    <Icon icon='IcInfoOutline' size={16} />
-                </PopoverMobile>
             </div>
         </div>
     );

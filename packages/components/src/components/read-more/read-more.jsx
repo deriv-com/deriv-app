@@ -9,7 +9,7 @@ const ReadMore = ({ className, collapse_length, expand_text, openDialog, show_di
     React.useEffect(() => {
         if (show_dialog) updateContent(text.substring(0, collapse_length));
         else updateContent(is_collapsed ? text.substring(0, collapse_length) : text);
-    }, [is_collapsed]);
+    }, [is_collapsed, text, show_dialog, collapse_length]);
 
     return (
         <React.Fragment>

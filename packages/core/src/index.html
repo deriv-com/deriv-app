@@ -406,7 +406,6 @@
                         websiteVersion: document?.querySelector('meta[name=version]')?.content,
                     };
 
-                    console.log(measurement);
                     dataLayer.push({ event: 'coreWebVitals', webVitalsMeasurement: measurement });
                 });
             }

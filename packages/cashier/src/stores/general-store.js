@@ -224,6 +224,7 @@ export default class GeneralStore extends BaseStore {
                 modules,
             } = this.root_store;
             const { account_prompt_dialog, payment_agent, withdraw } = modules.cashier;
+
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
 

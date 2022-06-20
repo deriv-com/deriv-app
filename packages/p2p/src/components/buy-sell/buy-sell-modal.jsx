@@ -98,11 +98,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             receive_amount={buy_sell_store.receive_amount}
         />
     );
+    const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const formik_ref = React.useRef();
-
-    const is_account_balance_low =
-        parseFloat(general_store.balance) === 0 ||
-        parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit;
 
     const BuySellFormError = () => (
         <div className='buy-sell__modal--error-message'>
@@ -146,6 +143,11 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
+        const balance_check =
+            parseFloat(general_store.balance) === 0 ||
+            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit;
+
+        setIsAccountBalanceLow(balance_check);
         if (!should_show_popup) {
             setErrorMessage(null);
         }

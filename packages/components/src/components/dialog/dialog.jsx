@@ -32,6 +32,8 @@ const Dialog = ({
         portal_element_id,
         title,
         has_close_icon,
+        secondary_button_type,
+        primary_button_type,
     } = other_props;
 
     const wrapper_ref = React.useRef();
@@ -144,6 +146,7 @@ const Dialog = ({
                                 onClick={handleCancel}
                                 secondary
                                 large
+                                type={secondary_button_type}
                             />
                         )}
                         {!!confirm_button_text && (
@@ -154,6 +157,7 @@ const Dialog = ({
                                 onClick={handleConfirm}
                                 primary
                                 large
+                                type={primary_button_type}
                             />
                         )}
                     </div>
@@ -177,6 +181,8 @@ Dialog.defaultProps = {
 Dialog.propTypes = {
     cancel_button_text: PropTypes.string,
     confirm_button_text: PropTypes.string,
+    secondary_button_type: PropTypes.string,
+    primary_button_type: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     has_close_icon: PropTypes.bool,

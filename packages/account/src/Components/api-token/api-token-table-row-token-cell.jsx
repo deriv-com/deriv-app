@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -34,7 +34,8 @@ const ApiTokenTableRowTokenCell = ({ token }) => {
                     className='da-api-token__visibility-icon'
                     onClick={toggleTokenVisibility}
                     width={15}
-                    color='secondary'
+                    custom_color='var(--text-prominent)'
+                    data_testid='dt_toggle_visibility_icon'
                 />
             </Popover>
         </div>

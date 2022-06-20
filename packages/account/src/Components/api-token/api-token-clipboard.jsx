@@ -87,6 +87,7 @@ const ApiTokenClipboard = ({
                 confirm_button_text={localize('Ok')}
                 onConfirm={onClick}
                 className='da-api-token__dialog'
+                primary_button_type='button'
             >
                 <WarningDialogMessage />
             </Dialog>
@@ -102,16 +103,20 @@ const ApiTokenClipboard = ({
                         icon='IcCheckmarkCircle'
                         custom_color='var(--status-success)'
                         className={classNames('dc-clipboard', className)}
+                        size={14}
+                        data_testid='dt_token_copied_icon'
                     />
                 )}
                 {!is_copied && (
                     <Icon
                         icon={icon || 'IcClipboard'}
-                        custom_color='var(--text-less-prominent)'
+                        custom_color='var(--text-prominent)'
                         className={classNames('dc-clipboard', className)}
                         onClick={toggleDialogVisibility}
                         onMouseEnter={togglePopupvisibility}
                         onMouseLeave={togglePopupvisibility}
+                        size={14}
+                        data_testid='dt_copy_token_icon'
                     />
                 )}
             </Popover>

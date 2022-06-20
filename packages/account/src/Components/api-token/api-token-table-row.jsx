@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import * as React from 'react';
-import ApiTokenDeleteButtons from './api-token-delete-buttons.jsx';
+import React from 'react';
+import ApiTokenDeleteButton from './api-token-delete-button.jsx';
 import ApiTokenTableRowCell from './api-token-table-row-cell.jsx';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell.jsx';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell.jsx';
@@ -16,7 +16,7 @@ const ApiTokenTableRow = ({ token }) => (
         </ApiTokenTableRowCell>
         <ApiTokenTableRowCell>{token.last_used}</ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>
-            <ApiTokenDeleteButtons token={token} />
+            <ApiTokenDeleteButton token={token} popover_props={{ relative_render: false, zIndex: 9999 }} />
         </ApiTokenTableRowCell>
     </tr>
 );

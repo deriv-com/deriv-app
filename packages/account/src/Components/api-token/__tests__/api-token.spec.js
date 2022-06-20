@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, findByText, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken from '../api-token';
 
@@ -219,41 +219,87 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText('Scopes')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
 
-        const delete_btns_1 = await screen.findAllByRole('button', { name: /delete/i });
+        const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
         expect(delete_btns_1.length).toBe(2);
 
         fireEvent.click(delete_btns_1[0]);
-        const delete_btns_2 = await screen.findAllByRole('button', { name: /delete/i });
-        expect(delete_btns_2.length).toBe(1);
-        const no_btn_1 = screen.getByRole('button', { name: /no/i });
+        const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
         expect(no_btn_1).toBeInTheDocument();
 
         fireEvent.click(no_btn_1);
-        expect(no_btn_1).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(no_btn_1).not.toBeInTheDocument();
+        });
 
-        const delete_btns_3 = await screen.findAllByRole('button', { name: /delete/i });
-        expect(delete_btns_3.length).toBe(2);
+        const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
+        expect(delete_btns_2.length).toBe(2);
 
-        fireEvent.click(delete_btns_3[0]);
-        const yes_btn_1 = screen.getByRole('button', { name: /yes/i });
+        fireEvent.click(delete_btns_2[0]);
+        const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
         expect(yes_btn_1).toBeInTheDocument();
 
         fireEvent.click(yes_btn_1);
         const deleteToken = mock_props.ws.authorized.apiToken;
         expect(deleteToken).toHaveBeenCalled();
-        const delete_btns_4 = await screen.findAllByRole('button', { name: /delete/i });
-        expect(delete_btns_4.length).toBe(1);
+        await waitFor(() => {
+            expect(yes_btn_1).not.toBeInTheDocument();
+        });
 
-        fireEvent.click(delete_btns_4[0]);
-        const no_btn_2 = screen.getByRole('button', { name: /no/i });
+        const delete_btns_3 = await screen.findAllByTestId('dt_token_delete_icon');
+        fireEvent.click(delete_btns_3[0]);
+        const no_btn_2 = screen.getByRole('button', { name: /cancel/i });
         expect(no_btn_2).toBeInTheDocument();
-        const yes_btn_2 = screen.getByRole('button', { name: /yes/i });
+        const yes_btn_2 = screen.getByRole('button', { name: /yes, delete/i });
         expect(yes_btn_2).toBeInTheDocument();
 
-        act(() => jest.advanceTimersByTime(10000));
+        act(() => jest.advanceTimersByTime(11000));
 
         expect(no_btn_2).not.toBeInTheDocument();
         expect(yes_btn_2).not.toBeInTheDocument();
+    });
+
+    it('should trigger hide/unhide icon and trigger copy icon', async () => {
+        const warning_msg =
+            'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf';
+
+        document.execCommand = jest.fn();
+
+        getPropertyValue.mockReturnValue([
+            {
+                display_name: 'First test token',
+                last_used: '',
+                scopes: ['Read', 'Trade'],
+                token: 'FirstTokenID',
+                valid_for_ip: '',
+            },
+        ]);
+
+        render(<ApiToken {...mock_props} />);
+
+        expect(await screen.findByText('First test token')).toBeInTheDocument();
+        expect(screen.queryByText('FirstTokenID')).not.toBeInTheDocument();
+
+        const toggle_visibility_btn = await screen.findByTestId('dt_toggle_visibility_icon');
+        expect(toggle_visibility_btn).toBeInTheDocument();
+
+        fireEvent.click(toggle_visibility_btn);
+        expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
+
+        const copy_btn = await screen.findByTestId('dt_copy_token_icon');
+        expect(copy_btn).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
+
+        fireEvent.click(copy_btn);
+        expect(await screen.findByText(warning_msg)).toBeInTheDocument();
+
+        const ok_btn = screen.getByRole('button', { name: /ok/i });
+        expect(ok_btn).toBeInTheDocument();
+
+        fireEvent.click(ok_btn);
+        expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
+        expect(copy_btn).not.toBeInTheDocument();
+
+        jest.clearAllMocks();
     });
 
     it('should render created tokens for mobile', async () => {
@@ -289,12 +335,11 @@ describe('<ApiToken/>', () => {
         expect((await screen.findAllByText('Name')).length).toBe(3);
         expect((await screen.findAllByText('Last Used')).length).toBe(3);
         expect((await screen.findAllByText('Token')).length).toBe(3);
-        expect((await screen.findAllByText('Scope')).length).toBe(3);
+        expect((await screen.findAllByText('Scopes')).length).toBe(3);
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
-        expect(await screen.findByText('SecondTokenID')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();
-        expect(screen.queryByText('Scopes')).not.toBeInTheDocument();
+        expect(screen.queryByText('SecondTokenID')).not.toBeInTheDocument();
         const never_used = await screen.findAllByText('Never');
         expect(never_used.length).toBe(2);
     });

@@ -76,14 +76,14 @@
             text-align: left;
         }
         &-cell {
+            vertical-align: middle;
             &-row {
                 border-bottom: 1px solid var(--general-section-1);
             }
 
-            padding: 2.4rem 0;
+            padding: 1.6rem 0;
 
             &--name {
-                min-width: 6.4rem;
                 > .dc-text {
                     word-break: break-all;
                 }
@@ -94,6 +94,9 @@
             flex-wrap: wrap;
             gap: 0.4rem;
             max-width: 22rem;
+            @media screen and (max-width: 926px) {
+                margin-top: 0.4rem;
+            }
         }
         &-scope-cell {
             border: 0.1rem solid $color-grey-5;

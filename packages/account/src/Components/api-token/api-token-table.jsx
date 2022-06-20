@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile, formatDate } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
+import ApiTokenDeleteButton from './api-token-delete-button.jsx';
 import ApiTokenTableBodyRow from './api-token-table-row.jsx';
 import ApiTokenTableRowHeader from './api-token-table-row-header.jsx';
-import ApiTokenDeleteButtons from './api-token-delete-buttons.jsx';
-import ApiTokenTableRowTokenCell from './api-token-table-row-cell.jsx';
+import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell.jsx';
+import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell.jsx';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext(ApiTokenContext);
@@ -56,18 +57,7 @@ const ApiTokenTable = () => {
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                 <Localize i18n_default_text='Token' />
                             </Text>
-                            <div className='da-api-token__clipboard-wrapper'>
-                                <Text size='xs' color='general' line_height='m'>
-                                    {token.token}
-                                </Text>
-                                {/* <Clipboard
-                                    className='da-api-token__clipboard'
-                                    popover_props={{ relative_render: false, zIndex: 9999 }}
-                                    text_copy={token.token}
-                                /> */}
-                                {/* doesn't work for mobile */}
-                                <ApiTokenTableRowTokenCell token={token.token} />
-                            </div>
+                            <ApiTokenTableRowTokenCell token={token.token} />
                         </div>
                         <div>
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
@@ -81,14 +71,15 @@ const ApiTokenTable = () => {
                     <div className='da-api-token__scope-item'>
                         <div>
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
-                                <Localize i18n_default_text='Scope' />
+                                <Localize i18n_default_text='Scopes' />
                             </Text>
-                            <Text as='p' size='s' color='general' line_height='m'>
-                                {token.scopes}
-                            </Text>
+                            <ApiTokenTableRowScopesCell scopes={token.scopes} />
                         </div>
                         <div>
-                            <ApiTokenDeleteButtons token={token} />
+                            <ApiTokenDeleteButton
+                                token={token}
+                                popover_props={{ relative_render: false, zIndex: 9999 }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -105,7 +96,6 @@ const ApiTokenTable = () => {
                     <ApiTokenTableRowHeader text={localize('Scopes')} />
                     <ApiTokenTableRowHeader text={localize('Last used')} />
                     <th />
-                    {/* <ApiTokenTableRowHeader text={localize('Action')} /> */}
                 </tr>
             </thead>
             <tbody>

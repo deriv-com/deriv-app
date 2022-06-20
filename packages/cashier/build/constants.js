@@ -27,6 +27,7 @@ const ALIASES = {
     Pages: path.resolve(__dirname, '../src/pages'),
     Sass: path.resolve(__dirname, '../src/Sass'),
     Stores: path.resolve(__dirname, '../src/stores'),
+    Types: path.resolve(__dirname, '../src/types'),
     Utils: path.resolve(__dirname, '../src/utils'),
 };
 

@@ -73,7 +73,7 @@ const PaymentAgentDepositWithdrawContainer = ({
                 )}
             </div>
             {payment_agent_list.map((payment_agent, idx) => {
-                return <PaymentAgentCard key={idx} payment_agent={payment_agent} />;
+                return <PaymentAgentCard key={idx} is_deposit={is_deposit} payment_agent={payment_agent} />;
             })}
         </React.Fragment>
     );

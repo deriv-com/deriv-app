@@ -1,3 +1,6 @@
+import { ad_type } from 'Constants/floating-rate';
+import { formatMoney } from '@deriv/shared';
+
 export const roundOffDecimal = (number, decimal_place = 2) => {
     // Rounds of the digit to the specified decimal place
     return parseFloat(Math.round(number * Math.pow(10, decimal_place)) / Math.pow(10, decimal_place));
@@ -10,6 +13,27 @@ export const setDecimalPlaces = (value, expected_decimal_place) => {
     }
     const actual_decimal_place = value.toString().split('.')[1]?.length;
     return actual_decimal_place > expected_decimal_place ? expected_decimal_place : actual_decimal_place;
+};
+
+export const generateEffectiveRate = ({
+    price = 0,
+    rate = 0,
+    local_currency = {},
+    exchange_rate = 0,
+    rate_type = ad_type.FIXED,
+} = {}) => {
+    let effective_rate = 0;
+    let display_effective_rate = 0;
+    if (rate_type === ad_type.FIXED) {
+        effective_rate = price;
+        display_effective_rate = formatMoney(local_currency, effective_rate, true);
+    } else {
+        effective_rate = parseFloat(exchange_rate * (1 + rate / 100));
+        display_effective_rate = removeTrailingZeros(
+            formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
+        );
+    }
+    return { effective_rate, display_effective_rate };
 };
 
 export const removeTrailingZeros = value => {

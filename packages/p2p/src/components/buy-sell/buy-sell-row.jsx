@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Table, Text, Button, Icon } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
-import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { setDecimalPlaces, removeTrailingZeros } from 'Utils/format-value.js';
+import { generateEffectiveRate } from 'Utils/format-value.js';
 import './buy-sell-row.scss';
 import TradeBadge from '../trade-badge';
 
@@ -51,18 +50,26 @@ const BuySellRow = ({ row: advert }) => {
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
 
-    let effective_rate = 0;
-    let display_effective_rate = 0;
+    // let effective_rate = 0;
+    // let display_effective_rate = 0;
 
-    if (rate_type === ad_type.FIXED) {
-        effective_rate = price_display;
-        display_effective_rate = formatMoney(local_currency, effective_rate, true);
-    } else {
-        effective_rate = parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
-        display_effective_rate = removeTrailingZeros(
-            formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
-        );
-    }
+    // if (rate_type === ad_type.FIXED) {
+    //     effective_rate = price_display;
+    //     display_effective_rate = formatMoney(local_currency, effective_rate, true);
+    // } else {
+    //     effective_rate = parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
+    //     display_effective_rate = removeTrailingZeros(
+    //         formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
+    //     );
+    // }
+
+    const { display_effective_rate } = generateEffectiveRate({
+        price: price_display,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
 
     if (isMobile()) {
         return (

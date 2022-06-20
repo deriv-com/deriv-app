@@ -1544,19 +1544,19 @@
     position: relative;
 
     &__table-header {
-        grid-template-columns: 0.9fr 1.36fr 2.67fr;
+        grid-template-columns: 0.9fr 1.39fr 2.7fr;
     }
     &__table-header-item {
         justify-content: center;
     }
 
     &__table-row {
-        grid-template-columns: 0.9fr 0.7fr 0.66fr 0.7fr 0.66fr 0.61fr 0.7fr;
+        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.61fr 0.7fr;
         &--leverage {
-            grid-template-columns: 0.9fr 0.7fr 0.66fr 1.97fr 0.7fr;
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 2fr 0.7fr;
         }
         &--instruments {
-            grid-template-columns: 0.9fr 1.36fr 1.36fr 0.61fr 0.7fr;
+            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.61fr 0.7fr;
         }
     }
 
@@ -1568,7 +1568,7 @@
         }
     }
     &__table-footer {
-        grid-template-columns: 0.9fr 0.7fr 0.66fr 0.7fr 0.66fr 0.61fr 0.7fr;
+        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.61fr 0.7fr;
         height: 4.8rem;
         &__item {
             height: 4.8rem;
@@ -1637,7 +1637,7 @@
             }
             &__header,
             &__row {
-                width: 200vw;
+                width: 250vw;
             }
             .dc-table__head.cfd-real-compare-accounts__table-empty-cell {
                 border-top: none;

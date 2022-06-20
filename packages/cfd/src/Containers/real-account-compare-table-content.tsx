@@ -1,26 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    Table, ThemedScrollbars, Div100vhContainer, Button,
-    Text,
-    Popover,
-} from '@deriv/components';
+import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 
+type RowItem = {
+    text: string | Array<string>;
+    tooltip_msg?: string;
+};
+
 type AccountsDescription = {
-    synthetic_svg?: { text: string, tooltip_msg?: string };
-    synthetic_bvi?: { text: string, tooltip_msg?: string };
-    financial_svg?: { text: string | Array<string>, tooltip_msg?: string };
-    financial_bvi?: { text: string | Array<string>, tooltip_msg?: string };
-    financial_v?: { text: string | Array<string>, tooltip_msg?: string };
-    financial_fx?: { text: string | Array<string>, tooltip_msg?: string };
+    synthetic_svg?: RowItem;
+    synthetic_bvi?: RowItem;
+    financial_svg?: RowItem;
+    financial_bvi?: RowItem;
+    financial_v?: RowItem;
+    financial_fx?: RowItem;
 };
 
 type TModalContentProps = {
     id: string;
     attribute: string;
-    values: AccountsDescription
+    values: AccountsDescription;
 };
 
 const content: TModalContentProps[] = [
@@ -34,9 +35,11 @@ const content: TModalContentProps[] = [
             financial_bvi: { text: localize('British Virgin Islands') },
             financial_v: { text: localize('Vanuatu') },
             financial_fx: {
-                text: localize('Labuan STP account'), tooltip_msg: localize('Your Financial (STP) trades go directly to the market. A Financial (STP) account offers you deep liquidity, fast execution and tight spreads.')
+                text: localize('Labuan STP account'),
+                tooltip_msg: localize(
+                    'Your Financial (STP) trades go directly to the market. A Financial (STP) account offers you deep liquidity, fast execution and tight spreads.'
+                ),
             },
-
         },
     },
     {
@@ -56,10 +59,18 @@ const content: TModalContentProps[] = [
         attribute: localize('Regulator'),
         values: {
             synthetic_svg: { text: localize('-') },
-            synthetic_bvi: { text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)') },
+            synthetic_bvi: {
+                text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
+            },
             financial_svg: { text: localize('-') },
-            financial_bvi: { text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)') },
-            financial_v: { text: localize('Vanuatu Financial Services Commission, and is a member of the Financial Markets Association') },
+            financial_bvi: {
+                text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
+            },
+            financial_v: {
+                text: localize(
+                    'Vanuatu Financial Services Commission, and is a member of the Financial Markets Association'
+                ),
+            },
             financial_fx: { text: localize('Labuan Financial Services Authority (licence no. MB/18/0024)') },
         },
     },
@@ -89,99 +100,91 @@ const content: TModalContentProps[] = [
                     localize('Commodities'),
                     localize('Basket indices'),
                     localize('Cryptocurrencies'),
-                ]
+                ],
             },
             financial_bvi: {
-                text: [
-                    localize('Forex'),
-                    localize('Commodities'),
-                ]
+                text: [localize('Forex'), localize('Commodities')],
             },
-            financial_fx: { text: [localize('Forex'), localize('Cryptocurrencies')] }
+            financial_fx: { text: [localize('Forex'), localize('Cryptocurrencies')] },
         },
     },
+];
 
-]
-
-const footer_buttons = {
-    synthetic_svg: { label: localize('Add'), action: "" },
-    synthetic_bvi: { label: localize('Add'), action: "" },
-    financial_svg: { label: localize('Add'), action: "" },
-    financial_bvi: { label: localize('Add'), action: "" },
-    financial_v: { label: localize('Add'), action: "" },
-    financial_fx: { label: localize('Add'), action: "" },
-}
+const footer_buttons = [
+    { label: localize('Add'), action: '' },
+    { label: localize('Add'), action: '' },
+    { label: localize('Add'), action: '' },
+    { label: localize('Add'), action: '' },
+    { label: localize('Add'), action: '' },
+    { label: localize('Add'), action: '' },
+];
 
 type InstrumentsRowProps = {
     attr: string;
-    val: AccountsDescription
+    val: AccountsDescription;
 };
 
-const InstrumentsRow = ({ attr, val }: InstrumentsRowProps) => {
-    return (
+const InstrumentsRow = ({ attr, val }: InstrumentsRowProps) => (
+    <Table.Row className='cfd-real-compare-accounts__table-row--instruments'>
+        <Table.Cell fixed>
+            <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
+                {attr}{' '}
+            </Text>
+        </Table.Cell>
 
-        <Table.Row className='cfd-real-compare-accounts__table-row--instruments'>
-
-            <Table.Cell fixed>
-                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>{attr} </Text>
+        {Object.keys(val).map(rowKey => (
+            <Table.Cell key={rowKey} className='cfd-real-compare-accounts__table-row-item'>
+                {Array.isArray(val[rowKey].text) ? (
+                    val[rowKey].text.map((item, index) => (
+                        <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
+                            {item}
+                        </Text>
+                    ))
+                ) : (
+                    <Text as='p' weight='normal' align='center' color='prominent' size='xxxs'>
+                        {val[rowKey].text}
+                    </Text>
+                )}
             </Table.Cell>
+        ))}
+    </Table.Row>
+);
 
-            {Object.keys(val).map(rowKey => (
-                <Table.Cell className='cfd-real-compare-accounts__table-row-item'>
-                    {Array.isArray(val[rowKey].text) ?
-                        (val[rowKey].text.map((item, index) => (
-                            <Text key={index} as='p' weight=' normal'
-                                align='center'
-                                color='prominent'
-                                size='xxxs'>
-                                {item}
-                            </Text>
-                        ))
-                        ) :
-                        (
-                            <Text as='p'
-                                weight='normal'
-                                align='center'
-                                color='prominent'
-                                size='xxxs'>
-                                {val[rowKey].text}
-                            </Text>
-                        )
-                    }
-                </Table.Cell>
-            ))
-            }
-        </Table.Row >
-    )
-}
 const Row = ({ id, attribute, values }: TModalContentProps) => {
     const is_leverage = id === 'leverage';
     if (id === 'instruments') {
-        return <InstrumentsRow attr={attribute} val={values} />
+        return <InstrumentsRow attr={attribute} val={values} />;
     }
     return (
         <Table.Row
             className={classNames('cfd-real-compare-accounts__table-row', {
                 'cfd-real-compare-accounts__table-row--leverage': is_leverage,
-            })}>
-
+            })}
+        >
             <Table.Cell fixed>
-                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>{attribute} </Text>
+                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
+                    {attribute}{' '}
+                </Text>
             </Table.Cell>
-            {Object.keys(values).map(item => (
-                <Table.Cell className={classNames('cfd-real-compare-accounts__table-row-item', {
-                    'cfd-real-compare-accounts__table-row-item--tooltip': values[item].tooltip_msg,
-                })}>
 
+            {Object.keys(values).map(item => (
+                <Table.Cell
+                    key={item}
+                    className={classNames('cfd-real-compare-accounts__table-row-item', {
+                        'cfd-real-compare-accounts__table-row-item--tooltip': values[item].tooltip_msg,
+                    })}
+                >
                     <>
-                        <Text as='p'
+                        <Text
+                            as='p'
                             weight={id === 'jurisdiction' ? 'bold' : 'normal'}
                             align='center'
                             color='prominent'
-                            size={(id === 'counterparty' || id === 'leverage') ? 'xxs' : 'xxxs'}>
+                            size={id === 'counterparty' || id === 'leverage' ? 'xxs' : 'xxxs'}
+                        >
                             {values[item].text}
                         </Text>
-                        {values[item].tooltip_msg &&
+                        {values[item].tooltip_msg && (
                             <Popover
                                 alignment='left'
                                 className='da-account-limits__popover'
@@ -192,61 +195,64 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
                                 message={values[item].tooltip_msg}
                                 zIndex={9999}
                             />
-                        }
+                        )}
                     </>
                 </Table.Cell>
-            ))
-            }
-        </Table.Row >
-    )
-}
-
-const RealModalContent = () => {
-    return (
-        <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}
-            className='cfd-real-compare-accounts'
-            style={{
-                '--cfd-real-compare-accounts-template-columns': '0.9fr  1.35fr 2.66fr',
-            }}>
-            <div className='cfd-real-compare-accounts'>
-                <div className='cfd-real-compare-accounts__table-wrapper'>
-                    <Table className='cfd-real-compare-accounts__table'>
-
-                        <Table.Header>
-                            <Table.Row className='cfd-real-compare-accounts__table-header' >
-                                <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                <Table.Head className='cfd-real-compare-accounts__table-header-item'>{localize('Synthetic')}</Table.Head>
-                                <Table.Head className='cfd-real-compare-accounts__table-header-item'>{localize('Financial')}</Table.Head>
-                            </Table.Row>
-                        </Table.Header>
-
-                        <Table.Body>
-                            {content.map(row => (
-                                <Row key={row.id} id={row.id} attribute={row.attribute} values={row.values} />
-                            ))}
-                        </Table.Body>
-                        <Table.Row className='cfd-real-compare-accounts__table-footer'>
-                            <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                            {Object.keys(footer_buttons).map(item =>
-                                <Table.Cell className='cfd-real-compare-accounts__table-footer__item'>
-                                    <Button
-                                        className='cfd-real-compare-accounts__table-footer__button'
-                                        type='button'
-                                        primary_light
-                                        onClick={() => {
-                                        }}
-                                    >
-                                        {footer_buttons[item].label}
-                                    </Button>
-                                </Table.Cell>
-                            )
-                            }
-                        </Table.Row>
-                    </Table>
-                </div>
-
-            </div >
-        </Div100vhContainer >
+            ))}
+        </Table.Row>
     );
 };
+
+const RealModalContent = () => (
+    <Div100vhContainer
+        height_offset='40px'
+        is_bypassed={isDesktop()}
+        className='cfd-real-compare-accounts'
+        style={{
+            '--cfd-real-compare-accounts-template-columns': '0.9fr  1.35fr 2.66fr',
+        }}
+    >
+        <div className='cfd-real-compare-accounts'>
+            <div className='cfd-real-compare-accounts__table-wrapper'>
+                <Table className='cfd-real-compare-accounts__table'>
+                    <Table.Header>
+                        <Table.Row className='cfd-real-compare-accounts__table-header'>
+                            <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
+                            <Table.Head className='cfd-real-compare-accounts__table-header-item'>
+                                {localize('Synthetic')}
+                            </Table.Head>
+                            <Table.Head className='cfd-real-compare-accounts__table-header-item'>
+                                {localize('Financial')}
+                            </Table.Head>
+                        </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                        {content.map(row => (
+                            <Row key={row.id} {...row} />
+                        ))}
+                    </Table.Body>
+
+                    <Table.Row className='cfd-real-compare-accounts__table-footer'>
+                        <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
+                        {footer_buttons.map((item, index) => (
+                            <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
+                                <Button
+                                    className='cfd-real-compare-accounts__table-footer__button'
+                                    type='button'
+                                    primary_light
+                                    // onClick={() => {
+                                    // }}
+                                >
+                                    {item.label}
+                                </Button>
+                            </Table.Cell>
+                        ))}
+                    </Table.Row>
+                </Table>
+            </div>
+        </div>
+    </Div100vhContainer>
+);
+
 export default RealModalContent;

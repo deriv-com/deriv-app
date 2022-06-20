@@ -32,6 +32,15 @@
         &:last-child {
             margin-right: 0;
         }
+        &--large {
+            width: 20%;
+            border-radius: unset;
+            height: 3.2rem;
+
+            &:not(:first-child) {
+                margin-left: 0;
+            }
+        }
     }
     @include mobile {
         margin-top: 0;

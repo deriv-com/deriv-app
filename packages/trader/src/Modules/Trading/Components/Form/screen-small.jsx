@@ -22,6 +22,7 @@ const CollapsibleTradeParams = ({
     has_allow_equals,
     previous_symbol,
     is_allow_equal,
+    is_accumulator,
     is_trade_params_expanded,
     is_multiplier,
     setIsTradeParamsExpanded,
@@ -66,7 +67,7 @@ const CollapsibleTradeParams = ({
                     <RiskManagementInfo />
                 </div>
             )}
-            <div className='purchase-container'>
+            <div className={`purchase-container${is_accumulator ? '--accumulator' : ''}`}>
                 <Purchase />
             </div>
         </Collapsible>
@@ -106,6 +107,7 @@ ScreenSmall.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    is_accumulator: modules.trade.is_accumulator,
     is_allow_equal: !!modules.trade.is_equal,
     is_multiplier: modules.trade.is_multiplier,
     duration_unit: modules.trade.duration_unit,

@@ -53,7 +53,6 @@ const ContractType = (() => {
                 contract_type: 'ACC',
                 exchange_name: 'RANDOM',
                 expiry_type: 'intraday',
-                growth_rate: 0.03,
                 market: 'synthetic_index',
                 max_contract_duration: '1d',
                 min_contract_duration: '1m',

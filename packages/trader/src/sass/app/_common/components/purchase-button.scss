@@ -324,4 +324,14 @@
             }
         }
     }
+    &--accumulator {
+        @include mobile {
+            .btn-purchase {
+                &__bottom,
+                &__top {
+                    width: unset;
+                }
+            }
+        }
+    }
 }

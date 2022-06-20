@@ -14,7 +14,7 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
                 name='growth_rate'
                 onChange={onChange}
                 selected_number={growth_rate}
-                show_in_percentage
+                should_show_in_percents
             />
         </Fieldset>
     );

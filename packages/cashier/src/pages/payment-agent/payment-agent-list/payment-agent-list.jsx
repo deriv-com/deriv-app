@@ -5,7 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import { isDesktop, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import VerificationEmail from 'Components/verification-email';
-import PaymentAgentDeposit from '../payment-agent-deposit';
+import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 import './payment-agent-list.scss';
@@ -40,7 +40,11 @@ const PaymentAgentList = ({
                     header_fit_content={isDesktop()}
                 >
                     <div label={localize('Deposit')}>
-                        {is_loading ? <Loading is_fullscreen={false} /> : <PaymentAgentDeposit />}
+                        {is_loading ? (
+                            <Loading is_fullscreen={false} />
+                        ) : (
+                            <PaymentAgentDepositWithdrawContainer is_deposit />
+                        )}
                         <div className='payment-agent-list__disclaimer'>
                             <Text size='xs' lh='s' weight='bold' className='cashier__text'>
                                 <Localize i18n_default_text='DISCLAIMER' />

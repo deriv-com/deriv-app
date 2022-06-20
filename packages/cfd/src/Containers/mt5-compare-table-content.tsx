@@ -4,24 +4,24 @@ import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/componen
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 
-type RowItem = {
+type TRowItem = {
     text: string | Array<string>;
     tooltip_msg?: string;
 };
 
-type AccountsDescription = {
-    synthetic_svg?: RowItem;
-    synthetic_bvi?: RowItem;
-    financial_svg?: RowItem;
-    financial_bvi?: RowItem;
-    financial_v?: RowItem;
-    financial_fx?: RowItem;
+type TAccountsDescription = {
+    synthetic_svg?: TRowItem;
+    synthetic_bvi?: TRowItem;
+    financial_svg?: TRowItem;
+    financial_bvi?: TRowItem;
+    financial_v?: TRowItem;
+    financial_fx?: TRowItem;
 };
 
 type TModalContentProps = {
     id: string;
     attribute: string;
-    values: AccountsDescription;
+    values: TAccountsDescription;
 };
 
 const content: TModalContentProps[] = [
@@ -119,16 +119,21 @@ const footer_buttons = [
     { label: localize('Add'), action: '' },
 ];
 
-type InstrumentsRowProps = {
+type TInstrumentsRowProps = {
     attr: string;
-    val: AccountsDescription;
+    val: TAccountsDescription;
 };
 
-const InstrumentsRow = ({ attr, val }: InstrumentsRowProps) => (
+const getContentSize = (id: string) => {
+    if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
+
+    return isDesktop() ? 'xxxs' : 'xxxxs';
+};
+const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
     <Table.Row className='cfd-real-compare-accounts__table-row--instruments'>
         <Table.Cell fixed>
             <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
-                {attr}{' '}
+                {attr}
             </Text>
         </Table.Cell>
 
@@ -180,7 +185,7 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
                             weight={id === 'jurisdiction' ? 'bold' : 'normal'}
                             align='center'
                             color='prominent'
-                            size={id === 'counterparty' || id === 'leverage' ? 'xxs' : 'xxxs'}
+                            size={getContentSize(id)}
                         >
                             {values[item].text}
                         </Text>
@@ -203,15 +208,8 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
     );
 };
 
-const RealModalContent = () => (
-    <Div100vhContainer
-        height_offset='40px'
-        is_bypassed={isDesktop()}
-        className='cfd-real-compare-accounts'
-        style={{
-            '--cfd-real-compare-accounts-template-columns': '0.9fr  1.35fr 2.66fr',
-        }}
-    >
+const DMT5CompareModalContent = () => (
+    <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
         <div className='cfd-real-compare-accounts'>
             <div className='cfd-real-compare-accounts__table-wrapper'>
                 <Table className='cfd-real-compare-accounts__table'>
@@ -255,4 +253,4 @@ const RealModalContent = () => (
     </Div100vhContainer>
 );
 
-export default RealModalContent;
+export default DMT5CompareModalContent;

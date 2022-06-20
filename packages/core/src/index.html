@@ -37,6 +37,17 @@
             }
         </style>
         <script type="text/javascript">
+            !(function () {
+                if ('PerformanceLongTaskTiming' in window) {
+                    var g = (window.__tti = { e: [] });
+                    g.o = new PerformanceObserver(function (l) {
+                        g.e = g.e.concat(l.getEntries());
+                    });
+                    g.o.observe({ entryTypes: ['longtask'] });
+                }
+            })();
+        </script>
+        <script type="text/javascript">
             var ui_store = localStorage.getItem('ui_store');
             var l = window.location;
             var is_bot =
@@ -126,7 +137,7 @@
         <!-- End RudderStack Script -->
 
         <!-- Start GTM Script -->
-        <script>
+        <script async defer>
             var gtm_id = 'GTM-NF7884S';
             if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function (w, d, s, l, i) {
@@ -357,5 +368,14 @@
             })(window, document, [].slice);
         </script>
         <!-- End LiveChat script -->
+
+        <script src="https://unpkg.com/tti-polyfill@0.2.2/tti-polyfill.js"></script>
+        <script async defer>
+            ttiPolyfill
+                .getFirstConsistentlyInteractive()
+                .then(tti =>
+                    console.log(`TTI Value: ${(Number.parseFloat(tti) / 1000).toFixed(4) + ' seconds' || 'Error'}`)
+                );
+        </script>
     </body>
 </html>

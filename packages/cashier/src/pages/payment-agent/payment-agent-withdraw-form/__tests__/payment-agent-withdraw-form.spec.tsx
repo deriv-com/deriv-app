@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-container,testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
@@ -42,6 +43,8 @@ describe('<PaymentAgentWithdrawForm />', () => {
     });
 
     afterAll(() => {
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
         document.body.removeChild(modal_root_el);
     });
 

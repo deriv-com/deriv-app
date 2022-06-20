@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import RootStore from 'Stores/types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import {
@@ -16,13 +16,104 @@ import {
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import ErrorDialog from 'Components/error-dialog';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import ErrorDialog from 'Components/error-dialog';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-withdraw-form.scss';
 
-const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
-    const errors = {};
+type TValidateWithdrawalValueProps = {
+    payment_method: string;
+    payment_agents: string | undefined;
+    payment_agent: string;
+    amount: string | number;
+    [key: string]: string | number | undefined;
+};
+
+type TValidateWithdrawalProps = {
+    balance: string;
+    currency: string;
+    payment_agent?: {
+        min_withdrawal?: string | number;
+        max_withdrawal?: string | number;
+        value?: string;
+        text?: string;
+    };
+};
+
+type TRadioProps = {
+    children?: string | JSX.Element | JSX.Element[];
+    field: {
+        value?: string;
+        name?: string;
+        onChange?: () => void;
+    };
+    propsItems: {
+        id?: string | undefined;
+        className?: string;
+    };
+};
+
+type TRadioDropDownProps = {
+    values: {
+        payment_agents: string;
+    };
+    field: {
+        value?: string;
+        name?: string;
+        onChange?: () => void;
+    };
+    payment_agent_list: Array<string>;
+    id?: string | undefined;
+};
+
+type TRadioInputProps = {
+    touched: {
+        payment_agent: string;
+    };
+    errors: {
+        payment_agent: string;
+    };
+    field: {
+        value?: string;
+        name?: string;
+        onChange?: () => void;
+    };
+    values: {
+        payment_agent: string;
+    };
+    id?: string | undefined;
+};
+
+type TPaymentAgentWithdrawFormProps = {
+    amount: string;
+    balance: string;
+    currency: string;
+    error: string;
+    error_message_withdraw: string;
+    is_loading: boolean;
+    is_try_withdraw_successful: boolean;
+    is_withdraw_successful: boolean;
+    onMount: () => void;
+    payment_agent_id: string;
+    payment_agent_list: Array<TValidateWithdrawalProps['payment_agent']>;
+    payment_agent_name: string;
+    requestTryPaymentAgentWithdraw: (arg: {
+        loginid: string | number | undefined;
+        currency: string;
+        amount: string | number;
+        verification_code: string;
+    }) => {
+        error?: string;
+    };
+    resetPaymentAgent: () => void;
+    verification_code: string;
+};
+
+const validateWithdrawal = (
+    values: TValidateWithdrawalValueProps,
+    { balance, currency, payment_agent = {} }: TValidateWithdrawalProps
+) => {
+    const errors: { payment_agent?: string; amount?: string } = {};
 
     if (
         values.payment_method === 'payment_agent' &&
@@ -52,21 +143,21 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
 };
 
 // TODO: refactor this to use the main radio component for forms too if possible
-const Radio = ({ children, field, props }) => (
+const Radio = ({ children, field, propsItems }: TRadioProps) => (
     <div className='payment-agent-withdraw-form__radio-container'>
         <input
-            id={props.id}
-            className={props.className}
+            id={propsItems.id}
+            className={propsItems.className}
             name={field.name}
-            value={props.id}
-            checked={field.value === props.id}
+            value={propsItems.id}
+            checked={field.value === propsItems.id}
             onChange={field.onChange}
             type='radio'
         />
-        <label htmlFor={props.id} className='payment-agent-withdraw-form__radio-wrapper'>
+        <label htmlFor={propsItems.id} className='payment-agent-withdraw-form__radio-wrapper'>
             <span
                 className={classNames('payment-agent-withdraw-form__radio-circle', {
-                    'payment-agent-withdraw-form__radio-circle--selected': field.value === props.id,
+                    'payment-agent-withdraw-form__radio-circle--selected': field.value === propsItems.id,
                 })}
             />
             {children}
@@ -74,13 +165,13 @@ const Radio = ({ children, field, props }) => (
     </div>
 );
 
-const RadioDropDown = ({ field, values, ...props }) => (
-    <Radio field={field} props={props}>
+const RadioDropDown = ({ field, values, ...props }: TRadioDropDownProps) => (
+    <Radio field={field} propsItems={props}>
         <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By name' />
         </Text>
         <Field name='payment_agents'>
-            {params => (
+            {(params: { form: { setFieldValue: (arg0: string, arg1: string | undefined) => void } }) => (
                 <React.Fragment>
                     <DesktopWrapper>
                         <Dropdown
@@ -92,7 +183,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                             classNameItems='cashier__drop-down-items'
                             list={props.payment_agent_list}
                             value={values.payment_agents}
-                            onChange={e => {
+                            onChange={(e: { target: { value: string } }) => {
                                 params.form.setFieldValue('payment_agents', e.target.value);
                                 params.form.setFieldValue('payment_method', props.id);
                             }}
@@ -107,7 +198,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                             value={values.payment_agents}
                             label={localize('Choose agent')}
                             should_show_empty_option={false}
-                            onChange={e => {
+                            onChange={(e: { target: { value: string } }) => {
                                 params.form.setFieldValue('payment_agents', e.target.value);
                                 params.form.setFieldValue('payment_method', props.id);
                             }}
@@ -120,13 +211,16 @@ const RadioDropDown = ({ field, values, ...props }) => (
     </Radio>
 );
 
-const RadioInput = ({ touched, errors, field, values, ...props }) => (
-    <Radio field={field} props={props}>
+const RadioInput = ({ touched, errors, field, values, ...props }: TRadioInputProps) => (
+    <Radio field={field} propsItems={props}>
         <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By payment agent ID' />
         </Text>
         <Field>
-            {params => (
+            {(params: {
+                field: { onChange: () => void; onBlur: () => void };
+                form: { setFieldValue: (arg0: string, arg1: string | undefined) => void };
+            }) => (
                 <Input
                     name='payment_agent'
                     className='payment-agent-withdraw-form__input'
@@ -163,7 +257,7 @@ const PaymentAgentWithdrawForm = ({
     requestTryPaymentAgentWithdraw,
     resetPaymentAgent,
     verification_code,
-}) => {
+}: TPaymentAgentWithdrawFormProps) => {
     React.useEffect(() => {
         onMount();
 
@@ -172,14 +266,17 @@ const PaymentAgentWithdrawForm = ({
         };
     }, [onMount, resetPaymentAgent]);
 
-    const validateWithdrawalPassthrough = values =>
+    const validateWithdrawalPassthrough = (values: TValidateWithdrawalValueProps) =>
         validateWithdrawal(values, {
             balance,
             currency,
-            payment_agent: payment_agent_list.find(pa => pa.value === values[values.payment_method]),
+            payment_agent: payment_agent_list.find(pa => pa?.value === values[values.payment_method]),
         });
 
-    const onWithdrawalPassthrough = async (values, actions) => {
+    const onWithdrawalPassthrough = async (
+        values: TValidateWithdrawalValueProps,
+        actions: { setSubmitting: (status: boolean) => void }
+    ) => {
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
             loginid: values[values.payment_method],
             currency,
@@ -222,7 +319,7 @@ const PaymentAgentWithdrawForm = ({
                     payment_agents:
                         should_fill_id || !payment_agent_name
                             ? payment_agent_list[0]?.value
-                            : payment_agent_list.find(pa => pa.text === payment_agent_name)?.value,
+                            : payment_agent_list.find(pa => pa?.text === payment_agent_name)?.value,
                     payment_method: should_fill_id ? 'payment_agent' : 'payment_agents',
                 }}
                 validate={validateWithdrawalPassthrough}
@@ -230,25 +327,25 @@ const PaymentAgentWithdrawForm = ({
             >
                 {({ errors, isSubmitting, isValid, values, touched }) => {
                     const getHint = () => {
-                        const getHintText = payment_agent => {
+                        const getHintText = (payment_agent: string | TValidateWithdrawalProps['payment_agent']) => {
                             return (
-                                payment_agent_list.find(pa => pa.value === payment_agent) && (
+                                payment_agent_list.find(pa => pa?.value === payment_agent) && (
                                     <Localize
                                         i18n_default_text='Withdrawal limits: <0 />-<1 />'
                                         components={[
                                             <Money
                                                 key={0}
                                                 amount={
-                                                    payment_agent_list.find(pa => pa.value === payment_agent)
-                                                        .min_withdrawal
+                                                    payment_agent_list.find(pa => pa?.value === payment_agent)
+                                                        ?.min_withdrawal
                                                 }
                                                 currency={currency}
                                             />,
                                             <Money
                                                 key={1}
                                                 amount={
-                                                    payment_agent_list.find(pa => pa.value === payment_agent)
-                                                        .max_withdrawal
+                                                    payment_agent_list.find(pa => pa?.value === payment_agent)
+                                                        ?.max_withdrawal
                                                 }
                                                 currency={currency}
                                             />,
@@ -289,9 +386,9 @@ const PaymentAgentWithdrawForm = ({
                                 />
                             </div>
                             <Field name='amount'>
-                                {({ field }) => (
+                                {({ field }: { [k: string]: string | object }) => (
                                     <Input
-                                        {...field}
+                                        {...(field as object)}
                                         className='cashier__input dc-input--no-placeholder'
                                         type='text'
                                         label={localize('Amount')}
@@ -330,24 +427,7 @@ const PaymentAgentWithdrawForm = ({
     );
 };
 
-PaymentAgentWithdrawForm.propTypes = {
-    amount: PropTypes.string,
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    error_message_withdraw: PropTypes.string,
-    is_loading: PropTypes.bool,
-    is_try_withdraw_successful: PropTypes.bool,
-    is_withdraw_successful: PropTypes.bool,
-    onMount: PropTypes.func,
-    payment_agent_id: PropTypes.string,
-    payment_agent_list: PropTypes.array,
-    payment_agent_name: PropTypes.string,
-    requestTryPaymentAgentWithdraw: PropTypes.func,
-    resetPaymentAgent: PropTypes.func,
-    verification_code: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     amount: modules.cashier.payment_agent.confirm.amount,
     balance: client.balance,
     currency: client.currency,

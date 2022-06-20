@@ -1,10 +1,22 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import CashierLocked from 'Components/cashier-locked';
-import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';
+import Virtual from 'Components/cashier-container/virtual';
+
+type TPaymentAgentProps = {
+    container?: string;
+    is_cashier_locked?: boolean;
+    is_payment_agent_withdraw?: boolean;
+    is_switching?: boolean;
+    is_virtual?: boolean;
+    payment_agent_active_tab_index?: number;
+    setActiveTab?: (container: string | undefined) => void;
+    setPaymentAgentActiveTabIndex?: (index: number) => void;
+    verification_code?: string;
+};
 
 const PaymentAgent = ({
     container,
@@ -16,15 +28,15 @@ const PaymentAgent = ({
     setActiveTab,
     setPaymentAgentActiveTabIndex,
     verification_code,
-}) => {
+}: TPaymentAgentProps) => {
     const initial_active_index =
         verification_code || is_payment_agent_withdraw || payment_agent_active_tab_index ? 1 : 0;
-    setPaymentAgentActiveTabIndex(initial_active_index);
+    if (setPaymentAgentActiveTabIndex) setPaymentAgentActiveTabIndex(initial_active_index);
 
     React.useEffect(() => {
-        setActiveTab(container);
+        if (setActiveTab) setActiveTab(container);
         return () => {
-            setPaymentAgentActiveTabIndex(0);
+            if (setPaymentAgentActiveTabIndex) setPaymentAgentActiveTabIndex(0);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -44,19 +56,8 @@ const PaymentAgent = ({
     );
 };
 
-PaymentAgent.propTypes = {
-    container: PropTypes.string,
-    is_cashier_locked: PropTypes.bool,
-    is_payment_agent_withdraw: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    payment_agent_active_tab_index: PropTypes.number,
-    setActiveTab: PropTypes.func,
-    setPaymentAgentActiveTabIndex: PropTypes.func,
-    verification_code: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
-    container: modules.cashier.payment_agent.container,
+export default connect(({ client, modules }: RootStore) => ({
+    container: modules.cashier.payment_agent?.container,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,

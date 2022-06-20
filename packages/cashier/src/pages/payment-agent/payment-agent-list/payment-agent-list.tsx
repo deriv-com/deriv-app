@@ -1,14 +1,39 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, Tabs, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import VerificationEmail from 'Components/verification-email';
 import PaymentAgentDeposit from '../payment-agent-deposit';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 import './payment-agent-list.scss';
+
+declare module 'react' {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface HTMLAttributes<T> {
+        label?: string;
+    }
+}
+
+type TPaymentAgentListProps = {
+    error?: {
+        code: number | string;
+    };
+    is_email_sent?: boolean;
+    is_loading?: boolean;
+    is_payment_agent_withdraw?: boolean;
+    is_resend_clicked?: boolean;
+    onMount?: () => void;
+    payment_agent_active_tab_index?: number;
+    resend_timeout?: number;
+    resendVerificationEmail?: () => void;
+    sendVerificationEmail?: () => void;
+    setActiveTabIndex?: (index: number) => void;
+    setIsResendClicked?: (status: boolean) => void;
+    verification_code?: string;
+};
 
 const PaymentAgentList = ({
     error,
@@ -24,9 +49,9 @@ const PaymentAgentList = ({
     setActiveTabIndex,
     setIsResendClicked,
     verification_code,
-}) => {
+}: TPaymentAgentListProps) => {
     React.useEffect(() => {
-        onMount();
+        onMount?.();
     }, [onMount]);
 
     return (
@@ -72,11 +97,9 @@ const PaymentAgentList = ({
                                     {is_email_sent ? (
                                         <div className='cashier__wrapper'>
                                             <VerificationEmail
-                                                is_email_sent={is_email_sent}
                                                 is_resend_clicked={is_resend_clicked}
                                                 resend_timeout={resend_timeout}
                                                 resendVerificationEmail={resendVerificationEmail}
-                                                sendVerificationEmail={sendVerificationEmail}
                                                 setIsResendClicked={setIsResendClicked}
                                             />
                                         </div>
@@ -95,23 +118,7 @@ const PaymentAgentList = ({
     );
 };
 
-PaymentAgentList.propTypes = {
-    error: PropTypes.object,
-    is_email_sent: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_resend_clicked: PropTypes.bool,
-    is_payment_agent_withdraw: PropTypes.bool,
-    onMount: PropTypes.func,
-    payment_agent_active_tab_index: PropTypes.number,
-    resend_timeout: PropTypes.number,
-    resendVerificationEmail: PropTypes.func,
-    sendVerificationEmail: PropTypes.func,
-    setActiveTabIndex: PropTypes.func,
-    setIsResendClicked: PropTypes.func,
-    verification_code: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     error: modules.cashier.payment_agent.verification.error,
     is_email_sent: modules.cashier.payment_agent.verification.is_email_sent,
     is_loading: modules.cashier.general_store.is_loading,

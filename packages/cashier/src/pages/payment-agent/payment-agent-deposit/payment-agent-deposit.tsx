@@ -1,14 +1,25 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { toJS } from 'mobx';
-import PropTypes from 'prop-types';
 import React from 'react';
+import { toJS } from 'mobx';
+import RootStore from 'Stores/types';
 import { Accordion, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details';
 
-const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, selected_bank, supported_banks }) => {
+type TPaymentAgentDepositProps = {
+    onChangePaymentMethod: (e: { target: { name: string; value: string | number } }) => void;
+    payment_agent_list: Array<{ name: string; email: string; phones: string; urls: string }>;
+    selected_bank: string | number;
+    supported_banks: Array<string>;
+};
+
+const PaymentAgentDeposit = ({
+    onChangePaymentMethod,
+    payment_agent_list,
+    selected_bank,
+    supported_banks,
+}: TPaymentAgentDepositProps) => {
     const list_with_default = [
         { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
         ...supported_banks,
@@ -49,7 +60,7 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}
                                 label={selected_bank === 0 ? localize('All payment agents') : localize('Type')}
-                                onChange={e =>
+                                onChange={(e: { target: { value: string } }) =>
                                     onChangePaymentMethod({
                                         target: {
                                             name: 'payment_methods',
@@ -80,14 +91,7 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
     );
 };
 
-PaymentAgentDeposit.propTypes = {
-    onChangePaymentMethod: PropTypes.func,
-    payment_agent_list: PropTypes.array,
-    selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    supported_banks: MobxPropTypes.arrayOrObservableArray,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
     payment_agent_list: modules.cashier.payment_agent.filtered_list,
     selected_bank: modules.cashier.payment_agent.selected_bank,

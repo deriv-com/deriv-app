@@ -45,9 +45,6 @@ const BuySellForm = props => {
         cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
 
-    // const effective_rate =
-    //     rate_type === ad_type.FLOAT ? parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100)) : price;
-
     let effective_rate = 0;
     let display_effective_rate = 0;
 

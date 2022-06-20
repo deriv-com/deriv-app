@@ -6,18 +6,40 @@ import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentCard from '../payment-agent-card';
+import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import PaymentAgentReceipt from '../payment-agent-receipt';
 
 const PaymentAgentDepositWithdrawContainer = ({
     is_deposit,
+    is_try_withdraw_successful,
+    is_withdraw_successful,
     onChangePaymentMethod,
     payment_agent_list,
+    resetPaymentAgent,
     selected_bank,
     supported_banks,
+    verification_code,
 }) => {
+    React.useEffect(() => {
+        return () => {
+            if (!is_deposit) {
+                resetPaymentAgent();
+            }
+        };
+    }, [resetPaymentAgent]);
+
     const list_with_default = [
         { text: <Localize i18n_default_text='All payment methods' />, value: 0 },
         ...supported_banks,
     ];
+
+    if (is_try_withdraw_successful) {
+        return <PaymentAgentWithdrawConfirm verification_code={verification_code} />;
+    }
+
+    if (is_withdraw_successful) {
+        return <PaymentAgentReceipt />;
+    }
 
     return (
         <React.Fragment>
@@ -81,15 +103,22 @@ const PaymentAgentDepositWithdrawContainer = ({
 
 PaymentAgentDepositWithdrawContainer.propTypes = {
     is_deposit: PropTypes.bool,
+    is_try_withdraw_successful: PropTypes.bool,
+    is_withdraw_successful: PropTypes.bool,
     onChangePaymentMethod: PropTypes.func,
     payment_agent_list: PropTypes.array,
+    resetPaymentAgent: PropTypes.func,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     supported_banks: MobxPropTypes.arrayOrObservableArray,
+    verification_code: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({
+    is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
+    is_withdraw_successful: modules.cashier.payment_agent.is_withdraw_successful,
     onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
     payment_agent_list: modules.cashier.payment_agent.filtered_list,
+    resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
     selected_bank: modules.cashier.payment_agent.selected_bank,
     supported_banks: modules.cashier.payment_agent.supported_banks,
 }))(PaymentAgentDepositWithdrawContainer);

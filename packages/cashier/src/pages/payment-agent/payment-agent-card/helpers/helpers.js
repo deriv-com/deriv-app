@@ -10,3 +10,11 @@ export const getNormalizedPaymentMethod = payment_method => {
 
     return normalized_payment_method;
 };
+
+export const hasNormalizedPaymentMethods = all_payment_methods => {
+    if (all_payment_methods.length > 0) {
+        return !all_payment_methods.every(method => getNormalizedPaymentMethod(method.payment_method) === '');
+    } 
+        return false;
+    
+};

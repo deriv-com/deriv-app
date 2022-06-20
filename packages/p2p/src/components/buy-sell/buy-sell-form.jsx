@@ -1,8 +1,9 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
-import { getRoundedNumber, getFormattedText, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { getRoundedNumber, formatMoney, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -11,7 +12,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
-import classNames from 'classnames';
+import { setDecimalPlaces, removeTrailingZeros } from 'Utils/format-value.js';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -44,8 +45,18 @@ const BuySellForm = props => {
         cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
 
-    const effective_rate =
-        rate_type === ad_type.FLOAT ? parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100)) : price;
+    let effective_rate = 0;
+    let display_effective_rate = 0;
+
+    if (rate_type === ad_type.FIXED) {
+        effective_rate = price;
+        display_effective_rate = formatMoney(local_currency, effective_rate, true);
+    } else {
+        effective_rate = parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
+        display_effective_rate = removeTrailingZeros(
+            formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
+        );
+    }
 
     React.useEffect(
         () => {
@@ -69,7 +80,7 @@ const BuySellForm = props => {
 
             advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
-            buy_sell_store.setInitialReceiveAmount(getRoundedNumber(effective_rate, buy_sell_store.account_currency));
+            buy_sell_store.setInitialReceiveAmount(effective_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
@@ -155,7 +166,7 @@ const BuySellForm = props => {
                                             />
                                         </Text>
                                         <Text as='p' color='general' line_height='m' size='xs'>
-                                            {getFormattedText(effective_rate, local_currency)}
+                                            {display_effective_rate} {local_currency}
                                         </Text>
                                     </div>
                                 </div>
@@ -355,14 +366,7 @@ const BuySellForm = props => {
 
                                                             setFieldValue('amount', getRoundedNumber(input_amount));
                                                             buy_sell_store.setReceiveAmount(
-                                                                getRoundedNumber(
-                                                                    input_amount *
-                                                                        getRoundedNumber(
-                                                                            effective_rate,
-                                                                            buy_sell_store.account_currency
-                                                                        ),
-                                                                    buy_sell_store.account_currency
-                                                                )
+                                                                input_amount * effective_rate
                                                             );
                                                         }
                                                     }}

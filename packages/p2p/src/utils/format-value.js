@@ -13,12 +13,13 @@ export const setDecimalPlaces = (value, expected_decimal_place) => {
 };
 
 export const removeTrailingZeros = value => {
+    // Returns the string after truncating extra zeros
     if (!value) {
         return '';
     }
     const [input, unit] = value.toString().trim().split(' ');
     if (input.indexOf('.') === -1) {
-        return input;
+        return formatInput(input, unit);
     }
     let trim_from = input.length - 1;
     do {
@@ -29,8 +30,12 @@ export const removeTrailingZeros = value => {
     if (input[trim_from] === '.') {
         trim_from--;
     }
-    const result = value.substr(0, trim_from + 1);
-    return parseFloat(result) % 1 !== 0
-        ? `${result}.00 ${unit ? unit.trim() : ''}`
-        : `${result} ${unit ? unit.trim() : ''}`;
+    const result = value.toString().substr(0, trim_from + 1);
+    return formatInput(result, unit);
+};
+
+const formatInput = (input, unit) => {
+    return parseFloat(input.replace(/,/g, '')) % 1 === 0
+        ? `${input}.00 ${unit ? unit.trim() : ''}`
+        : `${input} ${unit ? unit.trim() : ''}`;
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, findByText, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken from '../api-token';
 
@@ -258,7 +258,9 @@ describe('<ApiToken/>', () => {
         expect(yes_btn_2).not.toBeInTheDocument();
     });
 
-    it('should trigger hide/unhide icon and trigger copy icon', async () => {
+    it('should trigger hide/unhide icon and trigger copy icon, should show dialog only for admin scope', async () => {
+        jest.useFakeTimers();
+
         const warning_msg =
             'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf';
 
@@ -272,6 +274,13 @@ describe('<ApiToken/>', () => {
                 token: 'FirstTokenID',
                 valid_for_ip: '',
             },
+            {
+                display_name: 'Second test token',
+                last_used: '',
+                scopes: ['Read', 'Trade', 'Admin'],
+                token: 'SecondTokenID',
+                valid_for_ip: '',
+            },
         ]);
 
         render(<ApiToken {...mock_props} />);
@@ -279,25 +288,42 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(screen.queryByText('FirstTokenID')).not.toBeInTheDocument();
 
-        const toggle_visibility_btn = await screen.findByTestId('dt_toggle_visibility_icon');
-        expect(toggle_visibility_btn).toBeInTheDocument();
+        const toggle_visibility_btns = await screen.findAllByTestId('dt_toggle_visibility_icon');
+        expect(toggle_visibility_btns.length).toBe(2);
 
-        fireEvent.click(toggle_visibility_btn);
+        fireEvent.click(toggle_visibility_btns[0]);
         expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
 
-        const copy_btn = await screen.findByTestId('dt_copy_token_icon');
-        expect(copy_btn).toBeInTheDocument();
+        fireEvent.click(toggle_visibility_btns[1]);
+        expect(screen.getByText('SecondTokenID')).toBeInTheDocument();
+
+        const copy_btns_1 = await screen.findAllByTestId('dt_copy_token_icon');
+        expect(copy_btns_1.length).toBe(2);
+
+        fireEvent.click(copy_btns_1[0]);
+        expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
+        expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
+
+        act(() => jest.advanceTimersByTime(2100));
         expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
 
-        fireEvent.click(copy_btn);
+        fireEvent.click(copy_btns_1[1]);
         expect(await screen.findByText(warning_msg)).toBeInTheDocument();
+
+        expect(document.execCommand).toHaveBeenCalledTimes(1);
 
         const ok_btn = screen.getByRole('button', { name: /ok/i });
         expect(ok_btn).toBeInTheDocument();
 
         fireEvent.click(ok_btn);
         expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
-        expect(copy_btn).not.toBeInTheDocument();
+        const copy_btns_2 = await screen.findAllByTestId('dt_copy_token_icon');
+        expect(copy_btns_2.length).toBe(1);
+
+        act(() => jest.advanceTimersByTime(2100));
+        expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
+
+        expect(document.execCommand).toHaveBeenCalledTimes(2);
 
         jest.clearAllMocks();
     });

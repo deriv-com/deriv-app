@@ -76,10 +76,7 @@ const ApiTokenTable = () => {
                             <ApiTokenTableRowScopesCell scopes={token.scopes} />
                         </div>
                         <div>
-                            <ApiTokenDeleteButton
-                                token={token}
-                                popover_props={{ relative_render: false, zIndex: 9999 }}
-                            />
+                            <ApiTokenDeleteButton token={token} />
                         </div>
                     </div>
                 </div>

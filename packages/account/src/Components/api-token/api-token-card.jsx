@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import { Field } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 

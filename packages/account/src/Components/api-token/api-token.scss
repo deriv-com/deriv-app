@@ -55,13 +55,15 @@
             grid-template-columns: 1fr;
         }
     }
-    &__clipboard {
-        &-wrapper {
-            display: flex;
-            align-items: center;
+    &__clipboard-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+        height: 2.1rem;
+        @media screen and (max-width: 926px) {
+            padding-left: 0;
         }
-
-        margin-left: 0.8rem;
     }
     &__table {
         width: 100%;
@@ -84,6 +86,7 @@
             padding: 1.6rem 0;
 
             &--name {
+                max-width: 15rem;
                 > .dc-text {
                     word-break: break-all;
                 }
@@ -94,6 +97,7 @@
             flex-wrap: wrap;
             gap: 0.4rem;
             max-width: 22rem;
+            margin-right: 1rem;
             @media screen and (max-width: 926px) {
                 margin-top: 0.4rem;
             }
@@ -156,12 +160,13 @@
     }
     &__visibility-icon {
         cursor: pointer;
-        width: 3.5rem;
         height: 100%;
-        padding: 0 1rem;
-        // // background-color: var(--text-prominent);
-        // --fill-color: var(--text-general);
-        // background-color: $color-black-1;
+    }
+    &__delete-icon {
+        margin-left: 1rem;
+        @media screen and (max-width: 926px) {
+            margin-top: calc(50% - 3.3rem);
+        }
     }
     &__bullet {
         background-color: var(--text-prominent);
@@ -183,5 +188,15 @@
     }
     &__dialog > div:first-child {
         width: 44rem;
+    }
+    &__pass-dot {
+        background-color: var(--text-prominent);
+        border-radius: 100%;
+        width: 0.4rem;
+        height: 0.4rem;
+        &-container {
+            display: flex;
+            gap: 0.4rem;
+        }
     }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import { Dialog, Icon, Text, Popover } from '@deriv/components';
@@ -15,7 +14,7 @@ const WarningNoteBullet = ({ message }) => (
 );
 
 const WarningDialogMessage = () => (
-    <div>
+    <>
         <Text as='p' color='prominent ' size='xs' line_height='m'>
             {localize(
                 'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf'
@@ -26,20 +25,10 @@ const WarningDialogMessage = () => (
             <WarningNoteBullet message={localize('Create or delete API tokens for trading and withdrawals')} />
             <WarningNoteBullet message={localize('Modify account settings')} />
         </div>
-    </div>
+    </>
 );
 
-const ApiTokenClipboard = ({
-    scopes,
-    text_copy,
-    info_message,
-    icon,
-    success_message,
-    className,
-    popoverClassName,
-    popover_props = {},
-    popoverAlignment = 'bottom',
-}) => {
+const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popoverAlignment = 'bottom' }) => {
     const [is_copied, setIsCopied] = React.useState(false);
     const [is_visible, setIsVisible] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
@@ -95,25 +84,26 @@ const ApiTokenClipboard = ({
             </Dialog>
             <Popover
                 alignment={popoverAlignment}
-                classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
+                classNameBubble='dc-clipboard__popover'
                 message={is_copied ? success_message : info_message}
                 is_open={is_popover_open}
-                {...popover_props}
+                relative_render={false}
+                zIndex={9999}
             >
                 {is_copied && (
                     <Icon
                         icon='IcCheckmarkCircle'
                         custom_color='var(--status-success)'
-                        className={classNames('dc-clipboard', className)}
+                        className='dc-clipboard'
                         size={14}
                         data_testid='dt_token_copied_icon'
                     />
                 )}
                 {!is_copied && (
                     <Icon
-                        icon={icon || 'IcClipboard'}
+                        icon='IcClipboard'
                         custom_color='var(--text-prominent)'
-                        className={classNames('dc-clipboard', className)}
+                        className='dc-clipboard'
                         onClick={has_admin_scope ? toggleDialogVisibility : onClick}
                         onMouseEnter={togglePopupvisibility}
                         onMouseLeave={togglePopupvisibility}
@@ -125,14 +115,13 @@ const ApiTokenClipboard = ({
         </>
     );
 };
+
 ApiTokenClipboard.propTypes = {
     scopes: PropTypes.array.isRequired,
     text_copy: PropTypes.string,
-    icon: PropTypes.string,
     info_message: PropTypes.string,
     success_message: PropTypes.string,
-    className: PropTypes.string,
-    popoverClassName: PropTypes.string,
     popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
+
 export default ApiTokenClipboard;

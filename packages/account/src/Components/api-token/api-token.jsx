@@ -1,5 +1,5 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';

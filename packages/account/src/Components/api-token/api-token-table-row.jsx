@@ -16,7 +16,7 @@ const ApiTokenTableRow = ({ token }) => (
         </ApiTokenTableRowCell>
         <ApiTokenTableRowCell>{token.last_used}</ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>
-            <ApiTokenDeleteButton token={token} popover_props={{ relative_render: false, zIndex: 9999 }} />
+            <ApiTokenDeleteButton token={token} />
         </ApiTokenTableRowCell>
     </tr>
 );

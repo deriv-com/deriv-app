@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ApiTokenClipboard from './api-token-clipboard.jsx';
@@ -8,26 +7,36 @@ import ApiTokenClipboard from './api-token-clipboard.jsx';
 const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
     const [should_show_token, setShouldShowToken] = React.useState(false);
 
+    const HiddenPasswordDots = () => (
+        <div className='da-api-token__pass-dot-container'>
+            {[...Array(15)].map((el, index) => (
+                <div key={index} className='da-api-token__pass-dot' />
+            ))}
+        </div>
+    );
+
     const toggleTokenVisibility = () => {
         setShouldShowToken(!should_show_token);
     };
 
     return (
         <div className='da-api-token__clipboard-wrapper'>
-            <Text as='p' color='prominent ' size='xs' line_height='m'>
-                {should_show_token ? token : '• '.repeat(15)}
-            </Text>
+            {should_show_token ? (
+                <Text as='p' color='prominent ' size='xs' line_height='m'>
+                    {token}
+                </Text>
+            ) : (
+                <HiddenPasswordDots />
+            )}
             <ApiTokenClipboard
-                className='da-api-token__clipboard'
                 info_message={localize('Click here to copy token')}
-                popover_props={{ relative_render: false, zIndex: 9999 }}
                 success_message={localize('Token copied!')}
                 text_copy={token}
                 scopes={scopes}
             />
             <Popover
                 alignment='bottom'
-                classNameBubble={classNames('dc-clipboard__popover')}
+                classNameBubble='dc-clipboard__popover'
                 message={should_show_token ? 'Hide this token' : 'Show this token'}
             >
                 <Icon

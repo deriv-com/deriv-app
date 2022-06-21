@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Toast from 'Components/toast';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import notes from './README.md';
 
 const stories = storiesOf('Toast', module);
@@ -29,7 +29,9 @@ stories
                     onClick={action('clicked')}
                     is_open={boolean('is open?', true)}
                     timeout={number('Timeout', 3000)}
-                    onClose={console.log('Closed')}
+                    onClose={() => {
+                        // console.log('Closed')
+                    }}
                 >
                     Message
                 </Toast>

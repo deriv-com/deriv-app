@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import UILoader from 'Components/u-i-loader';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const Basic = () => (
     <Wrapper is_dark={boolean('Dark Theme', false)}>

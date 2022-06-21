@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 
 const styles = {
     display: 'flex',
@@ -17,5 +17,6 @@ const Wrapper = ({ children, is_dark }) => (
 
 Wrapper.propTypes = {
     is_dark: PropTypes.bool,
+    children: PropTypes.object,
 };
 export default Wrapper;

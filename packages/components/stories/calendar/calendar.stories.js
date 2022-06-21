@@ -4,7 +4,7 @@ import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import { toMoment } from '@deriv/shared';
 import Calendar from 'Components/calendar';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import notes from './README.md';
 
 const stories = storiesOf('Calendar', module);

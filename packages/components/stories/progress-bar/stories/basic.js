@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import ProgressBar from '../../../src/components/progress-bar/index';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const Basic = () => {
     const progress_bars = [

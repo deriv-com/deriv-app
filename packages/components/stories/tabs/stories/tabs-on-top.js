@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { boolean } from '@storybook/addon-knobs';
 import Tabs from 'Components/tabs';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const TabsOnTop = () => (
     <Wrapper is_block is_dark={boolean('Dark Theme', false)}>

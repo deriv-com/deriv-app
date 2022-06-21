@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Dropdown from 'Components/dropdown';
 // import 'Components/dropdown/dropdown.scss';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 
 const items = [
     {

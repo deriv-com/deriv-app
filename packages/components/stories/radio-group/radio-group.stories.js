@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import RadioGroup from 'Components/radio-group';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 import notes from './README.md';
 
 const stories = storiesOf('Radio Group', module);

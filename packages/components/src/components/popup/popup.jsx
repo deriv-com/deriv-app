@@ -132,6 +132,8 @@ Popup.propTypes = {
     ),
     title: PropTypes.string,
     togglePopupModal: PropTypes.func,
+    Component: PropTypes.node,
+    currency: PropTypes.string,
 };
 
 export default Popup;

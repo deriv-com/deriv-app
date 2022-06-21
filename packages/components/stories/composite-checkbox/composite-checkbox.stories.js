@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import CompositeCheckbox from 'Components/composite-checkbox/composite-checkbox.jsx';
 import notes from './README.md';
 import 'Components/composite-checkbox/composite-checkbox.scss';

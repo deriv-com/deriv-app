@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ContractCard from 'Components/contract-card';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 import { getCardLabels, getContractTypeDisplay } from '../statics/contract';
 import sampleData from '../sample-data/sampleData.json';
 import '../contract-card.stories.scss';

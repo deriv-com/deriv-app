@@ -6,7 +6,7 @@ import Card from 'Components/card';
 import Button from 'Components/button';
 import { Text } from '../button/shared-style';
 import notes from './README.md';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import './card.stories.scss';
 
 const stories = storiesOf('Card', module);

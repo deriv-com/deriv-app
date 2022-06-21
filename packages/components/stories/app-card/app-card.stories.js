@@ -4,7 +4,7 @@ import AppCard from 'Components/app-card';
 import React from 'react';
 import notes from './README.md';
 import { getCardLabels } from './statics/labels';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 
 storiesOf('AppCard', module)
     .addDecorator(withKnobs)
@@ -24,24 +24,6 @@ storiesOf('AppCard', module)
                         is_virtual={boolean('isVirtual', true)}
                         linked_wallet='Virtual USD Wallet'
                         login_id='7926972'
-                        onAddRealClick={() => {
-                            console.log('Add real clicked');
-                        }}
-                        onDepositClick={() => {
-                            console.log('Deposit clicked!');
-                        }}
-                        onPlayClick={() => {
-                            console.log('Play clicked!');
-                        }}
-                        onSettingsClick={() => {
-                            console.log('Settings clicked!');
-                        }}
-                        onTransactionsClick={() => {
-                            console.log('Transactions clicked!');
-                        }}
-                        onWithdrawClick={() => {
-                            console.log('Withdraw clicked!');
-                        }}
                         server='Deriv Server'
                         show_footer={boolean('showFooter', true)}
                         show_hover_actions={boolean('showHoverActions', true)}

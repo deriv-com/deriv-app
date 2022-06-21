@@ -2,7 +2,7 @@ import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PasswordMeter from 'Components/password-meter';
 import PasswordInput from 'Components/password-input';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const Basic = () => {
     const [new_password, updateNewPassword] = React.useState('');

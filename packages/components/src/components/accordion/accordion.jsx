@@ -50,6 +50,8 @@ const Accordion = ({ className, icon_close, icon_open, list }) => {
 Accordion.propTypes = {
     className: PropTypes.string,
     list: PropTypes.arrayOf(PropTypes.object),
+    icon_close: PropTypes.string,
+    icon_open: PropTypes.string,
 };
 
 export default Accordion;

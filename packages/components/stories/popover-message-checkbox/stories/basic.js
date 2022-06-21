@@ -2,7 +2,7 @@ import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PopoverMessageCheckbox from 'Components/popover-message-checkbox';
 import Popover from 'Components/popover';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const PopoverComponent = ({ message }) => (
     <Popover alignment='right' is_bubble_hover_enabled margin={2} zIndex={2} message={message}>
@@ -18,7 +18,7 @@ const Basic = () => {
             <PopoverComponent
                 message={
                     <PopoverMessageCheckbox
-                        onChange={() => toggleCkeck(!is_checked)}
+                        onChange={() => toggleCheck(!is_checked)}
                         defaultChecked={is_checked}
                         checkboxLabel='Disable a tool'
                         message='Check the box please'

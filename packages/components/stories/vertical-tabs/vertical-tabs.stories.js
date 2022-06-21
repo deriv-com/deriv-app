@@ -2,9 +2,9 @@ import React from 'react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import Icon from 'Components/icon';
-import VerticalTab from 'Components/vertical-tab/vertical-tab';
+import VerticalTab from '../../src/components/vertical-tab/vertical-tab.jsx';
 import 'Components/vertical-tab/vertical-tab.scss';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 import notes from './README.md';
 
 const TextComponent = props => (
@@ -22,7 +22,9 @@ const TextComponent = props => (
 
 const action_bar_items = [
     {
-        onClick: () => {},
+        onClick: () => {
+            /* TODO document why this method 'onClick' is empty */
+        },
         icon: 'IcCross',
         title: 'Close',
     },
@@ -89,7 +91,7 @@ stories.addDecorator(withKnobs);
 stories.add(
     'Basic usage',
     () => {
-        const [_, setVerticalTabIndex] = React.useState(0);
+        const [, setVerticalTabIndex] = React.useState(0);
 
         return (
             <Wrapper is_dark={boolean('dark theme', false)}>

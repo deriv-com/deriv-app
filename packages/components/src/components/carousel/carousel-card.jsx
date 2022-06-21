@@ -14,6 +14,7 @@ const Card = ({ children, width }) => (
 
 Card.propTypes = {
     width: PropTypes.number,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.object]),
 };
 
 export default Card;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PageError from 'Components/page-error';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const Basic = () => (
     <Wrapper is_block is_full_width is_dark={boolean('Dark Theme', false)}>

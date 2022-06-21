@@ -5,7 +5,7 @@ import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Button from 'Components/button';
 import { FlexWrapper } from './shared-style';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import notes from './README.md';
 
 const stories = storiesOf('Button', module);
@@ -33,8 +33,8 @@ stories.add(
                         secondary={type === 'secondary'}
                         tertiary={type === 'tertiary'}
                         primary_light={type === 'primary_light'}
-                        green={color == 'green'}
-                        blue={color == 'blue'}
+                        green={color === 'green'}
+                        blue={color === 'blue'}
                         is_circle={boolean('is_circle', false)}
                         is_loading={boolean('is_loading', false)}
                         rounded={boolean('rounded', false)}

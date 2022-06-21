@@ -93,6 +93,9 @@ TableRow.propTypes = {
     to: PropTypes.string,
     content_loader: PropTypes.elementType,
     measure: PropTypes.func,
+    getActionColumns: PropTypes,
+    show_preloader: PropTypes.bool,
+    is_dynamic_height: PropTypes.bool,
 };
 
 export default TableRow;

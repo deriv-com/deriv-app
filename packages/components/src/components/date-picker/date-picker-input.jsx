@@ -98,6 +98,8 @@ DatePickerInput.propTypes = {
     onClick: PropTypes.func,
     onClickClear: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    disabled: PropTypes.bool,
+    error: PropTypes.object,
 };
 
 export default DatePickerInput;

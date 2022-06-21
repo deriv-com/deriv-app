@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import CircularProgress from '../../src/components/circular-progress/index';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import { useInterval } from '../../src/hooks';
 
 function formatTime(seconds) {

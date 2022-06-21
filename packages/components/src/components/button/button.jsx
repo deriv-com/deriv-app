@@ -126,6 +126,12 @@ Button.propTypes = {
     transparent: PropTypes.bool,
     text: PropTypes.string,
     wrapperClassName: PropTypes.string,
+    is_button_toggle: PropTypes.bool,
+    is_circular: PropTypes.bool,
+    tabIndex: PropTypes.string,
+    type: PropTypes.string,
+    alternate: PropTypes.bool,
+    renderText: PropTypes.func,
 };
 
 Button.Group = ButtonGroup;

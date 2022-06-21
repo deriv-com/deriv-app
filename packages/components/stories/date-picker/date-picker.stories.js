@@ -5,7 +5,7 @@ import React from 'react';
 import { toMoment } from '@deriv/shared';
 import DatePicker from 'Components/date-picker';
 import notes from './README.md';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 
 const stories = storiesOf('DatePicker', module);
 

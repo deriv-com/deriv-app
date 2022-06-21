@@ -5,7 +5,7 @@ import RelativeDatepicker from 'Components/relative-datepicker';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 
 const stories = storiesOf('Relative-DatePicker', module);
 

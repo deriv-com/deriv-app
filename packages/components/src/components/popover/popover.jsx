@@ -222,6 +222,7 @@ Popover.propTypes = {
     zIndex: PropTypes.number,
     should_disable_pointer_events: PropTypes.bool,
     should_show_cursor: PropTypes.bool,
+    window_border: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Popover;

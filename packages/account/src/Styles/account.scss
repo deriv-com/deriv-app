@@ -2044,6 +2044,9 @@ $MIN_HEIGHT_FLOATING: calc(
         & > ul {
             padding-left: 3%;
             list-style-type: disc;
+            @include mobile {
+                padding-left: 5%;
+            }
         }
     }
 
@@ -2061,6 +2064,10 @@ $MIN_HEIGHT_FLOATING: calc(
         justify-content: flex-end;
         align-self: flex-end;
         background-color: transparent;
+
+        @include mobile {
+            align-self: center;
+        }
     }
     &__button {
         &--cancel {
@@ -2069,8 +2076,10 @@ $MIN_HEIGHT_FLOATING: calc(
             float: right;
 
             @include mobile {
-                float: none;
-                margin: 2.4rem auto 3.2rem;
+                display: none;
+                margin-top: -8px;
+                margin-right: 10px;
+                float: right;
                 &--dashboard {
                     width: 100%;
                 }
@@ -2176,8 +2185,6 @@ $MIN_HEIGHT_FLOATING: calc(
             & > div {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-                justify-content: center;
             }
         }
     }

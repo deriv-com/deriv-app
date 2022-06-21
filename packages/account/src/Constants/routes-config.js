@@ -116,7 +116,7 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                     {
                         path: routes.deactivate_account,
                         component: ClosingAccount,
-                        getTitle: () => localize('Closing account'),
+                        getTitle: () => localize('Close your account'),
                     },
                 ],
             },

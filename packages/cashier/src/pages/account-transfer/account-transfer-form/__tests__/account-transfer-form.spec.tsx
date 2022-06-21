@@ -21,6 +21,8 @@ describe('<AccountTransferForm />', () => {
         document.body.appendChild(modal_root_el);
     });
     afterAll(() => {
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
         document.body.removeChild(modal_root_el);
     });
     const mockProps = () => ({
@@ -69,9 +71,9 @@ describe('<AccountTransferForm />', () => {
     it('component should be rendered', () => {
         const props = mockProps();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        expect(container.querySelector('.account-transfer-form__wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('account-transfer-form__wrapper')).toBeInTheDocument();
         expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
     });
 
@@ -79,22 +81,22 @@ describe('<AccountTransferForm />', () => {
         const props = mockProps();
         props.accounts_list = [];
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        expect(container.querySelector('.cashier__loader-wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('cashier__loader-wrapper')).toBeInTheDocument();
     });
 
     it('should show <Form /> component if account_list.length > 0', () => {
         const props = mockProps();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
         expect(screen.getByText('From')).toBeInTheDocument();
         expect(screen.getByText('To')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__drop-down-wrapper')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__drop-down')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__drop-down--to-dropdown')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__form-submit')).toBeInTheDocument();
+        // expect(screen.getByTestId('account-transfer-form__drop-down-wrapper')).toBeInTheDocument();
+        // expect(screen.getByTestId('account-transfer-form__drop-down')).toBeInTheDocument();
+        // expect(screen.getByTestId('.account-transfer-form__drop-down--to-dropdown')).toBeInTheDocument();
+        // expect(screen.getByTestId('.account-transfer-form__form-submit')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer' })).toBeInTheDocument();
     });
 
@@ -103,9 +105,9 @@ describe('<AccountTransferForm />', () => {
         props.setErrorMessage = jest.fn();
         props.setAccountTransferAmount = jest.fn();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        const amount_field = container.querySelector('input[name=amount]');
+        const amount_field = screen.getByTestId('amount-input');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
 
         fireEvent.change(amount_field, { target: { value: '1' } });
@@ -123,9 +125,9 @@ describe('<AccountTransferForm />', () => {
         props.setAccountTransferAmount = jest.fn();
         props.selected_from.balance = 100;
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '200' } });
+        fireEvent.change(screen.getByTestId('amount-input'), { target: { value: '200' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
@@ -142,7 +144,7 @@ describe('<AccountTransferForm />', () => {
 
         const { container } = render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '100' } });
+        fireEvent.change(screen.getByTestId('amount-input'), { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         expect(props.requestTransferBetweenAccounts).not.toHaveBeenCalled();
@@ -151,9 +153,9 @@ describe('<AccountTransferForm />', () => {
     it('should show input if same currency', () => {
         const props = mockProps();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        expect(container.querySelector('.account-transfer-form__input')).toBeInTheDocument();
+        expect(screen.getByTestId('account-transfer-form__input')).toBeInTheDocument();
     });
 
     it("should show 'Please verify your identity' error if error.code is Fiat2CryptoTransferOverLimit", () => {

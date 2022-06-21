@@ -2,6 +2,7 @@ import { action, computed, observable } from 'mobx';
 import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import ServerTime from 'Utils/server-time';
+import { roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 
 export default class FloatingRateStore extends BaseStore {
     @observable fixed_rate_adverts_status;
@@ -66,7 +67,8 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     setExchangeRate(rate) {
-        this.exchange_rate = parseFloat(rate);
+        const fetched_rate = parseFloat(rate);
+        this.exchange_rate = removeTrailingZeros(roundOffDecimal(fetched_rate, 6));
         if (this.previous_exchange_rate === null) {
             this.previous_exchange_rate = this.exchange_rate;
             this.current_exchange_rate = this.exchange_rate;

@@ -161,10 +161,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    // value={getFormattedText(rate, local_currency)}
-                                    value={removeTrailingZeros(
-                                        formatMoney(local_currency, rate, true, setDecimalPlaces(rate, 6))
-                                    )}
+                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>

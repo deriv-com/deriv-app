@@ -7,7 +7,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
+import { removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
 
 const EditAdSummary = ({ offer_amount, price_rate, type }) => {
     const { floating_rate_store, general_store } = useStores();
@@ -42,12 +42,7 @@ const EditAdSummary = ({ offer_amount, price_rate, type }) => {
                 local_amount: display_total,
                 local_currency: local_currency_config.currency,
                 price_rate: removeTrailingZeros(
-                    formatMoney(
-                        local_currency_config.currency,
-                        display_price_rate,
-                        true,
-                        setDecimalPlaces(display_price_rate, 6)
-                    )
+                    formatMoney(local_currency_config.currency, display_price_rate, true, 6)
                 ),
             });
 

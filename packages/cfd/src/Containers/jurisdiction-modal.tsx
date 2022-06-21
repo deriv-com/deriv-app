@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
-import ModalContent2 from './compare-accounts-content2';
+import ModalContent2 from './jurisdiction-modal-content';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;

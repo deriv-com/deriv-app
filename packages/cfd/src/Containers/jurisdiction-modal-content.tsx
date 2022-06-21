@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { number } from 'prop-types';
 
 const ModalConent2 = () => {
     const [verification_status] = React.useState('pending');

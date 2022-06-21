@@ -1,11 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { routes, WS } from '@deriv/shared';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import CashierLocked from 'Components/cashier-locked';
+
+type TDepositLocked = {
+    account_status: {
+        authentication: {
+            identity: {
+                status: string;
+            };
+            document: {
+                status: string;
+            };
+            needs_verification: string;
+        };
+    };
+    is_tnc_needed: boolean;
+    is_financial_information_incomplete: boolean;
+    is_trading_experience_incomplete: boolean;
+    is_financial_account: boolean;
+    standpoint: {
+        iom: string;
+    };
+    onMount: () => void;
+};
 
 const DepositLocked = ({
     account_status,
@@ -15,7 +37,7 @@ const DepositLocked = ({
     is_financial_account,
     onMount,
     standpoint,
-}) => {
+}: TDepositLocked) => {
     // handle authentication locked
     const { identity, document, needs_verification } = account_status.authentication;
     const is_poi_needed = needs_verification.includes('identity');
@@ -102,16 +124,7 @@ const DepositLocked = ({
     );
 };
 
-DepositLocked.propTypes = {
-    account_status: PropTypes.object,
-    is_tnc_needed: PropTypes.bool,
-    is_financial_information_incomplete: PropTypes.bool,
-    is_trading_experience_incomplete: PropTypes.bool,
-    is_financial_account: PropTypes.bool,
-    onMount: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     account_status: client.account_status,
     is_tnc_needed: client.is_tnc_needed,
     is_financial_information_incomplete: client.is_financial_information_incomplete,

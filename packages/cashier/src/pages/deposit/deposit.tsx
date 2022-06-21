@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
@@ -12,6 +12,41 @@ import USDTSideNote from 'Components/usdt-side-note';
 import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
+
+type TDeposit = {
+    can_change_fiat_currency: boolean;
+    crypto_transactions: Array<object>;
+    container: string;
+    currency: string;
+    current_currency_type: string;
+    error: {
+        is_ask_uk_funds_protection?: boolean;
+        message?: string;
+    };
+    is_cashier_onboarding: boolean;
+    is_cashier_locked: boolean;
+    is_deposit: boolean;
+    is_crypto: boolean;
+    is_crypto_transactions_visible: boolean;
+    is_deposit_locked: boolean;
+    is_eu: boolean;
+    iframe_height: number | string;
+    iframe_url: string;
+    is_loading: boolean;
+    is_switching: boolean;
+    is_system_maintenance: boolean;
+    is_virtual: boolean;
+    landing_company_shortcode: string;
+    onMount: () => void;
+    clearIframe: () => void;
+    recentTransactionOnMount: () => void;
+    setActiveTab: (container: string) => void;
+    setErrorMessage: (error: string) => void;
+    setIsDeposit: (isDeposit: boolean) => void;
+    setSideNotes: (notes: object | null) => void;
+    standpoint: object;
+    tab_index: number;
+};
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -42,7 +77,7 @@ const Deposit = ({
     setIsDeposit,
     setSideNotes,
     tab_index,
-}) => {
+}: TDeposit) => {
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
     React.useEffect(() => {
@@ -130,36 +165,7 @@ const Deposit = ({
     return <CashierOnboarding setSideNotes={setSideNotes} />;
 };
 
-Deposit.propTypes = {
-    can_change_fiat_currency: PropTypes.bool,
-    crypto_transactions: PropTypes.array,
-    container: PropTypes.string,
-    current_currency_type: PropTypes.string,
-    error: PropTypes.object,
-    is_cashier_onboarding: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
-    is_deposit: PropTypes.bool,
-    is_crypto: PropTypes.bool,
-    is_crypto_transactions_visible: PropTypes.bool,
-    is_deposit_locked: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    iframe_url: PropTypes.string,
-    is_loading: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    is_system_maintenance: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
-    onMount: PropTypes.func,
-    recentTransactionOnMount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-    setIsDeposit: PropTypes.func,
-    setSideNotes: PropTypes.func,
-    standpoint: PropTypes.object,
-    tab_index: PropTypes.number,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     can_change_fiat_currency: client.can_change_fiat_currency,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     container: modules.cashier.deposit.container,

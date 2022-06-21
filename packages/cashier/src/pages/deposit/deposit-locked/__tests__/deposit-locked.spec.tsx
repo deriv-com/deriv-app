@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access,testing-library/no-container */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
@@ -132,7 +133,7 @@ describe('<DepositLocked />', () => {
             {
                 content: 'Check proof of identity document verification status',
                 status: 'action',
-                onClick: onClick,
+                onClick,
             },
         ];
         const { container } = render(<Checklist className='cashier-locked__checklist' items={items} />);

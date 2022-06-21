@@ -1,3 +1,3 @@
-import CryptoDeposit from './crypto-deposit.jsx';
+import CryptoDeposit from './crypto-deposit';
 
 export default CryptoDeposit;

@@ -1,3 +1,3 @@
-import DepositLocked from './deposit-locked.jsx';
+import DepositLocked from './deposit-locked';
 
 export default DepositLocked;

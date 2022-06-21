@@ -10,7 +10,7 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import DeletePaymentMethodErrorModal from 'Components/my-profile/payment-methods/payment-methods-list/delete-payment-method-error-modal.jsx';
+import DeletePaymentMethodErrorModal from './delete-payment-method-error-modal';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../payment-method-card';

@@ -1,11 +1,12 @@
 import React from 'react';
+import classNames from 'classnames';
+import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { Link } from 'react-router-dom';
 import { Button, Text, StaticUrl } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
-import classNames from 'classnames';
 
-const ClosingAccountSteps = ({ redirectToReasons }) => {
+const ClosingAccountSteps = ({ redirectToReasons, is_from_derivgo }) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -43,30 +44,45 @@ const ClosingAccountSteps = ({ redirectToReasons }) => {
                     />
                 </Text>
             </div>
-            <div className='closing-account__buttons-container'>
-                <Link to='/'>
+            {is_from_derivgo ? (
+                <div className='closing-account__buttons-container'>
                     <Button
-                        className={classNames('closing-account__button--cancel', {
+                        className={classNames('closing-account__button--close-account', {
                             'closing-account__button--dashboard': is_appstore,
                         })}
                         large
-                        secondary
+                        onClick={() => redirectToReasons()}
+                        primary
                     >
-                        <Localize i18n_default_text='Cancel' />
+                        <Localize i18n_default_text='Close my account' />
                     </Button>
-                </Link>
-                <Button
-                    className={classNames('closing-account__button--close-account', {
-                        'closing-account__button--dashboard': is_appstore,
-                    })}
-                    large
-                    onClick={() => redirectToReasons()}
-                    primary
-                >
-                    <Localize i18n_default_text='Close my account' />
-                </Button>
-            </div>
+                </div>
+            ) : (
+                <div className='closing-account__buttons-container'>
+                    <Link to='/'>
+                        <Button
+                            className={classNames('closing-account__button--cancel', {
+                                'closing-account__button--dashboard': is_appstore,
+                            })}
+                            large
+                            secondary
+                        >
+                            <Localize i18n_default_text='Cancel' />
+                        </Button>
+                    </Link>
+                    <Button
+                        className={classNames('closing-account__button--close-account', {
+                            'closing-account__button--dashboard': is_appstore,
+                        })}
+                        large
+                        onClick={() => redirectToReasons()}
+                        primary
+                    >
+                        <Localize i18n_default_text='Close my account' />
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };
-export default ClosingAccountSteps;
+export default connect(({ common }) => ({ is_from_derivgo: common.is_from_derivgo }))(ClosingAccountSteps);

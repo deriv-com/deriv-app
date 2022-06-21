@@ -2076,7 +2076,6 @@ $MIN_HEIGHT_FLOATING: calc(
             float: right;
 
             @include mobile {
-                display: none;
                 margin-top: -8px;
                 margin-right: 10px;
                 float: right;

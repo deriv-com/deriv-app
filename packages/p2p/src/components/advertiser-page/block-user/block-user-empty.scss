@@ -1,0 +1,23 @@
+.block-user-empty {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &__loading {
+        position: absolute;
+        background: var(--general-main-1);
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+    }
+
+    &__icon {
+        margin-top: 2.2rem;
+    }
+
+    &__text {
+        margin: 3rem 0 0.8rem;
+        font-size: 1.606rem;
+    }
+}

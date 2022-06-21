@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
-import ModalContent2 from './jurisdiction-modal-content';
+import JurisdictionModalContent from './jurisdiction-modal-content';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
@@ -14,7 +14,7 @@ type TCompareAccountsReusedProps = {
     is_uk: boolean;
 };
 
-type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
+type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     disableApp: () => void;
     enableApp: () => void;
     is_compare_accounts_visible2: boolean;
@@ -25,15 +25,14 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     toggleCompareAccounts2: () => void;
 };
 
-const CompareAccountsModal2 = ({
+const JurisdictionModal = ({
     disableApp,
     enableApp,
     is_compare_accounts_visible2,
-    landing_companies,
     is_loading,
     platform,
     toggleCompareAccounts2,
-}: TCompareAccountsModalProps) => {
+}: TJurisdictionModalProps) => {
     return (
         <>
             <div
@@ -61,7 +60,7 @@ const CompareAccountsModal2 = ({
                             height='696px'
                             width='1200px'
                         >
-                            <ModalContent2 />
+                            <JurisdictionModalContent />
                             <Modal.Footer>
                                 <Button primary>Next</Button>
                             </Modal.Footer>
@@ -75,7 +74,7 @@ const CompareAccountsModal2 = ({
                             visible={is_compare_accounts_visible2}
                             onClose={toggleCompareAccounts2}
                         >
-                            <ModalContent2 />
+                            <JurisdictionModalContent />
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Suspense>
@@ -96,4 +95,4 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     landing_companies: client.landing_companies,
     residence: client.residence,
     toggleCompareAccounts2: modules.cfd.toggleCompareAccountsModal2,
-}))(CompareAccountsModal2);
+}))(JurisdictionModal);

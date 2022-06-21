@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
-const ModalConent2 = () => {
+const JurisdictionModalContent = () => {
     const [verification_status] = React.useState('pending');
     const [verification_status2] = React.useState('verified');
     const [verification_status3] = React.useState('not_submitted');
@@ -264,4 +264,4 @@ const ModalConent2 = () => {
     );
 };
 
-export default ModalConent2;
+export default JurisdictionModalContent;

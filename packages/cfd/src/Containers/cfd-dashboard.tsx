@@ -18,7 +18,7 @@ import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
-import CompareAccountsModal2 from './compare-accounts-modal2';
+import JurisdictionModal from './jurisdiction-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
@@ -562,7 +562,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 )}
                             </LoadTab>
                             <CompareAccountsModal platform={platform} />
-                            <CompareAccountsModal2 platform={platform} />
+                            <JurisdictionModal platform={platform} />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon
                                     icon='IcAlertWarning'

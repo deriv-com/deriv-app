@@ -43,7 +43,7 @@ const CompareAccountsModal = ({
     toggleCompareAccounts,
 }: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-
+    const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
     const mt5_accounts = [
         landing_companies?.mt_gaming_company?.financial,
         landing_companies?.mt_financial_company?.financial,
@@ -54,7 +54,7 @@ const CompareAccountsModal = ({
         mt5_accounts.filter(Boolean).length === 1 ? localize('Account Information') : localize('Compare accounts');
 
     const getCFDModalTitle = () => {
-        if (platform === 'mt5') {
+        if (!is_dxtrade) {
             return isMobile()
                 ? localize('Choose a jurisdiction for your account')
                 : localize('Choose a jurisdiction for your {{type}} DMT5 account', {
@@ -66,10 +66,7 @@ const CompareAccountsModal = ({
 
     return (
         <>
-            <div
-                className='cfd-compare-accounts-modal__wrapper'
-                style={{ marginTop: platform === CFD_PLATFORMS.DXTRADE ? '5rem' : '2.4rem' }}
-            >
+            <div className='cfd-compare-accounts-modal__wrapper' style={{ marginTop: is_dxtrade ? '5rem' : '2.4rem' }}>
                 <Button
                     className='cfd-dashboard__welcome-message--button'
                     has_effect
@@ -81,17 +78,17 @@ const CompareAccountsModal = ({
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal
-                            className={is_demo_tab ? 'cfd-dashboard__compare-accounts' : 'cfd-real-compare-accounts'}
+                            className={is_dxtrade ? 'cfd-dashboard__compare-accounts' : 'cfd-real-compare-accounts'}
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_compare_accounts_visible}
                             title={getCFDModalTitle()}
                             toggleModal={toggleCompareAccounts}
                             type='button'
-                            height={platform === CFD_PLATFORMS.DXTRADE ? '696px' : '506px'}
-                            width={platform === CFD_PLATFORMS.DXTRADE ? '903px' : '996px'}
+                            height={is_dxtrade ? '696px' : '506px'}
+                            width={is_dxtrade ? '903px' : '996px'}
                         >
-                            {platform === CFD_PLATFORMS.DXTRADE ? (
+                            {is_dxtrade ? (
                                 <ModalContent
                                     is_logged_in={is_logged_in}
                                     landing_companies={landing_companies}
@@ -113,11 +110,9 @@ const CompareAccountsModal = ({
                             wrapper_classname='cfd-dashboard__compare-accounts'
                             visible={is_compare_accounts_visible}
                             onClose={toggleCompareAccounts}
-                            header_classname={
-                                platform === CFD_PLATFORMS.MT5 && 'cfd-real-compare-accounts-mobile-header'
-                            }
+                            header_classname={is_dxtrade ? '' : 'cfd-real-compare-accounts-mobile-header'}
                         >
-                            {platform === CFD_PLATFORMS.DXTRADE ? (
+                            {is_dxtrade ? (
                                 <ModalContent
                                     is_logged_in={is_logged_in}
                                     landing_companies={landing_companies}

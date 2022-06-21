@@ -1535,5 +1535,150 @@
         align-items: flex-end;
     }
 }
+.cfd-real-compare-accounts {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    background: inherit;
+    height: 100%;
+    position: relative;
+
+    &__table-header {
+        grid-template-columns: 0.9fr 1.39fr 2.7fr;
+    }
+    &__table-header-item {
+        justify-content: center;
+    }
+
+    &__table-row {
+        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.61fr 0.7fr;
+        &--leverage {
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 2fr 0.7fr;
+        }
+        &--instruments {
+            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.61fr 0.7fr;
+        }
+    }
+
+    &__table-row-item {
+        flex-direction: column;
+        justify-content: center;
+        &--tooltip {
+            flex-direction: row;
+        }
+    }
+    &__table-footer {
+        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.61fr 0.7fr;
+        height: 4.8rem;
+        &__item {
+            height: 4.8rem;
+        }
+        &__button {
+            width: 100%;
+        }
+    }
+
+    .dc-table {
+        margin: 0 25px;
+
+        &__header {
+            border: none;
+            height: 4rem;
+            top: 0;
+            z-index: 10;
+        }
+        &__cell:not(.cfd-real-compare-accounts__table-empty-cell),
+        &__head:not(.cfd-real-compare-accounts__table-empty-cell) {
+            padding: 0.8rem;
+            border: 1px solid var(--general-active);
+            margin-left: -1px;
+            margin-bottom: -1px;
+        }
+        &__cell {
+            padding: 1rem 0.8rem;
+        }
+        &__row {
+            border-bottom: none;
+            min-height: 4rem;
+        }
+
+        &--scrollbar {
+            display: block; // Safari needs this to work properly!
+        }
+    }
+    &-modal {
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.4rem;
+        }
+    }
+    @include mobile {
+        height: 100%;
+        font-size: 1.2rem;
+
+        .cfd-real-compare-accounts__table-empty-cell.dc-table__cell--fixed {
+            margin-left: -1px;
+            border: 1px solid var(--general-active);
+            border-width: 1px 1px 0px 0px;
+        }
+        .dc-table {
+            height: 100%;
+            margin: 25px;
+            overflow-x: auto;
+            &__cell {
+                &--fixed {
+                    background-color: var(--general-main-1);
+                    .dc-text {
+                        font-size: var(--text-size-xxxs);
+                        text-align: left;
+                    }
+                }
+            }
+            &__header,
+            &__row {
+                width: 250vw;
+            }
+            .dc-table__head.cfd-real-compare-accounts__table-empty-cell {
+                border-top: none;
+            }
+        }
+    }
+}
+.dc-modal-header__title--cfd-real-compare-accounts {
+    font-size: var(--text-size-sm);
+    line-height: 3rem;
+}
+.amina {
+    margin-left: 0.8rem;
+    &--msg {
+        font-size: var(--text-size-xxs);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px;
+        width: 276px;
+        border-radius: 4px;
+    }
+}
+.cfd-real-compare-accounts-mobile-header {
+    height: fit-content;
+    border-bottom: none;
+    .dc-text {
+        font-size: var(--text-size-s);
+    }
+}
+.cfd-compare-accounts-tooltip {
+    margin-left: 0.8rem;
+    &--msg {
+        font-size: var(--text-size-xxs);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px;
+        width: 276px;
+        border-radius: 4px;
+    }
+}
 
 /* stylelint-enable */

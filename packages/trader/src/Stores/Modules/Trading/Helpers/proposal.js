@@ -45,7 +45,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     if (store.contract_type === 'accumulator') {
         // dummy proposal info for accumulators:
         return {
-            tick_size_barrier: 0.058602,
+            tick_size_barrier: 0.000409,
             max_duration_ticks: 10,
             max_payout: '20000.00',
             error_code: undefined,

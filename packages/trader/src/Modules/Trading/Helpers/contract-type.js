@@ -8,12 +8,12 @@ export const contract_category_icon = {
     [localize('Look Backs')]: 'IcLookbacks',
     [localize('Digits')]: 'IcDigits',
     [localize('Multipliers')]: 'IcMultiplier',
-    [localize('Accumulators')]: 'IcUnknown',
+    [localize('Accumulators')]: 'IcTradetypeCall',
 };
 
 export const getContractTypeCategoryIcons = () => ({
     All: 'IcCatAll',
-    Accumulators: 'IcUnknown',
+    Accumulators: 'IcTradetypeCall',
     Options: 'IcCatOptions',
     Multipliers: 'IcCatMultiplier',
 });

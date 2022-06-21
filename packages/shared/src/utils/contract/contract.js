@@ -31,6 +31,8 @@ export const isValidToSell = contract_info =>
 
 export const hasContractEntered = contract_info => !!contract_info.entry_spot;
 
+export const isAccumulatorContract = contract_type => /ACC/i.test(contract_type);
+
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 
 export const isCryptoContract = underlying => /^cry/.test(underlying);

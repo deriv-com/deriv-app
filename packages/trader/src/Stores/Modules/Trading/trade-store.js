@@ -33,7 +33,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
+import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 
@@ -117,7 +117,7 @@ export default class TradeStore extends BaseStore {
     @observable accumulator_rates_list = [];
     @observable growth_rate;
     @observable max_duration_ticks = 0;
-    @observable tick_size_barrier = 0;
+    @observable tick_size_barrier;
 
     // Multiplier trade params
     @observable multiplier;
@@ -578,7 +578,15 @@ export default class TradeStore extends BaseStore {
         }
         const { contract_type, barrier, barrier2, high_barrier, low_barrier } = proposal_info;
 
-        if (isBarrierSupported(contract_type)) {
+        const is_accumulator = contract_type === 'ACC';
+        // show barriers for Accumulators only when a contract is open
+        if (
+            isBarrierSupported(contract_type) &&
+            (!is_accumulator ||
+                this.root_store.modules.contract_trade.contracts.some(
+                    c => c.contract_info.contract_type === 'ACC' && c.contract_info.status === 'open'
+                ))
+        ) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(
@@ -587,6 +595,8 @@ export default class TradeStore extends BaseStore {
                 this.onChartBarrierChange,
                 {
                     color,
+                    line_style: is_accumulator && BARRIER_LINE_STYLES.DOTTED,
+                    not_draggable: is_accumulator,
                 }
             );
             // this.main_barrier.updateBarrierShade(true, contract_type);

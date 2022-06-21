@@ -8,10 +8,18 @@ import { connect } from 'Stores/connect';
 import AccumulatorsInfo from './accumulators-info.jsx';
 
 const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
+    // splitting accumulator_rates_list into rows containing 5 values each:
+    const arr_arr_numbers = accumulator_rates_list.reduce((acc, _el, index) => {
+        if (index % 5 === 0) {
+            acc.push(accumulator_rates_list.slice(index, index + 5));
+        }
+        return acc;
+    }, []);
+
     return (
         <Fieldset className='trade-container__fieldset' header={localize('Accumulator')} is_center>
             <NumberSelector
-                arr_arr_numbers={[accumulator_rates_list]}
+                arr_arr_numbers={arr_arr_numbers}
                 name='growth_rate'
                 onChange={onChange}
                 selected_number={growth_rate}

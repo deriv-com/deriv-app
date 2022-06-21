@@ -54,7 +54,6 @@ const ClosingAccountSteps = ({ redirectToReasons }) => {
                     >
                         <Localize i18n_default_text='Cancel' />
                     </Button>
-                    {/* {localize('Cancel')} */}
                 </Link>
                 <Button
                     className={classNames('closing-account__button--close-account', {

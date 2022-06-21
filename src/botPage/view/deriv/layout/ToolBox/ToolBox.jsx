@@ -27,15 +27,15 @@ const ToolboxButton = ({
   label,
   tooltip,
   classes,
-  idContainer,
-  classContainer,
+  id_container,
+  class_container,
   id,
   onClick,
   position = "bottom",
   is_bot_running,
 }) => {
   return (
-      <Popover id={idContainer} classContainer={classContainer} content={tooltip} position={position}>
+      <Popover id={id_container} class_container={class_container} content={tooltip} position={position}>
           <button id={id} onClick={onClick} className={classes} disabled={is_bot_running}>
             {label}
           </button>
@@ -195,7 +195,7 @@ const ToolBox = ({ blockly }) => {
         classes={classNames("toolbox-button icon-summary",{"toolbox-hide":!has_active_token})}
       />
       <ToolboxButton 
-        idContainer="runButton"
+        id_container="runButton"
         tooltip={translate("Run the bot")} 
         position="bottom"
         onClick={() => globalObserver.emit("blockly.start")}
@@ -203,7 +203,7 @@ const ToolBox = ({ blockly }) => {
         is_bot_running={is_bot_running}
       />
       <ToolboxButton 
-        idContainer="stopButton"
+        id_container="stopButton"
         tooltip={translate("Stop the bot")}  
         position="bottom"
         onClick={()=>{globalObserver.emit("blockly.stop")}}
@@ -211,13 +211,13 @@ const ToolBox = ({ blockly }) => {
       />
       <ToolboxButton 
         id={"logButton"}
-        classContainer={classNames({"toolbox-hide":!has_active_token})}
+        class_container={classNames({"toolbox-hide":!has_active_token})}
         tooltip={translate("Show log")} 
         position={"bottom"}
         classes={classNames("toolbox-button icon-info",{"toolbox-hide":!has_active_token})}
       />
 
-      <span className="toolbox-separator" />
+      {has_active_token && <span className="toolbox-separator" />}
       {/* Needs resizeable modal */}
       <ToolboxButton 
         id={"chartButton"}

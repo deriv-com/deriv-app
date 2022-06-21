@@ -8,8 +8,17 @@ import Text from '../text/text.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
-    const { title, visible, children, has_full_height, portal_element_id, renderTitle, wrapper_classname, footer, header_classname } =
-        props;
+    const {
+        title,
+        visible,
+        children,
+        has_full_height,
+        portal_element_id,
+        renderTitle,
+        wrapper_classname,
+        footer,
+        header_classname,
+    } = props;
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
@@ -108,8 +117,8 @@ const MobileDialog = props => {
                         </div>
                     )}
                 </Div100vhContainer>
-            </div >
-        </CSSTransition >,
+            </div>
+        </CSSTransition>,
         document.getElementById(portal_element_id)
     );
 };
@@ -124,7 +133,7 @@ MobileDialog.propTypes = {
     title: PropTypes.string,
     visible: PropTypes.bool,
     wrapper_classname: PropTypes.string,
-    header_classname: PropTypes.string
+    header_classname: PropTypes.string,
 };
 
 export default MobileDialog;

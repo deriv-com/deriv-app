@@ -57,7 +57,9 @@ const CompareAccountsModal = ({
         if (platform === 'mt5') {
             return isMobile()
                 ? localize('Choose a jurisdiction for your account')
-                : localize('Choose a jurisdiction for your DMT5 account');
+                : localize('Choose a jurisdiction for your {{type}} DMT5 account', {
+                      type: is_demo_tab ? 'demo' : 'real',
+                  });
         }
         return cfd_account_button_label;
     };

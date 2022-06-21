@@ -182,8 +182,8 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
                         {values[item].tooltip_msg && (
                             <Popover
                                 alignment='left'
-                                className='da-account-limits__popover'
-                                classNameBubble='tooltip_msg'
+                                className='cfd-compare-accounts-tooltip'
+                                classNameBubble='cfd-compare-accounts-tooltip--msg'
                                 icon='info'
                                 disable_message_icon
                                 is_bubble_hover_enabled

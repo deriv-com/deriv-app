@@ -11,6 +11,7 @@ import { setIsBotRunning } from '../../store/ui-slice';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { isMobile } from "../../../../../common/utils/tools";
 import Popover from "../../components/popover/index";
+import config from "../../../../../app.config";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
@@ -225,12 +226,12 @@ const ToolBox = ({ blockly }) => {
         position={"bottom"}
         classes={"toolbox-button icon-chart-line"}
       />
-      <ToolboxButton 
+      {config.trading_view_chart.url && <ToolboxButton 
         id={"tradingViewButton"}
         tooltip={translate("Show Trading View")}
         position={"bottom"}
         classes={"toolbox-button icon-trading-view"}
-      />
+      />}
       {should_show_modal && (
         <ShowModal
           modal={MODALS[selected_modal]}

@@ -9,19 +9,15 @@ type TRowItem = {
     tooltip_msg?: string;
 };
 
-type TAccountsDescription = {
-    synthetic_svg?: TRowItem;
-    synthetic_bvi?: TRowItem;
-    financial_svg?: TRowItem;
-    financial_bvi?: TRowItem;
-    financial_v?: TRowItem;
-    financial_fx?: TRowItem;
+type TInstrumentsRowProps = {
+    attr: string;
+    val: Record<string, TRowItem>;
 };
 
 type TModalContentProps = {
     id: string;
     attribute: string;
-    values: TAccountsDescription;
+    values: Record<string, TRowItem>;
 };
 
 const content: TModalContentProps[] = [
@@ -119,14 +115,8 @@ const footer_buttons = [
     { label: localize('Add'), action: '' },
 ];
 
-type TInstrumentsRowProps = {
-    attr: string;
-    val: TAccountsDescription;
-};
-
 const getContentSize = (id: string) => {
     if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
-
     return isDesktop() ? 'xxxs' : 'xxxxs';
 };
 const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
@@ -140,7 +130,7 @@ const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
         {Object.keys(val).map(rowKey => (
             <Table.Cell key={rowKey} className='cfd-real-compare-accounts__table-row-item'>
                 {Array.isArray(val[rowKey].text) ? (
-                    val[rowKey].text.map((item, index) => (
+                    (val[rowKey].text as []).map((item, index) => (
                         <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
                             {item}
                         </Text>
@@ -168,7 +158,7 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
         >
             <Table.Cell fixed>
                 <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
-                    {attribute}{' '}
+                    {attribute}
                 </Text>
             </Table.Cell>
 

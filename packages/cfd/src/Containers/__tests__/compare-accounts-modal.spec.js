@@ -47,7 +47,6 @@ describe('should render the <CompareAccountsModal /> component', () => {
     it('should render the <CompareAccountsModal /> component', () => {
         const { container } = render(<CompareAccountsModal {...mock_props} />);
         expect(container.firstChild).toHaveClass('cfd-compare-accounts-modal__wrapper');
-        screen.debug(undefined, 50000);
     });
 
     it('expect compare-accounts-content to pop up when the compare accounts button is clicked', () => {
@@ -55,7 +54,6 @@ describe('should render the <CompareAccountsModal /> component', () => {
         expect(screen.queryByText(/compare accounts/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/compare accounts/i));
         expect(mock_props.toggleCompareAccounts).toHaveBeenCalled();
-        screen.debug(undefined, 50000);
     });
 
     it('should render the proper style for Mt5 platforms', () => {
@@ -63,7 +61,6 @@ describe('should render the <CompareAccountsModal /> component', () => {
         const div_element = document.getElementsByClassName('cfd-compare-accounts-modal__wrapper');
         const style = window.getComputedStyle(div_element[0]);
         expect(style.marginTop).toBe('2.4rem');
-        screen.debug(undefined, 50000);
     });
 
     it('should render the proper text if the user is from an eu country', () => {
@@ -76,7 +73,6 @@ describe('should render the <CompareAccountsModal /> component', () => {
                 is_compare_accounts_visible={true}
             />
         );
-        screen.debug(undefined, 50000);
         expect(screen.getAllByText('USD')[0]).toBeInTheDocument();
     });
 
@@ -89,8 +85,6 @@ describe('should render the <CompareAccountsModal /> component', () => {
                 is_compare_accounts_visible={true}
             />
         );
-
-        screen.debug(undefined, 50000);
     });
 
     it('should render the proper style for Dxtrade platforms', () => {
@@ -98,6 +92,5 @@ describe('should render the <CompareAccountsModal /> component', () => {
         const div_element = document.getElementsByClassName('cfd-compare-accounts-modal__wrapper');
         const style = window.getComputedStyle(div_element[0]);
         expect(style.marginTop).toBe('5rem');
-        screen.debug(undefined, 50000);
     });
 });

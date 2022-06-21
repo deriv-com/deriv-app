@@ -60,7 +60,7 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        trackJSTrack({ code:'Invalid financial market' });
+        trackJSTrack(new TrackJSError(translate('Invalid financial market')));
         showDialog({
             title: translate('Warning'),
             text: [translate('This strategy is not available in your country.')],

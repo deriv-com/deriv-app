@@ -3,6 +3,7 @@ import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
 import { trackJSTrack } from "../../common/integrations/trackJSTrack";
+import { TrackJSError } from "../../botPage/view/logger";
 
 export const MAX_MOBILE_WIDTH = 813;
 
@@ -156,5 +157,5 @@ export const errLogger = (err, msg) => {
     const err_str = JSON.stringify(err);
     const err_msg = `${msg} - Error: ${err_str}`;
     console.warn(err_msg);
-    trackJSTrack({ code: err_msg })
+    trackJSTrack(new TrackJSError(translate(err_msg), err_str));
 };

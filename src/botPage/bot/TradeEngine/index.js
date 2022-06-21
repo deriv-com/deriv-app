@@ -126,7 +126,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
               });
               resolve();
             }).catch(error => {
-              this.$scope.observer.emit("Error", error);
+              globalObserver.emit("Error", error);
             });
           } else {
             resolve();

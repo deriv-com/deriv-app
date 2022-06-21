@@ -12,7 +12,7 @@ const MenuLinks = () => (
         {config.reports.visible && <a className="url-cashier-deposit header__menu-links-item" href={config.cashier.url}>
             <span>
                 <img id="cashier_icon" className="header__icon-text" src="image/deriv/ic-cashier.svg" />
-                {config.reports.label}
+                {config.cashier.label}
             </span>
         </a>}
     </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
-import IconWithNoteInline from '../icon-with-note-inline';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 import { isDesktop, isMobile, getPropertyValue, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -240,9 +240,12 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                             'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. '
                                                         )}
                                                     >
-                                                        <IconWithNoteInline
+                                                        <InlineNoteWithIcon
                                                             icon='IcAlertWarning'
-                                                            message='Do not share tokens with the Admin scope with unauthorised parties.'
+                                                            message={localize(
+                                                                'Do not share tokens with the Admin scope with unauthorised parties.'
+                                                            )}
+                                                            title={localize('Note')}
                                                         />
                                                     </ApiTokenCard>
                                                 </div>

@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 
 const paymentMethodConfig = {
-    advcash: {
+    AdvCash: {
         icon: 'IcOtherPaymentMethod',
         paragraphs: [
             localize(
@@ -12,14 +12,14 @@ const paymentMethodConfig = {
         title: 'AdvCash',
         documents_required: 1,
     },
-    astropay: {
+    AstroPay: {
         icon: 'IcOtherPaymentMethod',
         paragraphs: [localize('Upload screenshots from the "personal details" page and the "account" page')],
         input_label: localize('Account Number'),
         title: 'AstroPay',
         documents_required: 2,
     },
-    beyonic: {
+    Beyonic: {
         icon: 'IcBeyonic',
         paragraphs: [
             localize(
@@ -30,7 +30,7 @@ const paymentMethodConfig = {
         title: 'Beyonic',
         documents_required: 1,
     },
-    boleto: {
+    'Boleto (D24 Voucher)': {
         icon: 'IcOtherPaymentMethod',
         paragraphs: [
             localize('Upload your bank statement that shows your name and account details for the transaction.'),
@@ -39,7 +39,7 @@ const paymentMethodConfig = {
         title: 'Boleto (D24 Voucher)',
         documents_required: 1,
     },
-    visa: {
+    VISA: {
         icon: 'IcStockVisa',
         paragraphs: [
             localize(
@@ -50,7 +50,7 @@ const paymentMethodConfig = {
         title: 'Credit / Debit Card',
         documents_required: 1,
     },
-    mastercard: {
+    MasterCard: {
         icon: 'IcStockMasterCard',
         paragraphs: [
             localize(
@@ -61,21 +61,21 @@ const paymentMethodConfig = {
         title: 'Credit / Debit Card',
         documents_required: 1,
     },
-    pix: {
+    PIX: {
         icon: 'IcOtherPaymentMethod',
         paragraphs: [localize('Upload a screenshot of your bank details for the bank linked to Pix')],
         input_label: localize('Account Number'),
         title: 'PIX',
         documents_required: 1,
     },
-    paylivre: {
+    PayLivre: {
         icon: 'IcCashierPayLivreLight',
         paragraphs: [localize('Upload a screenshot of your profile page')],
         input_label: localize('Email Address'),
         title: 'Paylivre',
         documents_required: 1,
     },
-    skrill: {
+    Skrill: {
         icon: 'IcWalletSkrillLight',
         paragraphs: [
             localize(
@@ -86,7 +86,7 @@ const paymentMethodConfig = {
         title: 'Skrill',
         documents_required: 1,
     },
-    neteller: {
+    NETeller: {
         icon: 'IcWalletNeteller',
         paragraphs: [
             localize(
@@ -97,7 +97,7 @@ const paymentMethodConfig = {
         title: 'NETeller',
         documents_required: 1,
     },
-    onlinenaira: {
+    OnlineNaira: {
         icon: 'IcOnlineNaira',
         paragraphs: [
             localize('Upload the following documents:'),
@@ -108,7 +108,7 @@ const paymentMethodConfig = {
         title: 'OnlineNaira',
         documents_required: 2,
     },
-    webmoney: {
+    WebMoney: {
         icon: 'IcWalletWebmoney',
         paragraphs: [
             localize(
@@ -119,14 +119,14 @@ const paymentMethodConfig = {
         title: 'Webmoney',
         documents_required: 1,
     },
-    zingpay: {
+    ZingPay: {
         icon: 'IcZingpay',
         paragraphs: [localize('Upload your Zingpay bank statement showing your name and bank account number.')],
         input_label: localize('Bank Account Number'),
         title: 'ZingPay',
         documents_required: 1,
     },
-    sticpay: {
+    SticPay: {
         icon: 'IcWalletSticpay',
         paragraphs: [localize('Upload a screenshot of your "Personal details". It should show your name and email')],
         input_label: localize('Account Number'),
@@ -142,7 +142,7 @@ const paymentMethodConfig = {
         title: 'Jeton',
         documents_required: 1,
     },
-    airtm: {
+    AirTM: {
         // Get proper details for this.
         icon: 'IcOtherPaymentMethod',
         paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
@@ -150,7 +150,7 @@ const paymentMethodConfig = {
         title: 'AirTM',
         documents_required: 1,
     },
-    creditdebitcard: {
+    credit_debit_card: {
         icon: 'IcCreditCard',
         paragraphs: [
             localize(
@@ -161,7 +161,7 @@ const paymentMethodConfig = {
         title: 'Credit / Debit Card',
         documents_required: 2,
     },
-    ewallet: {
+    e_wallet: {
         icon: 'IcEwallet',
         paragraphs: [
             localize(
@@ -172,7 +172,7 @@ const paymentMethodConfig = {
         title: 'E-wallet',
         documents_required: 1,
     },
-    bankwire: {
+    bank_wire: {
         icon: 'IcBankTransfer',
         paragraphs: [localize('Upload your bank statement showing your name and bank account number.')],
         input_label: localize('Bank Account Number'),
@@ -181,553 +181,553 @@ const paymentMethodConfig = {
     },
     other: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: '[Payment Method Name]',
         documents_required: 1,
     },
-    altneteller: {
+    altNETeller: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'altNETeller',
         documents_required: 1,
     },
-    altneteller2: {
+    altNETeller2: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'altNETeller2',
         documents_required: 1,
     },
-    altskrill: {
+    altSkrill: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'altSkrill',
         documents_required: 1,
     },
-    altskrill2: {
+    altSkrill2: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'altSkrill2',
         documents_required: 1,
     },
-    astropayew: {
+    AstroPayEW: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'AstroPayEW',
         documents_required: 1,
     },
-    awepaybt: {
+    AWEPayBT: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'AWEPayBT',
         documents_required: 1,
     },
-    baloto: {
+    Baloto: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Baloto',
         documents_required: 1,
     },
-    bancoazteca: {
+    'Banco Azteca': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco Azteca',
         documents_required: 1,
     },
-    bancobci: {
+    'Banco BCI': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco BCI',
         documents_required: 1,
     },
-    bancoguayaquil: {
+    'Banco Guayaquil': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco Guayaquil',
         documents_required: 1,
     },
-    banconacional: {
+    'Banco Nacional': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco Nacional',
         documents_required: 1,
     },
-    bancopichincha: {
+    'Banco Pichincha': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco Pichincha',
         documents_required: 1,
     },
-    bancowalmartacuenta: {
+    'Banco Walmart - aCuenta': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco Walmart - aCuenta',
         documents_required: 1,
     },
-    bbvabancomer: {
+    'BBVA Bancomer': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BBVA Bancomer',
         documents_required: 1,
     },
-    bbvacontinental: {
+    'BBVA Continental': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BBVA Continental',
         documents_required: 1,
     },
-    bch: {
+    BCH: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BCH',
         documents_required: 1,
     },
-    beyonicat: {
+    BeyonicAT: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BeyonicAT',
         documents_required: 1,
     },
-    beyonicbt: {
+    BeyonicBT: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BeyonicBT',
         documents_required: 1,
     },
-    beyonicmt: {
+    BeyonicMT: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BeyonicMT',
         documents_required: 1,
     },
-    btc: {
+    BTC: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'BTC',
         documents_required: 1,
     },
-    chipper: {
+    Chipper: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Chipper',
         documents_required: 1,
     },
-    circlek: {
+    'Circle K': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Circle K',
         documents_required: 1,
     },
-    d24bankdeposit: {
+    D24BankDeposit: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'D24BankDeposit',
         documents_required: 1,
     },
-    d24banktransfer: {
+    D24BankTransfer: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'D24BankTransfer',
         documents_required: 1,
     },
-    d24voucher: {
+    D24Voucher: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'D24Voucher',
         documents_required: 1,
     },
-    dinersclub: {
+    DinersClub: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'DinersClub',
         documents_required: 1,
     },
-    directbankingnga: {
+    DirectBankingNGA: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'DirectBankingNGA',
         documents_required: 1,
     },
-    discover: {
+    Discover: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Discover',
         documents_required: 1,
     },
-    dragonphbt: {
+    DragonPhBT: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'DragonPhBT',
         documents_required: 1,
     },
-    dragontechindiamobile: {
+    DragonTechIndiaMobile: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'DragonTechIndiaMobile',
         documents_required: 1,
     },
-    efecty: {
+    Efecty: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Efecty',
         documents_required: 1,
     },
-    electron: {
+    Electron: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Electron',
         documents_required: 1,
     },
-    eth: {
+    ETH: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'ETH',
         documents_required: 1,
     },
-    exito: {
+    Exito: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Exito',
         documents_required: 1,
     },
-    expresslider: {
+    'Express Lider': {
         icon: 'IcOtherPaymentMethod',
         paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
         input_label: null,
         title: 'Express Lider',
         documents_required: 1,
     },
-    fasapay: {
+    FasaPay: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'FasaPay',
         documents_required: 1,
     },
     help2pay: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'help2pay',
         documents_required: 1,
     },
-    hsbc: {
+    HSBC: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'HSBC',
         documents_required: 1,
     },
-    imps: {
+    IMPS: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'IMPS',
         documents_required: 1,
     },
-    interbank: {
+    Interbank: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Interbank',
         documents_required: 1,
     },
-    jetonwl: {
+    JetonWL: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'JetonWL',
         documents_required: 1,
     },
-    khipu: {
+    Khipu: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Khipu',
         documents_required: 1,
     },
-    ltc: {
+    LTC: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'LTC',
         documents_required: 1,
     },
-    mach: {
+    Mach: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Mach',
         documents_required: 1,
     },
-    maestro: {
+    Maestro: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Maestro',
         documents_required: 1,
     },
-    micomisariato: {
+    'Mi Comisariato': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Mi Comisariato',
         documents_required: 1,
     },
-    mifinity: {
+    MiFinity: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'MiFinity',
         documents_required: 1,
     },
-    multicaja: {
+    Multicaja: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Multicaja',
         documents_required: 1,
     },
-    netbanking: {
+    Netbanking: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Netbanking',
         documents_required: 1,
     },
-    nganluong: {
+    NganLuong: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'NganLuong',
         documents_required: 1,
     },
-    onepay: {
+    OnePay: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'OnePay',
         documents_required: 1,
     },
-    onevoucher: {
+    OneVoucher: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'OneVoucher',
         documents_required: 1,
     },
-    openpay: {
+    OpenPay: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'OpenPay',
         documents_required: 1,
     },
-    oxxo: {
+    OXXO: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'OXXO',
         documents_required: 1,
     },
-    pagoefectivo: {
+    PagoEfectivo: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PagoEfectivo',
         documents_required: 1,
     },
-    payfutnetbanking: {
+    PayFutNetBanking: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PayFutNetBanking',
         documents_required: 1,
     },
-    payrtransfer: {
+    PayRTransfer: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PayRTransfer',
         documents_required: 1,
     },
     paysafe: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'paysafe',
         documents_required: 1,
     },
-    paytrust: {
+    PayTrust: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PayTrust',
         documents_required: 1,
     },
-    perfectm: {
+    PerfectM: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PerfectM',
         documents_required: 1,
     },
-    pichinchamivecino: {
+    'Pichincha Mi Vecino': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Pichincha Mi Vecino',
         documents_required: 1,
     },
-    promptpayth: {
+    PromptPayTH: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PromptPayTH',
         documents_required: 1,
     },
-    pse: {
+    PSE: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'PSE',
         documents_required: 1,
     },
-    rapipago: {
+    Rapipago: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Rapipago',
         documents_required: 1,
     },
-    redactiva: {
+    'Red Activa': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Red Activa',
         documents_required: 1,
     },
-    santander: {
+    Santander: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Santander',
         documents_required: 1,
     },
-    scotiabank: {
+    Scotiabank: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Scotiabank',
         documents_required: 1,
     },
-    skrill1tap: {
+    Skrill1Tap: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Skrill1Tap',
         documents_required: 1,
     },
-    solidpaywave: {
+    SolidPayWave: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'SolidPayWave',
         documents_required: 1,
     },
-    spei: {
+    SPEI: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'SPEI',
         documents_required: 1,
     },
-    thunderxpay: {
+    ThunderXpay: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'ThunderXpay',
         documents_required: 1,
     },
-    upi: {
+    UPI: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'UPI',
         documents_required: 1,
     },
-    verve: {
+    Verve: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Verve',
         documents_required: 1,
     },
-    webpay: {
+    WebPay: {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'WebPay',
         documents_required: 1,
     },
-    westernunionpanama: {
+    'Western Union Panama': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Western Union Panama',
         documents_required: 1,
     },
-    bancodecrdito: {
+    'Banco de CrÃ©dito': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Banco de CrÃ©dito',
         documents_required: 1,
     },
-    pagofcil: {
+    'Pago FÃ¡cil': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: 'Pago FÃ¡cil',
         documents_required: 1,
     },
-    eleven: {
+    '7 Eleven': {
         icon: 'IcOtherPaymentMethod',
-        paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
+        paragraphs: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: '7 Eleven',
         documents_required: 1,

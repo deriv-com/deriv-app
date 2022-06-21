@@ -15,7 +15,7 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
     return (
         <div className='da-api-token__clipboard-wrapper'>
             <Text as='p' color='prominent ' size='xs' line_height='m'>
-                {should_show_token ? token : '•'.repeat(22)}
+                {should_show_token ? token : '• '.repeat(15)}
             </Text>
             <ApiTokenClipboard
                 className='da-api-token__clipboard'

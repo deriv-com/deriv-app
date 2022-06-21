@@ -30,13 +30,11 @@ export const ProofOfOwnership = ({ account_status }) => {
             if (error) {
                 throw new Error(error);
             }
-            if (formRef.current.errors.length > 0 || formValues.some(i => i.files.length === 0)) {
+            if (formRef.current.errors.length > 0) {
                 // Only upload if no errors and a file has been attached
                 return;
             }
-            if (formValues.some(i => i.files.length > 0)) {
-                setFormState({ ...form_state, ...{ is_btn_loading: true } });
-            }
+            setFormState({ ...form_state, ...{ is_btn_loading: true } });
             formValues.forEach(async values => {
                 if (values.files.length > 0) {
                     const files = values.files.flatMap(f => f.file);
@@ -60,12 +58,12 @@ export const ProofOfOwnership = ({ account_status }) => {
                         if (response.warning) {
                             // eslint-disable-next-line no-console
                             console.warn(response);
+                        } else {
+                            location.reload();
                         }
                     });
                 }
             });
-            location.reload();
-            setFormState({ ...form_state, ...{ is_btn_loading: false } });
         } catch (err) {
             // eslint-disable-next-line no-console
             console.warn(err);

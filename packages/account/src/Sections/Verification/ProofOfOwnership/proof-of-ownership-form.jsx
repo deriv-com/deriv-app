@@ -15,39 +15,47 @@ const getScrollOffset = (itemsCount = 0) => {
     if (itemsCount <= 2) return '0px';
     return '80px';
 };
-const validateFields = values => {
-    const errors = {};
-    errors.data = [];
-    values.data.map((element, index) => {
-        element.files.forEach((file, i) => {
-            if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
-                errors.data[index] = {};
-                errors.data[index].files = [];
-                errors.data[index].files[i] = {
-                    file: localize(
-                        "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
-                    ),
-                };
-            }
-            if (file?.file?.size / 1024 > 8000) {
-                errors.data[index] = {};
-                errors.data[index].files = [];
-                errors.data[index].files[i] = {
-                    file: localize('That file is too big (only up to 8MB allowed). Please upload another file.'),
-                };
-            }
-        });
-    });
-    return errors;
-};
 const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
     const initValues = {};
+    const [isDisabled, setIsDisabled] = React.useState(true);
     initValues.data = cards.map(item => {
         return { id: item.id, files: [], identifier: item.payment_method_identifier };
     });
+    const validateFields = values => {
+        const errors = {};
+        errors.data = [];
+        let fileUploaded = false;
+        values.data.map((element, index) => {
+            element.files.forEach((file, i) => {
+                fileUploaded = file?.file !== null;
+                if (fileUploaded) {
+                    if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
+                        errors.data[index] = {};
+                        errors.data[index].files = [];
+                        errors.data[index].files[i] = {
+                            file: localize(
+                                "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
+                            ),
+                        };
+                    }
+                    if (file?.file?.size / 1024 > 8000) {
+                        errors.data[index] = {};
+                        errors.data[index].files = [];
+                        errors.data[index].files[i] = {
+                            file: localize(
+                                'That file is too big (only up to 8MB allowed). Please upload another file.'
+                            ),
+                        };
+                    }
+                }
+            });
+        });
+        setIsDisabled(!fileUploaded || errors?.data?.length > 0);
+        return errors;
+    };
     return (
         <Formik initialValues={initValues} validate={validateFields} innerRef={formRef}>
-            {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
+            {({ values, errors, handleChange, handleBlur, setFieldValue, validateField }) => (
                 <form className='proof-of-ownership' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={getScrollOffset(cards.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
@@ -70,6 +78,7 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
                                                 values={values}
                                                 card={card}
                                                 setFieldValue={setFieldValue}
+                                                validateField={validateField}
                                             />
                                         </div>
                                     );
@@ -82,10 +91,7 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}
-                            is_disabled={(() => {
-                                const emptyFiles = values.data.some(item => !item?.files?.length > 0);
-                                return emptyFiles || errors?.data?.length > 0;
-                            })()}
+                            is_disabled={isDisabled}
                             data-testid={'submit-button'}
                             has_effect
                             text={localize('Submit')}

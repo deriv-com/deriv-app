@@ -4,7 +4,17 @@ import { Input, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 
-const ExpandedCard = ({ cardDetails, handleChange, handleBlur, identifier, values, setFieldValue, index, error }) => {
+const ExpandedCard = ({
+    cardDetails,
+    handleChange,
+    handleBlur,
+    identifier,
+    values,
+    setFieldValue,
+    index,
+    error,
+    validateField,
+}) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
     const controlsToShow = [...Array(cardDetails.documents_required).keys()];
     const handleUploadedFile = (name, file) => {
@@ -96,6 +106,7 @@ const ExpandedCard = ({ cardDetails, handleChange, handleBlur, identifier, value
                                         className='proof-of-ownership__card-open-inputs-photo'
                                         name={`data[${index}].files[${i}].file`}
                                         error={error?.files[i]?.file}
+                                        validateField={validateField}
                                     />
                                 </div>
                             </>

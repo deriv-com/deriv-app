@@ -2465,5 +2465,11 @@ $MIN_HEIGHT_FLOATING: calc(
 .organise {
     grid-column: 2;
 }
+.stack-top {
+    z-index: 12;
+}
+.remove-element {
+    display: none;
+}
 
 /* stylelint-enable */

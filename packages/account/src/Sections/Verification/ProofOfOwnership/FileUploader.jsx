@@ -1,18 +1,30 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { Button, Input } from '@deriv/components';
+import { Button, Input, Icon } from '@deriv/components';
 
-const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error }) => {
+const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error, validateField }) => {
     // Create a reference to the hidden file input element
     const hiddenFileInput = React.useRef(null);
+    const [showButton, setShowButton] = React.useState(true);
 
-    const handleClick = () => {
+    const handleClick = e => {
+        e.stopPropagation();
         hiddenFileInput.current.click();
     };
 
     const handleChange = event => {
+        event.stopPropagation();
         const fileUploaded = event.target.files[0];
         handleFile(name, fileUploaded);
+        setShowButton(!showButton);
+    };
+    const handleIconClick = e => {
+        e.stopPropagation();
+        setShowButton(!showButton);
+        e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
+        e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
+        handleFile(name, null);
+        validateField('files');
     };
     return (
         <div className={`file-uploader ${className}`}>
@@ -37,9 +49,18 @@ const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error
                 type={'text'}
                 tabIndex={'-1'}
                 error={error}
+                trailing_icon={
+                    <Icon
+                        onClick={handleIconClick}
+                        icon='IcCross'
+                        color='black'
+                        height='100%'
+                        className={`stack-top ${showButton ? 'remove-element' : ''}`}
+                    />
+                }
             />
             <Button
-                className='proof-of-ownership__card-open-inputs-photo-btn'
+                className={`proof-of-ownership__card-open-inputs-photo-btn ${showButton ? '' : 'remove-element'}`}
                 text={localize('Browse')}
                 onClick={handleClick}
                 primary

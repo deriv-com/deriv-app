@@ -5,7 +5,7 @@ import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
 
-const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error }) => {
+const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error, validateField }) => {
     const onClick = e => {
         e.preventDefault();
         setIsOpen(!is_open);
@@ -30,25 +30,13 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         >
             <div className='proof-of-ownership__card-item' onClick={onClick}>
                 <Icon
-                    icon={
-                        paymentMethodConfig[
-                            card.payment_method
-                                .replace(/(^\d)|[^a-zA-Z\d\s:]/gi, '')
-                                .replace(/\s/g, '')
-                                .toLowerCase()
-                        ]?.icon || paymentMethodConfig.other.icon
-                    }
+                    icon={paymentMethodConfig[card.payment_method]?.icon || paymentMethodConfig.other.icon}
                     className='proof-of-ownership__card-item-logo'
                     width={64}
                     height={58}
                 />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {paymentMethodConfig[
-                        card?.payment_method
-                            .replace(/(^\d)|[^a-zA-Z\d\s:]/gi, '')
-                            .replace(/\s/g, '')
-                            .toLowerCase()
-                    ]?.title || 'Payment method'}
+                    {card?.payment_method || 'Payment method'}
                 </Text>
                 <Button
                     id='proof-of-ownership'
@@ -61,14 +49,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
             </div>
             {is_open && (
                 <ExpandedCard
-                    cardDetails={
-                        paymentMethodConfig[
-                            card.payment_method
-                                .replace(/(^\d)|[^a-zA-Z\d\s:]/gi, '')
-                                .replace(/\s/g, '')
-                                .toLowerCase()
-                        ] ?? paymentMethodConfig.other
-                    }
+                    cardDetails={paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other}
                     identifier={card.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
@@ -76,6 +57,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
                     setFieldValue={setFieldValue}
                     index={index}
                     error={error}
+                    validateField={validateField}
                 />
             )}
         </div>

@@ -5,7 +5,7 @@ import { Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ApiTokenClipboard from './api-token-clipboard.jsx';
 
-const ApiTokenTableRowTokenCell = ({ token }) => {
+const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
     const [should_show_token, setShouldShowToken] = React.useState(false);
 
     const toggleTokenVisibility = () => {
@@ -23,6 +23,7 @@ const ApiTokenTableRowTokenCell = ({ token }) => {
                 popover_props={{ relative_render: false, zIndex: 9999 }}
                 success_message={localize('Token copied!')}
                 text_copy={token}
+                scopes={scopes}
             />
             <Popover
                 alignment='bottom'
@@ -44,6 +45,7 @@ const ApiTokenTableRowTokenCell = ({ token }) => {
 
 ApiTokenTableRowTokenCell.propTypes = {
     token: PropTypes.string.isRequired,
+    scopes: PropTypes.array.isRequired,
 };
 
 export default ApiTokenTableRowTokenCell;

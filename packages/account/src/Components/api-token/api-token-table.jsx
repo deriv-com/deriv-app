@@ -57,7 +57,7 @@ const ApiTokenTable = () => {
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                 <Localize i18n_default_text='Token' />
                             </Text>
-                            <ApiTokenTableRowTokenCell token={token.token} />
+                            <ApiTokenTableRowTokenCell token={token.token} scopes={token.scopes} />
                         </div>
                         <div>
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>

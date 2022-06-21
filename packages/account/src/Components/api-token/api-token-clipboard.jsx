@@ -30,6 +30,7 @@ const WarningDialogMessage = () => (
 );
 
 const ApiTokenClipboard = ({
+    scopes,
     text_copy,
     info_message,
     icon,
@@ -44,6 +45,7 @@ const ApiTokenClipboard = ({
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
     let timeout_clipboard = null;
+    const has_admin_scope = scopes.includes('Admin');
 
     const toggleDialogVisibility = event => {
         setIsVisible(!is_visible);
@@ -112,7 +114,7 @@ const ApiTokenClipboard = ({
                         icon={icon || 'IcClipboard'}
                         custom_color='var(--text-prominent)'
                         className={classNames('dc-clipboard', className)}
-                        onClick={toggleDialogVisibility}
+                        onClick={has_admin_scope ? toggleDialogVisibility : onClick}
                         onMouseEnter={togglePopupvisibility}
                         onMouseLeave={togglePopupvisibility}
                         size={14}
@@ -124,6 +126,7 @@ const ApiTokenClipboard = ({
     );
 };
 ApiTokenClipboard.propTypes = {
+    scopes: PropTypes.array.isRequired,
     text_copy: PropTypes.string,
     icon: PropTypes.string,
     info_message: PropTypes.string,

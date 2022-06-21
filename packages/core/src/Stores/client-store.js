@@ -1318,7 +1318,7 @@ export default class ClientStore extends BaseStore {
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
-            WS.newMT5API().then(res => (this.newMT5List = res));
+            WS.newMT5API().then(this.responseMT5TradingList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
             this.responseStatement(
@@ -2092,6 +2092,13 @@ export default class ClientStore extends BaseStore {
             });
         } else {
             this.mt5_login_list_error = response.error;
+        }
+    }
+
+    @action.bound
+    responseMT5TradingList(response) {
+        if (response) {
+            this.newMT5List = response;
         }
     }
 

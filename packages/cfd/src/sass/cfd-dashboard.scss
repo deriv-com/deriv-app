@@ -473,7 +473,7 @@
         margin-bottom: 1.6rem;
 
         &--banner {
-            position: absolute;
+            position: relative;
             transform: rotate(45deg);
             border-bottom: 1.8rem solid #85acb0;
             border-left: 1.8rem solid transparent;
@@ -831,7 +831,7 @@
     &__manage {
         display: flex;
         width: 100%;
-        margin-left: 0.6rem;
+        margin-left: 0.4rem;
         padding-top: 1.8rem;
 
         .dc-btn {

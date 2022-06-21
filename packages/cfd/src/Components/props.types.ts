@@ -28,6 +28,7 @@ export type TPasswordBoxProps = {
 export type TType = {
     category: string;
     type: string;
+    market_type: string;
     platform: string;
 };
 
@@ -80,6 +81,7 @@ export type TCFDAccountCard = {
     should_show_trade_servers?: boolean;
     toggleAccountsDialog?: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
+    newMT5List: any[];
 };
 
 export type TTradingPlatformAccounts = {

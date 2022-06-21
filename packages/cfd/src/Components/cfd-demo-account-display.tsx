@@ -103,6 +103,7 @@ const CFDDemoAccountDisplay = ({
                     type={{
                         category: 'demo',
                         type: 'synthetic',
+                        market_type: 'gaming',
                         platform,
                     }}
                     is_disabled={has_cfd_account_error || standpoint.malta}
@@ -154,6 +155,7 @@ const CFDDemoAccountDisplay = ({
                     type={{
                         category: 'demo',
                         type: 'financial',
+                        market_type: 'financial',
                         platform,
                     }}
                     existing_data={

@@ -390,6 +390,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         mt5_verification_code,
         dxtrade_verification_code,
         mt5_status_server,
+        newMT5List,
     } = props;
 
     const should_show_missing_real_account =
@@ -488,7 +489,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             )}
                                             <CFDRealAccountDisplay
                                                 is_eu={is_eu}
-                                                newMT5List={props.newMT5List}
+                                                newMT5List={newMT5List}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}

@@ -85,7 +85,6 @@ const CFDRealAccountDisplay = ({
     can_have_more_real_synthetic_mt5,
     residence,
 }: TCFDRealAccountDisplayProps) => {
-    console.log(newMT5List);
     const should_show_trade_servers =
         is_logged_in &&
         !is_eu &&
@@ -176,6 +175,7 @@ const CFDRealAccountDisplay = ({
                       return (
                           <CFDAccountCard
                               key={index}
+                              newMT5List={newMT5List}
                               has_cfd_account={has_cfd_account}
                               has_cfd_account_error={has_cfd_account_error}
                               title={localize('Synthetic')}
@@ -184,6 +184,7 @@ const CFDRealAccountDisplay = ({
                               type={{
                                   category: 'real',
                                   type: 'synthetic',
+                                  market_type: 'gaming',
                                   platform,
                               }}
                               is_logged_in={is_logged_in}
@@ -206,11 +207,13 @@ const CFDRealAccountDisplay = ({
                   <CFDAccountCard
                       key='real.synthetic'
                       has_cfd_account={has_cfd_account}
+                      newMT5List={newMT5List}
                       title={localize('Synthetic')}
                       is_disabled={isMT5AccountCardDisabled('synthetic')}
                       type={{
                           category: 'real',
                           type: 'synthetic',
+                          market_type: 'gaming',
                           platform,
                       }}
                       is_logged_in={is_logged_in}
@@ -236,11 +239,13 @@ const CFDRealAccountDisplay = ({
         <CFDAccountCard
             key='real.financial'
             has_cfd_account={has_cfd_account}
+            newMT5List={newMT5List}
             is_disabled={isMT5AccountCardDisabled('financial')}
             title={is_eu_user ? localize('CFDs') : localize('Financial')}
             type={{
                 category: 'real',
                 type: 'financial',
+                market_type: 'financial',
                 platform,
             }}
             existing_data={

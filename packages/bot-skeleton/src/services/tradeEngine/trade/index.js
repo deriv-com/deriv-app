@@ -130,19 +130,36 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                     }, 1500);
                 }
                 if (data.msg_type === 'authorize') {
-                    this.accountInfo = data;
+                    this.accountInfo = data?.authorize;
                     this.token = token;
 
                     // Only subscribe to balance in browser, not for tests.
                     if (document) {
-                        doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 })).then(r => {
-                            this.balance = Number(r.balance.balance);
+                        if (globalObserver.getState('balance_subscription_id')) {
                             resolve();
-                        });
+                        } else {
+                            doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 }))
+                                .then(({ balance }) => {
+                                    globalObserver.setState({ balance_subscription_id: balance.id });
+                                    this.balance = Number(balance.balance);
+                                    resolve();
+                                })
+                                .catch(err => {
+                                    this.$scope.observer.emit('Error', err);
+                                });
+                        }
                     } else {
                         resolve();
                     }
-                    doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }));
+                    if (!globalObserver.getState('transaction_subscription_id')) {
+                        doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }))
+                            .then(({ transaction }) => {
+                                globalObserver.setState({ transaction_subscription_id: transaction.id });
+                            })
+                            .catch(err => {
+                                this.$scope.observer.emit('Error', err);
+                            });
+                    }
                 }
             });
         });

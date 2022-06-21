@@ -4,9 +4,12 @@ import { getLanguage } from '@deriv/translations';
 
 export const generateDerivApiInstance = () => {
     const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
-    const deriv_socket = new WebSocket(socket_url);
     const deriv_api = new DerivAPIBasic({
-        connection: deriv_socket,
+        connection: new WebSocket(socket_url),
     });
     return deriv_api;
 };
+
+const api = generateDerivApiInstance();
+
+export default api;

@@ -1,9 +1,10 @@
+/* eslint-disable testing-library/no-container,testing-library/no-node-access */
 import React from 'react';
-import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
+import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

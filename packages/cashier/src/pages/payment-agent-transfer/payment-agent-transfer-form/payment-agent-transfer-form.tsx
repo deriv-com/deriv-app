@@ -1,16 +1,54 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-transfer-form.scss';
 
-const validateTransfer = (values, { balance, currency, transfer_limit }) => {
-    const errors = {};
+type TValidateTransferValueProps = {
+    amount: string | number;
+    loginid: string;
+    description: string;
+    [key: string]: string | number | undefined;
+};
+
+type TValidateTransferProps = {
+    balance: string;
+    currency: string;
+    transfer_limit: {
+        min?: string | number;
+        max?: string | number;
+    };
+};
+
+type TPaymentAgentTransferForm = {
+    amount: string;
+    balance: string;
+    currency: string;
+    description: string;
+    error: object;
+    requestTryPaymentAgentTransfer: (arg: {
+        amount: string | number;
+        currency: string;
+        description: string;
+        transfer_to: string | number;
+    }) => {
+        error?: string;
+    };
+    setErrorMessage: (error: string) => void;
+    transfer_limit: object;
+    transfer_to: string;
+};
+
+const validateTransfer = (
+    values: TValidateTransferValueProps,
+    { balance, currency, transfer_limit = {} }: TValidateTransferProps
+) => {
+    const errors: { loginid?: string | number; amount?: string; description?: string } = {};
 
     if (!values.loginid || !/^[A-Za-z]+[0-9]+$/.test(values.loginid)) {
         errors.loginid = localize('Please enter a valid client login ID.');
@@ -19,10 +57,11 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
         decimals: getDecimalPlaces(currency),
-        ...(transfer_limit.min && {
-            min: transfer_limit.min,
-            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
-        }),
+        ...(transfer_limit.min &&
+            transfer_limit.max && {
+                min: transfer_limit.min,
+                max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
+            }),
     });
 
     if (!values.amount) {
@@ -50,15 +89,18 @@ const PaymentAgentTransferForm = ({
     setErrorMessage,
     transfer_limit,
     transfer_to,
-}) => {
-    const validateTransferPassthrough = values =>
+}: TPaymentAgentTransferForm) => {
+    const validateTransferPassthrough = (values: TValidateTransferValueProps) =>
         validateTransfer(values, {
             balance,
             currency,
             transfer_limit,
         });
 
-    const onTransferPassthrough = async (values, actions) => {
+    const onTransferPassthrough = async (
+        values: TValidateTransferValueProps,
+        actions: { setSubmitting: (status: boolean) => void }
+    ) => {
         const payment_agent_transfer = await requestTryPaymentAgentTransfer({
             amount: values.amount,
             currency,
@@ -96,10 +138,10 @@ const PaymentAgentTransferForm = ({
                 {({ errors, isSubmitting, isValid, touched, handleChange }) => (
                     <Form noValidate>
                         <Field name='loginid'>
-                            {({ field }) => (
+                            {({ field }: { [k: string]: string | object }) => (
                                 <Input
-                                    {...field}
-                                    onChange={e => {
+                                    {...(field as object)}
+                                    onChange={(e: object) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -114,10 +156,10 @@ const PaymentAgentTransferForm = ({
                             )}
                         </Field>
                         <Field name='amount'>
-                            {({ field }) => (
+                            {({ field }: { [k: string]: string | object }) => (
                                 <Input
-                                    {...field}
-                                    onChange={e => {
+                                    {...(field as object)}
+                                    onChange={(e: object) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -142,10 +184,10 @@ const PaymentAgentTransferForm = ({
                             )}
                         </Field>
                         <Field name='description'>
-                            {({ field }) => (
+                            {({ field }: { [k: string]: string | object }) => (
                                 <Input
-                                    {...field}
-                                    onChange={e => {
+                                    {...(field as object)}
+                                    onChange={(e: object) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -179,19 +221,7 @@ const PaymentAgentTransferForm = ({
     );
 };
 
-PaymentAgentTransferForm.propTypes = {
-    amount: PropTypes.string,
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    description: PropTypes.string,
-    error: PropTypes.object,
-    requestTryPaymentAgentTransfer: PropTypes.func,
-    setErrorMessage: PropTypes.func,
-    transfer_limit: PropTypes.object,
-    transfer_to: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     balance: client.balance,
     currency: client.currency,
     amount: modules.cashier.payment_agent_transfer.confirm.amount,

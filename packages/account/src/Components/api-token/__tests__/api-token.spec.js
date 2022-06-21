@@ -204,7 +204,7 @@ describe('<ApiToken/>', () => {
             {
                 display_name: 'Second test token',
                 last_used: '',
-                scopes: ['Read', 'Payments', 'rade'],
+                scopes: ['Read', 'Payments', 'Trade'],
                 token: 'GHjaD2f4gDg5gSE',
                 valid_for_ip: '',
             },

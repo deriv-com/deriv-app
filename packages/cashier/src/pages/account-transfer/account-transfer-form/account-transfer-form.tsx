@@ -52,9 +52,9 @@ type TAccountTransferBullet = {
 
 type TAccountTransferNote = {
     allowed_transfers_count: {
-        internal: boolean | undefined;
-        mt5: boolean | undefined;
-        dxtrade: boolean | undefined;
+        internal: number | undefined;
+        mt5: number | undefined;
+        dxtrade: number | undefined;
     };
     currency: string;
     is_crypto_to_crypto_transfer: boolean;
@@ -69,16 +69,16 @@ type TAccountTransferForm = {
     account_limits: {
         daily_transfers?: {
             mt5?: {
-                allowed?: boolean;
-                available?: boolean;
+                allowed?: number;
+                available?: number;
             };
             dxtrade?: {
-                allowed?: boolean;
-                available?: boolean;
+                allowed?: number;
+                available?: number;
             };
             internal?: {
-                allowed?: boolean;
-                available?: boolean;
+                allowed?: number;
+                available?: number;
             };
         };
     };
@@ -333,7 +333,7 @@ const AccountTransferNote = ({
     );
 };
 
-let remaining_transfers: boolean | undefined;
+let remaining_transfers: number | undefined;
 let accounts_from: Array<TAccountOption['account']> = [];
 let mt_accounts_from: Array<TAccountOption['account']> = [];
 let dxtrade_accounts_from: Array<TAccountOption['account']> = [];

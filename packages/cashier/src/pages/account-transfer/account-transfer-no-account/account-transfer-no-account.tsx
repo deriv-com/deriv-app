@@ -3,9 +3,15 @@ import { Icon, Button, Text } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import './account-transfer-no-account.scss';
 
-const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) => (
+type TAccountTransferNoAccount = {
+    toggleAccountsDialog: boolean;
+    is_dxtrade_allowed: boolean;
+};
+
+const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }: TAccountTransferNoAccount) => (
     <div className='cashier__wrapper cashier__no-balance'>
         <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
         <Text as='h2' weight='bold' align='center'>
@@ -33,7 +39,7 @@ const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }) 
     </div>
 );
 
-export default connect(({ ui, client }) => ({
+export default connect(({ ui, client }: RootStore) => ({
     toggleAccountsDialog: ui.toggleAccountsDialog,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(AccountTransferNoAccount);

@@ -15,6 +15,7 @@ describe('<AccountTransferReceipt />', () => {
     const mockProps = loginid_value => {
         const history = createBrowserHistory();
         const resetAccountTransfer = jest.fn();
+        const switchAccount = jest.fn();
         const selected_to = {
             balance: '0.01194762',
             currency: 'BTC',
@@ -36,7 +37,7 @@ describe('<AccountTransferReceipt />', () => {
         const loginid = loginid_value;
         const receipt = { amount_transferred: '100' };
 
-        return { history, loginid, receipt, selected_from, selected_to, resetAccountTransfer };
+        return { history, loginid, receipt, selected_from, selected_to, resetAccountTransfer, switchAccount };
     };
 
     it('should show "Your funds have been transferred" message, "View transaction details" and "Make a new transfer" buttons', () => {

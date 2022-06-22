@@ -599,7 +599,7 @@ const AccountTransferForm = ({
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
-                                        data-testid='test-id'
+                                        testid='account-transfer-form__drop-down'
                                         is_large
                                         label={localize('From')}
                                         list={from_accounts}
@@ -623,7 +623,7 @@ const AccountTransferForm = ({
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
                                         classNameHint='account-transfer-form__hint'
-                                        data-testid='account-transfer-form__drop-down--to-dropdown'
+                                        testid='account-transfer-form__drop-down--to-dropdown'
                                         is_large
                                         label={localize('To')}
                                         list={to_accounts}
@@ -641,7 +641,7 @@ const AccountTransferForm = ({
                                     />
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (
-                                    <Field name='amount' validate={validateAmount} data-testid='amount-input'>
+                                    <Field name='amount' validate={validateAmount}>
                                         {({ field }: { [k: string]: string | object }) => (
                                             <Input
                                                 {...(field as object)}

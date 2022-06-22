@@ -12,9 +12,10 @@ import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import Verification from './verification/verification.jsx';
+import AdvertiserPage from './advertiser-page/advertiser-page';
 
 const AppContent = () => {
-    const { general_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -30,6 +31,10 @@ const AppContent = () => {
 
     if (general_store.props.should_show_verification) {
         return <Verification should_wrap />;
+    }
+
+    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
+        return <AdvertiserPage />;
     }
 
     return (

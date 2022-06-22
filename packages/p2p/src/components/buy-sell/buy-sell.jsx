@@ -3,7 +3,6 @@ import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
 import { buy_sell } from 'Constants/buy-sell';
@@ -46,14 +45,6 @@ const BuySell = () => {
             <React.Fragment>
                 <PageReturn onClick={buy_sell_store.hideVerification} page_title={localize('Verification')} />
                 <Verification />
-            </React.Fragment>
-        );
-    }
-
-    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return (
-            <React.Fragment>
-                <AdvertiserPage />
             </React.Fragment>
         );
     }

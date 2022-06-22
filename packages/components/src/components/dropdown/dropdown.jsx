@@ -197,7 +197,7 @@ const Dropdown = ({
     no_border,
     placeholder,
     suffix_icon,
-    testid,
+    test_id,
     onChange,
     value,
 }) => {
@@ -362,7 +362,7 @@ const Dropdown = ({
                 readOnly='readonly'
                 type='hidden'
                 value={value || 0}
-                data-testid={testid}
+                data-testid={test_id}
             />
             <div ref={wrapper_ref} className={containerClassName()}>
                 <div
@@ -475,7 +475,7 @@ Dropdown.propTypes = {
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
     suffix_icon: PropTypes.string,
-    testid: PropTypes.string,
+    test_id: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 

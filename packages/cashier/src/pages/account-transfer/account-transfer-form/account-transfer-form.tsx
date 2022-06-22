@@ -599,7 +599,7 @@ const AccountTransferForm = ({
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
-                                        testid='account-transfer-form__drop-down'
+                                        test_id='account-transfer-form__drop-down'
                                         is_large
                                         label={localize('From')}
                                         list={from_accounts}
@@ -623,7 +623,7 @@ const AccountTransferForm = ({
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
                                         classNameHint='account-transfer-form__hint'
-                                        testid='account-transfer-form__drop-down--to-dropdown'
+                                        test_id='account-transfer-form__drop-down--to-dropdown'
                                         is_large
                                         label={localize('To')}
                                         list={to_accounts}

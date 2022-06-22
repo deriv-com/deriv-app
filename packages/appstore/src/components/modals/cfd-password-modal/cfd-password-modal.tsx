@@ -1,14 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik } from 'formik';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { FormSubmitButton, Modal, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { isMobile, validLength, validPassword, getErrorMessages, getLegalEntityName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './cfd-password-modal.scss';
 
-const CFDPasswordForm = ({ ...props }) => (
+type TCFDPasswordFormProps = {
+    validatePassword: any;
+    submitMt5Password: any;
+    is_real_financial_stp: boolean;
+    closeModal: any;
+    form_error?: any;
+    account_title: any;
+};
+
+const CFDPasswordForm = ({ ...props }: TCFDPasswordFormProps) => (
     <Formik
         initialValues={{
             password: '',
@@ -65,7 +75,12 @@ const CFDPasswordForm = ({ ...props }) => (
                         </Text>
                         {props.is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                                <Localize
+                                    i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).'
+                                    values={{
+                                        legal_entity_name: getLegalEntityName('fx'),
+                                    }}
+                                />
                             </div>
                         )}
                     </div>

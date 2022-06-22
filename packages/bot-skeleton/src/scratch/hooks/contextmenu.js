@@ -245,18 +245,20 @@ Blockly.ContextMenu.blockDisableOption = function (block) {
  */
 Blockly.ContextMenu.blockEnableOption = function (block) {
     const checkAreSomeDisabled = (block_, disabledArr = []) => {
-        if (block_.restricted_parents?.some(restricted_parent => block_.isDescendantOf(restricted_parent))) {
-            disabledArr.push(block_.disabled);
-            return block_.nextConnection?.targetConnection
-                ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
-                : disabledArr.includes(true);
+        if (block_.restricted_parents && !block_.restricted_parents?.includes(block_.getTopParent()?.type)) {
+            return false;
         }
-        return false;
+        disabledArr.push(block_.disabled);
+        return block_.nextConnection?.targetConnection
+            ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
+            : disabledArr.includes(true);
     };
     const enabled = checkAreSomeDisabled(block);
 
     const enableBlocksRecursively = block_ => {
-        block_.setDisabled(false);
+        if (!block_.restricted_parents || block_.restricted_parents.includes(block_.getTopParent()?.type)) {
+            block_.setDisabled(false);
+        }
         if (block_.nextConnection?.targetConnection) {
             enableBlocksRecursively(block_.nextConnection?.targetConnection.sourceBlock_);
         }

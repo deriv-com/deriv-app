@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+    @observable has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -581,8 +582,8 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
             ? eu_shortcode_regex.test(financial_shortcode) ||
-            eu_shortcode_regex.test(gaming_shortcode) ||
-            eu_shortcode_regex.test(mt_gaming_shortcode)
+                  eu_shortcode_regex.test(gaming_shortcode) ||
+                  eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
     }
 
@@ -1029,21 +1030,18 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+
         if (is_maltainvest_account) {
             currency = form_values.currency;
             form_values.accept_risk = form_values.accept_risk || 0;
-            delete form_values.currency;
         }
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(form_values)
             : await WS.newAccountReal(form_values);
+
         if (!response.error) {
             await this.accountRealReaction(response);
-            // Set currency after account is created
-            // Maltainvest only
-            if (is_maltainvest_account) {
-                await this.setAccountCurrency(currency);
-            }
             if (is_samoa_account) {
                 await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
             }
@@ -1053,18 +1051,18 @@ export default class ClientStore extends BaseStore {
                 ...response,
                 ...(is_maltainvest_account
                     ? {
-                        new_account_maltainvest: {
-                            ...response.new_account_maltainvest,
-                            currency,
-                        },
-                    }
+                          new_account_maltainvest: {
+                              ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
                     : {}),
                 ...(is_samoa_account
                     ? {
-                        new_account_samoa: {
-                            currency,
-                        },
-                    }
+                          new_account_samoa: {
+                              currency,
+                          },
+                      }
                     : {}),
             });
         }
@@ -1229,9 +1227,23 @@ export default class ClientStore extends BaseStore {
         const search = window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
+        const code_param = search_params?.get('code');
+        const action_param = search_params?.get('action');
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+
+        if (search) {
+            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                }, 0);
+            });
+        }
+
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1273,7 +1285,7 @@ export default class ClientStore extends BaseStore {
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
                 const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    search_params?.get('action')
+                    action_param
                 );
 
                 if (has_action) {
@@ -1315,7 +1327,7 @@ export default class ClientStore extends BaseStore {
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
-
+            await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2241,6 +2253,26 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
+        });
+    }
+
+    @action.bound
+    setTwoFAStatus(status) {
+        this.has_enabled_two_fa = status;
+    }
+
+    @action.bound
+    getTwoFAStatus() {
+        return new Promise(resolve => {
+            WS.authorized.accountSecurity({ account_security: 1, totp_action: 'status' }).then(response => {
+                if (response.error) {
+                    resolve(response.error);
+                } else {
+                    const is_enabled = !!getPropertyValue(response, ['account_security', 'totp', 'is_enabled']);
+                    this.setTwoFAStatus(is_enabled);
+                    resolve(is_enabled);
+                }
+            });
         });
     }
 }

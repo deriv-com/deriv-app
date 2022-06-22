@@ -1,9 +1,9 @@
 import React from 'react';
-import IdvSubmitComplete from 'Components/poi-idv-submit-complete';
-import IdvExpired from 'Components/poi-idv-expired';
-import IdvVerified from 'Components/poi-idv-verified';
-import IdvRejected from 'Components/poi-idv-rejected';
-import IdvNoSubmissions from 'Components/poi-idv-limited';
+import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
+import IdvExpired from 'Components/poi/idv-status/idv-expired';
+import IdvVerified from 'Components/poi/idv-status/idv-verified';
+import IdvRejected from 'Components/poi/idv-status/idv-rejected';
+import IdvNoSubmissions from 'Components/poi/idv-status/idv-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {

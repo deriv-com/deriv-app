@@ -23,14 +23,15 @@ import {
     MultiStep,
 } from '@deriv/components';
 import {
+    CFD_PLATFORMS,
+    getCFDPlatformLabel,
+    getErrorMessages,
+    getLegalEntityName,
+    isDesktop,
     isMobile,
     routes,
     validLength,
     validPassword,
-    getErrorMessages,
-    isDesktop,
-    getCFDPlatformLabel,
-    CFD_PLATFORMS,
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -72,11 +73,13 @@ type TCFDPasswordFormReusedProps = {
 type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;
     onSubmit: TOnSubmitPassword;
+    is_real_financial_stp: boolean;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;
     submitPassword: TOnSubmitPassword;
+    is_real_financial_stp: boolean;
 };
 
 type TMultiStepRefProps = {
@@ -282,7 +285,14 @@ const handlePasswordInputChange = (
     });
 };
 
-const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }: TCFDCreatePasswordProps) => {
+const CreatePassword = ({
+    password,
+    platform,
+    validatePassword,
+    onSubmit,
+    error_message,
+    is_real_financial_stp,
+}: TCFDCreatePasswordProps) => {
     return (
         <Formik
             initialValues={{
@@ -352,6 +362,11 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                                 )}
                             </PasswordMeter>
                         </div>
+                        {is_real_financial_stp && (
+                            <div className='dc-modal__container_cfd-password-modal__description'>
+                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
+                            </div>
+                        )}
                         <FormSubmitButton
                             is_disabled={!values.password || Object.keys(errors).length > 0}
                             is_loading={isSubmitting}
@@ -373,6 +388,7 @@ const CFDCreatePasswordForm = ({
     error_message,
     validatePassword,
     submitPassword,
+    is_real_financial_stp,
 }: TCFDCreatePasswordFormProps) => {
     const multi_step_ref = React.useRef<TMultiStepRefProps>();
     const [password, setPassword] = React.useState('');
@@ -395,6 +411,7 @@ const CFDCreatePasswordForm = ({
                     error_message={error_message}
                     validatePassword={validatePassword}
                     onSubmit={onSubmit}
+                    is_real_financial_stp={is_real_financial_stp}
                 />
             ),
         },
@@ -478,6 +495,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                 validatePassword={props.validatePassword}
                 submitPassword={props.submitPassword}
                 has_mt5_account={props.has_mt5_account}
+                is_real_financial_stp={props.is_real_financial_stp}
             />
         );
     }
@@ -534,14 +552,14 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                             />
                         </div>
 
-                        {props.is_real_financial_stp && !props.is_bvi && (
+                        {props.is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
-                            </div>
-                        )}
-                        {props.is_real_financial_stp && props.is_bvi && (
-                            <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
+                                <Localize
+                                    i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).'
+                                    values={{
+                                        legal_entity_name: getLegalEntityName('fx'),
+                                    }}
+                                />
                             </div>
                         )}
                         {props.error_type === 'PasswordError' && (

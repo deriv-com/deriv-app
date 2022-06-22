@@ -51,7 +51,6 @@ const PaymentMethodsList = () => {
                                     <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
                                         {`${payment_methods_list_method.display_name}s`}
                                     </Text>
-
                                     <div className='payment-methods-list__list-body'>
                                         {payment_methods_list.map((each_payment_method, each_payment_method_key) => (
                                             <PaymentMethodCard
@@ -112,6 +111,7 @@ const PaymentMethodsList = () => {
                                                 key={each_payment_method_key}
                                                 payment_method={each_payment_method}
                                                 small={true}
+                                                show_payment_method_name={false}
                                             />
                                         ))}
                                     </ThemedScrollbars>

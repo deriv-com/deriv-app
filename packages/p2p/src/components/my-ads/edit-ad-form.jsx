@@ -109,9 +109,12 @@ const EditAdForm = () => {
                 selected_methods.push(pm[0]);
                 my_ads_store.payment_method_ids.push(pm[0]);
             });
-            if (my_ads_store.required_ad_type !== rate_type) {
-                setIsPaymentMethodTouched(!!selected_methods.length);
-            }
+        }
+        if (my_ads_store.required_ad_type !== rate_type) {
+            const is_payment_method_available =
+                !!Object.keys({ ...payment_method_details }).length ||
+                !!Object.values({ ...payment_method_names }).length;
+            setIsPaymentMethodTouched(is_payment_method_available);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

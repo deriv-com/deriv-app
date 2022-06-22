@@ -2,6 +2,7 @@ import ActiveSymbols from './activeSymbols';
 import config from '../../common/const';
 import { getObjectValue } from '../../../common/utils/tools';
 import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 let parsed_asset_index;
 
@@ -48,7 +49,11 @@ export default class _Symbol {
                     this.api.send({ asset_index: 1 }).then(({ asset_index }) => {
                         parsed_asset_index = parseAssetIndex(asset_index);
                         resolve();
+                    }).catch(err => {
+                        globalObserver.emit('Error', err);
                     });
+                }).catch(err => {
+                    globalObserver.emit('Error', err);
                 });
             };
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex

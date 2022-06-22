@@ -128,12 +128,12 @@ export const getContractTypesConfig = symbol => ({
 
 export const getContractCategoriesConfig = () => ({
     [localize('Multipliers')]: ['multiplier'],
-    [localize('Accumulators')]: ['accumulator'],
     [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
     [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
     [localize('Ins & Outs')]: ['end', 'stay'],
     [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
+    [localize('Accumulators')]: ['accumulator'],
 });
 
 export const unsupported_contract_types_list = [

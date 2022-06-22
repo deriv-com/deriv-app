@@ -123,6 +123,10 @@ type TCFDDashboardProps = {
         real: boolean;
         demo: boolean;
     };
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
     has_real_account: boolean;
     NotificationMessages: ({ ...props }) => JSX.Element;
     platform: 'mt5' | 'dxtrade';

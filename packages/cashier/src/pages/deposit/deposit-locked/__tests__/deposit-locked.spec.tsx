@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-node-access,testing-library/no-container */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
@@ -136,8 +135,8 @@ describe('<DepositLocked />', () => {
                 onClick,
             },
         ];
-        const { container } = render(<Checklist className='cashier-locked__checklist' items={items} />);
-        const btn = container.querySelector('.dc-checklist__item-status--action');
+        render(<Checklist className='cashier-locked__checklist' items={items} />);
+        const btn = screen.getByTestId('dc-checklist__item-status--action');
 
         fireEvent.click(btn);
         expect(onClick).toHaveBeenCalled();

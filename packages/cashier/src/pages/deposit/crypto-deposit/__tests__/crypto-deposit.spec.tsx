@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoDeposit from '../crypto-deposit';
@@ -23,9 +22,14 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('qrcode.react', () => () => <div>QRCode</div>);
-
-jest.mock('Components/recent-transaction', () => () => <div>RecentTransactions</div>);
+jest.mock('qrcode.react', () => {
+    const QrCode = () => <div>QRCode</div>;
+    return QrCode;
+});
+jest.mock('Components/recent-transaction', () => {
+    const RecentTransactions = () => <div>RecentTransactions</div>;
+    return RecentTransactions;
+});
 
 describe('<CryptoDeposit />', () => {
     let history;

@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-container,testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
@@ -36,9 +35,9 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should render the component', () => {
-        const { container } = render(<PaymentAgentTransferForm />);
+        render(<PaymentAgentTransferForm />);
 
-        expect(container.firstChild).toHaveClass('payment-agent-transfer-form__container');
+        expect(screen.getByTestId('payment-agent-transfer-form__container')).toBeInTheDocument();
     });
 
     it('should show an error if client login id or amount is not provided', async () => {
@@ -60,7 +59,7 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should show an error if the login id is not valid', async () => {
-        const { container } = render(
+        render(
             <PaymentAgentTransferForm
                 balance={balance}
                 setErrorMessage={setErrorMessage}
@@ -68,7 +67,7 @@ describe('<PaymentAgentTransferForm />', () => {
             />
         );
 
-        const loginid_field = container.querySelector('input[name=loginid]');
+        const loginid_field = screen.getByTestId('payment-agent-transfer-form__input__loginid');
         const submit_button = screen.getByRole('button');
 
         fireEvent.change(loginid_field, { target: { value: 'abc' } });
@@ -80,7 +79,7 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should show an error if amount to be transferred is greater than the balance', async () => {
-        const { container } = render(
+        render(
             <PaymentAgentTransferForm
                 balance={balance}
                 setErrorMessage={setErrorMessage}
@@ -88,7 +87,7 @@ describe('<PaymentAgentTransferForm />', () => {
             />
         );
 
-        const amount_field = container.querySelector('input[name=amount]');
+        const amount_field = screen.getByTestId('payment-agent-transfer-form__input__amount');
         const submit_button = screen.getByRole('button');
 
         fireEvent.change(amount_field, { target: { value: '90' } });
@@ -100,7 +99,7 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should show an error if description is not valid', async () => {
-        const { container } = render(
+        render(
             <PaymentAgentTransferForm
                 balance={balance}
                 setErrorMessage={setErrorMessage}
@@ -108,7 +107,7 @@ describe('<PaymentAgentTransferForm />', () => {
             />
         );
 
-        const description_field = container.querySelector('[name=description]');
+        const description_field = screen.getByTestId('payment-agent-transfer-form__input__description');
         const submit_button = screen.getByRole('button');
 
         fireEvent.change(description_field, { target: { value: '%' } });

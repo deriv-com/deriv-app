@@ -40,7 +40,10 @@ type TPaymentAgentTransferForm = {
         error?: string;
     };
     setErrorMessage: (error: string) => void;
-    transfer_limit: object;
+    transfer_limit: {
+        min?: string | number;
+        max?: string | number;
+    };
     transfer_to: string;
 };
 
@@ -113,7 +116,10 @@ const PaymentAgentTransferForm = ({
     };
 
     return (
-        <div className='cashier__wrapper payment-agent-transfer-form__container'>
+        <div
+            className='cashier__wrapper payment-agent-transfer-form__container'
+            data-testid='payment-agent-transfer-form__container'
+        >
             <DesktopWrapper>
                 <Text
                     as='h2'
@@ -146,6 +152,7 @@ const PaymentAgentTransferForm = ({
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input'
+                                    data-testid='payment-agent-transfer-form__input__loginid'
                                     type='text'
                                     label={localize('Client login ID')}
                                     error={touched.loginid && errors.loginid}
@@ -164,6 +171,7 @@ const PaymentAgentTransferForm = ({
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input dc-input--no-placeholder'
+                                    data-testid='payment-agent-transfer-form__input__amount'
                                     type='text'
                                     label={localize('Amount')}
                                     error={touched.amount && errors.amount}
@@ -192,6 +200,7 @@ const PaymentAgentTransferForm = ({
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input-area'
+                                    data-testid='payment-agent-transfer-form__input__description'
                                     type='textarea'
                                     label={localize('Description')}
                                     error={errors.description}

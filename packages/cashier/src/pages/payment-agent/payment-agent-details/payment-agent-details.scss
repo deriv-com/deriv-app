@@ -1,35 +1,23 @@
 .payment-agent-details {
     &__contact {
         text-decoration: none;
-        color: var(--brand-red-coral);
-        font-weight: bold;
-        font-size: var(--text-size-xs);
+        text-align: left;
+        align-self: flex-start;
+        color: var(--general);
+        font-size: var(--text-size-xxs);
         @include mobile {
             padding-left: 0;
+        }
+
+        &-wrapper {
+            display: grid;
         }
     }
     &__accordion-content {
         &-line {
-            margin-bottom: 8px;
             display: flex;
+            align-items: center;
             flex-direction: row;
-
-            &:first-child {
-                & .payment-agent-details__contact {
-                    color: var(--text-prominent);
-                }
-            }
-            &:last-child {
-                margin-bottom: 0;
-            }
-            @include mobile {
-                overflow: hidden;
-                text-overflow: ellipsis;
-
-                &:not(:first-child) {
-                    color: var(--brand-red-coral);
-                }
-            }
         }
         &-icon {
             vertical-align: middle;

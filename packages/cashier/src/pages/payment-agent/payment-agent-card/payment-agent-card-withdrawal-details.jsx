@@ -32,7 +32,6 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
 };
 
 const PaymentAgentCardWithdrawalDetails = ({
-    amount,
     balance,
     currency,
     error,
@@ -83,8 +82,7 @@ const PaymentAgentCardWithdrawalDetails = ({
             </Text>
             <Formik
                 initialValues={{
-                    // in case coming back from confirmation screen, populate the recent data to be edited
-                    amount: amount || '',
+                    amount: '',
                 }}
                 validate={validateWithdrawalPassthrough}
                 onSubmit={onWithdrawalPassthrough}
@@ -159,7 +157,6 @@ const PaymentAgentCardWithdrawalDetails = ({
 };
 
 PaymentAgentCardWithdrawalDetails.propTypes = {
-    amount: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
     error: PropTypes.object,
@@ -172,7 +169,6 @@ PaymentAgentCardWithdrawalDetails.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    amount: modules.cashier.payment_agent.confirm.amount,
     balance: client.balance,
     currency: client.currency,
     error: modules.cashier.payment_agent.error,

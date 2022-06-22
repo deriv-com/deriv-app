@@ -5,7 +5,9 @@
             grid-template-columns: 1fr;
             grid-gap: 0.8rem;
         }
-
+        &-hide-tabs .dc-tabs__list {
+            display: none;
+        }
         &-section {
             border: 1px solid var(--border-normal);
             flex: 1;

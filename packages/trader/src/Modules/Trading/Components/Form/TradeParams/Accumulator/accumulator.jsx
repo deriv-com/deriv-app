@@ -17,7 +17,17 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
     }, []);
 
     return (
-        <Fieldset className='trade-container__fieldset' header={localize('Accumulator')} is_center>
+        <Fieldset
+            className='trade-container__fieldset'
+            header={localize('Accumulator')}
+            is_center
+            header_tooltip={localize(
+                'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed ± 0.1% of the previous tick.',
+                {
+                    growth_rate: growth_rate * 100,
+                }
+            )}
+        >
             <NumberSelector
                 arr_arr_numbers={arr_arr_numbers}
                 name='growth_rate'

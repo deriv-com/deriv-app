@@ -47,7 +47,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         return {
             tick_size_barrier: 0.000409,
             max_duration_ticks: 10,
-            max_payout: '20000.00',
+            max_payout: 0,
             error_code: undefined,
             error_field: undefined,
             growth_rate: store.growth_rate,

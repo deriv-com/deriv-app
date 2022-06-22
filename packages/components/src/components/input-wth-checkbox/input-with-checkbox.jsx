@@ -11,6 +11,7 @@ const InputWithCheckbox = ({
     classNameInlinePrefix,
     classNameInput,
     className,
+    info_component,
     currency,
     current_focus,
     defaultChecked,
@@ -92,34 +93,37 @@ const InputWithCheckbox = ({
     };
 
     const input = (
-        <InputField
-            className={className}
-            classNameInlinePrefix={classNameInlinePrefix}
-            classNameInput={classNameInput}
-            currency={currency}
-            current_focus={current_focus}
-            error_messages={error_messages}
-            error_message_alignment={error_message_alignment}
-            is_error_tooltip_hidden={isMobile()}
-            is_disabled={is_disabled ? 'disabled' : undefined}
-            fractional_digits={getDecimalPlaces(currency)}
-            id={`dc_${name}_input`}
-            inline_prefix={is_single_currency ? currency : null}
-            is_autocomplete_disabled
-            is_float={getDecimalPlaces(currency) > 0}
-            is_hj_whitelisted
-            is_incrementable
-            is_negative_disabled={is_negative_disabled}
-            max_length={10}
-            max_value={max_value}
-            name={name}
-            onChange={onChange}
-            onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
-            type='number'
-            inputmode='decimal'
-            value={value}
-            setCurrentFocus={setCurrentFocus}
-        />
+        <>
+            <InputField
+                className={className}
+                classNameInlinePrefix={classNameInlinePrefix}
+                classNameInput={classNameInput}
+                currency={currency}
+                current_focus={current_focus}
+                error_messages={error_messages}
+                error_message_alignment={error_message_alignment}
+                is_error_tooltip_hidden={isMobile()}
+                is_disabled={is_disabled ? 'disabled' : undefined}
+                fractional_digits={getDecimalPlaces(currency)}
+                id={`dc_${name}_input`}
+                inline_prefix={is_single_currency ? currency : null}
+                is_autocomplete_disabled
+                is_float={getDecimalPlaces(currency) > 0}
+                is_hj_whitelisted
+                is_incrementable
+                is_negative_disabled={is_negative_disabled}
+                max_length={10}
+                max_value={max_value}
+                name={name}
+                onChange={onChange}
+                onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
+                type='number'
+                inputmode='decimal'
+                value={value}
+                setCurrentFocus={setCurrentFocus}
+            />
+            {info_component}
+        </>
     );
 
     const checkbox = (
@@ -183,6 +187,7 @@ InputWithCheckbox.propTypes = {
     current_focus: PropTypes.string,
     defaultChecked: PropTypes.bool,
     error_messages: PropTypes.array,
+    info_component: PropTypes.node,
     is_negative_disabled: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     is_input_hidden: PropTypes.bool,

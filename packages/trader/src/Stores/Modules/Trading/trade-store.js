@@ -33,7 +33,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
+import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 
@@ -117,6 +117,7 @@ export default class TradeStore extends BaseStore {
     @observable accumulator_rates_list = [];
     @observable growth_rate;
     @observable max_duration_ticks = 0;
+    @observable max_payout = 0;
     @observable tick_size_barrier;
 
     // Multiplier trade params
@@ -578,15 +579,7 @@ export default class TradeStore extends BaseStore {
         }
         const { contract_type, barrier, barrier2, high_barrier, low_barrier } = proposal_info;
 
-        const is_accumulator = contract_type === 'ACC';
-        // show barriers for Accumulators only when a contract is open
-        if (
-            isBarrierSupported(contract_type) &&
-            (!is_accumulator ||
-                this.root_store.modules.contract_trade.contracts.some(
-                    c => c.contract_info.contract_type === 'ACC' && c.contract_info.status === 'open'
-                ))
-        ) {
+        if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(
@@ -595,8 +588,6 @@ export default class TradeStore extends BaseStore {
                 this.onChartBarrierChange,
                 {
                     color,
-                    line_style: is_accumulator && BARRIER_LINE_STYLES.DOTTED,
-                    not_draggable: is_accumulator,
                 }
             );
             // this.main_barrier.updateBarrierShade(true, contract_type);
@@ -965,16 +956,19 @@ export default class TradeStore extends BaseStore {
         }
 
         if (this.is_accumulator && this.proposal_info && this.proposal_info.ACC) {
-            const { tick_size_barrier, max_duration_ticks } = this.proposal_info.ACC;
+            const { tick_size_barrier, max_duration_ticks, max_payout } = this.proposal_info.ACC;
             if (tick_size_barrier) {
                 this.tick_size_barrier = tick_size_barrier;
             }
             if (max_duration_ticks) {
                 this.max_duration_ticks = max_duration_ticks;
             }
+            if (max_payout) {
+                this.max_payout = max_payout;
+            }
         }
 
-        if (!this.main_barrier || this.main_barrier.shade) {
+        if (!this.is_accumulator && (!this.main_barrier || this.main_barrier.shade)) {
             this.setMainBarrier(response.echo_req);
         }
 

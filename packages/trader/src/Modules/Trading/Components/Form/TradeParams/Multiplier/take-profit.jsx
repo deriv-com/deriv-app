@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
+import MaxPayoutInfo from '../Accumulator/max-payout-info.jsx';
 
 const TakeProfit = ({
     addToast,
@@ -12,6 +13,7 @@ const TakeProfit = ({
     currency,
     current_focus,
     has_take_profit,
+    is_accumulator,
     is_single_currency,
     onChange,
     onChangeMultiple,
@@ -39,6 +41,9 @@ const TakeProfit = ({
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}
+                info_component={
+                    is_accumulator && <MaxPayoutInfo className='trade-container__accumulators-trade-info--max-payout' />
+                }
                 currency={currency}
                 current_focus={current_focus}
                 defaultChecked={has_take_profit}
@@ -51,7 +56,7 @@ const TakeProfit = ({
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
                 tooltip_label={localize(
-                    'Your contract is closed automatically when your profit is more than or equals to this amount.'
+                    'Your contract is closed automatically when your profit is more than or equal to this amount.'
                 )}
                 tooltip_alignment='left'
                 error_message_alignment='left'
@@ -65,6 +70,7 @@ TakeProfit.propTypes = {
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     has_take_profit: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeMultiple: PropTypes.func,
@@ -78,6 +84,7 @@ export default connect(({ modules, client, ui }, props) => ({
     currency: modules.trade.currency,
     current_focus: ui.current_focus,
     has_take_profit: props.has_take_profit ?? modules.trade.has_take_profit,
+    is_accumulator: modules.trade.is_accumulator,
     is_single_currency: client.is_single_currency,
     onChange: props.onChange ?? modules.trade.onChange,
     onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,

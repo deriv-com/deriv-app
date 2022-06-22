@@ -24,7 +24,6 @@ import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
 const InputSize = ({
-    field,
     onChangeInputValue,
     onChangeInputValueName,
     handleChange,
@@ -37,32 +36,41 @@ const InputSize = ({
     touched,
     is_mobile,
 }) => {
+    const ZIndexObject = Object.freeze({
+        0: 'quick-strategy__size',
+        1: 'alembert-unit',
+        2: 'oscar-unit',
+    });
     return (
-        <Input
-            {...field}
-            className='quick-strategy__input'
-            label_className='quick-strategy__input-label'
-            field_className='quick-strategy__input-field'
-            type='text'
-            error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
-            label={getSizeText(active_index)}
-            onChange={e => {
-                handleChange(e);
-                onChangeInputValue(onChangeInputValueName, e);
-            }}
-            onFocus={e => setCurrentFocus(e.currentTarget.name)}
-            onBlur={() => setCurrentFocus(null)}
-            placeholder='2'
-            trailing_icon={
-                <Popover
-                    alignment={is_mobile ? 'top' : 'bottom'}
-                    message={getSizeDesc(active_index)}
-                    zIndex={popover_zindex.QUICK_STRATEGY}
-                >
-                    <Icon icon='IcInfoOutline' />
-                </Popover>
-            }
-        />
+        <Field name={ZIndexObject[active_index]}>
+            {({ field }) => (
+                <Input
+                    {...field}
+                    className='quick-strategy__input'
+                    label_className='quick-strategy__input-label'
+                    field_className='quick-strategy__input-field'
+                    type='text'
+                    error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                    label={getSizeText(active_index)}
+                    onChange={e => {
+                        handleChange(e);
+                        onChangeInputValue(onChangeInputValueName, e);
+                    }}
+                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                    onBlur={() => setCurrentFocus(null)}
+                    placeholder='2'
+                    trailing_icon={
+                        <Popover
+                            alignment={is_mobile ? 'top' : 'bottom'}
+                            message={getSizeDesc(active_index)}
+                            zIndex={popover_zindex.QUICK_STRATEGY}
+                        >
+                            <Icon icon='IcInfoOutline' />
+                        </Popover>
+                    }
+                />
+            )}
+        </Field>
     );
 };
 const QuickStrategyForm = ({
@@ -366,65 +374,53 @@ const QuickStrategyForm = ({
                                 })}
                             >
                                 {active_index === 0 && (
-                                    <Field name='quick-strategy__size'>
-                                        {({ field }) => (
-                                            <InputSize
-                                                field={field}
-                                                onChangeInputValue={onChangeInputValue}
-                                                onChangeInputValueName='input_size'
-                                                handleChange={handleChange}
-                                                active_index={active_index}
-                                                getSizeDesc={getSizeDesc}
-                                                getSizeText={getSizeText}
-                                                initial_errors={initial_errors}
-                                                errors={errors}
-                                                setCurrentFocus={setCurrentFocus}
-                                                touched={touched}
-                                                is_mobile={is_mobile}
-                                            />
-                                        )}
-                                    </Field>
+                                    <InputSize
+                                        onChangeInputValue={onChangeInputValue}
+                                        onChangeInputValueName='input_size'
+                                        handleChange={handleChange}
+                                        active_index={active_index}
+                                        getSizeDesc={getSizeDesc}
+                                        getSizeText={getSizeText}
+                                        initial_errors={initial_errors}
+                                        errors={errors}
+                                        setCurrentFocus={setCurrentFocus}
+                                        touched={touched}
+                                        is_mobile={is_mobile}
+                                    />
                                 )}
+
                                 {active_index === 1 && (
-                                    <Field name='alembert-unit'>
-                                        {({ field }) => (
-                                            <InputSize
-                                                field={field}
-                                                onChangeInputValue={onChangeInputValue}
-                                                onChangeInputValueName='input_alembert_unit'
-                                                handleChange={handleChange}
-                                                active_index={active_index}
-                                                getSizeDesc={getSizeDesc}
-                                                getSizeText={getSizeText}
-                                                initial_errors={initial_errors}
-                                                errors={errors}
-                                                setCurrentFocus={setCurrentFocus}
-                                                touched={touched}
-                                                is_mobile={is_mobile}
-                                            />
-                                        )}
-                                    </Field>
+                                    <InputSize
+                                        onChangeInputValue={onChangeInputValue}
+                                        onChangeInputValueName='input_alembert_unit'
+                                        handleChange={handleChange}
+                                        active_index={active_index}
+                                        getSizeDesc={getSizeDesc}
+                                        getSizeText={getSizeText}
+                                        initial_errors={initial_errors}
+                                        errors={errors}
+                                        setCurrentFocus={setCurrentFocus}
+                                        touched={touched}
+                                        is_mobile={is_mobile}
+                                    />
                                 )}
+
                                 {active_index === 2 && (
-                                    <Field name='oscar-unit'>
-                                        {({ field }) => (
-                                            <InputSize
-                                                field={field}
-                                                onChangeInputValue={onChangeInputValue}
-                                                onChangeInputValueName='input_oscar_unit'
-                                                handleChange={handleChange}
-                                                active_index={active_index}
-                                                getSizeDesc={getSizeDesc}
-                                                getSizeText={getSizeText}
-                                                initial_errors={initial_errors}
-                                                errors={errors}
-                                                setCurrentFocus={setCurrentFocus}
-                                                touched={touched}
-                                                is_mobile={is_mobile}
-                                            />
-                                        )}
-                                    </Field>
+                                    <InputSize
+                                        onChangeInputValue={onChangeInputValue}
+                                        onChangeInputValueName='input_oscar_unit'
+                                        handleChange={handleChange}
+                                        active_index={active_index}
+                                        getSizeDesc={getSizeDesc}
+                                        getSizeText={getSizeText}
+                                        initial_errors={initial_errors}
+                                        errors={errors}
+                                        setCurrentFocus={setCurrentFocus}
+                                        touched={touched}
+                                        is_mobile={is_mobile}
+                                    />
                                 )}
+
                                 <Field name='quick-strategy__profit'>
                                     {({ field }) => (
                                         <Input

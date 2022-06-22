@@ -195,11 +195,6 @@ const CFDAccountCard = ({
         type.type === 'synthetic' &&
         (existing_data as DetailsOfEachMT5Loginid)?.server_info;
 
-    const is_real_synthetic_account: boolean =
-        type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.region;
-    const get_server_environment = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment;
-
     const ref = React.useRef<HTMLDivElement | null>(null);
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
     const button_ref = React.useRef<HTMLDivElement | null>(null);
@@ -225,34 +220,6 @@ const CFDAccountCard = ({
         };
     }, [onHover, existing_data]);
 
-    const getServerName: (value: TExistingData) => string = React.useCallback(server => {
-        if (server) {
-            const server_region = (server as DetailsOfEachMT5Loginid).server_info?.geolocation?.region;
-            if (server_region) {
-                return `${server_region} ${
-                    (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence === 1
-                        ? ''
-                        : (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence
-                }`;
-            }
-        }
-        return '';
-    }, []);
-
-    const createFullServerNames: () => string = () => {
-        let region_string = '';
-        let server_number = '';
-        const server_environment = get_server_environment ? get_server_environment.toLowerCase() : '';
-
-        if (is_real_synthetic_account && get_server_region) {
-            region_string = `-${get_server_region.toLowerCase()}`;
-        }
-        if (server_environment !== '' && is_real_synthetic_account) {
-            server_number = server_environment.split('server')[1];
-        }
-        return `${type.category}-${type.type}${region_string}${server_number}`;
-    };
-
     const handleClickSwitchAccount: () => void = () => {
         toggleShouldShowRealAccountsList?.(true);
         toggleAccountsDialog?.(true);
@@ -273,7 +240,6 @@ const CFDAccountCard = ({
             <div
                 className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
-                id={createFullServerNames()}
             >
                 {has_popular_banner && (
                     <div className='cfd-account-card__banner'>
@@ -283,11 +249,6 @@ const CFDAccountCard = ({
                 {has_demo_banner && (
                     <div className='cfd-account-card__banner cfd-account-card__banner--demo'>
                         <Localize i18n_default_text='DEMO' />
-                    </div>
-                )}
-                {has_server_banner && (
-                    <div className='cfd-account-card__banner cfd-account-card__banner--server'>
-                        {getServerName(existing_data)}
                     </div>
                 )}
                 <div

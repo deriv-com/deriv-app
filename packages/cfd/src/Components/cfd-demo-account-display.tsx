@@ -45,6 +45,7 @@ type TCFDDemoAccountDisplayProps = {
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
     landing_companies?: LandingCompany;
+    newMT5List: any[];
 };
 
 const CFDDemoAccountDisplay = ({
@@ -65,6 +66,7 @@ const CFDDemoAccountDisplay = ({
     has_cfd_account,
     openPasswordManager,
     residence,
+    newMT5List,
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -142,6 +144,7 @@ const CFDDemoAccountDisplay = ({
                     )}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
+                    newMT5List={newMT5List}
                 />
             )}
 
@@ -185,6 +188,7 @@ const CFDDemoAccountDisplay = ({
                     descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
                     specs={financial_specs}
                     has_banner
+                    newMT5List={newMT5List}
                 />
             )}
         </div>

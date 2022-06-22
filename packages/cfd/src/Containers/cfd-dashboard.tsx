@@ -550,6 +550,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             openPasswordManager={togglePasswordManagerModal}
                                             platform={platform}
                                             residence={residence}
+                                            newMT5List={newMT5List}
                                         />
                                     </div>
                                 )}

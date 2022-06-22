@@ -4,16 +4,16 @@ import { Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ApiTokenClipboard from './api-token-clipboard.jsx';
 
+const HiddenPasswordDots = () => (
+    <div className='da-api-token__pass-dot-container'>
+        {[...Array(15)].map((el, index) => (
+            <div key={index} className='da-api-token__pass-dot' />
+        ))}
+    </div>
+);
+
 const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
     const [should_show_token, setShouldShowToken] = React.useState(false);
-
-    const HiddenPasswordDots = () => (
-        <div className='da-api-token__pass-dot-container'>
-            {[...Array(15)].map((el, index) => (
-                <div key={index} className='da-api-token__pass-dot' />
-            ))}
-        </div>
-    );
 
     const toggleTokenVisibility = () => {
         setShouldShowToken(!should_show_token);

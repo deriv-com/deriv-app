@@ -10,15 +10,20 @@
         align-items: flex-start;
     }
 
+    & .dc-expansion-panel__header-chevron-icon {
+        flex-basis: 5%;
+    }
+
     &__description-container {
         display: flex;
         flex-direction: column;
+        flex-basis: 95%;
 
         &-icons-container {
             display: flex;
             align-items: center;
             height: 3.2rem;
-            margin-top: 2.4rem;
+            margin-top: 1.6rem;
 
             .dc-icon {
                 width: 5rem;
@@ -58,6 +63,10 @@
         padding: 0 1.6rem;
         margin-top: 3.2rem;
 
+        @include mobile {
+            padding: 0;
+        }
+
         &-header {
             margin-bottom: 1.6rem;
         }
@@ -65,16 +74,32 @@
         &__form {
             display: flex;
 
+            @include mobile {
+                flex-direction: column;
+            }
+
             .dc-input {
                 border-right: none;
                 border-top-right-radius: 0;
                 border-bottom-right-radius: 0;
                 margin-bottom: 1.8rem;
+
+                @include mobile {
+                    border: 1px solid var(--border-normal);
+                    border-top-right-radius: 0.4rem;
+                    border-bottom-right-radius: 0.4rem;
+                }
             }
 
             .dc-btn {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
+
+                @include mobile {
+                    margin-top: 1.2rem;
+                    border-top-left-radius: 0.4rem;
+                    border-bottom-left-radius: 0.4rem;
+                }
             }
         }
     }

@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Money, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { Money } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import Confirm from 'Components/confirm';
-import './payment-agent-transfer-confirm.scss';
 
 const PaymentAgentTransferConfirm = ({
     amount,
@@ -18,61 +16,35 @@ const PaymentAgentTransferConfirm = ({
     transfer_to,
     transfer_to_name,
 }) => {
-    const payment_agent_transfer_warning_messages = [
-        <Localize
-            i18n_default_text='<0>Remember</0>, it’s solely your responsibility to ensure the transfer is made to the correct account.'
-            components={[<strong key={0} />]}
-            key={0}
-        />,
-        <Localize
-            i18n_default_text='We <0>do not</0> guarantee a refund if you make a wrong transfer.'
-            components={[<strong key={0} />]}
-            key={1}
-        />,
-    ];
     return (
-        <div className='cashier__wrapper'>
-            <Icon
-                icon='IcCashierRedWarning'
-                className='payment-agent-transfer-confirm__warning-icon'
-                data_testid='dti_red_warning_icon'
-            />
-            <Text
-                as='h2'
-                color='loss-danger'
-                weight='bold'
-                align='center'
-                className='payment-agent-transfer-confirm__warning-icon__description'
-                size={isMobile() ? 'xs' : ''}
-            >
-                {localize('Check Transfer Information')}
-            </Text>
-            <Confirm
-                data={[
-                    { label: localize('Transfer from'), value: loginid, key: 'transfer_from' },
-                    {
-                        label: localize('Transfer to'),
-                        value: [transfer_to.toUpperCase(), transfer_to_name],
-                        key: 'transfer_to',
-                    },
-                    {
-                        label: localize('Amount'),
-                        value: <Money currency={currency} amount={amount} show_currency />,
-                        key: 'amount',
-                    },
-                    { label: localize('Description'), value: description, key: 'description' },
-                ]}
-                error={error}
-                is_payment_agent_transfer
-                onClickBack={() => {
-                    setIsTryTransferSuccessful(false);
-                }}
-                onClickConfirm={() => {
-                    requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
-                }}
-                warning_messages={payment_agent_transfer_warning_messages}
-            />
-        </div>
+        <Confirm
+            data={[
+                { label: localize('From account number'), value: loginid, key: 'transfer_from' },
+                {
+                    label: localize('To account number'),
+                    value: transfer_to.toUpperCase(),
+                    key: 'transfer_to',
+                },
+                {
+                    label: localize('Account holder name'),
+                    value: transfer_to_name,
+                    key: 'transfer_to',
+                },
+                {
+                    label: localize('Amount'),
+                    value: <Money currency={currency} amount={amount} show_currency />,
+                    key: 'amount',
+                },
+                { label: localize('Description'), value: description, key: 'description' },
+            ]}
+            error={error}
+            onClickBack={() => {
+                setIsTryTransferSuccessful(false);
+            }}
+            onClickConfirm={() => {
+                requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
+            }}
+        />
     );
 };
 

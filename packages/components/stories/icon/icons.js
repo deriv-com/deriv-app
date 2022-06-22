@@ -244,6 +244,7 @@ export const icons =
         'IcDrivingLicense',
         'IcEdit',
         'IcEmailFirewall',
+        'IcEmailOutlineNew',
         'IcEmailOutline',
         'IcEmailSentDashboard',
         'IcEmailSent',

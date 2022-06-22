@@ -11,7 +11,7 @@ const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
             <div>
                 <Icon icon={`Ic${icon}`} className='payment-agent-details__accordion-content-icon' color='secondary' />
             </div>
-            <div>
+            <div className='payment-agent-details__contact-wrapper'>
                 {detail.map((child, id) => (
                     <a
                         key={id}
@@ -48,14 +48,14 @@ const PaymentAgentDetails = ({ className, payment_agent_phones, payment_agent_ur
                         : payment_agent_phones}
                 </Detail>
             )}
+            {payment_agent_email && (
+                <Detail action='mailto' icon='EmailOutlineNew' is_last_child target='_blank' rel='noopener noreferrer'>
+                    {payment_agent_email}
+                </Detail>
+            )}
             {payment_agent_urls && (
                 <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
                     {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
-                </Detail>
-            )}
-            {payment_agent_email && (
-                <Detail action='mailto' icon='EmailOutline' is_last_child target='_blank' rel='noopener noreferrer'>
-                    {payment_agent_email}
                 </Detail>
             )}
         </div>

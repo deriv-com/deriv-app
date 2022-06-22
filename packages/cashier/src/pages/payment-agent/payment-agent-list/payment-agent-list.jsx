@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, Tabs, Text } from '@deriv/components';
@@ -15,6 +16,7 @@ const PaymentAgentList = ({
     is_loading,
     is_resend_clicked,
     is_payment_agent_withdraw,
+    is_try_withdraw_successful,
     payment_agent_active_tab_index,
     resend_timeout,
     resendVerificationEmail,
@@ -24,8 +26,16 @@ const PaymentAgentList = ({
     verification_code,
 }) => {
     return (
-        <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
-            <div className='payment-agent-list__instructions'>
+        <div
+            className={classNames('cashier__wrapper--align-left cashier__wrapper-padding', {
+                'cashier__wrapper-padding-top': is_try_withdraw_successful,
+            })}
+        >
+            <div
+                className={classNames('payment-agent-list__instructions', {
+                    'payment-agent-list__instructions-hide-tabs': is_try_withdraw_successful,
+                })}
+            >
                 <Tabs
                     active_index={payment_agent_active_tab_index}
                     className='tabs--desktop'
@@ -70,11 +80,9 @@ const PaymentAgentList = ({
                                     </div>
                                 ) : (
                                     (verification_code || is_payment_agent_withdraw) && (
-                                        // <PaymentAgentWithdrawForm verification_code={verification_code} />
                                         <PaymentAgentDepositWithdrawContainer verification_code={verification_code} />
                                     )
                                 )}
-                                {/* <PaymentAgentDepositWithdrawContainer verification_code={verification_code} /> */}
                             </div>
                         )}
                     </div>
@@ -90,6 +98,7 @@ PaymentAgentList.propTypes = {
     is_loading: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
     is_payment_agent_withdraw: PropTypes.bool,
+    is_try_withdraw_successful: PropTypes.bool,
     payment_agent_active_tab_index: PropTypes.number,
     resend_timeout: PropTypes.number,
     resendVerificationEmail: PropTypes.func,
@@ -104,6 +113,7 @@ export default connect(({ modules }) => ({
     is_email_sent: modules.cashier.payment_agent.verification.is_email_sent,
     is_loading: modules.cashier.general_store.is_loading,
     is_resend_clicked: modules.cashier.payment_agent.verification.is_resend_clicked,
+    is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
     payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
     resend_timeout: modules.cashier.payment_agent.verification.resend_timeout,
     resendVerificationEmail: modules.cashier.payment_agent.verification.resendVerificationEmail,

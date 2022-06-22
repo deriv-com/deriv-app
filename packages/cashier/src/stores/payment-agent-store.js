@@ -288,6 +288,7 @@ export default class PaymentAgentStore {
         this.error.setErrorMessage('');
         this.setIsWithdraw(false);
         this.setIsWithdrawSuccessful(false);
+        this.setIsTryWithdrawSuccessful(false);
         this.verification.clearVerification();
         this.setActiveTabIndex(0);
     };

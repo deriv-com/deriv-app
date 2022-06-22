@@ -13,6 +13,8 @@
         &--footer {
             bottom: 0;
             position: fixed;
+            width: 100%;
+            background-color: var(--general-main-1);
         }
     }
     &__button {
@@ -61,6 +63,10 @@
         &-horizontal {
             display: flex;
             max-width: 96vw !important;
+
+            @include mobile {
+                overflow-y: hidden;
+            }
         }
     }
 }

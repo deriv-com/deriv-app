@@ -20,6 +20,10 @@
     }
     &--bottom-label-active {
         margin-bottom: unset;
+
+        &.dc-input--error {
+            margin-bottom: calc(5rem - 12px);
+        }
     }
     &__bottom-label {
         margin-left: 1.2rem;

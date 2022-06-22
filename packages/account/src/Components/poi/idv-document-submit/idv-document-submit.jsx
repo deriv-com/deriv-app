@@ -100,7 +100,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         return errors;
     };
 
-    const submitHandler = (values, { setSubmitting, setStatus }) => {
+    const submitHandler = (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
         const submit_data = {
@@ -113,7 +113,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         WS.send(submit_data).then(response => {
             setSubmitting(false);
             if (response.error) {
-                setStatus(response.error);
+                setErrors({ error_message: response.error.message });
                 return;
             }
             handleViewComplete();
@@ -221,7 +221,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                 getExampleFormat(values.document_type.example_format)
                                             }
                                             disabled={is_input_disable}
-                                            error={touched.document_number && errors.document_number}
+                                            error={
+                                                (touched.document_number && errors.document_number) ||
+                                                errors.error_message
+                                            }
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}

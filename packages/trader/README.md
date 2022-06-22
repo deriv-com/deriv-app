@@ -12,12 +12,14 @@ This repository contains the static HTML, Javascript, CSS, and images content of
     -   [Clean root and deploy to it](#clean-root-and-deploy-to-it)
     -   [Deploy to test folder](#deploy-to-test-folder)
     -   [Preview on your local machine](#preview-on-your-local-machine)
--   [Miscellaneous](#Miscellaneous)
+-   [Miscellaneous](#miscellaneous)
 -   [Selenium tests](#selenium-tests)
 
 ## Other documents
 
 -   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+
+<br />
 
 ## Installation
 
@@ -25,29 +27,37 @@ In order to work on your own version of the Deriv Javascript and CSS, please **f
 
 You will also need to install the following on your development machine:
 
--   Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
+-   Node.js (14.17.3 is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
 -   Go to project root, then run `npm install`
 
 ### Use a custom domain
 
 In order to use your custom domain, please put it in a file named `CNAME` inside `scripts` folder of your local clone of deriv-app.
 
+<br />
+
 ## How to work with this project
+
+In deriv-app you don't need to deploy your app manually to create a PR and test link, it will automatically create by Vercel. but if you need that you can follow these steps:
+
+<br />
 
 ### Deploy to your gh-pages for the first time
 
-1.  Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
-    Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL.
+1.  Generate your API token [here](https://app.deriv.com/account/api-token). You can authenticate your applications with this token.
 
-        If you're using a custom domain, replace the github URLs above with your domain and remove the `deriv-app` base path.
+2.  Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
+    First authenticate your app using the Api token which you created in the previous step then Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL.
 
-2.  In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
+            If you're using a custom domain, replace the github URLs above with your domain and remove the `deriv-app` base path.
 
-    -   **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/config.js`
+3.  In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
 
-3.  Set `NODE_ENV` to `development` with `export NODE_ENV=development`
+    - **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/config.js`
 
-4.  Run `npm run deploy:clean`
+4.  Set `NODE_ENV` to `development` with `export NODE_ENV=development`
+
+5.  Run `npm run deploy:clean`
 
 ### Deploy to the root of the gh-pages
 

@@ -64,7 +64,7 @@ const PoaFileUploaderContainer = ({ is_description_enabled = true, getSocket, on
     return (
         <div className='account__file-uploader-section'>
             {is_description_enabled && (
-                <ul className='account__file-uploader-list'>
+                <ul className='account__file-uploader-list' data-testid='dt_file_uploader_container'>
                     <li className='account__file-uploader-box'>
                         {is_appstore ? (
                             <Icon icon='IcPoaFileEightMb' className='account__file-uploader-icon' size={24} />

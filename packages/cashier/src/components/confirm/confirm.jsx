@@ -65,7 +65,7 @@ const Confirm = ({ data, error, onClickBack, onClickConfirm }) => {
                 weight='bold'
                 align='center'
                 className='confirm__warning-icon__description'
-                size={isMobile() ? 'xs' : ''}
+                size={isMobile() ? 'xs' : 's'}
             >
                 {localize('Funds transfer information')}
             </Text>

@@ -33,6 +33,7 @@ export default () => {
                     if (!symbol) return;
 
                     this.pollForContracts(symbol).then(contracts => {
+                        globalObserver.setState({ symbol }); // initialize the symbol in global observer if available
                         this.updateBarrierOffsetBlocks(contracts, false, false); // false false to maintain user's values on import
                         this.updatePredictionBlocks(contracts);
                         this.updateDurationLists(contracts, false, false); // false false to maintain user's values on import
@@ -117,7 +118,7 @@ export default () => {
                     // Register an event and use as a lock to avoid spamming API
                     const event = `contractsLoaded.${symbol}`;
                     if (!globalObserver.isRegistered(event)) {
-                        globalObserver.register(event, () => {});
+                        globalObserver.register(event, () => { });
                         getContractsAvailableForSymbol(symbol).then(contracts => {
                             globalObserver.unregisterAll(event); // Release the lock
                             resolveContracts(contracts);

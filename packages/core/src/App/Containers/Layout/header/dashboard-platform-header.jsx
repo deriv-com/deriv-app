@@ -110,6 +110,7 @@ const DashboardPlatformHeader = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_pending_proof_of_ownership,
     is_account_transfer_visible,
     is_settings_modal_on,
     is_virtual,
@@ -150,6 +151,7 @@ const DashboardPlatformHeader = ({
                         is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         is_onramp_tab_visible={is_onramp_tab_visible}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        is_pending_proof_of_ownership={is_pending_proof_of_ownership}
                         is_account_transfer_visible={is_account_transfer_visible}
                         is_virtual={is_virtual}
                         toggleTheme={setDarkMode}
@@ -219,6 +221,7 @@ DashboardPlatformHeader.propTypes = {
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    is_pending_proof_of_ownership: PropTypes.bool,
     is_account_transfer_visible: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -245,6 +248,7 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
+    is_pending_proof_of_ownership: client.is_pending_proof_of_ownership,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,

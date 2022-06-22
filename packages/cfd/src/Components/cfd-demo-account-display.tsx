@@ -32,7 +32,6 @@ type TCFDDemoAccountDisplayProps = {
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     isFinancialCardVisible: () => boolean;
-    isFinancialStpCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
@@ -59,7 +58,6 @@ const CFDDemoAccountDisplay = ({
     is_logged_in,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    isFinancialStpCardVisible,
     onSelectAccount,
     openAccountTransfer,
     platform,
@@ -184,55 +182,6 @@ const CFDDemoAccountDisplay = ({
                     platform={platform}
                     descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
                     specs={financial_specs}
-                    has_banner
-                />
-            )}
-            {isFinancialStpCardVisible() && (
-                <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
-                    title={localize('Financial STP')}
-                    type={{
-                        category: 'demo',
-                        type: 'financial_stp',
-                        platform,
-                    }}
-                    is_disabled={has_cfd_account_error}
-                    is_logged_in={is_logged_in}
-                    existing_data={
-                        current_list[
-                            Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.financial_stp@`)
-                            ) || ''
-                        ]
-                    }
-                    commission_message={localize('No commission')}
-                    onSelectAccount={() =>
-                        onSelectAccount({
-                            category: 'demo',
-                            type: 'financial_stp',
-                        })
-                    }
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(
-                            current_list[
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial_stp@`)
-                                ) || ''
-                            ],
-                            {
-                                category: 'demo',
-                                type: 'financial_stp',
-                            }
-                        )
-                    }
-                    descriptor={localize(
-                        'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-                    )}
-                    specs={
-                        (specifications as TSpecifications)[platform as keyof TSpecifications].demo_financial_stp_specs
-                    }
-                    platform={platform}
                     has_banner
                 />
             )}

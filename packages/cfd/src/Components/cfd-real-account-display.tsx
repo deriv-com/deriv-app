@@ -3,13 +3,11 @@ import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
-import specifications from '../Constants/cfd-specifications';
+import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
-import { TSpecifications } from '../Constants/cfd-specifications';
-import { TExistingData } from './props.types.js';
-import { TTradingPlatformAccounts } from './props.types';
+import { TExistingData, TTradingPlatformAccounts } from './props.types.js';
 
 type TStandPoint = {
     financial_company: string;
@@ -43,7 +41,6 @@ type TCFDRealAccountDisplayProps = {
     is_pending_authentication: boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
-    isFinancialStpCardVisible: () => boolean;
     landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
     openAccountTransfer: (
@@ -95,7 +92,6 @@ const CFDRealAccountDisplay = ({
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    isFinancialStpCardVisible,
     landing_companies,
     onSelectAccount,
     openAccountTransfer,
@@ -139,15 +135,7 @@ const CFDRealAccountDisplay = ({
         return false;
     }, [account_settings, residence_list, landing_companies]) as boolean;
 
-    const button_label = getRealFinancialStpBtnLbl(
-        is_fully_authenticated,
-        is_pending_authentication,
-        has_required_credentials
-    );
-
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-
-    const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
@@ -173,17 +161,6 @@ const CFDRealAccountDisplay = ({
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
-        }
-    };
-    const onSelectRealFinancialStp = () => {
-        const account_type = {
-            category: 'real',
-            type: 'financial_stp',
-        };
-        if (is_fully_authenticated && has_required_credentials) {
-            openPasswordModal(account_type);
-        } else if ((!is_fully_authenticated && !is_real_financial_stp_disabled) || !has_required_credentials) {
-            onSelectAccount(account_type);
         }
     };
 
@@ -222,8 +199,6 @@ const CFDRealAccountDisplay = ({
             case 'synthetic':
             case 'financial':
                 return !has_real_account;
-            case 'financial_stp':
-                return is_real_financial_stp_disabled;
             default:
                 return false;
         }
@@ -298,44 +273,6 @@ const CFDRealAccountDisplay = ({
                   />,
               ]);
 
-    const financial_stp_account = isFinancialStpCardVisible() && (
-        <CFDAccountCard
-            key='real.financial_stp'
-            has_cfd_account={has_cfd_account}
-            title={localize('Financial STP')}
-            type={{
-                category: 'real',
-                type: 'financial_stp',
-                platform,
-            }}
-            is_logged_in={is_logged_in}
-            existing_data={
-                current_list[
-                    Object.keys(current_list).find((key: string) =>
-                        key.startsWith(`${platform}.real.financial_stp@`)
-                    ) || ''
-                ]
-            }
-            commission_message={localize('No commission')}
-            onSelectAccount={onSelectRealFinancialStp}
-            button_label={button_label}
-            is_button_primary={is_pending_authentication}
-            onPasswordManager={openPasswordManager}
-            onClickFund={onClickFundReal}
-            platform={platform}
-            descriptor={localize(
-                'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-            )}
-            specs={(specifications as TSpecifications)[platform as keyof TSpecifications].real_financial_stp_specs}
-            is_disabled={isMT5AccountCardDisabled('financial_stp')}
-            is_virtual={is_virtual}
-            has_real_account={has_real_account}
-            toggleAccountsDialog={toggleAccountsDialog}
-            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-            is_accounts_switcher_on={is_accounts_switcher_on}
-        />
-    );
-
     const financial_account = isFinancialCardVisible() && (
         <CFDAccountCard
             key='real.financial'
@@ -367,7 +304,7 @@ const CFDRealAccountDisplay = ({
         />
     );
 
-    const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
+    const items = [...(synthetic_account_items || []), financial_account].filter(Boolean);
 
     return (
         <div

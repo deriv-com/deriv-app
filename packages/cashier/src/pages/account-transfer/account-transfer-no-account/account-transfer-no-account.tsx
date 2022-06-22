@@ -7,7 +7,7 @@ import RootStore from 'Stores/types';
 import './account-transfer-no-account.scss';
 
 type TAccountTransferNoAccount = {
-    toggleAccountsDialog: boolean;
+    toggleAccountsDialog: () => void;
     is_dxtrade_allowed: boolean;
 };
 

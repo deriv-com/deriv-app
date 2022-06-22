@@ -47,7 +47,7 @@ type TAccountOption = {
 };
 
 type TAccountTransferBullet = {
-    children: React.ReactNode | JSX.Element | JSX.Element[];
+    children: React.ReactNode;
 };
 
 type TAccountTransferNote = {
@@ -88,6 +88,7 @@ type TAccountTransferForm = {
     converter_from_error: string;
     converter_to_amount: string;
     converter_to_error: string;
+    // Replace Array<object> with Array<TCryptoTransactions> when the component is converted to TS.
     crypto_transactions: Array<object>;
     error: object;
     is_crypto: boolean;
@@ -97,8 +98,8 @@ type TAccountTransferForm = {
     mt5_login_list: TAccountOption['mt5_login_list'];
     onChangeConverterFromAmount: () => void;
     onChangeConverterToAmount: () => void;
-    onChangeTransferFrom: (event: object) => void;
-    onChangeTransferTo: (event: object) => void;
+    onChangeTransferFrom: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeTransferTo: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onMount: () => void;
     percentage: number;
     recentTransactionOnMount: () => void;
@@ -394,7 +395,7 @@ const AccountTransferForm = ({
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
 
-    const validateAmount = (amount: string | number) => {
+    const validateAmount = (amount: string) => {
         if (!amount) return localize('This field is required.');
 
         const { is_ok, message } = validNumber(amount, {
@@ -606,7 +607,7 @@ const AccountTransferForm = ({
                                         list_height='404'
                                         name='transfer_from'
                                         value={selected_from.value}
-                                        onChange={(e: object) => {
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             onChangeTransferFrom(e);
                                             handleChange(e);
                                             setFieldValue('amount', '');
@@ -630,7 +631,7 @@ const AccountTransferForm = ({
                                         list_height='404'
                                         name='transfer_to'
                                         value={selected_to.value}
-                                        onChange={(e: object) => {
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             onChangeTransferTo(e);
                                             setFieldValue('amount', '');
                                             setFieldError('amount', '');

@@ -33,7 +33,7 @@ const AppContent = () => {
         return <Verification should_wrap />;
     }
 
-    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
+    if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return <AdvertiserPage />;
     }
 

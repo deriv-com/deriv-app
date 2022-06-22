@@ -4,7 +4,7 @@
 
     &__wrapper {
         align-items: center;
-        background-color: var(--general-main-1);
+        background: var(--general-main-1);
         border: 2px solid var(--general-section-1);
         border-radius: 6px;
         display: flex;
@@ -16,13 +16,14 @@
         top: 0;
         left: 0;
         width: 94rem;
-        z-index: 99;
+        z-index: 9999;
 
         @include mobile {
             border: none;
             border-radius: unset;
             width: 100%;
-            height: calc(100vh - 17.1rem);
+            height: 100%;
+            flex-flow: column;
         }
 
         &-text {

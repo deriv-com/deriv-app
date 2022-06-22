@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { TableError } from 'Components/table/table-error.jsx';
 import CreateAd from './create-ad.jsx';
+import EditAd from './edit-ad.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from '../verification/verification.jsx';
 import './my-ads.scss';
@@ -21,6 +22,8 @@ const MyAds = () => {
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
+        my_ads_store.setShowAdForm(false);
+        my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -38,7 +41,25 @@ const MyAds = () => {
     }
 
     if (general_store.is_advertiser) {
-        return <div className='p2p-my-ads'>{my_ads_store.show_ad_form ? <CreateAd /> : <MyAdsTable />}</div>;
+        if (my_ads_store.show_ad_form) {
+            return (
+                <div className='p2p-my-ads'>
+                    <CreateAd />
+                </div>
+            );
+        } else if (my_ads_store.show_edit_ad_form) {
+            return (
+                <div className='p2p-my-ads'>
+                    <EditAd />
+                </div>
+            );
+        }
+
+        return (
+            <div className='p2p-my-ads'>
+                <MyAdsTable />
+            </div>
+        );
     }
 
     return <Verification />;

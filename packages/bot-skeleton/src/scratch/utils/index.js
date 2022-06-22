@@ -306,8 +306,12 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
 
 export const hasAllRequiredBlocks = workspace => {
     const blocks_in_workspace = workspace.getAllBlocks();
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
     const { mandatoryMainBlocks } = config;
-    const required_block_types = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
+    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
     const all_block_types = blocks_in_workspace.map(block => block.type);
     const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
 
@@ -315,13 +319,17 @@ export const hasAllRequiredBlocks = workspace => {
 };
 
 export const isAllRequiredBlocksEnabled = workspace => {
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
+    const { mandatoryMainBlocks } = config;
+    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
+
     const enabled_blocks_types = workspace
         .getAllBlocks()
         .filter(block => !block.disabled)
         .map(block => block.type);
-
-    const { mandatoryMainBlocks } = config;
-    const required_block_types = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
 
     return required_block_types.every(required_type => enabled_blocks_types.includes(required_type));
 };

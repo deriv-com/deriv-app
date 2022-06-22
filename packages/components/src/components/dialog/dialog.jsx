@@ -16,6 +16,7 @@ const Dialog = ({
     is_closed_on_confirm,
     is_visible,
     onCancel,
+    onClose,
     onConfirm,
     onEscapeButtonCancel,
     ...other_props
@@ -66,9 +67,19 @@ const Dialog = ({
         onConfirm();
     };
 
+    const handleClose = () => {
+        if (onClose) {
+            onClose();
+        } else if (onCancel) {
+            handleCancel();
+        } else {
+            handleConfirm();
+        }
+    };
+
     const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
 
-    useOnClickOutside(wrapper_ref, onCancel ? handleCancel : handleConfirm, validateClickOutside);
+    useOnClickOutside(wrapper_ref, handleClose, validateClickOutside);
 
     const content_classes = classNames('dc-dialog__content', {
         'dc-dialog__content--centered': is_content_centered,
@@ -111,10 +122,7 @@ const Dialog = ({
                                 </Text>
                             )}
                             {has_close_icon && (
-                                <div
-                                    onClick={onCancel ? handleCancel : handleConfirm}
-                                    className='dc-dialog__header--close'
-                                >
+                                <div onClick={handleClose} className='dc-dialog__header--close'>
                                     <Icon icon='IcCross' />
                                 </div>
                             )}

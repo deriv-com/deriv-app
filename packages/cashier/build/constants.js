@@ -19,23 +19,22 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const ALIASES = {
     _common: path.resolve(__dirname, '../src/_common'),
-    Components: path.resolve(__dirname, '../src/Components'),
-    Config: path.resolve(__dirname, '../src/Config'),
-    Containers: path.resolve(__dirname, '../src/Containers'),
-    Constants: path.resolve(__dirname, '../src/Constants'),
+    Components: path.resolve(__dirname, '../src/components'),
+    Config: path.resolve(__dirname, '../src/config'),
+    Containers: path.resolve(__dirname, '../src/containers'),
+    Constants: path.resolve(__dirname, '../src/constants'),
     Images: path.resolve(__dirname, '../src/public/images'),
-    Routes: path.resolve(__dirname, '../src/Routes'),
+    Pages: path.resolve(__dirname, '../src/pages'),
     Sass: path.resolve(__dirname, '../src/Sass'),
-    Services: path.resolve(__dirname, '../src/Services'),
-    Stores: path.resolve(__dirname, '../src/Stores'),
-    Utils: path.resolve(__dirname, '../src/Utils'),
+    Stores: path.resolve(__dirname, '../src/stores'),
+    Utils: path.resolve(__dirname, '../src/utils'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
               {
-                  test: /\.(js|jsx)$/,
+                  test: /\.(js|jsx|ts|tsx)$/,
                   exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
                   include: /src/,
                   loader: 'eslint-loader',
@@ -49,7 +48,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
           ]
         : []),
     {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use: js_loaders,

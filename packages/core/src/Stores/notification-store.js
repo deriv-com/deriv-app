@@ -2,6 +2,7 @@ import { StaticUrl } from '@deriv/components';
 import {
     formatDate,
     getPathname,
+    getPlatformSettings,
     getStaticUrl,
     getUrlBase,
     isCryptocurrency,
@@ -34,7 +35,7 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
-    @observable should_show_popups = false;
+    @observable should_show_popups = true;
 
     constructor(root_store) {
         super({ root_store });
@@ -52,6 +53,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.modules?.cashier?.general_store?.is_p2p_visible,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
+                root_store.client.has_enabled_two_fa,
             ],
             () => {
                 if (
@@ -61,6 +63,7 @@ export default class NotificationStore extends BaseStore {
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
+                    this.setClientNotifications();
                     this.handleClientNotifications();
                 }
             }
@@ -167,25 +170,32 @@ export default class NotificationStore extends BaseStore {
     @action.bound
     handleClientNotifications() {
         const {
-            accounts,
             account_settings,
             account_status,
-            is_eu,
-            landing_company_shortcode,
-            has_malta_account,
+            accounts,
             has_iom_account,
+            has_malta_account,
+            isAccountOfType,
+            is_eu,
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
-            isAccountOfType,
+            is_uk,
+            landing_company_shortcode,
             loginid,
             obj_total_balance,
+            website_status,
+            has_enabled_two_fa,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
+        const is_website_up = website_status.site_status === 'up';
+        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
+            this.client_notifications.trustpilot.key
+        );
 
         let has_missing_required_field;
 
@@ -198,14 +208,27 @@ export default class NotificationStore extends BaseStore {
 
             const hidden_close_account_notification =
                 parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-            const { cashier_locked, withdrawal_locked, deposit_locked, mt5_withdrawal_locked, document_needs_action } =
-                getStatusValidations(status || []);
+            const {
+                cashier_locked,
+                deposit_locked,
+                document_needs_action,
+                mt5_withdrawal_locked,
+                personal_details_locked,
+                poi_name_mismatch,
+                withdrawal_locked,
+            } = getStatusValidations(status || []);
 
-            if (obj_total_balance.amount_real > 0) {
+            if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
             if (loginid !== LocalStore.get('active_loginid')) return;
+
+            if (is_uk && malta_account) {
+                this.addNotificationMessage(this.client_notifications.close_uk_account);
+            }
 
             if (
                 (has_iom_account || has_malta_account) &&
@@ -220,33 +243,42 @@ export default class NotificationStore extends BaseStore {
                 if (loginid !== LocalStore.get('active_loginid')) return;
 
                 const {
-                    system_maintenance,
+                    cashier_locked_status,
+                    documents_expired,
+                    FinancialAssessmentRequired,
                     is_virtual,
                     no_residence,
-                    documents_expired,
-                    unwelcome_status,
                     no_withdrawal_or_trading_status,
-                    withdrawal_locked_status,
-                    cashier_locked_status,
-                    FinancialAssessmentRequired,
                     SelfExclusion,
-                    ASK_CURRENCY,
+                    system_maintenance,
+                    unwelcome_status,
+                    withdrawal_locked_status,
                     ASK_AUTHENTICATE,
+                    ASK_CURRENCY,
                     ASK_FINANCIAL_RISK_APPROVAL,
-                    ASK_TIN_INFORMATION,
-                    ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
                     ASK_FIX_DETAILS,
+                    ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
+                    ASK_TIN_INFORMATION,
                     ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
 
-                this.addVerificationNotifications(identity, document);
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const onfido_submissions_left = identity?.services.onfido.submissions_left;
+
+                this.addVerificationNotifications(identity, document);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
+                    if (!personal_details_locked && onfido_submissions_left > 0) {
+                        this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
+                    } else {
+                        this.addNotificationMessage(this.client_notifications.onfido_failed);
+                    }
+                }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(
@@ -285,21 +317,27 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.cashier_locked);
                     }
                 } else {
-                    if (withdrawal_locked && ASK_AUTHENTICATE) {
-                        this.addNotificationMessage(this.client_notifications.withdrawal_locked_review);
-                    } else if (withdrawal_locked && no_withdrawal_or_trading_status) {
-                        this.addNotificationMessage(this.client_notifications.no_withdrawal_or_trading);
-                    } else if (withdrawal_locked && withdrawal_locked_status) {
-                        this.addNotificationMessage(this.client_notifications.withdrawal_locked);
-                    } else if (withdrawal_locked && ASK_FIX_DETAILS) {
-                        this.addNotificationMessage(
-                            this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
-                        );
+                    if (withdrawal_locked) {
+                        if (ASK_AUTHENTICATE) {
+                            this.addNotificationMessage(this.client_notifications.withdrawal_locked_review);
+                        } else if (no_withdrawal_or_trading_status) {
+                            this.addNotificationMessage(this.client_notifications.no_withdrawal_or_trading);
+                        } else if (withdrawal_locked_status) {
+                            this.addNotificationMessage(this.client_notifications.withdrawal_locked);
+                        } else if (ASK_FIX_DETAILS) {
+                            this.addNotificationMessage(
+                                this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
+                            );
+                        }
                     }
-                    if (deposit_locked && SelfExclusion) {
-                        this.addNotificationMessage(this.client_notifications.self_exclusion(client.excluded_until));
-                    } else if (deposit_locked && unwelcome_status) {
-                        this.addNotificationMessage(this.client_notifications.unwelcome);
+                    if (deposit_locked) {
+                        if (SelfExclusion) {
+                            this.addNotificationMessage(
+                                this.client_notifications.self_exclusion(client.excluded_until)
+                            );
+                        } else if (unwelcome_status) {
+                            this.addNotificationMessage(this.client_notifications.unwelcome);
+                        }
                     }
                     if (is_identity_verification_needed) {
                         this.addNotificationMessage(this.client_notifications.identity);
@@ -311,6 +349,10 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.dp2p);
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
+                }
+
+                if (is_website_up && !has_trustpilot) {
+                    this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
 
                 if (is_tnc_needed) {
@@ -331,22 +373,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-        this.setShouldShowPopups(true);
-    }
-
-    @action.bound
-    init() {
-        this.setClientNotifications();
-        reaction(
-            () => [
-                this.root_store.client.is_uk,
-                this.root_store.client.has_malta_account,
-                this.root_store.client.can_have_mlt_account,
-            ],
-            () => {
-                this.setClientNotifications();
-            }
-        );
     }
 
     @action.bound
@@ -358,6 +384,7 @@ export default class NotificationStore extends BaseStore {
     refreshNotifications() {
         this.removeNotifications(true);
         this.removeAllNotificationMessages();
+        this.setClientNotifications();
         this.handleClientNotifications();
     }
 
@@ -431,7 +458,7 @@ export default class NotificationStore extends BaseStore {
                 message = localize(
                     'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
                 );
-            this.setClientNotifications({ resetVirtualBalance: this.resetVirtualBalance, message });
+            this.setClientNotifications({ resetVirtualBalance: this.root_store.client.resetVirtualBalance, message });
             this.addNotificationMessage(this.client_notifications.reset_virtual_balance);
         } else {
             this.removeNotificationByKey({ key: 'reset_virtual_balance' });
@@ -440,22 +467,162 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    setClientNotifications(client = {}) {
+    setClientNotifications(client_data = {}) {
+        const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
-        const { ui } = this.root_store;
+
+        const platform_name_trader = getPlatformSettings('trader').name;
+        const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
-            two_f_a: {
-                key: 'two_f_a',
-                header: localize('Stronger security for your Deriv account'),
+            ask_financial_risk_approval: {
+                key: 'ask_financial_risk_approval',
+                header: localize('Complete your Appropriateness Test'),
+                message: localize('Please click the following link to complete your Appropriateness Test.'),
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Click here'),
+                },
+                type: 'warning',
+            },
+            ask_uk_funds_protection: {
+                key: 'ask_uk_funds_protection',
+                header: localize('Your cashier is locked'),
+                message: localize('See how we protect your funds to unlock the cashier.'),
+                action: {
+                    route: routes.cashier_deposit,
+                    text: localize('Find out more'),
+                },
+                type: 'warning',
+            },
+            authenticate: {
+                key: 'authenticate',
+                header: localize('Your account has not been verified'),
                 message: localize(
-                    'With two-factor authentication, you’ll protect your account with both your password and your phone - so only you can access your account, even if someone knows your password.'
+                    'Please submit your proof of identity and proof of address to verify your account in your account settings to access the cashier.'
                 ),
                 action: {
-                    route: routes.two_factor_authentication,
-                    text: localize('Secure my account'),
+                    route: routes.proof_of_identity,
+                    text: localize('Go to my account settings'),
                 },
+                type: 'warning',
+            },
+            cashier_locked: {
+                key: 'cashier_locked',
+                header: localize('Your cashier is currently locked'),
+                message: localize('Please contact us via live chat to unlock it.'),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to live chat'),
+                },
+                type: 'warning',
+            },
+            trustpilot: {
+                key: 'trustpilot',
+                header: localize('Enjoy using Deriv?'),
+                header_popup: localize('We’d love to hear your thoughts'),
+                message: localize('Drop your review on Trustpilot.'),
+                message_popup: localize('Drop your review on Trustpilot.'),
+                action: {
+                    onClick: () => {
+                        window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
+                        this.removeNotificationByKey({ key: this.client_notifications.trustpilot.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.trustpilot.key,
+                            should_show_again: false,
+                        });
+                    },
+                    text: localize('Go to Trustpilot'),
+                },
+                img_src: getUrlBase('/public/images/common/trustpilot_banner.png'),
+                img_alt: 'Trustpilot',
+                className: 'trustpilot',
+                type: 'trustpilot',
+            },
+            close_mx_mlt_account: {
+                key: 'close_mx_mlt_account',
+                header: mx_mlt_custom_header,
+                message: mx_mlt_custom_content,
+                secondary_btn: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        ui.showCloseMxMltAccountPopup(true);
+                    },
+                },
+                img_src: getUrlBase('/public/images/common/close_account_banner.png'),
+                img_alt: 'close mx mlt account',
+                type: 'close_mx_mlt',
+            },
+            close_uk_account: {
+                key: 'close_uk_account',
+                header: localize('Your account is scheduled to be closed'),
+                message: localize('Please withdraw all your funds.'),
+                action: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        ui.showCloseUKAccountPopup(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.close_uk_account.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.close_uk_account.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                type: 'danger',
+            },
+            currency: {
+                key: 'currency',
+                header: localize('You have not selected your account currency'),
+                message: localize('Please set your account currency to enable deposits and withdrawals.'),
+                action: {
+                    onClick: () => {
+                        ui.openRealAccountSignup('set_currency');
+                    },
+                    text: localize('Set my account currency'),
+                },
+                type: 'danger',
+            },
+            deriv_go: {
+                key: 'deriv_go',
+                message: (
+                    <Localize
+                        i18n_default_text='Get a faster mobile trading experience with the <0>{{platform_name_go}}</0> app!'
+                        components={[<StaticUrl key={0} className='link dark' href='/landing/deriv-go' />]}
+                        values={{ platform_name_go }}
+                    />
+                ),
+                cta_btn: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        window.open(getStaticUrl('/landing/deriv-go'), '_blank');
+                    },
+                },
+                img_src: getUrlBase('/public/images/common/derivgo_banner.png'),
+                img_alt: 'deriv_go',
+                type: 'promotions',
+            },
+            documents_expired: {
+                key: 'poi_expired',
+                header: localize('You submitted expired identification documents'),
+                message: localize('Please submit valid identity documents to unlock the cashier.'),
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Submit identity documents'),
+                },
+                type: 'danger',
+            },
+            document_needs_action: {
+                key: 'document_needs_action',
+                header: localize('Authentication failed'),
+                message: (
+                    <Localize
+                        i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
+                        components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />]}
+                    />
+                ),
                 type: 'warning',
             },
             dp2p: {
@@ -472,25 +639,117 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Deriv P2P',
                 type: 'news',
             },
-            close_mx_mlt_account: {
-                key: 'close_mx_mlt_account',
-                header: mx_mlt_custom_header,
-                message: mx_mlt_custom_content,
-                secondary_btn: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        ui.showCloseMxMltAccountPopup(true);
-                    },
+            identity: {
+                key: 'identity',
+                header: localize('Let’s verify your ID'),
+                message: localize(
+                    'You need to make a quick identity verification before you can access the Cashier. Please go to your account settings to submit your proof of identity.'
+                ),
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Go to my account settings'),
                 },
-                img_src: getUrlBase('/public/images/common/close_account_banner.png'),
-                img_alt: 'close mx mlt account',
-                type: 'close_mx_mlt',
+                type: 'warning',
+            },
+            install_pwa: {
+                key: 'install_pwa',
+                action: {
+                    onClick: () => ui.installWithDeferredPrompt(),
+                    text: localize('Install'),
+                },
+                header: localize('Install the {{platform_name_trader}} web app', { platform_name_trader }),
+                message: localize('Launch {{platform_name_trader}} in seconds the next time you want to trade.', {
+                    platform_name_trader,
+                }),
+                type: 'announce',
+                should_hide_close_btn: false,
             },
             is_virtual: {
                 key: 'is_virtual',
                 header: localize('You are on your demo account'),
                 message: localize('Please switch to your real account or create one to access the cashier.'),
                 type: 'warning',
+            },
+            max_turnover_limit_not_set: {
+                key: 'max_turnover_limit_not_set',
+                header: localize('You’ve not set your 30-day turnover limit'),
+                message: localize(
+                    'Your access to the cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to Self-exclusion and set the limit.'
+                ),
+                action: {
+                    route: routes.self_exclusion,
+                    text: localize('Go to Self-exclusion'),
+                },
+                type: 'danger',
+            },
+            mt5_withdrawal_locked: {
+                key: 'mt5_withdrawal_locked',
+                header: localize('MT5 withdrawal disabled'),
+                message: localize(
+                    'MT5 withdrawals have been disabled on your account. Please check your email for more details.'
+                ),
+                type: 'warning',
+            },
+            needs_poa: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Verify address'),
+                },
+                key: 'needs_poa',
+                header: localize('Please verify your proof of address'),
+                message: localize('To continue trading with us, please confirm where you live.'),
+                type: 'danger',
+            },
+            needs_poi: {
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Verify identity'),
+                },
+                key: 'needs_poi',
+                header: localize('Please verify your proof of identity'),
+                message: localize('To continue trading with us, please confirm who you are.'),
+                type: 'danger',
+            },
+            needs_poa_virtual: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Verify address'),
+                },
+                key: 'needs_poa_virtual',
+                header: localize('Please Verify your address'),
+                message: localize(
+                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
+                ),
+                type: 'danger',
+            },
+            needs_poi_virtual: {
+                action: {
+                    onClick: async () => {
+                        const { switchAccount, first_switchable_real_loginid } = client_data;
+
+                        await switchAccount(first_switchable_real_loginid);
+                    },
+                    text: localize('Verify identity'),
+                },
+                key: 'needs_poi_virtual',
+                header: localize('Please Verify your identity'),
+                message: localize(
+                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
+                ),
+                type: 'danger',
+            },
+            new_version_available: {
+                action: {
+                    onClick: () => window.location.reload(),
+                    text: localize('Refresh now'),
+                },
+                key: 'new_version_available',
+                header: localize('A new version of Deriv is available'),
+                message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
+                type: 'warning',
+                should_hide_close_btn: true,
+                timeout: 300000,
+                timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
             },
             no_residence: {
                 key: 'no_residence',
@@ -504,17 +763,102 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            currency: {
-                key: 'currency',
-                header: localize('You have not selected your account currency'),
-                message: localize('Please set your account currency to enable deposits and withdrawals.'),
+            no_withdrawal_or_trading: {
+                key: 'no_withdrawal_or_trading',
+                header: localize('You are only allowed to make deposits'),
+                message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        ui.openRealAccountSignup('set_currency');
+                        window.LC_API.open_chat_window();
                     },
-                    text: localize('Set my account currency'),
+                    text: localize('Go to live chat'),
+                },
+                type: 'warning',
+            },
+            onfido_failed: {
+                key: 'onfido_failed',
+                header: localize("You've reached the limit for uploading your documents."),
+                message: localize('Please contact us via live chat.'),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to live chat'),
                 },
                 type: 'danger',
+            },
+            password_changed: {
+                key: 'password_changed',
+                header: localize('Password updated.'),
+                message: <Localize i18n_default_text='Please log in with your updated password.' />,
+                type: 'info',
+            },
+            poi_name_mismatch: {
+                action: {
+                    route: routes.personal_details,
+                    text: localize('Personal details'),
+                },
+                key: 'poi_name_mismatch',
+                header: localize('Please update your personal info'),
+                message: (
+                    <Localize
+                        i18n_default_text='It seems that your name in the document is not the same as your Deriv profile. Please update your name in the <0>Personal details</0> page to solve this issue.'
+                        components={[<strong key={0} />]}
+                    />
+                ),
+                type: 'warning',
+            },
+            required_fields: (withdrawal_locked, deposit_locked) => {
+                let message;
+                if (withdrawal_locked) {
+                    message = localize(
+                        'Please go to your account settings and complete your personal details to enable withdrawals.'
+                    );
+                } else if (deposit_locked) {
+                    message = localize(
+                        'Please go to your account settings and complete your personal details to enable deposits.'
+                    );
+                } else {
+                    message = localize(
+                        'Please go to your account settings and complete your personal details to enable deposits and withdrawals.'
+                    );
+                }
+                return {
+                    key: 'required_fields',
+                    header: localize('Your personal details are incomplete'),
+                    message,
+                    type: 'danger',
+                    action: {
+                        route: routes.personal_details,
+                        text: localize('Go to my account settings'),
+                    },
+                };
+            },
+            reset_virtual_balance: {
+                key: 'reset_virtual_balance',
+                header: localize('Reset your balance'),
+                message: client_data.message,
+                type: 'info',
+                is_persistent: true,
+                should_show_again: true,
+                platform: [platform_name.DTrader],
+                is_disposable: true,
+                action: {
+                    text: localize('Reset balance'),
+                    onClick: async () => {
+                        await client_data.resetVirtualBalance();
+                    },
+                },
+            },
+            risk: {
+                key: 'risk',
+                header: localize('Your cashier is locked'),
+                message: localize('Please complete the financial assessment in your account settings to unlock it.'),
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Go to my account settings'),
+                },
+                type: 'warning',
             },
             self_exclusion: excluded_until => {
                 return {
@@ -538,21 +882,9 @@ export default class NotificationStore extends BaseStore {
                     type: 'danger',
                 };
             },
-            cashier_locked: {
-                key: 'cashier_locked',
-                header: localize('Your cashier is currently locked'),
-                message: localize('Please contact us via live chat to unlock it.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'warning',
-            },
             system_maintenance: (withdrawal_locked, deposit_locked) => {
                 let message, header;
-                if (isCryptocurrency(client.currency)) {
+                if (isCryptocurrency(client_data.currency)) {
                     if (withdrawal_locked) {
                         header = localize('Unable to process withdrawals in the moment');
                         message = localize(
@@ -581,129 +913,6 @@ export default class NotificationStore extends BaseStore {
                     message,
                     type: 'warning',
                 };
-            },
-            identity: {
-                key: 'identity',
-                header: localize('Let’s verify your ID'),
-                message: localize(
-                    'You need to make a quick identity verification before you can access the Cashier. Please go to your account settings to submit your proof of identity.'
-                ),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to my account settings'),
-                },
-                type: 'warning',
-            },
-            authenticate: {
-                key: 'authenticate',
-                header: localize('Your account has not been verified'),
-                message: localize(
-                    'Please submit your proof of identity and proof of address to verify your account in your account settings to access the cashier.'
-                ),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to my account settings'),
-                },
-                type: 'warning',
-            },
-            withdrawal_locked_review: {
-                key: 'withdrawal_locked_review',
-                header: localize('Your account has not been verified'),
-                message: localize(
-                    'Please submit your proof of identity and proof of address to verify your account in your account settings to access the cashier.'
-                ),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to my account settings'),
-                },
-                type: 'warning',
-            },
-            no_withdrawal_or_trading: {
-                key: 'no_withdrawal_or_trading',
-                header: localize('You are only allowed to make deposits'),
-                message: localize('Please contact us via live chat to enable withdrawals.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'warning',
-            },
-            withdrawal_locked: {
-                key: 'withdrawal_locked',
-                header: localize('You are only allowed to make deposits'),
-                message: localize('Please contact us via live chat to enable withdrawals.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'warning',
-            },
-            mt5_withdrawal_locked: {
-                key: 'mt5_withdrawal_locked',
-                header: localize('MT5 withdrawal disabled'),
-                message: localize(
-                    'MT5 withdrawals have been disabled on your account. Please check your email for more details.'
-                ),
-                type: 'warning',
-            },
-            ask_financial_risk_approval: {
-                key: 'ask_financial_risk_approval',
-                header: localize('Complete your Appropriateness Test'),
-                message: localize('Please click the following link to complete your Appropriateness Test.'),
-                action: {
-                    route: routes.financial_assessment,
-                    text: localize('Click here'),
-                },
-                type: 'warning',
-            },
-            document_needs_action: {
-                key: 'document_needs_action',
-                header: localize('Authentication failed'),
-                message: (
-                    <Localize
-                        i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
-                        components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />]}
-                    />
-                ),
-                type: 'warning',
-            },
-            unwelcome: {
-                key: 'unwelcome',
-                header: localize('Deposits are locked'),
-                message: localize('Please contact us via live chat.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'danger',
-            },
-            max_turnover_limit_not_set: {
-                key: 'max_turnover_limit_not_set',
-                header: localize('You’ve not set your 30-day turnover limit'),
-                message: localize(
-                    'Your access to the cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to Self-exclusion and set the limit.'
-                ),
-                action: {
-                    route: routes.self_exclusion,
-                    text: localize('Go to Self-exclusion'),
-                },
-                type: 'danger',
-            },
-            risk: {
-                key: 'risk',
-                header: localize('Your cashier is locked'),
-                message: localize('Please complete the financial assessment in your account settings to unlock it.'),
-                action: {
-                    route: routes.financial_assessment,
-                    text: localize('Go to my account settings'),
-                },
-                type: 'warning',
             },
             tax: {
                 key: 'tax',
@@ -735,169 +944,62 @@ export default class NotificationStore extends BaseStore {
                 ),
                 type: 'warning',
             },
-            required_fields: (withdrawal_locked, deposit_locked) => {
-                let message;
-                if (withdrawal_locked) {
-                    message = localize(
-                        'Please go to your account settings and complete your personal details to enable withdrawals.'
-                    );
-                } else if (deposit_locked) {
-                    message = localize(
-                        'Please go to your account settings and complete your personal details to enable deposits.'
-                    );
-                } else {
-                    message = localize(
-                        'Please go to your account settings and complete your personal details to enable deposits and withdrawals.'
-                    );
-                }
-                return {
-                    key: 'required_fields',
-                    header: localize('Your personal details are incomplete'),
-                    message,
-                    type: 'danger',
-                    action: {
-                        route: routes.personal_details,
-                        text: localize('Go to my account settings'),
+            two_f_a: {
+                key: 'two_f_a',
+                header: localize('Stronger security for your Deriv account'),
+                message: localize(
+                    'With two-factor authentication, you’ll protect your account with both your password and your phone - so only you can access your account, even if someone knows your password.'
+                ),
+                action: {
+                    route: routes.two_factor_authentication,
+                    text: localize('Secure my account'),
+                },
+                type: 'warning',
+            },
+            unwelcome: {
+                key: 'unwelcome',
+                header: localize('Deposits are locked'),
+                message: localize('Please contact us via live chat.'),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
                     },
-                };
+                    text: localize('Go to live chat'),
+                },
+                type: 'danger',
+            },
+            withdrawal_locked: {
+                key: 'withdrawal_locked',
+                header: localize('You are only allowed to make deposits'),
+                message: localize('Please contact us via live chat to enable withdrawals.'),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to live chat'),
+                },
+                type: 'warning',
+            },
+            withdrawal_locked_review: {
+                key: 'withdrawal_locked_review',
+                header: localize('You are unable to make withdrawals'),
+                message: (
+                    <Localize
+                        i18n_default_text='To enable withdrawals, please submit your <0>Proof of Identity (POI)</0> and <1>Proof of Address (POA)</1> and also complete the <2>financial assessment</2> in your account settings.'
+                        components={[
+                            <a key={0} className='link dark' href={'/account/proof-of-identity'} />,
+                            <a key={1} className='link dark' href={'/account/proof-of-address'} />,
+                            <a key={2} className='link dark' href={'/account/financial-assessment'} />,
+                        ]}
+                    />
+                ),
+                type: 'warning',
             },
             you_are_offline: {
                 key: 'you_are_offline',
                 header: localize('You are offline'),
                 message: <Localize i18n_default_text='Check your connection.' />,
                 type: 'danger',
-            },
-            password_changed: {
-                key: 'password_changed',
-                header: localize('Password updated.'),
-                message: <Localize i18n_default_text='Please log in with your updated password.' />,
-                type: 'info',
-            },
-            reset_virtual_balance: {
-                key: 'reset_virtual_balance',
-                header: localize('Reset your balance'),
-                message: client.message,
-                type: 'info',
-                is_persistent: true,
-                should_show_again: true,
-                platform: [platform_name.DTrader],
-                is_disposable: true,
-                action: {
-                    text: localize('Reset balance'),
-                    onClick: async () => {
-                        await client.resetVirtualBalance();
-                    },
-                },
-            },
-            needs_poi: {
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Verify identity'),
-                },
-                key: 'needs_poi',
-                header: localize('Please verify your proof of identity'),
-                message: localize('To continue trading with us, please confirm who you are.'),
-                type: 'danger',
-            },
-            needs_poa: {
-                action: {
-                    route: routes.proof_of_address,
-                    text: localize('Verify address'),
-                },
-                key: 'needs_poa',
-                header: localize('Please verify your proof of address'),
-                message: localize('To continue trading with us, please confirm where you live.'),
-                type: 'danger',
-            },
-            needs_poi_virtual: {
-                action: {
-                    onClick: async () => {
-                        const { switchAccount, first_switchable_real_loginid } = client;
-
-                        await switchAccount(first_switchable_real_loginid);
-                    },
-                    text: localize('Verify identity'),
-                },
-                key: 'needs_poi_virtual',
-                header: localize('Please Verify your identity'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
-                ),
-                type: 'danger',
-            },
-            needs_poa_virtual: {
-                action: {
-                    route: routes.proof_of_address,
-                    text: localize('Verify address'),
-                },
-                key: 'needs_poa_virtual',
-                header: localize('Please Verify your address'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
-                ),
-                type: 'danger',
-            },
-            documents_expired: {
-                key: 'poi_expired',
-                header: localize('You submitted expired identification documents'),
-                message: localize('Please submit valid identity documents to unlock the cashier.'),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Submit identity documents'),
-                },
-                type: 'danger',
-            },
-            new_version_available: {
-                action: {
-                    onClick: () => window.location.reload(),
-                    text: localize('Refresh now'),
-                },
-                key: 'new_version_available',
-                header: localize('A new version of Deriv is available'),
-                message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
-                type: 'warning',
-                should_hide_close_btn: true,
-                timeout: 300000,
-                timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
-            },
-            install_pwa: {
-                key: 'install_pwa',
-                action: {
-                    onClick: () => ui.installWithDeferredPrompt(),
-                    text: localize('Install'),
-                },
-                header: localize('Install the DTrader web app'),
-                message: localize('Launch DTrader in seconds the next time you want to trade.'),
-                type: 'announce',
-                should_hide_close_btn: false,
-            },
-            ask_uk_funds_protection: {
-                key: 'ask_uk_funds_protection',
-                header: localize('Your cashier is locked'),
-                message: localize('See how we protect your funds to unlock the cashier.'),
-                action: {
-                    route: routes.cashier_deposit,
-                    text: localize('Find out more'),
-                },
-                type: 'warning',
-            },
-            deriv_go: {
-                key: 'deriv_go',
-                message: (
-                    <Localize
-                        i18n_default_text='Get a faster mobile trading experience with the <0>Deriv GO</0> app!'
-                        components={[<StaticUrl key={0} className='link dark' href='/landing/deriv-go' />]}
-                    />
-                ),
-                cta_btn: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        window.open(getStaticUrl('/landing/deriv-go'), '_blank');
-                    },
-                },
-                img_src: getUrlBase('/public/images/common/derivgo_banner.png'),
-                img_alt: 'deriv_go',
-                type: 'promotions',
             },
         };
         this.client_notifications = notifications;

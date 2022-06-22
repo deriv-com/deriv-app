@@ -3,7 +3,6 @@ const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants
 const { openChromeBasedOnPlatform } = require('./helpers');
 
 module.exports = function (env) {
-    console.log(`Building application for ${env.IS_DASHBOARD === 'true' ? 'Deriv Dashboard' : 'Deriv App'}...`);
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
     const sub_path = env && env.open && env.open !== true ? env.open : '';
     const is_qawolf = env && env.IS_QAWOLF && JSON.parse(env.IS_QAWOLF);
@@ -23,14 +22,14 @@ module.exports = function (env) {
             },
         },
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: './index.js',
+        entry: './index.tsx',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
             symlinks: true,
         },
         optimization: {

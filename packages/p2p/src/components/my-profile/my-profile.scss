@@ -1,12 +1,21 @@
 .my-profile {
     &__content {
         @include tablet-up {
-            max-width: 672px;
+            max-width: 100%;
             min-width: 672px;
         }
         @include mobile {
             padding: 1.6rem;
             width: 100vw;
+
+            .dc-mobile-full-page-modal {
+                opacity: 1 !important;
+            }
         }
+    }
+
+    &__navigation {
+        display: flex;
+        justify-content: space-between;
     }
 }

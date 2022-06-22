@@ -11,7 +11,13 @@ import './advertiser-page.scss';
 const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const { currency } = general_store.client;
-    const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
+    const {
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        payment_method_names,
+        price_display,
+    } = advert;
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -42,7 +48,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                     <div className='advertiser-page__cell-limit'>
                         <Text size='xxs' line_height='m'>
                             <Localize
-                                i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
+                                i18n_default_text='Limits {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
                                 values={{
                                     min_order_amount_limit_display,
                                     max_order_amount_limit_display,
@@ -50,6 +56,19 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                                 }}
                             />
                         </Text>
+                    </div>
+                    <div className='advertiser-page__payment-methods-list'>
+                        {payment_method_names
+                            ? payment_method_names.map((payment_method, key) => {
+                                  return (
+                                      <div className='advertiser-page__payment-method' key={key}>
+                                          <Text color='general' line-height='l' size='xxxs'>
+                                              {payment_method}
+                                          </Text>
+                                      </div>
+                                  );
+                              })
+                            : null}
                     </div>
                 </Table.Cell>
                 {is_my_advert ? (
@@ -72,6 +91,21 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
                 <Text color='profit-success' line-height='m' size='xs' weight='bold'>
                     {price_display} {local_currency}
                 </Text>
+            </Table.Cell>
+            <Table.Cell>
+                <div className='buy-sell-row__payment-method'>
+                    {payment_method_names
+                        ? payment_method_names.map((payment_method, key) => {
+                              return (
+                                  <div className='buy-sell-row__payment-method--label' key={key}>
+                                      <Text color='general' size='xs' line-height='l'>
+                                          {payment_method}
+                                      </Text>
+                                  </div>
+                              );
+                          })
+                        : null}
+                </div>
             </Table.Cell>
             {is_my_advert ? (
                 <Table.Cell />

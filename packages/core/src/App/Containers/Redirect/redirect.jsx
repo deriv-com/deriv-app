@@ -10,27 +10,36 @@ const Redirect = ({
     history,
     currency,
     setVerificationCode,
+    verification_code,
     hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
+    setNewEmail,
+    toggleResetEmailModal,
+    toggleUpdateEmailModal,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_dashboard } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
+    const action_param = url_params.get('action');
+    const code_param = url_params.get('code') || verification_code[action_param];
 
-    setVerificationCode(url_params.get('code'), url_params.get('action'));
+    setVerificationCode(code_param, action_param);
 
-    switch (url_params.get('action')) {
+    setNewEmail(url_params.get('email'), action_param);
+
+    switch (action_param) {
         case 'signup': {
-            if (is_dashboard) {
-                history.push({
-                    pathname: routes.dashboard,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
+            if (is_appstore) {
+                // TODO: redirect
+                // history.push({
+                //     pathname: routes.dashboard,
+                //     search: url_query_string,
+                // });
+                // redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
@@ -38,6 +47,14 @@ const Redirect = ({
         }
         case 'reset_password': {
             toggleResetPasswordModal(true);
+            break;
+        }
+        case 'request_email': {
+            toggleResetEmailModal(true);
+            break;
+        }
+        case 'system_email_change': {
+            toggleUpdateEmailModal(true);
             break;
         }
         case 'trading_platform_mt5_password_reset':
@@ -122,7 +139,7 @@ const Redirect = ({
             break;
         }
         case 'trading_platform_investor_password_reset': {
-            localStorage.setItem('cfd_reset_password_code', url_params.get('code'));
+            localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
             redirected_to_route = true;
@@ -148,19 +165,27 @@ Redirect.propTypes = {
     history: PropTypes.object,
     setResetTradingPasswordModalOpen: PropTypes.func,
     setVerificationCode: PropTypes.func,
+    verification_code: PropTypes.object,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
+    setNewEmail: PropTypes.func,
+    toggleResetEmailModal: PropTypes.func,
+    toggleUpdateEmailModal: PropTypes.func,
 };
 
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
         setVerificationCode: client.setVerificationCode,
+        verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,
         hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
+        setNewEmail: client.setNewEmail,
+        toggleResetEmailModal: ui.toggleResetEmailModal,
+        toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
     }))(Redirect)
 );

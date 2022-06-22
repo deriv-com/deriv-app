@@ -27,26 +27,22 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
         let fileUploaded = false;
         values.data.map((element, index) => {
             element.files.forEach((file, i) => {
-                fileUploaded = file?.file !== null;
-                if (fileUploaded) {
-                    if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
-                        errors.data[index] = {};
-                        errors.data[index].files = [];
-                        errors.data[index].files[i] = {
-                            file: localize(
-                                "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
-                            ),
-                        };
-                    }
-                    if (file?.file?.size / 1024 > 8000) {
-                        errors.data[index] = {};
-                        errors.data[index].files = [];
-                        errors.data[index].files[i] = {
-                            file: localize(
-                                'That file is too big (only up to 8MB allowed). Please upload another file.'
-                            ),
-                        };
-                    }
+                fileUploaded = fileUploaded === true || file?.file !== null;
+                if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
+                    errors.data[index] = {};
+                    errors.data[index].files = [];
+                    errors.data[index].files[i] = {
+                        file: localize(
+                            "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
+                        ),
+                    };
+                }
+                if (file?.file?.size / 1024 > 8000) {
+                    errors.data[index] = {};
+                    errors.data[index].files = [];
+                    errors.data[index].files[i] = {
+                        file: localize('That file is too big (only up to 8MB allowed). Please upload another file.'),
+                    };
                 }
             });
         });

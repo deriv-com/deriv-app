@@ -37,8 +37,8 @@ export const ProofOfOwnership = ({ account_status }) => {
             }
             setFormState({ ...form_state, ...{ is_btn_loading: true } });
             formValues.forEach(async values => {
-                if (values.files.length > 0) {
-                    const files = values.files.flatMap(f => f.file);
+                const files = values.files.flatMap(f => f.file).filter(f => f !== null);
+                if (files.length > 0) {
                     const filesToProcess = await compressImageFiles(files);
                     const processedFiles = await readFiles(filesToProcess, fileReadErrorMessage);
                     if (typeof processedFiles === 'string') {

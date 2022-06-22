@@ -9,17 +9,20 @@ const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error
 
     const handleClick = e => {
         e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
         hiddenFileInput.current.click();
     };
 
     const handleChange = event => {
         event.stopPropagation();
+        event.nativeEvent.stopImmediatePropagation();
         const fileUploaded = event.target.files[0];
         handleFile(name, fileUploaded);
         setShowButton(!showButton);
     };
     const handleIconClick = e => {
         e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
         setShowButton(!showButton);
         e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
         e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';

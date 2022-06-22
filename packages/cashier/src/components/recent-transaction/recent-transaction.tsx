@@ -5,10 +5,30 @@ import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 import { getStatus } from 'Constants/transaction-status';
 import './recent-transaction.scss';
 
-const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCryptoTransactionsVisible }) => {
+type TRecentTransactionProps = {
+    crypto_transactions: {
+        address_hash: string;
+        status_code: string;
+        submit_date: Date;
+        transaction_hash: string;
+        transaction_type: string;
+        amount: number;
+    }[];
+    currency: string;
+    onMount: () => void;
+    setIsCryptoTransactionsVisible: (visible: boolean) => void;
+};
+
+const RecentTransaction = ({
+    crypto_transactions,
+    currency,
+    onMount,
+    setIsCryptoTransactionsVisible,
+}: TRecentTransactionProps) => {
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -113,14 +133,7 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount, setIsCrypto
     );
 };
 
-RecentTransaction.propTypes = {
-    crypto_transactions: PropTypes.array,
-    currency: PropTypes.string,
-    onMount: PropTypes.func,
-    setIsCryptoTransactionsVisible: PropTypes.func,
-};
-
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client }: RootStore) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     onMount: modules.cashier.transaction_history.onMount,

@@ -114,7 +114,7 @@ export default class PaymentAgentStore {
                     email: payment_agent.email,
                     phones: payment_agent?.phone_numbers || payment_agent?.telephone,
                     name: payment_agent.name,
-                    supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
+                    supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,
                 });
                 const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);

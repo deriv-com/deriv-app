@@ -10,6 +10,7 @@ import { Loading, useStateCallback } from '@deriv/components';
 import POONotRequired from 'Components/poo-not-required';
 import POOVerified from 'Components/poo-verified';
 import POORejetced from 'Components/poo-rejected';
+import { VERIFIED, PENDING, NONE, REJECTED, OWNERSHIP } from './constants/constants';
 
 export const ProofOfOwnership = ({ account_status }) => {
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
@@ -71,7 +72,7 @@ export const ProofOfOwnership = ({ account_status }) => {
             setFormState({ ...form_state, ...{ is_btn_loading: false } });
         }
     };
-    if (needs_verification === 'ownership') {
+    if (needs_verification === OWNERSHIP) {
         return (
             <ProofOfOwnershipForm
                 cards={cards}
@@ -81,16 +82,16 @@ export const ProofOfOwnership = ({ account_status }) => {
             />
         ); // Proof of ownership is required.
     }
-    if (status === 'verified') {
+    if (status === VERIFIED) {
         return <POOVerified />; // Proof of ownership verified
     }
-    if (status === 'pending') {
+    if (status === PENDING) {
         return <POOSubmitted />; // Proof of ownership submitted pending review
     }
-    if (status === 'none') {
+    if (status === NONE) {
         return <POONotRequired />; // Client does not need proof of ownership.
     }
-    if (status === 'rejected') {
+    if (status === REJECTED) {
         return <POORejetced />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;

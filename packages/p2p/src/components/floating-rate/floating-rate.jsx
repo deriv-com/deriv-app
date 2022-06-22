@@ -94,12 +94,7 @@ const FloatingRate = ({
                         className='floating-rate__mkt-rate--msg'
                     >
                         1 {fiat_currency} ={' '}
-                        {formatMoney(
-                            local_currency,
-                            floating_rate_store.exchange_rate,
-                            true,
-                            setDecimalPlaces(floating_rate_store.exchange_rate, 6)
-                        )}{' '}
+                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}{' '}
                         {local_currency}
                     </Text>
                 </div>

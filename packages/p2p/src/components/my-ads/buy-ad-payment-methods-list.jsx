@@ -58,6 +58,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                 setSelectedMethods([...selected_methods, value]);
                 setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
             }
+            touched(true);
         }
     };
 

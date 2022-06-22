@@ -71,7 +71,13 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
         );
     }
 
-    return <BuyAdPaymentMethodsList selected_methods={selected_methods} setSelectedMethods={setSelectedMethods} />;
+    return (
+        <BuyAdPaymentMethodsList
+            selected_methods={selected_methods}
+            setSelectedMethods={setSelectedMethods}
+            touched={touched}
+        />
+    );
 };
 
 export default observer(EditAdFormPaymentMethods);

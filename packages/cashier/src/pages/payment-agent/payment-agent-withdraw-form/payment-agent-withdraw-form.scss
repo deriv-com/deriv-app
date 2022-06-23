@@ -1,100 +1,47 @@
 .payment-agent-withdraw-form {
-    &__drop-down {
-        display: inline-block;
-        margin: 0;
-        line-height: 1.43;
-        padding-left: 1.6rem !important;
-        flex: 1;
-        @include mobile {
-            max-width: 72vw;
-        }
+    &__page-return {
+        display: flex;
+        column-gap: 0.8rem;
+        margin: 2.4rem 0;
+        cursor: pointer;
     }
-    &__input {
-        margin-left: 1.6rem;
-        display: inline-block !important;
-        margin-bottom: 0 !important;
-        flex: 1;
-    }
-    &__withdrawal {
-        &-header {
-            margin: 3.2rem 0;
-        }
-    }
-    &__radio {
-        display: none;
 
-        &-group {
-            display: block;
+    &__form {
+        margin-bottom: 3.6rem;
+
+        &-account-number {
+            margin-bottom: 4.4rem;
         }
-        &-wrapper {
+
+        &-amount {
             display: flex;
-            margin-bottom: 3.9rem;
-        }
-        &-circle {
-            border: 2px solid var(--text-less-prominent);
-            border-radius: 50%;
-            box-shadow: 0 0 1px 0 $color-white;
-            width: 16px;
-            height: 16px;
-            transition: all 0.3s ease-in-out;
-            margin-right: 8px;
-            align-self: center;
-            display: inline-flex;
 
-            &--selected {
-                border-width: 4px;
-                border-color: var(--brand-red-coral);
+            @include mobile {
+                flex-direction: column;
             }
-        }
-    }
-    @include mobile {
-        &__withdrawal {
-            display: flex;
-            justify-content: flex-start;
-            flex-direction: column;
-            align-items: center;
 
-            form {
-                width: 100%;
-                margin-top: 3.2rem;
-            }
-            &-wrapper {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-            }
-            .payment-agent-withdraw-form__radio {
-                &-wrapper {
-                    width: 100%;
-                    position: relative;
+            .dc-input {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-bottom: 0;
 
-                    &:first-child {
-                        margin-top: 2.4rem;
-                    }
-                }
-                &-circle {
-                    width: 16px;
-                    height: 16px;
-                }
-                &-label:first-child {
-                    flex: 1;
+                @include mobile {
+                    border: 1px solid var(--border-normal);
+                    border-top-right-radius: 0.4rem;
+                    border-bottom-right-radius: 0.4rem;
                 }
             }
-            .cashier {
-                &__header {
-                    display: none;
+
+            .dc-btn {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
+                @include mobile {
+                    margin-top: 1.2rem;
+                    border-top-left-radius: 0.4rem;
+                    border-bottom-left-radius: 0.4rem;
                 }
-                &__input {
-                    width: 100%;
-                }
-                &__form-submit-button {
-                    max-width: 10rem;
-                    margin-left: auto;
-                }
-            }
-            .dc-select-native__placeholder {
-                background-color: var(--general-main-1);
             }
         }
     }

@@ -16,7 +16,7 @@ type WarningBulletProps = {
     children: JSX.Element | string;
 };
 
-type TConfirmProps = {
+type TTransferConfirmProps = {
     data: Array<TRowProps>;
     error?: object;
     header?: string;
@@ -59,7 +59,7 @@ const WarningBullet = ({ children }: WarningBulletProps) => (
     </div>
 );
 
-const Confirm = ({
+const TransferConfirm = ({
     data,
     error,
     header,
@@ -67,7 +67,7 @@ const Confirm = ({
     onClickBack,
     onClickConfirm,
     warning_messages,
-}: TConfirmProps) => {
+}: TTransferConfirmProps) => {
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
     return (
@@ -133,4 +133,4 @@ const Confirm = ({
     );
 };
 
-export default Confirm;
+export default TransferConfirm;

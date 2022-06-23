@@ -18,7 +18,7 @@ type TPaymentAgentWithdrawalLockedItemProps = {
 
 export type TPaymentAgentWithdrawalLockedProps = RouteComponentProps & {
     error?: {
-        code: number | string;
+        code: string;
         onClickButton?: () => void;
     };
 };

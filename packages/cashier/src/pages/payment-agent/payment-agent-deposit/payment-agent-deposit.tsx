@@ -10,7 +10,7 @@ import PaymentAgentDetails from '../payment-agent-details';
 type TPaymentAgentDepositProps = {
     onChangePaymentMethod: (e: { target: { name: string; value: string | number } }) => void;
     payment_agent_list: Array<{ name: string; email: string; phones: string; urls: string }>;
-    selected_bank: string | number;
+    selected_bank: number;
     supported_banks: Array<string>;
 };
 

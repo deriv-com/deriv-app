@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-container,testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
@@ -49,7 +48,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
     });
 
     it('should render the component', () => {
-        const { container } = render(
+        render(
             <PaymentAgentWithdrawForm
                 currency={'USD'}
                 onMount={onMount}
@@ -58,11 +57,13 @@ describe('<PaymentAgentWithdrawForm />', () => {
             />
         );
 
-        expect(container.firstChild).toHaveClass('payment-agent-withdraw-form__withdrawal');
+        expect(screen.getByTestId('dt_payment_agent_withdraw_form')).toHaveClass(
+            'payment-agent-withdraw-form__withdrawal'
+        );
     });
 
     it('should show the withdrawal confirmation', () => {
-        const { container } = render(
+        render(
             <PaymentAgentWithdrawForm
                 currency={'USD'}
                 is_try_withdraw_successful
@@ -72,7 +73,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
             />
         );
 
-        expect(container.firstChild).toHaveClass('cashier__wrapper--confirm');
+        expect(screen.getByTestId('dt_cashier_wrapper_confirm')).toHaveClass('cashier__wrapper--confirm');
     });
 
     it('should show an error if amount is not provided', async () => {
@@ -94,7 +95,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
     });
 
     it('should not proceed if amount is greater than the withdrawal limit', async () => {
-        const { container } = render(
+        render(
             <PaymentAgentWithdrawForm
                 currency={'USD'}
                 onMount={onMount}
@@ -103,7 +104,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
             />
         );
 
-        const amount = container.querySelector('input[name=amount]');
+        const amount = screen.getByTestId('dt_cashier_input_amount');
         const withdraw_button = screen.getByRole('button');
 
         fireEvent.change(amount, { target: { value: '2500' } });
@@ -115,7 +116,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
     });
 
     it('should not proceed if payment agent id is invalid', async () => {
-        const { container } = render(
+        render(
             <PaymentAgentWithdrawForm
                 currency={'USD'}
                 onMount={onMount}
@@ -124,7 +125,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
             />
         );
 
-        const payment_agent = container.querySelector('input[name=payment_agent]');
+        const payment_agent = screen.getByTestId('dt_cashier_input_payment_agent');
         const withdraw_button = screen.getByRole('button');
 
         fireEvent.change(payment_agent, { target: { value: 'abc' } });

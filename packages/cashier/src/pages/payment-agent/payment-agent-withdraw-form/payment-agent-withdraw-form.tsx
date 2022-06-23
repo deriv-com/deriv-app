@@ -25,16 +25,16 @@ type TValidateWithdrawalValueProps = {
     payment_method: string;
     payment_agents: string | undefined;
     payment_agent: string;
-    amount: string | number;
-    [key: string]: string | number | undefined;
+    amount: string;
+    [key: string]: string | undefined;
 };
 
 type TValidateWithdrawalProps = {
     balance: string;
     currency: string;
     payment_agent?: {
-        min_withdrawal?: string | number;
-        max_withdrawal?: string | number;
+        min_withdrawal?: string;
+        max_withdrawal?: string;
         value?: string;
         text?: string;
     };
@@ -100,7 +100,7 @@ type TPaymentAgentWithdrawFormProps = {
     requestTryPaymentAgentWithdraw: (arg: {
         loginid: string | number | undefined;
         currency: string;
-        amount: string | number;
+        amount: string;
         verification_code: string;
     }) => {
         error?: string;
@@ -225,6 +225,7 @@ const RadioInput = ({ touched, errors, field, values, ...props }: TRadioInputPro
                     name='payment_agent'
                     className='payment-agent-withdraw-form__input'
                     classNameError='payment-agent-withdraw-form__input-error'
+                    data-testid='dt_cashier_input_payment_agent'
                     type='text'
                     placeholder='CR'
                     error={touched.payment_agent && errors.payment_agent}
@@ -300,7 +301,10 @@ const PaymentAgentWithdrawForm = ({
     const should_fill_id = !payment_agent_name && payment_agent_id;
 
     return (
-        <div className='cashier__wrapper--align-center payment-agent-withdraw-form__withdrawal'>
+        <div
+            className='cashier__wrapper--align-center payment-agent-withdraw-form__withdrawal'
+            data-testid='dt_payment_agent_withdraw_form'
+        >
             <Text
                 as='p'
                 size='s'
@@ -393,6 +397,7 @@ const PaymentAgentWithdrawForm = ({
                                         type='text'
                                         label={localize('Amount')}
                                         error={touched.amount && errors.amount}
+                                        data-testid='dt_cashier_input_amount'
                                         required
                                         leading_icon={
                                             <span

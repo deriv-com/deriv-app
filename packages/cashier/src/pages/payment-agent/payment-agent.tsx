@@ -4,7 +4,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/types';
 import CashierLocked from 'Components/cashier-locked';
 import PaymentAgentList from './payment-agent-list';
-import Virtual from 'Components/cashier-container/virtual';
+import { Virtual } from 'Components/cashier-container';
 
 type TPaymentAgentProps = {
     container?: string;
@@ -13,7 +13,7 @@ type TPaymentAgentProps = {
     is_switching?: boolean;
     is_virtual?: boolean;
     payment_agent_active_tab_index?: number;
-    setActiveTab?: (container: string | undefined) => void;
+    setActiveTab?: (container?: string) => void;
     setPaymentAgentActiveTabIndex?: (index: number) => void;
     verification_code?: string;
 };

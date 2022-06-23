@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PaymentAgentList from '../payment-agent-list';
@@ -11,10 +10,22 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Pages/payment-agent/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
-jest.mock('Components/verification-email', () => () => <div>The email has been sent!</div>);
-jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
-jest.mock('Pages/payment-agent/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
+jest.mock('Pages/payment-agent/payment-agent-withdrawal-locked', () => {
+    const PaymentAgentWithdrawalLocked = () => <div>PaymentAgentWithdrawalLocked</div>;
+    return PaymentAgentWithdrawalLocked;
+});
+jest.mock('Components/verification-email', () => {
+    const VerificationEmail = () => <div>The email has been sent!</div>;
+    return VerificationEmail;
+});
+jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => {
+    const PaymentAgentWithdrawForm = () => <div>Payment agent withdraw form</div>;
+    return PaymentAgentWithdrawForm;
+});
+jest.mock('Pages/payment-agent/payment-agent-deposit', () => {
+    const PaymentAgentDeposit = () => <div>Payment agent deposit</div>;
+    return PaymentAgentDeposit;
+});
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

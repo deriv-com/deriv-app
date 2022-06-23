@@ -464,9 +464,10 @@
     }
 
     &__verification-status {
+        width: 80%;
         text-align: center;
         min-height: 2.4rem;
-        margin: 0 0.8rem 0.8rem 0.8rem;
+        margin: 0 auto 0.8rem auto;
         margin-top: auto;
 
         &--pending {
@@ -478,6 +479,13 @@
 
         &--verified {
             background-color: #4bb4b3;
+            color: #fff;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+        }
+
+        &--POA_POI {
+            background-color: #ec3f3f;
             color: #fff;
             padding: 0.8rem;
             border-radius: 0.5rem;

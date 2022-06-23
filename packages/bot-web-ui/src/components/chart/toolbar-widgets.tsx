@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ToolbarWidget, ChartMode, DrawTools, Share, StudyLegend, Views } from '@deriv/deriv-charts';
 
-const ToolbarWidgets = ({ updateChartType, updateGranularity }) => (
+type TToolbarWidgetsProps = {
+    updateChartType: (chart_type: string) => void;
+    updateGranularity: (updateGranularity: number) => void;
+};
+
+const ToolbarWidgets = ({ updateChartType, updateGranularity }: TToolbarWidgetsProps) => (
     <ToolbarWidget>
         <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
         <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
@@ -11,10 +15,5 @@ const ToolbarWidgets = ({ updateChartType, updateGranularity }) => (
         <Share portalNodeId='modal_root' />
     </ToolbarWidget>
 );
-
-ToolbarWidgets.propTypes = {
-    updateChartType: PropTypes.func,
-    updateGranularity: PropTypes.func,
-};
 
 export default ToolbarWidgets;

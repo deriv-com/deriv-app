@@ -120,18 +120,12 @@ export default class PaymentAgentStore {
                     name: payment_agent.name,
                     paymentagent_loginid: payment_agent.paymentagent_loginid,
                     phones: payment_agent?.phone_numbers || payment_agent?.telephone,
-                    supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
+                    supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,
                     withdrawal_commission: payment_agent.withdrawal_commission,
                 });
-                if (payment_agent.supported_payment_methods) {
-                    const supported_banks_array = payment_agent?.supported_payment_methods
-                        ? payment_agent.supported_payment_methods.map(bank => bank.payment_method)
-                        : payment_agent.supported_banks.split(',');
-                    supported_banks_array.forEach(bank => {
-                        this.addSupportedBank(bank);
-                    });
-                }
+                const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
+                supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
             shuffleArray(this.list);
         } catch (e) {

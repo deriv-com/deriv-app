@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import 'babel-polyfill';
 import 'promise-polyfill';
+// eslint-disable-next-line
 import registerServiceWorker from 'Utils/pwa';
 import initStore from 'App/initStore';
 import App from 'App/app.jsx';

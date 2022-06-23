@@ -11,7 +11,7 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
-import StarRating from '../star-rating/star-rating.jsx';
+import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
 

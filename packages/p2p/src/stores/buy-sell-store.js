@@ -47,7 +47,7 @@ export default class BuySellStore extends BaseStore {
     payment_method_ids = [];
     sort_list = [
         { text: localize('Exchange rate'), value: 'rate' },
-        { text: localize('User Rating'), value: 'rating' },
+        { text: localize('User rating'), value: 'rating' },
     ];
 
     @computed

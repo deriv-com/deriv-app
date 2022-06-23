@@ -50,7 +50,7 @@ const PaymentAgentTransferReceipt = ({
                 </span>
                 <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                 <span className='account-transfer__transfer-details-to'>
-                    <Icon icon='IcClient' />
+                    <Icon icon='IcCashierPaymentAgent' />
                     <span className='cashier__transferred-details'>
                         <Text size='xs' line_height='xs' weight='bold' align='center'>
                             {receipt.client_name}

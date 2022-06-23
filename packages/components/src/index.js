@@ -67,6 +67,7 @@ export { default as MobileDialog } from './components/mobile-dialog';
 export { default as MobileDrawer } from './components/mobile-drawer';
 export { default as MobileFullPageModal } from './components/mobile-full-page-modal';
 export { default as MobileWrapper } from './components/mobile-wrapper';
+export { default as Microtip } from './components/microtip';
 export { default as Modal } from './components/modal';
 export { default as Money } from './components/money';
 export { default as MultiStep } from './components/multi-step';

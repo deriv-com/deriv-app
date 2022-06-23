@@ -4,7 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/types';
-import Confirm from 'Components/confirm';
+import TransferConfirm from 'Components/transfer-confirm';
 import './payment-agent-transfer-confirm.scss';
 
 type TPaymentAgentTransferConfirm = {
@@ -64,7 +64,7 @@ const PaymentAgentTransferConfirm = ({
             >
                 {localize('Check Transfer Information')}
             </Text>
-            <Confirm
+            <TransferConfirm
                 data={[
                     { label: localize('Transfer from'), value: loginid, key: 'transfer_from' },
                     {

@@ -49,6 +49,7 @@ export default class ClientStore extends BaseStore {
     @observable currencies_list = {};
     @observable residence_list = [];
     @observable states_list = [];
+    @observable citizen = '';
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
@@ -1293,6 +1294,7 @@ export default class ClientStore extends BaseStore {
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
+            if (this.citizen) this.onSetCitizen(this.citizen);
         }
 
         this.selectCurrency('');
@@ -1631,6 +1633,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setCitizen(citizen) {
+        this.citizen = citizen;
+    }
+
+    @action.bound
     setEmail(email) {
         this.accounts[this.loginid].email = email;
         this.email = email;
@@ -1928,8 +1935,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
-        if (!this.verification_code.signup || !password || !residence) return;
+    onSetCitizen(citizen) {
+        if (!citizen) return;
+        WS.setSettings({
+            set_settings: 1,
+            citizen,
+        });
+    }
+
+    @action.bound
+    onSignup({ citizenship, password, residence }, cb) {
+        if (!this.verification_code.signup || !password || !residence || !citizenship) return;
         WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
             async response => {
                 if (response.error) {
@@ -1938,8 +1954,8 @@ export default class ClientStore extends BaseStore {
                     cb();
                     // Initialize client store with new user login
                     const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    await this.setCitizen(citizenship);
                     await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
-
                     // GTM Signup event
                     this.root_store.gtm.pushDataLayer({
                         event: 'virtual_signup',

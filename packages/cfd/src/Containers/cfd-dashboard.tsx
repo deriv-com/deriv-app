@@ -496,8 +496,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
                                                         : is_suspended_mt5_real_server ||
-                                                        dxtrade_disabled_signup_types.real ||
-                                                        !!dxtrade_accounts_list_error
+                                                          dxtrade_disabled_signup_types.real ||
+                                                          !!dxtrade_accounts_list_error
                                                 }
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
@@ -511,7 +511,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_virtual={is_virtual}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
-                                                isFinancialStpCardVisible={isFinancialStpCardVisible}
                                                 openAccountTransfer={openAccountTransfer}
                                                 openPasswordManager={togglePasswordManagerModal}
                                                 openPasswordModal={openRealPasswordModal}
@@ -539,15 +538,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 platform === CFD_PLATFORMS.MT5
                                                     ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
                                                     : is_suspended_mt5_demo_server ||
-                                                    dxtrade_disabled_signup_types.demo ||
-                                                    !!dxtrade_accounts_list_error
+                                                      dxtrade_disabled_signup_types.demo ||
+                                                      !!dxtrade_accounts_list_error
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
                                             is_loading={is_loading}
                                             isSyntheticCardVisible={isSyntheticCardVisible}
                                             isFinancialCardVisible={isFinancialCardVisible}
-                                            isFinancialStpCardVisible={isFinancialStpCardVisible}
                                             has_cfd_account={has_cfd_account}
                                             current_list={current_list}
                                             onSelectAccount={createCFDAccount}

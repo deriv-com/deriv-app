@@ -459,11 +459,45 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 37rem;
+    min-height: 24rem;
     width: 30.4em;
     position: relative;
     @include desktop {
         height: 100%;
+    }
+
+    &__item {
+        width: 90%;
+        background-color: var(--general-section-1);
+        border-radius: 8px;
+        margin-bottom: 1.6rem;
+
+        &--banner {
+            position: relative;
+            transform: rotate(45deg);
+            border-bottom: 1.8rem solid #85acb0;
+            border-left: 1.8rem solid transparent;
+            border-right: 1.8rem solid transparent;
+            height: 0;
+            width: 7rem;
+            left: 21.8rem;
+            top: 1rem;
+            color: #fff;
+            font-weight: bold;
+            line-height: 18px;
+            white-space: nowrap;
+            text-align: center;
+
+            &--demo {
+                border-bottom-color: var(--brand-secondary);
+            }
+            &--server {
+                border-bottom-color: $color-blue-2;
+            }
+            @include mobile {
+                left: calc(100vw - 14.2rem);
+            }
+        }
     }
 
     &__wrapper {
@@ -564,6 +598,7 @@
     &--balance {
         @include typeface(--title-left-bold-black);
         color: var(--text-profit-success);
+        padding: 1rem;
     }
     &__banner {
         position: absolute;
@@ -806,6 +841,24 @@
             }
         }
     }
+
+    &__manage--mt5 {
+        display: flex;
+        width: 100%;
+        margin-left: 0.4rem;
+        padding-top: 1.8rem;
+
+        .dc-btn {
+            min-width: 12rem;
+            margin-bottom: 1.6rem;
+            height: 4rem;
+
+            &:not(:last-child) {
+                margin-right: 0.6rem;
+            }
+        }
+    }
+
     &__action-wrapper {
         margin: 0 auto 1.3rem;
         padding-top: 1rem;

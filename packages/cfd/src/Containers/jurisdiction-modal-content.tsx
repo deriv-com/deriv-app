@@ -19,7 +19,7 @@ const JurisdictionModalContent = ({
     const [verification_status] = React.useState('POI');
     const [verification_status2] = React.useState('verified');
     const [verification_status3] = React.useState('not_submitted');
-    const [verification_status4] = React.useState('POA');
+    const [verification_status4] = React.useState('pending');
     const [unselect_card, setUnselectCard] = React.useState(false);
     const [number_of_cards] = React.useState(2);
 

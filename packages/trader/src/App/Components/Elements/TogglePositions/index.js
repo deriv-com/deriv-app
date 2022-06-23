@@ -1,1 +1,3 @@
-export default './toggle-positions.jsx';
+import TogglePositions from './toggle-positions.jsx';
+
+export default TogglePositions;

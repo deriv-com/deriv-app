@@ -1,1 +1,3 @@
-export default './progress-slider-stream.jsx';
+import ProgressSliderStream from './progress-slider-stream.jsx';
+
+export default ProgressSliderStream;

@@ -74,7 +74,7 @@ const BuySellRow = ({ row: advert }) => {
                                 {advertiser_name}
                             </Text>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
-                        </div>{' '}
+                        </div>
                         {!!rating_count && !!rating_average ? (
                             <div className='buy-sell-row__rating'>
                                 <StarRating

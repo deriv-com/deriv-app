@@ -29,6 +29,12 @@ const PaymentAgentDepositWithdrawContainer = ({
         };
     }, [resetPaymentAgent]);
 
+    React.useEffect(() => {
+        return () => {
+            onChangePaymentMethod({ target: { value: '0' } });
+        };
+    }, []);
+
     const [is_unlisted_withdraw, setIsUnlistedWithdraw] = React.useState(false);
 
     const list_with_default = [
@@ -96,7 +102,7 @@ const PaymentAgentDepositWithdrawContainer = ({
                         </DesktopWrapper>
                         <MobileWrapper>
                             <SelectNative
-                                placeholder={localize('Please select')}
+                                placeholder={localize('All payment agents')}
                                 name='payment_methods'
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}

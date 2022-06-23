@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'promise-polyfill';
+// eslint-disable-next-line
 import registerServiceWorker from 'Utils/pwa';
 
 if (

@@ -54,6 +54,31 @@
         }
     }
 
+    &__witdrawal-details {
+        padding: 0 1.6rem;
+        margin-top: 3.2rem;
+
+        &-header {
+            margin-bottom: 1.6rem;
+        }
+
+        &__form {
+            display: flex;
+
+            .dc-input {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-bottom: 1.8rem;
+            }
+
+            .dc-btn {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+
     &__detail {
         display: flex;
 

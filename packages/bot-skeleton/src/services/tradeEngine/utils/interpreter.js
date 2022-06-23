@@ -33,21 +33,14 @@ const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    let $scope = createScope();
-    let bot = Interface($scope);
+    const $scope = createScope();
+    const bot = Interface($scope);
     let interpreter = {};
     let onFinish;
 
     $scope.observer.register('REVERT', watchName =>
         revert(watchName === 'before' ? $scope.beforeState : $scope.duringState)
     );
-
-    function init() {
-        $scope = createScope();
-        bot = Interface($scope);
-        interpreter = {};
-        onFinish = () => {};
-    }
 
     function revert(state) {
         interpreter.restoreStateSnapshot(state);
@@ -218,7 +211,6 @@ const Interpreter = () => {
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = bot.tradeEngine;
                 terminateSession();
-                init();
                 $scope.observer.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
                 bot.tradeEngine.start(tradeOptions);

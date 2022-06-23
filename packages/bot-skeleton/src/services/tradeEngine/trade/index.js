@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { localize } from '@deriv/translations';
-import Balance from './Balance';
+import { observeBalance } from './Balance';
 import OpenContract from './OpenContract';
 import Proposal from './Proposal';
 import Purchase from './Purchase';
@@ -62,7 +62,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
+export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {})))))) {
     constructor($scope) {
         super();
         this.$scope = $scope;
@@ -131,7 +131,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                 if (data.msg_type === 'authorize') {
                     this.accountInfo = data;
                     this.token = token;
-
+                    if (data?.loginid) {
+                        observeBalance(data.loginid);
+                    }
                     // Only subscribe to balance in browser, not for tests.
                     if (document) {
                         doUntilDone(() => api.send({ balance: 1, subscribe: 1 })).then(r => {
@@ -149,7 +151,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     observe() {
         this.observeOpenContract();
-        this.observeBalance();
         this.observeProposals();
     }
 

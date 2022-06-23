@@ -8,8 +8,9 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
-import './buy-sell-row.scss';
+import StarRating from '../star-rating/star-rating.jsx';
 import TradeBadge from '../trade-badge';
+import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -45,7 +46,9 @@ const BuySellRow = ({ row: advert }) => {
 
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const { name: advertiser_name } = advert.advertiser_details;
+    const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
+
+    const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
     if (isMobile()) {
         return (
@@ -71,15 +74,28 @@ const BuySellRow = ({ row: advert }) => {
                                 {advertiser_name}
                             </Text>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
-                        </div>
-                        {advert.advertiser_details.total_completion_rate ? (
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize
-                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
-                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
+                        </div>{' '}
+                        {!!rating_count && !!rating_average ? (
+                            <div className='buy-sell-row__rating'>
+                                <StarRating
+                                    empty_star_className='buy-sell-row__rating--star'
+                                    empty_star_icon='IcEmptyStar'
+                                    full_star_className='buy-sell-row__rating--star'
+                                    full_star_icon='IcFullStar'
+                                    initial_value={rating_average_decimal}
+                                    is_readonly
+                                    number_of_stars={5}
+                                    should_allow_hover_effect={false}
+                                    star_size={14}
                                 />
-                            </Text>
-                        ) : null}
+                            </div>
+                        ) : (
+                            <div className='buy-sell-row__rating'>
+                                <Text color='less-prominent' size='xxs'>
+                                    <Localize i18n_default_text='Not rated yet' />
+                                </Text>
+                            </div>
+                        )}
                     </div>
                     <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
                 </div>
@@ -161,13 +177,26 @@ const BuySellRow = ({ row: advert }) => {
                             </div>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
-                        {!!advert.advertiser_details.total_completion_rate && (
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize
-                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
-                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
+                        {!!rating_count && !!rating_average ? (
+                            <div className='buy-sell-row__rating'>
+                                <StarRating
+                                    empty_star_className='buy-sell-row__rating--star'
+                                    empty_star_icon='IcEmptyStar'
+                                    full_star_className='buy-sell-row__rating--star'
+                                    full_star_icon='IcFullStar'
+                                    initial_value={rating_average_decimal}
+                                    is_readonly
+                                    number_of_stars={5}
+                                    should_allow_hover_effect={false}
+                                    star_size={14}
                                 />
-                            </Text>
+                            </div>
+                        ) : (
+                            <div className='buy-sell-row__rating'>
+                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
+                                    <Localize i18n_default_text='Not rated yet' />
+                                </Text>
+                            </div>
                         )}
                     </div>
                 </div>

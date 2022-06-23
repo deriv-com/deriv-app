@@ -107,6 +107,16 @@
         }
     }
 
+    &__rating {
+        padding-top: 0.1rem;
+
+        &--star {
+            > svg {
+                padding-right: 0.1rem;
+            }
+        }
+    }
+
     &__table-cell {
         &--left {
             align-items: flex-start;

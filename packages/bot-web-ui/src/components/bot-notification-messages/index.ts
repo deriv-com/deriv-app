@@ -1,4 +1,4 @@
-import BotNotificationMessages from './bot-notification-messages.jsx';
+import BotNotificationMessages from './bot-notification-messages';
 import './bot-notification-messages.scss';
 
 export default BotNotificationMessages;

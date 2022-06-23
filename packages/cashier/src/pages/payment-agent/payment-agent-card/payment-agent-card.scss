@@ -10,15 +10,20 @@
         align-items: flex-start;
     }
 
+    & .dc-expansion-panel__header-chevron-icon {
+        flex-basis: 5%;
+    }
+
     &__description-container {
         display: flex;
         flex-direction: column;
+        flex-basis: 95%;
 
         &-icons-container {
             display: flex;
             align-items: center;
             height: 3.2rem;
-            margin-top: 2.4rem;
+            margin-top: 1.6rem;
 
             .dc-icon {
                 width: 5rem;

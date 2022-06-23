@@ -2,42 +2,19 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import {
-    Button,
-    DesktopWrapper,
-    Dropdown,
-    Input,
-    Loading,
-    MobileWrapper,
-    Money,
-    SelectNative,
-    Text,
-} from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
+import { Button, Icon, Input, Text } from '@deriv/components';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ErrorDialog from 'Components/error-dialog';
-import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-withdraw-form.scss';
 
-const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
+const validateWithdrawal = (values, { balance, currency }) => {
     const errors = {};
-
-    if (
-        values.payment_method === 'payment_agent' &&
-        (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))
-    ) {
-        errors.payment_agent = localize('Please enter a valid payment agent ID.');
-    }
 
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
         decimals: getDecimalPlaces(currency),
-        ...(payment_agent.min_withdrawal && {
-            min: payment_agent.min_withdrawal,
-            max: payment_agent.max_withdrawal,
-        }),
     });
 
     if (!values.amount) {
@@ -46,142 +23,33 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
         errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
+    } else if (!values.account_number) {
+        errors.account_number = localize('This field is required.');
+    } else if (!values.account_number.startsWith('CR')) {
+        errors.account_number = localize('Please enter a valid account number. Example: CR123456789');
     }
 
     return errors;
 };
 
-// TODO: refactor this to use the main radio component for forms too if possible
-const Radio = ({ children, field, props }) => (
-    <div className='payment-agent-withdraw-form__radio-container'>
-        <input
-            id={props.id}
-            className={props.className}
-            name={field.name}
-            value={props.id}
-            checked={field.value === props.id}
-            onChange={field.onChange}
-            type='radio'
-        />
-        <label htmlFor={props.id} className='payment-agent-withdraw-form__radio-wrapper'>
-            <span
-                className={classNames('payment-agent-withdraw-form__radio-circle', {
-                    'payment-agent-withdraw-form__radio-circle--selected': field.value === props.id,
-                })}
-            />
-            {children}
-        </label>
-    </div>
-);
-
-const RadioDropDown = ({ field, values, ...props }) => (
-    <Radio field={field} props={props}>
-        <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
-            <Localize i18n_default_text='By name' />
-        </Text>
-        <Field name='payment_agents'>
-            {params => (
-                <React.Fragment>
-                    <DesktopWrapper>
-                        <Dropdown
-                            placeholder={localize('Choose an agent')}
-                            is_align_text_left
-                            className='payment-agent-withdraw-form__drop-down'
-                            classNameDisplay='cashier__drop-down-display'
-                            classNameDisplaySpan='cashier__drop-down-display-span'
-                            classNameItems='cashier__drop-down-items'
-                            list={props.payment_agent_list}
-                            value={values.payment_agents}
-                            onChange={e => {
-                                params.form.setFieldValue('payment_agents', e.target.value);
-                                params.form.setFieldValue('payment_method', props.id);
-                            }}
-                        />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <SelectNative
-                            placeholder={localize('Please select')}
-                            name='payment_methods'
-                            className='payment-agent-withdraw-form__drop-down'
-                            list_items={props.payment_agent_list}
-                            value={values.payment_agents}
-                            label={localize('Choose agent')}
-                            should_show_empty_option={false}
-                            onChange={e => {
-                                params.form.setFieldValue('payment_agents', e.target.value);
-                                params.form.setFieldValue('payment_method', props.id);
-                            }}
-                            use_text={false}
-                        />
-                    </MobileWrapper>
-                </React.Fragment>
-            )}
-        </Field>
-    </Radio>
-);
-
-const RadioInput = ({ touched, errors, field, values, ...props }) => (
-    <Radio field={field} props={props}>
-        <Text as='p' size='xxs' line_height='s' className='payment-agent-withdraw-form__radio-label cashier__paragraph'>
-            <Localize i18n_default_text='By payment agent ID' />
-        </Text>
-        <Field>
-            {params => (
-                <Input
-                    name='payment_agent'
-                    className='payment-agent-withdraw-form__input'
-                    classNameError='payment-agent-withdraw-form__input-error'
-                    type='text'
-                    placeholder='CR'
-                    error={touched.payment_agent && errors.payment_agent}
-                    autoComplete='off'
-                    maxLength='20'
-                    value={values.payment_agent}
-                    onChange={params.field.onChange}
-                    onFocus={() => {
-                        params.form.setFieldValue('payment_method', props.id);
-                    }}
-                    onBlur={params.field.onBlur}
-                />
-            )}
-        </Field>
-    </Radio>
-);
-
 const PaymentAgentWithdrawForm = ({
-    amount,
     balance,
     currency,
     error,
-    is_loading,
-    is_try_withdraw_successful,
-    is_withdraw_successful,
     onMount,
-    payment_agent_id,
-    payment_agent_list,
-    payment_agent_name,
     requestTryPaymentAgentWithdraw,
-    resetPaymentAgent,
     verification_code,
+    setIsUnlistedWithdraw,
 }) => {
     React.useEffect(() => {
         onMount();
+    }, [onMount]);
 
-        return () => {
-            resetPaymentAgent();
-        };
-    }, [onMount, resetPaymentAgent]);
-
-    const validateWithdrawalPassthrough = values =>
-        validateWithdrawal(values, {
-            balance,
-            currency,
-            payment_agent: payment_agent_list.find(pa => pa.value === values[values.payment_method]),
-        });
+    const validateWithdrawalPassthrough = values => validateWithdrawal(values, { balance, currency });
 
     const onWithdrawalPassthrough = async (values, actions) => {
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
-            loginid: values[values.payment_method],
+            loginid: values.account_number,
             currency,
             amount: values.amount,
             verification_code,
@@ -191,134 +59,67 @@ const PaymentAgentWithdrawForm = ({
         }
     };
 
-    if (is_loading || !payment_agent_list.length) {
-        return <Loading className='cashier__loader' is_fullscreen={false} />;
-    }
-    if (is_try_withdraw_successful) {
-        return <PaymentAgentWithdrawConfirm verification_code={verification_code} />;
-    }
-    if (is_withdraw_successful) {
-        return <PaymentAgentReceipt />;
-    }
-    const should_fill_id = !payment_agent_name && payment_agent_id;
-
     return (
-        <div className='cashier__wrapper--align-center payment-agent-withdraw-form__withdrawal'>
-            <Text
-                as='p'
-                size='s'
-                weight='bold'
-                align='center'
-                color='prominent'
-                className='cashier__header payment-agent-withdraw-form__withdrawal-header'
-            >
-                <Localize i18n_default_text='Payment agent withdrawal' />
-            </Text>
+        <div className='payment-agent-withdraw-form'>
+            <div onClick={() => setIsUnlistedWithdraw(false)} className='payment-agent-withdraw-form__page-return'>
+                <Icon icon='icArrowLeftBold' />
+                <Text as='p' line_height='m' size='xs' weight='bold'>
+                    <Localize i18n_default_text='Back to list' />
+                </Text>
+            </div>
+
             <Formik
                 initialValues={{
-                    // in case coming back from confirmation screen, populate the recent data to be edited
-                    amount: amount || '',
-                    payment_agent: should_fill_id ? payment_agent_id : '',
-                    payment_agents:
-                        should_fill_id || !payment_agent_name
-                            ? payment_agent_list[0]?.value
-                            : payment_agent_list.find(pa => pa.text === payment_agent_name)?.value,
-                    payment_method: should_fill_id ? 'payment_agent' : 'payment_agents',
+                    account_number: '',
+                    amount: '',
                 }}
                 validate={validateWithdrawalPassthrough}
                 onSubmit={onWithdrawalPassthrough}
             >
-                {({ errors, isSubmitting, isValid, values, touched }) => {
-                    const getHint = () => {
-                        const getHintText = payment_agent => {
-                            return (
-                                payment_agent_list.find(pa => pa.value === payment_agent) && (
-                                    <Localize
-                                        i18n_default_text='Withdrawal limits: <0 />-<1 />'
-                                        components={[
-                                            <Money
-                                                key={0}
-                                                amount={
-                                                    payment_agent_list.find(pa => pa.value === payment_agent)
-                                                        .min_withdrawal
-                                                }
-                                                currency={currency}
-                                            />,
-                                            <Money
-                                                key={1}
-                                                amount={
-                                                    payment_agent_list.find(pa => pa.value === payment_agent)
-                                                        .max_withdrawal
-                                                }
-                                                currency={currency}
-                                            />,
-                                        ]}
-                                    />
-                                )
-                            );
-                        };
-                        switch (values.payment_method) {
-                            case 'payment_agents':
-                                return getHintText(values.payment_agents);
-                            case 'payment_agent':
-                                return getHintText(values.payment_agent);
-                            default:
-                                return <></>;
-                        }
-                    };
-
+                {({ errors, isSubmitting, isValid, touched }) => {
                     return (
-                        <Form>
-                            <div className='payment-agent-withdraw-form__radio-group'>
-                                <Field
-                                    id='payment_agents'
-                                    component={RadioDropDown}
-                                    payment_agent_list={payment_agent_list}
-                                    className='payment-agent-withdraw-form__radio'
-                                    name='payment_method'
-                                    values={values}
-                                />
-                                <Field
-                                    id='payment_agent'
-                                    component={RadioInput}
-                                    touched={touched}
-                                    errors={errors}
-                                    values={values}
-                                    className='payment-agent-withdraw-form__radio'
-                                    name='payment_method'
-                                />
-                            </div>
-                            <Field name='amount'>
+                        <Form className='payment-agent-withdraw-form__form'>
+                            <Field name='account_number'>
                                 {({ field }) => (
                                     <Input
                                         {...field}
-                                        className='cashier__input dc-input--no-placeholder'
                                         type='text'
-                                        label={localize('Amount')}
-                                        error={touched.amount && errors.amount}
+                                        className='payment-agent-withdraw-form__form-account-number'
+                                        label={localize('Enter the payment agent account number')}
+                                        error={touched.account_number && errors.account_number}
+                                        hint={localize('Example: CR123456789')}
                                         required
-                                        leading_icon={
-                                            <span
-                                                className={classNames('symbols', `symbols--${currency.toLowerCase()}`)}
-                                            >
-                                                {getCurrencyDisplayCode(currency)}
-                                            </span>
-                                        }
                                         autoComplete='off'
                                         maxLength='30'
-                                        hint={getHint()}
                                     />
                                 )}
                             </Field>
-                            <div className='cashier__form-submit'>
-                                <Button
-                                    className='cashier__form-submit-button'
-                                    type='submit'
-                                    is_disabled={!isValid || isSubmitting}
-                                    primary
-                                    large
-                                >
-                                    <Localize i18n_default_text='Withdraw' />
+                            <div className='payment-agent-withdraw-form__form-amount'>
+                                <Field name='amount'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            type='text'
+                                            label={localize('Enter amount')}
+                                            error={touched.amount && errors.amount}
+                                            required
+                                            autoComplete='off'
+                                            maxLength='30'
+                                            trailing_icon={
+                                                <span
+                                                    className={classNames(
+                                                        'symbols',
+                                                        `symbols--${currency.toLowerCase()}`
+                                                    )}
+                                                >
+                                                    {getCurrencyDisplayCode(currency)}
+                                                </span>
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                                <Button type='submit' is_disabled={!isValid || isSubmitting} primary large>
+                                    <Localize i18n_default_text='Continue' />
                                 </Button>
                             </div>
                             <ErrorDialog error={error} />
@@ -326,39 +127,31 @@ const PaymentAgentWithdrawForm = ({
                     );
                 }}
             </Formik>
+            <Text as='p' color='less-prominent' line_height='s' size='xxs'>
+                <Localize
+                    i18n_default_text='Note: {{website_name}} does not charge any transfer fees.'
+                    values={{ website_name }}
+                />
+            </Text>
         </div>
     );
 };
 
 PaymentAgentWithdrawForm.propTypes = {
-    amount: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
-    error_message_withdraw: PropTypes.string,
-    is_loading: PropTypes.bool,
-    is_try_withdraw_successful: PropTypes.bool,
-    is_withdraw_successful: PropTypes.bool,
+    error: PropTypes.object,
     onMount: PropTypes.func,
-    payment_agent_id: PropTypes.string,
-    payment_agent_list: PropTypes.array,
-    payment_agent_name: PropTypes.string,
     requestTryPaymentAgentWithdraw: PropTypes.func,
-    resetPaymentAgent: PropTypes.func,
     verification_code: PropTypes.string,
+    setIsUnlistedWithdraw: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
-    amount: modules.cashier.payment_agent.confirm.amount,
     balance: client.balance,
     currency: client.currency,
     error: modules.cashier.payment_agent.error,
-    is_loading: modules.cashier.general_store.is_loading,
-    is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
-    is_withdraw_successful: modules.cashier.payment_agent.is_withdraw_successful,
     onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
-    payment_agent_id: modules.cashier.payment_agent.confirm.loginid,
-    payment_agent_list: modules.cashier.payment_agent.agents,
-    payment_agent_name: modules.cashier.payment_agent.confirm.payment_agent_name,
     requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
-    resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
+    verification_code: client.verification_code.payment_agent_withdraw,
 }))(PaymentAgentWithdrawForm);

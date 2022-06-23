@@ -7,6 +7,7 @@ import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentCard from '../payment-agent-card';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 
 const PaymentAgentDepositWithdrawContainer = ({
@@ -34,6 +35,8 @@ const PaymentAgentDepositWithdrawContainer = ({
         };
     }, []);
 
+    const [is_unlisted_withdraw, setIsUnlistedWithdraw] = React.useState(false);
+
     const list_with_default = [
         { text: <Localize i18n_default_text='All payment methods' />, value: 0 },
         ...supported_banks,
@@ -47,6 +50,15 @@ const PaymentAgentDepositWithdrawContainer = ({
         return <PaymentAgentReceipt />;
     }
 
+    if (is_unlisted_withdraw) {
+        return (
+            <PaymentAgentWithdrawForm
+                verification_code={verification_code}
+                setIsUnlistedWithdraw={setIsUnlistedWithdraw}
+            />
+        );
+    }
+
     return (
         <React.Fragment>
             <div className='payment-agent-list__list-header'>
@@ -56,7 +68,16 @@ const PaymentAgentDepositWithdrawContainer = ({
                     </Text>
                 ) : (
                     <Text as='p' line_height='s' size='xs'>
-                        <Localize i18n_default_text='Choose your preferred payment agent and enter your withdrawal amount. If your payment agent is not listed, search for them using their account number.' />
+                        <Localize
+                            i18n_default_text='Choose your preferred payment agent and enter your withdrawal amount. If your payment agent is not listed, <0>search for them using their account number</0>.'
+                            components={[
+                                <span
+                                    key={0}
+                                    className='link'
+                                    onClick={() => setIsUnlistedWithdraw(!is_unlisted_withdraw)}
+                                />,
+                            ]}
+                        />
                     </Text>
                 )}
             </div>

@@ -40,7 +40,10 @@
             text-align: left;
         }
         &-padding {
-            padding: 1.6rem;
+            padding: 0 1.6rem 1.6rem 4.2rem;
+            @include mobile {
+                padding: 1.6rem;
+            }
         }
         &-padding-top {
             padding-top: 0;

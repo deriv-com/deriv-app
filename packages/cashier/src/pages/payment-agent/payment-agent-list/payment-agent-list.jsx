@@ -26,11 +26,7 @@ const PaymentAgentList = ({
     verification_code,
 }) => {
     return (
-        <div
-            className={classNames('cashier__wrapper--align-left cashier__wrapper-padding', {
-                'cashier__wrapper-padding-top': is_try_withdraw_successful,
-            })}
-        >
+        <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
             <div
                 className={classNames('payment-agent-list__instructions', {
                     'payment-agent-list__instructions-hide-tabs': is_try_withdraw_successful,

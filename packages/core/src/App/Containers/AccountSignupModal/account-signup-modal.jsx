@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { Field, Formik, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, Dialog, Loading } from '@deriv/components';
 import {
     validPassword,
     getLocation,
@@ -10,16 +10,17 @@ import {
     website_name,
     getErrorMessages,
     PlatformContext,
-    redirectToSignUp,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import SignupSeparatorContainer from './signup-separator-container.jsx';
+import SameCitizenshipModal from '../CitizenshipModal/same-citizenship-modal.jsx';
+import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
+import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '' };
+const signupInitialValues = { citizenship: '', password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
@@ -52,6 +53,20 @@ const validateSignup = (values, residence_list) => {
         }
     }
 
+    if (!values.citizenship) {
+        errors.citizenship = true;
+    } else {
+        const index_of_selection = residence_list.findIndex(
+            item => item.text.toLowerCase() === values.citizenship.toLowerCase()
+        );
+
+        if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
+            errors.citizenship = localize('Unfortunately, {{website_name}} is not available in your country.', {
+                website_name,
+            });
+        }
+    }
+
     return errors;
 };
 
@@ -62,12 +77,25 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const [country, setCountry] = React.useState('');
     const [pw_input, setPWInput] = React.useState('');
     const [selected_residence, setSelectedResidence] = React.useState('');
+    const [selected_citizenship, setSelectedCitizenship] = React.useState('');
+    const [is_citizenship_modal, setIsCitizenshipModal] = React.useState(false);
+    const [is_same_citizenship_modal, setIsSameCitizenshipModal] = React.useState(false);
+    const [is_pasword_modal, setIsPasswordModal] = React.useState(false);
 
     const updatePassword = new_password => {
         setPWInput(new_password);
     };
 
-    const onResidenceSelection = residence => setSelectedResidence(residence);
+    const onResidenceSelection = residence => {
+        setSelectedResidence(residence);
+        setIsSameCitizenshipModal(true);
+    };
+
+    const onCitizenshipSelection = citizenship => {
+        setSelectedCitizenship(citizenship);
+        setIsPasswordModal(true);
+    };
+
     // didMount lifecycle hook
     React.useEffect(() => {
         WS.wait('website_status', 'residence_list').then(() => {
@@ -89,15 +117,19 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
 
     const validateSignupPassthrough = values => validateSignup(values, residence_list);
 
+    const indexOfSelection = selected_country =>
+        residence_list.findIndex(item => item.text.toLowerCase() === selected_country.toLowerCase());
+
     const onSignupPassthrough = values => {
-        const index_of_selection = residence_list.findIndex(
-            item => item.text.toLowerCase() === values.residence.toLowerCase()
-        );
+        const index_of_selected_residence = indexOfSelection(values.residence);
+        const index_of_selected_citizenship = indexOfSelection(values.citizenship);
 
         const modded_values = {
             ...values,
-            residence: residence_list[index_of_selection].value,
+            residence: residence_list[index_of_selected_residence].value,
+            citizenship: residence_list[index_of_selected_citizenship].value,
         };
+
         onSignup(modded_values, onSignupComplete);
     };
 
@@ -123,7 +155,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         touched,
                     }) => (
                         <Form>
-                            {!selected_residence ? (
+                            {!selected_residence || !is_same_citizenship_modal ? (
                                 <ResidenceForm
                                     header_text={localize('Thanks for verifying your email')}
                                     class_prefix='account-signup'
@@ -144,86 +176,66 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             onResidenceSelection(values.residence);
                                         }}
                                         primary
+                                        large
                                         text={localize('Next')}
                                     />
                                 </ResidenceForm>
                             ) : (
-                                <div className='account-signup__password-selection'>
-                                    <Text as='p' weight='bold' className='account-signup__heading' align='center'>
-                                        <Localize i18n_default_text='Keep your account secure with a password' />
-                                    </Text>
-                                    <Field name='password'>
-                                        {({ field }) => (
-                                            <PasswordMeter
-                                                input={pw_input}
-                                                has_error={!!(touched.password && errors.password)}
-                                                custom_feedback_messages={getErrorMessages().password_warnings}
-                                            >
-                                                <PasswordInput
-                                                    {...field}
-                                                    autoComplete='new-password'
-                                                    className='account-signup__password-field'
-                                                    label={localize('Create a password')}
-                                                    error={touched.password && errors.password}
-                                                    required
-                                                    value={values.password}
-                                                    onBlur={handleBlur}
-                                                    onChange={e => {
-                                                        const input = e.target;
-                                                        setFieldTouched('password', true);
-                                                        if (input) updatePassword(input.value);
-                                                        handleChange(e);
-                                                    }}
-                                                    input_id='dt_core_account-signup-modal_account-signup-password-field'
-                                                />
-                                            </PasswordMeter>
-                                        )}
-                                    </Field>
-
-                                    <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
-                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
-                                    </Text>
-                                    <SignupSeparatorContainer />
-                                    {api_error ? (
-                                        <React.Fragment>
-                                            <Text
-                                                as='p'
-                                                size='xxs'
-                                                color='loss-danger'
-                                                className='account-signup__subtext account-signup__subtext--error'
-                                                align='center'
-                                            >
-                                                {api_error}
-                                            </Text>
-                                            <div className='account-signup__error-wrapper'>
-                                                <Button
-                                                    secondary
-                                                    text={localize('Cancel')}
-                                                    type='button'
-                                                    onClick={() => isModalVisible(false)}
-                                                />
-                                                <Button
-                                                    primary
-                                                    text={localize('Create new account')}
-                                                    type='button'
-                                                    onClick={() => redirectToSignUp({ is_appstore })}
-                                                />
-                                            </div>
-                                        </React.Fragment>
-                                    ) : (
-                                        <Button
-                                            className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled':
-                                                    !values.password || errors.password || isSubmitting,
-                                            })}
-                                            id='dt_core_account-signup-modal_submit-btn'
-                                            type='submit'
-                                            is_disabled={!values.password || !!errors.password || isSubmitting}
-                                            text={localize('Start trading')}
-                                            primary
+                                <>
+                                    {!is_pasword_modal && !is_citizenship_modal ? (
+                                        <SameCitizenshipModal
+                                            onCitizenshipSelection={onCitizenshipSelection}
+                                            residence={values.residence}
+                                            setFieldValue={setFieldValue}
+                                            setIsCitizenshipModal={setIsCitizenshipModal}
+                                            setIsPasswordModal={setIsPasswordModal}
+                                            setIsSameCitizenshipModal={setIsSameCitizenshipModal}
                                         />
+                                    ) : (
+                                        <>
+                                            {selected_citizenship && is_pasword_modal ? (
+                                                <PasswordSelectionModal
+                                                    api_error={api_error}
+                                                    errors={errors}
+                                                    handleBlur={handleBlur}
+                                                    handleChange={handleChange}
+                                                    is_appstore={is_appstore}
+                                                    isModalVisible={isModalVisible}
+                                                    isSubmitting={isSubmitting}
+                                                    touched={touched}
+                                                    pw_input={pw_input}
+                                                    setFieldTouched={setFieldTouched}
+                                                    updatePassword={updatePassword}
+                                                    values={values}
+                                                />
+                                            ) : (
+                                                <CitizenshipForm
+                                                    class_prefix='account-signup'
+                                                    errors={errors}
+                                                    touched={touched}
+                                                    setFieldTouched={setFieldTouched}
+                                                    setFieldValue={setFieldValue}
+                                                    citizenship_list={residence_list}
+                                                >
+                                                    <Button
+                                                        className={classNames('account-signup__btn', {
+                                                            'account-signup__btn--disabled':
+                                                                !values.citizenship || errors.citizenship,
+                                                        })}
+                                                        type='button'
+                                                        is_disabled={!values.citizenship || !!errors.citizenship}
+                                                        onClick={() => {
+                                                            onCitizenshipSelection(values.citizenship);
+                                                        }}
+                                                        primary
+                                                        large
+                                                        text={localize('Next')}
+                                                    />
+                                                </CitizenshipForm>
+                                            )}
+                                        </>
                                     )}
-                                </div>
+                                </>
                             )}
                         </Form>
                     )}
@@ -234,6 +246,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
 };
 
 AccountSignup.propTypes = {
+    clients_country: PropTypes.string,
     enableApp: PropTypes.func,
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,

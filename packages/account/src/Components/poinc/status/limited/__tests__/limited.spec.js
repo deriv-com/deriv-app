@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { PoincLimited } from '../poinc-limited';
+import { PoincLimited } from '../limited';
 
 describe('<PoincLimited/>', () => {
     it('should render PoincLimited component', () => {

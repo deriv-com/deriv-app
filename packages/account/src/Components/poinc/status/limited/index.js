@@ -1,3 +1,3 @@
-import { PoincLimited } from './poinc-limited.jsx';
+import { PoincLimited } from './limited.jsx';
 
 export default PoincLimited;

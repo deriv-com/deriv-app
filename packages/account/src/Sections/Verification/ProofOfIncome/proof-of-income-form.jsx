@@ -17,7 +17,7 @@ import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import LoadErrorMessage from 'Components/load-error-message';
-import PoincFileUploaderContainer from 'Components/poinc/poinc-file-uploader-container';
+import PoincFileUploaderContainer from 'Components/poinc/file-uploader-container';
 
 let file_uploader_ref = null;
 
@@ -41,12 +41,13 @@ const ProofOfIncomeForm = ({
         const { document_type } = values;
 
         if (!document_type) {
-            setInactiveItems([2]);
+            // setInactiveItems([2]);
             errors.document_type = localize('This field is required.');
         } else if (!poinc_documents_list.find(c => c.text === document_type)) {
-            setInactiveItems([2]);
+            // setInactiveItems([2]);
             errors.document_type = localize('This field is required.');
         }
+        setInactiveItems([2]);
 
         if (!errors.document_type) {
             setInactiveItems([]);
@@ -199,7 +200,6 @@ const ProofOfIncomeForm = ({
                             </div>
                         </Timeline.Item>
                     </Timeline>
-                    {/* <FormFooter className='account-form__footer-poa'> */}
                     <FormFooter>
                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                         <Button

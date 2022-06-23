@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isDesktop, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FileUploader from '../file-uploader';
+import FileUploader from '../../file-uploader';
 
 const FileProperties = () => {
     const properties = [
@@ -44,9 +44,7 @@ const PoaFileUploaderContainer = ({ is_description_enabled = true, getSocket, on
     const getSocketFunc = getSocket ?? WS.getSocket;
 
     React.useEffect(() => {
-        if (ref) {
-            if (typeof onRef === 'function') onRef(ref);
-        }
+        if (ref && typeof onRef === 'function') onRef(ref);
         return () => onRef(undefined);
     }, [onRef, ref]);
     if (is_appstore && isDesktop()) {

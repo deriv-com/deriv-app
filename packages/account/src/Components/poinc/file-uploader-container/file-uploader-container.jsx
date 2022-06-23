@@ -12,9 +12,7 @@ const PoincFileUploaderContainer = ({ is_description_enabled = true, getSocket, 
     const getSocketFunc = getSocket ?? WS.getSocket;
 
     React.useEffect(() => {
-        if (ref) {
-            if (typeof onRef === 'function') onRef(ref);
-        }
+        if (ref && typeof onRef === 'function') onRef(ref);
         return () => onRef(undefined);
     }, [onRef, ref]);
 

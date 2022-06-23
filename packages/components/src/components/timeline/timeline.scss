@@ -4,8 +4,8 @@
         border-left: var(--brand-red-coral) solid 1px;
         position: relative;
 
-        &.inactive {
-            opacity: 0.32;
+        &-inactive {
+            opacity: 0.68;
             & * {
                 cursor: not-allowed;
                 & * {

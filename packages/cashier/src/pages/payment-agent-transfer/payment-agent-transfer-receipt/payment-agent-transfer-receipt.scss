@@ -7,6 +7,9 @@
                     &-to {
                         display: flex;
                         align-items: center;
+                        border: 1px solid var(--general-section-1);
+                        border-radius: 0.8rem;
+                        padding: 1.6rem;
                     }
                     &-from {
                         flex-direction: row-reverse;
@@ -106,10 +109,10 @@
                         & .account-transfer__transfer {
                             &-details-from {
                                 flex-direction: row-reverse;
-                                padding-bottom: 1.6rem;
+                                margin-bottom: 1.6rem;
                             }
                             &-details-to {
-                                padding-top: 1.6rem;
+                                margin-top: 1.6rem;
 
                                 & .cashier {
                                     &__transferred-details {

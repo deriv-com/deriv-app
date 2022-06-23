@@ -451,20 +451,3 @@
     line-height: 1.5;
     text-align: right;
 }
-
-/** @define badge-server; weak */
-.badge-server {
-    display: inline-block;
-    background-color: $color-blue-2;
-    padding: 0.2rem;
-    border-radius: 0.2rem;
-    margin-left: 0.5rem;
-    height: 2.2rem;
-
-    &-bot {
-        color: var(--text-colored-background);
-    }
-    &--disabled {
-        background-color: var(--border-disabled);
-    }
-}

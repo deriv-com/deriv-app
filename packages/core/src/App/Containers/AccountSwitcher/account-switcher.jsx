@@ -144,17 +144,14 @@ const AccountSwitcher = props => {
     };
 
     const redirectToMt5Real = (market_type, server) => {
-        const synthetic_server_region = server ? server.server_info?.geolocation.region : '';
         const synthetic_server_environment = server ? (server.server_info?.environment).toLowerCase() : '';
 
         const serverElementName = () => {
             let filter_server_number = '';
-            let synthetic_region_string = '';
             if (market_type === 'synthetic') {
                 filter_server_number = synthetic_server_environment.split('server')[1];
-                synthetic_region_string = `-${synthetic_server_region.toLowerCase()}`;
             }
-            return `-${market_type}${synthetic_region_string}${filter_server_number}`;
+            return `-${market_type}${filter_server_number}`;
         };
 
         redirectToMt5(`real${market_type ? serverElementName() : ''}`);
@@ -697,7 +694,6 @@ const AccountSwitcher = props => {
                                     <div className='acc-switcher__accounts'>
                                         {getRealMT5().map(account => (
                                             <AccountList
-                                                is_dark_mode_on={props.is_dark_mode_on}
                                                 is_eu={props.is_eu}
                                                 key={account.login}
                                                 market_type={account.market_type}
@@ -721,7 +717,6 @@ const AccountSwitcher = props => {
                                                         findServerForAccount(account)
                                                     );
                                                 }}
-                                                server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
                                                 shortcode={account.landing_company_short}
                                             />

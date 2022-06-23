@@ -1,13 +1,14 @@
 import { getFormattedText } from '@deriv/shared';
 import { info } from '../utils/broadcast';
 import DBotStore from '../../../scratch/dbot-store';
+import ws from '../../api/ws';
 
 let balance_string = '';
 
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
-            this.api.onMessage().subscribe(({ data }) => {
+            ws.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'balance') {
                     const {
                         balance: { balance: b, currency },

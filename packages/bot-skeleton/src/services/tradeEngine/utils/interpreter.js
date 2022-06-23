@@ -4,6 +4,7 @@ import { createScope } from './cliTools';
 import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
+import ws from '../../api/ws';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
@@ -173,7 +174,7 @@ const Interpreter = () => {
     }
 
     function terminateSession() {
-        const { connection } = $scope.api;
+        const { connection } = ws;
         if (connection.readyState === 0) {
             connection.addEventListener('open', () => connection.close());
         } else if (connection.readyState === 1) {

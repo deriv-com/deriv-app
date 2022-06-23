@@ -15,6 +15,7 @@ import { doUntilDone } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
+import api from '../../api/ws';
 
 const watchBefore = store =>
     watchScope({
@@ -64,7 +65,6 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
 export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
     constructor($scope) {
         super();
-        this.api = $scope.api;
         this.$scope = $scope;
         this.observe();
         this.data = {
@@ -106,7 +106,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             return Promise.resolve();
         }
 
-        doUntilDone(() => this.api.authorize(token)).catch(e => {
+        doUntilDone(() => api.authorize(token)).catch(e => {
             globalObserver.emit('Error', e);
         });
         return new Promise(resolve => {
@@ -115,7 +115,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             // event, wait a couple seconds for the API to give us the correct "proposal_open_contract"
             // response, if there's none after x seconds. Send an explicit request, which _should_
             // solve the issue. This is a backup!
-            this.api.onMessage().subscribe(({ data }) => {
+            api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'transaction' && data.transaction.action === 'sell') {
                     this.transaction_recovery_timeout = setTimeout(() => {
                         const { contract } = this.data;
@@ -123,7 +123,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                         const is_open_contract = contract.status === 'open';
                         if (is_same_contract && is_open_contract) {
                             doUntilDone(() => {
-                                this.api.send({ proposal_open_contract: 1, contract_id: contract.contract_id });
+                                api.send({ proposal_open_contract: 1, contract_id: contract.contract_id });
                             }, ['PriceMoved']);
                         }
                     }, 1500);
@@ -134,14 +134,14 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
                     // Only subscribe to balance in browser, not for tests.
                     if (document) {
-                        doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 })).then(r => {
+                        doUntilDone(() => api.send({ balance: 1, subscribe: 1 })).then(r => {
                             this.balance = Number(r.balance.balance);
                             resolve();
                         });
                     } else {
                         resolve();
                     }
-                    doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }));
+                    doUntilDone(() => api.send({ transaction: 1, subscribe: 1 }));
                 }
             });
         });

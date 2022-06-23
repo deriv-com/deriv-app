@@ -1,1 +1,1 @@
-export default from './error-component.jsx';
+export default './error-component.jsx';

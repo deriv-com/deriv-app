@@ -1,1 +1,1 @@
-export default from './toggle-positions.jsx';
+export default './toggle-positions.jsx';

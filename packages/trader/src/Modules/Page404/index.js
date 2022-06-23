@@ -1,1 +1,1 @@
-export default from './Components/Page404.jsx';
+export default './Components/Page404.jsx';

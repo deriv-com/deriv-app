@@ -1,1 +1,1 @@
-export default from './Containers/trade.jsx';
+export default './Containers/trade.jsx';

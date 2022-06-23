@@ -114,8 +114,17 @@ const TradeHeaderExtensions = props => {
 };
 
 TradeHeaderExtensions.propTypes = {
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     is_logged_in: PropTypes.bool,
+    onMountCashier: PropTypes.func,
+    onMountPositions: PropTypes.func,
+    onPositionsCancel: PropTypes.func,
+    onPositionsRemove: PropTypes.func,
+    onPositionsSell: PropTypes.func,
     populateHeaderExtensions: PropTypes.func,
+    setAccountSwitchListener: PropTypes.func,
+    store: PropTypes.object,
 };
 
 export default connect(({ client, modules, ui }) => ({

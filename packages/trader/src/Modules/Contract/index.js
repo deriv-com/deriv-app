@@ -1,1 +1,1 @@
-export default from './Containers/contract.jsx';
+export default './Containers/contract.jsx';

@@ -1,1 +1,1 @@
-export default from './trade-modals.jsx';
+export default './trade-modals.jsx';

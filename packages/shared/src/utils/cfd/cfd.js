@@ -8,8 +8,13 @@ const CFD_text = {
     mt5: 'MT5',
     cfd: 'CFDs',
     synthetic: 'Synthetic',
+    synthetic_bvi: 'Synthetic BVI',
+    synthetic_svg: 'Synthetic SVG',
     financial: 'Financial',
-    financial_stp: 'Financial STP',
+    financial_bvi: 'Financial BVI',
+    financial_fx: 'Financial Labuan',
+    financial_v: 'Financial Vanuatu',
+    financial_svg: 'Financial SVG',
 };
 
 // * mt5_login_list returns these:
@@ -26,9 +31,6 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) =>
     if (market_type === 'financial') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             return 'financial';
-        }
-        if (sub_account_type === 'financial_stp') {
-            return 'financial_stp';
         }
     }
     return undefined;

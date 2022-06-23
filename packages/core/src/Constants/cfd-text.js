@@ -5,6 +5,11 @@ export const CFD_TEXT = {
     mt5: () => localize('MT5'),
     cfd: () => localize('CFDs'),
     synthetic: () => localize('Synthetic'),
+    synthetic_bvi: () => localize('Synthetic BVI'),
+    synthetic_svg: () => localize('Synthetic SVG'),
     financial: () => localize('Financial'),
-    financial_stp: () => localize('Financial STP'),
+    financial_bvi: () => localize('Financial BVI'),
+    financial_fx: () => localize('Financial Labuan'),
+    financial_v: () => localize('Financial Vanuatu'),
+    financial_svg: () => localize('Financial SVG'),
 };

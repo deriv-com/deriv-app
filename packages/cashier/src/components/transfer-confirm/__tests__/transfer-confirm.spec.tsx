@@ -2,7 +2,7 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { fireEvent, render, screen } from '@testing-library/react';
-import Confirm from '../confirm.jsx';
+import Confirm from '../transfer-confirm.jsx';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

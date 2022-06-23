@@ -38,7 +38,7 @@ const Interpreter = () => {
     let interpreter = {};
     let onFinish;
 
-    $scope.observer.register('REVERT', watchName =>
+    globalObserver.register('REVERT', watchName =>
         revert(watchName === 'before' ? $scope.beforeState : $scope.duringState)
     );
 
@@ -73,7 +73,7 @@ const Interpreter = () => {
                 })
                 .catch(e => {
                     // e.error for errors get from API, e for code errors
-                    $scope.observer.emit('Error', e.error || e);
+                    globalObserver.emit('Error', e.error || e);
                 });
         };
 
@@ -211,13 +211,13 @@ const Interpreter = () => {
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = bot.tradeEngine;
                 terminateSession();
-                $scope.observer.register('Error', onError);
+                globalObserver.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
                 bot.tradeEngine.start(tradeOptions);
                 revert($scope.startState);
             };
 
-            $scope.observer.register('Error', onError);
+            globalObserver.register('Error', onError);
 
             interpreter = new JSInterpreter(code, initFunc);
             onFinish = resolve;

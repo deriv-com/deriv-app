@@ -2,13 +2,14 @@ import getToolsInterface from './ToolsInterface';
 import getTicksInterface from './TicksInterface';
 import getBotInterface from './BotInterface';
 import TradeEngine from '../trade';
+import { observer as globalObserver } from '../../../utils/observer';
 
-const sleep = (observer, arg = 1) => {
+const sleep = (arg = 1) => {
     return new Promise(
         r =>
             setTimeout(() => {
                 r();
-                setTimeout(() => observer.emit('CONTINUE'), 0);
+                setTimeout(() => globalObserver.emit('CONTINUE'), 0);
             }, arg * 1000),
         () => {}
     );
@@ -16,14 +17,13 @@ const sleep = (observer, arg = 1) => {
 
 const Interface = $scope => {
     const tradeEngine = new TradeEngine($scope);
-    const { observer } = $scope;
     const getInterface = () => {
         return {
             ...getBotInterface(tradeEngine),
             ...getToolsInterface(tradeEngine),
             getTicksInterface: getTicksInterface(tradeEngine),
             watch: (...args) => tradeEngine.watch(...args),
-            sleep: (...args) => sleep(observer, ...args),
+            sleep: (...args) => sleep(...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert
             prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
             console: {
@@ -34,7 +34,7 @@ const Interface = $scope => {
             },
         };
     };
-    return { tradeEngine, observer, getInterface };
+    return { tradeEngine, globalObserver, getInterface };
 };
 
 export default Interface;

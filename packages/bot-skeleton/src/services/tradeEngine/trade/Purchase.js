@@ -3,6 +3,7 @@ import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
 import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
+import { observer as globalObserver } from '../../../utils/observer';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -64,7 +65,7 @@ export default Engine =>
                     const unsubscribe = this.store.subscribe(() => {
                         const { scope, proposalsReady } = this.store.getState();
                         if (scope === BEFORE_PURCHASE && proposalsReady) {
-                            makeDelay().then(() => this.observer.emit('REVERT', 'before'));
+                            makeDelay().then(() => globalObserver.emit('REVERT', 'before'));
                             unsubscribe();
                         }
                     });

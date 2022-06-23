@@ -65,7 +65,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
     constructor($scope) {
         super();
         this.api = $scope.api;
-        this.observer = $scope.observer;
         this.$scope = $scope;
         this.observe();
         this.data = {
@@ -108,7 +107,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         }
 
         doUntilDone(() => this.api.authorize(token)).catch(e => {
-            this.$scope.observer.emit('Error', e);
+            globalObserver.emit('Error', e);
         });
         return new Promise(resolve => {
             // Try to recover from a situation where API doesn't give us a correct response on

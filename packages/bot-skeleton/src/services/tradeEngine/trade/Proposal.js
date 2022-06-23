@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
+import { observer as globalObserver } from '../../../utils/observer';
 
 export default Engine =>
     class Proposal extends Engine {
@@ -85,7 +86,7 @@ export default Engine =>
                         }
                         if (!has_informed_error) {
                             has_informed_error = true;
-                            this.$scope.observer.emit('Error', error.error);
+                            globalObserver.emit('Error', error.error);
                         }
                         return null;
                     });

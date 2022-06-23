@@ -104,7 +104,7 @@ export default Engine =>
 
                 // If above checkbox not checked, try to recover from sell error.
                 const recoverFn = (error_code, makeDelay) => {
-                    return makeDelay().then(() => this.observer.emit('REVERT', 'during'));
+                    return makeDelay().then(() => globalObserver.emit('REVERT', 'during'));
                 };
                 return recoverFromError(
                     sellContractAndGetContractInfo,

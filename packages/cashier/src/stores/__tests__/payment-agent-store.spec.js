@@ -15,7 +15,7 @@ describe('PaymentAgentStore', () => {
                 email: 'pa@example.com',
                 telephone: '+12345678',
                 url: 'http://www.pa.com',
-                supported_banks: 'Visa',
+                supported_payment_methods: [{ payment_method: 'Visa' }],
             },
             {
                 name: 'Payment Agent of CR90000002',
@@ -25,7 +25,6 @@ describe('PaymentAgentStore', () => {
                 email: 'pa@example.com',
                 telephone: '+12345678',
                 url: 'http://www.pa.com',
-                supported_banks: 'Visa, Mastercard',
                 supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             },
         ],
@@ -35,7 +34,7 @@ describe('PaymentAgentStore', () => {
             email: 'pa@example.com',
             phones: '+12345678',
             name: 'Payment Agent of CR90000000',
-            supported_banks: 'Visa',
+            supported_banks: [{ payment_method: 'Visa' }],
             urls: 'http://www.pa.com',
         },
         {
@@ -165,7 +164,7 @@ describe('PaymentAgentStore', () => {
                     email: 'pa@example.com',
                     phones: '+12345678',
                     name: 'Payment Agent of CR90000000',
-                    supported_banks: 'Visa',
+                    supported_banks: [{ payment_method: 'Visa' }],
                     urls: 'http://www.pa.com',
                 },
             ])

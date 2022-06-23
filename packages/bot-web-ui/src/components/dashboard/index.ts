@@ -1,4 +1,4 @@
-import Dashboard from './dashboard.jsx';
+import Dashboard from './dashboard';
 import './dashboard.scss';
 
 export default Dashboard;

@@ -22,15 +22,33 @@ const CFD_text = {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
-export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) => {
+export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }) => {
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
-            return 'synthetic';
+            switch (shortcode) {
+                case 'svg':
+                    return 'synthetic_svg';
+                case 'bvi':
+                    return 'synthetic_bvi';
+                default:
+                    return 'synthetic';
+            }
         }
     }
     if (market_type === 'financial') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
-            return 'financial';
+            switch (shortcode) {
+                case 'svg':
+                    return 'financial_svg';
+                case 'bvi':
+                    return 'financial_bvi';
+                case 'labuan':
+                    return 'financial_fx';
+                case 'vanuatu':
+                    return 'financial_v';
+                default:
+                    return 'financial';
+            }
         }
     }
     return undefined;
@@ -76,8 +94,8 @@ export const getAccountTypeFields = ({ category, type }) => {
     return map_mode[category][type];
 };
 
-export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform, is_eu }) => {
-    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform, is_eu, shortcode }) => {
+    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {

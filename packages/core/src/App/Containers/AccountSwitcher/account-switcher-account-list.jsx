@@ -22,6 +22,7 @@ const AccountList = ({
     onClickResetVirtualBalance,
     selected_loginid,
     server,
+    shortcode,
     is_dark_mode_on,
     sub_account_type,
     platform,
@@ -62,6 +63,7 @@ const AccountList = ({
                                 has_error={has_error}
                                 is_dark_mode_on={is_dark_mode_on}
                                 platform={platform}
+                                shortcode={shortcode}
                             />
                         )}
                         <div
@@ -141,7 +143,16 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform, is_eu }) => {
+const AccountDisplay = ({
+    has_error,
+    market_type,
+    sub_account_type,
+    server,
+    is_dark_mode_on,
+    platform,
+    is_eu,
+    shortcode,
+}) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
@@ -159,7 +170,7 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         );
     return (
         <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu })}
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
             {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}

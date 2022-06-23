@@ -4,7 +4,7 @@ import { Button, Modal, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-const WideLimitExceededModal = ({ is_visible, onConfirm }) => {
+const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }) => {
     return (
         <Modal
             is_open={is_visible}
@@ -26,9 +26,9 @@ const WideLimitExceededModal = ({ is_visible, onConfirm }) => {
     );
 };
 
-WideLimitExceededModal.propTypes = {
+CompanyWideLimitExceededModal.propTypes = {
     is_visible: PropTypes.bool,
     onConfirm: PropTypes.func,
 };
 
-export default WideLimitExceededModal;
+export default CompanyWideLimitExceededModal;

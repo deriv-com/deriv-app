@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { title } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
-import CompanyWideLimitExceeded from './wide-limit-exceeded-modal';
+import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
 
 const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, services_error }) => {
     const { code, message } = services_error;
@@ -29,7 +29,7 @@ const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, s
     }
 
     if (code === 'CompanyWideLimitExceeded') {
-        return <CompanyWideLimitExceeded is_visible={is_visible} onConfirm={onConfirm} />;
+        return <CompanyWideLimitExceededModal is_visible={is_visible} onConfirm={onConfirm} />;
     }
 
     return (

@@ -11,7 +11,6 @@ import {
     TSpecBoxProps,
     TPasswordBoxProps,
     TCFDAccountCardActionProps,
-    TExistingData,
     TCFDAccountCard,
     TTradingPlatformAccounts,
 } from './props.types';
@@ -196,11 +195,6 @@ const CFDAccountCard = ({
         type.category === 'real' &&
         type.type === 'synthetic' &&
         (existing_data as DetailsOfEachMT5Loginid)?.server_info;
-
-    const is_real_synthetic_account: boolean =
-        type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.region;
-    const get_server_environment = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment;
 
     const ref = React.useRef<HTMLDivElement | null>(null);
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);

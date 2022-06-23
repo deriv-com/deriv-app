@@ -75,7 +75,7 @@ const JurisdictionModal = ({
                             portal_element_id='deriv_app'
                             title={localize('Compare accounts')}
                             wrapper_classname='cfd-dashboard__compare-accounts'
-                            visible={toggleJurisdictionModal}
+                            visible={is_jurisdiction_modal_visible}
                             onClose={toggleJurisdictionModal}
                         >
                             <JurisdictionModalContent />

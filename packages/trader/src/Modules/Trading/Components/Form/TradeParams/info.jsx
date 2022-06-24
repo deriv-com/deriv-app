@@ -38,23 +38,6 @@ const Info = ({
     tick_size_barrier,
     tick_size_barrier_text_size,
 }) => {
-    const getRoundedTickSizeBarrier = () => {
-        // business decision is to show 4 decimals including no more then 1 zero,
-        // e.g. round 0.000409 to 0.0409%
-        let rounded_tick_size_barrier;
-        if (tick_size_barrier) {
-            const decimal_zeros_count = -Math.floor(Math.log10(tick_size_barrier) + 1);
-            if (decimal_zeros_count > 1) {
-                rounded_tick_size_barrier = (
-                    tick_size_barrier * Number(`1${'0'.repeat(decimal_zeros_count - 1)}`)
-                ).toFixed(4);
-            } else {
-                rounded_tick_size_barrier = tick_size_barrier.toFixed(4);
-            }
-        }
-        return rounded_tick_size_barrier;
-    };
-
     let info_type = [];
 
     const getInfoContent = () => {
@@ -112,7 +95,7 @@ const Info = ({
                     info_text: (
                         <Localize
                             i18n_default_text={'Distance from barriers <0>±{{tick_size_barrier}}%</0>'}
-                            values={{ tick_size_barrier: getRoundedTickSizeBarrier() || '0.0000' }}
+                            values={{ tick_size_barrier: tick_size_barrier.toFixed(5) }}
                             components={[<span key={0} />]}
                         />
                     ),

@@ -118,7 +118,7 @@ export default class TradeStore extends BaseStore {
     @observable growth_rate;
     @observable max_duration_ticks = 0;
     @observable max_payout = 0;
-    @observable tick_size_barrier;
+    @observable tick_size_barrier = 0;
 
     // Multiplier trade params
     @observable multiplier;

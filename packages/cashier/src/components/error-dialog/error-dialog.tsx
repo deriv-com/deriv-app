@@ -5,11 +5,31 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 
-const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
+type TErrorDialogProps = {
+    disableApp: () => void;
+    enableApp: () => void;
+    error: {
+        message?: string;
+        code?: string;
+        setErrorMessage?: (message: string) => void;
+    };
+};
+
+type TSetDetails = {
+    title: string;
+    cancel_button_text: undefined | string;
+    confirm_button_text: undefined | string;
+    onConfirm: undefined | (() => void);
+    message: any;
+    has_close_icon?: boolean;
+};
+
+const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
-    const [details, setDetails] = React.useState({
+    const [details, setDetails] = React.useState<TSetDetails>({
         title: '',
         cancel_button_text: undefined,
         confirm_button_text: '',
@@ -17,20 +37,10 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
         message: '',
     });
 
-    React.useEffect(() => {
-        // avoid resetting the text when dismissing the pop up
-        if (error.message) {
-            mapErrorToDetails(error.code, error.message);
-        }
-    }, [error.code, error.message, mapErrorToDetails]);
-
-    React.useEffect(() => {
-        setErrorVisibility(!!error.message);
-    }, [error.message]);
-
     const mapErrorToDetails = React.useCallback(
-        (error_code, error_message) => {
+        (error_code?: string, error_message?: string) => {
             if (
+                error_code &&
                 [
                     'Fiat2CryptoTransferOverLimit',
                     'Crypto2FiatTransferOverLimit',
@@ -94,12 +104,25 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
         [history]
     );
 
-    const setErrorVisibility = is_error_visible => {
+    React.useEffect(() => {
+        // avoid resetting the text when dismissing the pop up
+        if (error.message) {
+            mapErrorToDetails(error.code, error.message);
+        }
+    }, [error.code, error.message, mapErrorToDetails]);
+
+    React.useEffect(() => {
+        setErrorVisibility(!!error.message);
+    }, [error.message]);
+
+    const setErrorVisibility = (is_error_visible: boolean) => {
         setIsVisible(is_error_visible);
     };
 
     const dismissError = () => {
-        error.setErrorMessage('');
+        if (error.setErrorMessage) {
+            error.setErrorMessage('');
+        }
         setErrorVisibility(false);
     };
 
@@ -136,7 +159,7 @@ ErrorDialog.propTypes = {
     enableApp: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
 }))(ErrorDialog);

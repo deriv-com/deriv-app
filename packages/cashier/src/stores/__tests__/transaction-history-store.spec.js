@@ -89,7 +89,7 @@ describe('TransactionHistoryStore', () => {
     it('should cancel a crypto transaction', async () => {
         await transaction_history_store.cancelCryptoTransaction('175');
         expect(transaction_history_store.selected_crypto_transaction_id).toBeFalsy();
-        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBeFalse();
+        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBeFalsy();
     });
 
     it('should not proceed with the cancellation of a crypto transaction if there is an error', async () => {

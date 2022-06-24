@@ -172,7 +172,7 @@ const Amount = ({
                     />
                 </React.Fragment>
             )}
-            {is_accumulator && <MaxPayoutInfo className='trade-container__max_payout-trade-info' is_max_payout_info />}
+            {is_accumulator && <MaxPayoutInfo className='trade-container__max-payout-trade-info' is_max_payout_info />}
         </Fieldset>
     );
 };

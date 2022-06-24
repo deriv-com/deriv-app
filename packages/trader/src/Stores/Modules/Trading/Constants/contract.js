@@ -108,7 +108,7 @@ export const getContractTypesConfig = symbol => ({
         title: localize('Accumulate'),
         trade_types: ['ACC'],
         basis: ['stake'],
-        components: ['take_profit', 'accumulator'],
+        components: ['take_profit', 'accumulator', 'stats_chart_display'],
         barrier_count: 2,
         config: { hide_duration: true },
     },

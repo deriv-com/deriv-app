@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 const INFO_TYPES = {
     MULTIP: 'multipliers',
     ACC: 'accumulators',
-    MAX_PAYOUT: 'max_payout',
+    MAX_PAYOUT: 'max-payout',
 };
 
 const commission_tooltip_margin = 30;

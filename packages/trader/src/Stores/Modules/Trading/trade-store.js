@@ -968,7 +968,7 @@ export default class TradeStore extends BaseStore {
             }
         }
 
-        if (!this.is_accumulator && (!this.main_barrier || this.main_barrier.shade)) {
+        if ((!this.accumulator && !this.main_barrier) || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
             this.setMainBarrier(response.echo_req);
         }
 

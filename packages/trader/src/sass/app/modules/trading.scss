@@ -462,17 +462,13 @@
         }
     }
     &__multipliers-trade-info,
-    &__accumulators-trade-info {
+    &__accumulators-trade-info,
+    &__max_payout-trade-info {
         display: flex;
         justify-content: space-around;
         gap: 2.8rem;
 
-        &--max-payout {
-            display: flex;
-            justify-content: flex-start;
-        }
-        &-tooltip-text,
-        &--max-payout-tooltip-text {
+        &-tooltip-text {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -483,7 +479,12 @@
                 border-bottom: 1px dotted var(--text-general);
             }
         }
-        &--max-payout-tooltip-text {
+    }
+    &__max_payout-trade-info {
+        justify-content: flex-start;
+        gap: unset;
+
+        &-tooltip-text {
             flex-direction: unset;
         }
     }

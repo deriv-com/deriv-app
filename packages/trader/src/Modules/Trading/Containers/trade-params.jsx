@@ -22,11 +22,11 @@ const TradeParams = ({ form_components, is_minimized }) => {
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
+            {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
             {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
             {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
             {isVisible('cancellation') && <CancelDeal key={'cancellation'} />}
             {isVisible('expiration') && <Expiration key={'expiration'} />}
-            {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
         </React.Fragment>
     );
 };

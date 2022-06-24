@@ -8,8 +8,8 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
-import MultipliersInfo from './Multiplier/info.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
+import { MaxPayoutInfo, MultipliersInfo } from './info.jsx';
 
 const Input = ({
     amount,
@@ -168,9 +168,11 @@ const Amount = ({
                         className='trade-container__multipliers-trade-info'
                         should_show_tooltip
                         is_tooltip_relative
+                        is_multipliers_info
                     />
                 </React.Fragment>
             )}
+            {is_accumulator && <MaxPayoutInfo className='trade-container__max_payout-trade-info' is_max_payout_info />}
         </Fieldset>
     );
 };

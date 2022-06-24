@@ -5,8 +5,8 @@ import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multipl
 import MultiplierOptionsModal from 'Modules/Trading/Containers/Multiplier/multiplier-options-modal.jsx';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal.jsx';
-import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 import { localize } from '@deriv/translations';
+import { MultipliersInfo } from '../info.jsx';
 
 const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -35,6 +35,7 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
                     className='mobile-widget__multiplier-trade-info'
                     commission_text_size='xxxxs'
                     stop_out_text_size='xxxxs'
+                    is_multipliers_info
                 />
             </div>
             {is_crypto_multiplier && (

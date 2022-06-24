@@ -96,8 +96,8 @@ export default class CFDStore extends BaseStore {
     checkShouldOpenAccount() {
         const account_type = sessionStorage.getItem('open_cfd_account_type');
         if (account_type) {
-            const [category, type, set_password] = account_type.split('.');
-            this.createCFDAccount({ category, type, set_password });
+            const [category, platform, type, set_password] = account_type.split('.');
+            this.createCFDAccount({ category, platform, type, set_password });
             sessionStorage.removeItem('open_cfd_account_type');
         }
     }
@@ -126,17 +126,20 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    createCFDAccount({ category, type, set_password }) {
+    createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
             category,
             type,
         });
-
-        if (category === 'real') {
-            this.realCFDSignup(set_password);
+        if (this.root_store.client.is_eu || platform === CFD_PLATFORMS.DXTRADE) {
+            if (category === 'real') {
+                this.realCFDSignup(set_password);
+            } else {
+                this.demoCFDSignup();
+            }
         } else {
-            this.demoCFDSignup();
+            this.toggleJurisdictionModal();
         }
     }
 

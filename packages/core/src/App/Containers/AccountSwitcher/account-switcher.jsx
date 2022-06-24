@@ -137,8 +137,11 @@ const AccountSwitcher = props => {
             );
         } else {
             if (should_redirect_fstp_password)
-                sessionStorage.setItem('open_cfd_account_type', `real.${account_type}.set_password`);
-            else sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+                sessionStorage.setItem(
+                    'open_cfd_account_type',
+                    `real.${CFD_PLATFORMS.MT5}.${account_type}.set_password`
+                );
+            else sessionStorage.setItem('open_cfd_account_type', `real.${CFD_PLATFORMS.MT5}.${account_type}`);
             redirectToMt5Real();
         }
     };
@@ -167,17 +170,17 @@ const AccountSwitcher = props => {
             props.openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
-        sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.MT5}.${account_type}`);
         redirectToMt5Demo();
     };
 
     const openDXTradeDemoAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
         redirectToDXTradeDemo();
     };
 
     const openDXTradeRealAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `real.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
         redirectToDXTradeReal();
     };
 

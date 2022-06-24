@@ -108,6 +108,7 @@ const Dialog = ({
                     className={classNames('dc-dialog__dialog', {
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                     })}
+                    role='dialog'
                     ref={wrapper_ref}
                 >
                     {(title || has_close_icon) && (

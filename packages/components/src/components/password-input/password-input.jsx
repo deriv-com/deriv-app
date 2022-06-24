@@ -31,6 +31,7 @@ const PasswordInput = ({
                         onClick={togglePasswordVisibility}
                         color='secondary'
                         width={18}
+                        data_testid='dc-password-input__visibility-icon'
                     />
                 }
             />

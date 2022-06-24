@@ -41,16 +41,15 @@ const ProofOfIncomeForm = ({
         const { document_type } = values;
 
         if (!document_type) {
-            // setInactiveItems([2]);
             errors.document_type = localize('This field is required.');
         } else if (!poinc_documents_list.find(c => c.text === document_type)) {
-            // setInactiveItems([2]);
             errors.document_type = localize('This field is required.');
         }
-        setInactiveItems([2]);
 
         if (!errors.document_type) {
             setInactiveItems([]);
+        } else if (!inactive_items.includes(2)) {
+            setInactiveItems([2]);
         }
 
         return errors;

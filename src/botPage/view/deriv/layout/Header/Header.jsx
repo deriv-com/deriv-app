@@ -102,12 +102,13 @@ const Header = () => {
             account: "all",
             subscribe: 1,
           }).then(({ balance }) => {
-
             globalObserver.setState({
               balance: Number(balance.balance),
               currency: balance.currency,
               is_subscribed_to_balance: true,
-            })
+            });
+          }).catch((e) => {
+            globalObserver.emit("Error", e);
           })
         }
 

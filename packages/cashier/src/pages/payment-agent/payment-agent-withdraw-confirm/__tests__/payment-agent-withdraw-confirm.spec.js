@@ -32,13 +32,11 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         verification_code: 'ABCdef',
     };
 
-    it('should show proper messages, icons and buttons', () => {
+    it('should show proper messages and buttons', () => {
         render(<PaymentAgentWithdrawConfirm {...props} />);
 
         const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
 
-        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
-        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
         expect(screen.getByText('From account number')).toBeInTheDocument();
         expect(screen.getByText('CR90000100')).toBeInTheDocument();
         expect(screen.getByText('To account number')).toBeInTheDocument();
@@ -46,18 +44,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         expect(screen.getByText('ALICHARGER')).toBeInTheDocument();
         expect(screen.getByText('Amount')).toBeInTheDocument();
         expect(screen.getByText('20.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
-        expect(screen.getByText(/please ensure/i)).toBeInTheDocument();
-        expect(screen.getByText(/all details/i)).toBeInTheDocument();
-        expect(screen.getByText(/are/i)).toBeInTheDocument();
-        expect(screen.getByText(/correct/i)).toBeInTheDocument();
-        expect(screen.getByText(/before making your transfer/i)).toBeInTheDocument();
-        expect(screen.getByText(/we/i)).toBeInTheDocument();
-        expect(screen.getByText(/do not/i)).toBeInTheDocument();
-        expect(screen.getByText(/are/i)).toBeInTheDocument();
-        expect(screen.getByText(/correct/i)).toBeInTheDocument();
-        expect(screen.getByText(/guarantee a refund if you make a wrong transfer/i)).toBeInTheDocument();
         expect(back_btn).toBeInTheDocument();
         expect(transfer_now_btn).toBeInTheDocument();
     });

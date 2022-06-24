@@ -1,6 +1,5 @@
 import React from 'react';
-import { Money } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Confirm from '../confirm.jsx';
 
@@ -10,102 +9,97 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-let modal_root_el;
-
 describe('<Confirm />', () => {
     beforeAll(() => {
-        modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
+        });
     });
 
     afterAll(() => {
-        document.body.removeChild(modal_root_el);
+        ReactDOM.createPortal.mockClear();
     });
+
     const props = {
         data: [
-            { key: 'pa', label: 'Payment agent', value: 'Payment Agent of CR90000561 (Created from Script)' },
-            { key: 'amount', label: 'Amount', value: <Money amount='100' currency='USD' show_currency /> },
-            { key: 'test', label: 'test', value: ['test1', 'test2'] },
+            { key: '1', label: 'label 1', value: 'value 1' },
+            { key: '2', label: 'label 2', value: ['value 2', 'value 3'] },
         ],
-        header: 'Please confirm the transaction details in order to complete the withdrawal:',
+        error: {},
         onClickBack: jest.fn(),
         onClickConfirm: jest.fn(),
-        warning_messages: [
-            <Localize
-                i18n_default_text='Remember, it’s solely your responsibility to ensure the transfer is made to the correct account.'
-                key={0}
-            />,
-            <Localize i18n_default_text='We do not guarantee a refund if you make a wrong transfer.' key={1} />,
-        ],
     };
 
-    it('should show proper icon, header, messages and buttons', () => {
+    it('should show proper icon, messages and buttons', () => {
         render(<Confirm {...props} />);
 
-        expect(screen.getByTestId('dti_confirm_details_icon')).toBeInTheDocument();
-        expect(
-            screen.getByText('Please confirm the transaction details in order to complete the withdrawal:')
-        ).toBeInTheDocument();
-        expect(screen.getByText('Payment agent')).toBeInTheDocument();
-        expect(screen.getByText('Payment Agent of CR90000561 (Created from Script)')).toBeInTheDocument();
-        expect(screen.getByText('Amount')).toBeInTheDocument();
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('test')).toBeInTheDocument();
-        expect(screen.getByText('test1')).toBeInTheDocument();
-        expect(screen.getByText('test2')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
+        const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
+
+        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
+        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
+        expect(screen.getByText('label 1')).toBeInTheDocument();
+        expect(screen.getByText('value 1')).toBeInTheDocument();
+        expect(screen.getByText('label 2')).toBeInTheDocument();
+        expect(screen.getByText('value 2')).toBeInTheDocument();
+        expect(screen.getByText('value 3')).toBeInTheDocument();
+        expect(screen.getByRole('checkbox')).toBeInTheDocument();
+        expect(screen.getByText(/please ensure/i)).toBeInTheDocument();
+        expect(screen.getByText(/all details/i)).toBeInTheDocument();
+        expect(screen.getByText(/are/i)).toBeInTheDocument();
+        expect(screen.getByText(/correct/i)).toBeInTheDocument();
+        expect(screen.getByText(/before making your transfer/i)).toBeInTheDocument();
+        expect(screen.getByText(/we/i)).toBeInTheDocument();
+        expect(screen.getByText(/do not/i)).toBeInTheDocument();
+        expect(screen.getByText(/are/i)).toBeInTheDocument();
+        expect(screen.getByText(/correct/i)).toBeInTheDocument();
+        expect(screen.getByText(/guarantee a refund if you make a wrong transfer/i)).toBeInTheDocument();
+        expect(back_btn).toBeInTheDocument();
+        expect(transfer_now_btn).toBeInTheDocument();
     });
 
-    it('should trigger onClick callback when the client clicks on Back button', () => {
+    it('should show error messages and button', () => {
+        render(
+            <Confirm
+                {...props}
+                error={{
+                    code: 'code',
+                    message: 'error_message',
+                }}
+            />
+        );
+
+        expect(screen.getByText('Cashier Error')).toBeInTheDocument();
+        expect(screen.getByText('error_message')).toBeInTheDocument();
+        expect(screen.getAllByRole('button')[2]).toBeInTheDocument();
+    });
+
+    it('should trigger onClickBack method when the client clicks on Back button', () => {
         render(<Confirm {...props} />);
 
-        const el_back_btn = screen.getByRole('button', { name: 'Back' });
-        fireEvent.click(el_back_btn);
+        const [back_btn, _] = screen.getAllByRole('button');
+        fireEvent.click(back_btn);
+
         expect(props.onClickBack).toHaveBeenCalledTimes(1);
     });
 
-    it('should trigger onClick callback when the client clicks on Confirm button', () => {
+    it('should enable Transfer now button when checkbox is checked', () => {
         render(<Confirm {...props} />);
 
-        const el_confirm_btn = screen.getByRole('button', { name: 'Confirm' });
-        fireEvent.click(el_confirm_btn);
+        const el_checkbox = screen.getByRole('checkbox');
+        const [_, transfer_now_btn] = screen.getAllByRole('button');
+        fireEvent.click(el_checkbox);
+
+        expect(transfer_now_btn).toBeEnabled();
+    });
+
+    it('should trigger onClickConfirm method when the client clicks on Transfer now button', () => {
+        render(<Confirm {...props} />);
+
+        const el_checkbox = screen.getByRole('checkbox');
+        const [_, transfer_now_btn] = screen.getAllByRole('button');
+        fireEvent.click(el_checkbox);
+        fireEvent.click(transfer_now_btn);
+
         expect(props.onClickConfirm).toHaveBeenCalledTimes(1);
-    });
-
-    it('should show error message', () => {
-        render(<Confirm {...props} error={{ message: 'Error message' }} />);
-
-        expect(screen.getByText('Error message')).toBeInTheDocument();
-    });
-
-    it('should show warning messages', () => {
-        render(<Confirm {...props} />);
-
-        expect(
-            screen.getByText(
-                'Remember, it’s solely your responsibility to ensure the transfer is made to the correct account.'
-            )
-        ).toBeInTheDocument();
-        expect(screen.getByText('We do not guarantee a refund if you make a wrong transfer.')).toBeInTheDocument();
-    });
-
-    it('should show checkbox when is_payment_agent_transfer property is equal to true', () => {
-        render(<Confirm {...props} is_payment_agent_transfer />);
-
-        expect(
-            screen.getByLabelText('I confirm that I have checked and verified the client’s transfer information')
-        ).toBeInTheDocument();
-    });
-
-    it('should enable "Transfer now" button when checkbox is checked', () => {
-        render(<Confirm {...props} is_payment_agent_transfer />);
-
-        const el_checkbox_transfer_consent = screen.getByRole('checkbox');
-        fireEvent.click(el_checkbox_transfer_consent);
-        const el_btn_transfer_now = screen.getByRole('button', { name: 'Transfer now' });
-
-        expect(el_btn_transfer_now).toBeEnabled();
     });
 });

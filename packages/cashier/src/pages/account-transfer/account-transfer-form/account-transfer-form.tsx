@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
+import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
@@ -17,34 +17,8 @@ import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
+import { TAccountOption } from '../types';
 import './account-transfer-form.scss';
-
-type TAccountOption = {
-    mt5_login_list: Array<{
-        login: string;
-        market_type: string;
-        server_info: {
-            geolocation: {
-                region: string;
-                sequence: string | number;
-            };
-        };
-    }>;
-    account: {
-        balance?: string | number;
-        currency?: string;
-        disabled?: boolean;
-        is_dxtrade?: boolean;
-        is_mt?: boolean;
-        market_type?: string;
-        nativepicker_text: string;
-        platform_icon?: string;
-        text: JSX.Element | string;
-        value?: string;
-    };
-    idx: string | number;
-    is_dark_mode_on: boolean;
-};
 
 type TAccountTransferBullet = {
     children: React.ReactNode;
@@ -125,7 +99,7 @@ type TAccountTransferForm = {
     };
     setAccountTransferAmount: (amount: string) => void;
     setErrorMessage: (message: string) => void;
-    setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]>) => void;
+    setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
     setTransferPercentageSelectorResult: () => void;
     should_percentage_reset: boolean;
     transfer_fee: number;
@@ -559,7 +533,7 @@ const AccountTransferForm = ({
     }, [selected_to, selected_from, account_limits]);
 
     return (
-        <div className='cashier__wrapper account-transfer-form__wrapper' data-testid='account-transfer-form__wrapper'>
+        <div className='cashier__wrapper account-transfer-form__wrapper' data-testid='dt_account_transfer_form_wrapper'>
             <Text
                 as='h2'
                 color='prominent'
@@ -584,14 +558,14 @@ const AccountTransferForm = ({
                 {({ errors, handleChange, isSubmitting, touched, setFieldValue, setFieldTouched, setFieldError }) => (
                     <React.Fragment>
                         {isSubmitting || accounts_list.length === 0 ? (
-                            <div className='cashier__loader-wrapper' data-testid='cashier__loader-wrapper'>
+                            <div className='cashier__loader-wrapper' data-testid='dt_cashier_loader_wrapper'>
                                 <Loading className='cashier__loader' is_fullscreen={false} />
                             </div>
                         ) : (
                             <Form noValidate>
                                 <div
                                     className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'
-                                    data-testid='account-transfer-form__drop-down-wrapper'
+                                    data-testid='dt_account_transfer_form_drop_down_wrapper'
                                 >
                                     <Dropdown
                                         id='transfer_from'
@@ -600,7 +574,7 @@ const AccountTransferForm = ({
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
-                                        test_id='account-transfer-form__drop-down'
+                                        test_id='dt_account_transfer_form_drop_down'
                                         is_large
                                         label={localize('From')}
                                         list={from_accounts}
@@ -624,7 +598,7 @@ const AccountTransferForm = ({
                                         classNameItems='cashier__drop-down-items'
                                         classNameLabel='cashier__drop-down-label'
                                         classNameHint='account-transfer-form__hint'
-                                        test_id='account-transfer-form__drop-down--to-dropdown'
+                                        test_id='dt_account_transfer_form_to_dropdown'
                                         is_large
                                         label={localize('To')}
                                         list={to_accounts}
@@ -642,10 +616,14 @@ const AccountTransferForm = ({
                                     />
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (
-                                    <Field name='amount' validate={validateAmount}>
-                                        {({ field }: { [k: string]: string | object }) => (
+                                    <Field
+                                        name='amount'
+                                        validate={validateAmount}
+                                        data-testid='dt_account_transfer_form_input'
+                                    >
+                                        {(field: FieldProps) => (
                                             <Input
-                                                {...(field as object)}
+                                                {...field}
                                                 onChange={(e: { target: { value: string } }) => {
                                                     setErrorMessage('');
                                                     handleChange(e);
@@ -654,7 +632,6 @@ const AccountTransferForm = ({
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer-form__input'
                                                 classNameHint='account-transfer-form__hint'
-                                                data-testid='account-transfer-form__input'
                                                 type='text'
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount ? errors.amount : ''}
@@ -748,7 +725,7 @@ const AccountTransferForm = ({
                                 )}
                                 <div
                                     className='cashier__form-submit account-transfer-form__form-submit'
-                                    data-testid='account-transfer-form__form-submit'
+                                    data-testid='dt_account_transfer_form_submit'
                                 >
                                     <Button
                                         className='account-transfer-form__submit-button'

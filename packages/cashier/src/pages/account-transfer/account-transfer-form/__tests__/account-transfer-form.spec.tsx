@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 
@@ -79,7 +79,7 @@ describe('<AccountTransferForm />', () => {
 
         render(<AccountTransferForm {...props} />);
 
-        expect(screen.getByTestId('account-transfer-form__wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
         expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
     });
 
@@ -89,7 +89,7 @@ describe('<AccountTransferForm />', () => {
 
         render(<AccountTransferForm {...props} />);
 
-        expect(screen.getByTestId('cashier__loader-wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cashier_loader_wrapper')).toBeInTheDocument();
     });
 
     it('should show <Form /> component if account_list.length > 0', () => {
@@ -99,10 +99,10 @@ describe('<AccountTransferForm />', () => {
 
         expect(screen.getByText('From')).toBeInTheDocument();
         expect(screen.getByText('To')).toBeInTheDocument();
-        expect(screen.getByTestId('account-transfer-form__drop-down-wrapper')).toBeInTheDocument();
-        expect(screen.getByTestId('account-transfer-form__drop-down')).toBeInTheDocument();
-        expect(screen.getByTestId('account-transfer-form__drop-down--to-dropdown')).toBeInTheDocument();
-        expect(screen.getByTestId('account-transfer-form__form-submit')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_drop_down_wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_drop_down')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_to_dropdown')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_submit')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer' })).toBeInTheDocument();
     });
 
@@ -113,7 +113,7 @@ describe('<AccountTransferForm />', () => {
 
         render(<AccountTransferForm {...props} />);
 
-        const amount_field = screen.getByTestId('account-transfer-form__input');
+        const amount_field = screen.getByTestId('dt_account_transfer_form_input');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
 
         fireEvent.change(amount_field, { target: { value: '1' } });
@@ -121,6 +121,8 @@ describe('<AccountTransferForm />', () => {
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('This field is required.')).toBeInTheDocument();
+        // await waitFor(()=>expect(screen.getByText('This field is required.')).toBeInTheDocument());
+        // screen.debug();
     });
 
     it('should show an error if transfer amount is greater than balance', async () => {
@@ -133,7 +135,7 @@ describe('<AccountTransferForm />', () => {
 
         render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(screen.getByTestId('account-transfer-form__input'), { target: { value: '200' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '200' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
@@ -150,7 +152,7 @@ describe('<AccountTransferForm />', () => {
 
         render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(screen.getByTestId('account-transfer-form__input'), { target: { value: '100' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         expect(props.requestTransferBetweenAccounts).not.toHaveBeenCalled();
@@ -161,7 +163,7 @@ describe('<AccountTransferForm />', () => {
 
         render(<AccountTransferForm {...props} />);
 
-        expect(screen.getByTestId('account-transfer-form__input')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_input')).toBeInTheDocument();
     });
 
     it("should show 'Please verify your identity' error if error.code is Fiat2CryptoTransferOverLimit", () => {

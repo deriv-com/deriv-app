@@ -12,9 +12,10 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
+import { TAccountOption } from './types';
 
 type TAccountTransfer = {
-    accounts_list: Array<object>;
+    accounts_list: Array<TAccountOption>;
     container: string;
     error: {
         is_show_full_page: boolean;
@@ -34,7 +35,7 @@ type TAccountTransfer = {
     setAccountTransferAmount: (amount: number | string) => void;
     setActiveTab: (container: string) => void;
     setIsTransferConfirm: (status: boolean) => void;
-    setSideNotes: (notes: Array<object | string> | null) => void;
+    setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
 };
 
 const AccountTransfer = ({

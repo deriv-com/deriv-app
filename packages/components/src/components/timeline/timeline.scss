@@ -15,7 +15,7 @@
         }
 
         &--no-border {
-            border-left: unset;
+            border-left: transparent solid 1px;
         }
     }
     &__container {

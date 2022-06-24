@@ -8,8 +8,8 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
-import StarRating from '../star-rating/star-rating.jsx';
-import TradeBadge from '../trade-badge';
+import StarRating from 'Components/star-rating';
+import TradeBadge from 'Components/trade-badge';
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {

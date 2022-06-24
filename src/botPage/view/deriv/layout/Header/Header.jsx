@@ -27,6 +27,7 @@ import {
 import { queryToObjectArray } from "../../../../../common/appId";
 import api from "../../api";
 import config from "../../../../../app.config";
+import { observer as globalObserver } from "../../../../../common/utils/observer";
 
 const AccountSwitcher = () => {
   const { account_switcher_loader } = useSelector((state) => state.ui);
@@ -95,16 +96,21 @@ const Header = () => {
         dispatch(updateActiveToken(active_storage_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
-
-        api.send({ forget_all: "balance" }).then(() => {
+        if (!globalObserver.getState('is_subscribed_to_balance')) {
           api.send({
             balance: 1,
             account: "all",
             subscribe: 1,
+          }).then(({ balance }) => {
+
+            globalObserver.setState({
+              balance: Number(balance.balance),
+              currency: balance.currency,
+              is_subscribed_to_balance: true,
+            })
           })
-            .then(() => { })
-            .catch(() => { });
-        });
+        }
+
       }).catch(() => {
         removeAllTokens();
         dispatch(resetClient());

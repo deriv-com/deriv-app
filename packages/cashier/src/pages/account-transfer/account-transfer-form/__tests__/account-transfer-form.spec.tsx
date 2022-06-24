@@ -1,5 +1,6 @@
+/* eslint-disable testing-library/no-container,testing-library/no-node-access */
 import React from 'react';
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 
@@ -111,9 +112,9 @@ describe('<AccountTransferForm />', () => {
         props.setErrorMessage = jest.fn();
         props.setAccountTransferAmount = jest.fn();
 
-        render(<AccountTransferForm {...props} />);
+        const { container } = render(<AccountTransferForm {...props} />);
 
-        const amount_field = screen.getByTestId('dt_account_transfer_form_input');
+        const amount_field = container.querySelector('input[name=amount]');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
 
         fireEvent.change(amount_field, { target: { value: '1' } });
@@ -121,8 +122,6 @@ describe('<AccountTransferForm />', () => {
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('This field is required.')).toBeInTheDocument();
-        // await waitFor(()=>expect(screen.getByText('This field is required.')).toBeInTheDocument());
-        // screen.debug();
     });
 
     it('should show an error if transfer amount is greater than balance', async () => {
@@ -133,10 +132,13 @@ describe('<AccountTransferForm />', () => {
         props.setAccountTransferAmount = jest.fn();
         props.selected_from.balance = 100;
 
-        render(<AccountTransferForm {...props} />);
+        const { container } = render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '200' } });
-        fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
+        const amount_field = container.querySelector('input[name=amount]');
+        const submit_button = screen.getByRole('button', { name: 'Transfer' });
+
+        fireEvent.change(amount_field, { target: { value: '200' } });
+        fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
     });

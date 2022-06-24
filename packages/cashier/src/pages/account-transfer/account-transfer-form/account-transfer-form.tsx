@@ -616,11 +616,7 @@ const AccountTransferForm = ({
                                     />
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (
-                                    <Field
-                                        name='amount'
-                                        validate={validateAmount}
-                                        data-testid='dt_account_transfer_form_input'
-                                    >
+                                    <Field name='amount' validate={validateAmount}>
                                         {(field: FieldProps) => (
                                             <Input
                                                 {...field}
@@ -632,6 +628,8 @@ const AccountTransferForm = ({
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer-form__input'
                                                 classNameHint='account-transfer-form__hint'
+                                                data-testid='dt_account_transfer_form_input'
+                                                name='amount'
                                                 type='text'
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount ? errors.amount : ''}

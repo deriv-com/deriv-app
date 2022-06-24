@@ -13,6 +13,8 @@ const INFO_TYPES = {
 
 const commission_tooltip_margin = 30;
 const stop_out_tooltip_margin = 160;
+const tick_size_tooltip_margin = 20;
+const max_duration_tooltip_margin = 140;
 
 const Info = ({
     amount = 0,
@@ -114,7 +116,7 @@ const Info = ({
                             components={[<span key={0} />]}
                         />
                     ),
-                    margin: commission_tooltip_margin,
+                    margin: tick_size_tooltip_margin,
                     text_size: tick_size_barrier_text_size,
                     tooltip_message: (
                         <Localize i18n_default_text='This is the distance of the barrier from the spot price.' />
@@ -128,7 +130,7 @@ const Info = ({
                             components={[<span key={0} />]}
                         />
                     ),
-                    margin: stop_out_tooltip_margin,
+                    margin: max_duration_tooltip_margin,
                     text_size: max_duration_text_size,
                     tooltip_message: (
                         <Localize

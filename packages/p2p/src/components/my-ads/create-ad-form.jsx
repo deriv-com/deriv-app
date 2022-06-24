@@ -36,11 +36,8 @@ const CreateAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
-
     const { currency, local_currency_config } = general_store.client;
-
     const should_not_show_auto_archive_message_again = React.useRef(false);
-
     const [selected_methods, setSelectedMethods] = React.useState([]);
 
     // eslint-disable-next-line no-shadow
@@ -66,11 +63,12 @@ const CreateAdForm = () => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
-
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
+        // P2P configuration is not subscribable. Hence need to fetch it on demand
+        general_store.setP2PConfig();
 
         return () => {
             disposeApiErrorReaction();
@@ -129,7 +127,7 @@ const CreateAdForm = () => {
                     };
 
                     return (
-                        <div className='p2p-my-ads__form'>
+                        <div className='p2p-my-ads__form' data-testid='dp2p-create-ad-form_container'>
                             <Form
                                 className={classNames('p2p-my-ads__form-element', {
                                     'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',
@@ -179,6 +177,7 @@ const CreateAdForm = () => {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
+                                                        data-testid='offer_amount'
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.offer_amount && errors.offer_amount}
@@ -222,8 +221,8 @@ const CreateAdForm = () => {
                                                     floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                         <FloatingRate
                                                             className='p2p-my-ads__form-field'
+                                                            data_testid='float_rate_type'
                                                             error_messages={errors.rate_type}
-                                                            exchange_rate={floating_rate_store.exchange_rate}
                                                             fiat_currency={currency}
                                                             local_currency={local_currency_config.currency}
                                                             onChange={handleChange}
@@ -238,13 +237,14 @@ const CreateAdForm = () => {
                                                             }}
                                                             required
                                                             change_handler={e => {
-                                                                my_ads_store.restrictDecimalPlace(e, 2, handleChange);
+                                                                my_ads_store.restrictDecimalPlace(e, handleChange);
                                                             }}
                                                             {...field}
                                                         />
                                                     ) : (
                                                         <Input
                                                             {...field}
+                                                            data-testid='fixed_rate_type'
                                                             data-lpignore='true'
                                                             type='text'
                                                             error={touched.rate_type && errors.rate_type}
@@ -276,6 +276,7 @@ const CreateAdForm = () => {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
+                                                        data-testid='min_transaction'
                                                         type='text'
                                                         error={touched.min_transaction && errors.min_transaction}
                                                         label={localize('Min order')}
@@ -300,6 +301,7 @@ const CreateAdForm = () => {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
+                                                        data-testid='max_transaction'
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.max_transaction && errors.max_transaction}
@@ -327,6 +329,7 @@ const CreateAdForm = () => {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
+                                                        data-testid='contact_info'
                                                         data-lpignore='true'
                                                         type='textarea'
                                                         label={
@@ -348,6 +351,7 @@ const CreateAdForm = () => {
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
+                                                    data-testid='default_advert_description'
                                                     data-lpignore='true'
                                                     type='textarea'
                                                     error={

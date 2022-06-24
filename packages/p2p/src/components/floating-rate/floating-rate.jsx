@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './floating-rate.scss';
@@ -11,18 +11,21 @@ import './floating-rate.scss';
 const FloatingRate = ({
     change_handler,
     className,
-    exchange_rate,
     error_messages,
     fiat_currency,
     local_currency,
     onChange,
     offset,
+    data_testid,
     ...props
 }) => {
-    const { general_store } = useStores();
+    const { floating_rate_store, general_store } = useStores();
+    const os = mobileOSDetect();
     const { name, value, required } = props;
 
-    const market_feed = value ? parseFloat(exchange_rate * (1 + value / 100)) : exchange_rate;
+    const market_feed = value
+        ? parseFloat(floating_rate_store.exchange_rate * (1 + value / 100))
+        : floating_rate_store.exchange_rate;
 
     // Input mask for formatting value on blur of floating rate field
     const onBlurHandler = e => {
@@ -60,15 +63,15 @@ const FloatingRate = ({
                     is_float
                     is_incrementable
                     is_signed
-                    inputmode='decimal'
                     increment_button_type='button'
                     name={name}
                     onBlur={onBlurHandler}
                     onChange={change_handler}
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
-                    type='number'
+                    type={isMobile() && os !== 'iOS' ? 'tel' : 'number'}
                     value={value}
+                    data_testid={data_testid}
                 />
                 <div className='floating-rate__mkt-rate'>
                     <Text
@@ -89,7 +92,8 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} = {formatMoney(local_currency, exchange_rate, true)} {local_currency}
+                        1 {fiat_currency} = {formatMoney(local_currency, floating_rate_store.exchange_rate, true)}{' '}
+                        {local_currency}
                     </Text>
                 </div>
             </section>
@@ -123,7 +127,6 @@ const FloatingRate = ({
 FloatingRate.propTypes = {
     change_handler: PropTypes.func,
     className: PropTypes.string,
-    exchange_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,

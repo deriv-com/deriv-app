@@ -12,11 +12,13 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable balance;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_blocked = false;
     @observable is_listed = false;
     @observable is_loading = false;
+    @observable is_p2p_blocked_for_pa = false;
     @observable is_restricted = false;
     @observable nickname = null;
     @observable nickname_error = '';
@@ -44,7 +46,7 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get client() {
-        return this.props?.client || {};
+        return { ...this.props?.client } || {};
     }
 
     @computed
@@ -180,6 +182,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsLoading(true);
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
+        this.setIsP2pBlockedForPa(false);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -196,9 +199,15 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            if (!error && get_account_status.risk_classification === 'high') {
-                const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
+            const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
+            const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+
+            if (error) {
+                this.setIsHighRiskFullyAuthedWithoutFa(false);
+                this.setIsBlocked(false);
+                this.setIsP2pBlockedForPa(false);
+            } else if (get_account_status.risk_classification === 'high') {
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
 
                 const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
@@ -207,8 +216,6 @@ export default class GeneralStore extends BaseStore {
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
                 const is_fully_authed_but_needs_fa =
                     is_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
-                const is_fully_authed_and_does_not_need_fa =
-                    is_fully_authenticated && !hasStatuses(['financial_assessment_not_complete']);
 
                 const is_not_fully_authenticated_and_fa_not_completed =
                     is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
@@ -216,8 +223,6 @@ export default class GeneralStore extends BaseStore {
                 if (is_fully_authed_but_needs_fa) {
                     // First priority: Send user to Financial Assessment if they have to submit it.
                     this.setIsHighRiskFullyAuthedWithoutFa(true);
-                    this.setIsLoading(false);
-                    return;
                 } else if (
                     is_cashier_locked ||
                     is_not_fully_authenticated ||
@@ -226,17 +231,19 @@ export default class GeneralStore extends BaseStore {
                 ) {
                     // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
-                    this.setIsLoading(false);
-                } else if (is_fully_authed_and_does_not_need_fa) {
-                    this.setIsLoading(false);
                 }
-            } else if (error) {
-                this.setIsHighRiskFullyAuthedWithoutFa(false);
-                this.setIsBlocked(false);
-                this.setIsLoading(false);
             }
 
+            if (is_blocked_for_pa) {
+                this.setIsP2pBlockedForPa(true);
+            }
+
+            this.setIsLoading(false);
+
             const { sendbird_store } = this.root_store;
+
+            this.setP2PConfig();
+
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -253,6 +260,15 @@ export default class GeneralStore extends BaseStore {
                         limit: this.list_item_limit,
                     },
                     [this.setP2pOrderList]
+                ),
+                exchange_rate_subscription: subscribeWS(
+                    {
+                        exchange_rates: 1,
+                        base_currency: this.client.currency,
+                        subscribe: 1,
+                        target_currency: this.client.local_currency_config?.currency,
+                    },
+                    [this.root_store.floating_rate_store.fetchExchangeRate]
                 ),
             };
 
@@ -311,6 +327,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setAccountBalance(value) {
+        this.balance = value;
+    }
+
+    @action.bound
     setAdvertiserId(advertiser_id) {
         this.advertiser_id = advertiser_id;
     }
@@ -351,6 +372,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsP2pBlockedForPa(is_p2p_blocked_for_pa) {
+        this.is_p2p_blocked_for_pa = is_p2p_blocked_for_pa;
+    }
+
+    @action.bound
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
     }
@@ -378,6 +404,7 @@ export default class GeneralStore extends BaseStore {
         this.order_table_type = order_table_type;
     }
 
+    @action.bound
     setOrderTimeOut(time) {
         this.order_timeout = time;
     }

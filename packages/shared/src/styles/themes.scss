@@ -71,6 +71,7 @@
         --general-section-2: #{$color-grey-2};
         --general-section-3: #{$color-grey-11};
         --general-section-4: #{$color-grey-12};
+        --general-section-5: #{$color-grey-2};
         --general-disabled: #{$color-grey-3};
         --general-hover: #{$color-grey-4};
         --general-active: #{$color-grey-5};
@@ -164,6 +165,7 @@
         --transparent-success: #{$alpha-color-green-1};
         --transparent-info: #{$alpha-color-blue-1};
         --transparent-hint: #{$alpha-color-blue-3};
+        --transparent-danger: #{$alpha-color-red-2};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
@@ -188,6 +190,7 @@
         --general-section-3: #{$color-black-5};
         // @TODO: get color from design
         --general-section-4: #{$color-black-5};
+        --general-section-5: #{$color-black-5};
         --general-disabled: #{$color-black-4};
         --general-hover: #{$color-black-5};
         --general-active: #{$color-black-8};
@@ -234,6 +237,7 @@
         --state-hover: #{$color-black-5};
         --state-active: #{$color-black-8};
         --state-disabled: #{$color-black-4};
+        --checkbox-disabled-grey: #{$color-grey-6};
         // Border
         --border-normal: #{$color-black-8};
         --border-normal-1: #{$color-grey-5};
@@ -260,6 +264,7 @@
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};
         --transparent-hint: #{$alpha-color-blue-1};
+        --transparent-danger: #{$alpha-color-red-2};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-2};

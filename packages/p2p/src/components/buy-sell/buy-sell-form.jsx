@@ -233,7 +233,9 @@ const BuySellForm = props => {
                                                         } = my_profile_store;
                                                         const matching_payment_methods =
                                                             advertiser_payment_methods_list.filter(
-                                                                pm => pm.display_name === add_payment_method
+                                                                advertiser_payment_method =>
+                                                                    advertiser_payment_method.display_name ===
+                                                                    add_payment_method
                                                             );
                                                         return matching_payment_methods.length > 0 ? (
                                                             matching_payment_methods.map(payment_method => (

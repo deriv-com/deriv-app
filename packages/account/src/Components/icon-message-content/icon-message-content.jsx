@@ -59,7 +59,7 @@ const IconMessageContent = ({ children, className, full_width, icon, icon_row, m
 );
 
 IconMessageContent.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.bool]),
     className: PropTypes.string,
     full_width: PropTypes.bool,
     icon: PropTypes.object,

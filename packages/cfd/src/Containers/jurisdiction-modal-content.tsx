@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import { PoaStatusCodes } from '@deriv/account';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import RootStore from 'Stores/index';
@@ -9,19 +10,26 @@ type TJurisdictionModalContent = {
     jurisdiction_selected_card: string | undefined;
     selectTypeOfCard: (card_type: string | undefined) => string | undefined;
     account_status: any[];
+    synthetic_available_accounts: any[];
+    financial_available_accounts: any[];
 };
 
 const JurisdictionModalContent = ({
     jurisdiction_selected_card,
     selectTypeOfCard,
     account_status,
+    synthetic_available_accounts,
+    financial_available_accounts,
 }: TJurisdictionModalContent) => {
-    const [verification_status] = React.useState('POI');
-    const [verification_status2] = React.useState('verified');
-    const [verification_status3] = React.useState('not_submitted');
-    const [verification_status4] = React.useState('pending');
-    const [unselect_card, setUnselectCard] = React.useState(false);
-    const [number_of_cards] = React.useState(2);
+    const amount_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
+    const amount_of_financial_accounts_to_be_shown = financial_available_accounts.length;
+
+    const [verification_status] = React.useState<string>('POI');
+    const [verification_status2] = React.useState<string>('verified');
+    const [verification_status3] = React.useState<string>('not_submitted');
+    const [verification_status4] = React.useState<string>('pending');
+    const [unselect_card, setUnselectCard] = React.useState<boolean>(false);
+    const [number_of_cards] = React.useState<number>(amount_of_financial_accounts_to_be_shown);
 
     const cardSelection = (cardType: string) => {
         setUnselectCard(!unselect_card);
@@ -37,7 +45,7 @@ const JurisdictionModalContent = ({
     return (
         <>
             <div className='cfd-jurisdiction-card__wrapper'>
-                {number_of_cards === 2 && (
+                {number_of_cards >= 1 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'BVI',
@@ -110,7 +118,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
 
-                {number_of_cards === 2 && (
+                {number_of_cards >= 2 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'Vanuatu',
@@ -181,7 +189,7 @@ const JurisdictionModalContent = ({
                         )}
                     </div>
                 )}
-                {number_of_cards === 4 && (
+                {number_of_cards >= 3 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'Labuan',
@@ -256,7 +264,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
 
-                {number_of_cards === 4 && (
+                {number_of_cards >= 4 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'SVG',

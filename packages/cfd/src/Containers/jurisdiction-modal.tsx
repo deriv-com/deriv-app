@@ -24,6 +24,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     residence: string;
     jurisdiction_selected_card: boolean;
     toggleJurisdictionModal: () => void;
+    tradingPlatformAvailableAccounts: any[];
 };
 
 const JurisdictionModal = ({
@@ -34,7 +35,16 @@ const JurisdictionModal = ({
     platform,
     jurisdiction_selected_card,
     toggleJurisdictionModal,
+    tradingPlatformAvailableAccounts,
 }: TJurisdictionModalProps) => {
+    const financial_available_accounts = tradingPlatformAvailableAccounts
+        .filter(available_account => available_account.market_type === 'financial')
+        .map((acc: any[]) => acc);
+
+    const synthetic_available_accounts = tradingPlatformAvailableAccounts
+        .filter(available_account => available_account.market_type === 'gaming')
+        .map((acc: any[]) => acc);
+
     return (
         <>
             <div
@@ -62,7 +72,10 @@ const JurisdictionModal = ({
                             height='696px'
                             width='1200px'
                         >
-                            <JurisdictionModalContent />
+                            <JurisdictionModalContent
+                                financial_available_accounts={financial_available_accounts}
+                                synthetic_available_accounts={synthetic_available_accounts}
+                            />
                             <Modal.Footer>
                                 <Button disabled={jurisdiction_selected_card === undefined} primary>
                                     Next
@@ -78,7 +91,10 @@ const JurisdictionModal = ({
                             visible={is_jurisdiction_modal_visible}
                             onClose={toggleJurisdictionModal}
                         >
-                            <JurisdictionModalContent />
+                            <JurisdictionModalContent
+                                financial_available_accounts={financial_available_accounts}
+                                synthetic_available_accounts={synthetic_available_accounts}
+                            />
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Suspense>
@@ -91,6 +107,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
+    tradingPlatformAvailableAccounts: client.tradingPlatformAvailableAccounts,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,
     is_uk: client.is_uk,

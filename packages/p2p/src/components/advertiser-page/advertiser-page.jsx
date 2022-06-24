@@ -13,9 +13,10 @@ import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
-import './advertiser-page.scss';
 import BlockUserOverlay from './block-user/block-user-overlay';
 import BlockUserModal from './block-user/block-user-modal';
+import classNames from 'classnames';
+import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
@@ -53,7 +54,11 @@ const AdvertiserPage = () => {
     }
 
     return (
-        <div className='advertiser-page'>
+        <div
+            className={classNames('advertiser-page', {
+                'advertiser-page--no-scroll': !!is_blocked,
+            })}
+        >
             <BlockUserModal
                 is_advertiser_blocked={!!is_blocked}
                 is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}

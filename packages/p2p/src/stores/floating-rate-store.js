@@ -22,9 +22,9 @@ export default class FloatingRateStore extends BaseStore {
     @computed
     get rate_type() {
         if (this.float_rate_adverts_status === 'enabled') {
-            return ad_type.FLOAT;
+            return ad_type.FIXED;
         }
-        return ad_type.FIXED;
+        return ad_type.FLOAT;
     }
 
     @computed

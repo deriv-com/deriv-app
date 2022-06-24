@@ -11,7 +11,6 @@ import {
     TSpecBoxProps,
     TPasswordBoxProps,
     TCFDAccountCardActionProps,
-    TExistingData,
     TCFDAccountCard,
     TTradingPlatformAccounts,
 } from './props.types';
@@ -197,11 +196,6 @@ const CFDAccountCard = ({
         type.type === 'synthetic' &&
         (existing_data as DetailsOfEachMT5Loginid)?.server_info;
 
-    const is_real_synthetic_account: boolean =
-        type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.region;
-    const get_server_environment = (existing_data as DetailsOfEachMT5Loginid)?.server_info?.environment;
-
     const ref = React.useRef<HTMLDivElement | null>(null);
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
     const button_ref = React.useRef<HTMLDivElement | null>(null);
@@ -318,7 +312,7 @@ const CFDAccountCard = ({
                             <div className='cfd-account-card__item'>
                                 {existing_data?.display_balance && is_logged_in && (
                                     <div className='cfd-account-card__item--banner'>
-                                        <Localize i18n_default_text='Labuan' />
+                                        <Localize i18n_default_text={existing_data.landing_company_short} />
                                     </div>
                                 )}
                                 {existing_data?.display_balance && is_logged_in && (

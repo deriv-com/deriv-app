@@ -5,6 +5,8 @@ import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
+    @observable is_jurisdiction_modal_visible = false;
+
     @observable account_type = {
         category: undefined,
         type: undefined,
@@ -19,6 +21,8 @@ export default class CFDStore extends BaseStore {
     @observable is_mt5_financial_stp_modal_open = false;
     @observable is_cfd_password_modal_enabled = false;
     @observable is_cfd_reset_password_modal_enabled = false;
+
+    @observable jurisdiction_selected_card = undefined;
 
     @observable is_cfd_pending_dialog_open = false;
 
@@ -148,6 +152,12 @@ export default class CFDStore extends BaseStore {
     @action.bound
     enableCFDPasswordModal() {
         this.is_cfd_password_modal_enabled = true;
+    }
+
+    @action.bound
+    selectTypeOfCard(card_type) {
+        this.jurisdiction_selected_card = undefined;
+        this.jurisdiction_selected_card = card_type;
     }
 
     @action.bound
@@ -391,6 +401,11 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    toggleJurisdictionModal() {
+        this.is_jurisdiction_modal_visible = !this.is_jurisdiction_modal_visible;
     }
 
     @action.bound

@@ -41,6 +41,7 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
+    @observable tradingPlatformAvailableAccounts = [];
     @observable pre_switch_broadcast = false;
     @observable switched = '';
     @observable is_switching = false;
@@ -1319,6 +1320,7 @@ export default class ClientStore extends BaseStore {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
@@ -2127,6 +2129,13 @@ export default class ClientStore extends BaseStore {
                 });
             }
         });
+    }
+
+    @action.bound
+    responseTradingPlatformAvailableAccounts(response) {
+        if (!response.error) {
+            this.tradingPlatformAvailableAccounts = response.trading_platform_available_accounts;
+        }
     }
 
     @action.bound

@@ -61,8 +61,8 @@ const PaymentAgentWithdrawForm = ({
 
     return (
         <div className='payment-agent-withdraw-form'>
-            <div onClick={() => setIsUnlistedWithdraw(false)} className='payment-agent-withdraw-form__page-return'>
-                <Icon icon='icArrowLeftBold' />
+            <div className='payment-agent-withdraw-form__page-return'>
+                <Icon icon='icArrowLeftBold' onClick={() => setIsUnlistedWithdraw(false)} />
                 <Text as='p' line_height='m' size='xs' weight='bold'>
                     <Localize i18n_default_text='Back to list' />
                 </Text>

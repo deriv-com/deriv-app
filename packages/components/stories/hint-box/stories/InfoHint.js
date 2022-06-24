@@ -1,6 +1,6 @@
 import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 import HintBox from 'Components/hint-box';
 
 const InfoHint = () => {

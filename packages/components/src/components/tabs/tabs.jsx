@@ -224,6 +224,10 @@ Tabs.propTypes = {
     should_update_hash: PropTypes.bool,
     single_tab_has_no_label: PropTypes.bool,
     top: PropTypes.bool,
+    background_color: PropTypes.string,
+    is_full_width: PropTypes.bool,
+    is_scrollable: PropTypes.bool,
+    is_overflow_hidden: PropTypes.bool,
 };
 
 export default withRouter(Tabs);

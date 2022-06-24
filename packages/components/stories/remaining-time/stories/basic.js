@@ -2,7 +2,7 @@ import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import { toMoment } from '@deriv/shared';
 import RemainingTime from 'Components/remaining-time';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const getCardLabels = () => ({
     DAYS: 'Days',

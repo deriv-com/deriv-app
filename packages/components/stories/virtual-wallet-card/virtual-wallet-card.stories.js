@@ -4,7 +4,7 @@ import VirtualWalletCard from 'Components/virtual-wallet-card';
 import React from 'react';
 import notes from './README.md';
 import { getWalletLabels } from '../real-wallet-card/wallet-labels';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 
 storiesOf('VirtualWalletCard', module)
     .addDecorator(withKnobs)
@@ -22,10 +22,10 @@ storiesOf('VirtualWalletCard', module)
                         is_actions_footer={boolean('is_actions_footer', true)}
                         is_topup_footer={boolean('is_topup_footer', false)}
                         onClickReset={() => {
-                            console.log('Reset clicked!');
+                            // TODO document why this arrow function is empty
                         }}
                         onClickTransactions={() => {
-                            console.log('Transactions clicked!');
+                            // TODO document why this arrow function is empty
                         }}
                         wallet_name='Virtual USD Wallet'
                         width='280'

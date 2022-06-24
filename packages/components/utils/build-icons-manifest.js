@@ -6,7 +6,7 @@ const glob = require('glob');
 
 const { getFileNameFromPath, getKebabCase, getPascalCase } = require('./helper');
 
-const icons_list = require('./icons.js');
+const icons_list = require('./icons');
 
 function validateIcons(svgs_map) {
     Object.keys(icons_list).forEach(icon_path => {
@@ -23,7 +23,7 @@ function validateIcons(svgs_map) {
         }
 
         if (category !== dir_name) {
-            throw `'${file_name}' icon is in incorrect folder. Please move it to the ${category} folder.`;
+            throw new Error(`'${file_name}' icon is in incorrect folder. Please move it to the ${category} folder.`);
         }
     });
 }

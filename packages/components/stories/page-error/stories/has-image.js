@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PageError from 'Components/page-error';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 import image_404 from '../page-not-found.png';
 
 const HasImage = () => (

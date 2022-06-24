@@ -185,6 +185,13 @@ VerticalTab.propTypes = {
     setVerticalTabIndex: PropTypes.func,
     side_note_class_name: PropTypes.string,
     vertical_tab_index: PropTypes.number,
+    extra_content: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
+    extra_offset: PropTypes.number,
+    has_mixed_dimensions: PropTypes.bool,
+    is_collapsible: PropTypes.bool,
+    is_grid: PropTypes.bool,
+    onClickClose: PropTypes.func,
+    title: PropTypes.string,
 };
 
 VerticalTab.ContentContainer = VerticalTabContentContainer;

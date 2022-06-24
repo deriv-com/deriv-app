@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs, text, select } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import Text from 'Components/text';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import notes from './README.md';
 import './styles.scss';
 
@@ -17,7 +17,7 @@ stories.add(
         <Theme is_dark={boolean('dark theme', false)}>
             <div className='text-component-container'>
                 <Text
-                    size='s'
+                    // size='s'
                     align='right'
                     weight={select('weight', ['lighter', 'normal', 'bold', 'bolder'], 'bold')}
                     color={select(

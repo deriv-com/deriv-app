@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import notes from './README.md';
 import TickProgress from '../../src/components/tick-progress/index';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import { useInterval } from '../../src/hooks';
 
 const tick_progresses = [

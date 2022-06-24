@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import Timeline from 'Components/timeline';
-import Wrapper from '../shared/theme';
+import Wrapper from '../shared/theme.jsx';
 import notes from './README.md';
 
 const stories = storiesOf('Timeline', module);
@@ -15,7 +15,7 @@ stories.add(
     () => (
         <Wrapper is_dark={boolean('dark theme', true)}>
             <div style={{ display: 'flex' }}>
-                <div style={{ width: '20rem' }}></div>
+                <div style={{ width: '20rem' }} />
                 <Timeline>
                     <Timeline.Item item_title='Title'>
                         <div>test</div>

@@ -4,7 +4,7 @@ import RealWalletCard from 'Components/real-wallet-card';
 import React from 'react';
 import notes from './README.md';
 import { getWalletLabels } from './wallet-labels';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 
 storiesOf('RealWalletCard', module)
     .addDecorator(withKnobs)
@@ -25,19 +25,21 @@ storiesOf('RealWalletCard', module)
                         is_selected={boolean('is_selected', false)}
                         is_temporarily_unavailable={boolean('is_temporarily_unavailable', false)}
                         onClickDeposit={() => {
-                            console.log('Deposit clicked!');
+                            // TODO document why this arrow function is empty
                         }}
                         onClickSettings={() => {
-                            console.log('Settings clicked!');
+                            // TODO document why this arrow function is empty
+                            // TODO document why this arrow function is empty
                         }}
                         onClickTransactions={() => {
-                            console.log('Transactions clicked!');
+                            // TODO document why this arrow function is empty
+                            // TODO document why this arrow function is empty
                         }}
                         onClickTransfer={() => {
-                            console.log('Transfer clicked!');
+                            // TODO document why this arrow function is empty
                         }}
                         onClickWithdrawal={() => {
-                            console.log('Withdrawal clicked!');
+                            // TODO document why this arrow function is empty
                         }}
                         wallet_name='Credit/Debit USD Wallet'
                         width='280'

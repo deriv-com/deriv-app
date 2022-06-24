@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 import ReadMore from 'Components/read-more';
 import notes from './README.md';
 

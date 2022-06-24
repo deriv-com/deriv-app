@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react';
 import Icon from 'Components/icon';
 import Text from 'Components/text';
 import NewsTicker from 'Components/news-ticker';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import notes from './README.md';
 
 const flags = ['de', 'en', 'es', 'fr', 'id', 'it', 'pl', 'pt', 'ru', 'th', 'uk', 'vi', 'zh-cn', 'zh-tw'];

@@ -2,10 +2,10 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wizard from 'Components/wizard';
-import Button from 'Components/button';
+import Wizard from '../../src/components/wizard';
+import Button from '../../src/components/button';
 import { FlexWrapper, ButtonWrapper, Text } from '../button/shared-style';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 import notes from './README.md';
 
 const stories = storiesOf('Wizard', module);

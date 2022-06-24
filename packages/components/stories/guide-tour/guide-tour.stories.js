@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean } from '@storybook/addon-knobs';
 import GuideTour from 'Components/guide-tour';
 import React from 'react';
-import Wrapper from '../shared/wrapper';
+import Wrapper from '../shared/wrapper.jsx';
 import notes from './README.md';
 import './guide-tour.stories.scss';
 

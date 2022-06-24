@@ -66,6 +66,7 @@ Tab.propTypes = {
     onClick: PropTypes.func,
     setActiveLineStyle: PropTypes.func,
     top: PropTypes.bool,
+    is_scrollable: PropTypes.bool,
 };
 
 export default Tab;

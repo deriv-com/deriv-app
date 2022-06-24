@@ -2,7 +2,7 @@ import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import SwipeableWrapper from 'Components/swipeable-wrapper';
-import Wrapper from '../../shared/wrapper';
+import Wrapper from '../../shared/wrapper.jsx';
 
 const Slide = ({ id }) => (
     <div className='swipeable-wrapper-storybook-slide'>

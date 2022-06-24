@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import Numpad from 'Components/numpad';
 import { boolean, text, number, withKnobs } from '@storybook/addon-knobs';
 import notes from './README.md';
-import Theme from '../shared/theme';
+import Theme from '../shared/theme.jsx';
 
 storiesOf('Numpad', module)
     .addParameters({ viewport: { defaultViewport: 'mobile2' } })

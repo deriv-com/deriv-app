@@ -26,7 +26,7 @@ const Real = ({ iframe_height, iframe_url, clearIframe, is_loading }: TRealProps
                     src={iframe_url}
                     frameBorder='0'
                     scrolling='auto'
-                    data-testid='doughflow_section'
+                    data-testid='dt_doughflow_section'
                 />
             )}
         </div>

@@ -15,11 +15,13 @@ type TVirtualProps = RouteComponentProps & {
 };
 const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
     return (
-        <div className='cashier__wrapper' data-testid='cashier-wrapper-id'>
+        <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>
             <React.Fragment>
                 <div
                     data-testid={
-                        is_dark_mode_on ? 'virtual-account-switch-icon-dark-id' : 'virtual-account-switch-icon-light-id'
+                        is_dark_mode_on
+                            ? 'dt_virtual_account_switch_icon_dark_id'
+                            : 'dt_virtual_account_switch_icon_light_id'
                     }
                     className={classNames(
                         'virtual__account-switch-icon',

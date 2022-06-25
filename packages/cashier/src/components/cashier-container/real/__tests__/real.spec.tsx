@@ -20,7 +20,7 @@ describe('<Real />', () => {
         const el_loader = screen.queryByText('Loading');
 
         expect(el_loader).not.toBeInTheDocument();
-        expect(screen.queryByTestId('doughflow_section')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_doughflow_section')).toBeInTheDocument();
     });
 
     it('should render the loading when is_loading is true', () => {
@@ -28,7 +28,7 @@ describe('<Real />', () => {
         const el_loader = screen.queryByText('Loading');
 
         expect(el_loader).toBeInTheDocument();
-        expect(screen.queryByTestId('doughflow_section')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_doughflow_section')).not.toBeInTheDocument();
     });
 
     it('will display doughflow and loader if all props are provided', () => {
@@ -36,6 +36,6 @@ describe('<Real />', () => {
         const el_loader = screen.queryByText('Loading');
 
         expect(el_loader).toBeInTheDocument();
-        expect(screen.queryByTestId('doughflow_section')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_doughflow_section')).toBeInTheDocument();
     });
 });

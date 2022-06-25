@@ -20,7 +20,7 @@ describe('<Virtual />', () => {
             </Router>
         );
 
-        expect(screen.getByTestId('cashier-wrapper-id')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cashier_wrapper_id')).toBeInTheDocument();
     });
 
     it(`icon styling should be dark when 'is_dark_mode_on' prop is true`, () => {
@@ -30,7 +30,7 @@ describe('<Virtual />', () => {
             </Router>
         );
 
-        expect(screen.getByTestId('virtual-account-switch-icon-dark-id')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_virtual_account_switch_icon_dark_id')).toBeInTheDocument();
     });
 
     it(`icon styling should be light when 'is_dark_mode_on' prop is false`, () => {
@@ -40,7 +40,7 @@ describe('<Virtual />', () => {
             </Router>
         );
 
-        expect(screen.getByTestId('virtual-account-switch-icon-light-id')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_virtual_account_switch_icon_light_id')).toBeInTheDocument();
     });
 
     it(`toggleAccountsDialog func should be triggered on click on text element 'Account Switcher.'`, () => {

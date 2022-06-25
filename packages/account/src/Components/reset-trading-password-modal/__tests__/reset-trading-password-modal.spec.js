@@ -6,6 +6,7 @@ import ResetTradingPasswordModal from '../reset-trading-password-modal';
 import { WS } from '@deriv/shared';
 
 const mock_promise = Promise.resolve();
+const mockFn = jest.fn();
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -23,7 +24,7 @@ describe('<ResetTradingPasswordModal/>', () => {
     const props = {
         disableApp: jest.fn(),
         enableApp: jest.fn(),
-        toggleResetTradingPasswordModal: jest.fn(),
+        toggleResetTradingPasswordModal: mockFn,
         is_loading: false,
         is_visible: true,
         verification_code: '',
@@ -40,6 +41,18 @@ describe('<ResetTradingPasswordModal/>', () => {
         );
         expect(screen.getByRole('dialog')).toBeInTheDocument();
         await act(() => mock_promise);
+    });
+
+    it('should remove the ResetTradingPasswordModal component when is_visible is false', async () => {
+        const new_props = { ...props, is_visible: false };
+        render(
+            <Router history={history}>
+                <ResetTradingPasswordModal {...new_props} />
+            </Router>
+        );
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
     });
 
     it('should render dialog title to specific CFDPlatform label', async () => {
@@ -80,6 +93,24 @@ describe('<ResetTradingPasswordModal/>', () => {
         ).toBeInTheDocument();
     });
 
+    it('should close the dialog when Ok button is clicked', async () => {
+        render(
+            <Router history={history}>
+                <ResetTradingPasswordModal {...props} />
+            </Router>
+        );
+        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
+
+        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
+            target: { value: 'hN795jCWkDtPy5' },
+        });
+        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: /Ok/i }));
+            expect(mockFn).toHaveBeenCalled();
+        });
+    });
+
     it('should get the account status on successful submission', async () => {
         WS.tradingPlatformPasswordReset.mockReturnValue(Promise.resolve({ data: 'Test data' }));
         render(
@@ -96,6 +127,25 @@ describe('<ResetTradingPasswordModal/>', () => {
 
         await waitFor(() => {
             expect(WS.getAccountStatus).toHaveBeenCalled();
+        });
+    });
+
+    it('should close the dialog when Done button is clicked', async () => {
+        render(
+            <Router history={history}>
+                <ResetTradingPasswordModal {...props} />
+            </Router>
+        );
+
+        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
+        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
+            target: { value: 'hN795jCWkDtPy5' },
+        });
+        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: /Done/i }));
+            expect(mockFn).toHaveBeenCalled();
         });
     });
 
@@ -134,11 +184,9 @@ describe('<ResetTradingPasswordModal/>', () => {
     });
 
     it('should close the dialog when cancel button is clicked', async () => {
-        const mockFn = jest.fn();
-        const new_props = { ...props, toggleResetTradingPasswordModal: mockFn };
         render(
             <Router history={history}>
-                <ResetTradingPasswordModal {...new_props} />
+                <ResetTradingPasswordModal {...props} />
             </Router>
         );
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));

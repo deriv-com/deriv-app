@@ -11,7 +11,7 @@ import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
 import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 
-const Notification = ({ data, removeNotificationMessage }) => {
+const Notification = ({ data, removeNotificationMessage, config }) => {
     const linear_progress_container_ref = React.useRef(null);
     const { is_appstore } = React.useContext(PlatformContext);
 
@@ -43,8 +43,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     onClose={destroy}
                 />
             );
-        case 'trustpilot':
-            return (
+        case 'trustpilot': {
+            // Trustpilot notification will be displayed only after a week of account creation
+            return config.account_open_date && config.account_open_date >= 7 ? (
                 <NotificationBanner
                     className={data.className}
                     header={data.header_popup}
@@ -54,7 +55,8 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     img_alt={data.img_alt}
                     onClose={destroy}
                 />
-            );
+            ) : null;
+        }
         case 'close_mx_mlt':
             return (
                 <NotificationCloseMxMlt
@@ -176,6 +178,10 @@ Notification.propTypes = {
             'promotions',
             'close_mx_mlt',
         ]).isRequired,
+    }),
+    config: PropTypes.shape({
+        // Configurations controlling display of Notification banner
+        account_open_date: PropTypes.number,
     }),
     removeNotificationMessage: PropTypes.func,
 };

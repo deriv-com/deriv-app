@@ -165,6 +165,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get account_open_date() {
+        if (isEmptyObject(this.accounts)) return undefined;
+        return Object.keys(this.accounts[this.loginid]).includes('created_at')
+            ? this.accounts[this.loginid].created_at
+            : undefined;
+    }
+
+    @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
             return false;

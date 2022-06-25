@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings, daysSince } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
@@ -14,6 +14,7 @@ const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
 
 const NotificationsContent = ({
+    account_open_date,
     is_notification_loaded,
     style,
     notifications,
@@ -56,7 +57,11 @@ const NotificationsContent = ({
                         }}
                         unmountOnExit
                     >
-                        <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
+                        <Notification
+                            data={notification}
+                            removeNotificationMessage={removeNotificationMessage}
+                            config={{ account_open_date }}
+                        />
                     </CSSTransition>
                 ))}
             </TransitionGroup>
@@ -65,6 +70,7 @@ const NotificationsContent = ({
 };
 
 const AppNotificationMessages = ({
+    account_open_date,
     is_notification_loaded,
     is_mt5,
     marked_notifications,
@@ -121,6 +127,7 @@ const AppNotificationMessages = ({
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
+                    account_open_date={daysSince(account_open_date)}
                     notifications={notifications_sublist}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
@@ -171,4 +178,5 @@ export default connect(({ client, notifications }) => ({
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
     should_show_popups: notifications.should_show_popups,
+    account_open_date: client.account_open_date,
 }))(AppNotificationMessages);

@@ -131,7 +131,7 @@ describe('<OnRamp />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
 
         render(<OnRamp {...props} />);
-        const select = screen.getByTestId('on-ramp-select-native');
+        const select = screen.getByTestId('dt_on_ramp_select_native');
         const labels = Array.from(select as any).map((option: any) => option.label);
 
         expect(labels).toContain('Deposit');
@@ -156,7 +156,7 @@ describe('<OnRamp />', () => {
         ];
 
         const { container } = render(<OnRamp {...props} />);
-        const select = screen.getByTestId('on-ramp-select-native');
+        const select = screen.getByTestId('dt_on_ramp_select_native');
 
         fireEvent.change(select, { target: { value: routes.cashier_deposit } });
 

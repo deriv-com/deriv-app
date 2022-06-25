@@ -65,7 +65,6 @@ const OnRampProviderCard = ({
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default connect(({ modules, ui }: RootStore) => ({
     setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
     is_dark_mode_on: ui.is_dark_mode_on,

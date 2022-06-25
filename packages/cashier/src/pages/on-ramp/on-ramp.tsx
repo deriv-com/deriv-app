@@ -113,7 +113,7 @@ const OnRamp = ({
                 {isMobile() && (
                     <React.Fragment>
                         <SelectNative
-                            data_testid='on-ramp-select-native'
+                            data_testid='dt_on_ramp_select_native'
                             className='on-ramp__selector'
                             list_items={getActivePaths()}
                             value={selected_cashier_path}

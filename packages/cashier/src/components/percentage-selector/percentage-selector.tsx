@@ -72,7 +72,7 @@ const PercentageSelector = ({
     const currency__display_code = getCurrencyDisplayCode(currency);
     return (
         <React.Fragment>
-            <div className='percentage-selector' data-testid='percentage-selector-id'>
+            <div className='percentage-selector' data-testid='dt_percentage_selector_id'>
                 <div className='percentage-selector__block-container'>
                     <Text color='prominent' size='xs' className='percentage-selector__text'>
                         {'25%'}
@@ -81,7 +81,7 @@ const PercentageSelector = ({
                         id='1'
                         className='percentage-selector-block'
                         onClick={e => calculateAmount(e, 25)}
-                        data-testid='percentage-selector-block-id-1'
+                        data-testid='dt_percentage_selector_block_id_1'
                     />
                 </div>
                 <div className='percentage-selector__block-container'>
@@ -92,7 +92,7 @@ const PercentageSelector = ({
                         id='2'
                         className='percentage-selector-block'
                         onClick={e => calculateAmount(e, 50)}
-                        data-testid='percentage-selector-block-id-2'
+                        data-testid='dt_percentage_selector_block_id_2'
                     />
                 </div>
                 <div className='percentage-selector__block-container'>
@@ -103,7 +103,7 @@ const PercentageSelector = ({
                         id='3'
                         className='percentage-selector-block'
                         onClick={e => calculateAmount(e, 75)}
-                        data-testid='percentage-selector-block-id-3'
+                        data-testid='dt_percentage_selector_block_id_3'
                     />
                 </div>
                 <div className='percentage-selector__block-container'>
@@ -114,7 +114,7 @@ const PercentageSelector = ({
                         id='4'
                         className='percentage-selector-block'
                         onClick={e => calculateAmount(e, 100)}
-                        data-testid='percentage-selector-block-id-4'
+                        data-testid='dt_percentage_selector_block_id_4'
                     />
                 </div>
             </div>

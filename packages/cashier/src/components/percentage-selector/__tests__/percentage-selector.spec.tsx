@@ -17,45 +17,45 @@ describe('<PercentageSelector />', () => {
     it('should render the component', () => {
         render(<PercentageSelector {...percentage_selector_props} />);
 
-        expect(screen.getByTestId('percentage-selector-id')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_percentage_selector_id')).toBeInTheDocument();
     });
 
     it('should calculate the percentage amount on click of percentage block', () => {
         render(<PercentageSelector {...percentage_selector_props} />);
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-1'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_1'));
         expect(screen.getByText(`25% of available balance (100.00 USD)`)).toBeInTheDocument();
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-2'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_2'));
         expect(screen.getByText(`50% of available balance (100.00 USD)`)).toBeInTheDocument();
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-3'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_3'));
         expect(screen.getByText(`75% of available balance (100.00 USD)`)).toBeInTheDocument();
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-4'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_4'));
         expect(screen.getByText(`100% of available balance (100.00 USD)`)).toBeInTheDocument();
     });
 
     it('should reset the percentage block upon clicking twice', () => {
         render(<PercentageSelector {...percentage_selector_props} />);
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-1'));
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-1'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_1'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_1'));
 
         expect(screen.getByText(`0% of available balance (100.00 USD)`)).toBeInTheDocument();
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-2'));
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-2'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_2'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_2'));
 
         expect(screen.getByText(`25% of available balance (100.00 USD)`)).toBeInTheDocument();
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-3'));
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-3'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_3'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_3'));
 
         expect(screen.getByText(`50% of available balance (100.00 USD)`)).toBeInTheDocument();
 
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-4'));
-        fireEvent.click(screen.getByTestId('percentage-selector-block-id-4'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_4'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_4'));
 
         expect(screen.getByText(`75% of available balance (100.00 USD)`)).toBeInTheDocument();
     });

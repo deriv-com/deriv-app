@@ -7,6 +7,7 @@ import { FixedSizeList as List } from "react-window";
 // import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
+import ResizeObserver from "resize-observer-polyfill";
 
 /* TODO:
       1. implement sorting by column (ASC/DESC)
@@ -34,36 +35,40 @@ const DataTable = ({
     const is_dynamic_height = !getRowSize;
     const [scroll_top, setScrollTop] = React.useState(0);
     const [is_loading, setLoading] = React.useState(true);
+    const [width, setWidth] = React.useState(0);
+    const [height, setHeight] = React.useState(0);
+    const my_ref = React.useRef(null);
+
+
+
 
     React.useEffect(() => {
-        // TODO: Needs custom implementation for caching
-        // if (is_dynamic_height) {
-        //     cache_ref.current = new CellMeasurerCache({
-        //         fixedWidth: true,
-        //         keyMapper: row_index => {
-        //             if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
-        //             return row_index;
-        //         },
-        //     });
-        // }
-        setLoading(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const el = my_ref.current;
+        if (!el) return;
+
+        function handleResize() {
+            const { height, width } = el.getBoundingClientRect();
+            setHeight(height);
+            setWidth(width);
+        }
+
+        // resize observer is a tool you can use to watch for size changes efficiently
+        const resizeObserver = new ResizeObserver(handleResize);
+        resizeObserver.observe(el);
+
+        return () => resizeObserver.disconnect();
     }, []);
-
-    React.useEffect(() => {
-        if (is_dynamic_height) list_ref.current?.recomputeGridSize(0);
-    }, [data_source, is_dynamic_height]);
 
     const handleScroll = ev => {
         setScrollTop(ev.target.scrollTop);
         if (typeof onScroll === 'function') onScroll(ev);
     };
 
-    const rowRenderer = ({ style, index, key, parent }) => {
+    const rowRenderer = ({ style, index, _key, parent }) => {
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
-        const contract_id = item.contract_id || item.id;
-        const row_key = keyMapper?.(item) || key;
+        const contract_id = item?.contract_id || item?.id;
+        const row_key = keyMapper?.(item) || _key;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const getContent = ({ measure } = {}) => (
@@ -97,9 +102,9 @@ const DataTable = ({
         );
     };
 
-    if (is_loading) {
-        return <div />;
-    }
+    // if (is_loading) {
+    //     return <div />;
+    // }
     return (
         <div
             className={classNames('table', {
@@ -117,36 +122,12 @@ const DataTable = ({
                     is_header
                 />
             </div>
-            <div className='table__body'>
-                {/* <FixedSizeList> */}
-                {({ width, height }) => (
-                    <div
-                        className='dc-data-table'
-                        style={{
-                            height,
-                            width,
-                        }}
-                    >
-                        <ThemedScrollbars autoHide onScroll={handleScroll}>
-                            <List
-                                autoHeight
-                                className={className}
-                                deferredMeasurementCache={cache_ref.current}
-                                height={height}
-                                overscanRowCount={1}
-                                ref={ref => (list_ref.current = ref)}
-                                rowCount={data_source.length}
-                                rowHeight={is_dynamic_height ? cache_ref?.current.rowHeight : getRowSize}
-                                rowRenderer={rowRenderer}
-                                scrollingResetTimeInterval={0}
-                                scrollTop={scroll_top}
-                                width={width}
-                            />
-                        </ThemedScrollbars>
-                        {children}
-                    </div>
-                )}
-                {/* </FixedSizeList> */}
+            <div className='table__body' ref={my_ref}>
+                <ThemedScrollbars autoHide onScroll={handleScroll}>
+                    <List ref={list_ref} height={height} width={width} itemCount={data_source.length} itemSize={63}>
+                        {rowRenderer}
+                    </List>
+                </ThemedScrollbars>
             </div>
 
             {footer && (

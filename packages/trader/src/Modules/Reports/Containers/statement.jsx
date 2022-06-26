@@ -55,31 +55,31 @@ const DetailsComponent = ({ message = '', action_type = '' }) => {
 
 const getRowAction = row_obj => {
     let action;
-    if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
+    if (row_obj?.id && ['buy', 'sell'].includes(row_obj?.action_type)) {
         action =
             getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-                ? getContractPath(row_obj.id)
+                !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
+                ? getContractPath(row_obj?.id)
                 : {
-                      component: (
-                          <Localize
-                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                              values={{
-                                  website_name,
-                              }}
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link link--orange'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={urlFor('user/statementws', { legacy: true })}
-                                  />,
-                              ]}
-                          />
-                      ),
-                  };
-    } else if (row_obj.action_type === 'withdrawal') {
+                    component: (
+                        <Localize
+                            i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                            values={{
+                                website_name,
+                            }}
+                            components={[
+                                <a
+                                    key={0}
+                                    className='link link--orange'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href={urlFor('user/statementws', { legacy: true })}
+                                />,
+                            ]}
+                        />
+                    ),
+                };
+    } else if (row_obj?.action_type === 'withdrawal') {
         if (row_obj.withdrawal_details && row_obj.longcode) {
             action = {
                 message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
@@ -89,14 +89,14 @@ const getRowAction = row_obj => {
                 message: row_obj.desc,
             };
         }
-    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
+    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj?.action_type)) {
         action = {
             message: row_obj.desc,
         };
     }
 
     if (action?.message) {
-        action.component = <DetailsComponent message={action.message} action_type={row_obj.action_type} />;
+        action.component = <DetailsComponent message={action.message} action_type={row_obj?.action_type} />;
     }
 
     return action;

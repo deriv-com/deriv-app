@@ -76,60 +76,60 @@ const Popover = ({
                     windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
-                              contentDestination: popover_ref,
-                              contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
-                                  const screen_width = document.body.clientWidth;
-                                  const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);
-                                  let top_offset = 0;
-                                  let left_offset = 0;
+                            contentDestination: popover_ref,
+                            contentLocation: ({ childRect, popoverRect, nudgedLeft }) => {
+                                const screen_width = document.body.clientWidth;
+                                const total_width = childRect.right + (popoverRect.width - childRect.width / 2);
+                                let top_offset = 0;
+                                let left_offset = 0;
 
-                                  switch (alignment) {
-                                      case 'left': {
-                                          left_offset =
-                                              Math.abs(
-                                                  (popoverRect.height > popoverRect.width
-                                                      ? nudgedLeft
-                                                      : popoverRect.width) + margin
-                                              ) * -1;
-                                          top_offset =
-                                              targetRect.height > popoverRect.height
-                                                  ? (targetRect.height - popoverRect.height) / 2
-                                                  : ((popoverRect.height - targetRect.height) / 2) * -1;
-                                          break;
-                                      }
-                                      case 'right': {
-                                          left_offset = popoverRect.width + margin;
-                                          top_offset =
-                                              targetRect.height > popoverRect.height
-                                                  ? (targetRect.height - popoverRect.height) / 2
-                                                  : ((popoverRect.height - targetRect.height) / 2) * -1;
-                                          break;
-                                      }
-                                      case 'top': {
-                                          left_offset =
-                                              total_width > screen_width
-                                                  ? Math.abs(total_width - screen_width) * -1
-                                                  : 0;
-                                          top_offset = Math.abs(popoverRect.height + margin) * -1;
-                                          break;
-                                      }
-                                      case 'bottom': {
-                                          left_offset =
-                                              total_width > screen_width
-                                                  ? Math.abs(total_width - screen_width) * -1
-                                                  : 0;
-                                          top_offset = targetRect.height + margin;
-                                          break;
-                                      }
-                                      default:
-                                          break;
-                                  }
-                                  return {
-                                      top: top_offset,
-                                      left: left_offset,
-                                  };
-                              },
-                          }
+                                switch (alignment) {
+                                    case 'left': {
+                                        left_offset =
+                                            Math.abs(
+                                                (popoverRect.height > popoverRect.width
+                                                    ? nudgedLeft
+                                                    : popoverRect.width) + margin
+                                            ) * -1;
+                                        top_offset =
+                                            childRect.height > popoverRect.height
+                                                ? (childRect.height - popoverRect.height) / 2
+                                                : ((popoverRect.height - childRect.height) / 2) * -1;
+                                        break;
+                                    }
+                                    case 'right': {
+                                        left_offset = popoverRect.width + margin;
+                                        top_offset =
+                                            childRect.height > popoverRect.height
+                                                ? (childRect.height - popoverRect.height) / 2
+                                                : ((popoverRect.height - childRect.height) / 2) * -1;
+                                        break;
+                                    }
+                                    case 'top': {
+                                        left_offset =
+                                            total_width > screen_width
+                                                ? Math.abs(total_width - screen_width) * -1
+                                                : 0;
+                                        top_offset = Math.abs(popoverRect.height + margin) * -1;
+                                        break;
+                                    }
+                                    case 'bottom': {
+                                        left_offset =
+                                            total_width > screen_width
+                                                ? Math.abs(total_width - screen_width) * -1
+                                                : 0;
+                                        top_offset = childRect.height + margin;
+                                        break;
+                                    }
+                                    default:
+                                        break;
+                                }
+                                return {
+                                    top: top_offset,
+                                    left: left_offset,
+                                };
+                            },
+                        }
                         : { containerStyle: { zIndex } })}
                     content={({ position, childRect, popoverRect }) => {
                         return (
@@ -159,10 +159,10 @@ const Popover = ({
                                             {message}
                                         </Text>
                                     )) || (
-                                        <Text line_height='m' size='xxs' className='dc-popover__bubble__text'>
-                                            {message}
-                                        </Text>
-                                    )}
+                                            <Text line_height='m' size='xxs' className='dc-popover__bubble__text'>
+                                                {message}
+                                            </Text>
+                                        )}
                                 </div>
                             </ArrowContainer>
                         );

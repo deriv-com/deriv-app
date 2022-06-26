@@ -17,28 +17,28 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
 
 const getRowAction = row_obj =>
-    getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-    !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
+    getSupportedContracts()[extractInfoFromShortcode(row_obj?.shortcode).category.toUpperCase()] &&
+        !isForwardStarting(row_obj?.shortcode, row_obj.purchase_time_unix)
         ? getContractPath(row_obj.contract_id)
         : {
-              component: (
-                  <Localize
-                      i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                      values={{
-                          website_name,
-                      }}
-                      components={[
-                          <a
-                              key={0}
-                              className='link link--orange'
-                              rel='noopener noreferrer'
-                              target='_blank'
-                              href={urlFor('user/profit_tablews', { legacy: true })}
-                          />,
-                      ]}
-                  />
-              ),
-          };
+            component: (
+                <Localize
+                    i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                    values={{
+                        website_name,
+                    }}
+                    components={[
+                        <a
+                            key={0}
+                            className='link link--orange'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href={urlFor('user/profit_tablews', { legacy: true })}
+                        />,
+                    ]}
+                />
+            ),
+        };
 
 const ProfitTable = ({
     component_icon,
@@ -84,7 +84,7 @@ const ProfitTable = ({
     }, {});
 
     const mobileRowRenderer = ({ row, is_footer }) => {
-        const duration_type = /^MULTUP|MULTDOWN/.test(row.shortcode) ? '' : row.duration_type;
+        const duration_type = /^MULTUP|MULTDOWN/.test(row?.shortcode) ? '' : row.duration_type;
         const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
         if (is_footer) {

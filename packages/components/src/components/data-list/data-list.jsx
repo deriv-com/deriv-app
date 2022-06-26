@@ -37,6 +37,10 @@ const DataList = React.memo(
 
         const is_dynamic_height = !getRowSize;
 
+        const [width, setWidth] = React.useState(0);
+        const [height, setHeight] = React.useState(0);
+        const my_ref = React.useRef(null);
+
         const trackItemsForTransition = React.useCallback(() => {
             data_source.forEach((item, index) => {
                 const row_key = keyMapper?.(item) || `${index}-0`;
@@ -61,6 +65,23 @@ const DataList = React.memo(
         }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
+            const el = my_ref.current;
+            if (!el) return;
+
+            function handleResize() {
+                const { height, width } = el.getBoundingClientRect();
+                setHeight(height);
+                setWidth(width);
+            }
+
+            // resize observer is a tool you can use to watch for size changes efficiently
+            const resizeObserver = new ResizeObserver(handleResize);
+            resizeObserver.observe(el);
+
+            return () => resizeObserver.disconnect();
+        }, []);
+
+        React.useEffect(() => {
             if (is_dynamic_height) {
                 list_ref.current?.recomputeGridSize(0);
             }
@@ -71,13 +92,13 @@ const DataList = React.memo(
             return <React.Fragment>{other_props.rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
         };
 
-        const rowRenderer = ({ style, index, key, parent }) => {
+        const rowRenderer = ({ style, index, _key, parent }) => {
             const { getRowAction, passthrough, row_gap } = other_props;
             const row = data_source[index];
             const action = getRowAction && getRowAction(row);
             const destination_link = typeof action === 'string' ? action : undefined;
             const action_desc = typeof action === 'object' ? action : undefined;
-            const row_key = keyMapper?.(row) || key;
+            const row_key = keyMapper?.(row) || _key;
 
             const getContent = ({ measure } = {}) => (
                 <DataListRow
@@ -95,12 +116,16 @@ const DataList = React.memo(
                 />
             );
 
+
             return is_dynamic_height ? (
                 // TODO: Needs custom implementation for caching
                 // <CellMeasurer cache={cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
-                <>
-                    {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
-                </>
+                // <>
+                //     {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
+                // </>
+                <div key={row_key} style={style}>
+                    {getContent()}
+                </div>
                 // </CellMeasurer>
             ) : (
                 <div key={row_key} style={style}>
@@ -133,9 +158,9 @@ const DataList = React.memo(
             }
         };
 
-        if (is_loading) {
-            return <div />;
-        }
+        // if (is_loading) {
+        //     return <div />;
+        // }
         return (
             <div
                 className={classNames(className, 'data-list', {
@@ -143,30 +168,10 @@ const DataList = React.memo(
                 })}
             >
                 <div className='data-list__body-wrapper'>
-                    <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                        {({ width, height }) => (
-                            // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
-                            <TransitionGroup style={{ height, width }}>
-                                <ThemedScrollbars onScroll={handleScroll} autoHide is_bypassed={isMobile()}>
-                                    <FixedSizeList
-                                        className={className}
-                                        deferredMeasurementCache={cache.current}
-                                        height={height}
-                                        onRowsRendered={onRowsRendered}
-                                        overscanRowCount={overscanRowCount || 1}
-                                        ref={ref => setRef(ref)}
-                                        rowCount={data_source.length}
-                                        rowHeight={is_dynamic_height ? cache?.current.rowHeight : getRowSize}
-                                        rowRenderer={rowRenderer}
-                                        scrollingResetTimeInterval={0}
-                                        width={width}
-                                        {...(isDesktop()
-                                            ? { scrollTop: scroll_top, autoHeight: true }
-                                            : { onScroll: target => handleScroll({ target }) })}>
-                                    </FixedSizeList>
-                                </ThemedScrollbars>
-                            </TransitionGroup>
-                        )}
+                    <div ref={my_ref} className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
+                        <FixedSizeList height={height} width={width} itemCount={data_source.length} itemSize={270}>
+                            {rowRenderer}
+                        </FixedSizeList>
                     </div>
                     {children}
                 </div>

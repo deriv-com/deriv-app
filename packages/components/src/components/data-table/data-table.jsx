@@ -92,7 +92,8 @@ const DataTable = ({
         return is_dynamic_height ? (
             // <CellMeasurer cache={cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
             <>
-                {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
+                {/* {({ measure }) => <div style={style}>{getContent({ measure })}</div>} */}
+                <div key={row_key} style={style}>{getContent()}</div>
             </>
             // </CellMeasurer>
         ) : (

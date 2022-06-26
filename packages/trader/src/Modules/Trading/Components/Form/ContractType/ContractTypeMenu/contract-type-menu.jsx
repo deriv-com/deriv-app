@@ -113,7 +113,7 @@ Dialog.propTypes = {
     children: PropTypes.node,
     is_info_dialog_open: PropTypes.bool,
     is_open: PropTypes.bool,
-    selected: PropTypes.any,
+    selected: PropTypes.bool,
     show_loading: PropTypes.bool,
     item: PropTypes.object,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

@@ -33,7 +33,7 @@ export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }
 
 SwipeableContractAudit.propTypes = {
     is_multiplier: PropTypes.bool,
-    children: PropTypes.any,
+    children: PropTypes.node,
     onSwipedDown: PropTypes.func,
 };
 
@@ -47,7 +47,7 @@ export const SwipeableContractDrawer = ({ children, onSwipedDown, onSwipedUp }) 
 };
 
 SwipeableContractDrawer.propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.node,
     onSwipedDown: PropTypes.func,
     onSwipedUp: PropTypes.func,
 };

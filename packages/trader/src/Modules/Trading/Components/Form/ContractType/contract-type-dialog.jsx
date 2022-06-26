@@ -63,7 +63,7 @@ ContractTypeDialog.propTypes = {
     onChangeInput: PropTypes.func,
     onClose: PropTypes.func,
     open: PropTypes.bool,
-    selected: PropTypes.any,
+    selected: PropTypes.bool,
     show_loading: PropTypes.bool,
 };
 

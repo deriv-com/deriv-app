@@ -135,7 +135,7 @@ const PositionsDrawer = ({
 
 PositionsDrawer.propTypes = {
     all_positions: MobxPropTypes.arrayOrObservableArray,
-    children: PropTypes.any,
+    children: PropTypes.node,
     error: PropTypes.string,
     is_mobile: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
@@ -145,7 +145,7 @@ PositionsDrawer.propTypes = {
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
-    trade_contract_type: PropTypes.any,
+    trade_contract_type: PropTypes.string,
 };
 
 export default connect(({ modules, ui }) => ({

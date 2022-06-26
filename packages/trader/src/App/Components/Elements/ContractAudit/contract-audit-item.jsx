@@ -38,7 +38,7 @@ ContractAuditItem.propTypes = {
     icon: PropTypes.node,
     id: PropTypes.string,
     label: PropTypes.string,
-    timestamp: PropTypes.any,
+    timestamp: PropTypes.string,
     value: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.node]),
     value2: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

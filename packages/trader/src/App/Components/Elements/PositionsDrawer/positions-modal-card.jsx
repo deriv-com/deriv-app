@@ -295,7 +295,7 @@ const PositionsModalCard = ({
 };
 
 PositionsModalCard.propTypes = {
-    active_symbols: PropTypes.any,
+    active_symbols: PropTypes.array,
     addToast: PropTypes.func,
     className: PropTypes.string,
     contract_info: PropTypes.object,

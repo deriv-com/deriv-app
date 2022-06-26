@@ -81,8 +81,8 @@ TopWidgets.propTypes = {
     is_mobile: PropTypes.bool,
     is_title_enabled: PropTypes.bool,
     onSymbolChange: PropTypes.func,
-    open: PropTypes.any,
-    open_market: PropTypes.any,
+    open: PropTypes.bool,
+    open_market: PropTypes.object,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
 };

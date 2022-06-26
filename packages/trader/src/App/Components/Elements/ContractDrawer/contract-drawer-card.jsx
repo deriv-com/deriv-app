@@ -154,7 +154,7 @@ const ContractDrawerCard = ({
 };
 
 ContractDrawerCard.propTypes = {
-    active_symbols: PropTypes.any,
+    active_symbols: PropTypes.array,
     addToast: PropTypes.func,
     contract_info: PropTypes.object,
     contract_update: PropTypes.object,

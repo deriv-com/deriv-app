@@ -145,7 +145,7 @@ LastDigitPrediction.propTypes = {
     onDigitChange: PropTypes.func,
     onLastDigitSpot: PropTypes.func,
     selected_digit: PropTypes.number,
-    tick: PropTypes.any,
+    tick: PropTypes.object,
 };
 
 export default observer(LastDigitPrediction);

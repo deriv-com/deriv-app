@@ -1,4 +1,4 @@
-const fs = require('fs');
+// const fs = require('fs');
 const expect = require('chai').expect;
 const getStringsFromInput = require('../extract-string').getStringsFromInput;
 // const getTranslatableFiles = require('../extract-string').getTranslatableFiles;

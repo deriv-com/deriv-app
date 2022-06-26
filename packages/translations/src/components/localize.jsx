@@ -14,6 +14,7 @@ Localize.propTypes = {
     components: PropTypes.arrayOf(PropTypes.node),
     i18n: PropTypes.object.isRequired,
     i18n_default_text: PropTypes.string,
+    options: PropTypes.object,
     values: PropTypes.object,
 };
 

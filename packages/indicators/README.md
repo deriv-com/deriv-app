@@ -10,8 +10,6 @@
 -   [Usage](#usage)
     -   [Indicators](#indicators)
 
-<br />
-
 ## Simple Moving Average
 
 A simple moving average (SMA) is an arithmetic moving average calculated by adding the closing price of the security for a number of time periods and then dividing this total by the number of time periods.
@@ -43,16 +41,12 @@ const data = [1, 2, 3, ...];
 const result = simpleMovingAverageArray(data, { periods: 10 });
 ```
 
-<br />
-
 ## Exponential Moving Average (EMA)
 
 The 12- and 26-day EMAs are the most popular short-term averages, and they are used to create indicators like the moving average convergence divergence (MACD) and the percentage price oscillator (PPO). In general, the 50- and 200-day EMAs are used as signals of long-term trends.
 
 -   [Moving Average @ Wikipedia](https://en.wikipedia.org/wiki/Moving_average)
 -   [EMA @ Investopedia](http://www.investopedia.com/terms/e/ema.asp)
-
-<br />
 
 ## Bollinger Band (BB)
 
@@ -89,16 +83,12 @@ const data = [1, 2, 3, ...];
 const result = bollingerBandsArray(data, { periods: 10 });
 ```
 
-<br />
-
 ## Relative Strength Index (RSI)
 
 Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. RSI oscillates between zero and 100.
 
 -   [RSI @ Investopedia](http://www.investopedia.com/terms/r/rsi.asp)
 -   [RSI @ StockCharts](http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:relative_strength_index_rsi)
-
-<br />
 
 ## Moving Average Convergence Divergence (MACD)
 

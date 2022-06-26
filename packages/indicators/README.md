@@ -3,12 +3,14 @@
 **In this document**
 
 -   [Simple Moving Average](#simple-moving-average)
--   [Exponential Moving Average (EMA)](<#exponential-moving-average-(EMA)>)
--   [Bollinger Band (BB)](<#bollinger-band-(BB)>)
--   [Relative Strength Index (RSI)](<#relative-strength-index-(RSI)>)
--   [Moving Average Convergence Divergence (MACD)](<#moving-average-convergence-divergence-(MACD)>)
+-   [Exponential Moving Average (EMA)](#exponential-moving-average-ema)
+-   [Bollinger Band (BB)](#bollinger-band-bb)
+-   [Relative Strength Index (RSI)](#relative-strength-index-rsi)
+-   [Moving Average Convergence Divergence (MACD)](#moving-average-convergence-divergence-macd)
 -   [Usage](#usage)
-    -   Indicators](#Indicators)
+    -   [Indicators](#indicators)
+
+<br />
 
 ## Simple Moving Average
 
@@ -36,10 +38,12 @@ const result = simpleMovingAverage(data, { periods: 3, field: 'close' });
 
 ### Calculate an array of values from an array of numbers:
 
-```
+```js
 const data = [1, 2, 3, ...];
 const result = simpleMovingAverageArray(data, { periods: 10 });
 ```
+
+<br />
 
 ## Exponential Moving Average (EMA)
 
@@ -47,6 +51,8 @@ The 12- and 26-day EMAs are the most popular short-term averages, and they are u
 
 -   [Moving Average @ Wikipedia](https://en.wikipedia.org/wiki/Moving_average)
 -   [EMA @ Investopedia](http://www.investopedia.com/terms/e/ema.asp)
+
+<br />
 
 ## Bollinger Band (BB)
 
@@ -58,34 +64,32 @@ Bollinger Bands® are volatility bands placed above and below a moving average. 
 
 Input array of numbers:
 
-```
+```js
 const data = [1, 10, 100, 1000, 10000];
 const result = bollingerBands(data, { periods: 3 });
 ```
 
 Returned value is an array of three items:
 
-```
-[middleValue, upperValue, lowerValue]
+```js
+[middleValue, upperValue, lowerValue];
 ```
 
 ### Calculate a single value from an array of candles:
 
-```
-const data = [
-    { close: 1 },
-    { close: 2 },
-    { close: 3 },
-];
+```js
+const data = [{ close: 1 }, { close: 2 }, { close: 3 }];
 const result = bollingerBands(data, { periods: 3, field: 'close' });
 ```
 
 ### Calculate an array of values from an array of numbers:
 
-```
+```js
 const data = [1, 2, 3, ...];
 const result = bollingerBandsArray(data, { periods: 10 });
 ```
+
+<br />
 
 ## Relative Strength Index (RSI)
 
@@ -94,11 +98,15 @@ Relative Strength Index (RSI) is a momentum oscillator that measures the speed a
 -   [RSI @ Investopedia](http://www.investopedia.com/terms/r/rsi.asp)
 -   [RSI @ StockCharts](http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:relative_strength_index_rsi)
 
+<br />
+
 ## Moving Average Convergence Divergence (MACD)
 
 Moving average convergence divergence (MACD) is a trend-following momentum indicator that shows the relationship between two moving averages of prices. The MACD is calculated by subtracting the 26-day exponential moving average (EMA) from the 12-day EMA. A nine-day EMA of the MACD, called the "signal line", is then plotted on top of the MACD, functioning as a trigger for buy and sell signals.
 
 -   [MACD @ Investopedia](http://www.investopedia.com/terms/m/macd.asp)
+
+<br />
 
 ## Usage
 

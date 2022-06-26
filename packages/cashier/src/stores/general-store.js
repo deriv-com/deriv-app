@@ -100,7 +100,7 @@ export default class GeneralStore extends BaseStore {
     should_percentage_reset = false;
     percentage = 0;
     show_p2p_in_cashier_default = false;
-    onRemount = () => { };
+    onRemount = () => {};
 
     is_cashier_onboarding = true;
 
@@ -121,7 +121,6 @@ export default class GeneralStore extends BaseStore {
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }
-
 
     showP2pInCashierOnboarding() {
         const { account_list, is_virtual } = this.root_store.client;
@@ -233,7 +232,6 @@ export default class GeneralStore extends BaseStore {
         this.should_show_all_available_currencies = value;
     }
 
-
     setIsCashierOnboarding(is_cashier_onboarding) {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
@@ -261,7 +259,7 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { account_prompt_dialog, withdraw } = modules.cashier;
+            const { account_prompt_dialog, payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
@@ -271,6 +269,10 @@ export default class GeneralStore extends BaseStore {
                 account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();
+                    payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+                    if (!payment_agent_transfer.is_payment_agent) {
+                        payment_agent_transfer.checkIsPaymentAgent();
+                    }
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();

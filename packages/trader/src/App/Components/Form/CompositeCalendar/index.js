@@ -1,3 +1,1 @@
-import CompositeCalendar from './composite-calendar.jsx';
-
-export default CompositeCalendar;
+export default from './composite-calendar.jsx';

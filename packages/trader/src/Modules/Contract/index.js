@@ -1,3 +1,1 @@
-import Contract from './Containers/contract.jsx';
-
-export default Contract;
+export default from './Containers/contract.jsx';

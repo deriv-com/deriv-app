@@ -11,7 +11,10 @@ import initStore from './init-store.js'; // eslint-disable-line import/extension
 import 'Sass/app.scss';
 
 type Apptypes = {
-    passthrough: any;
+    passthrough: {
+        root_store: any;
+        WS: any;
+    };
 };
 
 const TradeModals = Loadable({

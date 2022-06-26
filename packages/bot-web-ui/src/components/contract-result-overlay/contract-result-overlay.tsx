@@ -1,15 +1,19 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const ContractResultOverlay = props => {
-    const has_won_contract = props.profit >= 0;
+type TContractResultOverlayProps = {
+    profit: number;
+    className: string;
+};
+
+const ContractResultOverlay = ({ profit, className }: TContractResultOverlayProps) => {
+    const has_won_contract = profit >= 0;
 
     return (
         <div
-            className={classNames('db-contract-card__result', props.className, {
+            className={classNames('db-contract-card__result', className, {
                 'db-contract-card__result--won': has_won_contract,
                 'db-contract-card__result--lost': !has_won_contract,
             })}
@@ -29,10 +33,6 @@ const ContractResultOverlay = props => {
             </Text>
         </div>
     );
-};
-
-ContractResultOverlay.propTypes = {
-    profit: PropTypes.number,
 };
 
 export default ContractResultOverlay;

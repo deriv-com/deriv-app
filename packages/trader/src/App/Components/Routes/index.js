@@ -1,7 +1,4 @@
-import BinaryLink from './binary-link.jsx';
-import RouteWithSubRoutes from './route-with-sub-routes.jsx';
-import BinaryRoutes from './binary-routes.jsx';
-
+export BinaryLink from './binary-link.jsx';
+export default from './binary-routes.jsx';
 export * from './helpers';
-export { BinaryLink, RouteWithSubRoutes };
-export default BinaryRoutes;
+export RouteWithSubRoutes from './route-with-sub-routes.jsx';

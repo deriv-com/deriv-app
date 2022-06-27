@@ -50,7 +50,7 @@ describe('proof-of-ownership.jsx', () => {
         const element = screen.getByText('We’ve received your proof of ownership.', { exact: true });
         expect(element).toBeInTheDocument();
     });
-    it('should render poo rejected status page', async () => {
+    it('should render poo rejected status page', () => {
         render(
             <ProofOfOwnership
                 account_status={{

@@ -51,14 +51,6 @@ const JurisdictionModal = ({
                 className='cfd-compare-accounts-modal__wrapper'
                 style={{ marginTop: platform === CFD_PLATFORMS.DXTRADE ? '5rem' : '2.4rem' }}
             >
-                <Button
-                    className='cfd-dashboard__welcome-message--button'
-                    has_effect
-                    text={'Jurisdiction modal'}
-                    onClick={toggleJurisdictionModal}
-                    secondary
-                    disabled={is_loading}
-                />
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal

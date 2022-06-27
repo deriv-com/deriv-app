@@ -79,7 +79,13 @@ export const getCFDConfig = (
                 if (type) {
                     cfd_config.push({
                         icon: getCFDAccount({ market_type, sub_account_type: company, platform, is_eu }),
-                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform, is_eu }),
+                        title: getCFDAccountDisplay({
+                            market_type,
+                            sub_account_type: company,
+                            platform,
+                            is_eu,
+                            is_remaining_account: true,
+                        }),
                         type,
                     });
                 }

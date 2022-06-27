@@ -143,7 +143,6 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     AirTM: {
-        // Get proper details for this.
         icon: 'IcOtherPaymentMethod',
         paragraphs: [localize('Upload a document showing your name and bank account number or account detail.')],
         input_label: null,

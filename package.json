@@ -55,7 +55,10 @@
         "stylelint-formatter-pretty": "^2.1.1",
         "stylelint-no-unsupported-browser-features": "^4.0.0",
         "stylelint-selector-bem-pattern": "^2.1.0",
-        "stylelint-webpack-plugin": "^2.1.1"
+        "stylelint-webpack-plugin": "^2.1.1",
+        "@testing-library/jest-dom": "^5.12.0",
+        "jest-chain": "^1.1.5",
+        "jest-extended": "^1.2.0"
     },
     "scripts": {
         "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
@@ -90,12 +93,9 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
-        "@testing-library/jest-dom": "^5.12.0",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",
         "dotenv": "^8.2.0",
-        "jest-chain": "^1.1.5",
-        "jest-extended": "^1.2.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "typescript": "^4.6.3"

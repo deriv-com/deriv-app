@@ -7,29 +7,40 @@ import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
 type TJurisdictionModalContent = {
+    account_type: string;
     jurisdiction_selected_card: string | undefined;
     selectTypeOfCard: (card_type: string | undefined) => string | undefined;
-    account_status: any[];
     synthetic_available_accounts: any[];
     financial_available_accounts: any[];
+    poa_status: string;
+    poi_status: string;
 };
 
 const JurisdictionModalContent = ({
     jurisdiction_selected_card,
+    account_type,
     selectTypeOfCard,
-    account_status,
     synthetic_available_accounts,
     financial_available_accounts,
+    poa_status,
+    poi_status,
 }: TJurisdictionModalContent) => {
-    const amount_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
-    const amount_of_financial_accounts_to_be_shown = financial_available_accounts.length;
+    const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
+    const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
 
-    const [verification_status] = React.useState<string>('POI');
-    const [verification_status2] = React.useState<string>('verified');
-    const [verification_status3] = React.useState<string>('not_submitted');
-    const [verification_status4] = React.useState<string>('pending');
     const [unselect_card, setUnselectCard] = React.useState<boolean>(false);
-    const [number_of_cards] = React.useState<number>(amount_of_financial_accounts_to_be_shown);
+    const [number_of_cards] = React.useState(
+        account_type === 'Synthetic'
+            ? number_of_synthetic_accounts_to_be_shown
+            : number_of_financial_accounts_to_be_shown
+    );
+
+    const poa_pending = poa_status === 'pending';
+    const poa_verified = poa_status === 'verified';
+    const poa_none = poa_status === 'none';
+    const poi_pending = poi_status === 'pending';
+    const poi_verified = poi_status === 'verified';
+    const poi_none = poi_status === 'none';
 
     const cardSelection = (cardType: string) => {
         setUnselectCard(!unselect_card);
@@ -41,6 +52,48 @@ const JurisdictionModalContent = ({
     );
 
     const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
+
+    const Verification_statuses = () => {
+        return (
+            <>
+                {poa_none && poi_none && (
+                    <div className='cfd-jurisdiction-card__footer'>
+                        <p>
+                            <Localize i18n_default_text='You will need to submit proof of identity and address' />
+                        </p>
+                    </div>
+                )}
+                {(poa_pending || poi_pending) && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--pending'>
+                            <Localize i18n_default_text='Pending verification' />
+                        </p>
+                    </div>
+                )}
+                {poa_verified && poi_verified && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--verified'>
+                            <Localize i18n_default_text='Verified' />
+                        </p>
+                    </div>
+                )}
+                {poi_none && poa_verified && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                            <Localize i18n_default_text='Check your proof of identity' />
+                        </p>
+                    </div>
+                )}
+                {poa_none && poi_verified && (
+                    <div className='cfd-jurisdiction-card__verification-status'>
+                        <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                            <Localize i18n_default_text='Check your proof of address' />
+                        </p>
+                    </div>
+                )}
+            </>
+        );
+    };
 
     return (
         <>
@@ -80,41 +133,7 @@ const JurisdictionModalContent = ({
                             <Checkmark />
                             <Localize i18n_default_text='Leverage up to 1:1000' />
                         </div>
-                        {verification_status === 'not_submitted' && (
-                            <div className='cfd-jurisdiction-card__footer'>
-                                <p>
-                                    <Localize i18n_default_text='You will need to submit proof of identity and address' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status === 'pending' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--pending'>
-                                    <Localize i18n_default_text='Pending verification' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status === 'verified' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--verified'>
-                                    <Localize i18n_default_text='Verified' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status === 'POA' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of identity' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status === 'POI' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of address' />
-                                </p>
-                            </div>
-                        )}
+                        <Verification_statuses />
                     </div>
                 )}
 
@@ -152,41 +171,7 @@ const JurisdictionModalContent = ({
                             <Checkmark />
                             <Localize i18n_default_text='Leverage up to 1:1000' />
                         </div>
-                        {verification_status2 === 'not_submitted' && (
-                            <div className='cfd-jurisdiction-card__footer'>
-                                <p>
-                                    <Localize i18n_default_text='You will need to submit proof of identity and address' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status2 === 'pending' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--pending'>
-                                    <Localize i18n_default_text='Pending verification' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status2 === 'verified' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--verified'>
-                                    <Localize i18n_default_text='Verified' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status2 === 'POA' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of identity' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status2 === 'POI' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of address' />
-                                </p>
-                            </div>
-                        )}
+                        {Verification_statuses()}
                     </div>
                 )}
                 {number_of_cards >= 3 && (
@@ -226,41 +211,7 @@ const JurisdictionModalContent = ({
                             <Checkmark />
                             <Localize i18n_default_text='Straight through processing' />
                         </div>
-                        {verification_status3 === 'not_submitted' && (
-                            <div className='cfd-jurisdiction-card__footer'>
-                                <p>
-                                    <Localize i18n_default_text='You will need to submit proof of identity and address' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status3 === 'pending' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--pending'>
-                                    <Localize i18n_default_text='Pending verification' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status3 === 'verified' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--verified'>
-                                    <Localize i18n_default_text='Verified' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status3 === 'POA' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of identity' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status3 === 'POI' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of address' />
-                                </p>
-                            </div>
-                        )}
+                        {Verification_statuses()}
                     </div>
                 )}
 
@@ -298,41 +249,7 @@ const JurisdictionModalContent = ({
                             <Checkmark />
                             <Localize i18n_default_text='Straight through processing' />
                         </div>
-                        {verification_status3 === 'not_submitted' && (
-                            <div className='cfd-jurisdiction-card__footer'>
-                                <p>
-                                    <Localize i18n_default_text='You will need to submit proof of identity and address' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status3 === 'pending' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--pending'>
-                                    <Localize i18n_default_text='Pending verification' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status3 === 'verified' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--verified'>
-                                    <Localize i18n_default_text='Verified' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status4 === 'POA' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of identity' />
-                                </p>
-                            </div>
-                        )}
-                        {verification_status4 === 'POI' && (
-                            <div className='cfd-jurisdiction-card__verification-status'>
-                                <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
-                                    <Localize i18n_default_text='Check your proof of address' />
-                                </p>
-                            </div>
-                        )}
+                        {Verification_statuses()}
                     </div>
                 )}
             </div>

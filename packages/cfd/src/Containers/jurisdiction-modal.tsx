@@ -15,6 +15,11 @@ type TCompareAccountsReusedProps = {
 };
 
 type TJurisdictionModalProps = TCompareAccountsReusedProps & {
+    account_type: string;
+    authentication_status: {
+        document_status: string;
+        identity_status: string;
+    };
     disableApp: () => void;
     enableApp: () => void;
     is_jurisdiction_modal_visible: boolean;
@@ -28,6 +33,8 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
 };
 
 const JurisdictionModal = ({
+    account_type,
+    authentication_status,
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
@@ -44,6 +51,9 @@ const JurisdictionModal = ({
     const synthetic_available_accounts = tradingPlatformAvailableAccounts
         .filter(available_account => available_account.market_type === 'gaming')
         .map((acc: any[]) => acc);
+
+    const poa_status = authentication_status?.document_status;
+    const poi_status = authentication_status?.identity_status;
 
     return (
         <>
@@ -75,6 +85,10 @@ const JurisdictionModal = ({
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}
                                 synthetic_available_accounts={synthetic_available_accounts}
+                                account_type={account_type}
+                                authentication_status={authentication_status}
+                                poa_status={poa_status}
+                                poi_status={poi_status}
                             />
                             <Modal.Footer>
                                 <Button disabled={jurisdiction_selected_card === undefined} primary>
@@ -94,6 +108,10 @@ const JurisdictionModal = ({
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}
                                 synthetic_available_accounts={synthetic_available_accounts}
+                                account_type={account_type}
+                                authentication_status={authentication_status}
+                                poa_status={poa_status}
+                                poi_status={poi_status}
                             />
                         </MobileDialog>
                     </MobileWrapper>
@@ -104,6 +122,8 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
+    account_type: modules.cfd.account_type,
+    authentication_status: client.authentication_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,

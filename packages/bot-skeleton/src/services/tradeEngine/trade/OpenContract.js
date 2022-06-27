@@ -13,6 +13,10 @@ const setContractFlags = contract => {
     $scope.contract_flags.is_expired = Boolean(is_expired);
 };
 
+const expectedContractId = contractId => {
+    return $scope.contract_id && contractId === $scope.contract_id;
+};
+
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
@@ -20,7 +24,7 @@ export default Engine =>
                 if (data.msg_type === 'proposal_open_contract') {
                     const contract = data.proposal_open_contract;
 
-                    if (!contract && !this.expectedContractId(contract?.contract_id)) {
+                    if (!contract && !expectedContractId(contract?.contract_id)) {
                         return;
                     }
 
@@ -31,7 +35,7 @@ export default Engine =>
                     broadcastContract({ accountID: $scope.account_info.loginid, ...contract });
 
                     if ($scope.contract_flags.is_sold) {
-                        this.contractId = '';
+                        $scope.contract_id = '';
                         clearTimeout(this.transaction_recovery_timeout);
                         this.updateTotals(contract);
                         contractStatus({
@@ -58,8 +62,8 @@ export default Engine =>
             });
         }
 
-        subscribeToOpenContract(contract_id = this.contractId) {
-            this.contractId = contract_id;
+        subscribeToOpenContract(contract_id = $scope.contract_id) {
+            $scope.contract_id = contract_id;
             doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
                 .then(data => {
                     const { populateConfig } = DBotStore.instance;
@@ -73,10 +77,6 @@ export default Engine =>
                         );
                     }
                 });
-        }
-
-        expectedContractId(contractId) {
-            return this.contractId && contractId === this.contractId;
         }
 
         getSellPrice() {

@@ -80,7 +80,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         const [token, options] = expectInitArg(args);
         const { symbol } = options;
 
-        this.initArgs = args;
+        $scope.initArgs = args;
         this.options = options;
         this.startPromise = this.loginAndGetBalance(token);
 
@@ -103,7 +103,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
     }
 
     loginAndGetBalance(token) {
-        if (this.token === token) {
+        if ($scope.token === token) {
             return Promise.resolve();
         }
 
@@ -131,7 +131,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
                 }
                 if (data.msg_type === 'authorize') {
                     $scope.account_info = data;
-                    this.token = token;
+                    $scope.token = token;
                     if (data?.loginid) {
                         observeBalance(data.loginid);
                     }

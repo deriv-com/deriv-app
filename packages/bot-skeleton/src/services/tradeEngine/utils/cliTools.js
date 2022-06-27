@@ -8,12 +8,22 @@ export const createScope = () => {
         is_sell_available: false,
         is_expired: false,
     };
+    const contract_id = '';
     const session = {
         runs: 0,
         profit: 0,
     };
     const stopped = false;
-    return { api, stopped, session, balance, contract_flags };
+    const token = '';
+    return {
+        api,
+        contract_id,
+        contract_flags,
+        balance,
+        session,
+        stopped,
+        token,
+    };
 };
 
 const $scope = createScope();

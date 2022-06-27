@@ -1,5 +1,6 @@
 import { observer as globalObserver } from '../../../utils/observer';
 import { createDetails } from '../utils/helpers';
+import { isSellAtMarketAvailable } from '../trade/Sell';
 
 const getBotInterface = tradeEngine => {
     const getDetail = i => createDetails(tradeEngine.data.contract)[i];
@@ -12,7 +13,7 @@ const getBotInterface = tradeEngine => {
         getAskPrice: contract_type => Number(getProposal(contract_type, tradeEngine).ask_price),
         getPayout: contract_type => Number(getProposal(contract_type, tradeEngine).payout),
         getPurchaseReference: () => tradeEngine.getPurchaseReference(),
-        isSellAvailable: () => tradeEngine.isSellAtMarketAvailable(),
+        isSellAvailable: () => isSellAtMarketAvailable(),
         sellAtMarket: () => tradeEngine.sellAtMarket(),
         getSellPrice: () => getSellPrice(tradeEngine),
         isResult: result => getDetail(10) === result,

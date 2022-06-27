@@ -156,7 +156,7 @@ const Interpreter = () => {
             timeout => global_timeouts[timeout].is_cancellable
         );
 
-        if (!bot.tradeEngine.contractId && is_timeouts_cancellable) {
+        if (!bot.tradeEngine?.$scope.contract_id && is_timeouts_cancellable) {
             // When user is rate limited, allow them to stop the bot immediately
             // granted there is no active contract.
             global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
@@ -218,7 +218,6 @@ const Interpreter = () => {
             };
 
             globalObserver.register('Error', onError);
-
             interpreter = new JSInterpreter(code, initFunc);
             onFinish = resolve;
 

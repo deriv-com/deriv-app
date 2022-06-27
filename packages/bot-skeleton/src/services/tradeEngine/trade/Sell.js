@@ -6,13 +6,13 @@ import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
 
+export const isSellAtMarketAvailable = () => {
+    const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
+    return $scope.contract_id && !is_sold && is_sell_available && !is_expired;
+};
+
 export default Engine =>
     class Sell extends Engine {
-        isSellAtMarketAvailable() {
-            const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
-            return this.contractId && !is_sold && is_sell_available && !is_expired;
-        }
-
         sellAtMarket() {
             globalObserver.emit('bot.sell');
 
@@ -21,7 +21,7 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            if (!this.isSellAtMarketAvailable()) {
+            if (!isSellAtMarketAvailable()) {
                 log(log_types.NOT_OFFERED);
                 return Promise.resolve();
             }
@@ -42,7 +42,7 @@ export default Engine =>
                     resolve();
                 };
 
-                const contract_id = this.contractId;
+                const contract_id = $scope.contract_id;
 
                 const sellContractAndGetContractInfo = () => {
                     return doUntilDone(() => ws.send({ sell: contract_id, price: 0 }))

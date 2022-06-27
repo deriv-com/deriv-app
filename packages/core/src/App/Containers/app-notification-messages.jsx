@@ -14,7 +14,6 @@ const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
 
 const NotificationsContent = ({
-    account_open_date,
     is_notification_loaded,
     style,
     notifications,
@@ -57,11 +56,7 @@ const NotificationsContent = ({
                         }}
                         unmountOnExit
                     >
-                        <Notification
-                            data={notification}
-                            removeNotificationMessage={removeNotificationMessage}
-                            config={{ account_open_since_days: account_open_date }}
-                        />
+                        <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
                     </CSSTransition>
                 ))}
             </TransitionGroup>
@@ -86,6 +81,7 @@ const AppNotificationMessages = ({
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
+    const days_since_account_created = daysSince(account_open_date);
 
     React.useEffect(() => {
         if (is_mt5) {
@@ -119,7 +115,15 @@ const AppNotificationMessages = ({
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
-    const notifications_sublist = notifications.slice(0, notifications_limit);
+    // Ensuring Trustpilot notification is displayed only after 7 days of account creation
+    const filtered_notification_list = notifications.filter(notification => {
+        if (notification.type === 'trustpilot' && days_since_account_created < 7) {
+            return false;
+        }
+        return true;
+    });
+
+    const notifications_sublist = filtered_notification_list.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 
@@ -127,7 +131,6 @@ const AppNotificationMessages = ({
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    account_open_date={daysSince(account_open_date)}
                     notifications={notifications_sublist}
                     is_notification_loaded={is_notification_loaded}
                     style={style}

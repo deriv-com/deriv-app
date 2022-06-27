@@ -62,13 +62,19 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     tradingPlatformAvailableAccounts,
 }: TJurisdictionModalProps) => {
-    const financial_available_accounts = tradingPlatformAvailableAccounts
-        .filter(available_account => available_account.market_type === 'financial')
-        .map((acc: any[]) => acc);
+    const financial_available_accounts = tradingPlatformAvailableAccounts.filter(
+        available_account => available_account.market_type === 'financial'
+    );
 
-    const synthetic_available_accounts = tradingPlatformAvailableAccounts
-        .filter(available_account => available_account.market_type === 'gaming')
-        .map((acc: any[]) => acc);
+    const synthetic_available_accounts = tradingPlatformAvailableAccounts.filter(
+        available_account => available_account.market_type === 'gaming'
+    );
+
+    const modal_title = is_eu
+        ? localize('Jurisdiction for your DMT5 CFDs account')
+        : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
+              account_type: account_type === 'synthetic' ? 'Synthetic' : 'Financial',
+          });
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
@@ -86,11 +92,7 @@ const JurisdictionModal = ({
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_jurisdiction_modal_visible}
-                            title={localize(
-                                `Choose a jurisdiction for your ${is_eu ? 'CFDs' : 'DMT5'} ${
-                                    account_type === 'synthetic' ? 'Synthetic' : 'Financial'
-                                } account`
-                            )}
+                            title={modal_title}
                             toggleModal={toggleJurisdictionModal}
                             type='button'
                             height='696px'

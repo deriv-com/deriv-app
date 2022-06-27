@@ -5,6 +5,7 @@ import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
+import $scope from '../utils/cliTools';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -36,7 +37,7 @@ export default Engine =>
                 delayIndex = 0;
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
-                    accountID: this.accountInfo.loginid,
+                    accountID: $scope.account_info.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
                     contract_type,

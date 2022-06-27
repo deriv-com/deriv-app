@@ -36,6 +36,14 @@ export const checkLimits = tradeOption => {
     }
 };
 
+export const clearStatistics = () => {
+    $scope.session.runs = 0;
+    $scope.session.profit = 0;
+    if (!$scope.account_info) return;
+    const { loginid: accountID } = $scope.account_info;
+    globalStat[accountID] = { ...skeleton };
+};
+
 export default Engine =>
     class Total extends Engine {
         constructor() {
@@ -44,15 +52,7 @@ export default Engine =>
             $scope.session.runs = 0;
             $scope.session.profit = 0;
 
-            globalObserver.register('statistics.clear', this.clearStatistics.bind(this));
-        }
-
-        clearStatistics() {
-            $scope.session.runs = 0;
-            $scope.session.profit = 0;
-            if (!this.accountInfo) return;
-            const { loginid: accountID } = this.accountInfo;
-            globalStat[accountID] = { ...skeleton };
+            globalObserver.register('statistics.clear', clearStatistics);
         }
 
         updateTotals(contract) {
@@ -79,7 +79,7 @@ export default Engine =>
             info({
                 profit,
                 contract,
-                accountID: this.accountInfo.loginid,
+                accountID: $scope.account_info.loginid,
                 totalProfit: accountStat.totalProfit,
                 totalWins: accountStat.totalWins,
                 totalLosses: accountStat.totalLosses,
@@ -112,7 +112,7 @@ export default Engine =>
         }
 
         getAccountStat() {
-            const { loginid: accountID } = this.accountInfo;
+            const { loginid: accountID } = $scope.account_info;
 
             if (!(accountID in globalStat)) {
                 globalStat[accountID] = { ...skeleton };

@@ -4,6 +4,7 @@ import { contractStatus, contract as broadcastContract } from '../utils/broadcas
 import { doUntilDone } from '../utils/helpers';
 import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
+import $scope from '../utils/cliTools';
 
 export default Engine =>
     class OpenContract extends Engine {
@@ -20,7 +21,7 @@ export default Engine =>
 
                     this.data.contract = contract;
 
-                    broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
+                    broadcastContract({ accountID: $scope.account_info.loginid, ...contract });
 
                     if (this.isSold) {
                         this.contractId = '';

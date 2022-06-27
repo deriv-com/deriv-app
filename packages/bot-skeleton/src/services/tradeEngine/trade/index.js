@@ -130,7 +130,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
                     }, 1500);
                 }
                 if (data.msg_type === 'authorize') {
-                    this.accountInfo = data;
+                    $scope.account_info = data;
                     this.token = token;
                     if (data?.loginid) {
                         observeBalance(data.loginid);

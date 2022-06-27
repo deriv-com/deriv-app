@@ -1,26 +1,32 @@
 import classNames from 'classnames';
-import React from 'react';
-import { Button, FormSubmitErrorMessage } from '@deriv/components';
+import React, { useRef } from 'react';
+import { Button, FormSubmitErrorMessage, useStateCallback } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
-import { isMobile } from '@deriv/shared';
+import { isMobile, compressImageFiles, readFiles, WS } from '@deriv/shared';
 import Card from './Card.jsx';
+import DocumentUploader from '@binary-com/binary-document-uploader';
 
 const getScrollOffset = (itemsCount = 0) => {
     if (isMobile()) return '200px';
     if (itemsCount <= 2) return '0px';
     return '80px';
 };
-const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
+const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
     const initValues = {};
     const [isDisabled, setIsDisabled] = React.useState(true);
-    initValues.data = cards.map(item => {
+    initValues.data = cards?.map(item => {
         return { id: item.id, files: [], identifier: item.payment_method_identifier };
     });
+    const [form_state, setFormState] = useStateCallback({ should_show_form: true });
+    const formRef = useRef();
+    const fileReadErrorMessage = filename => {
+        return localize('Unable to read file {{name}}', { name: filename });
+    };
     const validateFields = values => {
         const errors = {};
         errors.data = [];
@@ -48,6 +54,58 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
         });
         setIsDisabled(!fileUploaded || errors?.data?.length > 0);
         return errors;
+    };
+    const handleSubmit = async e => {
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
+            const { data: formValues } = formRef.current.values;
+            const uploader = new DocumentUploader({ connection: WS.getSocket() });
+            const { get_settings, error } = await WS.authorized.storage.getSettings();
+            if (error) {
+                throw new Error(error);
+            }
+            if (formRef.current.errors.length > 0) {
+                // Only upload if no errors and a file has been attached
+                return;
+            }
+            setFormState({ ...form_state, ...{ is_btn_loading: true } });
+            formValues.forEach(async values => {
+                const files = values.files.flatMap(f => f.file).filter(f => f !== null);
+                if (files.length > 0) {
+                    const filesToProcess = await compressImageFiles(files);
+                    const processedFiles = await readFiles(filesToProcess, fileReadErrorMessage);
+                    if (typeof processedFiles === 'string') {
+                        // eslint-disable-next-line no-console
+                        console.warn(processedFiles);
+                    }
+                    processedFiles.forEach(async pF => {
+                        const fileToSends = pF;
+                        fileToSends.proof_of_ownership = {
+                            details: {
+                                email: get_settings.email,
+                                identifier: values.identifier,
+                            },
+                            id: values.id,
+                        };
+                        fileToSends.documentType = 'proof_of_ownership';
+                        const response = await uploader.upload(fileToSends);
+                        if (response.warning) {
+                            // eslint-disable-next-line no-console
+                            console.warn(response);
+                        } else {
+                            updateAccountStatus();
+                        }
+                    });
+                }
+            });
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.warn(err);
+        } finally {
+            setFormState({ ...form_state, ...{ is_btn_loading: false } });
+        }
     };
     return (
         <Formik initialValues={initValues} validate={validateFields} innerRef={formRef}>
@@ -93,7 +151,7 @@ const ProofOfOwnershipForm = ({ cards, handleSubmit, formRef, is_loading }) => {
                             text={localize('Submit')}
                             large
                             primary
-                            is_loading={is_loading}
+                            is_loading={form_state.is_btn_loading}
                         />
                     </FormFooter>
                 </form>

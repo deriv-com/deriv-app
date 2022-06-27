@@ -24,6 +24,7 @@
 -   `CROWDIN_API_KEY` environment variables to your `~/.bash_profile`
 -   remote `origin` should be your fork
 -   remote `upstream` should be the source repository (e.g. `git@github.com:binary-com/deriv-app.git`)
+-   you can see push and pull crowdin translations guides here: https://github.com/binary-com/deriv-app/blob/master/.github/workflows/push_and_pull_crowdin_translations.yml
 
 ## Extracting translations
 

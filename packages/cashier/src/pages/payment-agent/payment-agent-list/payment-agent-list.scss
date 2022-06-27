@@ -4,65 +4,32 @@
             display: grid;
             grid-template-columns: 1fr;
             grid-gap: 0.8rem;
-        }
-        &-hide-tabs .dc-tabs__list {
-            display: none;
-        }
-        &-section {
-            border: 1px solid var(--border-normal);
-            flex: 1;
-            padding: 1.6rem;
-            border-radius: $BORDER_RADIUS;
-            @include desktop {
-                &:not(:first-child) {
-                    margin-left: 24px;
-                    margin-left: 1.6rem;
+
+            .dc-tabs__list--header--tabs--desktop {
+                @include mobile {
+                    position: fixed;
+                    background-color: var(--general-main-1);
+                    width: 100%;
+                    left: 0;
+                    z-index: 1000;
+                    padding: 1.6rem 3.5rem;
                 }
             }
-            @include mobile {
-                display: flex;
 
-                &:first-child {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-                /* postcss-bem-linter: ignore */
-                &:last-child {
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-
-                    & h2 {
-                        margin: 0;
-                    }
-                    & .dc-btn {
-                        margin: 0 0 0 auto;
-                        padding: 0.3rem 0.8rem;
-                        height: 3rem;
-
-                        &__text {
-                            font-size: 1.2rem;
-                        }
-                        /* iPhone SE screen height fixes due to UI space restrictions */
-                        @media only screen and (max-height: 480px) {
-                            height: 4.8rem;
-
-                            &__text {
-                                width: 14rem;
-                                white-space: normal;
-                            }
-                        }
-                    }
-                }
-                /* postcss-bem-linter: ignore */
-                & .cashier__paragraph {
-                    padding-left: 0;
-                }
+            .dc-tabs__content {
+                margin-top: 7.2rem;
             }
         }
-        .dc-tabs__list--header--tabs--desktop {
-            @include mobile {
-                margin: 0 3.5rem;
+        &-hide-tabs {
+            & .dc-tabs__list {
+                display: none;
+            }
+            & .dc-tabs__content {
+                margin-top: 1.6rem;
+            }
+
+            & .dc-tabs__list--header--tabs--desktop {
+                display: none;
             }
         }
         .verification-email__icon {

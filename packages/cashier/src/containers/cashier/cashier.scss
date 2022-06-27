@@ -42,7 +42,7 @@
         &-padding {
             padding: 0 1.6rem 1.6rem 4.2rem;
             @include mobile {
-                padding: 1.6rem;
+                padding: 0 1.6rem 1.6rem;
             }
         }
         &-padding-top {
@@ -76,6 +76,12 @@
                         justify-content: flex-start;
                         flex-direction: column;
                         padding-top: 2.4rem;
+                    }
+                    @include mobile {
+                        &--confirm {
+                            width: 100%;
+                            margin: 0;
+                        }
                     }
                 }
                 .barspinner {

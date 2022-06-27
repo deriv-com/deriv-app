@@ -130,6 +130,27 @@ commands:
           failure_message: "Release failed for deriv bot with version *$(cat www/version)*"
           success_message: "Release succeeded for deriv bot with version *$(cat www/version)*"
           webhook: ${SLACK_WEBHOOK} 
+
+  publish_to_pages_staging:
+    description: "Publish to cloudflare pages"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (staging)"
+          command: |
+            cd www
+            npx wrangler pages publish . --project-name=deriv-binary-bot-pages --branch=staging
+            echo "New staging website - http://staging.cf-pages-deriv-binary-bot.deriv.com"
+
+  publish_to_pages_production:
+    description: "Publish to cloudflare pages"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (production)"
+          command: |
+            cd www
+            npx wrangler pages publish . --project-name=deriv-binary-bot-pages --branch=main
+            echo "New website - http://cf-pages-deriv-binary-bot.deriv.com"
+
 jobs:
   test:
     docker:
@@ -147,6 +168,10 @@ jobs:
       - npm_install
       - test
       - build
+      - persist_to_workspace:
+          root: www
+          paths:
+            - .
       - docker_build_push
       - deploy:
           target_branch: "staging"
@@ -160,6 +185,10 @@ jobs:
       - npm_install
       - test
       - build
+      - persist_to_workspace:
+          root: www
+          paths:
+            - .
       - docker_build_push:
           docker_latest_image_tag: latest
           docker_image_tag: ${CIRCLE_TAG}
@@ -170,6 +199,22 @@ jobs:
           k8s_namespace: "bot-deriv-com-production"
           k8s_version: ${CIRCLE_TAG}
       - notify_slack
+ 
+  publish_cloudflare_staging:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: www
+      - publish_to_pages_staging
+
+  publish_cloudflare_production:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: www
+      - publish_to_pages_production
 
 workflows:
   test:
@@ -185,7 +230,23 @@ workflows:
             branches:
               only: /^master$/
           context: binary-frontend-artifact-upload
+      - publish_cloudflare_staging:
+          requires:
+            - release_staging
+          filters:
+            branches:
+              only: /^master$/
+          context: binary-frontend-artifact-upload
       - release_production:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^production.*/
+          context: binary-frontend-artifact-upload
+      - publish_cloudflare_production:
+          requires:
+            - release_production
           filters:
             branches:
               ignore: /.*/

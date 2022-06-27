@@ -104,11 +104,11 @@
         }
         &--stats-chart-display {
             height: 8.4rem;
-            padding: 0 2.4rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 0.8rem;
         }
         .dc-datepicker {
             .dc-input {

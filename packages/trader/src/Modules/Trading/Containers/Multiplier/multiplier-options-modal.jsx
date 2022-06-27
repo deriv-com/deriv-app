@@ -110,7 +110,6 @@ const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange
                 commission={commission}
                 stop_out={stop_out}
                 amount={amount}
-                is_multipliers_info
             />
         </React.Fragment>
     );

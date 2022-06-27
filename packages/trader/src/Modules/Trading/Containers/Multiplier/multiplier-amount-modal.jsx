@@ -116,7 +116,6 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_s
                 commission={commission}
                 stop_out={stop_out}
                 amount={stake_value}
-                is_multipliers_info
             />
         </React.Fragment>
     );

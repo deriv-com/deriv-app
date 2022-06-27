@@ -168,11 +168,10 @@ const Amount = ({
                         className='trade-container__multipliers-trade-info'
                         should_show_tooltip
                         is_tooltip_relative
-                        is_multipliers_info
                     />
                 </React.Fragment>
             )}
-            {is_accumulator && <MaxPayoutInfo className='trade-container__max-payout-trade-info' is_max_payout_info />}
+            {is_accumulator && <MaxPayoutInfo className='trade-container__max-payout-trade-info' />}
         </Fieldset>
     );
 };

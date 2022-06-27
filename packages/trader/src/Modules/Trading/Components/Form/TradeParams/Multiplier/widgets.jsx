@@ -35,7 +35,6 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
                     className='mobile-widget__multiplier-trade-info'
                     commission_text_size='xxxxs'
                     stop_out_text_size='xxxxs'
-                    is_multipliers_info
                 />
             </div>
             {is_crypto_multiplier && (

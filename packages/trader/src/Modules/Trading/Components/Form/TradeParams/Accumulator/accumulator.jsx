@@ -37,7 +37,6 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
             />
             <AccumulatorsInfo
                 className='trade-container__accumulators-trade-info'
-                is_accumulators_info
                 should_show_tooltip
                 is_tooltip_relative
             />

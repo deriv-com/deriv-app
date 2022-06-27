@@ -23,9 +23,7 @@ const Info = ({
     commission_text_size,
     currency,
     has_stop_loss,
-    is_accumulators_info,
-    is_max_payout_info,
-    is_multipliers_info,
+    info_type,
     is_tooltip_relative,
     max_duration_text_size,
     max_duration_ticks,
@@ -38,12 +36,9 @@ const Info = ({
     tick_size_barrier,
     tick_size_barrier_text_size,
 }) => {
-    let info_type = [];
-
     const getInfoContent = () => {
         let info_content;
-        if (is_multipliers_info) {
-            info_type = INFO_TYPES.MULTIP;
+        if (info_type === INFO_TYPES.MULTIP) {
             info_content = [
                 {
                     info_text: (
@@ -88,13 +83,12 @@ const Info = ({
                     is_hidden: has_stop_loss,
                 },
             ];
-        } else if (is_accumulators_info) {
-            info_type = INFO_TYPES.ACC;
+        } else if (info_type === INFO_TYPES.ACC) {
             info_content = [
                 {
                     info_text: (
                         <Localize
-                            i18n_default_text={'Distance from barriers <0>±{{tick_size_barrier}}%</0>'}
+                            i18n_default_text={'Barriers <0>±{{tick_size_barrier}}%</0>'}
                             values={{ tick_size_barrier: tick_size_barrier.toFixed(5) }}
                             components={[<span key={0} />]}
                         />
@@ -123,8 +117,7 @@ const Info = ({
                     ),
                 },
             ];
-        } else if (is_max_payout_info) {
-            info_type = INFO_TYPES.MAX_PAYOUT;
+        } else if (info_type === INFO_TYPES.MAX_PAYOUT) {
             info_content = [
                 {
                     info_text: (
@@ -168,7 +161,7 @@ const Info = ({
     return (
         <div
             className={classNames(`${info_type}-trade-info`, className, {
-                'mobile-widget__multiplier-trade-info--no-stop-out': has_stop_loss && is_multipliers_info,
+                'mobile-widget__multiplier-trade-info--no-stop-out': has_stop_loss && info_type === INFO_TYPES.MULTIP,
             })}
         >
             {getInfoContent().map(({ tooltip_message, margin, ...rest }, index) => {
@@ -197,9 +190,7 @@ Info.propTypes = {
     commission_text_size: PropTypes.string,
     currency: PropTypes.string,
     has_stop_loss: PropTypes.bool,
-    is_accumulators_info: PropTypes.bool,
-    is_max_payout_info: PropTypes.bool,
-    is_multipliers_info: PropTypes.bool,
+    info_type: PropTypes.string,
     is_tooltip_relative: PropTypes.bool,
     max_duration_ticks: PropTypes.number,
     max_duration_text_size: PropTypes.string,
@@ -220,14 +211,17 @@ export const MultipliersInfo = connect(({ modules }, props) => ({
     has_stop_loss: modules.trade.has_stop_loss,
     multiplier: modules.trade.multiplier,
     stop_out: props.stop_out ?? modules.trade.stop_out,
+    info_type: INFO_TYPES.MULTIP,
 }))(Info);
 
 export const AccumulatorsInfo = connect(({ modules }) => ({
     max_duration_ticks: modules.trade.max_duration_ticks,
     tick_size_barrier: modules.trade.tick_size_barrier,
+    info_type: INFO_TYPES.ACC,
 }))(Info);
 
 export const MaxPayoutInfo = connect(({ modules }) => ({
     currency: modules.trade.currency,
     max_payout: modules.trade.max_payout,
+    info_type: INFO_TYPES.MAX_PAYOUT,
 }))(Info);

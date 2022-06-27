@@ -1,13 +1,14 @@
 import React from 'react';
-import { DesktopWrapper, Icon, Popover, Text } from '@deriv/components';
+import { DesktopWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import { daysSince, isMobile } from '@deriv/shared';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import TradeBadge from '../../../trade-badge';
 import MyProfilePrivacy from '../my-profile-privacy';
 import StarRating from 'Components/star-rating';
+import RecommendedBy from 'Components/recommended-by';
 
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
@@ -77,21 +78,10 @@ const MyProfileName = () => {
                                         </Text>
                                     </div>
                                     <div className='my-profile-name--rating__row'>
-                                        <Popover
-                                            alignment='top'
-                                            message={localize('Recommended by {{recommended_count}} traders', {
-                                                recommended_count,
-                                            })}
-                                        >
-                                            <Icon icon='IcThumbsUp' size={14} />
-                                            <Text
-                                                color='less-prominent'
-                                                line_height='s'
-                                                size={isMobile() ? 'xxxs' : 'xs'}
-                                            >
-                                                {`${recommended_average}%`}
-                                            </Text>
-                                        </Popover>
+                                        <RecommendedBy
+                                            recommended_average={recommended_average}
+                                            recommended_count={recommended_count}
+                                        />
                                     </div>
                                 </React.Fragment>
                             ) : (
@@ -101,7 +91,6 @@ const MyProfileName = () => {
                                     </Text>
                                 </div>
                             )}
-
                             <Text
                                 className='my-profile-name--rating__row'
                                 color='less-prominent'

@@ -45,7 +45,7 @@ const Notification = ({ data, removeNotificationMessage, config }) => {
             );
         case 'trustpilot': {
             // Trustpilot notification will be displayed only after a week of account creation
-            return config.account_open_date && config.account_open_date >= 7 ? (
+            return config?.account_open_date >= 7 ? (
                 <NotificationBanner
                     className={data.className}
                     header={data.header_popup}

@@ -80,7 +80,6 @@ const AppNotificationMessages = ({
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
-    // const days_since_account_created = daysSince(account_open_date);
 
     React.useEffect(() => {
         if (is_mt5) {

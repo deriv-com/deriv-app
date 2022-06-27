@@ -2058,6 +2058,17 @@ $MIN_HEIGHT_FLOATING: calc(
         font-weight: bold;
         text-decoration: none;
     }
+    &__close-account-button-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        align-self: center;
+        background-color: transparent;
+
+        @include mobile {
+            margin-bottom: -3rem;
+        }
+    }
     &__buttons-container {
         display: flex;
         align-items: center;

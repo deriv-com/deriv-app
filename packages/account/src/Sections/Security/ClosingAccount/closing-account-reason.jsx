@@ -2,8 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import { routes, PlatformContext, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import AccountHasPendingConditions from './account-has-balance.jsx';
 import ClosingAccountReasonFrom from './closing-account-reason-form.jsx';
@@ -44,14 +44,32 @@ const WarningModal = props => {
                     )}
                 </Text>
             </div>
-            <FormSubmitButton
+            <div className='closing-account__close-account-button-container'>
+                <Button
+                    className={classNames('closing-account__button--cancel')}
+                    large
+                    secondary
+                    onClick={() => props.closeModal()}
+                >
+                    <Localize i18n_default_text='Go back' />
+                </Button>
+                <Button
+                    className={classNames('closing-account__button--close-account')}
+                    large
+                    onClick={() => props.startDeactivating()}
+                    primary
+                >
+                    <Localize i18n_default_text='Close account' />
+                </Button>
+            </div>
+            {/* <FormSubmitButton
                 is_disabled={false}
-                label={localize('Close account')}
+                label={localize('Close Account')}
                 has_cancel
                 cancel_label={localize('Go back')}
                 onCancel={() => props.closeModal()}
                 onClick={() => props.startDeactivating()}
-            />
+            /> */}
         </div>
     );
 };

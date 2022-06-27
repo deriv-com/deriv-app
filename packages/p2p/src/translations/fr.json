@@ -43,7 +43,7 @@
     "671582270": "Le montant maximum disponible est de {{value}}",
     "683273691": "Taux (1 {{ account_currency }})",
     "728383001": "Je n'ai reçu plus que le montant convenu.",
-    "733311523": "P2P transactions are locked. This feature is not available for payment agents.",
+    "733311523": "Les transactions P2P sont verrouillées. Cette fonction n'est pas disponible pour les agents de paiement.",
     "767789372": "Attendez pour le paiement",
     "782834680": "Temps restant",
     "783454335": "Oui, enlever",

@@ -94,7 +94,7 @@ describe('WithdrawStore', () => {
         const spyClearVerification = jest.spyOn(withdraw_store.verification, 'clearVerification');
 
         withdraw_store.setIsWithdrawConfirmed(true);
-        expect(withdraw_store.is_withdraw_confirmed).toBeTrue();
+        expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
 
         withdraw_store.setIsWithdrawConfirmed(false);
@@ -140,7 +140,7 @@ describe('WithdrawStore', () => {
 
         await withdraw_store.saveWithdraw(verification_code);
         expect(spySetErrorMessage).toHaveBeenCalledWith('');
-        expect(withdraw_store.is_withdraw_confirmed).toBeTrue();
+        expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
 
         withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
@@ -239,18 +239,18 @@ describe('WithdrawStore', () => {
 
     it('should return is_withdrawal_locked equal to false if there is no account status', () => {
         withdraw_store.root_store.client.account_status = {};
-        expect(withdraw_store.is_withdrawal_locked).toBeFalse();
+        expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
     });
 
     it('should return is_withdrawal_locked equal to true if client needs POI verification', () => {
         withdraw_store.root_store.client.account_status.status = ['authentication_needed'];
         withdraw_store.error.is_ask_authentication = true;
-        expect(withdraw_store.is_withdrawal_locked).toBeTrue();
+        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
     });
 
     it('should return is_withdrawal_locked equal to true if client needs financial risk approval', () => {
         withdraw_store.error.is_ask_financial_risk_approval = true;
-        expect(withdraw_store.is_withdrawal_locked).toBeTrue();
+        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
     });
 
     it('should set max_withdraw_amount', () => {
@@ -261,12 +261,12 @@ describe('WithdrawStore', () => {
     it('should check 10k limit', async () => {
         await withdraw_store.check10kLimit();
         expect(withdraw_store.max_withdraw_amount).toBe(80);
-        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTrue();
+        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
     });
 
     it('should set is_10k_withdrawal_limit_reached', () => {
         withdraw_store.set10kLimitation(true);
-        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTrue();
+        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
     });
 
     it('should set percentage selector result', () => {

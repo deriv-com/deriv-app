@@ -7,6 +7,23 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 
+type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
+};
+
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
     platform: string;
@@ -29,7 +46,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     residence: string;
     jurisdiction_selected_card: boolean;
     toggleJurisdictionModal: () => void;
-    tradingPlatformAvailableAccounts: any[];
+    tradingPlatformAvailableAccounts: TTradingPlatformAvailableAccount[];
 };
 
 const JurisdictionModal = ({
@@ -119,7 +136,7 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
-    account_type: modules.cfd.account_type,
+    account_type: modules.cfd.account_type.type,
     authentication_status: client.authentication_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,

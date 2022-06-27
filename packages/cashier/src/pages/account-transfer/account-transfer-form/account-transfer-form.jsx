@@ -19,51 +19,31 @@ import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import './account-transfer-form.scss';
 
-const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
-    let server;
-
-    if (account.is_mt) {
-        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-    }
-
-    return (
-        <React.Fragment key={idx}>
-            {(account.currency || account.platform_icon) && (
-                <div>
-                    <Icon
-                        icon={account.platform_icon || `IcCurrency-${account.currency.toLowerCase()}`}
-                        className='account-transfer-form__currency-icon'
-                    />
-                </div>
-            )}
-
-            <div className='account-transfer-form__currency-wrapper'>
-                <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
-                </Text>
-                <Text size='xxxs' align='left' color='less-prominent'>
-                    {account.value}
-                </Text>
-            </div>
-
-            {(server?.market_type === 'gaming' || server?.market_type === 'synthetic') && (
-                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.server_info.geolocation.region}&nbsp;
-                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
-                </Text>
-            )}
-
-            <span className='account-transfer-form__balance'>
-                <Money
-                    amount={account.balance}
-                    currency={account.currency}
-                    has_sign={account.balance < 0}
-                    show_currency
+const AccountOption = ({ account, idx }) => (
+    <React.Fragment key={idx}>
+        {(account.currency || account.platform_icon) && (
+            <div>
+                <Icon
+                    icon={account.platform_icon || `IcCurrency-${account.currency.toLowerCase()}`}
+                    className='account-transfer-form__currency-icon'
                 />
-            </span>
-        </React.Fragment>
-    );
-};
+            </div>
+        )}
+
+        <div className='account-transfer-form__currency-wrapper'>
+            <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
+                {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
+            </Text>
+            <Text size='xxxs' align='left' color='less-prominent'>
+                {account.value}
+            </Text>
+        </div>
+
+        <span className='account-transfer-form__balance'>
+            <Money amount={account.balance} currency={account.currency} has_sign={account.balance < 0} show_currency />
+        </span>
+    </React.Fragment>
+);
 
 const AccountTransferBullet = ({ children }) => (
     <div className='account-transfer-form__bullet-wrapper'>
@@ -236,9 +216,7 @@ const AccountTransferForm = ({
     error,
     is_crypto,
     is_dxtrade_allowed,
-    is_dark_mode_on,
     minimum_fee,
-    mt5_login_list,
     onChangeConverterFromAmount,
     onChangeConverterToAmount,
     onChangeTransferFrom,
@@ -320,35 +298,19 @@ const AccountTransferForm = ({
         dxtrade_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
-            const text = (
-                <AccountOption
-                    mt5_login_list={mt5_login_list}
-                    idx={idx}
-                    account={account}
-                    is_dark_mode_on={is_dark_mode_on}
-                />
-            );
+            const text = <AccountOption idx={idx} account={account} />;
             const value = account.value;
-            const account_server = mt5_login_list.find(server => server.login === account.value);
 
             const is_cfd_account = account.is_mt || account.is_dxtrade;
-            let server_region = '';
-            if (account_server?.market_type === 'gaming' || account_server?.market_type === 'synthetic') {
-                server_region = `[${account_server.server_info.geolocation.region}${
-                    account_server.server_info.geolocation.sequence !== 1
-                        ? account_server.server_info.geolocation.sequence
-                        : ''
-                }]`;
-            }
 
             getAccounts('from', account).push({
                 text,
                 value,
                 is_mt: account.is_mt,
                 is_dxtrade: account.is_dxtrade,
-                nativepicker_text: `${
-                    is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                    account.balance
+                } ${is_cfd_account ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
 
@@ -370,9 +332,9 @@ const AccountTransferForm = ({
                     is_mt: account.is_mt,
                     is_dxtrade: account.is_dxtrade,
                     disabled: is_disabled,
-                    nativepicker_text: `${
-                        is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                    } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                    nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                        account.balance
+                    } ${is_cfd_account ? account.currency : account.text})`,
                 });
             }
         });
@@ -702,7 +664,7 @@ AccountTransferForm.propTypes = {
     validateTransferToAmount: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules }) => ({
     account_limits: client.account_limits,
     accounts_list: modules.cashier.account_transfer.accounts_list,
     account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
@@ -712,10 +674,8 @@ export default connect(({ client, modules, ui }) => ({
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     is_crypto: modules.cashier.general_store.is_crypto,
-    is_dark_mode_on: ui.is_dark_mode_on,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.account_transfer.minimum_fee,
-    mt5_login_list: client.mt5_login_list,
     onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
     onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
     onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,

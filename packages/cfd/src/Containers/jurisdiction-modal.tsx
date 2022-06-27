@@ -7,6 +7,23 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 
+type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
+};
+
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
     platform: string;
@@ -29,7 +46,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     residence: string;
     jurisdiction_selected_card: boolean;
     toggleJurisdictionModal: () => void;
-    tradingPlatformAvailableAccounts: any[];
+    tradingPlatformAvailableAccounts: TTradingPlatformAvailableAccount[];
 };
 
 const JurisdictionModal = ({
@@ -45,13 +62,19 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     tradingPlatformAvailableAccounts,
 }: TJurisdictionModalProps) => {
-    const financial_available_accounts = tradingPlatformAvailableAccounts
-        .filter(available_account => available_account.market_type === 'financial')
-        .map((acc: any[]) => acc);
+    const financial_available_accounts = tradingPlatformAvailableAccounts.filter(
+        available_account => available_account.market_type === 'financial'
+    );
 
-    const synthetic_available_accounts = tradingPlatformAvailableAccounts
-        .filter(available_account => available_account.market_type === 'gaming')
-        .map((acc: any[]) => acc);
+    const synthetic_available_accounts = tradingPlatformAvailableAccounts.filter(
+        available_account => available_account.market_type === 'gaming'
+    );
+
+    const modal_title = is_eu
+        ? localize('Jurisdiction for your DMT5 CFDs account')
+        : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
+              account_type: account_type === 'synthetic' ? 'Synthetic' : 'Financial',
+          });
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
@@ -62,14 +85,6 @@ const JurisdictionModal = ({
                 className='cfd-compare-accounts-modal__wrapper'
                 style={{ marginTop: platform === CFD_PLATFORMS.DXTRADE ? '5rem' : '2.4rem' }}
             >
-                <Button
-                    className='cfd-dashboard__welcome-message--button'
-                    has_effect
-                    text={'Jurisdiction modal'}
-                    onClick={toggleJurisdictionModal}
-                    secondary
-                    disabled={is_loading}
-                />
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal
@@ -77,11 +92,7 @@ const JurisdictionModal = ({
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_jurisdiction_modal_visible}
-                            title={localize(
-                                `Choose a jurisdiction for your ${is_eu ? 'CFDs' : 'DMT5'} ${
-                                    account_type === 'synthetic' ? 'Synthetic' : 'Financial'
-                                } account`
-                            )}
+                            title={modal_title}
                             toggleModal={toggleJurisdictionModal}
                             type='button'
                             height='696px'
@@ -127,7 +138,7 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
-    account_type: modules.cfd.account_type,
+    account_type: modules.cfd.account_type.type,
     authentication_status: client.authentication_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,

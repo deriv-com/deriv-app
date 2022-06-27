@@ -137,24 +137,24 @@ const AccountSwitcher = props => {
             );
         } else {
             if (should_redirect_fstp_password)
-                sessionStorage.setItem('open_cfd_account_type', `real.${account_type}.set_password`);
-            else sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+                sessionStorage.setItem(
+                    'open_cfd_account_type',
+                    `real.${CFD_PLATFORMS.MT5}.${account_type}.set_password`
+                );
+            else sessionStorage.setItem('open_cfd_account_type', `real.${CFD_PLATFORMS.MT5}.${account_type}`);
             redirectToMt5Real();
         }
     };
 
     const redirectToMt5Real = (market_type, server) => {
-        const synthetic_server_region = server ? server.server_info?.geolocation.region : '';
         const synthetic_server_environment = server ? (server.server_info?.environment).toLowerCase() : '';
 
         const serverElementName = () => {
             let filter_server_number = '';
-            let synthetic_region_string = '';
             if (market_type === 'synthetic') {
                 filter_server_number = synthetic_server_environment.split('server')[1];
-                synthetic_region_string = `-${synthetic_server_region.toLowerCase()}`;
             }
-            return `-${market_type}${synthetic_region_string}${filter_server_number}`;
+            return `-${market_type}${filter_server_number}`;
         };
 
         redirectToMt5(`real${market_type ? serverElementName() : ''}`);
@@ -170,17 +170,17 @@ const AccountSwitcher = props => {
             props.openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
-        sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.MT5}.${account_type}`);
         redirectToMt5Demo();
     };
 
     const openDXTradeDemoAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
         redirectToDXTradeDemo();
     };
 
     const openDXTradeRealAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `real.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
         redirectToDXTradeReal();
     };
 
@@ -219,7 +219,8 @@ const AccountSwitcher = props => {
             existing_cfd_accounts,
             props.mt5_trading_servers,
             platform,
-            is_eu
+            is_eu,
+            props.trading_platform_available_accounts
         );
         const financial_config = getCFDConfig(
             'financial',
@@ -229,7 +230,8 @@ const AccountSwitcher = props => {
             existing_cfd_accounts,
             props.mt5_trading_servers,
             platform,
-            is_eu
+            is_eu,
+            props.trading_platform_available_accounts
         );
         // Handling CFD for EU
         // TODO: Move this logic inside getCFDConfig when CFD added to landing_companies API
@@ -510,6 +512,7 @@ const AccountSwitcher = props => {
                                                 loginid={account.display_login}
                                                 redirectAccount={() => redirectToMt5Demo(account.market_type)}
                                                 platform={CFD_PLATFORMS.MT5}
+                                                shortcode={account.landing_company_short}
                                             />
                                         ))}
                                     </div>
@@ -694,7 +697,6 @@ const AccountSwitcher = props => {
                                     <div className='acc-switcher__accounts'>
                                         {getRealMT5().map(account => (
                                             <AccountList
-                                                is_dark_mode_on={props.is_dark_mode_on}
                                                 is_eu={props.is_eu}
                                                 key={account.login}
                                                 market_type={account.market_type}
@@ -718,8 +720,8 @@ const AccountSwitcher = props => {
                                                         findServerForAccount(account)
                                                     );
                                                 }}
-                                                server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
+                                                shortcode={account.landing_company_short}
                                             />
                                         ))}
                                     </div>
@@ -931,6 +933,7 @@ AccountSwitcher.propTypes = {
     toggleAccountsDialog: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
+    trading_platform_available_accounts: PropTypes.array,
     updateMt5LoginList: PropTypes.func,
 };
 
@@ -986,6 +989,7 @@ const account_switcher = withRouter(
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+        trading_platform_available_accounts: client.trading_platform_available_accounts,
     }))(AccountSwitcher)
 );
 

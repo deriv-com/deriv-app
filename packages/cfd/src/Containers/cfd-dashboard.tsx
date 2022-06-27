@@ -85,12 +85,14 @@ type TMt5StatusServerType = {
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
+export type TObjectCFDAccount = { category: string; type: string; set_password?: number; platform?: string };
+
 type TCFDDashboardProps = {
     account_settings: { residence: string };
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;
-    createCFDAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    createCFDAccount: (objCFDAccount: TObjectCFDAccount) => void;
     current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
     dxtrade_accounts_list_error: null;
     isAccountOfTypeDisabled: (

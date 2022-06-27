@@ -8,6 +8,7 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
 import { TExistingData, TTradingPlatformAccounts } from './props.types.js';
+import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -42,7 +43,7 @@ type TCFDRealAccountDisplayProps = {
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
     landing_companies: LandingCompany;
-    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
@@ -153,14 +154,14 @@ const CFDRealAccountDisplay = ({
         if (is_eu && standpoint.malta && !has_malta_account) {
             openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
         } else {
-            onSelectAccount({ type: 'synthetic', category: 'real' });
+            onSelectAccount({ type: 'synthetic', category: 'real', platform });
         }
     };
     const onSelectRealFinancial = () => {
         if (is_eu && !has_maltainvest_account) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
         } else {
-            onSelectAccount({ type: 'financial', category: 'real' });
+            onSelectAccount({ type: 'financial', category: 'real', platform });
         }
     };
 

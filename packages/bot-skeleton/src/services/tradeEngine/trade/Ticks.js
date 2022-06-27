@@ -79,7 +79,7 @@ export const getLastDigit = () => {
 };
 
 export const getLastDigitList = () => {
-    return new Promise(resolve => getTicks().then(ticks => resolve(this.getLastDigitsFromList(ticks))));
+    return new Promise(resolve => getTicks().then(ticks => resolve(getLastDigitsFromList(ticks))));
 };
 
 export const getLastDigitsFromList = ticks => {

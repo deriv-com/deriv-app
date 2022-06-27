@@ -21,7 +21,7 @@ const Interface = $scope => {
         return {
             ...getBotInterface(tradeEngine),
             ...getToolsInterface(tradeEngine),
-            getTicksInterface: getTicksInterface(tradeEngine),
+            getTicksInterface: getTicksInterface(),
             watch: (...args) => tradeEngine.watch(...args),
             sleep: (...args) => sleep(...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert

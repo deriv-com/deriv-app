@@ -9,9 +9,10 @@ import {
     relativeStrengthIndexArray as rsia,
     macdArray as macda,
 } from '@deriv/indicators';
+import { getPipSize } from '../trade/Ticks';
 
-const decorate = (f, input, tradeEngine, config, ...args) => {
-    const pipSize = tradeEngine.getPipSize();
+const decorate = (f, input, config, ...args) => {
+    const pipSize = getPipSize();
     return f(input, { pipSize, ...config }, ...args);
 };
 

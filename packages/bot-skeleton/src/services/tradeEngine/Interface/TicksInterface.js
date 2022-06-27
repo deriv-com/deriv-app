@@ -1,12 +1,15 @@
-const getTicksInterface = tradeEngine => {
+import { getOhlc, checkDirection, getOhlcFromEnd, getLastTick, getTicks, getLastDigitList } from '../trade/Ticks';
+import getLastDigit from 'binary-utils/lib/number/getLastDigit';
+
+const getTicksInterface = () => {
     return {
-        getLastTick: (...args) => tradeEngine.getLastTick(...args),
-        getLastDigit: (...args) => tradeEngine.getLastDigit(...args),
-        getTicks: (...args) => tradeEngine.getTicks(...args),
-        checkDirection: (...args) => tradeEngine.checkDirection(...args),
-        getOhlcFromEnd: (...args) => tradeEngine.getOhlcFromEnd(...args),
-        getOhlc: (...args) => tradeEngine.getOhlc(...args),
-        getLastDigitList: (...args) => tradeEngine.getLastDigitList(...args),
+        getLastTick: (...args) => getLastTick(...args),
+        getLastDigit: (...args) => getLastDigit(...args),
+        getTicks: (...args) => getTicks(...args),
+        checkDirection: (...args) => checkDirection(...args),
+        getOhlcFromEnd: (...args) => getOhlcFromEnd(...args),
+        getOhlc: (...args) => getOhlc(...args),
+        getLastDigitList: (...args) => getLastDigitList(...args),
     };
 };
 

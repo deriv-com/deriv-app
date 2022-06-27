@@ -14,6 +14,7 @@ export const createScope = () => {
         profit: 0,
     };
     const stopped = false;
+    const symbol = '';
     const token = '';
     const options = {};
 
@@ -26,6 +27,7 @@ export const createScope = () => {
         stopped,
         token,
         options,
+        symbol,
     };
 };
 

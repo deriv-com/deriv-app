@@ -4,6 +4,7 @@ export const CFD_TEXT = {
     dxtrade: () => localize('Deriv X'),
     mt5: () => localize('MT5'),
     cfd: () => localize('CFDs'),
+    mt5_cfd_mfsa: () => localize('MT5 CFDs MFSA'),
     synthetic: () => localize('Synthetic'),
     synthetic_bvi: () => localize('Synthetic BVI'),
     synthetic_svg: () => localize('Synthetic SVG'),

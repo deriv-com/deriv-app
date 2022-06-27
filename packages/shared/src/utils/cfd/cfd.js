@@ -7,6 +7,7 @@ const CFD_text = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
     cfd: 'CFDs',
+    mt5_cfd_mfsa: 'MT5 CFDs MFSA',
     synthetic: 'Synthetic',
     synthetic_bvi: 'Synthetic BVI',
     synthetic_svg: 'Synthetic SVG',
@@ -110,7 +111,7 @@ export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
-        cfd_account_key = 'cfd';
+        cfd_account_key = 'mt5_cfd_mfsa';
     }
 
     return CFD_text[cfd_account_key];

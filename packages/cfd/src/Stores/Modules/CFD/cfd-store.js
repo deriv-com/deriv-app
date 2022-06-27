@@ -132,7 +132,7 @@ export default class CFDStore extends BaseStore {
             category,
             type,
         });
-        if (this.root_store.client.is_eu || platform === CFD_PLATFORMS.DXTRADE) {
+        if (platform === CFD_PLATFORMS.DXTRADE) {
             if (category === 'real') {
                 this.realCFDSignup(set_password);
             } else {

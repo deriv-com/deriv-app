@@ -60,7 +60,7 @@ const NotificationsContent = ({
                         <Notification
                             data={notification}
                             removeNotificationMessage={removeNotificationMessage}
-                            config={{ account_open_date }}
+                            config={{ account_open_since_days: account_open_date }}
                         />
                     </CSSTransition>
                 ))}

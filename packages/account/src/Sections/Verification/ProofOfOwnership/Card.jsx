@@ -65,9 +65,12 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
 };
 export default Card;
 Card.propTypes = {
+    card: PropTypes.object,
     handleChange: PropTypes.func,
     handleBlur: PropTypes.func,
     values: PropTypes.object,
     setFieldValue: PropTypes.func,
     index: PropTypes.number,
+    error: PropTypes.object,
+    validateField: PropTypes.func,
 };

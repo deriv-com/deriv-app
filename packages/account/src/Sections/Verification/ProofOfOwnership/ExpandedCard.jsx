@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import FileUploader from './FileUploader.jsx';
 import { Input, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -75,7 +76,8 @@ const ExpandedCard = ({
                             </div>
                         )}
                         {controlsToShow.map(i => (
-                            <>
+                            <React.Fragment key={i}>
+                                {/* Used React.Fragment instead of the <></> to resolve devtools console errors/warnings of missing key prop. */}
                                 {cardDetails.icon === 'IcCreditCard' && (
                                     <div className='proof-of-ownership__card-open-inputs-field' key={i}>
                                         <Input
@@ -109,7 +111,7 @@ const ExpandedCard = ({
                                         validateField={validateField}
                                     />
                                 </div>
-                            </>
+                            </React.Fragment>
                         ))}
                     </div>
                 </fieldset>
@@ -122,6 +124,18 @@ const ExpandedCard = ({
             />
         </>
     );
+};
+
+ExpandedCard.propTypes = {
+    cardDetails: PropTypes.object,
+    handleChange: PropTypes.func,
+    handleBlur: PropTypes.func,
+    identifier: PropTypes.string,
+    values: PropTypes.object,
+    setFieldValue: PropTypes.func,
+    index: PropTypes.number,
+    error: PropTypes.object,
+    validateField: PropTypes.func,
 };
 
 export default ExpandedCard;

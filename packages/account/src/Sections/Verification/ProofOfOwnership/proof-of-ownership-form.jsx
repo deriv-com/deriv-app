@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Button, FormSubmitErrorMessage, useStateCallback } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
@@ -159,5 +160,8 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         </Formik>
     );
 };
-
+ProofOfOwnershipForm.propTypes = {
+    cards: PropTypes.array,
+    updateAccountStatus: PropTypes.func,
+};
 export default ProofOfOwnershipForm;

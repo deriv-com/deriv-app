@@ -8,7 +8,7 @@ describe('proof-of-ownership.jsx', () => {
     beforeAll(() => {
         ownership_temp = testData;
     });
-    it('should render no poo required status page', async () => {
+    it('should render no poo required status page', () => {
         render(
             <ProofOfOwnership
                 account_status={{
@@ -21,7 +21,7 @@ describe('proof-of-ownership.jsx', () => {
         const element = screen.getByText('Proof of ownership not required.', { exact: true });
         expect(element).toBeInTheDocument();
     });
-    it('should render poo verified status page', async () => {
+    it('should render poo verified status page', () => {
         render(
             <ProofOfOwnership
                 account_status={{
@@ -34,7 +34,7 @@ describe('proof-of-ownership.jsx', () => {
         const element = screen.getByText('Proof of ownership verification passed.', { exact: true });
         expect(element).toBeInTheDocument();
     });
-    it('should render poo submitted status page', async () => {
+    it('should render poo submitted status page', () => {
         render(
             <ProofOfOwnership
                 account_status={{
@@ -60,7 +60,7 @@ describe('proof-of-ownership.jsx', () => {
         const element = screen.getByText('Proof of ownership verification failed', { exact: true });
         expect(element).toBeInTheDocument();
     });
-    it('should render ProofOfOwnershipForm', async () => {
+    it('should render ProofOfOwnershipForm', () => {
         render(
             <ProofOfOwnership
                 account_status={{

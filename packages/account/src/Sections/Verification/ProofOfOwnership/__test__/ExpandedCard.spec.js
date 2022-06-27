@@ -35,7 +35,7 @@ describe('ExpandedCard.jsx', () => {
         const element = screen.getByText('Card Number', { exact: true });
         expect(element).toBeInTheDocument();
     });
-    it('should show example link for credit/debit card', async () => {
+    it('should show example link for credit/debit card', () => {
         render(<ExpandedCard cardDetails={cardDetails} identifier={cardDetails.payment_method_identifier} />);
         const exampelLink = screen.getByText('See example');
         expect(exampelLink).toBeInTheDocument();

@@ -71,7 +71,7 @@ export default class IframeStore {
         const { client, ui } = this.root_store;
 
         if (url) {
-            this.iframe_url = `${url}&theme=${ui.is_dark_mode_on ? 'dark' : 'light'}`;
+            this.iframe_url = `${url}&dark_mode=${ui.is_dark_mode_on ? 'on' : 'off'}`;
             // after we set iframe url we can clear verification code
             client.setVerificationCode('', Constants.map_action[container]);
         } else {

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
@@ -151,12 +150,6 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
             {details.message}
         </Dialog>
     );
-};
-
-ErrorDialog.propTypes = {
-    error: PropTypes.object,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
 };
 
 export default connect(({ ui }: RootStore) => ({

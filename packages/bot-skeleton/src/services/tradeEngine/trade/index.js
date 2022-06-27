@@ -81,14 +81,14 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         const { symbol } = options;
 
         $scope.initArgs = args;
-        this.options = options;
+        $scope.options = options;
         this.startPromise = this.loginAndGetBalance(token);
 
         this.watchTicks(symbol);
     }
 
     start(tradeOptions) {
-        if (!this.options) {
+        if (!$scope.options) {
             throw createError('NotInitialized', localize('Bot.init is not called'));
         }
 
@@ -98,7 +98,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
 
         this.store.dispatch(start());
         checkLimits(tradeOptions);
-        this.makeProposals({ ...this.options, ...tradeOptions });
+        this.makeProposals({ ...$scope.options, ...tradeOptions });
         this.checkProposalReady();
     }
 

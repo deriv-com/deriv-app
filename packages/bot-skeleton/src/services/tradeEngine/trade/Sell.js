@@ -99,7 +99,7 @@ export default Engine =>
                 const errors_to_ignore = ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'];
 
                 // Restart buy/sell on error is enabled, don't recover from sell error.
-                if (!this.options.timeMachineEnabled) {
+                if (!$scope.options.timeMachineEnabled) {
                     return doUntilDone(sellContractAndGetContractInfo, errors_to_ignore).then(sell_response =>
                         onContractSold(sell_response)
                     );

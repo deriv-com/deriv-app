@@ -51,7 +51,7 @@ export default Engine =>
                 data: askPrice,
             });
 
-            if (!this.options.timeMachineEnabled) {
+            if (!$scope.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
             }
             return recoverFromError(

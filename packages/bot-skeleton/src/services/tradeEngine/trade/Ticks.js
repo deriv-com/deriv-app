@@ -6,6 +6,7 @@ import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
 import TicksService from '../../api/ticks_service';
 import api from '../../api/ws';
+import $scope from '../utils/cliTools';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);
@@ -90,7 +91,7 @@ export default Engine =>
         }
 
         getOhlc(args) {
-            const { granularity = this.options.candleInterval || 60, field } = args || {};
+            const { granularity = $scope.options.candleInterval || 60, field } = args || {};
 
             return new Promise(resolve =>
                 ticksService

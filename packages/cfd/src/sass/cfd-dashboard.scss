@@ -1825,18 +1825,7 @@
     font-size: var(--text-size-sm);
     line-height: 3rem;
 }
-.amina {
-    margin-left: 0.8rem;
-    &--msg {
-        font-size: var(--text-size-xxs);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 8px;
-        width: 276px;
-        border-radius: 4px;
-    }
-}
+
 .cfd-real-compare-accounts-mobile-header {
     height: fit-content;
     border-bottom: none;

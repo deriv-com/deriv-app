@@ -16,6 +16,7 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: [], status: 'none' },
                     },
                 }}
+                updateAccountStatus={jest.fn()}
             />
         );
         const element = screen.getByText('Proof of ownership not required.', { exact: true });
@@ -29,6 +30,7 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: [], status: 'verified' },
                     },
                 }}
+                updateAccountStatus={jest.fn()}
             />
         );
         const element = screen.getByText('Proof of ownership verification passed.', { exact: true });
@@ -42,6 +44,7 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: [], status: 'pending' },
                     },
                 }}
+                updateAccountStatus={jest.fn()}
             />
         );
         const element = screen.getByText('We’ve received your proof of ownership.', { exact: true });
@@ -55,6 +58,7 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: [], status: 'rejected' },
                     },
                 }}
+                updateAccountStatus={jest.fn()}
             />
         );
         const element = screen.getByText('Proof of ownership verification failed', { exact: true });
@@ -69,6 +73,7 @@ describe('proof-of-ownership.jsx', () => {
                         needs_verification: ['ownership'],
                     },
                 }}
+                updateAccountStatus={jest.fn()}
             />
         );
         expect(screen.getByTestId(ownership_temp.requests[0].id, { exact: true })).toBeInTheDocument();

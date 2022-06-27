@@ -9,12 +9,12 @@ describe('proof-of-ownership-form.jsx', () => {
         cards = testData;
     });
     it('should render a single card item inside the form', () => {
-        render(<ProofOfOwnershipForm cards={[cards.requests[0]]} handleSubmit={jest.fn()} />);
+        render(<ProofOfOwnershipForm cards={[cards.requests[0]]} updateAccountStatus={jest.fn()} />);
         const cardItems = screen.getAllByRole('card-item');
         expect(cardItems.length).toEqual(1);
     });
     it('should render multiple card items inside the form', () => {
-        render(<ProofOfOwnershipForm cards={cards.requests} handleSubmit={jest.fn()} />);
+        render(<ProofOfOwnershipForm cards={cards.requests} updateAccountStatus={jest.fn()} />);
         const cardItems = screen.getAllByRole('card-item');
         expect(cardItems.length).toEqual(cards.requests.length);
     });

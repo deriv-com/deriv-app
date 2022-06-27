@@ -4,11 +4,13 @@ import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
+import $scope from '../utils/cliTools';
 
 export default Engine =>
     class Sell extends Engine {
         isSellAtMarketAvailable() {
-            return this.contractId && !this.isSold && this.isSellAvailable && !this.isExpired;
+            const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
+            return this.contractId && !is_sold && is_sell_available && !is_expired;
         }
 
         sellAtMarket() {

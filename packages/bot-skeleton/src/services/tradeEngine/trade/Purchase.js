@@ -45,7 +45,7 @@ export default Engine =>
                 });
             };
             const action = () => ws.send({ buy: id, price: askPrice });
-            this.isSold = false;
+            $scope.contract_flags.is_sold = false;
             contractStatus({
                 id: 'contract.purchase_sent',
                 data: askPrice,

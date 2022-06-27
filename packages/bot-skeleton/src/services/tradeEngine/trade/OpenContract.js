@@ -6,6 +6,13 @@ import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
 
+const setContractFlags = contract => {
+    const { is_expired, is_valid_to_sell, is_sold } = contract;
+    $scope.contract_flags.is_sold = Boolean(is_sold);
+    $scope.contract_flags.is_sell_available = !$scope.contract_flags.is_sold && Boolean(is_valid_to_sell);
+    $scope.contract_flags.is_expired = Boolean(is_expired);
+};
+
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
@@ -17,13 +24,13 @@ export default Engine =>
                         return;
                     }
 
-                    this.setContractFlags(contract);
+                    setContractFlags(contract);
 
                     this.data.contract = contract;
 
                     broadcastContract({ accountID: $scope.account_info.loginid, ...contract });
 
-                    if (this.isSold) {
+                    if ($scope.contract_flags.is_sold) {
                         this.contractId = '';
                         clearTimeout(this.transaction_recovery_timeout);
                         this.updateTotals(contract);
@@ -66,15 +73,6 @@ export default Engine =>
                         );
                     }
                 });
-        }
-
-        setContractFlags(contract) {
-            const { is_expired, is_valid_to_sell, is_sold, entry_tick } = contract;
-
-            this.isSold = Boolean(is_sold);
-            this.isSellAvailable = !this.isSold && Boolean(is_valid_to_sell);
-            this.isExpired = Boolean(is_expired);
-            this.hasEntryTick = Boolean(entry_tick);
         }
 
         expectedContractId(contractId) {

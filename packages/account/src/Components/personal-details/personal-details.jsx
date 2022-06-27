@@ -220,6 +220,7 @@ const PersonalDetails = ({
                                             />
                                         )}
                                         {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
+                                            // Radio Group example
                                             <RadioGroup
                                                 className='dc-radio__input'
                                                 name='salutation'

@@ -8,6 +8,7 @@ import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import TradingAssessment from '../trading-assessment/trading-assessment.jsx';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -151,7 +152,10 @@ const CurrencySelector = ({
                             className='currency-selector'
                             data-testid='currency_selector_form'
                         >
-                            <Div100vhContainer
+                            <Div100vhContainer>
+                                <TradingAssessment />
+                            </Div100vhContainer>
+                            {/* <Div100vhContainer
                                 className={classNames('currency-selector__container', {
                                     'currency-selector__container--no-top-margin':
                                         !has_currency && has_real_account && isMobile(),
@@ -218,7 +222,7 @@ const CurrencySelector = ({
                                         </React.Fragment>
                                     )}
                                 </ThemedScrollbars>
-                            </Div100vhContainer>
+                            </Div100vhContainer> */}
                             <Modal.Footer is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     className={

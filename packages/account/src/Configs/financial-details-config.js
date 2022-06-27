@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
-
+// all the dropdowns
 const financial_details_config = ({ financial_assessment }) => {
     return {
         account_turnover: {

@@ -1,0 +1,26 @@
+.trading-assessment {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 72.2rem;
+    height: fit-content;
+
+    &__form {
+        justify-content: center;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 72.2rem;
+        background-color: #d6dadb;
+    }
+    &__answer-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}

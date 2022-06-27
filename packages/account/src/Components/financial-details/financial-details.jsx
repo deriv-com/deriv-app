@@ -65,7 +65,7 @@ const TradingExperience = ({
     cfd_trading_experience_enum,
     cfd_trading_frequency_enum,
     other_instruments_trading_experience_enum,
-    other_instruments_trading_frequency_enum,
+    other_instruments_trading_frequencCFDTradingAllowsYouy_enum,
 }) => (
     <React.Fragment>
         <FormSubHeader

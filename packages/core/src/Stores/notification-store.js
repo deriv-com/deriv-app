@@ -1,5 +1,6 @@
 import { StaticUrl } from '@deriv/components';
 import {
+    daysSince,
     formatDate,
     getPathname,
     getPlatformSettings,
@@ -351,7 +352,11 @@ export default class NotificationStore extends BaseStore {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
 
-                if (is_website_up && !has_trustpilot) {
+                if (
+                    is_website_up &&
+                    !has_trustpilot &&
+                    daysSince(this.root_store?.client_store?.account_open_date) >= 7
+                ) {
                     this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
 

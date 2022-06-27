@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings, daysSince } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
@@ -65,7 +65,6 @@ const NotificationsContent = ({
 };
 
 const AppNotificationMessages = ({
-    account_open_date,
     is_notification_loaded,
     is_mt5,
     marked_notifications,
@@ -81,7 +80,7 @@ const AppNotificationMessages = ({
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
-    const days_since_account_created = daysSince(account_open_date);
+    // const days_since_account_created = daysSince(account_open_date);
 
     React.useEffect(() => {
         if (is_mt5) {
@@ -115,12 +114,7 @@ const AppNotificationMessages = ({
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
-    // Ensuring Trustpilot notification is displayed only after 7 days of account creation
-    const filtered_notification_list = notifications.filter(
-        notification => !(notification.type === 'trustpilot' && days_since_account_created < 7)
-    );
-
-    const notifications_sublist = filtered_notification_list.slice(0, notifications_limit);
+    const notifications_sublist = notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 
@@ -178,5 +172,4 @@ export default connect(({ client, notifications }) => ({
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
     should_show_popups: notifications.should_show_popups,
-    account_open_date: client.account_open_date,
 }))(AppNotificationMessages);

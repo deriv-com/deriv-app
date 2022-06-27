@@ -116,12 +116,9 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     // Ensuring Trustpilot notification is displayed only after 7 days of account creation
-    const filtered_notification_list = notifications.filter(notification => {
-        if (notification.type === 'trustpilot' && days_since_account_created < 7) {
-            return false;
-        }
-        return true;
-    });
+    const filtered_notification_list = notifications.filter(
+        notification => !(notification.type === 'trustpilot' && days_since_account_created < 7)
+    );
 
     const notifications_sublist = filtered_notification_list.slice(0, notifications_limit);
 

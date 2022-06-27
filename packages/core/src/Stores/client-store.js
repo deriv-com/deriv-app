@@ -130,7 +130,6 @@ export default class ClientStore extends BaseStore {
 
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
-    @observable trading_platform_available_accounts = [];
 
     is_mt5_account_list_updated = false;
 
@@ -1322,7 +1321,6 @@ export default class ClientStore extends BaseStore {
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
-            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
             this.responseStatement(
@@ -2170,15 +2168,6 @@ export default class ClientStore extends BaseStore {
         } else {
             this[`${platform}_accounts_list_error`] = response.error;
         }
-    }
-
-    @action.bound
-    responseTradingPlatformAvailableAccounts(response) {
-        if (response.error) {
-            this.trading_platform_available_accounts = [];
-            return;
-        }
-        this.trading_platform_available_accounts = response.trading_platform_available_accounts;
     }
 
     @action.bound

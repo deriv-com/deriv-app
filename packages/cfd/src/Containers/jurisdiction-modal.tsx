@@ -7,23 +7,6 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 
-type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
-    name: string;
-    requirements: {
-        after_first_deposit: {
-            financial_assessment: string[];
-        };
-        compliance: {
-            mt5: string[];
-            tax_information: string[];
-        };
-        signup: string[];
-    };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
-    sub_account_type: string;
-};
-
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
     platform: string;
@@ -32,10 +15,6 @@ type TCompareAccountsReusedProps = {
 };
 
 type TJurisdictionModalProps = TCompareAccountsReusedProps & {
-    account_type: {
-        category?: string;
-        type?: string;
-    };
     disableApp: () => void;
     enableApp: () => void;
     is_jurisdiction_modal_visible: boolean;
@@ -45,11 +24,10 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     residence: string;
     jurisdiction_selected_card: boolean;
     toggleJurisdictionModal: () => void;
-    tradingPlatformAvailableAccounts: TTradingPlatformAvailableAccount[];
+    tradingPlatformAvailableAccounts: any[];
 };
 
 const JurisdictionModal = ({
-    account_type,
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
@@ -59,17 +37,13 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     tradingPlatformAvailableAccounts,
 }: TJurisdictionModalProps) => {
-    let synthetic_available_accounts: TTradingPlatformAvailableAccount[] = [];
-    let financial_available_accounts: TTradingPlatformAvailableAccount[] = [];
-    if (account_type.type === 'synthetic') {
-        synthetic_available_accounts = tradingPlatformAvailableAccounts.filter(
-            available_account => available_account.market_type === 'gaming'
-        );
-    } else if (account_type.type === 'financial') {
-        financial_available_accounts = tradingPlatformAvailableAccounts.filter(
-            available_account => available_account.market_type === 'financial'
-        );
-    }
+    const financial_available_accounts = tradingPlatformAvailableAccounts
+        .filter(available_account => available_account.market_type === 'financial')
+        .map((acc: any[]) => acc);
+
+    const synthetic_available_accounts = tradingPlatformAvailableAccounts
+        .filter(available_account => available_account.market_type === 'gaming')
+        .map((acc: any[]) => acc);
 
     return (
         <>
@@ -92,9 +66,7 @@ const JurisdictionModal = ({
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_jurisdiction_modal_visible}
-                            title={localize('Choose a jurisdiction for your DMT5 {{type}} account', {
-                                type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
-                            })}
+                            title={'Choose a jurisdiction for your DMT5 financial account'}
                             toggleModal={toggleJurisdictionModal}
                             type='button'
                             height='696px'
@@ -132,7 +104,6 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
-    account_type: modules.cfd.account_type,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,

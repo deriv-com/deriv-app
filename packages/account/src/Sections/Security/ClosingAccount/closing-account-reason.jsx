@@ -34,10 +34,7 @@ const WarningModal = props => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
-            <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
-                {localize('Warning!')}
-            </Text>
-            <Text size='xs' line_height='x' weight='bold'>
+            <Text size='xs' line_height='x' weight='bold' className='account-closure-warning-modal__warning-message'>
                 {localize('Close your account?')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
@@ -191,7 +188,7 @@ const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dx
         }
     };
 
-    if (is_account_closed) return <Redirect to={routes.account_deactivated} />;
+    if (is_account_closed) return <Redirect to={routes.account_closed} />;
 
     if (is_loading) return <Loading is_fullscreen={false} />;
 

@@ -62,7 +62,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
   });
 };
 
-export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
+export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class { }))))))) {
   constructor($scope) {
     super();
     this.api = $scope.api;
@@ -104,32 +104,12 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
   loginAndGetBalance(token) {
     if (this.token === token) return Promise.resolve();
-
     doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit("Error", e));
-
     return new Promise(resolve =>
-      this.api.onMessage().subscribe(({ data }) => {
-        if (data?.error?.code) {
-          return;
-        }
-        if (data?.msg_type === "authorize") {
-          const { authorize } = data;
-          this.accountInfo = authorize;
-          this.token = token;
-          // Only subscribe to balance in browser, not for tests.
-          if (document) {
-            // Get the balance before opening contract
-              this.api.send({ balance: 1 }).then(({ balance }) => {
-                globalObserver.setState({
-                  balance: Number(balance.balance),
-                  currency: balance.currency,
-                });
-                resolve();
-              })
-          } else {
-            resolve();
-          }
-        }
+      this.api.expectResponse('authorize').then(({ authorize }) => {
+        this.accountInfo = authorize;
+        this.token = token;
+        resolve();
       })
     );
   }

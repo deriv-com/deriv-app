@@ -40,6 +40,7 @@ const JurisdictionModal = ({
     is_jurisdiction_modal_visible,
     is_loading,
     platform,
+    is_eu,
     jurisdiction_selected_card,
     toggleJurisdictionModal,
     tradingPlatformAvailableAccounts,
@@ -76,7 +77,11 @@ const JurisdictionModal = ({
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_jurisdiction_modal_visible}
-                            title={'Choose a jurisdiction for your DMT5 financial account'}
+                            title={localize(
+                                `Choose a jurisdiction for your ${is_eu ? 'CFDs' : 'DMT5'} ${
+                                    account_type === 'synthetic' ? 'Synthetic' : 'Financial'
+                                } account`
+                            )}
                             toggleModal={toggleJurisdictionModal}
                             type='button'
                             height='696px'

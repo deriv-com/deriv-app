@@ -68,11 +68,6 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         super();
         this.$scope = $scope;
         this.observe();
-        this.data = {
-            contract: {},
-            proposals: [],
-            forget_proposal_ids: [],
-        };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
 
@@ -119,7 +114,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
             api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'transaction' && data.transaction.action === 'sell') {
                     this.transaction_recovery_timeout = setTimeout(() => {
-                        const { contract } = this.data;
+                        const { contract } = $scope.data;
                         const is_same_contract = contract.contract_id === data.transaction.contract_id;
                         const is_open_contract = contract.status === 'open';
                         if (is_same_contract && is_open_contract) {

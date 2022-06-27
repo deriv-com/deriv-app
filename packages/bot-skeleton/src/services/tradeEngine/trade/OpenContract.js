@@ -17,6 +17,11 @@ const expectedContractId = contractId => {
     return $scope.contract_id && contractId === $scope.contract_id;
 };
 
+export const getSellPrice = () => {
+    const { bid_price: bidPrice, buy_price: buyPrice, currency } = $scope.data.contract;
+    return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
+};
+
 export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
     $scope.contract_id = contract_id;
     doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
@@ -47,7 +52,7 @@ export default Engine =>
 
                     setContractFlags(contract);
 
-                    this.data.contract = contract;
+                    $scope.data.contract = contract;
 
                     broadcastContract({ accountID: $scope.account_info.loginid, ...contract });
 
@@ -77,10 +82,5 @@ export default Engine =>
             return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
-        }
-
-        getSellPrice() {
-            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.contract;
-            return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
         }
     };

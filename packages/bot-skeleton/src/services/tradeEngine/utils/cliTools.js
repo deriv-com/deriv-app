@@ -20,6 +20,11 @@ export const createScope = () => {
     const options = {};
     const trade_option = {};
     const proposal_templates = [];
+    const data = {
+        contract: {},
+        proposals: [],
+        forget_proposal_ids: [],
+    };
 
     return {
         api,
@@ -34,6 +39,7 @@ export const createScope = () => {
         token,
         trade_option,
         proposal_templates,
+        data,
     };
 };
 

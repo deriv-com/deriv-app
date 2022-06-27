@@ -5,6 +5,37 @@ import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
 
+const requestProposals = () => {
+    // Since there are two proposals (in most cases), an error may be logged twice, to avoid this
+    // flip this boolean on error.
+    let has_informed_error = false;
+
+    Promise.all(
+        $scope.proposal_templates.map(proposal => {
+            doUntilDone(() => ws.send(proposal)).catch(error => {
+                // We intercept ContractBuyValidationError as user may have specified
+                // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
+                // the other is valid. We will error on Purchase rather than here.
+
+                if (error.error.code === 'ContractBuyValidationError') {
+                    $scope.data.proposals.push({
+                        ...error.error.echo_req,
+                        ...error.echo_req.passthrough,
+                        error,
+                    });
+
+                    return null;
+                }
+                if (!has_informed_error) {
+                    has_informed_error = true;
+                    globalObserver.emit('Error', error.error);
+                }
+                return null;
+            });
+        })
+    );
+};
+
 export const isNewTradeOption = trade_option => {
     if (!$scope.trade_option) {
         $scope.trade_option = trade_option;
@@ -42,7 +73,7 @@ export default Engine =>
         }
 
         selectProposal(contract_type) {
-            const { proposals } = this.data;
+            const { proposals } = $scope.data;
 
             if (proposals.length === 0) {
                 throw Error(localize('Proposals are not ready'));
@@ -78,43 +109,12 @@ export default Engine =>
         }
 
         renewProposalsOnPurchase() {
-            this.unsubscribeProposals().then(() => this.requestProposals());
+            this.unsubscribeProposals().then(() => requestProposals());
         }
 
         clearProposals() {
-            this.data.proposals = [];
+            $scope.data.proposals = [];
             this.store.dispatch(clearProposals());
-        }
-
-        requestProposals() {
-            // Since there are two proposals (in most cases), an error may be logged twice, to avoid this
-            // flip this boolean on error.
-            let has_informed_error = false;
-
-            Promise.all(
-                $scope.proposal_templates.map(proposal => {
-                    doUntilDone(() => ws.send(proposal)).catch(error => {
-                        // We intercept ContractBuyValidationError as user may have specified
-                        // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
-                        // the other is valid. We will error on Purchase rather than here.
-
-                        if (error.error.code === 'ContractBuyValidationError') {
-                            this.data.proposals.push({
-                                ...error.error.echo_req,
-                                ...error.echo_req.passthrough,
-                                error,
-                            });
-
-                            return null;
-                        }
-                        if (!has_informed_error) {
-                            has_informed_error = true;
-                            globalObserver.emit('Error', error.error);
-                        }
-                        return null;
-                    });
-                })
-            );
         }
 
         observeProposals() {
@@ -123,11 +123,11 @@ export default Engine =>
                     const { passthrough, proposal } = response.data;
                     if (
                         proposal &&
-                        this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
-                        !this.data.forget_proposal_ids.includes(proposal.id)
+                        $scope.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
+                        !$scope.data.forget_proposal_ids.includes(proposal.id)
                     ) {
                         // Add proposals based on the ID returned by the API.
-                        this.data.proposals.push({ ...proposal, ...passthrough });
+                        $scope.data.proposals.push({ ...proposal, ...passthrough });
                         this.checkProposalReady();
                     }
                 }
@@ -135,16 +135,18 @@ export default Engine =>
         }
 
         unsubscribeProposals() {
-            const { proposals } = this.data;
+            const { proposals } = $scope.data;
             const removeForgetProposalById = forget_proposal_id =>
-                (this.data.forget_proposal_ids = this.data.forget_proposal_ids.filter(id => id !== forget_proposal_id));
+                ($scope.data.forget_proposal_ids = $scope.data.forget_proposal_ids.filter(
+                    id => id !== forget_proposal_id
+                ));
 
             this.clearProposals();
 
             return Promise.all(
                 proposals.map(proposal => {
-                    if (!this.data.forget_proposal_ids.includes(proposal.id)) {
-                        this.data.forget_proposal_ids.push(proposal.id);
+                    if (!$scope.data.forget_proposal_ids.includes(proposal.id)) {
+                        $scope.data.forget_proposal_ids.push(proposal.id);
                     }
 
                     if (proposal.error) {
@@ -162,7 +164,7 @@ export default Engine =>
         checkProposalReady() {
             // Proposals are considered ready when the proposals in our memory match the ones
             // we've requested from the API, we determine this by checking the passthrough of the response.
-            const { proposals } = this.data;
+            const { proposals } = $scope.data;
 
             if (proposals.length > 0) {
                 const has_equal_proposals = $scope.proposal_templates.every(template => {

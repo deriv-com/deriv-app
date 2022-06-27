@@ -23,7 +23,7 @@ export default Engine =>
 
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
-                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
+                $scope.data.proposals = $scope.data.proposals.filter(p => p.id !== response.echo_req.buy);
                 const { buy } = response;
 
                 contractStatus({

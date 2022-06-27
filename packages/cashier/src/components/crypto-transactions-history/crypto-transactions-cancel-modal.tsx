@@ -1,15 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
+
+type TCryptoTransactionsCancelModalProps = {
+    cancelCryptoTransaction: (selected_crypto_transaction_id: string) => void;
+    hideCryptoTransactionsCancelModal: () => void;
+    is_cancel_modal_visible: boolean;
+    selected_crypto_transaction_id: string;
+};
 
 const CryptoTransactionsCancelModal = ({
     cancelCryptoTransaction,
     hideCryptoTransactionsCancelModal,
     is_cancel_modal_visible,
     selected_crypto_transaction_id,
-}) => {
+}: TCryptoTransactionsCancelModalProps) => {
     return (
         <React.Fragment>
             <Modal
@@ -38,14 +45,7 @@ const CryptoTransactionsCancelModal = ({
     );
 };
 
-CryptoTransactionsCancelModal.propTypes = {
-    cancelCryptoTransaction: PropTypes.func,
-    hideCryptoTransactionsCancelModal: PropTypes.func,
-    is_cancel_modal_visible: PropTypes.bool,
-    selected_crypto_transaction_id: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
     hideCryptoTransactionsCancelModal: modules.cashier.transaction_history.hideCryptoTransactionsCancelModal,
     is_cancel_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible,

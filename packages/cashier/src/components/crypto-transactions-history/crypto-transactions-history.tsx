@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal.jsx';
-import CryptoTransactionsStatusModal from './crypto-transactions-status-modal.jsx';
-import CryptoTransactionsRenderer from './crypto-transactions-renderer.jsx';
+import RootStore from 'Stores/types';
+import { TCryptoTransactionDetails } from 'Types/crypto-transaction-details.types';
+import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
+import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
+import CryptoTransactionsRenderer from './crypto-transactions-renderer';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -18,13 +19,21 @@ const getHeaders = () => [
     { text: localize('Action') },
 ];
 
+type TCryptoTransactionsHistoryProps = {
+    crypto_transactions: TCryptoTransactionDetails[];
+    currency: string;
+    is_loading: boolean;
+    setIsCryptoTransactionsVisible: (is_crypto_transactions_visible: boolean) => void;
+    setIsDeposit: (is_deposit: boolean) => void;
+};
+
 const CryptoTransactionsHistory = ({
     crypto_transactions,
     currency,
     is_loading,
     setIsCryptoTransactionsVisible,
     setIsDeposit,
-}) => {
+}: TCryptoTransactionsHistoryProps) => {
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
     }, [setIsCryptoTransactionsVisible, currency]);
@@ -40,7 +49,11 @@ const CryptoTransactionsHistory = ({
         <React.Fragment>
             <div className='crypto-transactions-history'>
                 <div className='crypto-transactions-history__header'>
-                    <div className='crypto-transactions-history__back' onClick={onClickBack}>
+                    <div
+                        className='crypto-transactions-history__back'
+                        onClick={onClickBack}
+                        data-testid='dt_crypto_transactions_history_back'
+                    >
                         <Icon icon={isMobile() ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
                             <Localize i18n_default_text={` ${currency} recent transactions`} />
@@ -69,8 +82,10 @@ const CryptoTransactionsHistory = ({
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
                                     data_source={crypto_transactions}
-                                    rowRenderer={row_props => <CryptoTransactionsRenderer {...row_props} />}
-                                    keyMapper={row => row.id}
+                                    rowRenderer={(row_props: TCryptoTransactionDetails) => (
+                                        <CryptoTransactionsRenderer {...row_props} />
+                                    )}
+                                    keyMapper={(row: TCryptoTransactionDetails) => row.id}
                                     row_gap={isMobile() ? 8 : 0}
                                 />
                             )}
@@ -88,14 +103,7 @@ const CryptoTransactionsHistory = ({
     );
 };
 
-CryptoTransactionsHistory.propTypes = {
-    crypto_transactions: PropTypes.array,
-    currency: PropTypes.string,
-    is_loading: PropTypes.bool,
-    setIsCryptoTransactionsVisible: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,

@@ -1,15 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
 
+type TCryptoTransactionsStatusModalProps = {
+    hideCryptoTransactionsStatusModal: (e: React.MouseEvent<HTMLElement>) => void;
+    is_status_modal_visible: boolean;
+    selected_crypto_status: string;
+    selected_crypto_status_description: string;
+};
 const CryptoTransactionsStatusModal = ({
     hideCryptoTransactionsStatusModal,
     is_status_modal_visible,
     selected_crypto_status,
     selected_crypto_status_description,
-}) => {
+}: TCryptoTransactionsStatusModalProps) => {
     return (
         <React.Fragment>
             <Modal
@@ -28,14 +34,7 @@ const CryptoTransactionsStatusModal = ({
     );
 };
 
-CryptoTransactionsStatusModal.propTypes = {
-    hideCryptoTransactionsStatusModal: PropTypes.func,
-    is_status_modal_visible: PropTypes.bool,
-    selected_crypto_status: PropTypes.string,
-    selected_crypto_status_description: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     hideCryptoTransactionsStatusModal: modules.cashier.transaction_history.hideCryptoTransactionsStatusModal,
     is_status_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_status_modal_visible,
     selected_crypto_status: modules.cashier.transaction_history.selected_crypto_status,

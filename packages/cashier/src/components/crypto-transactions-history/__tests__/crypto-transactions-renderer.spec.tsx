@@ -42,11 +42,9 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should show the popover with the proper message, "Yes" and "No" buttons if the "Cancel transaction" cross-button was clicked in Desktop mode', () => {
-        const { container } = render(
-            <CryptoTransactionsRenderer row={row} currency={'BTC'} is_transaction_clicked is_valid_to_cancel={1} />
-        );
-        const cancel_transaction_div = container.querySelector('.crypto-transactions-history__table-action');
-        fireEvent.click(cancel_transaction_div.firstChild);
+        render(<CryptoTransactionsRenderer row={row} currency={'BTC'} is_transaction_clicked is_valid_to_cancel={1} />);
+        const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
+        fireEvent.click(cancel_transaction_div);
 
         expect(screen.getByText('Are you sure you want to cancel this transaction?')).toBeInTheDocument();
         expect(screen.getByText('Yes')).toBeInTheDocument();
@@ -57,8 +55,8 @@ describe('<CryptoTransactionsRenderer />', () => {
         const { container } = render(
             <CryptoTransactionsRenderer row={row} currency={'BTC'} is_transaction_clicked is_valid_to_cancel={1} />
         );
-        const cancel_transaction_div = container.querySelector('.crypto-transactions-history__table-action');
-        fireEvent.click(cancel_transaction_div.firstChild);
+        const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
+        fireEvent.click(cancel_transaction_div);
         const no_btn = screen.getByText('No');
         fireEvent.click(no_btn);
 
@@ -80,8 +78,8 @@ describe('<CryptoTransactionsRenderer />', () => {
                 cancelCryptoTransaction={cancelCryptoTransaction}
             />
         );
-        const cancel_transaction_div = container.querySelector('.crypto-transactions-history__table-action');
-        fireEvent.click(cancel_transaction_div.firstChild);
+        const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
+        fireEvent.click(cancel_transaction_div);
         const yes_btn = screen.getByText('Yes');
         fireEvent.click(yes_btn);
 
@@ -93,9 +91,9 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should trigger onClick callback when "crypto-transactions-history__table-status" is clicked in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const showCryptoTransactionsStatusModal = jest.fn();
-        const { container } = render(
+        render(
             <CryptoTransactionsRenderer
                 row={row}
                 currency={'BTC'}
@@ -103,14 +101,14 @@ describe('<CryptoTransactionsRenderer />', () => {
             />
         );
 
-        const table_status = container.querySelector('.crypto-transactions-history__table-status');
+        const table_status = screen.getByText('In review');
         fireEvent.click(table_status);
 
         expect(showCryptoTransactionsStatusModal).toHaveBeenCalledTimes(1);
     });
 
     it('should show the proper data in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         render(<CryptoTransactionsRenderer row={row} currency={'BTC'} />);
 
         expect(screen.getByText('withdrawal')).toBeInTheDocument();
@@ -122,7 +120,7 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should trigger onClick callback when the user clicks "Cancel transaction" button in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const showCryptoTransactionsCancelModal = jest.fn();
 
         render(
@@ -133,7 +131,7 @@ describe('<CryptoTransactionsRenderer />', () => {
             />
         );
 
-        let cancel_transaction_btn = screen.getByText('Cancel transaction');
+        const cancel_transaction_btn = screen.getByText('Cancel transaction');
         fireEvent.click(cancel_transaction_btn);
         expect(showCryptoTransactionsCancelModal).toHaveBeenCalledTimes(1);
     });

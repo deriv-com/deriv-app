@@ -1,11 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { getStatus } from 'Constants/transaction-status';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/types';
+import { TCryptoTransactionDetails } from 'Types/crypto-transaction-details.types';
+
+type TCryptoTransactionsRendererProps = {
+    row: TCryptoTransactionDetails;
+    cancelCryptoTransaction: (id: string) => void;
+    currency: string;
+    showCryptoTransactionsCancelModal: (id: string) => void;
+    showCryptoTransactionsStatusModal: (description: string, name: string) => void;
+};
 
 const CryptoTransactionsRenderer = ({
     row: crypto,
@@ -13,7 +22,7 @@ const CryptoTransactionsRenderer = ({
     currency,
     showCryptoTransactionsCancelModal,
     showCryptoTransactionsStatusModal,
-}) => {
+}: TCryptoTransactionsRendererProps) => {
     const {
         address_hash,
         address_url,
@@ -270,7 +279,7 @@ const CryptoTransactionsRenderer = ({
                 ) : (
                     <Table.Cell className='crypto-transactions-history__table-action'>
                         {is_valid_to_cancel === 1 && (
-                            <div onClick={onClickCancel}>
+                            <div onClick={onClickCancel} data-testid='dt_crypto_transactions_history_table_button'>
                                 <Popover
                                     alignment='left'
                                     className='crypto-transactions-history__table-popover'
@@ -287,15 +296,7 @@ const CryptoTransactionsRenderer = ({
     );
 };
 
-CryptoTransactionsRenderer.propTypes = {
-    crypto: PropTypes.object,
-    currency: PropTypes.string,
-    cancelCryptoTransaction: PropTypes.func,
-    showCryptoTransactionsCancelModal: PropTypes.func,
-    showCryptoTransactionsStatusModal: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     currency: client.currency,
     cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
     showCryptoTransactionsCancelModal: modules.cashier.transaction_history.showCryptoTransactionsCancelModal,

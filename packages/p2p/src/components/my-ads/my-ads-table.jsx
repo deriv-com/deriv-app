@@ -71,7 +71,6 @@ const MyAdsTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
         return () => {
-            my_ads_store.setMissingPaymentMethods(false);
             floating_rate_store.setChangeAdAlert(false);
         };
     }, []);

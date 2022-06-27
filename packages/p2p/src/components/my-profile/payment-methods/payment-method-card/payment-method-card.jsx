@@ -18,6 +18,7 @@ const PaymentMethodCard = ({
     show_payment_method_name = true,
     small,
     style,
+    disabled,
 }) => {
     const { my_profile_store } = useStores();
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
@@ -44,7 +45,7 @@ const PaymentMethodCard = ({
                     size={32}
                 />
 
-                <Text align='center' color='prominent' size='xs'>
+                <Text align='center' color={disabled ? 'less-prominent' : 'prominent'} size='xs'>
                     {label || add_payment_method}
                 </Text>
             </div>
@@ -133,6 +134,7 @@ PaymentMethodCard.propTypes = {
     payment_method: PropTypes.object,
     small: PropTypes.bool,
     style: PropTypes.object,
+    disabled: PropTypes.bool,
 };
 
 export default PaymentMethodCard;

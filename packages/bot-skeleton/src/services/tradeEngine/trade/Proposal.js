@@ -3,19 +3,41 @@ import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
+import $scope from '../utils/cliTools';
+
+export const isNewTradeOption = trade_option => {
+    if (!$scope.trade_option) {
+        $scope.trade_option = trade_option;
+        return true;
+    }
+
+    // Compare incoming "trade_option" argument with "this.trade_option", if any
+    // of the values is different, this is a new tradeOption and new proposals
+    // should be generated.
+    return [
+        'amount',
+        'barrierOffset',
+        'basis',
+        'duration',
+        'duration_unit',
+        'prediction',
+        'secondBarrierOffset',
+        'symbol',
+    ].some(value => $scope.trade_option[value] !== trade_option[value]);
+};
 
 export default Engine =>
     class Proposal extends Engine {
         makeProposals(trade_option) {
-            if (!this.isNewTradeOption(trade_option)) {
+            if (!isNewTradeOption(trade_option)) {
                 return;
             }
 
             // Generate a purchase reference when trade options are different from previous trade options.
             // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
             this.regeneratePurchaseReference();
-            this.trade_option = trade_option;
-            this.proposal_templates = tradeOptionToProposal(trade_option, this.getPurchaseReference());
+            $scope.trade_option = trade_option;
+            $scope.proposal_templates = tradeOptionToProposal(trade_option, this.getPurchaseReference());
             this.renewProposalsOnPurchase();
         }
 
@@ -70,7 +92,7 @@ export default Engine =>
             let has_informed_error = false;
 
             Promise.all(
-                this.proposal_templates.map(proposal => {
+                $scope.proposal_templates.map(proposal => {
                     doUntilDone(() => ws.send(proposal)).catch(error => {
                         // We intercept ContractBuyValidationError as user may have specified
                         // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
@@ -143,7 +165,7 @@ export default Engine =>
             const { proposals } = this.data;
 
             if (proposals.length > 0) {
-                const has_equal_proposals = this.proposal_templates.every(template => {
+                const has_equal_proposals = $scope.proposal_templates.every(template => {
                     return (
                         proposals.findIndex(proposal => {
                             return (
@@ -158,26 +180,5 @@ export default Engine =>
                     this.startPromise.then(() => this.store.dispatch(proposalsReady()));
                 }
             }
-        }
-
-        isNewTradeOption(trade_option) {
-            if (!this.trade_option) {
-                this.trade_option = trade_option;
-                return true;
-            }
-
-            // Compare incoming "trade_option" argument with "this.trade_option", if any
-            // of the values is different, this is a new tradeOption and new proposals
-            // should be generated.
-            return [
-                'amount',
-                'barrierOffset',
-                'basis',
-                'duration',
-                'duration_unit',
-                'prediction',
-                'secondBarrierOffset',
-                'symbol',
-            ].some(value => this.trade_option[value] !== trade_option[value]);
         }
     };

@@ -18,18 +18,22 @@ export const createScope = () => {
     const token = '';
     const open_contract_id = '';
     const options = {};
+    const trade_option = {};
+    const proposal_templates = [];
 
     return {
         api,
         contract_id,
         contract_flags,
         balance,
-        session,
-        stopped,
-        token,
         open_contract_id,
         options,
+        session,
+        stopped,
         symbol,
+        token,
+        trade_option,
+        proposal_templates,
     };
 };
 

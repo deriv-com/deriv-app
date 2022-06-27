@@ -35,18 +35,8 @@ const WithdrawalSideNote = ({ is_mobile, currency }) => {
             <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
         );
     }
-    const side_note_title =
-        notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
-    return (
-        <SideNote
-            has_bullets
-            is_mobile={is_mobile}
-            side_notes={notes}
-            title={side_note_title}
-            className='outside-wrapper'
-        />
-    );
+    return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
 
 const Withdrawal = ({

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, Text } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -156,16 +156,6 @@ const AccountTransferNote = ({
 
     return (
         <div className='account-transfer-form__notes'>
-            <DesktopWrapper>
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    className='cashier__header account-transfer-form__notes-header'
-                >
-                    <Localize i18n_default_text='Notes' />
-                </Text>
-            </DesktopWrapper>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
                     <Localize
@@ -418,7 +408,11 @@ const AccountTransferForm = ({
                     is_mt_transfer={is_mt_transfer}
                 />
             );
-            setSideNotes([<SideNote key={0}>{side_notes}</SideNote>]);
+            setSideNotes([
+                <SideNote title={<Localize i18n_default_text='Notes' />} key={0}>
+                    {side_notes}
+                </SideNote>,
+            ]);
         }
     }, [transfer_fee, selected_from, selected_to, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]);
 
@@ -643,7 +637,7 @@ const AccountTransferForm = ({
                                         <Localize i18n_default_text='Transfer' />
                                     </Button>
                                 </div>
-                                <SideNote is_mobile>
+                                <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
                                     {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                     <AccountTransferNote
                                         allowed_transfers_count={{

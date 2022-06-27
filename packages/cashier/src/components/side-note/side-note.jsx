@@ -6,12 +6,16 @@ import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import './side-note.scss';
 
-const SideNoteTitle = ({ side_notes, title }) => (
-    <Text className='side-note__title' weight='bold' as='p'>
-        {title ||
-            (side_notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />)}
-    </Text>
-);
+const SideNoteTitle = ({ side_notes_length, children_length, title }) => {
+    const length_of_notes = children_length || side_notes_length;
+
+    return (
+        <Text className='side-note__title' weight='bold' as='p'>
+            {title ||
+                (length_of_notes > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />)}
+        </Text>
+    );
+};
 
 const SideNoteBullet = ({ children }) => (
     <div className='side-note__bullet-wrapper'>
@@ -20,7 +24,7 @@ const SideNoteBullet = ({ children }) => (
     </div>
 );
 
-const SideNote = ({ children, side_notes, title, has_bullets = true, is_mobile, className }) => {
+const SideNote = ({ children, side_notes, title, has_title = true, has_bullets = true, is_mobile, className }) => {
     const Wrapper = is_mobile ? MobileWrapper : DesktopWrapper;
 
     return (
@@ -28,9 +32,13 @@ const SideNote = ({ children, side_notes, title, has_bullets = true, is_mobile, 
             {(children || side_notes?.length) && (
                 <Wrapper>
                     <div className={classNames('side-note', { 'side-note--mobile': isMobile() }, className)}>
-                        <DesktopWrapper>
-                            <SideNoteTitle side_notes={side_notes} title={title} />
-                        </DesktopWrapper>
+                        {has_title && (
+                            <SideNoteTitle
+                                title={title}
+                                children_length={children?.length}
+                                side_notes_length={side_notes?.length}
+                            />
+                        )}
 
                         {children && <>{children}</>}
 
@@ -57,6 +65,7 @@ SideNote.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     has_bullets: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    has_title: PropTypes.bool,
     className: PropTypes.string,
 };
 

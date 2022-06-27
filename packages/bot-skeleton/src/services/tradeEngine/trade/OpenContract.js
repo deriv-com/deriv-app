@@ -17,6 +17,23 @@ const expectedContractId = contractId => {
     return $scope.contract_id && contractId === $scope.contract_id;
 };
 
+export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
+    $scope.contract_id = contract_id;
+    doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
+        .then(data => {
+            const { populateConfig } = DBotStore.instance;
+            populateConfig(data.proposal_open_contract);
+            $scope.open_contract_id = data.proposal_open_contract.id;
+        })
+        .catch(error => {
+            if (error.error.code !== 'AlreadySubscribed') {
+                doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
+                    response => ($scope.open_contract_id = response.proposal_open_contract.id)
+                );
+            }
+        });
+};
+
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
@@ -60,23 +77,6 @@ export default Engine =>
             return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
-        }
-
-        subscribeToOpenContract(contract_id = $scope.contract_id) {
-            $scope.contract_id = contract_id;
-            doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
-                .then(data => {
-                    const { populateConfig } = DBotStore.instance;
-                    populateConfig(data.proposal_open_contract);
-                    this.openContractId = data.proposal_open_contract.id;
-                })
-                .catch(error => {
-                    if (error.error.code !== 'AlreadySubscribed') {
-                        doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
-                            response => (this.openContractId = response.proposal_open_contract.id)
-                        );
-                    }
-                });
         }
 
         getSellPrice() {

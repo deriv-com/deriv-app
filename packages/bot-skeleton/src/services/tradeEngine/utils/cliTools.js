@@ -16,6 +16,7 @@ export const createScope = () => {
     const stopped = false;
     const symbol = '';
     const token = '';
+    const open_contract_id = '';
     const options = {};
 
     return {
@@ -26,6 +27,7 @@ export const createScope = () => {
         session,
         stopped,
         token,
+        open_contract_id,
         options,
         symbol,
     };

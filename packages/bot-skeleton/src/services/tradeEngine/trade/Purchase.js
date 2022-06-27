@@ -6,6 +6,7 @@ import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
+import { subscribeToOpenContract } from './OpenContract';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -31,7 +32,7 @@ export default Engine =>
                     buy,
                 });
 
-                this.subscribeToOpenContract(buy.contract_id);
+                subscribeToOpenContract(buy.contract_id);
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;

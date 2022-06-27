@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 const DerivRealAccountRequiredModal = ({ is_open, onClose, disableApp, enableApp, openRealAccountSignup }) => {
     const createAccount = () => {
         onClose();
-        openRealAccountSignup('set_currency');
+        openRealAccountSignup();
     };
 
     return (

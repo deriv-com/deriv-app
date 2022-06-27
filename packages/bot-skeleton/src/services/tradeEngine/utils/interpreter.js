@@ -1,6 +1,6 @@
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
-import { createScope } from './cliTools';
+import $scope from './cliTools';
 import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -34,7 +34,6 @@ const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    const $scope = createScope();
     const bot = Interface($scope);
     let interpreter = {};
     let onFinish;

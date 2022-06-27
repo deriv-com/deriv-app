@@ -10,12 +10,13 @@ import { start } from './state/actions';
 import * as constants from './state/constants';
 import rootReducer from './state/reducers';
 import Ticks from './Ticks';
-import Total from './Total';
+import Total, { checkLimits } from './Total';
 import { doUntilDone } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import api from '../../api/ws';
+import $scope from '../utils/cliTools';
 
 const watchBefore = store =>
     watchScope({
@@ -63,7 +64,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
 };
 
 export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {})))))) {
-    constructor($scope) {
+    constructor() {
         super();
         this.$scope = $scope;
         this.observe();
@@ -96,7 +97,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         this.tradeOptions = tradeOptions;
 
         this.store.dispatch(start());
-        this.checkLimits(tradeOptions);
+        checkLimits(tradeOptions);
         this.makeProposals({ ...this.options, ...tradeOptions });
         this.checkProposalReady();
     }
@@ -137,7 +138,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
                     // Only subscribe to balance in browser, not for tests.
                     if (document) {
                         doUntilDone(() => api.send({ balance: 1, subscribe: 1 })).then(r => {
-                            this.balance = Number(r.balance.balance);
+                            $scope.balance = Number(r.balance.balance);
                             resolve();
                         });
                     } else {

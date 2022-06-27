@@ -4,6 +4,7 @@ import { info, log } from '../utils/broadcast';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import { log_types } from '../../../constants/messages';
+import $scope from '../utils/cliTools';
 
 const skeleton = {
     totalProfit: 0,
@@ -16,19 +17,39 @@ const skeleton = {
 
 const globalStat = {};
 
+export const checkLimits = tradeOption => {
+    if (!tradeOption.limitations) {
+        return;
+    }
+
+    const {
+        limitations: { maxLoss, maxTrades },
+    } = tradeOption;
+
+    if (maxLoss && maxTrades) {
+        if ($scope.session.runs >= maxTrades) {
+            throw createError('CustomLimitsReached', localize('Maximum number of trades reached'));
+        }
+        if ($scope.session.profit <= -maxLoss) {
+            throw createError('CustomLimitsReached', localize('Maximum loss amount reached'));
+        }
+    }
+};
+
 export default Engine =>
     class Total extends Engine {
         constructor() {
             super();
-            this.sessionRuns = 0;
-            this.sessionProfit = 0;
+
+            $scope.session.runs = 0;
+            $scope.session.profit = 0;
 
             globalObserver.register('statistics.clear', this.clearStatistics.bind(this));
         }
 
         clearStatistics() {
-            this.sessionRuns = 0;
-            this.sessionProfit = 0;
+            $scope.session.runs = 0;
+            $scope.session.profit = 0;
             if (!this.accountInfo) return;
             const { loginid: accountID } = this.accountInfo;
             globalStat[accountID] = { ...skeleton };
@@ -47,7 +68,7 @@ export default Engine =>
 
             accountStat.totalLosses += !win ? 1 : 0;
 
-            this.sessionProfit = getRoundedNumber(Number(this.sessionProfit) + Number(profit), currency);
+            $scope.session.profit = getRoundedNumber(Number($scope.session.profit) + Number(profit), currency);
 
             accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
 
@@ -70,7 +91,7 @@ export default Engine =>
         }
 
         updateAndReturnTotalRuns() {
-            this.sessionRuns++;
+            $scope.session.runs++;
             const accountStat = this.getAccountStat();
 
             return ++accountStat.totalRuns;
@@ -88,26 +109,6 @@ export default Engine =>
             return toString && accountStat.totalProfit !== 0
                 ? getRoundedNumber(+accountStat.totalProfit, currency)
                 : +accountStat.totalProfit;
-        }
-
-        /* eslint-enable */
-        checkLimits(tradeOption) {
-            if (!tradeOption.limitations) {
-                return;
-            }
-
-            const {
-                limitations: { maxLoss, maxTrades },
-            } = tradeOption;
-
-            if (maxLoss && maxTrades) {
-                if (this.sessionRuns >= maxTrades) {
-                    throw createError('CustomLimitsReached', localize('Maximum number of trades reached'));
-                }
-                if (this.sessionProfit <= -maxLoss) {
-                    throw createError('CustomLimitsReached', localize('Maximum loss amount reached'));
-                }
-            }
         }
 
         getAccountStat() {

@@ -7,5 +7,14 @@ export const createScope = () => {
     const api = ws;
     const ticksService = new TicksService(api);
     const stopped = false;
-    return { observer, api, ticksService, stopped };
+    const session = {
+        runs: 0,
+        profit: 0,
+    };
+    const balance = 0;
+    return { observer, api, ticksService, stopped, session, balance };
 };
+
+const $scope = createScope();
+
+export default $scope;

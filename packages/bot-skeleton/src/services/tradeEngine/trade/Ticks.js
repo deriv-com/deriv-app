@@ -4,6 +4,7 @@ import * as constants from './state/constants';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
+import $scope from '../utils/cliTools';
 
 let tickListenerKey;
 
@@ -11,7 +12,7 @@ export default Engine =>
     class Ticks extends Engine {
         watchTicks(symbol) {
             if (symbol && this.symbol !== symbol) {
-                const { ticksService } = this.$scope;
+                const { ticksService } = $scope;
 
                 ticksService.stopMonitor({
                     symbol,
@@ -35,7 +36,7 @@ export default Engine =>
 
         getTicks(toString = false) {
             return new Promise(resolve => {
-                this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
+                $scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
                     const ticks_list = ticks.map(tick => {
                         if (toString) {
                             return tick.quote.toFixed(this.getPipSize());
@@ -50,7 +51,7 @@ export default Engine =>
 
         getLastTick(raw, toString = false) {
             return new Promise(resolve =>
-                this.$scope.ticksService
+                $scope.ticksService
                     .request({ symbol: this.symbol })
                     .then(ticks => {
                         let last_tick = raw ? getLast(ticks) : getLast(ticks).quote;
@@ -84,9 +85,7 @@ export default Engine =>
 
         checkDirection(dir) {
             return new Promise(resolve =>
-                this.$scope.ticksService
-                    .request({ symbol: this.symbol })
-                    .then(ticks => resolve(getDirection(ticks) === dir))
+                $scope.ticksService.request({ symbol: this.symbol }).then(ticks => resolve(getDirection(ticks) === dir))
             );
         }
 
@@ -94,7 +93,7 @@ export default Engine =>
             const { granularity = this.options.candleInterval || 60, field } = args || {};
 
             return new Promise(resolve =>
-                this.$scope.ticksService
+                $scope.ticksService
                     .request({ symbol: this.symbol, granularity })
                     .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc))
             );
@@ -109,6 +108,6 @@ export default Engine =>
         }
 
         getPipSize() {
-            return this.$scope.ticksService.pipSizes[this.symbol];
+            return $scope.ticksService.pipSizes[this.symbol];
         }
     };

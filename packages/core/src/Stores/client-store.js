@@ -41,7 +41,7 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
-    @observable tradingPlatformAvailableAccounts = [];
+    @observable trading_platform_available_accounts = [];
     @observable pre_switch_broadcast = false;
     @observable switched = '';
     @observable is_switching = false;
@@ -2132,7 +2132,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
-            this.tradingPlatformAvailableAccounts = response.trading_platform_available_accounts;
+            this.trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

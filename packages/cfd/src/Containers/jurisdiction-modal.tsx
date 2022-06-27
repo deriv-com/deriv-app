@@ -46,7 +46,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     residence: string;
     jurisdiction_selected_card: boolean;
     toggleJurisdictionModal: () => void;
-    tradingPlatformAvailableAccounts: TTradingPlatformAvailableAccount[];
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
 };
 
 const JurisdictionModal = ({
@@ -60,13 +60,13 @@ const JurisdictionModal = ({
     is_eu,
     jurisdiction_selected_card,
     toggleJurisdictionModal,
-    tradingPlatformAvailableAccounts,
+    trading_platform_available_accounts,
 }: TJurisdictionModalProps) => {
-    const financial_available_accounts = tradingPlatformAvailableAccounts.filter(
+    const financial_available_accounts = trading_platform_available_accounts.filter(
         available_account => available_account.market_type === 'financial'
     );
 
-    const synthetic_available_accounts = tradingPlatformAvailableAccounts.filter(
+    const synthetic_available_accounts = trading_platform_available_accounts.filter(
         available_account => available_account.market_type === 'gaming'
     );
 
@@ -143,7 +143,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
-    tradingPlatformAvailableAccounts: client.tradingPlatformAvailableAccounts,
+    trading_platform_available_accounts: client.trading_platform_available_accounts,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,
     is_uk: client.is_uk,

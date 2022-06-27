@@ -2253,6 +2253,13 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0.4rem;
             }
         }
+        &__close-account-button {
+            .dc-btn {
+                &--primary {
+                    padding: 1rem 6rem;
+                }
+            }
+        }
     }
 
     .closing-account-error {

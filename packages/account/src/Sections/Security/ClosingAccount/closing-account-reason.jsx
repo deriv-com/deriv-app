@@ -47,7 +47,7 @@ const WarningModal = props => {
             <FormSubmitButton
                 is_disabled={false}
                 label={localize('Close account')}
-                className='close-account-button'
+                className='account-closure-warning-modal__close-account-button'
                 has_cancel
                 cancel_label={localize('Go Back')}
                 onClick={() => props.startDeactivating()}

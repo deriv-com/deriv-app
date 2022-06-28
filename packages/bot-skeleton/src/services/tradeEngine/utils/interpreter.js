@@ -1,7 +1,7 @@
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import $scope from './cliTools';
-import Interface from '../Interface';
+import { getInterface } from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
@@ -17,24 +17,24 @@ JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
     this.initFunc_(this, this.global);
 };
 
-const botInitialized = bot => bot && $scope.options;
-const botStarted = bot => botInitialized(bot) && $scope.tradeOptions;
-const shouldRestartOnError = (bot, errorName = '') =>
-    !unrecoverable_errors.includes(errorName) && botInitialized(bot) && $scope.options.shouldRestartOnError;
+const botStarted = () => $scope.tradeOptions;
+const shouldRestartOnError = (errorName = '') =>
+    !unrecoverable_errors.includes(errorName) && $scope.options.shouldRestartOnError;
 
-const shouldStopOnError = (bot, errorName = '') => {
+const shouldStopOnError = (errorName = '') => {
     const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure'];
-    if (stopErrors.includes(errorName) && botInitialized(bot)) {
+    if (stopErrors.includes(errorName)) {
         return true;
     }
     return false;
 };
 
-const timeMachineEnabled = bot => botInitialized(bot) && $scope.options.timeMachineEnabled;
+const timeMachineEnabled = () => $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    const bot = Interface($scope);
+    const bot_interface = getInterface();
+    bot_interface.tradeEngineObserver();
     let interpreter = {};
     let onFinish;
 
@@ -86,7 +86,6 @@ const Interpreter = () => {
     }
 
     function initFunc(js_interpreter, scope) {
-        const bot_interface = bot.getInterface();
         const { getTicksInterface, alert, prompt, sleep, console: custom_console } = bot_interface;
         const ticks_interface = getTicksInterface;
 
@@ -110,7 +109,7 @@ const Interpreter = () => {
             'start',
             js_interpreter.nativeToPseudo((...args) => {
                 const { start } = bot_interface;
-                if (shouldRestartOnError(bot)) {
+                if (shouldRestartOnError()) {
                     $scope.startState = js_interpreter.takeStateSnapshot();
                 }
                 start(...args);
@@ -132,9 +131,9 @@ const Interpreter = () => {
             scope,
             'watch',
             createAsync(js_interpreter, watchName => {
-                const { watch } = bot.getInterface();
+                const { watch } = getInterface();
 
-                if (timeMachineEnabled(bot)) {
+                if (timeMachineEnabled()) {
                     const snapshot = interpreter.takeStateSnapshot();
                     if (watchName === 'before') {
                         $scope.beforeState = snapshot;
@@ -196,25 +195,26 @@ const Interpreter = () => {
                     globalObserver.emit('client.invalid_token');
                     return;
                 }
-                if (shouldStopOnError(bot, e?.code)) {
+                if (shouldStopOnError(e?.code)) {
                     globalObserver.emit('ui.log.error', e.message);
                     globalObserver.emit('bot.click_stop');
                     return;
                 }
 
                 $scope.is_error_triggered = true;
-                if (!shouldRestartOnError(bot, e.code) || !botStarted(bot)) {
+                if (!shouldRestartOnError(e.code) || !botStarted()) {
                     reject(e);
                     return;
                 }
 
                 globalObserver.emit('Error', e);
-                const { initArgs, tradeOptions } = bot.tradeEngine;
+                const { initArgs, tradeOptions } = $scope;
 
                 terminateSession();
                 globalObserver.register('Error', onError);
-                bot.tradeEngine.init(...initArgs);
-                bot.tradeEngine.start(tradeOptions);
+                const { init, start } = bot_interface;
+                init(...initArgs);
+                start(tradeOptions);
                 revert($scope.startState);
             };
 
@@ -226,7 +226,7 @@ const Interpreter = () => {
         });
     }
 
-    return { stop, run, terminateSession, bot };
+    return { stop, run, terminateSession };
 };
 export default Interpreter;
 

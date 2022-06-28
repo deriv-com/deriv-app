@@ -93,10 +93,8 @@ export const stopTradeEngine = () => {
     $scope = initial_scope;
 };
 
-export default class TradeEngine {
-    constructor() {
-        globalObserver.register('statistics.clear', clearStatistics);
-        observeOpenContract();
-        observeProposals();
-    }
-}
+export const tradeEngineObserver = () => {
+    globalObserver.register('statistics.clear', clearStatistics);
+    observeOpenContract();
+    observeProposals();
+};

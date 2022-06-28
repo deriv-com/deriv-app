@@ -1,15 +1,13 @@
 import { expect } from 'chai';
-import Interface from '../Interface';
+import Interface, { getInterface } from '../Interface';
 import { createScope } from '../utils/cliTools';
 import Store from '../trade/trade-engine-store';
 
 const $scope = createScope();
 
-const botInterface = new Interface($scope);
+const Bot = getInterface('Bot');
 
-const Bot = botInterface.getInterface('Bot');
-
-const { watch, alert } = botInterface.getInterface();
+const { watch, alert } = Bot;
 
 describe('Interface', () => {
     it('alert should not be native', () => {

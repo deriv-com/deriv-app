@@ -3,13 +3,14 @@ import { isTradeAgainObserver } from '../trade/Observers';
 import { getSellPrice, getDetail } from '../trade/OpenContract';
 import { purchase } from '../trade/Purchase';
 import { getPurchaseReference, getProposal } from '../trade/Proposal';
-import { initTradeEngine, startTradeEngine, stopTradeEngine } from '../trade';
+import { initTradeEngine, startTradeEngine, stopTradeEngine, tradeEngineObserver } from '../trade';
 
 const getBotInterface = () => {
     return {
         init: (...args) => initTradeEngine(...args),
         start: (...args) => startTradeEngine(...args),
         stop: () => stopTradeEngine(),
+        tradeEngineObserver: () => tradeEngineObserver(),
         purchase: contract_type => purchase(contract_type),
         getAskPrice: contract_type => Number(getProposal(contract_type).ask_price),
         getPayout: contract_type => Number(getProposal(contract_type).payout),

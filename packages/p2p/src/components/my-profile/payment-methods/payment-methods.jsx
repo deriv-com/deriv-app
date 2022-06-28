@@ -25,7 +25,7 @@ const PaymentMethods = ({ formik_ref }) => {
     } else if (!my_profile_store.advertiser_has_payment_methods) {
         return <PaymentMethodsEmpty />;
     } else if (my_profile_store.should_show_edit_payment_method_form) {
-        return <EditPaymentMethodForm />;
+        return <EditPaymentMethodForm formik_ref={formik_ref} />;
     }
 
     return <PaymentMethodsList />;

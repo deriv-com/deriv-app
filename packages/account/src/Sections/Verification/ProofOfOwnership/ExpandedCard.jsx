@@ -17,7 +17,7 @@ const ExpandedCard = ({
     validateField,
 }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
-    const controlsToShow = [...Array(cardDetails.documents_required).keys()];
+    const controls_to_show = [...Array(cardDetails.documents_required).keys()];
     const handleUploadedFile = (name, file) => {
         setFieldValue(name, file);
     };

@@ -25,10 +25,12 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     is_jurisdiction_modal_visible: boolean;
     is_loading: boolean;
     is_eu: boolean;
+    is_fully_authenticated: boolean;
     is_eu_country: boolean;
     residence: string;
-    jurisdiction_selected_card: boolean;
+    jurisdiction_selected_card: string | undefined;
     toggleJurisdictionModal: () => void;
+    toggleBVIPOIModal: () => void;
     tradingPlatformAvailableAccounts: any[];
 };
 
@@ -41,8 +43,10 @@ const JurisdictionModal = ({
     is_loading,
     platform,
     is_eu,
+    is_fully_authenticated,
     jurisdiction_selected_card,
     toggleJurisdictionModal,
+    toggleBVIPOIModal,
     tradingPlatformAvailableAccounts,
 }: TJurisdictionModalProps) => {
     const financial_available_accounts = tradingPlatformAvailableAccounts
@@ -91,12 +95,16 @@ const JurisdictionModal = ({
                                 financial_available_accounts={financial_available_accounts}
                                 synthetic_available_accounts={synthetic_available_accounts}
                                 account_type={account_type}
-                                authentication_status={authentication_status}
                                 poa_status={poa_status}
                                 poi_status={poi_status}
+                                is_fully_authenticated={is_fully_authenticated}
                             />
                             <Modal.Footer>
-                                <Button disabled={jurisdiction_selected_card === undefined} primary>
+                                <Button
+                                    onClick={toggleBVIPOIModal}
+                                    disabled={jurisdiction_selected_card === undefined}
+                                    primary
+                                >
                                     Next
                                 </Button>
                             </Modal.Footer>
@@ -105,7 +113,7 @@ const JurisdictionModal = ({
                     <MobileWrapper>
                         <MobileDialog
                             portal_element_id='deriv_app'
-                            title={localize('Compare accounts')}
+                            title={localize('Jurisdiction Modal')}
                             wrapper_classname='cfd-dashboard__compare-accounts'
                             visible={is_jurisdiction_modal_visible}
                             onClose={toggleJurisdictionModal}
@@ -114,9 +122,9 @@ const JurisdictionModal = ({
                                 financial_available_accounts={financial_available_accounts}
                                 synthetic_available_accounts={synthetic_available_accounts}
                                 account_type={account_type}
-                                authentication_status={authentication_status}
                                 poa_status={poa_status}
                                 poi_status={poi_status}
+                                is_fully_authenticated={is_fully_authenticated}
                             />
                         </MobileDialog>
                     </MobileWrapper>
@@ -138,8 +146,10 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     is_uk: client.is_uk,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
+    is_fully_authenticated: client.is_fully_authenticated,
     landing_companies: client.landing_companies,
     residence: client.residence,
     jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
+    toggleBVIPOIModal: modules.cfd.toggleBVIPOIModal,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
 }))(JurisdictionModal);

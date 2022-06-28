@@ -119,6 +119,8 @@ const CFDRealAccountDisplay = ({
         platform === CFD_PLATFORMS.MT5;
     const [active_hover, setActiveHover] = React.useState(0);
 
+    console.log(current_list);
+
     const has_required_credentials = React.useMemo(() => {
         const { citizen, tax_identification_number, tax_residence } = account_settings;
 

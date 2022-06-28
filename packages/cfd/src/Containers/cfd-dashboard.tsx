@@ -19,6 +19,7 @@ import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal';
+import JurisdictionNextModal from './jurisdiction-next-modal';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
@@ -643,6 +644,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             <React.Fragment>
                                 <MT5AccountOpeningRealFinancialStpModal />
                                 <CFDFinancialStpPendingDialog />
+                                <JurisdictionNextModal />
                             </React.Fragment>
                         )}
                         <CFDResetPasswordModal platform={platform} />
@@ -734,6 +736,7 @@ export default withRouter(
         setCurrentAccount: modules.cfd.setCurrentAccount,
         standpoint: client.standpoint,
         toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
+        toggleBVIPOIModal: modules.cfd.toggleBVIPOIModal,
         toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
         is_accounts_switcher_on: ui.is_accounts_switcher_on,
         openTopUpModal: ui.openTopUpModal,

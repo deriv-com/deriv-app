@@ -14,6 +14,7 @@ type TJurisdictionModalContent = {
     financial_available_accounts: any[];
     poa_status: string;
     poi_status: string;
+    is_fully_authenticated: boolean;
 };
 
 const JurisdictionModalContent = ({
@@ -24,6 +25,7 @@ const JurisdictionModalContent = ({
     financial_available_accounts,
     poa_status,
     poi_status,
+    is_fully_authenticated,
 }: TJurisdictionModalContent) => {
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
@@ -70,7 +72,7 @@ const JurisdictionModalContent = ({
                         </p>
                     </div>
                 )}
-                {poa_verified && poi_verified && (
+                {is_fully_authenticated && (
                     <div className='cfd-jurisdiction-card__verification-status'>
                         <p className='cfd-jurisdiction-card__verification-status--verified'>
                             <Localize i18n_default_text='Verified' />
@@ -90,6 +92,23 @@ const JurisdictionModalContent = ({
                             <Localize i18n_default_text='Check your proof of address' />
                         </p>
                     </div>
+                )}
+            </>
+        );
+    };
+
+    const ModalFootNote = () => {
+        return (
+            <>
+                {poa_none && poi_none && jurisdiction_selected_card === 'BVI' && (
+                    <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
+                        <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
+                    </Text>
+                )}
+                {poa_none && poi_none && jurisdiction_selected_card === 'SVG' && (
+                    <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
+                        <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
+                    </Text>
                 )}
             </>
         );
@@ -253,9 +272,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
             </div>
-            <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
-                <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
-            </Text>
+            <ModalFootNote />
         </>
     );
 };

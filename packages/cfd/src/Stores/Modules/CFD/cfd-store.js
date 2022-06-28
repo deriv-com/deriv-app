@@ -22,6 +22,8 @@ export default class CFDStore extends BaseStore {
     @observable is_cfd_password_modal_enabled = false;
     @observable is_cfd_reset_password_modal_enabled = false;
 
+    @observable is_bvi_poi_modal_open = false;
+
     @observable jurisdiction_selected_card = undefined;
 
     @observable is_cfd_pending_dialog_open = false;
@@ -401,6 +403,12 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    toggleBVIPOIModal() {
+        this.is_jurisdiction_modal_visible = false;
+        this.is_bvi_poi_modal_open = !this.is_bvi_poi_modal_open;
     }
 
     @action.bound

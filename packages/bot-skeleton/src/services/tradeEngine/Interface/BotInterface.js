@@ -1,15 +1,11 @@
-import { createDetails } from '../utils/helpers';
 import { isSellAtMarketAvailable, sellAtMarket } from '../trade/Sell';
 import { isTradeAgainObserver } from '../trade/Observers';
-import { getSellPrice } from '../trade/OpenContract';
+import { getSellPrice, getDetail } from '../trade/OpenContract';
 import { purchase } from '../trade/Purchase';
 import { getPurchaseReference, getProposal } from '../trade/Proposal';
 import { initTradeEngine, startTradeEngine, stopTradeEngine } from '../trade';
-import $scope from '../utils/cliTools';
 
 const getBotInterface = () => {
-    const getDetail = i => createDetails($scope.data.contract)[i];
-
     return {
         init: (...args) => initTradeEngine(...args),
         start: (...args) => startTradeEngine(...args),

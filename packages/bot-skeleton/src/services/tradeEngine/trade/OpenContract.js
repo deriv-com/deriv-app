@@ -1,7 +1,7 @@
 import { getRoundedNumber } from '@deriv/shared';
 import { sell, openContractReceived } from './state/actions';
 import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
-import { doUntilDone } from '../utils/helpers';
+import { doUntilDone, createDetails } from '../utils/helpers';
 import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
@@ -85,3 +85,5 @@ export const observeOpenContract = () => {
         }
     });
 };
+
+export const getDetail = i => createDetails($scope.data.contract)[i];

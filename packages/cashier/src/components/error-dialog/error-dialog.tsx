@@ -21,7 +21,7 @@ type TSetDetails = {
     cancel_button_text: undefined | string;
     confirm_button_text: undefined | string;
     onConfirm: undefined | (() => void);
-    message: any;
+    message: undefined | string | React.ReactElement;
     has_close_icon?: boolean;
 };
 

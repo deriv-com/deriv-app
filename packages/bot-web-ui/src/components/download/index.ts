@@ -1,4 +1,4 @@
-import Download from './download.jsx';
+import Download from './download';
 import './download.scss';
 
 export default Download;

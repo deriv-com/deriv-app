@@ -16,41 +16,41 @@ describe('ErrorStore', () => {
     it('should change value of the variable is_ask_uk_funds_protection', () => {
         error_store.setIsAskUkFundsProtection(false);
 
-        expect(error_store.is_ask_uk_funds_protection).toBeFalse();
+        expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
 
         error_store.setIsAskUkFundsProtection(true);
 
-        expect(error_store.is_ask_uk_funds_protection).toBeTrue();
+        expect(error_store.is_ask_uk_funds_protection).toBeTruthy();
     });
 
     it('should change value of the variable is_self_exclusion_max_turnover_set', () => {
         error_store.setIsSelfExclusionMaxTurnoverSet(false);
 
-        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalse();
+        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalsy();
 
         error_store.setIsSelfExclusionMaxTurnoverSet(true);
 
-        expect(error_store.is_self_exclusion_max_turnover_set).toBeTrue();
+        expect(error_store.is_self_exclusion_max_turnover_set).toBeTruthy();
     });
 
     it('should change value of the variable is_ask_authentication', () => {
         error_store.setIsAskAuthentication(false);
 
-        expect(error_store.is_ask_authentication).toBeFalse();
+        expect(error_store.is_ask_authentication).toBeFalsy();
 
         error_store.setIsAskAuthentication(true);
 
-        expect(error_store.is_ask_authentication).toBeTrue();
+        expect(error_store.is_ask_authentication).toBeTruthy();
     });
 
     it('should change value of the variable is_ask_financial_risk_approval', () => {
         error_store.setIsAskFinancialRiskApproval(false);
 
-        expect(error_store.is_ask_financial_risk_approval).toBeFalse();
+        expect(error_store.is_ask_financial_risk_approval).toBeFalsy();
 
         error_store.setIsAskFinancialRiskApproval(true);
 
-        expect(error_store.is_ask_financial_risk_approval).toBeTrue();
+        expect(error_store.is_ask_financial_risk_approval).toBeTruthy();
     });
 
     it('should proper handle different error codes', () => {
@@ -66,31 +66,31 @@ describe('ErrorStore', () => {
 
         error_store.handleCashierError({ code: 'ASK_UK_FUNDS_PROTECTION' });
 
-        expect(error_store.is_ask_uk_funds_protection).toBeTrue();
+        expect(error_store.is_ask_uk_funds_protection).toBeTruthy();
 
         error_store.handleCashierError({ code: 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET' });
 
-        expect(error_store.is_self_exclusion_max_turnover_set).toBeTrue();
+        expect(error_store.is_self_exclusion_max_turnover_set).toBeTruthy();
 
         error_store.handleCashierError({ code: 'ASK_AUTHENTICATE' });
 
-        expect(error_store.is_ask_authentication).toBeTrue();
+        expect(error_store.is_ask_authentication).toBeTruthy();
 
         error_store.handleCashierError({ code: 'ASK_AGE_VERIFICATION' });
 
-        expect(error_store.is_ask_authentication).toBeTrue();
+        expect(error_store.is_ask_authentication).toBeTruthy();
 
         error_store.handleCashierError({ code: 'ASK_FINANCIAL_RISK_APPROVAL' });
 
-        expect(error_store.is_ask_financial_risk_approval).toBeTrue();
+        expect(error_store.is_ask_financial_risk_approval).toBeTruthy();
 
         error_store.handleCashierError({ code: 'DEFAULT_ERROR_CODE' });
 
         expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'DEFAULT_ERROR_CODE' });
-        expect(error_store.is_ask_uk_funds_protection).toBeFalse();
-        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalse();
-        expect(error_store.is_ask_authentication).toBeFalse();
-        expect(error_store.is_ask_financial_risk_approval).toBeFalse();
+        expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
+        expect(error_store.is_self_exclusion_max_turnover_set).toBeFalsy();
+        expect(error_store.is_ask_authentication).toBeFalsy();
+        expect(error_store.is_ask_financial_risk_approval).toBeFalsy();
     });
 
     it('should set proper values when the setErrorMessage function is called', () => {
@@ -108,6 +108,6 @@ describe('ErrorStore', () => {
         expect(error_store.code).toBe('ERROR_CODE');
         expect(error_store.message).toBe('ERROR_MESSAGE');
         expect(error_store.fields).toBe('FIELDS');
-        expect(error_store.is_show_full_page).toBeTrue();
+        expect(error_store.is_show_full_page).toBeTruthy();
     });
 });

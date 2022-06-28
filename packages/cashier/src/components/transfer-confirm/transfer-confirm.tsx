@@ -1,13 +1,33 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Checkbox, Icon, Text } from '@deriv/components';
 import ErrorDialog from 'Components/error-dialog';
-import './confirm.scss';
+import './transfer-confirm.scss';
 
-const Row = ({ item_key, label, value }) => (
-    <div className='confirm__row'>
+type TRowProps = {
+    item_key?: string | number;
+    label: string;
+    value: string | Array<string> | JSX.Element;
+    key: string | number;
+};
+
+type WarningBulletProps = {
+    children: JSX.Element | string;
+};
+
+type TTransferConfirmProps = {
+    data: Array<TRowProps>;
+    error?: object;
+    header?: string;
+    is_payment_agent_transfer?: boolean;
+    onClickBack?: () => void;
+    onClickConfirm?: () => void;
+    warning_messages?: Array<JSX.Element>;
+};
+
+const Row = ({ item_key, label, value }: TRowProps) => (
+    <div className='transfer-confirm__row' data-testid={`dt_transfer_confirm_row_${item_key}`}>
         <Text size='xs'>{label}</Text>
         {Array.isArray(value) ? (
             <div>
@@ -32,14 +52,22 @@ const Row = ({ item_key, label, value }) => (
     </div>
 );
 
-const WarningBullet = ({ children }) => (
-    <div className='confirm__warnings-bullet-wrapper'>
-        <div className='confirm__warnings-bullet' />
+const WarningBullet = ({ children }: WarningBulletProps) => (
+    <div className='transfer-confirm__warnings-bullet-wrapper'>
+        <div className='transfer-confirm__warnings-bullet' />
         {children}
     </div>
 );
 
-const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, onClickConfirm, warning_messages }) => {
+const TransferConfirm = ({
+    data,
+    error,
+    header,
+    is_payment_agent_transfer,
+    onClickBack,
+    onClickConfirm,
+    warning_messages,
+}: TTransferConfirmProps) => {
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
     return (
@@ -47,6 +75,7 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
             className={classNames('cashier__wrapper--confirm', {
                 cashier__wrapper: !is_payment_agent_transfer,
             })}
+            data-testid='dt_cashier_wrapper_transfer_confirm'
         >
             {!is_payment_agent_transfer && (
                 <Icon data_testid='dti_confirm_details_icon' icon='IcConfirmDetails' width='128' height='128' />
@@ -57,20 +86,20 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
                     color='prominent'
                     align='center'
                     weight='bold'
-                    className='cashier__header confirm__header'
+                    className='cashier__header transfer-confirm__header'
                 >
                     {header}
                 </Text>
             )}
-            <div className='confirm__column-wrapper'>
-                <div className='confirm__column'>
+            <div className='transfer-confirm__column-wrapper'>
+                <div className='transfer-confirm__column'>
                     {data.map((d, key) => (
                         <Row item_key={key} label={d.label} value={d.value} key={key} />
                     ))}
                 </div>
             </div>
             {warning_messages && (
-                <div className='confirm__warnings'>
+                <div className='transfer-confirm__warnings'>
                     {warning_messages.map((warning, idx) => (
                         <WarningBullet key={idx}>
                             <Text as='p' size='xxs' color='loss-danger' align='left'>
@@ -86,10 +115,10 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
                     value={is_transfer_consent_checked}
                     onChange={() => setIsTransferConsentChecked(!is_transfer_consent_checked)}
                     label={localize('I confirm that I have checked and verified the client’s transfer information')}
-                    classNameLabel='confirm__checkbox-label'
+                    classNameLabel='transfer-confirm__checkbox-label'
                 />
             )}
-            <div className='confirm__submit'>
+            <div className='transfer-confirm__submit'>
                 <Button large text={localize('Back')} onClick={onClickBack} secondary />
                 <Button
                     large
@@ -104,19 +133,4 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
     );
 };
 
-Confirm.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            label: PropTypes.string,
-            value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
-        })
-    ),
-    error: PropTypes.object,
-    header: PropTypes.string,
-    is_payment_agent_transfer: PropTypes.bool,
-    onClickBack: PropTypes.func,
-    onClickConfirm: PropTypes.func,
-    warning_messages: PropTypes.arrayOf(PropTypes.object),
-};
-
-export default Confirm;
+export default TransferConfirm;

@@ -32,6 +32,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
+    @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -351,6 +352,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
+    }
+
+    @action.bound
+    setIsModalOpen(is_modal_open) {
+        this.is_modal_open = is_modal_open;
     }
 
     @action.bound

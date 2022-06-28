@@ -85,6 +85,14 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
+    get payment_method_field_set() {
+        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
+        return this.selected_payment_method_fields.reduce((dict, field_data) => {
+            return { ...dict, [field_data[0]]: field_data[1].display_name };
+        }, {});
+    }
+
+    @computed
     get payment_method_info() {
         return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit.ID)[0];
     }

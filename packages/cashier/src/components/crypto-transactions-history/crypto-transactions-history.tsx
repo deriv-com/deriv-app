@@ -3,7 +3,7 @@ import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/comp
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 import { TCryptoTransactionDetails } from 'Types/crypto-transaction-details.types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 
 type TCryptoTransactionsCancelModalProps = {
     cancelCryptoTransaction: (selected_crypto_transaction_id: string) => void;

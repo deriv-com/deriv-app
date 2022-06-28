@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite';
 import BlockUserRow from './block-user-row.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { isMobile } from '@deriv/shared';
-import BlockUserEmpty from 'Components/advertiser-page/block-user/block-user-empty';
-import './block-user.scss';
+import BlockUserEmpty from './block-user-empty.jsx';
+import '../block-user.scss';
 
 const BlockUserTable = () => {
     const { advertiser_page_store, my_profile_store } = useStores();

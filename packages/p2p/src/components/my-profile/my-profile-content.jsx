@@ -7,7 +7,7 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
-import BlockUserTable from '../advertiser-page/block-user/block-user-table.jsx';
+import BlockUserTable from '../advertiser-page/block-user/block-user-table/block-user-table';
 import BlockUserModal from '../advertiser-page/block-user/block-user-modal.jsx';
 
 const MyProfileContent = () => {
@@ -16,7 +16,7 @@ const MyProfileContent = () => {
 
     const onSubmit = async () => {
         advertiser_page_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.unblockUser(advertiser_page_store.selected_blocked_user.id);
+        advertiser_page_store.unblockUser(my_profile_store.selected_blocked_user.id);
         my_profile_store.getBlockedAdvertisersList();
     };
 
@@ -56,7 +56,7 @@ const MyProfileContent = () => {
         return (
             <React.Fragment>
                 <BlockUserModal
-                    advertiser_name={advertiser_page_store.selected_blocked_user.name}
+                    advertiser_name={my_profile_store.selected_blocked_user.name}
                     is_advertiser_blocked
                     is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
                     onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}

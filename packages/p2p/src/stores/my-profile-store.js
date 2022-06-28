@@ -34,6 +34,7 @@ export default class MyProfileStore extends BaseStore {
     @observable payment_method_to_edit = {};
     @observable search_results = [];
     @observable search_term = '';
+    @observable selected_blocked_user = {};
     @observable selected_payment_method = '';
     @observable selected_payment_method_display_name = '';
     @observable selected_payment_method_fields = [];
@@ -571,6 +572,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setSearchTerm(search_term) {
         this.search_term = search_term;
+    }
+
+    @action.bound
+    setSelectedBlockedUser(selected_blocked_user) {
+        this.selected_blocked_user = selected_blocked_user;
     }
 
     @action.bound

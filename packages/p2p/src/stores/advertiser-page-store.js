@@ -20,7 +20,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
-    @observable selected_blocked_user = {};
     @observable submitForm = () => {};
 
     @computed
@@ -200,11 +199,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
-    }
-
-    @action.bound
-    setSelectedBlockedUser(selected_blocked_user) {
-        this.selected_blocked_user = selected_blocked_user;
     }
 
     @action.bound

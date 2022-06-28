@@ -3,10 +3,9 @@ import { InfiniteDataList, Loading, Table } from '@deriv/components';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import BlockUserRow from './block-user-row.jsx';
-import Empty from 'Components/empty/empty.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
-import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
+import BlockUserEmpty from 'Components/advertiser-page/block-user/block-user-empty';
 import './block-user.scss';
 
 const BlockUserTable = () => {
@@ -47,15 +46,7 @@ const BlockUserTable = () => {
         );
     }
 
-    // TODO: Replace with Empty Advertiser's Tab once Blocked Advertisers Tab is merged
-    return (
-        <Empty
-            className='buy-sell__empty'
-            has_tabs
-            icon='IcCashierNoAds'
-            title={localize('You have no blocked advertisers')}
-        />
-    );
+    return <BlockUserEmpty />;
 };
 
 export default observer(BlockUserTable);

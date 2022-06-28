@@ -4,12 +4,11 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
-// import MyProfileForm from './my-profile-form';
+import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
 import BlockUserTable from '../advertiser-page/block-user/block-user-table.jsx';
 import BlockUserModal from '../advertiser-page/block-user/block-user-modal.jsx';
-import BlockUserEmpty from 'Components/advertiser-page/block-user/block-user-empty';
 
 const MyProfileContent = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
@@ -21,7 +20,29 @@ const MyProfileContent = () => {
     };
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
-        // return <MyProfileForm />;
+        return <MyProfileForm />;
+    } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
+        return (
+            <React.Fragment>
+                <DesktopWrapper>
+                    <PaymentMethods />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileFullPageModal
+                        body_className='payment-methods-list__modal'
+                        height_offset='80px'
+                        is_modal_open
+                        is_flex
+                        page_header_className='buy-sell__modal-header'
+                        page_header_text={localize('Payment methods')}
+                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                    >
+                        <PaymentMethods />
+                    </MobileFullPageModal>
+                </MobileWrapper>
+            </React.Fragment>
+        );
+    } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
         return (
             <React.Fragment>
                 <BlockUserModal
@@ -49,30 +70,6 @@ const MyProfileContent = () => {
                 </MobileWrapper>
             </React.Fragment>
         );
-    } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <PaymentMethods />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <MobileFullPageModal
-                        body_className='payment-methods-list__modal'
-                        height_offset='80px'
-                        is_modal_open
-                        is_flex
-                        page_header_className='buy-sell__modal-header'
-                        page_header_text={localize('Payment methods')}
-                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                    >
-                        <PaymentMethods />
-                    </MobileFullPageModal>
-                </MobileWrapper>
-            </React.Fragment>
-        );
-    } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
-        // TODO: Add search box and integrate list of blocked users once blocked user list is merged
-        return <BlockUserEmpty />;
     }
     return <MyProfileStats />;
 };

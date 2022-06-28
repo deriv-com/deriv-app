@@ -97,6 +97,35 @@ const JurisdictionModalContent = ({
         );
     };
 
+    const ModalFootNote = () => {
+        return (
+            <>
+                {poa_none && poi_none && jurisdiction_selected_card === 'BVI' && (
+                    <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
+                        <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
+                    </Text>
+                )}
+                {poa_none && poi_none && jurisdiction_selected_card === 'SVG' && (
+                    <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
+                        <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
+                    </Text>
+                )}
+                {poa_pending ||
+                    (poi_pending && (
+                        <Text
+                            as='p'
+                            align='center'
+                            size='xs'
+                            line_height='xs'
+                            className='cfd-jurisdiction-card__footnote--pending'
+                        >
+                            <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
+                        </Text>
+                    ))}
+            </>
+        );
+    };
+
     return (
         <>
             <div className='cfd-jurisdiction-card__wrapper'>
@@ -294,9 +323,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
             </div>
-            <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
-                <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
-            </Text>
+            <ModalFootNote />
         </>
     );
 };

@@ -513,6 +513,10 @@
     &__footnote {
         margin-top: 2.4rem;
         color: #333333;
+
+        &--pending {
+            color: #ffad3a;
+        }
     }
 
     &__over-header {

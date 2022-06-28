@@ -1,6 +1,8 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
+import { validNumber } from '@deriv/shared';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -9,126 +11,145 @@ jest.mock('Stores/connect', () => ({
 }));
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    validNumber: jest.fn(() => true),
+    ...jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules'),
+    validNumber: jest.fn(() => ({ is_ok: false, message: 'error_message' })),
 }));
 
 describe('<PaymentAgentWithdrawForm />', () => {
-    const onMount = jest.fn();
-    const resetPaymentAgent = jest.fn();
-    const payment_agent_list = [
-        {
-            currencies: 'USD',
-            deposit_commission: '0',
-            email: 'test@example.com',
-            further_information: 'Test Info',
-            max_withdrawal: '2000',
-            min_withdrawal: '10',
-            name: 'Payment Agent',
-            paymentagent_loginid: 'CR90000874',
-            summary: 'Test Summary',
-            supported_banks: null,
-            telephone: '+12345678',
-            url: 'http://www.MyPAMyAdventure.com/',
-            withdrawal_commission: '0',
-        },
-    ];
-
     beforeAll(() => {
-        const modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
+        });
     });
 
     afterAll(() => {
-        document.body.removeChild(modal_root_el);
+        ReactDOM.createPortal.mockClear();
     });
+
+    const props = {
+        balance: '1000',
+        currency: 'USD',
+        error: {},
+        verification_code: 'ABCdef',
+        onMount: jest.fn(),
+        requestTryPaymentAgentWithdraw: jest.fn().mockResolvedValue(),
+        setIsUnlistedWithdraw: jest.fn(),
+    };
 
     it('should render the component', () => {
-        const { container } = render(
-            <PaymentAgentWithdrawForm
-                currency={'USD'}
-                onMount={onMount}
-                payment_agent_list={payment_agent_list}
-                resetPaymentAgent={resetPaymentAgent}
-            />
-        );
+        render(<PaymentAgentWithdrawForm {...props} />);
 
-        expect(container.firstChild).toHaveClass('payment-agent-withdraw-form__withdrawal');
+        expect(screen.getByTestId('dt-back-arrow-icon')).toBeInTheDocument();
+        expect(screen.getByText('Back to list')).toBeInTheDocument();
+        expect(screen.getByLabelText('Enter the payment agent account number')).toBeInTheDocument();
+        expect(screen.getByText('Example: CR123456789')).toBeInTheDocument();
+        expect(screen.getByText('USD')).toBeInTheDocument();
+        expect(screen.getByLabelText('Enter amount')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
+        expect(screen.getByText('Note: Deriv does not charge any transfer fees.')).toBeInTheDocument();
     });
 
-    it('should show the withdrawal confirmation', () => {
-        const { container } = render(
-            <PaymentAgentWithdrawForm
-                currency={'USD'}
-                is_try_withdraw_successful
-                onMount={onMount}
-                payment_agent_list={payment_agent_list}
-                resetPaymentAgent={resetPaymentAgent}
-            />
-        );
+    it('should trigger onclick callback when arrow back button was clicked', () => {
+        render(<PaymentAgentWithdrawForm {...props} />);
 
-        expect(container.firstChild).toHaveClass('cashier__wrapper--confirm');
+        const el_back_arrow_icon = screen.getByTestId('dt-back-arrow-icon');
+        fireEvent.click(el_back_arrow_icon);
+
+        expect(props.setIsUnlistedWithdraw).toHaveBeenCalledWith(false);
     });
 
-    it('should show an error if amount is not provided', async () => {
-        render(
-            <PaymentAgentWithdrawForm
-                currency={'USD'}
-                onMount={onMount}
-                payment_agent_list={payment_agent_list}
-                resetPaymentAgent={resetPaymentAgent}
-            />
-        );
+    it('should show Field is required for amount field, if there is no data and the field was touched', async () => {
+        render(<PaymentAgentWithdrawForm {...props} />);
 
-        const withdraw_button = screen.getByRole('button');
-        fireEvent.click(withdraw_button);
+        const el_input_amount = screen.getByLabelText('Enter amount');
+        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        fireEvent.change(el_input_amount, { target: { value: '100' } });
+        fireEvent.change(el_input_amount, { target: { value: '' } });
+        fireEvent.click(el_continue_btn);
 
         await waitFor(() => {
             expect(screen.getByText('This field is required.')).toBeInTheDocument();
         });
     });
 
-    it('should not proceed if amount is greater than the withdrawal limit', async () => {
-        const { container } = render(
-            <PaymentAgentWithdrawForm
-                currency={'USD'}
-                onMount={onMount}
-                payment_agent_list={payment_agent_list}
-                resetPaymentAgent={resetPaymentAgent}
-            />
-        );
+    it('should show error message, if amount is not valid', async () => {
+        render(<PaymentAgentWithdrawForm {...props} />);
 
-        const amount = container.querySelector('input[name=amount]');
-        const withdraw_button = screen.getByRole('button');
-
-        fireEvent.change(amount, { target: { value: '2500' } });
-        fireEvent.click(withdraw_button);
+        const el_input_amount = screen.getByLabelText('Enter amount');
+        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        fireEvent.change(el_input_amount, { target: { value: '100.99999' } });
+        fireEvent.click(el_continue_btn);
 
         await waitFor(() => {
-            expect(withdraw_button).toBeDisabled();
+            expect(screen.getByText('error_message')).toBeInTheDocument();
         });
     });
 
-    it('should not proceed if payment agent id is invalid', async () => {
-        const { container } = render(
-            <PaymentAgentWithdrawForm
-                currency={'USD'}
-                onMount={onMount}
-                payment_agent_list={payment_agent_list}
-                resetPaymentAgent={resetPaymentAgent}
-            />
-        );
+    it('should show Insufficient balance error', async () => {
+        validNumber.mockReturnValue({ is_ok: true, message: '' });
+        render(<PaymentAgentWithdrawForm {...props} />);
 
-        const payment_agent = container.querySelector('input[name=payment_agent]');
-        const withdraw_button = screen.getByRole('button');
-
-        fireEvent.change(payment_agent, { target: { value: 'abc' } });
-        fireEvent.click(withdraw_button);
+        const el_input_amount = screen.getByLabelText('Enter amount');
+        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        fireEvent.change(el_input_amount, { target: { value: '2000' } });
+        fireEvent.click(el_continue_btn);
 
         await waitFor(() => {
-            expect(withdraw_button).toBeDisabled();
+            expect(screen.getByText('Insufficient balance.')).toBeInTheDocument();
+        });
+    });
+
+    it('should show Field is required for account_number field, if there is no data and the field was touched', async () => {
+        validNumber.mockReturnValue({ is_ok: true, message: '' });
+        render(<PaymentAgentWithdrawForm {...props} />);
+
+        const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
+        const el_input_amount = screen.getByLabelText('Enter amount');
+        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        fireEvent.change(el_input_account_number, { target: { value: 'CR56656565' } });
+        fireEvent.change(el_input_amount, { target: { value: '100' } });
+        fireEvent.change(el_input_account_number, { target: { value: '' } });
+        fireEvent.click(el_continue_btn);
+
+        await waitFor(() => {
+            expect(screen.getByText('This field is required.')).toBeInTheDocument();
+        });
+    });
+
+    it('should show an error meaage when account number is not valid', async () => {
+        validNumber.mockReturnValue({ is_ok: true, message: '' });
+        render(<PaymentAgentWithdrawForm {...props} />);
+
+        const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
+        const el_input_amount = screen.getByLabelText('Enter amount');
+        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        fireEvent.change(el_input_account_number, { target: { value: '667766767' } });
+        fireEvent.change(el_input_amount, { target: { value: '100' } });
+        fireEvent.click(el_continue_btn);
+
+        await waitFor(() => {
+            expect(screen.getByText('Please enter a valid account number. Example: CR123456789')).toBeInTheDocument();
+        });
+    });
+
+    it('should trigger requestTryPaymentAgentWithdraw, when all data are valid', async () => {
+        validNumber.mockReturnValue({ is_ok: true, message: '' });
+        render(<PaymentAgentWithdrawForm {...props} />);
+
+        const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
+        const el_input_amount = screen.getByLabelText('Enter amount');
+        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        fireEvent.change(el_input_account_number, { target: { value: 'CR90000100' } });
+        fireEvent.change(el_input_amount, { target: { value: '100' } });
+        fireEvent.click(el_continue_btn);
+
+        await waitFor(() => {
+            expect(props.requestTryPaymentAgentWithdraw).toHaveBeenCalledWith({
+                loginid: 'CR90000100',
+                currency: 'USD',
+                amount: '100',
+                verification_code: 'ABCdef',
+            });
         });
     });
 });

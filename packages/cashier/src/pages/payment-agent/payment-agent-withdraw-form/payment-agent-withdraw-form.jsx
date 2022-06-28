@@ -25,7 +25,7 @@ const validateWithdrawal = (values, { balance, currency }) => {
         errors.amount = localize('Insufficient balance.');
     } else if (!values.account_number) {
         errors.account_number = localize('This field is required.');
-    } else if (!values.account_number.startsWith('CR')) {
+    } else if (!/[A-Z]{2}[A-Z\d]\d+/.test(values.account_number)) {
         errors.account_number = localize('Please enter a valid account number. Example: CR123456789');
     }
 
@@ -62,7 +62,11 @@ const PaymentAgentWithdrawForm = ({
     return (
         <div className='payment-agent-withdraw-form'>
             <div className='payment-agent-withdraw-form__page-return'>
-                <Icon icon='icArrowLeftBold' onClick={() => setIsUnlistedWithdraw(false)} />
+                <Icon
+                    data_testid={'dt-back-arrow-icon'}
+                    icon='icArrowLeftBold'
+                    onClick={() => setIsUnlistedWithdraw(false)}
+                />
                 <Text as='p' line_height='m' size='xs' weight='bold'>
                     <Localize i18n_default_text='Back to list' />
                 </Text>

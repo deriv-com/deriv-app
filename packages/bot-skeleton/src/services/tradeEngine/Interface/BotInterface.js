@@ -4,7 +4,7 @@ import { isSellAtMarketAvailable, sellAtMarket } from '../trade/Sell';
 import { getSellPrice } from '../trade/OpenContract';
 import { purchase } from '../trade/Purchase';
 import { getPurchaseReference } from '../trade/Proposal';
-import { initTradeEngine, startTradeEngine } from '../trade';
+import { initTradeEngine, startTradeEngine, stopTradeEngine } from '../trade';
 import $scope from '../utils/cliTools';
 
 const getProposal = contract_type => {
@@ -19,8 +19,7 @@ const getBotInterface = () => {
     return {
         init: (...args) => initTradeEngine(...args),
         start: (...args) => startTradeEngine(...args),
-        // [Todo] we need initialize $scope on stop tradeEngine
-        // stop: (...args) => tradeEngine.stop(...args),
+        stop: () => stopTradeEngine(),
         purchase: contract_type => purchase(contract_type),
         getAskPrice: contract_type => Number(getProposal(contract_type).ask_price),
         getPayout: contract_type => Number(getProposal(contract_type).payout),

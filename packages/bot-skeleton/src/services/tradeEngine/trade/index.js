@@ -8,7 +8,7 @@ import { checkLimits, clearStatistics } from './Total';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
-import $scope from '../utils/cliTools';
+import $scope, { initial_scope } from '../utils/cliTools';
 import Store from './trade-engine-store';
 import { loginAndGetBalance } from './Authenticate';
 
@@ -87,6 +87,10 @@ export const startTradeEngine = tradeOptions => {
     checkLimits(tradeOptions);
     makeProposals({ ...$scope.options, ...tradeOptions });
     checkProposalReady();
+};
+
+export const stopTradeEngine = () => {
+    $scope = initial_scope;
 };
 
 export default class TradeEngine {

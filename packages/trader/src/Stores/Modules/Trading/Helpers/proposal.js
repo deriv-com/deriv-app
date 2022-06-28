@@ -46,6 +46,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         // dummy proposal info for accumulators:
         return {
             tick_size_barrier: 0.000409,
+            ticks_count_since_loss_condition: 13,
             max_duration_ticks: 10,
             max_payout: 0,
             error_code: undefined,
@@ -157,9 +158,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
                   duration_unit: store.duration_unit,
               }
             : obj_expiry),
-        ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) && {
-            barrier: store.barrier_1 || store.last_digit,
-        }),
+        ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) &&
+            store.contract_type !== 'accumulator' && {
+                barrier: store.barrier_1 || store.last_digit,
+            }),
         ...(store.barrier_count === 2 && { barrier2: store.barrier_2 }),
         ...obj_accumulator,
         ...obj_multiplier,

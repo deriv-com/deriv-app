@@ -17,6 +17,7 @@ const ContractDrawer = ({
     contract_info,
     contract_update,
     contract_update_history,
+    is_accumulator,
     is_mobile,
     is_sell_requested,
     is_dark_theme,
@@ -58,6 +59,7 @@ const ContractDrawer = ({
                     contract_info={contract_info}
                     contract_update={contract_update}
                     currency={currency}
+                    is_accumulator={is_accumulator}
                     is_mobile={is_mobile}
                     is_market_closed={is_market_closed}
                     is_multiplier={is_multiplier}

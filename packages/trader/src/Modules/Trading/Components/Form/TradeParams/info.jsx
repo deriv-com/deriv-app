@@ -102,8 +102,8 @@ const Info = ({
                 {
                     info_text: (
                         <Localize
-                            i18n_default_text={'Maximum duration <0>{{max_duration_ticks}} ticks</0>'}
-                            values={{ max_duration_ticks }}
+                            i18n_default_text={'Maximum duration <0>{{max_duration_ticks}} {{ticks}}</0>'}
+                            values={{ max_duration_ticks, ticks: max_duration_ticks === 1 ? 'tick' : 'ticks' }}
                             components={[<span key={0} />]}
                         />
                     ),
@@ -111,8 +111,8 @@ const Info = ({
                     text_size: max_duration_text_size,
                     tooltip_message: (
                         <Localize
-                            i18n_default_text='This contract will be closed automatically after {{max_duration_ticks}} ticks.'
-                            values={{ max_duration_ticks }}
+                            i18n_default_text='This contract will be closed automatically after {{max_duration_ticks}} {{ticks}}.'
+                            values={{ max_duration_ticks, ticks: max_duration_ticks === 1 ? 'tick' : 'ticks' }}
                         />
                     ),
                 },

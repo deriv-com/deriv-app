@@ -25,15 +25,24 @@ const ContractCardHeader = ({
     server_time,
 }) => {
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
-    const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, tick_count, is_sold } =
-        contract_info;
+    const {
+        growth_rate,
+        underlying,
+        multiplier,
+        contract_type,
+        shortcode,
+        purchase_time,
+        date_expiry,
+        tick_count,
+        is_sold,
+    } = contract_info;
 
     return (
         <>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
-                    'dc-contract-card__grid-underlying-trade--trader': !isBot(),
+                    'dc-contract-card__grid-underlying-trade--trader': !isBot() && !growth_rate,
                 })}
             >
                 <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
@@ -47,6 +56,7 @@ const ContractCardHeader = ({
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
                         multiplier={multiplier}
+                        growth_rate={growth_rate}
                         type={contract_type}
                     />
                 </div>

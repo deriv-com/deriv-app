@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
 
-const StatsChartDisplay = ({ tick_size_barrier, ticks_count_since_loss_condition = 13 }) => {
+const StatsChartDisplay = ({ tick_size_barrier, ticks_count_since_loss_condition }) => {
     return (
         <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--stats-chart-display')}>
             <Text size='xxs' align='center'>
@@ -15,8 +15,9 @@ const StatsChartDisplay = ({ tick_size_barrier, ticks_count_since_loss_condition
                 })}
             </Text>
             <Text size='xs' weight='bold'>
-                {localize('{{ticks_count_since_loss_condition}} ticks ago', {
+                {localize('{{ticks_count_since_loss_condition}} {{ticks}} ago', {
                     ticks_count_since_loss_condition,
+                    ticks: ticks_count_since_loss_condition === 1 ? 'tick' : 'ticks',
                 })}
             </Text>
         </Fieldset>
@@ -29,6 +30,7 @@ StatsChartDisplay.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    // TODO: when API is ready, connect real ticks_count_since_loss_condition
+    // TODO:: when API is ready, connect real ticks_count_since_loss_condition
+    ticks_count_since_loss_condition: modules.trade.ticks_count_since_loss_condition,
     tick_size_barrier: modules.trade.tick_size_barrier,
 }))(StatsChartDisplay);

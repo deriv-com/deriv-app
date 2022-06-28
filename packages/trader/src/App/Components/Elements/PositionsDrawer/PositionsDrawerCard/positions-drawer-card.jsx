@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ContractCard } from '@deriv/components';
-import { getContractPath, isCryptoContract, isMultiplierContract } from '@deriv/shared';
+import { getContractPath, isAccumulatorContract, isCryptoContract, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -39,9 +39,10 @@ const PositionsDrawerCard = ({
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
 }) => {
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
-    const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
+    const has_progress_slider = (!is_accumulator && !is_multiplier) || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
 
     const loader_el = (
@@ -78,6 +79,7 @@ const PositionsDrawerCard = ({
             onMouseLeave={() => {
                 if (typeof onMouseLeave === 'function') onMouseLeave();
             }}
+            is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={has_ended}
@@ -116,8 +118,8 @@ const PositionsDrawerCard = ({
     const supported_contract_card = (
         <div
             className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
+                'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
             })}
             onClick={() => toggleUnsupportedContractModal(true)}
         >
@@ -128,8 +130,8 @@ const PositionsDrawerCard = ({
     const unsupported_contract_card = is_link_disabled ? (
         <div
             className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
+                'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
             })}
         >
             {contract_info.underlying ? contract_el : loader_el}
@@ -137,8 +139,8 @@ const PositionsDrawerCard = ({
     ) : (
         <NavLink
             className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
+                'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
             })}
             to={{
                 pathname: `/contract/${contract_info.contract_id}`,

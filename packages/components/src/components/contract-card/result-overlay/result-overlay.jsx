@@ -30,6 +30,7 @@ const ResultOverlay = ({
     contract_id,
     getCardLabels,
     getContractPath,
+    // is_accumulator,
     is_positions,
     is_unsupported,
     is_visible,
@@ -62,6 +63,7 @@ const ResultOverlay = ({
                     id={`dc_contract_card_${contract_id}_result`}
                     className={classNames('dc-contract-card__result', {
                         'dc-result__positions-overlay': is_positions,
+                        // 'dc-result__positions-overlay-accumulator': is_accumulator,
                         'dc-contract-card__result--won': is_contract_won,
                         'dc-contract-card__result--lost': !is_contract_won,
                     })}

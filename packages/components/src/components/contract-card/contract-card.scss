@@ -154,6 +154,11 @@
             transform: translateY(-16px);
         }
     }
+    // &__wrapper-accumulator {
+    //     margin: auto;
+    //     width: 22.4rem;
+    //     max-width: 22.4rem;
+    // }
     .purchase-price,
     .potential-payout {
         &-container {
@@ -548,7 +553,7 @@
         line-height: 1.5;
         text-align: left;
 
-        &-multiplier {
+        &-parameter {
             font-size: 1rem;
             line-height: 1rem;
             color: var(--text-less-prominent);

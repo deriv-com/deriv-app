@@ -22,12 +22,9 @@ const RadioButtonGroup = ({
         <div className={className}>
             {is_title_enabled && (
                 <h2
-                    className={
-                        (`${className}--is-header`,
-                        {
-                            'currency-selector__is-crypto': !is_fiat,
-                        })
-                    }
+                    className={classNames(`${className}--is-header`, {
+                        'currency-selector__is-crypto': !is_fiat,
+                    })}
                 >
                     {label}
                 </h2>

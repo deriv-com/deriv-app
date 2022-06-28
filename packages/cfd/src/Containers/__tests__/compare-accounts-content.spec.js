@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import CompareAccountsContent from '../compare-accounts-content';
+import { notDeepEqual } from 'assert';
 
 beforeAll(() => {
     const modal_root_el = document.createElement('div');
@@ -9,12 +10,6 @@ beforeAll(() => {
 });
 
 describe('should render the CompareAccountsContent component properly', () => {
-    const only_gaming_company = {
-        mt_gaming_company: {
-            financial: 'USD',
-        },
-    };
-
     const all_landing_companies = {
         mt_gaming_company: {
             financial: 'USD',
@@ -31,7 +26,7 @@ describe('should render the CompareAccountsContent component properly', () => {
         show_eu_related: 'false',
         residence: 'idn',
         is_eu: 'false',
-        is_uk: 'true',
+        is_uk: 'false',
     };
 
     it('should render the component', () => {
@@ -157,8 +152,15 @@ describe('should render the CompareAccountsContent component properly', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render the correct content for the only_gaming_company', () => {
-        render(<CompareAccountsContent {...mock_props} landing_companies={only_gaming_company} />);
-        expect(screen.getAllByText(/Synthetic/i)[0]).toBeInTheDocument();
+    it('should render the correct content for the DerivX platform', () => {
+        render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} platform='dxtrade' />);
+
+        expect(screen.getAllByText(/Account currency/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText('EUR/GBP')[0]).toBeInTheDocument();
+        expect(screen.getByText(/Number of assets/i)).toBeInTheDocument();
+        expect(screen.getByText(/90+/i)).toBeInTheDocument();
+        expect(
+            screen.getByText('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)')
+        ).toBeInTheDocument();
     });
 });

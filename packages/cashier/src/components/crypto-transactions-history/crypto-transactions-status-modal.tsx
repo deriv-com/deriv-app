@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { TReactMouseEvent, RootStore } from 'Types';
 
 type TCryptoTransactionsStatusModalProps = {
-    hideCryptoTransactionsStatusModal: (e: React.MouseEvent<HTMLElement>) => void;
+    hideCryptoTransactionsStatusModal: (e: TReactMouseEvent) => void;
     is_status_modal_visible: boolean;
     selected_crypto_status: string;
     selected_crypto_status_description: string;

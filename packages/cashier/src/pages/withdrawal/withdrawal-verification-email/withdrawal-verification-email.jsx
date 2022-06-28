@@ -13,7 +13,6 @@ const WithdrawalVerificationEmail = ({
     currency,
     is_email_sent,
     is_resend_clicked,
-    resend_timeout,
     resendVerificationEmail,
     recentTransactionOnMount,
     sendVerificationEmail,
@@ -29,7 +28,7 @@ const WithdrawalVerificationEmail = ({
                 <VerificationEmail
                     is_email_sent={is_email_sent}
                     is_resend_clicked={is_resend_clicked}
-                    resend_timeout={resend_timeout}
+                    is_withdrawal
                     resendVerificationEmail={resendVerificationEmail}
                     sendVerificationEmail={sendVerificationEmail}
                     setIsResendClicked={setIsResendClicked}
@@ -67,7 +66,6 @@ WithdrawalVerificationEmail.propTypes = {
     crypto_transactions: PropTypes.array,
     is_email_sent: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
-    resend_timeout: PropTypes.number,
     recentTransactionOnMount: PropTypes.func,
     resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
@@ -79,7 +77,6 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     is_email_sent: modules.cashier.withdraw.verification.is_email_sent,
     is_resend_clicked: modules.cashier.withdraw.verification.is_resend_clicked,
-    resend_timeout: modules.cashier.withdraw.verification.resend_timeout,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     resendVerificationEmail: modules.cashier.withdraw.verification.resendVerificationEmail,
     sendVerificationEmail: modules.cashier.withdraw.verification.sendVerificationEmail,

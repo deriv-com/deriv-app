@@ -1,5 +1,4 @@
 import moment from 'moment/min/moment-with-locales';
-import { getLanguage } from '@deriv/translations';
 
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed
@@ -8,7 +7,7 @@ moment.createFromInputFallback = function (config) {
 };
 
 // Localize moment instance with specific object
-export const initMoment = () => moment.locale(getLanguage());
+export const initMoment = lang => moment.locale(lang);
 
 /**
  * Convert epoch to moment object

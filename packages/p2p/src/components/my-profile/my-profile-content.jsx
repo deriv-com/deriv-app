@@ -9,6 +9,7 @@ import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
 import BlockUserTable from '../advertiser-page/block-user/block-user-table.jsx';
 import BlockUserModal from '../advertiser-page/block-user/block-user-modal.jsx';
+import BlockUserEmpty from 'Components/advertiser-page/block-user/block-user-empty';
 
 const MyProfileContent = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
@@ -58,8 +59,8 @@ const MyProfileContent = () => {
                     <MobileFullPageModal
                         body_className='payment-methods-list__modal'
                         height_offset='80px'
-                        is_flex
                         is_modal_open
+                        is_flex
                         page_header_className='buy-sell__modal-header'
                         page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
@@ -69,6 +70,9 @@ const MyProfileContent = () => {
                 </MobileWrapper>
             </React.Fragment>
         );
+    } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
+        // TODO: Add search box and integrate list of blocked users once blocked user list is merged
+        return <BlockUserEmpty />;
     }
     return <MyProfileStats />;
 };

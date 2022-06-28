@@ -116,7 +116,10 @@ const JurisdictionModal = ({
                             />
                             <Modal.Footer>
                                 <Button
-                                    disabled={jurisdiction_selected_card === undefined || (is_eu && !checked)}
+                                    disabled={
+                                        jurisdiction_selected_card === undefined ||
+                                        (is_eu && is_fully_authenticated && !checked)
+                                    }
                                     primary
                                 >
                                     Next

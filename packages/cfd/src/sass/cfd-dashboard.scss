@@ -520,7 +520,17 @@
         }
     }
 
-    &__jurisdiction-checkbox &__over-header {
+    &__jurisdiction-checkbox {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.6rem;
+
+        &--desciption {
+            color: #333333;
+        }
+    }
+
+    &__over-header {
         background-color: #dfeaff;
         top: -1rem;
         left: 1.4rem;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text, Checkbox } from '@deriv/components';
 import { PoaStatusCodes } from '@deriv/account';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -184,7 +184,7 @@ const JurisdictionModalContent = ({
                     >
                         <div className='cfd-jurisdiction-card__over-header'>
                             <p>
-                                <Localize i18n_default_text='Better leverage & spreads' />
+                                <Localize i18n_default_text='Better leverage and spreads' />
                             </p>
                         </div>
                         <h1>
@@ -330,15 +330,15 @@ const JurisdictionModalContent = ({
                 )}
             </div>
             <ModalFootNote />
-            {is_eu && is_fully_authenticated && (
-                <div>
-                    <input type='checkbox' checked={checked} onChange={() => setChecked(!checked)} />
+            {is_eu && (
+                <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
+                    <Checkbox onChange={() => setChecked(!checked)} />
                     <Text
                         as='p'
                         align='center'
                         size='xs'
                         line_height='xs'
-                        className='cfd-jurisdiction-card__jurisdiction-checkbox'
+                        className='cfd-jurisdiction-card____jurisdiction-checkbox--description'
                     >
                         I confirm and accept Deriv Investments (Europe) Limited 's Terms and Conditions
                     </Text>

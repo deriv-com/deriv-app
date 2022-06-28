@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { routes, initMoment } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -55,7 +55,6 @@ const App = props => {
 
     React.useEffect(() => {
         setLanguage(lang);
-        initMoment();
     }, [lang]);
 
     return (

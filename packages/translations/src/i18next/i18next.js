@@ -2,6 +2,7 @@ import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { initMoment } from '@deriv/shared';
 import { isProduction } from '../../../shared/src/utils/config/config';
 import withI18n from '../components';
 
@@ -168,6 +169,8 @@ export const useOnLoadTranslation = () => {
 
         return () => i18n.store.off('added');
     }, []);
+
+    initMoment(i18n.language);
 
     return [is_loaded, setLoaded];
 };

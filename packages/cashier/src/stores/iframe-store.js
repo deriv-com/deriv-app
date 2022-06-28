@@ -68,14 +68,12 @@ export default class IframeStore {
 
     @action.bound
     setIframeUrl(url, container = this.root_store.modules.cashier.general_store.active_container) {
-        const { client, ui } = this.root_store;
+        const { client } = this.root_store;
 
+        this.iframe_url = url;
         if (url) {
-            this.iframe_url = `${url}&dark_mode=${ui.is_dark_mode_on ? 'on' : 'off'}`;
             // after we set iframe url we can clear verification code
             client.setVerificationCode('', Constants.map_action[container]);
-        } else {
-            this.iframe_url = url;
         }
     }
 

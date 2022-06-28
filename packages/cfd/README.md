@@ -42,4 +42,7 @@ src
 
 ## Troubleshooting
 
--   **Icon missing:** If the icons are missing, you only need to build this project.
+-   **Icon missing:** If the icons are missing, you only need to build this project. You can do this by running the build command:
+
+```console
+npm run build

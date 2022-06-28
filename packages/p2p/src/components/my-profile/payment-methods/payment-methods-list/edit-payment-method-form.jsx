@@ -3,65 +3,16 @@ import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
+import { usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
+import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal';
+import classNames from 'classnames';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
-
-    const validateFields = values => {
-        const errors = {};
-        const no_symbols_regex = /^[a-zA-Z0-9\\\s.@_+-]+$/;
-        const no_symbols_message = localize(
-            'This field can only include letters, numbers, spaces, and any of these symbols: -+._@'
-        );
-        const max_characters_error_message = localize('This field has exceeded maximum length of 200 characters.');
-
-        if (values.account) {
-            if (!no_symbols_regex.test(values.account)) {
-                errors.account = no_symbols_message;
-            } else if (values.account.length > 200) {
-                errors.account = max_characters_error_message;
-            }
-        }
-
-        if (values.bank_name) {
-            if (!no_symbols_regex.test(values.bank_name)) {
-                errors.bank_name = no_symbols_message;
-            } else if (values.bank_name.length > 200) {
-                errors.bank_name = max_characters_error_message;
-            }
-        }
-
-        if (values.branch) {
-            if (!no_symbols_regex.test(values.branch)) {
-                errors.branch = no_symbols_message;
-            } else if (values.branch.length > 200) {
-                errors.branch = max_characters_error_message;
-            }
-        }
-
-        if (values.instructions) {
-            if (!no_symbols_regex.test(values.instructions)) {
-                errors.instructions = no_symbols_message;
-            } else if (values.instructions.length > 200) {
-                errors.instructions = max_characters_error_message;
-            }
-        }
-
-        if (values.name) {
-            if (!no_symbols_regex.test(values.name)) {
-                errors.name = no_symbols_message;
-            } else if (values.name.length > 200) {
-                errors.name = max_characters_error_message;
-            }
-        }
-
-        return errors;
-    };
+    const validateFields = usePaymentMethodValidator();
 
     React.useEffect(() => {
-        my_profile_store.getAdvertiserPaymentMethods();
-
         return () => {
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
@@ -75,6 +26,7 @@ const EditPaymentMethodForm = () => {
 
     return (
         <React.Fragment>
+            <CancelEditPaymentMethodModal />
             <Formik
                 enableReinitialize
                 initialValues={my_profile_store.initial_values}
@@ -120,7 +72,10 @@ const EditPaymentMethodForm = () => {
                                                                 : payment_method_field[1].type
                                                         }
                                                         label={payment_method_field[1].display_name}
-                                                        className='add-payment-method-form__payment-method-field'
+                                                        className={classNames({
+                                                            'add-payment-method-form__payment-method-field':
+                                                                !errors[payment_method_field[0]]?.length,
+                                                        })}
                                                         onChange={handleChange}
                                                         name={payment_method_field[0]}
                                                         required={!!payment_method_field[1].required}
@@ -136,8 +91,12 @@ const EditPaymentMethodForm = () => {
                                     secondary
                                     large
                                     onClick={() => {
-                                        my_profile_store.setShouldShowEditPaymentMethodForm(false);
-                                        my_profile_store.setPaymentMethodToEdit();
+                                        if (dirty) {
+                                            my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                        } else {
+                                            my_profile_store.setPaymentMethodToEdit(null);
+                                            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                        }
                                     }}
                                     type='button'
                                 >
@@ -147,7 +106,7 @@ const EditPaymentMethodForm = () => {
                                     className='add-payment-method-form__buttons--add'
                                     primary
                                     large
-                                    is_disabled={isSubmitting || !dirty}
+                                    is_disabled={isSubmitting || !dirty || !!Object.keys(errors)?.length}
                                 >
                                     <Localize i18n_default_text='Save changes' />
                                 </Button>

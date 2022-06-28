@@ -112,6 +112,7 @@ export const icons =
         'IcCashierPromptPayLight',
         'IcCashierQrCodeDark',
         'IcCashierQrCodeLight',
+        'IcCashierRedWarning',
         'IcCashierSendEmail',
         'IcCashierSepaDark',
         'IcCashierSepaLight',
@@ -245,6 +246,7 @@ export const icons =
         'IcEmailSent',
         'IcEmailSpam',
         'IcEmailTypo',
+        'IcEmailVerified',
         'IcEmail',
         'IcEmptyFolder',
         'IcEye',
@@ -439,7 +441,7 @@ export const icons =
         'IcCurrencyUst',
         'IcCurrencyVirtual'
     ],
-    dxtrade: [
+    'dxtrade': [
         'IcDxtradeDeviceDesktopLight',
         'IcDxtradeDeviceDesktop',
         'IcDxtradeDeviceLaptopLight',
@@ -790,6 +792,6 @@ export const icons =
         'IcWalletWebmoneyLight',
         'IcWalletWebmoney',
         'IcWalletZingpayDark',
-        'IcWalletZingpayLight'
-    ]
+        'IcWalletZingpayLight',
+    ],
 }

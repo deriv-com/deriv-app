@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
-import CountrySelector from 'Components/poi-country-selector';
-import IdvDocumentSubmit from 'Components/poi-idv-document-submit';
-import IdvUploadComplete from 'Components/poi-idv-submit-complete';
-import Unsupported from 'Components/poi-unsupported';
-import UploadComplete from 'Components/poi-upload-complete';
+import CountrySelector from 'Components/poi/poi-country-selector';
+import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
+import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
+import Unsupported from 'Components/poi/status/unsupported';
+import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
@@ -66,36 +67,39 @@ const POISubmission = ({
     );
 
     React.useEffect(() => {
-        if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
-            switch (identity_last_attempt.service) {
-                case service_code.idv: {
-                    if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
-                        setSubmissionStatus(submission_status_code.selecting);
-                    } else {
-                        setSubmissionService(service_code.manual);
+        if (submission_status !== submission_status_code.complete) {
+            if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
+                switch (identity_last_attempt.service) {
+                    case service_code.idv: {
+                        if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
+                            setSubmissionStatus(submission_status_code.selecting);
+                        } else {
+                            setSubmissionService(service_code.manual);
+                            setSubmissionStatus(submission_status_code.submitting);
+                        }
+                        break;
+                    }
+                    case service_code.onfido: {
+                        if (Number(onfido.submissions_left) > 0) {
+                            setSubmissionStatus(submission_status_code.selecting);
+                        } else {
+                            setSubmissionService(service_code.manual);
+                            setSubmissionStatus(submission_status_code.submitting);
+                        }
+                        break;
+                    }
+                    case service_code.manual: {
+                        setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
                         setSubmissionStatus(submission_status_code.submitting);
-                    }
-                    break;
-                }
-                case service_code.onfido: {
-                    if (Number(onfido.submissions_left) > 0) {
-                        setSubmissionStatus(submission_status_code.selecting);
-                    } else {
                         setSubmissionService(service_code.manual);
+                        break;
                     }
-                    break;
+                    default:
+                        break;
                 }
-                case service_code.manual: {
-                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
-                    setSubmissionStatus(submission_status_code.submitting);
-                    setSubmissionService(service_code.manual);
-                    break;
-                }
-                default:
-                    break;
+            } else {
+                setSubmissionStatus(submission_status_code.selecting);
             }
-        } else {
-            setSubmissionStatus(submission_status_code.selecting);
         }
     }, [
         allow_poi_resubmission,

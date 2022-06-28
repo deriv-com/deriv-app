@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import PropTypes from 'prop-types';
 
 const PaymentMethodCard = ({
     add_payment_method,
@@ -14,11 +15,11 @@ const PaymentMethodCard = ({
     onClick = () => {},
     onClickAdd = () => {},
     payment_method,
+    show_payment_method_name = true,
     small,
     style,
 }) => {
     const { my_profile_store } = useStores();
-
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.fields?.account?.display_name;
@@ -104,11 +105,10 @@ const PaymentMethodCard = ({
             </div>
             <div className='payment-method-card__body'>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {method === 'BankTransfer' || method === 'Other'
-                        ? payment_method?.display_name
-                        : payment_account_name}
+                    {!['BankTransfer', 'Other'].includes(method)
+                        ? payment_account_name
+                        : show_payment_method_name && payment_method?.display_name}
                 </Text>
-
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
                     {payment_bank_name || payment_name}
                 </Text>
@@ -118,6 +118,21 @@ const PaymentMethodCard = ({
             </div>
         </div>
     );
+};
+
+PaymentMethodCard.propTypes = {
+    add_payment_method: PropTypes.string,
+    is_add: PropTypes.bool,
+    is_vertical_ellipsis_visible: PropTypes.bool,
+    show_payment_method_name: PropTypes.bool,
+    label: PropTypes.string,
+    large: PropTypes.bool,
+    medium: PropTypes.bool,
+    onClick: PropTypes.func,
+    onClickAdd: PropTypes.func,
+    payment_method: PropTypes.object,
+    small: PropTypes.bool,
+    style: PropTypes.object,
 };
 
 export default PaymentMethodCard;

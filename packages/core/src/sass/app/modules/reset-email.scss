@@ -1,0 +1,104 @@
+/* @define reset-email */
+.reset-email {
+    .dc-dialog__content {
+        margin-bottom: 0;
+    }
+    &__email-selection {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-flow: nowrap column;
+        .reset-email__heading {
+            margin-bottom: 1.6rem;
+        }
+        .reset-email__descripton {
+            margin-bottom: 2rem;
+        }
+    }
+    &__subtext {
+        color: var(--status-danger);
+        position: relative;
+        bottom: 3rem;
+    }
+    &__heading {
+        margin-bottom: 0.8rem;
+    }
+    &__text {
+        text-align: center;
+        margin-bottom: 3.3rem;
+    }
+    &__btn {
+        margin: 0;
+        background-color: var(--button-primary-default);
+        font-weight: bold;
+        align-self: flex-end;
+        color: var(--text-colored-background);
+        font-size: 1.2rem;
+
+        &:hover {
+            background-color: var(--button-primary-hover);
+        }
+        &--disabled {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+    }
+    &__fieldset {
+        position: relative;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    &__email-field {
+        /* postcss-bem-linter: ignore */
+        & > label {
+            top: 0.9rem;
+            background-color: var(--general-main-2);
+        }
+    }
+}
+
+.change-email-update {
+    display: grid;
+    padding: 3.2rem 0;
+    &__modal {
+        &-content {
+            display: grid;
+            grid-gap: 8px;
+        }
+        &-close {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 1.2rem;
+            cursor: pointer;
+        }
+        &-title {
+            margin: 0.8rem 2.4rem;
+            text-align: center;
+        }
+        &-description {
+            text-align: center;
+            margin: 0 2rem;
+        }
+        &-icon {
+            width: 100%;
+            text-align: center;
+            margin-top: 1.6rem;
+            padding-top: 0;
+            padding-bottom: 1.6rem;
+            align-self: center;
+        }
+    }
+    &__footer {
+        justify-content: center;
+    }
+}
+
+.email-confirmation {
+    margin: 0.5rem 2.4rem 1.7rem;
+    word-break: break-word;
+
+    &__currentEmail {
+        color: var(--status-danger);
+        font-style: italic;
+    }
+}

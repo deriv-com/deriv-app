@@ -33,6 +33,8 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
 
         return () => {
             disposeFloatingWrapper();
+            my_profile_store.setSelectedPaymentMethod('');
+            my_profile_store.setSelectedPaymentMethodDisplayName('');
         };
     }, []);
 
@@ -58,9 +60,8 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
                     large
                     onClick={() => {
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                        my_profile_store.setSelectedPaymentMethod('');
-                        my_profile_store.setSelectedPaymentMethodDisplayName('');
                         my_profile_store.hideAddPaymentMethodForm();
+                        my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
                         my_ads_store.setShouldShowAddPaymentMethodModal(false);
                     }}
                     secondary

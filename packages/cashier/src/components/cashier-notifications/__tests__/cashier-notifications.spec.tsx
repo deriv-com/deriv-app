@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import CashierNotifications from '../cashier-notifications';
 
 jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+    const original_module = jest.requireActual('@deriv/components') as any;
 
     return {
         ...original_module,

@@ -188,19 +188,19 @@ const ToolBox = ({ blockly }) => {
         classes={"toolbox-button icon-sort"}
       />
       {/* Needs Refactor ClientInfo Structure */}
-      <span className={classNames("toolbox-separator",{"toolbox-hide":!has_active_token})} />
+      <span className={classNames("toolbox-separator")} />
       <ToolboxButton 
         id={"showSummary"}
         tooltip={translate("Show/hide the summary pop-up")}
         position={"bottom"}
-        classes={classNames("toolbox-button icon-summary",{"toolbox-hide":!has_active_token})}
+        classes={classNames("toolbox-button icon-summary",{"toolbox-hide": !has_active_token || is_loading_balance})}
       />
       <ToolboxButton 
         id_container="runButton"
         tooltip={translate("Run the bot")} 
         position="bottom"
         onClick={() => globalObserver.emit("blockly.start")}
-        classes={classNames("toolbox-button icon-run",{"toolbox-hide":!has_active_token || is_loading_balance})}
+        classes={classNames("toolbox-button icon-run",{"toolbox-hide": is_loading_balance})}
         is_bot_running={is_bot_running}
       />
       <ToolboxButton 
@@ -208,7 +208,7 @@ const ToolBox = ({ blockly }) => {
         tooltip={translate("Stop the bot")}  
         position="bottom"
         onClick={()=>{globalObserver.emit("blockly.stop")}}
-        classes={classNames("toolbox-button icon-stop",{"toolbox-hide":!has_active_token})}
+        classes={classNames("toolbox-button icon-stop")}
       />
       <ToolboxButton 
         id={"logButton"}

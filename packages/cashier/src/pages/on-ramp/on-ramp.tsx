@@ -4,21 +4,25 @@ import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
+import { RootStore, TProvider } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import SideNote from 'Components/side-note';
-import RootStore from 'Stores/types';
+
 import './on-ramp.scss';
 
 type TOnRampProps = {
-    filtered_onramp_providers: any[];
+    filtered_onramp_providers: TProvider[];
     is_cashier_locked: boolean;
     is_cashier_onboarding: boolean;
     is_deposit_locked: boolean;
     is_onramp_modal_open: boolean;
     is_switching: boolean;
     is_loading: boolean;
-    menu_options: any[];
+    menu_options: {
+        label: string;
+        path: string;
+    }[];
     onMountOnramp: () => void;
     onUnmountOnramp: () => void;
     onramp_popup_modal_title: string;

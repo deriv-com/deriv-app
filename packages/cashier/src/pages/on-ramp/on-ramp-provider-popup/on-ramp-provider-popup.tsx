@@ -4,8 +4,7 @@ import { Button, HintBox, Icon, Loading, Popover, Text } from '@deriv/components
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
-import { TProvider } from 'Types/provider.types';
+import { RootStore, TProvider } from 'Types';
 
 type TOnRampProviderPopupProps = {
     api_error: string;

@@ -155,7 +155,7 @@ describe('<OnRamp />', () => {
             },
         ];
 
-        const { container } = render(<OnRamp {...props} />);
+        render(<OnRamp {...props} />);
         const select = screen.getByTestId('dt_on_ramp_select_native');
 
         fireEvent.change(select, { target: { value: routes.cashier_deposit } });

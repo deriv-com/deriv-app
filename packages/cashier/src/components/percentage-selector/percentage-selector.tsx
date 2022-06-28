@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { TReactMouseEvent } from 'Types';
 
 type TPercentageSelectorProps = {
     amount: number;
@@ -45,7 +46,7 @@ const PercentageSelector = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [from_account, to_account]);
 
-    const calculateAmount = (e: TCalculateAmountInputEvent | React.MouseEvent, percent: number) => {
+    const calculateAmount = (e: TCalculateAmountInputEvent | TReactMouseEvent, percent: number) => {
         let new_percentage = percent;
         const is_percentage_selected = percent > 0 && percent <= selected_percentage;
         if (is_percentage_selected) new_percentage -= 25;

@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
 import { observeOpenContract } from './OpenContract';
 import { checkProposalReady, observeProposals, makeProposals } from './Proposal';
-import Sell from './Sell';
 import { start } from './state/actions';
 import * as constants from './state/constants';
 import { watchTicks } from './Ticks';
@@ -65,9 +64,8 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Sell(class {}) {
+export default class TradeEngine {
     constructor() {
-        super();
         globalObserver.register('statistics.clear', clearStatistics);
         this.$scope = $scope;
         observeOpenContract();

@@ -1,6 +1,6 @@
 import { observer as globalObserver } from '../../../utils/observer';
 import { createDetails } from '../utils/helpers';
-import { isSellAtMarketAvailable } from '../trade/Sell';
+import { isSellAtMarketAvailable, sellAtMarket } from '../trade/Sell';
 import { getSellPrice } from '../trade/OpenContract';
 import { purchase } from '../trade/Purchase';
 import { getPurchaseReference } from '../trade/Proposal';
@@ -17,7 +17,7 @@ const getBotInterface = tradeEngine => {
         getPayout: contract_type => Number(getProposal(contract_type, tradeEngine).payout),
         getPurchaseReference: () => getPurchaseReference(),
         isSellAvailable: () => isSellAtMarketAvailable(),
-        sellAtMarket: () => tradeEngine.sellAtMarket(),
+        sellAtMarket: () => sellAtMarket(),
         getSellPrice: () => getSellPrice(),
         isResult: result => getDetail(10) === result,
         isTradeAgain: result => globalObserver.emit('bot.trade_again', result),

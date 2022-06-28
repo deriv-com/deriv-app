@@ -2,34 +2,57 @@
   @deriv/p2p
 </h1>
 
-**In this document**
+This repository is a workspace of [deriv-app](../../README.md) monorepo and covers the components and logics of [p2p](https://app.deriv.com/cashier/p2p) from cashier menu in app.deriv.com .
 
--   [Pre-installation](#pre-installation)
--   [Quick start](#quick-start)
+> to access the p2p section you need to login and switch to your real account.
 
-## Pre-installation
+**these are the routes used in app.deriv.com for this package:**
 
--   node >= 14.17.1
--   npm >= 7.1.0
+```
+    cashier_p2p: '/cashier/p2p',
+    cashier_p2p_verification: '/cashier/p2p/verification',
+    cashier_pa_transfer: '/cashier/payment-agent-transfer',
+```
 
-## Quick start
+## How to Install the Project
 
-1.  **Install your dependencies:**
+You need to follow the instructions [here](../../README.md).
 
-    ```sh
-    npm ci
-    ```
+## How To Work With This Project
 
-2.  **To build publish file:**
+To run and work on this workspace you need to use `npm run serve cfd` command along with `npm run serve core`.
+Webpack will watch changes in `p2p` so that if you made any changes in this package, it will automatically rebuild `p2p` and recompile `core`.
 
-    ```sh
-    npm run build
-    ```
+**Libary usage:**
 
-3.  **Libary usage:**
+```
+import P2P from '@deriv/p2p';
 
-    ```js
-    import P2P from '@deriv/p2p';
+<P2P />;
+```
 
-    <P2P />;
-    ```
+## Folder Structure
+
+```
+crowdin
+    ├── message.json
+scripts
+    ├── extract-string.js
+    ├── extract-translations.js
+    ├── update-translations.sh
+src
+    ├── assets
+    ├── components
+    ├── constants
+    ├── stores
+    ├── translations
+    ├── utils
+    │   ├── validations.js
+    │   ├── websocket.js
+
+// message.json ??
+// scripts ??
+// websocket ??
+```
+
+## Troubleshooting

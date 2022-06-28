@@ -3,6 +3,12 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken from '../api-token';
 
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
+
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getPropertyValue: jest.fn().mockReturnValue([]),
@@ -15,6 +21,17 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
 }));
+
+let modal_root_el;
+beforeAll(() => {
+    modal_root_el = document.createElement('div');
+    modal_root_el.setAttribute('id', 'modal_root');
+    document.body.appendChild(modal_root_el);
+});
+
+afterAll(() => {
+    document.body.removeChild(modal_root_el);
+});
 
 describe('<ApiToken/>', () => {
     const admin_scope_description =

@@ -62,7 +62,12 @@ export const removeTrailingZeros = value => {
 };
 
 const formatInput = (input, unit) => {
-    return parseFloat(input.replace(/,/g, '')) % 1 === 0
-        ? `${input}.00 ${unit ? unit.trim() : ''}`
-        : `${input} ${unit ? unit.trim() : ''}`;
+    const plain_input = input.replace(/,/g, '');
+    if (parseFloat(plain_input) % 1 === 0) {
+        return `${input}.00 ${unit ? unit.trim() : ''}`;
+    }
+    if (plain_input.split('.')[1].length === 1) {
+        return `${input}0 ${unit ? unit.trim() : ''}`;
+    }
+    return `${input} ${unit ? unit.trim() : ''}`;
 };

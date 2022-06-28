@@ -1,10 +1,10 @@
-import { Table, Text, Icon } from '@deriv/components';
+import { Button, Table, Text, Icon } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
@@ -179,7 +179,10 @@ const OrderRow = ({ style, row: order }) => {
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
                     ) : (
-                        order_purchase_datetime
+                        <Button className='orders__table-button' onClick={() => {}} secondary small>
+                            <Icon className='orders__table-icon' icon='IcFullStar' size={16} />
+                            <Localize i18n_default_text='Rate' />
+                        </Button>
                     )}
                 </Table.Cell>
             </Table.Row>

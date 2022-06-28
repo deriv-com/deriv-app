@@ -169,6 +169,14 @@
             flex-direction: column;
         }
 
+        &-button {
+            margin-left: auto;
+        }
+
+        &-icon {
+            padding-right: 0.5rem;
+        }
+
         &-row {
             padding: 2.4rem;
             cursor: pointer;

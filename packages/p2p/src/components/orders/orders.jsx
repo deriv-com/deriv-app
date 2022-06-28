@@ -6,6 +6,7 @@ import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useStores } from 'Stores';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
+import OrdersUserRatingModal from './orders-user-rating-modal/orders-user-rating-modal.jsx';
 
 const Orders = observer(() => {
     const { order_store } = useStores();
@@ -48,6 +49,7 @@ const Orders = observer(() => {
 
     return (
         <div className='orders'>
+            <OrdersUserRatingModal />
             <OrderTable />
         </div>
     );

@@ -15,6 +15,9 @@ type TJurisdictionModalContent = {
     poa_status: string;
     poi_status: string;
     is_eu: boolean;
+    is_fully_authenticated: boolean;
+    checked: boolean;
+    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const JurisdictionModalContent = ({
@@ -26,6 +29,9 @@ const JurisdictionModalContent = ({
     poa_status,
     poi_status,
     is_eu,
+    is_fully_authenticated,
+    checked,
+    setChecked,
 }: TJurisdictionModalContent) => {
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
@@ -324,6 +330,20 @@ const JurisdictionModalContent = ({
                 )}
             </div>
             <ModalFootNote />
+            {is_eu && is_fully_authenticated && (
+                <div>
+                    <input type='checkbox' checked={checked} onChange={() => setChecked(!checked)} />
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__jurisdiction-checkbox'
+                    >
+                        I confirm and accept Deriv Investments (Europe) Limited 's Terms and Conditions
+                    </Text>
+                </div>
+            )}
         </>
     );
 };

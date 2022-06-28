@@ -47,6 +47,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     jurisdiction_selected_card: boolean;
     toggleJurisdictionModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    is_fully_authenticated: boolean;
 };
 
 const JurisdictionModal = ({
@@ -61,7 +62,10 @@ const JurisdictionModal = ({
     jurisdiction_selected_card,
     toggleJurisdictionModal,
     trading_platform_available_accounts,
+    is_fully_authenticated,
 }: TJurisdictionModalProps) => {
+    const [checked, setChecked] = React.useState<boolean>(false);
+
     const financial_available_accounts = trading_platform_available_accounts.filter(
         available_account => available_account.market_type === 'financial'
     );
@@ -106,9 +110,15 @@ const JurisdictionModal = ({
                                 poa_status={poa_status}
                                 poi_status={poi_status}
                                 is_eu={is_eu}
+                                is_fully_authenticated={is_fully_authenticated}
+                                checked={checked}
+                                setChecked={setChecked}
                             />
                             <Modal.Footer>
-                                <Button disabled={jurisdiction_selected_card === undefined} primary>
+                                <Button
+                                    disabled={jurisdiction_selected_card === undefined || (is_eu && !checked)}
+                                    primary
+                                >
                                     Next
                                 </Button>
                             </Modal.Footer>
@@ -130,6 +140,9 @@ const JurisdictionModal = ({
                                 poa_status={poa_status}
                                 poi_status={poi_status}
                                 is_eu={is_eu}
+                                is_fully_authenticated={is_fully_authenticated}
+                                checked={checked}
+                                setChecked={setChecked}
                             />
                         </MobileDialog>
                     </MobileWrapper>
@@ -152,6 +165,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
+    is_fully_authenticated: client.is_fully_authenticated,
     residence: client.residence,
     jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,

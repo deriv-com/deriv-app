@@ -513,13 +513,14 @@
     &__footnote {
         margin-top: 2.4rem;
         color: #333333;
+        font-weight: bold;
 
         &--pending {
             color: #ffad3a;
         }
     }
 
-    &__over-header {
+    &__jurisdiction-checkbox &__over-header {
         background-color: #dfeaff;
         top: -1rem;
         left: 1.4rem;

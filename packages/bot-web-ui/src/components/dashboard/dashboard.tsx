@@ -2,12 +2,13 @@ import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
     const [active_index, setActiveTabIndex] = React.useState(0);
 
     return (
         <div className='dashboard__container'>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
+                {/* [Todo] needs to update tabs component children instead of using label property */}
                 <div label={localize('Dashboard')}>
                     <div>
                         <h1>Create or start a bot</h1>

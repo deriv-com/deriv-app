@@ -8,6 +8,8 @@ import $scope from '../utils/cliTools';
 import Store from './trade-engine-store';
 import { updateTotals } from './Total';
 
+let afterPromise;
+
 const setContractFlags = contract => {
     const { is_expired, is_valid_to_sell, is_sold } = contract;
     $scope.contract_flags.is_sold = Boolean(is_sold);
@@ -41,48 +43,45 @@ export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
         });
 };
 
-export default Engine =>
-    class OpenContract extends Engine {
-        observeOpenContract() {
-            ws.onMessage().subscribe(({ data }) => {
-                if (data.msg_type === 'proposal_open_contract') {
-                    const contract = data.proposal_open_contract;
+export const waitForAfter = () => {
+    return new Promise(resolve => {
+        afterPromise = resolve;
+    });
+};
 
-                    if (!contract && !expectedContractId(contract?.contract_id)) {
-                        return;
-                    }
+export const observeOpenContract = () => {
+    ws.onMessage().subscribe(({ data }) => {
+        if (data.msg_type === 'proposal_open_contract') {
+            const contract = data.proposal_open_contract;
 
-                    setContractFlags(contract);
+            if (!contract && !expectedContractId(contract?.contract_id)) {
+                return;
+            }
 
-                    $scope.data.contract = contract;
+            setContractFlags(contract);
 
-                    broadcastContract({ accountID: $scope.account_info.loginid, ...contract });
+            $scope.data.contract = contract;
 
-                    if ($scope.contract_flags.is_sold) {
-                        $scope.contract_id = '';
-                        clearTimeout(this.transaction_recovery_timeout);
-                        updateTotals(contract);
-                        contractStatus({
-                            id: 'contract.sold',
-                            data: contract.transaction_ids.sell,
-                            contract,
-                        });
+            broadcastContract({ accountID: $scope.account_info.loginid, ...contract });
 
-                        if (this.afterPromise) {
-                            this.afterPromise();
-                        }
+            if ($scope.contract_flags.is_sold) {
+                $scope.contract_id = '';
+                clearTimeout($scope.transaction_recovery_timeout);
+                updateTotals(contract);
+                contractStatus({
+                    id: 'contract.sold',
+                    data: contract.transaction_ids.sell,
+                    contract,
+                });
 
-                        Store.dispatch(sell());
-                    } else {
-                        Store.dispatch(openContractReceived());
-                    }
+                if (afterPromise) {
+                    afterPromise();
                 }
-            });
-        }
 
-        waitForAfter() {
-            return new Promise(resolve => {
-                this.afterPromise = resolve;
-            });
+                Store.dispatch(sell());
+            } else {
+                Store.dispatch(openContractReceived());
+            }
         }
-    };
+    });
+};

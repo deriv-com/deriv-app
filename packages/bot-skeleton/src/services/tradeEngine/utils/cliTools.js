@@ -26,6 +26,7 @@ export const createScope = () => {
         forget_proposal_ids: [],
     };
     const purchase_reference = '';
+    const transaction_recovery_timeout = '';
 
     return {
         api,
@@ -42,6 +43,7 @@ export const createScope = () => {
         proposal_templates,
         data,
         purchase_reference,
+        transaction_recovery_timeout,
     };
 };
 

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import OpenContract from './OpenContract';
+import { observeOpenContract } from './OpenContract';
 import { checkProposalReady, observeProposals, makeProposals } from './Proposal';
 import Sell from './Sell';
 import { start } from './state/actions';
@@ -65,12 +65,13 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Sell(OpenContract(class {})) {
+export default class TradeEngine extends Sell(class {}) {
     constructor() {
         super();
         globalObserver.register('statistics.clear', clearStatistics);
         this.$scope = $scope;
-        this.observe();
+        observeOpenContract();
+        observeProposals();
     }
     // eslint-disable-next-line class-methods-use-this
     init(...args) {
@@ -96,10 +97,5 @@ export default class TradeEngine extends Sell(OpenContract(class {})) {
         checkLimits(tradeOptions);
         makeProposals({ ...$scope.options, ...tradeOptions });
         checkProposalReady();
-    }
-
-    observe() {
-        this.observeOpenContract();
-        observeProposals();
     }
 }

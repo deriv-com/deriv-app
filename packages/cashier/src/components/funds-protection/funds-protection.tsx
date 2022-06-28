@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 import './funds-protection.scss';
 
 type TFundsProtectionProps = {

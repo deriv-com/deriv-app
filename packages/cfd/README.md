@@ -1,7 +1,7 @@
 # CFD (contract for difference)
 
 This repository is a workspace of [deriv-app](../../README.md) monorepo and contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://app.deriv.com) website.
-[DMT5](https://app.deriv.com/mt5) and [Deriv X](https://app.deriv.com/derivx) platforms are related to this workspace.
+This workspace covers the [DMT5](https://app.deriv.com/mt5) and [Deriv X](https://app.deriv.com/derivx) platforms.
 
 ## How to Install the Project
 

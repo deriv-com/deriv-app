@@ -15,8 +15,8 @@ const sleep = (arg = 1) => {
     );
 };
 
-const Interface = $scope => {
-    const tradeEngine = new TradeEngine($scope);
+const Interface = () => {
+    const tradeEngine = new TradeEngine();
     const getInterface = () => {
         return {
             ...getBotInterface(tradeEngine),

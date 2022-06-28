@@ -67,7 +67,6 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
 export default class TradeEngine {
     constructor() {
         globalObserver.register('statistics.clear', clearStatistics);
-        this.$scope = $scope;
         observeOpenContract();
         observeProposals();
     }

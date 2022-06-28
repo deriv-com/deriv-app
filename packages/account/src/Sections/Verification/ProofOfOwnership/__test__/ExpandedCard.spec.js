@@ -31,17 +31,17 @@ describe('ExpandedCard.jsx', () => {
         };
     });
     it('should display correct identifier', () => {
-        render(<ExpandedCard cardDetails={cardDetails} identifier={cardDetails.payment_method_identifier} />);
+        render(<ExpandedCard card_details={cardDetails} identifier={cardDetails.payment_method_identifier} />);
         const element = screen.getByText('Card Number', { exact: true });
         expect(element).toBeInTheDocument();
     });
     it('should show example link for credit/debit card', () => {
-        render(<ExpandedCard cardDetails={cardDetails} identifier={cardDetails.payment_method_identifier} />);
+        render(<ExpandedCard card_details={cardDetails} identifier={cardDetails.payment_method_identifier} />);
         const exampelLink = screen.getByText('See example');
         expect(exampelLink).toBeInTheDocument();
     });
     it('should format identifier', () => {
-        render(<ExpandedCard cardDetails={cardDetails} identifier={cardDetails.payment_method_identifier} />);
+        render(<ExpandedCard card_details={cardDetails} identifier={cardDetails.payment_method_identifier} />);
         const element = screen.getByDisplayValue(
             formatIdentifier(cardDetails.payment_method_identifier, cardDetails.icon),
             {

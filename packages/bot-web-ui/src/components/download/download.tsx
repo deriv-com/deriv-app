@@ -1,10 +1,22 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import PropTypes from 'prop-types';
+import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
-const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_clear_stat_disabled }) => {
+type TDownloadProps = {
+    onClickDownloadTransaction: () => void;
+    onClickDownloadJournal: () => void;
+    tab: string;
+    is_clear_stat_disabled: boolean;
+};
+
+const Download = ({
+    tab,
+    onClickDownloadTransaction,
+    onClickDownloadJournal,
+    is_clear_stat_disabled,
+}: TDownloadProps) => {
     let clickFunction, popover_message;
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
@@ -34,14 +46,7 @@ const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_
     );
 };
 
-Download.propTypes = {
-    onClickDownloadTransaction: PropTypes.func,
-    onClickDownloadJournal: PropTypes.func,
-    tab: PropTypes.string,
-    is_clear_stat_disabled: PropTypes.bool,
-};
-
-export default connect(({ download, run_panel }) => ({
+export default connect(({ download, run_panel }: RootStore) => ({
     onClickDownloadTransaction: download.onClickDownloadTransaction,
     onClickDownloadJournal: download.onClickDownloadJournal,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,

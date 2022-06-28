@@ -1,20 +1,18 @@
 import { localize } from '@deriv/translations';
-import { observeBalance } from './Balance';
 import OpenContract from './OpenContract';
-import Proposal from './Proposal';
+import Proposal, { checkProposalReady, observeProposals } from './Proposal';
 import Purchase from './Purchase';
 import Sell from './Sell';
 import { start } from './state/actions';
 import * as constants from './state/constants';
-import Ticks from './Ticks';
+import { watchTicks } from './Ticks';
 import { checkLimits, clearStatistics } from './Total';
-import { doUntilDone } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
-import api from '../../api/ws';
 import $scope from '../utils/cliTools';
 import Store from './trade-engine-store';
+import { loginAndGetBalance } from './Authenticate';
 
 const watchBefore = store =>
     watchScope({
@@ -68,23 +66,23 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Ticks(class {}))))) {
+export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(class {})))) {
     constructor() {
         super();
         globalObserver.register('statistics.clear', clearStatistics);
         this.$scope = $scope;
         this.observe();
     }
-
+    // eslint-disable-next-line class-methods-use-this
     init(...args) {
         const [token, options] = expectInitArg(args);
         const { symbol } = options;
 
         $scope.initArgs = args;
         $scope.options = options;
-        this.startPromise = this.loginAndGetBalance(token);
+        $scope.startPromise = loginAndGetBalance(token);
 
-        this.watchTicks(symbol);
+        watchTicks(symbol);
     }
 
     start(tradeOptions) {
@@ -98,59 +96,11 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         Store.dispatch(start());
         checkLimits(tradeOptions);
         this.makeProposals({ ...$scope.options, ...tradeOptions });
-        this.checkProposalReady();
-    }
-
-    loginAndGetBalance(token) {
-        if ($scope.token === token) {
-            return Promise.resolve();
-        }
-
-        doUntilDone(() => api.authorize(token)).catch(e => {
-            globalObserver.emit('Error', e);
-        });
-        return new Promise(resolve => {
-            // Try to recover from a situation where API doesn't give us a correct response on
-            // "proposal_open_contract" which would make the bot run forever. When there's a "sell"
-            // event, wait a couple seconds for the API to give us the correct "proposal_open_contract"
-            // response, if there's none after x seconds. Send an explicit request, which _should_
-            // solve the issue. This is a backup!
-            api.onMessage().subscribe(({ data }) => {
-                if (data.msg_type === 'transaction' && data.transaction.action === 'sell') {
-                    this.transaction_recovery_timeout = setTimeout(() => {
-                        const { contract } = $scope.data;
-                        const is_same_contract = contract.contract_id === data.transaction.contract_id;
-                        const is_open_contract = contract.status === 'open';
-                        if (is_same_contract && is_open_contract) {
-                            doUntilDone(() => {
-                                api.send({ proposal_open_contract: 1, contract_id: contract.contract_id });
-                            }, ['PriceMoved']);
-                        }
-                    }, 1500);
-                }
-                if (data.msg_type === 'authorize') {
-                    $scope.account_info = data;
-                    $scope.token = token;
-                    if (data?.loginid) {
-                        observeBalance(data.loginid);
-                    }
-                    // Only subscribe to balance in browser, not for tests.
-                    if (document) {
-                        doUntilDone(() => api.send({ balance: 1, subscribe: 1 })).then(r => {
-                            $scope.balance = Number(r.balance.balance);
-                            resolve();
-                        });
-                    } else {
-                        resolve();
-                    }
-                    doUntilDone(() => api.send({ transaction: 1, subscribe: 1 }));
-                }
-            });
-        });
+        checkProposalReady();
     }
 
     observe() {
         this.observeOpenContract();
-        this.observeProposals();
+        observeProposals();
     }
 }

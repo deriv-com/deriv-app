@@ -8,6 +8,7 @@ import TicksService from '../../api/ticks_service';
 import api from '../../api/ws';
 import $scope from '../utils/cliTools';
 import Store from './trade-engine-store';
+import { checkProposalReady } from './Proposal';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);
@@ -90,27 +91,24 @@ export const getLastDigitsFromList = ticks => {
     return digits;
 };
 
-export default Engine =>
-    class Ticks extends Engine {
-        watchTicks(symbol) {
-            if (symbol && $scope.symbol !== symbol) {
-                ticksService.stopMonitor({
-                    symbol,
-                    key: tickListenerKey,
-                });
+export const watchTicks = symbol => {
+    if (symbol && $scope.symbol !== symbol) {
+        ticksService.stopMonitor({
+            symbol,
+            key: tickListenerKey,
+        });
 
-                const callback = ticks => {
-                    this.checkProposalReady();
-                    const lastTick = ticks.slice(-1)[0];
-                    const { epoch } = lastTick;
-                    Store.dispatch({ type: constants.NEW_TICK, payload: epoch });
-                };
+        const callback = ticks => {
+            checkProposalReady();
+            const lastTick = ticks.slice(-1)[0];
+            const { epoch } = lastTick;
+            Store.dispatch({ type: constants.NEW_TICK, payload: epoch });
+        };
 
-                const key = ticksService.monitor({ symbol, callback });
+        const key = ticksService.monitor({ symbol, callback });
 
-                $scope.symbol = symbol;
+        $scope.symbol = symbol;
 
-                tickListenerKey = key;
-            }
-        }
-    };
+        tickListenerKey = key;
+    }
+};

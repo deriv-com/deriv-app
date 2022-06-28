@@ -92,6 +92,46 @@ export const renewProposalsOnPurchase = () => {
     unsubscribeProposals().then(() => requestProposals());
 };
 
+export const checkProposalReady = () => {
+    // Proposals are considered ready when the proposals in our memory match the ones
+    // we've requested from the API, we determine this by checking the passthrough of the response.
+    const { proposals } = $scope.data;
+
+    if (proposals.length > 0) {
+        const has_equal_proposals = $scope.proposal_templates.every(template => {
+            return (
+                proposals.findIndex(proposal => {
+                    return (
+                        proposal.purchase_reference === template.passthrough.purchase_reference &&
+                        proposal.contract_type === template.contract_type
+                    );
+                }) !== -1
+            );
+        });
+
+        if (has_equal_proposals) {
+            $scope.startPromise.then(() => Store.dispatch(proposalsReady()));
+        }
+    }
+};
+
+export const observeProposals = () => {
+    ws.onMessage().subscribe(response => {
+        if (response.data.msg_type === 'proposal') {
+            const { passthrough, proposal } = response.data;
+            if (
+                proposal &&
+                $scope.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
+                !$scope.data.forget_proposal_ids.includes(proposal.id)
+            ) {
+                // Add proposals based on the ID returned by the API.
+                $scope.data.proposals.push({ ...proposal, ...passthrough });
+                checkProposalReady();
+            }
+        }
+    });
+};
+
 export default Engine =>
     class Proposal extends Engine {
         makeProposals(trade_option) {
@@ -141,44 +181,5 @@ export default Engine =>
                 id: to_buy.id,
                 askPrice: to_buy.ask_price,
             };
-        }
-
-        observeProposals() {
-            ws.onMessage().subscribe(response => {
-                if (response.data.msg_type === 'proposal') {
-                    const { passthrough, proposal } = response.data;
-                    if (
-                        proposal &&
-                        $scope.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
-                        !$scope.data.forget_proposal_ids.includes(proposal.id)
-                    ) {
-                        // Add proposals based on the ID returned by the API.
-                        $scope.data.proposals.push({ ...proposal, ...passthrough });
-                        this.checkProposalReady();
-                    }
-                }
-            });
-        }
-        checkProposalReady() {
-            // Proposals are considered ready when the proposals in our memory match the ones
-            // we've requested from the API, we determine this by checking the passthrough of the response.
-            const { proposals } = $scope.data;
-
-            if (proposals.length > 0) {
-                const has_equal_proposals = $scope.proposal_templates.every(template => {
-                    return (
-                        proposals.findIndex(proposal => {
-                            return (
-                                proposal.purchase_reference === template.passthrough.purchase_reference &&
-                                proposal.contract_type === template.contract_type
-                            );
-                        }) !== -1
-                    );
-                });
-
-                if (has_equal_proposals) {
-                    this.startPromise.then(() => Store.dispatch(proposalsReady()));
-                }
-            }
         }
     };

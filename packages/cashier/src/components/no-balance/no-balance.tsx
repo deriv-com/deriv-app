@@ -4,7 +4,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 
 type TNoBalanceProps = RouteComponentProps & {
     currency: string;

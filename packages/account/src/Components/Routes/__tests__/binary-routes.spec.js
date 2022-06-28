@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { PlatformContext } from '@deriv/shared';
 import BinaryRoutes from '../binary-routes';
 
@@ -11,28 +11,22 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('../route-with-sub-routes.jsx', () => jest.fn(() => 'RouteWithSubRoutes'));
+jest.mock('../route-with-sub-routes.jsx', () => jest.fn(() => <div>RouteWithSubRoutes</div>));
 
-jest.mock('Constants/routes-config.js', () => () => ({
-    getRoutesConfig: jest.fn().mockReturnValue([]),
-}));
+jest.mock('Constants/routes-config', () => () => [{}]);
 
 describe('<BinaryRoutes />', () => {
     const history = createBrowserHistory();
 
-    it('should show ', async () => {
-        act(() => {
-            render(
-                <PlatformContext.Provider value={{ is_appstore: false }}>
-                    <Router history={history}>
-                        <BinaryRoutes is_social_signup={false} />
-                    </Router>
-                </PlatformContext.Provider>
-            );
-        });
+    it('should render BinaryRoutes with mocked route', () => {
+        render(
+            <PlatformContext.Provider value={{ is_appstore: false }}>
+                <Router history={history}>
+                    <BinaryRoutes />
+                </Router>
+            </PlatformContext.Provider>
+        );
 
-        await waitFor(() => {
-            screen.debug();
-        });
+        expect(screen.getByText('RouteWithSubRoutes')).toBeInTheDocument();
     });
 });

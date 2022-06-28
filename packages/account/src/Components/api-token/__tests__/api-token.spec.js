@@ -5,7 +5,7 @@ import ApiToken from '../api-token';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    getPropertyValue: jest.fn().mockReturnValue([]),
+    getPropertyValue: jest.fn(() => []),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
     useIsMounted: jest.fn().mockImplementation(() => () => true),

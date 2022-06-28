@@ -33,7 +33,6 @@ export default () => {
                     if (!symbol) return;
 
                     this.pollForContracts(symbol).then(contracts => {
-                        globalObserver.setState({ symbol }); // initialize the symbol in global observer if available
                         this.updateBarrierOffsetBlocks(contracts, false, false); // false false to maintain user's values on import
                         this.updatePredictionBlocks(contracts);
                         this.updateDurationLists(contracts, false, false); // false false to maintain user's values on import

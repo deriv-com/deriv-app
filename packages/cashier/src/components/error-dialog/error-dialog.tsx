@@ -4,7 +4,7 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types/stores.types';
+import { RootStore } from 'Types/index';
 
 type TErrorDialogProps = {
     disableApp: () => void;

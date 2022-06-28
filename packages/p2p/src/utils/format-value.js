@@ -3,6 +3,9 @@ import { formatMoney } from '@deriv/shared';
 
 export const roundOffDecimal = (number, decimal_place = 2) => {
     // Rounds of the digit to the specified decimal place
+    if (number === null || number === undefined) {
+        return 0;
+    }
     return parseFloat(Math.round(number * Math.pow(10, decimal_place)) / Math.pow(10, decimal_place));
 };
 

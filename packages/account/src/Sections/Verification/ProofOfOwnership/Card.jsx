@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
 
 const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error, validateField }) => {
-    const onClick = e => {
+    const onClickHandler = e => {
         e.preventDefault();
         setIsOpen(!is_open);
     };
@@ -28,7 +28,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
             data-testid={card.id}
             role='card-item'
         >
-            <div className='proof-of-ownership__card-item' onClick={onClick}>
+            <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
                 <Icon
                     icon={paymentMethodConfig[card.payment_method]?.icon || paymentMethodConfig.other.icon}
                     className='proof-of-ownership__card-item-logo'
@@ -42,14 +42,14 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
                     id='proof-of-ownership'
                     icon={icon}
                     className='proof-of-ownership__card-item-icon'
-                    onClick={onClick}
+                    onClick={onClickHandler}
                     transparent
                     data-testid={'proof-of-ownership-button'}
                 />
             </div>
             {is_open && (
                 <ExpandedCard
-                    cardDetails={paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other}
+                    card_details={paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other}
                     identifier={card.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
@@ -63,7 +63,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
         </div>
     );
 };
-export default Card;
+
 Card.propTypes = {
     card: PropTypes.object,
     handleChange: PropTypes.func,
@@ -74,3 +74,5 @@ Card.propTypes = {
     error: PropTypes.object,
     validateField: PropTypes.func,
 };
+
+export default Card;

@@ -11,7 +11,7 @@ import { VERIFIED, PENDING, NONE, REJECTED, OWNERSHIP } from './constants/consta
 
 export const ProofOfOwnership = ({ account_status, updateAccountStatus }) => {
     const cards = account_status?.authentication?.ownership?.requests;
-    const needsVerification = account_status?.authentication?.needs_verification?.find(a => a === 'ownership');
+    const needs_verification = account_status?.authentication?.needs_verification?.find(a => a === 'ownership');
     const [status, setStatus] = useState(NONE);
     useEffect(() => {
         setStatus(account_status?.authentication?.ownership?.status);
@@ -19,7 +19,7 @@ export const ProofOfOwnership = ({ account_status, updateAccountStatus }) => {
     const handleRequireSubmission = () => {
         setStatus(NONE);
     };
-    if (needsVerification === OWNERSHIP && status !== REJECTED) {
+    if (needs_verification === OWNERSHIP && status !== REJECTED) {
         return <ProofOfOwnershipForm cards={cards} updateAccountStatus={updateAccountStatus} />; // Proof of ownership is required.
     }
     if (status === VERIFIED) {

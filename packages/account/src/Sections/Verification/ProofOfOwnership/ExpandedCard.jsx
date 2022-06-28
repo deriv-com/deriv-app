@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 
 const ExpandedCard = ({
-    cardDetails,
+    card_details,
     handleChange,
     handleBlur,
     identifier,
@@ -17,15 +17,13 @@ const ExpandedCard = ({
     validateField,
 }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
-    const controls_to_show = [...Array(cardDetails.documents_required).keys()];
+    const controls_to_show = [...Array(card_details?.documents_required).keys()];
     const handleUploadedFile = (name, file) => {
         setFieldValue(name, file);
     };
 
     const exampleLink = () =>
-        cardDetails.icon === 'IcCreditCard' ||
-        cardDetails.icon === 'IcStockVisa' ||
-        cardDetails.icon === 'IcStockMasterCard' ? (
+        ['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(icon => icon === card_details.icon) && (
             <span
                 className='proof-of-ownership__card-open-desc-link'
                 key={0}
@@ -35,16 +33,14 @@ const ExpandedCard = ({
             >
                 {localize('See example')}
             </span>
-        ) : (
-            ''
         );
 
     const formatIdentifier = (id, type) => {
-        let formattedID = id;
-        if (type === 'IcCreditCard' || type === 'IcStockVisa' || type === 'IcStockMasterCard')
-            formattedID = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
-        else if (type === 'IcEwallet') return formattedID;
-        return formattedID
+        let formatted_id = id;
+        if (['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(s => s === type))
+            formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
+        else if (type === 'IcEwallet') return formatted_id;
+        return formatted_id
             .replace(/\s/g, '')
             .replace(/(\w{4})/g, '$1 ')
             .trim();
@@ -53,41 +49,41 @@ const ExpandedCard = ({
     return (
         <>
             <div>
-                {cardDetails.paragraphs.map((para, idx) => (
+                {card_details.paragraphs.map((para, idx) => (
                     <Text className='proof-of-ownership__card-open-desc' as='p' color='general' size='xs' key={idx}>
                         {para} {exampleLink()}
                     </Text>
                 ))}
                 <fieldset>
                     <div className='proof-of-ownership__card-open-inputs'>
-                        {cardDetails.input_label && cardDetails.icon !== 'IcCreditCard' && (
+                        {card_details.input_label && card_details.icon !== 'IcCreditCard' && (
                             <div className='proof-of-ownership__card-open-inputs-field'>
                                 <Input
-                                    label={cardDetails.input_label}
+                                    label={card_details.input_label}
                                     data-lpignore='true'
                                     className='proof-of-ownership__card-open-inputs-cardnumber'
                                     type='text'
                                     onChange={handleChange}
                                     disabled
-                                    value={formatIdentifier(identifier, cardDetails.icon)}
+                                    value={formatIdentifier(identifier, card_details.icon)}
                                     onBlur={handleBlur}
                                     maxLength='19'
                                 />
                             </div>
                         )}
-                        {controlsToShow.map(i => (
+                        {controls_to_show.map(i => (
                             <React.Fragment key={i}>
                                 {/* Used React.Fragment instead of the <></> to resolve devtools console errors/warnings of missing key prop. */}
-                                {cardDetails.icon === 'IcCreditCard' && (
+                                {card_details.icon === 'IcCreditCard' && (
                                     <div className='proof-of-ownership__card-open-inputs-field' key={i}>
                                         <Input
-                                            label={cardDetails.input_label}
+                                            label={card_details.input_label}
                                             data-lpignore='true'
                                             className='proof-of-ownership__card-open-inputs-cardnumber'
                                             type='text'
                                             onChange={handleChange}
                                             disabled
-                                            value={formatIdentifier(identifier, cardDetails.icon)}
+                                            value={formatIdentifier(identifier, card_details.icon)}
                                             onBlur={handleBlur}
                                             maxLength='19'
                                             data-datatestid='identifier'
@@ -96,9 +92,9 @@ const ExpandedCard = ({
                                 )}
                                 <div
                                     className={`proof-of-ownership__card-open-inputs-upload ${
-                                        !cardDetails.input_label ? 'expand' : ''
+                                        !card_details.input_label ? 'expand' : ''
                                     }
-                                        ${cardDetails.input_label !== null ? 'organise' : ''}
+                                        ${card_details.input_label !== null ? 'organise' : ''}
                                     `}
                                 >
                                     <FileUploader
@@ -127,7 +123,7 @@ const ExpandedCard = ({
 };
 
 ExpandedCard.propTypes = {
-    cardDetails: PropTypes.object,
+    card_details: PropTypes.object,
     handleChange: PropTypes.func,
     handleBlur: PropTypes.func,
     identifier: PropTypes.string,

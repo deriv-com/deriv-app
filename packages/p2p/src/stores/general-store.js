@@ -14,6 +14,7 @@ export default class GeneralStore extends BaseStore {
     @observable advertiser_id = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_advertiser_blocked = null;
     @observable is_blocked = false;
     @observable is_listed = false;
     @observable is_loading = false;
@@ -324,6 +325,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsAdvertiserBlocked(is_advertiser_blocked) {
+        this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
+    @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
     }
@@ -465,6 +471,7 @@ export default class GeneralStore extends BaseStore {
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);

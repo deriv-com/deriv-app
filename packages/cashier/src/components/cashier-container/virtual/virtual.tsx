@@ -6,7 +6,7 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types/index';
 import './virtual.scss';
 
 type TVirtualProps = RouteComponentProps & {

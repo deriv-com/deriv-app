@@ -3,8 +3,9 @@ import { notify } from '../utils/broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
 import { getBalance } from '../trade/Balance';
 import { getTotalRuns, getTotalProfit } from '../trade/Total';
+import $scope from '../utils/cliTools';
 
-const getMiscInterface = tradeEngine => {
+const getMiscInterface = () => {
     return {
         notify: args => globalObserver.emit('ui.log.notify', args),
         console: ({ type, message }) => console[type](message), // eslint-disable-line no-console
@@ -27,7 +28,7 @@ const getMiscInterface = tradeEngine => {
         },
         getTotalRuns: () => getTotalRuns(),
         getBalance: type => getBalance(type),
-        getTotalProfit: toString => getTotalProfit(toString, tradeEngine.tradeOptions.currency),
+        getTotalProfit: toString => getTotalProfit(toString, $scope.tradeOptions.currency),
     };
 };
 

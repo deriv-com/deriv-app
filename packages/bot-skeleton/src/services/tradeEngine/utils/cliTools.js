@@ -27,6 +27,7 @@ export const createScope = () => {
     };
     const purchase_reference = '';
     const transaction_recovery_timeout = '';
+    const initArgs = {};
 
     return {
         api,
@@ -44,6 +45,7 @@ export const createScope = () => {
         data,
         purchase_reference,
         transaction_recovery_timeout,
+        initArgs,
     };
 };
 

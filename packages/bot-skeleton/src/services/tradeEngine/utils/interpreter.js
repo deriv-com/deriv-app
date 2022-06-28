@@ -17,10 +17,10 @@ JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
     this.initFunc_(this, this.global);
 };
 
-const botInitialized = bot => bot && bot.tradeEngine.options;
-const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
+const botInitialized = bot => bot && $scope.options;
+const botStarted = bot => botInitialized(bot) && $scope.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
-    !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+    !unrecoverable_errors.includes(errorName) && botInitialized(bot) && $scope.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
     const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure'];
@@ -30,7 +30,7 @@ const shouldStopOnError = (bot, errorName = '') => {
     return false;
 };
 
-const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
+const timeMachineEnabled = bot => botInitialized(bot) && $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
@@ -156,12 +156,12 @@ const Interpreter = () => {
             timeout => global_timeouts[timeout].is_cancellable
         );
 
-        if (!bot.tradeEngine?.$scope.contract_id && is_timeouts_cancellable) {
+        if (!$scope.contract_id && is_timeouts_cancellable) {
             // When user is rate limited, allow them to stop the bot immediately
             // granted there is no active contract.
             global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
             terminateSession();
-        } else if (bot.tradeEngine.isSold === false && !$scope.is_error_triggered) {
+        } else if ($scope.contract_flags.is_sold === false && !$scope.is_error_triggered) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     terminateSession();
@@ -210,6 +210,7 @@ const Interpreter = () => {
 
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = bot.tradeEngine;
+
                 terminateSession();
                 globalObserver.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);

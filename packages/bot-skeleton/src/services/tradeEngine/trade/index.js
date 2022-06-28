@@ -64,35 +64,35 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
+export const initTradeEngine = (...args) => {
+    const [token, options] = expectInitArg(args);
+    const { symbol } = options;
+
+    $scope.initArgs = args;
+    $scope.options = options;
+    $scope.startPromise = loginAndGetBalance(token);
+
+    watchTicks(symbol);
+};
+
+export const startTradeEngine = tradeOptions => {
+    if (!$scope.options) {
+        throw createError('NotInitialized', localize('Bot.init is not called'));
+    }
+
+    globalObserver.emit('bot.running');
+
+    $scope.tradeOptions = tradeOptions;
+    Store.dispatch(start());
+    checkLimits(tradeOptions);
+    makeProposals({ ...$scope.options, ...tradeOptions });
+    checkProposalReady();
+};
+
 export default class TradeEngine {
     constructor() {
         globalObserver.register('statistics.clear', clearStatistics);
         observeOpenContract();
         observeProposals();
-    }
-    // eslint-disable-next-line class-methods-use-this
-    init(...args) {
-        const [token, options] = expectInitArg(args);
-        const { symbol } = options;
-
-        $scope.initArgs = args;
-        $scope.options = options;
-        $scope.startPromise = loginAndGetBalance(token);
-
-        watchTicks(symbol);
-    }
-
-    start(tradeOptions) {
-        if (!$scope.options) {
-            throw createError('NotInitialized', localize('Bot.init is not called'));
-        }
-
-        globalObserver.emit('bot.running');
-
-        this.tradeOptions = tradeOptions;
-        Store.dispatch(start());
-        checkLimits(tradeOptions);
-        makeProposals({ ...$scope.options, ...tradeOptions });
-        checkProposalReady();
     }
 }

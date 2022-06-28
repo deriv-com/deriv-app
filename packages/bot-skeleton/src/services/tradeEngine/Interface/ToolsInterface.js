@@ -3,7 +3,7 @@ import getCandleInterface from './CandleInterface';
 import getIndicatorsInterface from './IndicatorsInterface';
 import getMiscInterface from './MiscInterface';
 
-const getToolsInterface = tradeEngine => {
+const getToolsInterface = () => {
     return {
         dateTimeStringToTimestamp: datetime_string => {
             const invalid_msg = localize('Invalid date/time: {{ datetime_string }}', { datetime_string });
@@ -44,7 +44,7 @@ const getToolsInterface = tradeEngine => {
         },
         getTime: () => parseInt(new Date().getTime() / 1000),
         ...getCandleInterface(),
-        ...getMiscInterface(tradeEngine),
+        ...getMiscInterface(),
         ...getIndicatorsInterface(),
 
         // Highlight the block that is being executed

@@ -19,8 +19,8 @@ const Interface = () => {
     const tradeEngine = new TradeEngine();
     const getInterface = () => {
         return {
-            ...getBotInterface(tradeEngine),
-            ...getToolsInterface(tradeEngine),
+            ...getBotInterface(),
+            ...getToolsInterface(),
             getTicksInterface: getTicksInterface(),
             watch: (...args) => watch(...args),
             sleep: (...args) => sleep(...args),

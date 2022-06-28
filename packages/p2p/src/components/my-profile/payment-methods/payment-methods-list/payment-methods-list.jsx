@@ -10,12 +10,13 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
+import DeletePaymentMethodErrorModal from './delete-payment-method-error-modal';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../payment-method-card';
 
 const PaymentMethodsList = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     const independent_categories = ['bank_transfer', 'other'];
 
@@ -139,27 +140,7 @@ const PaymentMethodsList = () => {
                     </div>
                 </MobileFullPageModal>
             </MobileWrapper>
-            <Modal
-                is_open={my_profile_store.is_delete_error_modal_open}
-                small
-                has_close_icon={false}
-                title={localize("Something's not right")}
-            >
-                <Modal.Body>
-                    <Text as='p' size='xs' color='prominent'>
-                        {my_profile_store.delete_error_message}
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => my_profile_store.setIsDeleteErrorModalOpen(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
+            <DeletePaymentMethodErrorModal />
             <Modal
                 is_open={my_profile_store.is_confirm_delete_modal_open}
                 small
@@ -170,6 +151,8 @@ const PaymentMethodsList = () => {
                         my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
                         my_profile_store?.payment_method_to_delete?.fields?.account?.value,
                 })}
+                onMount={() => general_store.setIsModalOpen(true)}
+                onUnmount={() => general_store.setIsModalOpen(false)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>

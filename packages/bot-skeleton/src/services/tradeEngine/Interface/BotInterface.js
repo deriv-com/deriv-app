@@ -3,15 +3,9 @@ import { createDetails } from '../utils/helpers';
 import { isSellAtMarketAvailable, sellAtMarket } from '../trade/Sell';
 import { getSellPrice } from '../trade/OpenContract';
 import { purchase } from '../trade/Purchase';
-import { getPurchaseReference } from '../trade/Proposal';
+import { getPurchaseReference, getProposal } from '../trade/Proposal';
 import { initTradeEngine, startTradeEngine, stopTradeEngine } from '../trade';
 import $scope from '../utils/cliTools';
-
-const getProposal = contract_type => {
-    return $scope.data.proposals.find(
-        proposal => proposal.contract_type === contract_type && proposal.purchase_reference === getPurchaseReference()
-    );
-};
 
 const getBotInterface = () => {
     const getDetail = i => createDetails($scope.data.contract)[i];

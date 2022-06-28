@@ -179,3 +179,9 @@ export const makeProposals = trade_option => {
     $scope.proposal_templates = tradeOptionToProposal(trade_option, getPurchaseReference());
     renewProposalsOnPurchase();
 };
+
+export const getProposal = contract_type => {
+    return $scope.data.proposals.find(
+        proposal => proposal.contract_type === contract_type && proposal.purchase_reference === getPurchaseReference()
+    );
+};

@@ -34,13 +34,13 @@ For Fonts, Constants, Mixins, Themes, Devices:
 ### Browser css reset
 
 ```scss
-@import @deriv / shared/utils/styles/reset.scss;
+@import @deriv/shared/utils/styles/reset.scss;
 ```
 
 ### Google fonts
 
 ```scss
-@import @deriv / shared/utils/styles/google-fonts.scss;
+@import @deriv/shared/utils/styles/google-fonts.scss;
 ```
 
 ## Utility functions

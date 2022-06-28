@@ -4,7 +4,7 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { RootStore, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
     disableApp: () => void;
@@ -21,7 +21,7 @@ type TSetDetails = {
     cancel_button_text: undefined | string;
     confirm_button_text: undefined | string;
     onConfirm: undefined | (() => void);
-    message: undefined | string | React.ReactElement;
+    message: undefined | string | TReactElement;
     has_close_icon?: boolean;
 };
 

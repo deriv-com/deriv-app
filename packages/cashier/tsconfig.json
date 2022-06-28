@@ -9,6 +9,7 @@
             "Images/*": ["public/images/*"],
             "Pages/*": ["pages/*"],
             "Stores/*": ["stores/*"],
+            "Types": ["types"],
             "Types/*": ["types/*"],
             "Utils/*": ["utils/*"],
         },

@@ -135,7 +135,7 @@ const JurisdictionModalContent = ({
     return (
         <>
             <div className='cfd-jurisdiction-card__wrapper'>
-                {!is_eu && (
+                {!is_eu && number_of_cards >= 1 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'BVI',

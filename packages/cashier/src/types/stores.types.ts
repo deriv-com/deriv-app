@@ -1,4 +1,4 @@
-export default class RootStore {
+export class RootStore {
     client: any;
     common: any;
     modules: any;

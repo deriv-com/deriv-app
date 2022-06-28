@@ -114,17 +114,11 @@ export default class PaymentAgentStore {
                     email: payment_agent.email,
                     phones: payment_agent?.phone_numbers || payment_agent?.telephone,
                     name: payment_agent.name,
-                    supported_banks: payment_agent?.supported_payment_methods || payment_agent?.supported_banks,
+                    supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,
                 });
-                if (payment_agent.supported_banks) {
-                    const supported_banks_array = payment_agent?.supported_payment_methods
-                        ? payment_agent.supported_payment_methods.map(bank => bank.payment_method)
-                        : payment_agent.supported_banks.split(',');
-                    supported_banks_array.forEach(bank => {
-                        this.addSupportedBank(bank);
-                    });
-                }
+                const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
+                supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
         } catch (e) {
             // eslint-disable-next-line no-console

@@ -11,7 +11,6 @@ import {
     getContractTypeDisplay,
     getEndTime,
 } from '@deriv/shared';
-import { connectWithContractUpdate } from '../../../Helpers/multiplier';
 
 const PositionsDrawerCard = ({
     addToast,
@@ -72,7 +71,6 @@ const PositionsDrawerCard = ({
     const card_body = (
         <ContractCard.Body
             addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}

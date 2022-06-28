@@ -374,6 +374,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         this.root_store.common.setSelectedContractType(this.contract_type);
+        this.root_store.portfolio.setContractType(this.contract_type);
     }
 
     @action.bound

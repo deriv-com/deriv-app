@@ -330,7 +330,7 @@ const JurisdictionModalContent = ({
                 )}
             </div>
             <ModalFootNote />
-            {is_eu && (
+            {is_eu && is_fully_authenticated && jurisdiction_selected_card === 'Malta' && (
                 <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
                     <Checkbox onChange={() => setChecked(!checked)} />
                     <Text

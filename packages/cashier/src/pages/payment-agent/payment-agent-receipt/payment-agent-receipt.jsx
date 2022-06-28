@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Text } from '@deriv/components';
+import { Button, Text, MobileWrapper } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
@@ -20,6 +21,9 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
+            <MobileWrapper>
+                <PaymentAgentDisclaimer />
+            </MobileWrapper>
             <Text
                 as='h1'
                 align='center'

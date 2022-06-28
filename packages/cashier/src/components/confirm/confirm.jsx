@@ -57,7 +57,7 @@ const Confirm = ({ data, error, onClickBack, onClickConfirm }) => {
     ];
 
     return (
-        <div className='cashier__wrapper cashier__wrapper--confirm'>
+        <div className='cashier__wrapper--align-center'>
             <Icon icon='IcCashierRedWarning' className='confirm__warning-icon' data_testid='dt_red_warning_icon' />
             <Text
                 as='h2'

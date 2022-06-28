@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Loading, Tabs, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { isDesktop, website_name } from '@deriv/shared';
+import { Loading, Tabs } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import VerificationEmail from 'Components/verification-email';
 import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import './payment-agent-list.scss';
 
 const PaymentAgentList = ({
@@ -17,16 +18,28 @@ const PaymentAgentList = ({
     is_resend_clicked,
     is_payment_agent_withdraw,
     is_try_withdraw_successful,
+    onMount,
     payment_agent_active_tab_index,
     resend_timeout,
     resendVerificationEmail,
     sendVerificationEmail,
     setActiveTabIndex,
     setIsResendClicked,
+    setSideNotes,
     verification_code,
 }) => {
+    React.useEffect(() => {
+        onMount();
+    }, [onMount]);
+
+    React.useEffect(() => {
+        if (typeof setSideNotes === 'function' && !is_loading) {
+            setSideNotes([<PaymentAgentDisclaimer key={0} />]);
+        }
+    }, [is_loading]);
+
     return (
-        <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
+        <div className='payment-agent-list cashier__wrapper--align-left'>
             <div
                 className={classNames('payment-agent-list__instructions', {
                     'payment-agent-list__instructions-hide-tabs': is_try_withdraw_successful,
@@ -45,18 +58,6 @@ const PaymentAgentList = ({
                         ) : (
                             <PaymentAgentDepositWithdrawContainer is_deposit />
                         )}
-                        <div className='payment-agent-list__disclaimer'>
-                            <Text size='xs' lh='s' weight='bold' className='cashier__text'>
-                                <Localize i18n_default_text='DISCLAIMER' />
-                            </Text>
-                            :&nbsp;
-                            <Text size='xxs'>
-                                <Localize
-                                    i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
-                                    values={{ website_name }}
-                                />
-                            </Text>
-                        </div>
                     </div>
                     <div label={localize('Withdrawal')}>
                         {error?.code ? (
@@ -95,12 +96,14 @@ PaymentAgentList.propTypes = {
     is_resend_clicked: PropTypes.bool,
     is_payment_agent_withdraw: PropTypes.bool,
     is_try_withdraw_successful: PropTypes.bool,
+    onMount: PropTypes.func,
     payment_agent_active_tab_index: PropTypes.number,
     resend_timeout: PropTypes.number,
     resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     setIsResendClicked: PropTypes.func,
+    setSideNotes: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -110,6 +113,7 @@ export default connect(({ modules }) => ({
     is_loading: modules.cashier.general_store.is_loading,
     is_resend_clicked: modules.cashier.payment_agent.verification.is_resend_clicked,
     is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
+    onMount: modules.cashier.payment_agent.onMountPaymentAgentList,
     payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
     resend_timeout: modules.cashier.payment_agent.verification.resend_timeout,
     resendVerificationEmail: modules.cashier.payment_agent.verification.resendVerificationEmail,

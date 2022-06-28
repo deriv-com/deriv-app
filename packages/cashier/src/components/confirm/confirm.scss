@@ -1,8 +1,4 @@
 .confirm {
-    &__header {
-        margin-top: 1.4rem;
-        margin-bottom: 2.4rem;
-    }
     &__column {
         &-wrapper {
             display: flex;
@@ -36,7 +32,7 @@
         @include mobile {
             min-width: 4.8rem;
             min-height: 4.8rem;
-            margin: 0 0 1.6rem;
+            margin: 1.6rem 0;
         }
 
         &__description {
@@ -80,7 +76,7 @@
         font-size: var(--text-size-xxs);
     }
     &__submit {
-        margin: 3.3rem auto;
+        margin: 3.3rem auto 0;
         width: 40rem;
         display: flex;
         justify-content: flex-end;

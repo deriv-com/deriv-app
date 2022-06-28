@@ -9,6 +9,7 @@ import PaymentAgentCard from '../payment-agent-card';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
 import PaymentAgentReceipt from '../payment-agent-receipt';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 
 const PaymentAgentDepositWithdrawContainer = ({
     is_deposit,
@@ -61,6 +62,9 @@ const PaymentAgentDepositWithdrawContainer = ({
 
     return (
         <React.Fragment>
+            <MobileWrapper>
+                <PaymentAgentDisclaimer />
+            </MobileWrapper>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>

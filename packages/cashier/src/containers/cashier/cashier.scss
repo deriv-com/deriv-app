@@ -40,13 +40,7 @@
             text-align: left;
         }
         &-padding {
-            padding: 0 1.6rem 1.6rem 4.2rem;
-            @include mobile {
-                padding: 0 1.6rem 1.6rem;
-            }
-        }
-        &-padding-top {
-            padding-top: 0;
+            padding: 1.6rem;
         }
         &--align-center {
             text-align: center;
@@ -76,12 +70,6 @@
                         justify-content: flex-start;
                         flex-direction: column;
                         padding-top: 2.4rem;
-                    }
-                    @include mobile {
-                        &--confirm {
-                            width: 100%;
-                            margin: 0;
-                        }
                     }
                 }
                 .barspinner {
@@ -331,5 +319,10 @@
 
     &__side-note {
         min-width: 20rem;
+    }
+
+    .dc-vertical-tab__content-side-note-item {
+        position: sticky;
+        top: calc(2.4rem + 41px);
     }
 }

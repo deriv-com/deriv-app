@@ -1,4 +1,8 @@
 .payment-agent-list {
+    padding: 0 4.2rem 1.6rem;
+    @include mobile {
+        padding: 0 1.6rem 1.6rem;
+    }
     &__instructions {
         @include mobile {
             display: grid;
@@ -24,8 +28,9 @@
             & .dc-tabs__list {
                 display: none;
             }
+
             & .dc-tabs__content {
-                margin-top: 1.6rem;
+                margin-top: 0;
             }
 
             & .dc-tabs__list--header--tabs--desktop {
@@ -40,6 +45,9 @@
         &-header {
             margin-top: 2.4rem;
             margin-bottom: 1.6rem;
+            @include mobile {
+                margin-top: 1.6rem;
+            }
         }
 
         &-selector {
@@ -84,11 +92,5 @@
             min-height: 3.2rem;
             min-width: 22.8rem;
         }
-    }
-    &__disclaimer {
-        background-color: var(--general-section-1);
-        margin-top: 2.4rem;
-        margin-bottom: 2.4rem;
-        padding: 1.6rem;
     }
 }

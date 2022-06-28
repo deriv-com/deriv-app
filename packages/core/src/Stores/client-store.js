@@ -1044,8 +1044,6 @@ export default class ClientStore extends BaseStore {
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
 
-        console.log(response); // eslint-disable-line no-console
-
         if (!response.error) {
             await this.accountRealReaction(response);
             if (is_samoa_account) {

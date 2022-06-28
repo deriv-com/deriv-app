@@ -89,8 +89,8 @@
                 .btm-spacer {
                     margin-bottom: 1.6rem;
                 }
-                .top-spacer {
-                    margin-top: 1.6rem;
+                .spacer {
+                    margin: 1.6rem 0;
                 }
             }
 
@@ -131,6 +131,7 @@
                 }
                 &-input {
                     width: unset;
+                    margin-bottom: 1rem;
                 }
             }
             &__sample-container {
@@ -145,9 +146,6 @@
                     margin-right: unset;
                 }
             }
-        }
-        .dc-themed-scrollbars {
-            height: 100%;
         }
     }
     & .details-form {

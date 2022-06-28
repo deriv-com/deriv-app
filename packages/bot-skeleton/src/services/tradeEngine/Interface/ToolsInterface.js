@@ -45,7 +45,7 @@ const getToolsInterface = tradeEngine => {
         getTime: () => parseInt(new Date().getTime() / 1000),
         ...getCandleInterface(),
         ...getMiscInterface(tradeEngine),
-        ...getIndicatorsInterface(tradeEngine),
+        ...getIndicatorsInterface(),
 
         // Highlight the block that is being executed
         highlightBlock: block_id => {

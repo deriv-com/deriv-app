@@ -159,6 +159,7 @@ type TCFDDashboardProps = {
     setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     mt5_status_server: TMt5StatusServer;
+    openDerivRealAccountNeededModal: () => void;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -392,10 +393,13 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         mt5_verification_code,
         dxtrade_verification_code,
         mt5_status_server,
+        openDerivRealAccountNeededModal,
     } = props;
 
     const should_show_missing_real_account =
-        !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
+        is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
+    const should_enable_add_button = should_show_missing_real_account && CFD_PLATFORMS.MT5 && is_real_enabled;
+
     if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
     // all: 1 in mt5_status response means that server is suspended
@@ -526,6 +530,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                                 residence={residence}
                                                 residence_list={residence_list}
+                                                openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
+                                                should_enable_add_button={should_enable_add_button}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -754,5 +760,6 @@ export default withRouter(
         mt5_verification_code: client.verification_code.trading_platform_mt5_password_reset,
         dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
         mt5_status_server: client.website_status.mt5_status,
+        openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
     }))(CFDDashboard)
 );

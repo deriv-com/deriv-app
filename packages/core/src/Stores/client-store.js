@@ -1039,11 +1039,13 @@ export default class ClientStore extends BaseStore {
         }
 
         const { document_number, document_type, country_code, ...required_form_values } = form_values;
-
+        required_form_values.citizen = country_code;
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
-        console.log(response);
+
+        console.log(response); // eslint-disable-line no-console
+
         if (!response.error) {
             await this.accountRealReaction(response);
             if (is_samoa_account) {

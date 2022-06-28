@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-const proofOfIdentityConfig = ({ account_settings, residence_list }, ProofOfIdentityForm) => {
+const proofOfIdentityConfig = ({ account_settings }, ProofOfIdentityForm) => {
     return {
         header: {
             active_title: localize('Identity information'),

@@ -64,6 +64,8 @@ type TCFDRealAccountDisplayProps = {
     residence: string;
     residence_list: ResidenceList;
     account_status?: object;
+    openDerivRealAccountNeededModal: () => void;
+    should_enable_add_button?: boolean;
 };
 
 const getRealFinancialStpBtnLbl = (
@@ -111,6 +113,8 @@ const CFDRealAccountDisplay = ({
     can_have_more_real_synthetic_mt5,
     residence,
     residence_list,
+    openDerivRealAccountNeededModal,
+    should_enable_add_button,
 }: TCFDRealAccountDisplayProps) => {
     const should_show_trade_servers =
         is_logged_in &&
@@ -151,14 +155,18 @@ const CFDRealAccountDisplay = ({
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealSynthetic = () => {
-        if (is_eu && standpoint.malta && !has_malta_account) {
+        if (should_enable_add_button) {
+            openDerivRealAccountNeededModal();
+        } else if (is_eu && standpoint.malta && !has_malta_account) {
             openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
         } else {
             onSelectAccount({ type: 'synthetic', category: 'real', platform });
         }
     };
     const onSelectRealFinancial = () => {
-        if (is_eu && !has_maltainvest_account) {
+        if (should_enable_add_button) {
+            openDerivRealAccountNeededModal();
+        } else if (is_eu && !has_maltainvest_account) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real', platform });
@@ -199,7 +207,7 @@ const CFDRealAccountDisplay = ({
         switch (sub_account_type) {
             case 'synthetic':
             case 'financial':
-                return !has_real_account;
+                return should_enable_add_button ? false : !has_real_account;
             default:
                 return false;
         }

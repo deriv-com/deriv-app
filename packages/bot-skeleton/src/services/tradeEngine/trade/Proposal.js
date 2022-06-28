@@ -1,9 +1,10 @@
 import { localize } from '@deriv/translations';
-import { proposalsReady, clearProposals } from './state/actions';
+import { proposalsReady, clearProposals as clearProposalsAction } from './state/actions';
 import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
+import Store from './trade-engine-store';
 
 const requestProposals = () => {
     // Since there are two proposals (in most cases), an error may be logged twice, to avoid this
@@ -36,6 +37,31 @@ const requestProposals = () => {
     );
 };
 
+const unsubscribeProposals = () => {
+    const { proposals } = $scope.data;
+    const removeForgetProposalById = forget_proposal_id =>
+        ($scope.data.forget_proposal_ids = $scope.data.forget_proposal_ids.filter(id => id !== forget_proposal_id));
+
+    clearProposals();
+
+    return Promise.all(
+        proposals.map(proposal => {
+            if (!$scope.data.forget_proposal_ids.includes(proposal.id)) {
+                $scope.data.forget_proposal_ids.push(proposal.id);
+            }
+
+            if (proposal.error) {
+                removeForgetProposalById(proposal.id);
+                return Promise.resolve();
+            }
+
+            return doUntilDone(() => ws.forget(proposal.id)).then(() => {
+                removeForgetProposalById(proposal.id);
+            });
+        })
+    );
+};
+
 export const isNewTradeOption = trade_option => {
     if (!$scope.trade_option) {
         $scope.trade_option = trade_option;
@@ -57,6 +83,15 @@ export const isNewTradeOption = trade_option => {
     ].some(value => $scope.trade_option[value] !== trade_option[value]);
 };
 
+export const clearProposals = () => {
+    $scope.data.proposals = [];
+    Store.dispatch(clearProposalsAction());
+};
+
+export const renewProposalsOnPurchase = () => {
+    unsubscribeProposals().then(() => requestProposals());
+};
+
 export default Engine =>
     class Proposal extends Engine {
         makeProposals(trade_option) {
@@ -69,7 +104,7 @@ export default Engine =>
             this.regeneratePurchaseReference();
             $scope.trade_option = trade_option;
             $scope.proposal_templates = tradeOptionToProposal(trade_option, this.getPurchaseReference());
-            this.renewProposalsOnPurchase();
+            renewProposalsOnPurchase();
         }
 
         selectProposal(contract_type) {
@@ -108,15 +143,6 @@ export default Engine =>
             };
         }
 
-        renewProposalsOnPurchase() {
-            this.unsubscribeProposals().then(() => requestProposals());
-        }
-
-        clearProposals() {
-            $scope.data.proposals = [];
-            this.store.dispatch(clearProposals());
-        }
-
         observeProposals() {
             ws.onMessage().subscribe(response => {
                 if (response.data.msg_type === 'proposal') {
@@ -133,34 +159,6 @@ export default Engine =>
                 }
             });
         }
-
-        unsubscribeProposals() {
-            const { proposals } = $scope.data;
-            const removeForgetProposalById = forget_proposal_id =>
-                ($scope.data.forget_proposal_ids = $scope.data.forget_proposal_ids.filter(
-                    id => id !== forget_proposal_id
-                ));
-
-            this.clearProposals();
-
-            return Promise.all(
-                proposals.map(proposal => {
-                    if (!$scope.data.forget_proposal_ids.includes(proposal.id)) {
-                        $scope.data.forget_proposal_ids.push(proposal.id);
-                    }
-
-                    if (proposal.error) {
-                        removeForgetProposalById(proposal.id);
-                        return Promise.resolve();
-                    }
-
-                    return doUntilDone(() => ws.forget(proposal.id)).then(() => {
-                        removeForgetProposalById(proposal.id);
-                    });
-                })
-            );
-        }
-
         checkProposalReady() {
             // Proposals are considered ready when the proposals in our memory match the ones
             // we've requested from the API, we determine this by checking the passthrough of the response.
@@ -179,7 +177,7 @@ export default Engine =>
                 });
 
                 if (has_equal_proposals) {
-                    this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+                    this.startPromise.then(() => Store.dispatch(proposalsReady()));
                 }
             }
         }

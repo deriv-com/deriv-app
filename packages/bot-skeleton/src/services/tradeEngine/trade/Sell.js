@@ -5,6 +5,7 @@ import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
+import Store from './trade-engine-store';
 
 export const isSellAtMarketAvailable = () => {
     const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
@@ -17,7 +18,7 @@ export default Engine =>
             globalObserver.emit('bot.sell');
 
             // Prevent calling sell twice
-            if (this.store.getState().scope !== DURING_PURCHASE) {
+            if (Store.getState().scope !== DURING_PURCHASE) {
                 return Promise.resolve();
             }
 

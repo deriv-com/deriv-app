@@ -5,6 +5,7 @@ import { doUntilDone } from '../utils/helpers';
 import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
+import Store from './trade-engine-store';
 
 const setContractFlags = contract => {
     const { is_expired, is_valid_to_sell, is_sold } = contract;
@@ -70,9 +71,9 @@ export default Engine =>
                             this.afterPromise();
                         }
 
-                        this.store.dispatch(sell());
+                        Store.dispatch(sell());
                     } else {
-                        this.store.dispatch(openContractReceived());
+                        Store.dispatch(openContractReceived());
                     }
                 }
             });

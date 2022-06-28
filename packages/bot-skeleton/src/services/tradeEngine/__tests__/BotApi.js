@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import Interface from '../Interface';
 import { createScope } from '../utils/cliTools';
+import Store from '../trade/trade-engine-store';
 
 const $scope = createScope();
 
@@ -42,7 +43,7 @@ describe('Interface', () => {
         });
 
         it('context is inside before', () => {
-            expect(botInterface.tradeEngine.store.getState().scope).equal('BEFORE_PURCHASE');
+            expect(Store.getState().scope).equal('BEFORE_PURCHASE');
         });
 
         it('Loop stayed on correctly', () => {

@@ -1,5 +1,3 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import { localize } from '@deriv/translations';
 import { observeBalance } from './Balance';
 import OpenContract from './OpenContract';
@@ -8,7 +6,6 @@ import Purchase from './Purchase';
 import Sell from './Sell';
 import { start } from './state/actions';
 import * as constants from './state/constants';
-import rootReducer from './state/reducers';
 import Ticks from './Ticks';
 import Total, { checkLimits } from './Total';
 import { doUntilDone } from '../utils/helpers';
@@ -17,6 +14,7 @@ import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import api from '../../api/ws';
 import $scope from '../utils/cliTools';
+import Store from './trade-engine-store';
 
 const watchBefore = store =>
     watchScope({
@@ -33,6 +31,13 @@ const watchDuring = store =>
         passScope: constants.DURING_PURCHASE,
         passFlag: 'openContract',
     });
+
+export const watch = watchName => {
+    if (watchName === 'before') {
+        return watchBefore(Store);
+    }
+    return watchDuring(Store);
+};
 
 /* The watchScope function is called randomly and resets the prevTick
  * which leads to the same problem we try to solve. So prevTick is isolated
@@ -68,7 +73,6 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         super();
         this.$scope = $scope;
         this.observe();
-        this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
 
     init(...args) {
@@ -90,8 +94,7 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
         globalObserver.emit('bot.running');
 
         this.tradeOptions = tradeOptions;
-
-        this.store.dispatch(start());
+        Store.dispatch(start());
         checkLimits(tradeOptions);
         this.makeProposals({ ...$scope.options, ...tradeOptions });
         this.checkProposalReady();
@@ -148,12 +151,5 @@ export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Tic
     observe() {
         this.observeOpenContract();
         this.observeProposals();
-    }
-
-    watch(watchName) {
-        if (watchName === 'before') {
-            return watchBefore(this.store);
-        }
-        return watchDuring(this.store);
     }
 }

@@ -7,6 +7,7 @@ import { observer as globalObserver } from '../../../utils/observer';
 import TicksService from '../../api/ticks_service';
 import api from '../../api/ws';
 import $scope from '../utils/cliTools';
+import Store from './trade-engine-store';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);
@@ -102,7 +103,7 @@ export default Engine =>
                     this.checkProposalReady();
                     const lastTick = ticks.slice(-1)[0];
                     const { epoch } = lastTick;
-                    this.store.dispatch({ type: constants.NEW_TICK, payload: epoch });
+                    Store.dispatch({ type: constants.NEW_TICK, payload: epoch });
                 };
 
                 const key = ticksService.monitor({ symbol, callback });

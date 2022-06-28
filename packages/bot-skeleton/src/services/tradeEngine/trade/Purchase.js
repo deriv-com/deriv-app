@@ -7,6 +7,8 @@ import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
 import { subscribeToOpenContract } from './OpenContract';
+import Store from './trade-engine-store';
+import { clearProposals, renewProposalsOnPurchase } from './Proposal';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -15,7 +17,7 @@ export default Engine =>
     class Purchase extends Engine {
         purchase(contract_type) {
             // Prevent calling purchase twice
-            if (this.store.getState().scope !== BEFORE_PURCHASE) {
+            if (Store.getState().scope !== BEFORE_PURCHASE) {
                 return Promise.resolve();
             }
 
@@ -33,8 +35,8 @@ export default Engine =>
                 });
 
                 subscribeToOpenContract(buy.contract_id);
-                this.store.dispatch(purchaseSuccessful());
-                this.renewProposalsOnPurchase();
+                Store.dispatch(purchaseSuccessful());
+                renewProposalsOnPurchase();
                 delayIndex = 0;
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
@@ -60,13 +62,13 @@ export default Engine =>
                 (errorCode, makeDelay) => {
                     // if disconnected no need to resubscription (handled by live-api)
                     if (errorCode !== 'DisconnectError') {
-                        this.renewProposalsOnPurchase();
+                        renewProposalsOnPurchase();
                     } else {
-                        this.clearProposals();
+                        clearProposals();
                     }
 
-                    const unsubscribe = this.store.subscribe(() => {
-                        const { scope, proposalsReady } = this.store.getState();
+                    const unsubscribe = Store.subscribe(() => {
+                        const { scope, proposalsReady } = Store.getState();
                         if (scope === BEFORE_PURCHASE && proposalsReady) {
                             makeDelay().then(() => globalObserver.emit('REVERT', 'before'));
                             unsubscribe();

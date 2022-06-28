@@ -1,7 +1,7 @@
 import getToolsInterface from './ToolsInterface';
 import getTicksInterface from './TicksInterface';
 import getBotInterface from './BotInterface';
-import TradeEngine from '../trade';
+import TradeEngine, { watch } from '../trade';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const sleep = (arg = 1) => {
@@ -22,7 +22,7 @@ const Interface = $scope => {
             ...getBotInterface(tradeEngine),
             ...getToolsInterface(tradeEngine),
             getTicksInterface: getTicksInterface(),
-            watch: (...args) => tradeEngine.watch(...args),
+            watch: (...args) => watch(...args),
             sleep: (...args) => sleep(...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert
             prompt: (...args) => prompt(...args), // eslint-disable-line no-alert

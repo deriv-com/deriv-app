@@ -5,6 +5,15 @@ import ws from '../../api/ws';
 
 let balance_string = '';
 
+export const getBalance = type => {
+    // [Todo] remove DBotStore dependency and use ws
+    const { client } = DBotStore.instance;
+    const balance = (client && client.balance) || 0;
+
+    balance_string = getFormattedText(balance, client.currency, false);
+    return type === 'STR' ? balance_string : balance;
+};
+
 export const observeBalance = loginid => {
     ws.onMessage().subscribe(({ data }) => {
         if (data.msg_type === 'balance') {
@@ -17,12 +26,4 @@ export const observeBalance = loginid => {
             info({ accountID: loginid, balance: balance_string });
         }
     });
-};
-export const getBalance = type => {
-    // [Todo] remove DBotStore dependency and use ws
-    const { client } = DBotStore.instance;
-    const balance = (client && client.balance) || 0;
-
-    balance_string = getFormattedText(balance, client.currency, false);
-    return type === 'STR' ? balance_string : balance;
 };

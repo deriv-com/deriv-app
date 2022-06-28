@@ -13,32 +13,25 @@ import { checkProposalReady } from './Proposal';
 let tickListenerKey;
 const ticksService = new TicksService(api);
 
-export const getOhlc = args => {
-    const { granularity = $scope.options.candleInterval || 60, field } = args || {};
-
-    return new Promise(resolve =>
-        ticksService
-            .request({ symbol: $scope.symbol, granularity })
-            .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc))
-    );
-};
-
 export const checkDirection = dir => {
     return new Promise(resolve =>
         ticksService.request({ symbol: $scope.symbol }).then(ticks => resolve(getDirection(ticks) === dir))
     );
 };
 
-export const getPipSize = () => {
-    return ticksService.pipSizes[$scope.symbol];
+export const getLastDigit = () => {
+    return new Promise(resolve => getLastTick(false, true).then(tick => resolve(getLastDigitHelpers(tick))));
 };
 
-export const getOhlcFromEnd = args => {
-    const { index: i = 1 } = args || {};
+export const getLastDigitList = () => {
+    return new Promise(resolve => getTicks().then(ticks => resolve(getLastDigitsFromList(ticks))));
+};
 
-    const index = expectPositiveInteger(Number(i), localize('Index must be a positive integer'));
-
-    return new Promise(resolve => getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
+export const getLastDigitsFromList = ticks => {
+    const digits = ticks.map(tick => {
+        return getLastDigitHelpers(tick.toFixed(getPipSize()));
+    });
+    return digits;
 };
 
 export const getLastTick = (raw, toString = false) => {
@@ -61,6 +54,28 @@ export const getLastTick = (raw, toString = false) => {
     );
 };
 
+export const getOhlc = args => {
+    const { granularity = $scope.options.candleInterval || 60, field } = args || {};
+
+    return new Promise(resolve =>
+        ticksService
+            .request({ symbol: $scope.symbol, granularity })
+            .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc))
+    );
+};
+
+export const getOhlcFromEnd = args => {
+    const { index: i = 1 } = args || {};
+
+    const index = expectPositiveInteger(Number(i), localize('Index must be a positive integer'));
+
+    return new Promise(resolve => getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
+};
+
+export const getPipSize = () => {
+    return ticksService.pipSizes[$scope.symbol];
+};
+
 export const getTicks = (toString = false) => {
     return new Promise(resolve => {
         ticksService.request({ symbol: $scope.symbol }).then(ticks => {
@@ -74,21 +89,6 @@ export const getTicks = (toString = false) => {
             resolve(ticks_list);
         });
     });
-};
-
-export const getLastDigit = () => {
-    return new Promise(resolve => getLastTick(false, true).then(tick => resolve(getLastDigitHelpers(tick))));
-};
-
-export const getLastDigitList = () => {
-    return new Promise(resolve => getTicks().then(ticks => resolve(getLastDigitsFromList(ticks))));
-};
-
-export const getLastDigitsFromList = ticks => {
-    const digits = ticks.map(tick => {
-        return getLastDigitHelpers(tick.toFixed(getPipSize()));
-    });
-    return digits;
 };
 
 export const watchTicks = symbol => {

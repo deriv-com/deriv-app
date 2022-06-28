@@ -62,38 +62,6 @@ const unsubscribeProposals = () => {
     );
 };
 
-export const getPurchaseReference = () => $scope.purchase_reference;
-
-export const isNewTradeOption = trade_option => {
-    if (!$scope.trade_option) {
-        $scope.trade_option = trade_option;
-        return true;
-    }
-
-    // Compare incoming "trade_option" argument with "this.trade_option", if any
-    // of the values is different, this is a new tradeOption and new proposals
-    // should be generated.
-    return [
-        'amount',
-        'barrierOffset',
-        'basis',
-        'duration',
-        'duration_unit',
-        'prediction',
-        'secondBarrierOffset',
-        'symbol',
-    ].some(value => $scope.trade_option[value] !== trade_option[value]);
-};
-
-export const clearProposals = () => {
-    $scope.data.proposals = [];
-    Store.dispatch(clearProposalsAction());
-};
-
-export const renewProposalsOnPurchase = () => {
-    unsubscribeProposals().then(() => requestProposals());
-};
-
 export const checkProposalReady = () => {
     // Proposals are considered ready when the proposals in our memory match the ones
     // we've requested from the API, we determine this by checking the passthrough of the response.
@@ -117,6 +85,53 @@ export const checkProposalReady = () => {
     }
 };
 
+export const clearProposals = () => {
+    $scope.data.proposals = [];
+    Store.dispatch(clearProposalsAction());
+};
+
+export const getProposal = contract_type => {
+    return $scope.data.proposals.find(
+        proposal => proposal.contract_type === contract_type && proposal.purchase_reference === getPurchaseReference()
+    );
+};
+
+export const getPurchaseReference = () => $scope.purchase_reference;
+
+export const isNewTradeOption = trade_option => {
+    if (!$scope.trade_option) {
+        $scope.trade_option = trade_option;
+        return true;
+    }
+
+    // Compare incoming "trade_option" argument with "this.trade_option", if any
+    // of the values is different, this is a new tradeOption and new proposals
+    // should be generated.
+    return [
+        'amount',
+        'barrierOffset',
+        'basis',
+        'duration',
+        'duration_unit',
+        'prediction',
+        'secondBarrierOffset',
+        'symbol',
+    ].some(value => $scope.trade_option[value] !== trade_option[value]);
+};
+
+export const makeProposals = trade_option => {
+    if (!isNewTradeOption(trade_option)) {
+        return;
+    }
+
+    // Generate a purchase reference when trade options are different from previous trade options.
+    // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
+    $scope.purchase_reference = getUUID();
+    $scope.trade_option = trade_option;
+    $scope.proposal_templates = tradeOptionToProposal(trade_option, getPurchaseReference());
+    renewProposalsOnPurchase();
+};
+
 export const observeProposals = () => {
     ws.onMessage().subscribe(response => {
         if (response.data.msg_type === 'proposal') {
@@ -132,6 +147,10 @@ export const observeProposals = () => {
             }
         }
     });
+};
+
+export const renewProposalsOnPurchase = () => {
+    unsubscribeProposals().then(() => requestProposals());
 };
 
 export const selectProposal = contract_type => {
@@ -165,23 +184,4 @@ export const selectProposal = contract_type => {
         id: to_buy.id,
         askPrice: to_buy.ask_price,
     };
-};
-
-export const makeProposals = trade_option => {
-    if (!isNewTradeOption(trade_option)) {
-        return;
-    }
-
-    // Generate a purchase reference when trade options are different from previous trade options.
-    // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
-    $scope.purchase_reference = getUUID();
-    $scope.trade_option = trade_option;
-    $scope.proposal_templates = tradeOptionToProposal(trade_option, getPurchaseReference());
-    renewProposalsOnPurchase();
-};
-
-export const getProposal = contract_type => {
-    return $scope.data.proposals.find(
-        proposal => proposal.contract_type === contract_type && proposal.purchase_reference === getPurchaseReference()
-    );
 };

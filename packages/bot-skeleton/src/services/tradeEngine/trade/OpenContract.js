@@ -21,32 +21,11 @@ const expectedContractId = contractId => {
     return $scope.contract_id && contractId === $scope.contract_id;
 };
 
+export const getDetail = i => createDetails($scope.data.contract)[i];
+
 export const getSellPrice = () => {
     const { bid_price: bidPrice, buy_price: buyPrice, currency } = $scope.data.contract;
     return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
-};
-
-export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
-    $scope.contract_id = contract_id;
-    doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
-        .then(data => {
-            const { populateConfig } = DBotStore.instance;
-            populateConfig(data.proposal_open_contract);
-            $scope.open_contract_id = data.proposal_open_contract.id;
-        })
-        .catch(error => {
-            if (error.error.code !== 'AlreadySubscribed') {
-                doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
-                    response => ($scope.open_contract_id = response.proposal_open_contract.id)
-                );
-            }
-        });
-};
-
-export const waitForAfter = () => {
-    return new Promise(resolve => {
-        afterPromise = resolve;
-    });
 };
 
 export const observeOpenContract = () => {
@@ -86,4 +65,25 @@ export const observeOpenContract = () => {
     });
 };
 
-export const getDetail = i => createDetails($scope.data.contract)[i];
+export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
+    $scope.contract_id = contract_id;
+    doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
+        .then(data => {
+            const { populateConfig } = DBotStore.instance;
+            populateConfig(data.proposal_open_contract);
+            $scope.open_contract_id = data.proposal_open_contract.id;
+        })
+        .catch(error => {
+            if (error.error.code !== 'AlreadySubscribed') {
+                doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
+                    response => ($scope.open_contract_id = response.proposal_open_contract.id)
+                );
+            }
+        });
+};
+
+export const waitForAfter = () => {
+    return new Promise(resolve => {
+        afterPromise = resolve;
+    });
+};

@@ -53,17 +53,24 @@ export const getAccountStat = () => {
     return globalStat[accountID];
 };
 
-export const getTotalRuns = () => {
-    const accountStat = getAccountStat();
-    return accountStat.totalRuns;
-};
-
 export const getTotalProfit = (toString, currency) => {
     const accountStat = getAccountStat();
 
     return toString && accountStat.totalProfit !== 0
         ? getRoundedNumber(+accountStat.totalProfit, currency)
         : +accountStat.totalProfit;
+};
+
+export const getTotalRuns = () => {
+    const accountStat = getAccountStat();
+    return accountStat.totalRuns;
+};
+
+export const updateAndReturnTotalRuns = () => {
+    $scope.session.runs++;
+    const accountStat = getAccountStat();
+
+    return ++accountStat.totalRuns;
 };
 
 export const updateTotals = contract => {
@@ -99,11 +106,4 @@ export const updateTotals = contract => {
     });
 
     log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
-};
-
-export const updateAndReturnTotalRuns = () => {
-    $scope.session.runs++;
-    const accountStat = getAccountStat();
-
-    return ++accountStat.totalRuns;
 };

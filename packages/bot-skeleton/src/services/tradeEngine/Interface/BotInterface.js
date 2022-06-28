@@ -1,9 +1,17 @@
-import { isSellAtMarketAvailable, sellAtMarket } from '../trade/Sell';
-import { isTradeAgainObserver } from '../trade/Observers';
-import { getSellPrice, getDetail } from '../trade/OpenContract';
-import { purchase } from '../trade/Purchase';
-import { getPurchaseReference, getProposal } from '../trade/Proposal';
-import { initTradeEngine, startTradeEngine, stopTradeEngine, tradeEngineObserver } from '../trade';
+import {
+    getDetail,
+    getProposal,
+    getPurchaseReference,
+    getSellPrice,
+    initTradeEngine,
+    isSellAtMarketAvailable,
+    isTradeAgainObserver,
+    purchase,
+    sellAtMarket,
+    startTradeEngine,
+    stopTradeEngine,
+    tradeEngineObserver,
+} from '../trade';
 
 const getBotInterface = () => {
     return {

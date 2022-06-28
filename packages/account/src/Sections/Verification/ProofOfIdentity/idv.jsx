@@ -9,10 +9,6 @@ import { identity_status_codes } from './proof-of-identity-utils';
 const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
     const { status, submissions_left } = idv;
 
-    console.log('');
-    console.log('IDV');
-    console.log(status);
-
     switch (status) {
         case identity_status_codes.pending:
             return <IdvSubmitComplete is_from_external={is_from_external} needs_poa={needs_poa} />;

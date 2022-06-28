@@ -42,17 +42,18 @@ const ToolBox = ({ blockly }) => {
     globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
     globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
 
-    const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
+    const Keys = Object.freeze({ zoomIn: "=", zoomOut: "-" });
     document.body.addEventListener("keydown", (e) => {
-      e.preventDefault();
-      if (e.which === Keys.zoomOut && e.ctrlKey) {
+      if (e.key === Keys.zoomOut && e.ctrlKey) {
         // Ctrl + -
+        e.preventDefault();
         // eslint-disable-next-line no-unused-expressions
         blockly?.zoomOnPlusMinus(false);
         return;
       }
-      if (e.which === Keys.zoomIn && e.ctrlKey) {
+      if (e.key === Keys.zoomIn && e.ctrlKey) {
         // Ctrl + +
+        e.preventDefault();
         // eslint-disable-next-line no-unused-expressions
         blockly?.zoomOnPlusMinus(true);
       }

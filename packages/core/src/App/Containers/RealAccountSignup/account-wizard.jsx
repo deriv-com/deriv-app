@@ -242,12 +242,8 @@ const AccountWizard = props => {
             document_type: document_type.id,
             issuing_country: country_code,
         };
-        await WS.send(idv_submit_data).then((res) => {
-            console.log(res);
-        });
-
-    }
-
+        await WS.send(idv_submit_data);
+    };
 
     const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
@@ -262,9 +258,9 @@ const AccountWizard = props => {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
 
-                const { document_type, document_number, country_code } = { ...form_values() }
+                const { document_type, document_number, country_code } = { ...form_values() };
                 if (document_type && document_number && country_code) {
-                    submitIDVData(document_type, document_number, country_code)
+                    submitIDVData(document_type, document_number, country_code);
                 }
             })
             .catch(error => {

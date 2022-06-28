@@ -10,7 +10,7 @@ You need to follow the instructions [here](../../README.md).
 ## How To Work With This Project
 
 To run and work on this workspace you need to use `npm run serve cfd` command along with `npm run serve core`.
-It will watch `cfd` so after you made a change in this package, it will automatically rebuild `cfd` and recompile `core`.
+Webpack will watch changes in `cfd` so that if you made any changes in this package, it will automatically rebuild `cfd` and recompile `core`.
 
 ## Folder Structure
 

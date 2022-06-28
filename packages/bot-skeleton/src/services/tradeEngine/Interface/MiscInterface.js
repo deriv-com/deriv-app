@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 import { notify } from '../utils/broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
 import { getBalance } from '../trade/Balance';
+import { getTotalRuns, getTotalProfit } from '../trade/Total';
 
 const getMiscInterface = tradeEngine => {
     return {
@@ -24,9 +25,9 @@ const getMiscInterface = tradeEngine => {
                 })
                 .catch(onError);
         },
-        getTotalRuns: () => tradeEngine.getTotalRuns(),
+        getTotalRuns: () => getTotalRuns(),
         getBalance: type => getBalance(type),
-        getTotalProfit: toString => tradeEngine.getTotalProfit(toString, tradeEngine.tradeOptions.currency),
+        getTotalProfit: toString => getTotalProfit(toString, tradeEngine.tradeOptions.currency),
     };
 };
 

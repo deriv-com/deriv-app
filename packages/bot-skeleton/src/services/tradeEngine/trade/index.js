@@ -7,7 +7,7 @@ import Sell from './Sell';
 import { start } from './state/actions';
 import * as constants from './state/constants';
 import Ticks from './Ticks';
-import Total, { checkLimits } from './Total';
+import { checkLimits, clearStatistics } from './Total';
 import { doUntilDone } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
@@ -68,9 +68,10 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {})))))) {
+export default class TradeEngine extends Purchase(Sell(OpenContract(Proposal(Ticks(class {}))))) {
     constructor() {
         super();
+        globalObserver.register('statistics.clear', clearStatistics);
         this.$scope = $scope;
         this.observe();
     }

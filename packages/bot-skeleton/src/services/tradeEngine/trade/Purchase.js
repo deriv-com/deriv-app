@@ -9,6 +9,7 @@ import $scope from '../utils/cliTools';
 import { subscribeToOpenContract } from './OpenContract';
 import Store from './trade-engine-store';
 import { clearProposals, renewProposalsOnPurchase } from './Proposal';
+import { updateAndReturnTotalRuns } from './Total';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -41,7 +42,7 @@ export default Engine =>
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
                     accountID: $scope.account_info.loginid,
-                    totalRuns: this.updateAndReturnTotalRuns(),
+                    totalRuns: updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
                     contract_type,
                     buy_price: buy.buy_price,

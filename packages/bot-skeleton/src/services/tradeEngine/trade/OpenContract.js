@@ -6,6 +6,7 @@ import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
 import Store from './trade-engine-store';
+import { updateTotals } from './Total';
 
 const setContractFlags = contract => {
     const { is_expired, is_valid_to_sell, is_sold } = contract;
@@ -60,7 +61,7 @@ export default Engine =>
                     if ($scope.contract_flags.is_sold) {
                         $scope.contract_id = '';
                         clearTimeout(this.transaction_recovery_timeout);
-                        this.updateTotals(contract);
+                        updateTotals(contract);
                         contractStatus({
                             id: 'contract.sold',
                             data: contract.transaction_ids.sell,

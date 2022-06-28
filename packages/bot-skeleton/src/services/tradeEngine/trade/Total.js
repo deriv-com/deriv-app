@@ -2,7 +2,6 @@ import { getRoundedNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { info, log } from '../utils/broadcast';
 import { createError } from '../../../utils/error';
-import { observer as globalObserver } from '../../../utils/observer';
 import { log_types } from '../../../constants/messages';
 import $scope from '../utils/cliTools';
 
@@ -44,80 +43,67 @@ export const clearStatistics = () => {
     globalStat[accountID] = { ...skeleton };
 };
 
-export default Engine =>
-    class Total extends Engine {
-        constructor() {
-            super();
+export const getAccountStat = () => {
+    const { loginid: accountID } = $scope.account_info;
 
-            $scope.session.runs = 0;
-            $scope.session.profit = 0;
+    if (!(accountID in globalStat)) {
+        globalStat[accountID] = { ...skeleton };
+    }
 
-            globalObserver.register('statistics.clear', clearStatistics);
-        }
+    return globalStat[accountID];
+};
 
-        updateTotals(contract) {
-            const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
+export const getTotalRuns = () => {
+    const accountStat = getAccountStat();
+    return accountStat.totalRuns;
+};
 
-            const profit = getRoundedNumber(Number(sellPrice) - Number(buyPrice), currency);
+export const getTotalProfit = (toString, currency) => {
+    const accountStat = getAccountStat();
 
-            const win = profit > 0;
+    return toString && accountStat.totalProfit !== 0
+        ? getRoundedNumber(+accountStat.totalProfit, currency)
+        : +accountStat.totalProfit;
+};
 
-            const accountStat = this.getAccountStat();
+export const updateTotals = contract => {
+    const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
-            accountStat.totalWins += win ? 1 : 0;
+    const profit = getRoundedNumber(Number(sellPrice) - Number(buyPrice), currency);
 
-            accountStat.totalLosses += !win ? 1 : 0;
+    const win = profit > 0;
 
-            $scope.session.profit = getRoundedNumber(Number($scope.session.profit) + Number(profit), currency);
+    const accountStat = getAccountStat();
 
-            accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
+    accountStat.totalWins += win ? 1 : 0;
 
-            accountStat.totalStake = getRoundedNumber(Number(accountStat.totalStake) + Number(buyPrice), currency);
+    accountStat.totalLosses += !win ? 1 : 0;
 
-            accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice), currency);
+    $scope.session.profit = getRoundedNumber(Number($scope.session.profit) + Number(profit), currency);
 
-            info({
-                profit,
-                contract,
-                accountID: $scope.account_info.loginid,
-                totalProfit: accountStat.totalProfit,
-                totalWins: accountStat.totalWins,
-                totalLosses: accountStat.totalLosses,
-                totalStake: accountStat.totalStake,
-                totalPayout: accountStat.totalPayout,
-            });
+    accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
 
-            log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
-        }
+    accountStat.totalStake = getRoundedNumber(Number(accountStat.totalStake) + Number(buyPrice), currency);
 
-        updateAndReturnTotalRuns() {
-            $scope.session.runs++;
-            const accountStat = this.getAccountStat();
+    accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice), currency);
 
-            return ++accountStat.totalRuns;
-        }
+    info({
+        profit,
+        contract,
+        accountID: $scope.account_info.loginid,
+        totalProfit: accountStat.totalProfit,
+        totalWins: accountStat.totalWins,
+        totalLosses: accountStat.totalLosses,
+        totalStake: accountStat.totalStake,
+        totalPayout: accountStat.totalPayout,
+    });
 
-        /* eslint-disable class-methods-use-this */
-        getTotalRuns() {
-            const accountStat = this.getAccountStat();
-            return accountStat.totalRuns;
-        }
+    log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
+};
 
-        getTotalProfit(toString, currency) {
-            const accountStat = this.getAccountStat();
+export const updateAndReturnTotalRuns = () => {
+    $scope.session.runs++;
+    const accountStat = getAccountStat();
 
-            return toString && accountStat.totalProfit !== 0
-                ? getRoundedNumber(+accountStat.totalProfit, currency)
-                : +accountStat.totalProfit;
-        }
-
-        getAccountStat() {
-            const { loginid: accountID } = $scope.account_info;
-
-            if (!(accountID in globalStat)) {
-                globalStat[accountID] = { ...skeleton };
-            }
-
-            return globalStat[accountID];
-        }
-    };
+    return ++accountStat.totalRuns;
+};

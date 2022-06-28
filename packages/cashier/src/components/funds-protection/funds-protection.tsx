@@ -1,11 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { RootStore } from 'Types';
 import './funds-protection.scss';
 
-const FundsProtection = ({ submitFundsProtection }) => {
+type TFundsProtectionProps = {
+    submitFundsProtection: () => void;
+};
+
+const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
     return (
         <div className='funds-protection'>
             <Icon icon='IcCashierFundsProtection' className='funds-protection__icon' />
@@ -36,10 +40,6 @@ const FundsProtection = ({ submitFundsProtection }) => {
     );
 };
 
-FundsProtection.propTypes = {
-    submitFundsProtection: PropTypes.func,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     submitFundsProtection: modules.cashier.deposit.submitFundsProtection,
 }))(FundsProtection);

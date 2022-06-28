@@ -160,8 +160,10 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         </Formik>
     );
 };
+
 ProofOfOwnershipForm.propTypes = {
     cards: PropTypes.array,
     updateAccountStatus: PropTypes.func,
 };
+
 export default ProofOfOwnershipForm;

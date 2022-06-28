@@ -36,16 +36,17 @@ describe('<CryptoFiatConverter />', () => {
 
     it('should change arrow direction when the focus changes between inputs', () => {
         const props = mockProps();
-        const { container } = render(
+        render(
             <Formik>
                 <CryptoFiatConverter {...props} />
             </Formik>
         );
+
         const [converter_from_amount_input, converter_to_amount_input] = screen.getAllByRole('textbox');
         converter_from_amount_input.focus();
-        expect(container.querySelector('#arrow_right_bold')).toBeInTheDocument();
+        expect(screen.getByTestId('dti_arrow_right_bold')).toBeInTheDocument();
         converter_to_amount_input.focus();
-        expect(container.querySelector('#arrow_left_bold')).toBeInTheDocument();
+        expect(screen.getByTestId('dti_arrow_left_bold')).toBeInTheDocument();
     });
 
     it('"converter_from_amount" and "converter_to_amount" inputs should show the proper values', () => {
@@ -57,16 +58,16 @@ describe('<CryptoFiatConverter />', () => {
         );
         const [converter_from_amount_input, converter_to_amount_input] = screen.getAllByRole('textbox');
 
-        expect(converter_from_amount_input.value).toBe('100');
-        expect(converter_to_amount_input.value).toBe('200');
+        expect(converter_from_amount_input).toHaveValue('100');
+        expect(converter_to_amount_input).toHaveValue('200');
     });
 
     it('should trigger onChange callback when the input field changes', () => {
         const props = mockProps();
         const onChangeConverterFromAmount = jest.fn();
         const onChangeConverterToAmount = jest.fn();
-        const use_formik_context = jest.spyOn(formik, 'useFormikContext');
-        use_formik_context.mockReturnValueOnce({ handleChange: () => {} });
+        const use_formik_context = jest.spyOn(formik, 'useFormikContext') as any;
+        use_formik_context.mockReturnValueOnce({ handleChange: jest.fn() });
         render(
             <Formik>
                 <CryptoFiatConverter

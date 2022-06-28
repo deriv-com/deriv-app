@@ -1,22 +1,49 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Field, useFormikContext } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
+import { RootStore, TReactChangeEvent, TReactChildren } from 'Types';
 import './crypto-fiat-converter.scss';
 
-const Timer = ({ onComplete }) => {
+type TTimerProps = {
+    onComplete: () => void;
+};
+
+type TInputGroupProps = {
+    children: TReactChildren;
+    className: string;
+};
+
+type TCryptoFiatConverterProps = {
+    converter_from_amount: string;
+    converter_from_error: string;
+    converter_to_error: string;
+    converter_to_amount: string;
+    from_currency: string;
+    hint: string | TReactChildren;
+    is_timer_visible: boolean;
+    onChangeConverterFromAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    resetConverter: () => void;
+    to_currency: string;
+    validateFromAmount: () => void;
+    validateToAmount: () => void;
+};
+let changed_event_amount: TReactChangeEvent;
+
+const Timer = ({ onComplete }: TTimerProps) => {
     const initial_time = 60;
-    const [remaining_time, setRemainingTime] = React.useState(initial_time);
+    const [remaining_time, setRemainingTime] = React.useState<number>(initial_time);
 
     useInterval(() => {
         if (remaining_time > 0) {
             setRemainingTime(remaining_time - 1);
         }
     }, 1000);
+
     React.useEffect(() => {
         if (remaining_time === 0) {
             onComplete();
@@ -31,7 +58,7 @@ const Timer = ({ onComplete }) => {
     );
 };
 
-const InputGroup = ({ children, className }) => {
+const InputGroup = ({ children, className }: TInputGroupProps) => {
     return (
         <fieldset>
             <div className={className}>{children}</div>
@@ -53,9 +80,9 @@ const CryptoFiatConverter = ({
     to_currency,
     validateFromAmount,
     validateToAmount,
-}) => {
+}: TCryptoFiatConverterProps) => {
     const { handleChange } = useFormikContext();
-    const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
+    const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
 
     React.useEffect(() => {
         return () => resetConverter();
@@ -70,13 +97,13 @@ const CryptoFiatConverter = ({
     return (
         <div className='crypto-fiat-converter'>
             <Field name='converter_from_amount' validate={validateFromAmount}>
-                {({ field }) => (
+                {({ field }: FieldProps<string>) => (
                     <Input
                         {...field}
                         onFocus={() => {
                             setArrowIconDirection('right');
                         }}
-                        onChange={e => {
+                        onChange={(e: TReactChangeEvent) => {
                             onChangeConverterFromAmount(e, from_currency, to_currency);
                             handleChange(e);
                         }}
@@ -96,20 +123,20 @@ const CryptoFiatConverter = ({
             </MobileWrapper>
             <DesktopWrapper>
                 {arrow_icon_direction === 'right' ? (
-                    <Icon icon='IcArrowRightBold' id='arrow_right_bold' />
+                    <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />
                 ) : (
-                    <Icon icon='IcArrowLeftBold' id='arrow_left_bold' />
+                    <Icon icon='IcArrowLeftBold' id='arrow_left_bold' data_testid='dti_arrow_left_bold' />
                 )}
             </DesktopWrapper>
             <Field name='converter_to_amount' validate={validateToAmount}>
-                {({ field }) => (
+                {({ field }: FieldProps<string>) => (
                     <InputGroup className='input-group'>
                         <Input
                             {...field}
                             onFocus={() => {
                                 setArrowIconDirection('left');
                             }}
-                            onChange={e => {
+                            onChange={(e: TReactChangeEvent) => {
                                 onChangeConverterToAmount(e, to_currency, from_currency);
                                 handleChange(e);
                             }}
@@ -124,12 +151,9 @@ const CryptoFiatConverter = ({
                         {is_timer_visible && (
                             <Timer
                                 onComplete={() => {
+                                    changed_event_amount.target.value = converter_from_amount;
                                     onChangeConverterFromAmount(
-                                        {
-                                            target: {
-                                                value: converter_from_amount,
-                                            },
-                                        },
+                                        { ...changed_event_amount },
                                         from_currency,
                                         to_currency
                                     );
@@ -143,22 +167,7 @@ const CryptoFiatConverter = ({
     );
 };
 
-CryptoFiatConverter.propTypes = {
-    converter_from_amount: PropTypes.string,
-    converter_from_error: PropTypes.string,
-    converter_to_error: PropTypes.string,
-    converter_to_amount: PropTypes.string,
-    from_currency: PropTypes.string,
-    is_timer_visible: PropTypes.bool,
-    onChangeConverterFromAmount: PropTypes.func,
-    onChangeConverterToAmount: PropTypes.func,
-    resetConverter: PropTypes.func,
-    to_currency: PropTypes.string,
-    validateFromAmount: PropTypes.func,
-    validateToAmount: PropTypes.func,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: RootStore) => ({
     converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
     converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,

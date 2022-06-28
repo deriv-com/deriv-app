@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 import { getStatus } from 'Constants/transaction-status';
 import './recent-transaction.scss';
 

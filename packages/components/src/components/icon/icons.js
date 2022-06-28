@@ -239,6 +239,7 @@ import './common/ic-email-spam.svg';
 import './common/ic-email-typo.svg';
 import './common/ic-email-verified.svg';
 import './common/ic-email.svg';
+import './common/ic-empty-blocked-advertisers.svg';
 import './common/ic-empty-folder.svg';
 import './common/ic-eye.svg';
 import './common/ic-filter.svg';

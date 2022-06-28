@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Dialog, Icon, Popover } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import ApiTokenContext from './api-token-context';
 
-const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left' }) => {
+const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left', disableApp, enableApp }) => {
     const { deleteToken } = React.useContext(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
     const isMounted = useIsMounted();
@@ -44,6 +45,11 @@ const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left' }) => {
                 secondary_button_type='button'
                 primary_button_type='button'
                 title='Delete token'
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_closed_on_cancel
+                is_closed_on_confirm
+                portal_element_id='modal_root'
             >
                 {localize('Are you sure you want to delete this token?')}
             </Dialog>
@@ -77,4 +83,7 @@ ApiTokenDeleteButton.propTypes = {
     popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
-export default ApiTokenDeleteButton;
+export default connect(({ ui }) => ({
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+}))(ApiTokenDeleteButton);

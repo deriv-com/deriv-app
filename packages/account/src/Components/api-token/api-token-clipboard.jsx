@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import { Dialog, Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const WarningNoteBullet = ({ message }) => (
     <div className='da-api-token__bullet-wrapper'>
@@ -28,7 +29,15 @@ const WarningDialogMessage = () => (
     </>
 );
 
-const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popoverAlignment = 'bottom' }) => {
+const ApiTokenClipboard = ({
+    scopes,
+    text_copy,
+    info_message,
+    success_message,
+    popoverAlignment = 'bottom',
+    disableApp,
+    enableApp,
+}) => {
     const [is_copied, setIsCopied] = React.useState(false);
     const [is_visible, setIsVisible] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
@@ -79,6 +88,11 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
                 onConfirm={onClick}
                 className='da-api-token__dialog'
                 primary_button_type='button'
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_closed_on_cancel
+                is_closed_on_confirm
+                portal_element_id='modal_root'
             >
                 <WarningDialogMessage />
             </Dialog>
@@ -124,4 +138,7 @@ ApiTokenClipboard.propTypes = {
     popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
-export default ApiTokenClipboard;
+export default connect(({ ui }) => ({
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+}))(ApiTokenClipboard);

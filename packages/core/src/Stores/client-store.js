@@ -1043,7 +1043,7 @@ export default class ClientStore extends BaseStore {
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
-
+        console.log(response);
         if (!response.error) {
             await this.accountRealReaction(response);
             if (is_samoa_account) {
@@ -1051,16 +1051,6 @@ export default class ClientStore extends BaseStore {
             }
             localStorage.removeItem('real_account_signup_wizard');
             await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-
-            if (document_number && document_type && country_code) {
-                const idv_submit_data = {
-                    identity_verification_document_add: 1,
-                    document_number,
-                    document_type: document_type.id,
-                    issuing_country: country_code,
-                };
-                await WS.send(idv_submit_data);
-            }
 
             return Promise.resolve({
                 ...response,

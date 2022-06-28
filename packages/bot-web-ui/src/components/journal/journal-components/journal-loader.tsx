@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-export const JournalLoader = ({ is_mobile }: { is_mobile: boolean }) => (
+const JournalLoader = ({ is_mobile }: { is_mobile: boolean }) => (
     <ContentLoader
         className={classnames('journal__loader', { 'journal__loader--mobile': is_mobile })}
         speed={3}
@@ -15,3 +15,5 @@ export const JournalLoader = ({ is_mobile }: { is_mobile: boolean }) => (
         <rect x='15' y='60' rx='5' ry='5' width='180' height='7' />
     </ContentLoader>
 );
+
+export default JournalLoader;

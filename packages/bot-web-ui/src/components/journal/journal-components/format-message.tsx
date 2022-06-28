@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import React from 'react';
 import { TFormatMessageProps } from '../journal.types';
 
-export const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
+const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
     const getLogMessage = () => {
         switch (logType) {
             case log_types.LOAD_BLOCK: {
@@ -70,3 +70,5 @@ export const FormatMessage = ({ logType, className, extra }: TFormatMessageProps
 
     return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
+
+export default FormatMessage;

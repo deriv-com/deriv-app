@@ -87,6 +87,6 @@ export type TJournalDataListArgs = {
     is_new_row: boolean;
     is_scrolling: boolean;
     measure: () => void;
-    passthrough: undefined;
+    passthrough?: any;
     row: TFilterMessageValues;
 };

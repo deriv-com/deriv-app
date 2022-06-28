@@ -3,10 +3,10 @@ import { Localize } from '@deriv/translations';
 import Download from 'Components/download';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { FilterDialog } from '.';
 import { TJournalToolsProps } from '../journal.types';
-import FilterDialog from '../filter-dialog';
 
-export const JournalTools = ({
+const JournalTools = ({
     checked_filters,
     filters,
     filterMessage,
@@ -50,3 +50,5 @@ export const JournalTools = ({
         </>
     );
 };
+
+export default JournalTools;

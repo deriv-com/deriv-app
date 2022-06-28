@@ -5,10 +5,8 @@ import { contract_stages } from 'Constants/contract-stage';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs, TJournalProps } from './journal.types';
-import JournalTools from './journal-tools';
-import JournalItem from './journal-item';
-import JournalLoader from './journal-loader';
 
 const Journal = ({
     contract_stage,

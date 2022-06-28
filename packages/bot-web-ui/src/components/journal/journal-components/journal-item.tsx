@@ -4,8 +4,7 @@ import classnames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
-import { DateItem } from '../date-item/date-item';
-import FormatMessage from '../format-message';
+import { FormatMessage, DateItem } from '.';
 
 const getJournalItemContent = (
     message: string | ((value: () => void) => string),
@@ -32,7 +31,7 @@ const getJournalItemContent = (
     }
 };
 
-export const JournalItem = ({ row, is_new_row, measure }: TJournalItemProps) => {
+const JournalItem = ({ row, is_new_row, measure }: TJournalItemProps) => {
     const { in_prop } = useNewRowTransition(is_new_row);
     const { date, time, message, message_type, className, extra } = row;
     const date_el = DateItem({ date, time });
@@ -48,3 +47,5 @@ export const JournalItem = ({ row, is_new_row, measure }: TJournalItemProps) => 
         </CSSTransition>
     );
 };
+
+export default JournalItem;

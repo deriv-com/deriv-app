@@ -1,9 +1,9 @@
 import { useOnClickOutside } from '@deriv/components';
 import React from 'react';
+import { Filters } from '.';
 import { TFilterDialogProps } from '../journal.types';
-import Filters from '../filters';
 
-export const FilterDialog = ({
+const FilterDialog = ({
     toggle_ref,
     checked_filters,
     filters,
@@ -27,3 +27,5 @@ export const FilterDialog = ({
         />
     );
 };
+
+export default FilterDialog;

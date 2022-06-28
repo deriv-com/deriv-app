@@ -2,7 +2,7 @@ import { Checkbox } from '@deriv/components';
 import React from 'react';
 import { TFiltersProps } from '../journal.types';
 
-export const Filters = ({
+const Filters = ({
     wrapper_ref,
     checked_filters,
     filters,
@@ -26,3 +26,5 @@ export const Filters = ({
         })}
     </div>
 );
+
+export default Filters;

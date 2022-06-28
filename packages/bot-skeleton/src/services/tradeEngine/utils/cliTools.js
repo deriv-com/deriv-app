@@ -25,6 +25,7 @@ export const createScope = () => {
         proposals: [],
         forget_proposal_ids: [],
     };
+    const purchase_reference = '';
 
     return {
         api,
@@ -40,6 +41,7 @@ export const createScope = () => {
         trade_option,
         proposal_templates,
         data,
+        purchase_reference,
     };
 };
 

@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { proposalsReady, clearProposals as clearProposalsAction } from './state/actions';
-import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
+import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
@@ -61,6 +61,8 @@ const unsubscribeProposals = () => {
         })
     );
 };
+
+export const getPurchaseReference = () => $scope.purchase_reference;
 
 export const isNewTradeOption = trade_option => {
     if (!$scope.trade_option) {
@@ -132,54 +134,48 @@ export const observeProposals = () => {
     });
 };
 
-export default Engine =>
-    class Proposal extends Engine {
-        makeProposals(trade_option) {
-            if (!isNewTradeOption(trade_option)) {
-                return;
+export const selectProposal = contract_type => {
+    const { proposals } = $scope.data;
+
+    if (proposals.length === 0) {
+        throw Error(localize('Proposals are not ready'));
+    }
+
+    const to_buy = proposals.find(proposal => {
+        if (proposal.contract_type === contract_type && proposal.purchase_reference === getPurchaseReference()) {
+            // Below happens when a user has had one of the proposals return
+            // with a ContractBuyValidationError. We allow the logic to continue
+            // to here cause the opposite proposal may still be valid. Only once
+            // they attempt to purchase the errored proposal we will intervene.
+            if (proposal.error) {
+                throw proposal.error;
             }
 
-            // Generate a purchase reference when trade options are different from previous trade options.
-            // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
-            this.regeneratePurchaseReference();
-            $scope.trade_option = trade_option;
-            $scope.proposal_templates = tradeOptionToProposal(trade_option, this.getPurchaseReference());
-            renewProposalsOnPurchase();
+            return proposal;
         }
 
-        selectProposal(contract_type) {
-            const { proposals } = $scope.data;
+        return false;
+    });
 
-            if (proposals.length === 0) {
-                throw Error(localize('Proposals are not ready'));
-            }
+    if (!to_buy) {
+        throw new Error(localize('Selected proposal does not exist'));
+    }
 
-            const to_buy = proposals.find(proposal => {
-                if (
-                    proposal.contract_type === contract_type &&
-                    proposal.purchase_reference === this.getPurchaseReference()
-                ) {
-                    // Below happens when a user has had one of the proposals return
-                    // with a ContractBuyValidationError. We allow the logic to continue
-                    // to here cause the opposite proposal may still be valid. Only once
-                    // they attempt to purchase the errored proposal we will intervene.
-                    if (proposal.error) {
-                        throw proposal.error;
-                    }
-
-                    return proposal;
-                }
-
-                return false;
-            });
-
-            if (!to_buy) {
-                throw new Error(localize('Selected proposal does not exist'));
-            }
-
-            return {
-                id: to_buy.id,
-                askPrice: to_buy.ask_price,
-            };
-        }
+    return {
+        id: to_buy.id,
+        askPrice: to_buy.ask_price,
     };
+};
+
+export const makeProposals = trade_option => {
+    if (!isNewTradeOption(trade_option)) {
+        return;
+    }
+
+    // Generate a purchase reference when trade options are different from previous trade options.
+    // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
+    $scope.purchase_reference = getUUID();
+    $scope.trade_option = trade_option;
+    $scope.proposal_templates = tradeOptionToProposal(trade_option, getPurchaseReference());
+    renewProposalsOnPurchase();
+};

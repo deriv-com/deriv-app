@@ -105,6 +105,7 @@ const JurisdictionModal = ({
                                 authentication_status={authentication_status}
                                 poa_status={poa_status}
                                 poi_status={poi_status}
+                                is_eu={is_eu}
                             />
                             <Modal.Footer>
                                 <Button disabled={jurisdiction_selected_card === undefined} primary>
@@ -128,6 +129,7 @@ const JurisdictionModal = ({
                                 authentication_status={authentication_status}
                                 poa_status={poa_status}
                                 poi_status={poi_status}
+                                is_eu={is_eu}
                             />
                         </MobileDialog>
                     </MobileWrapper>

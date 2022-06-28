@@ -14,6 +14,7 @@ type TJurisdictionModalContent = {
     financial_available_accounts: any[];
     poa_status: string;
     poi_status: string;
+    is_eu: boolean;
 };
 
 const JurisdictionModalContent = ({
@@ -24,6 +25,7 @@ const JurisdictionModalContent = ({
     financial_available_accounts,
     poa_status,
     poi_status,
+    is_eu,
 }: TJurisdictionModalContent) => {
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
@@ -98,7 +100,7 @@ const JurisdictionModalContent = ({
     return (
         <>
             <div className='cfd-jurisdiction-card__wrapper'>
-                {number_of_cards >= 1 && (
+                {!is_eu && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'BVI',
@@ -132,6 +134,45 @@ const JurisdictionModalContent = ({
                         <div className='cfd-jurisdiction-card__bullet-wrapper'>
                             <Checkmark />
                             <Localize i18n_default_text='Leverage up to 1:1000' />
+                        </div>
+                        <Verification_statuses />
+                    </div>
+                )}
+
+                {is_eu && (
+                    <div
+                        className={classNames('cfd-jurisdiction-card', {
+                            'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'Malta',
+                        })}
+                        onClick={() => cardSelection('Malta')}
+                        style={{ width: '32em' }}
+                    >
+                        <div className='cfd-jurisdiction-card__over-header'>
+                            <p>
+                                <Localize i18n_default_text='Better leverage & spreads' />
+                            </p>
+                        </div>
+                        <h1>
+                            <Localize i18n_default_text='Malta Financial' />
+                        </h1>
+                        <div className='cfd-jurisdiction-card__bullet-wrapper'>
+                            <Checkmark />
+                            <Localize i18n_default_text='Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)' />
+                        </div>
+
+                        <div className='cfd-jurisdiction-card__bullet-wrapper'>
+                            <Checkmark />
+                            <Localize i18n_default_text='Registered with the Financial Commission' />
+                        </div>
+
+                        <div className='cfd-jurisdiction-card__bullet-wrapper'>
+                            <Checkmark />
+                            <Localize i18n_default_text='50+ assets: forex, stocks, stock indices, synthetics indices, and cryptocurrencies.' />
+                        </div>
+
+                        <div className='cfd-jurisdiction-card__bullet-wrapper'>
+                            <Checkmark />
+                            <Localize i18n_default_text='Leverage up to 1:30' />
                         </div>
                         <Verification_statuses />
                     </div>

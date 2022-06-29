@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
-import { validNumber } from '@deriv/shared';
+import { isMobile, validNumber } from '@deriv/shared';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -10,10 +10,13 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules'),
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
     validNumber: jest.fn(() => ({ is_ok: true, message: '' })),
+    isMobile: jest.fn(() => false),
 }));
+
+jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
 
 describe('<PaymentAgentWithdrawForm />', () => {
     beforeAll(() => {
@@ -149,5 +152,12 @@ describe('<PaymentAgentWithdrawForm />', () => {
                 verification_code: 'ABCdef',
             });
         });
+    });
+
+    it('should show PaymentAgentDisclaimer in mobile view', () => {
+        isMobile.mockReturnValue(true);
+        render(<PaymentAgentWithdrawForm {...props} />);
+
+        expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 });

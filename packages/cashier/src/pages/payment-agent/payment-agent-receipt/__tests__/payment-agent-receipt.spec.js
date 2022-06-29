@@ -3,13 +3,20 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     connect: () => Component => Component,
 }));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+}));
+
+jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
 
 describe('<PaymentAgentReceipt />', () => {
     const history = createBrowserHistory();
@@ -83,5 +90,16 @@ describe('<PaymentAgentReceipt />', () => {
         );
 
         expect(screen.getAllByRole('button').length).toBe(1);
+    });
+
+    it('should show PaymentAgentDisclaimer in mobile view', () => {
+        isMobile.mockReturnValue(true);
+        render(
+            <Router history={history}>
+                <PaymentAgentReceipt {...props} />
+            </Router>
+        );
+
+        expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 });

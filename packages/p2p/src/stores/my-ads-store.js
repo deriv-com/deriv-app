@@ -23,7 +23,6 @@ export default class MyAdsStore extends BaseStore {
     @observable edit_ad_form_error = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
-    @observable has_missing_payment_methods = false;
     @observable is_ad_created_modal_visible = false;
     @observable is_ad_exceeds_daily_limit_modal_open = false;
     @observable is_api_error_modal_visible = false;
@@ -342,11 +341,6 @@ export default class MyAdsStore extends BaseStore {
                     const { list } = response.p2p_advertiser_adverts;
                     this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
-                    if (!this.has_missing_payment_methods) {
-                        this.setMissingPaymentMethods(
-                            !!list.find(payment_method => !payment_method.payment_method_names)
-                        );
-                    }
                     if (!floating_rate_store.change_ad_alert) {
                         let should_update_ads = false;
                         if (floating_rate_store.rate_type === ad_type.FLOAT) {
@@ -473,11 +467,6 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
-    }
-
-    @action.bound
-    setMissingPaymentMethods(has_missing_payment_methods) {
-        this.has_missing_payment_methods = has_missing_payment_methods;
     }
 
     @action.bound

@@ -35,6 +35,7 @@ describe('<PaymentAgentList />', () => {
         payment_agent_active_tab_index: 0,
         verification_code: '',
         onMount: jest.fn(),
+        setSideNotes: jest.fn(),
     };
 
     let history;
@@ -83,5 +84,11 @@ describe('<PaymentAgentList />', () => {
         );
 
         expect(screen.getByText('Payment agent deposit withdraw container')).toBeInTheDocument();
+    });
+
+    it('should set side notes when component is mounting', () => {
+        renderWithRouter(<PaymentAgentList {...props} />);
+
+        expect(props.setSideNotes).toHaveBeenCalledTimes(1);
     });
 });

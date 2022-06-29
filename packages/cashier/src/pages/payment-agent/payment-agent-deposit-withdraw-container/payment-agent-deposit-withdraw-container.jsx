@@ -76,6 +76,7 @@ const PaymentAgentDepositWithdrawContainer = ({
                             i18n_default_text='Choose your preferred payment agent and enter your withdrawal amount. If your payment agent is not listed, <0>search for them using their account number</0>.'
                             components={[
                                 <span
+                                    data-testid='dt_withdrawal_link'
                                     key={0}
                                     className='link'
                                     onClick={() => setIsUnlistedWithdraw(!is_unlisted_withdraw)}

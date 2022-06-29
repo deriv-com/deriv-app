@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
-import { toMoment, getLocation, makeCancellablePromise } from '@deriv/shared';
+import { toMoment, getLocation, makeCancellablePromise, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingModal from './real-account-signup-loader.jsx';
@@ -235,6 +235,16 @@ const AccountWizard = props => {
         return properties;
     };
 
+    const submitIDVData = async (document_type, document_number, country_code) => {
+        const idv_submit_data = {
+            identity_verification_document_add: 1,
+            document_number,
+            document_type: document_type.id,
+            issuing_country: country_code,
+        };
+        await WS.send(idv_submit_data);
+    };
+
     const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
         submitForm(payload)
@@ -246,6 +256,11 @@ const AccountWizard = props => {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                }
+
+                const { document_type, document_number, country_code } = { ...form_values() };
+                if (document_type && document_number && country_code) {
+                    submitIDVData(document_type, document_number, country_code);
                 }
             })
             .catch(error => {

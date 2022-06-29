@@ -672,7 +672,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleDerivAccountNeededModal() {
+    openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 }

@@ -76,6 +76,25 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    blockUnblockUser(should_block, advertiser_id) {
+        const { advertiser_page_store } = this.root_store;
+        advertiser_page_store.setIsLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+            [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    advertiser_page_store.setIsBlockUserModalOpen(false);
+                } else {
+                    advertiser_page_store.setErrorMessage(response.error);
+                }
+            }
+            advertiser_page_store.setIsLoading(false);
+        });
+    }
+
+    @action.bound
     createAdvertiser(name) {
         requestWS({
             p2p_advertiser_create: 1,

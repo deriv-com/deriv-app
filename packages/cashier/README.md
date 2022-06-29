@@ -47,7 +47,7 @@ src
 
 ```
 
-**components:** This folder contains all the reusable components we need for developing the project.
+**components:** This folder contains all the reusable components that we need for developing this workspace.
 We have a separate folder for each component.
 
 **constants:** We add the static data structures needed for the project here.

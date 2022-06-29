@@ -1,7 +1,7 @@
 import React from 'react';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { Button, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { TMissingRealAccount } from './props.types';
 
 const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) => (

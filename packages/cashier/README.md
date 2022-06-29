@@ -3,7 +3,7 @@
 ## Description
 
 This repository is a workspace of [deriv-app](../../README.md) monorepo and covers the [cashier](https://app.deriv.com/cashier/) page in app.deriv.com. (You need to be logged in to see the page.)
-This project covers:
+This workspace covers:
 
 -   Deposit, Withdraw and Transfer (for both `Fiat` and `Crypto`)
 -   Deposit and withdraw for `payment agent`

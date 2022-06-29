@@ -358,8 +358,7 @@ const BuySellForm = props => {
                                                                 event.target.value,
                                                                 buy_sell_store.account_currency
                                                             );
-
-                                                            setFieldValue('amount', getRoundedNumber(input_amount));
+                                                            setFieldValue('amount', input_amount);
                                                             buy_sell_store.setReceiveAmount(
                                                                 input_amount * effective_rate
                                                             );

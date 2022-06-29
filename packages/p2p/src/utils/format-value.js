@@ -31,10 +31,10 @@ export const generateEffectiveRate = ({
         effective_rate = price;
         display_effective_rate = formatMoney(local_currency, effective_rate, true);
     } else {
-        effective_rate = parseFloat(exchange_rate * (1 + rate / 100));
-        display_effective_rate = removeTrailingZeros(
-            formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
-        );
+        const provided_rate = parseFloat(exchange_rate * (1 + rate / 100));
+        const decimal_places = setDecimalPlaces(provided_rate, 6);
+        effective_rate = removeTrailingZeros(roundOffDecimal(provided_rate, decimal_places));
+        display_effective_rate = removeTrailingZeros(formatMoney(local_currency, provided_rate, true, decimal_places));
     }
     return { effective_rate, display_effective_rate };
 };

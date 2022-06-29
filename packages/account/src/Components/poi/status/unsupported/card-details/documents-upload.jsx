@@ -45,10 +45,6 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
         label: fields[0].label,
     });
 
-    const goBack = () => {
-        goToCards();
-    };
-
     return (
         <div
             className={classNames(ROOT_CLASS, {
@@ -99,7 +95,7 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
                             </div>
                             <div className={`${ROOT_CLASS}__btns`}>
                                 <Button
-                                    onClick={goBack}
+                                    onClick={goToCards}
                                     secondary
                                     large
                                     text={localize('Go back')}

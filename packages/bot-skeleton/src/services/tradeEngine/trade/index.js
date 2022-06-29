@@ -46,5 +46,3 @@ export {
     updateAndReturnTotalRuns,
     updateTotals,
 } from './Total';
-
-export { default as Store } from './trade-engine-store';

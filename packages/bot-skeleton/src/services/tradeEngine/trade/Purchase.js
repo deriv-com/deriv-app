@@ -7,7 +7,7 @@ import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
 import { subscribeToOpenContract } from './OpenContract';
-import Store from './trade-engine-store';
+import Store from './state';
 import { clearProposals, renewProposalsOnPurchase, selectProposal } from './Proposal';
 import { updateAndReturnTotalRuns } from './Total';
 

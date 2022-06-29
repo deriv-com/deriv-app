@@ -4,7 +4,7 @@ import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
-import Store from './trade-engine-store';
+import Store from './state';
 
 const requestProposals = () => {
     // Since there are two proposals (in most cases), an error may be logged twice, to avoid this

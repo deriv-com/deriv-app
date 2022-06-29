@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import Interface, { getInterface } from '../Interface';
+import { getInterface } from '../Interface';
 import { createScope } from '../utils/cliTools';
-import Store from '../trade/trade-engine-store';
+import Store from '../trade/state';
 
 const $scope = createScope();
 

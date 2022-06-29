@@ -9,7 +9,7 @@ import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import $scope, { initial_scope } from '../utils/cliTools';
-import Store from './trade-engine-store';
+import Store from './state';
 import { loginAndGetBalance } from './Authenticate';
 
 /* The watchScope function is called randomly and resets the prevTick

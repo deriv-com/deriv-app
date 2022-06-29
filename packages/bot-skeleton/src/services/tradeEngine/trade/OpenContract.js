@@ -5,7 +5,7 @@ import { doUntilDone, createDetails } from '../utils/helpers';
 import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
-import Store from './trade-engine-store';
+import Store from './state';
 import { updateTotals } from './Total';
 
 let afterPromise;

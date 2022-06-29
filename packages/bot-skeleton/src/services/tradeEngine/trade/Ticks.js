@@ -7,7 +7,7 @@ import { observer as globalObserver } from '../../../utils/observer';
 import TicksService from '../../api/ticks_service';
 import api from '../../api/ws';
 import $scope from '../utils/cliTools';
-import Store from './trade-engine-store';
+import Store from './state';
 import { checkProposalReady } from './Proposal';
 
 let tickListenerKey;

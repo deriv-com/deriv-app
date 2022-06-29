@@ -5,7 +5,7 @@ import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
 import $scope from '../utils/cliTools';
-import Store from './trade-engine-store';
+import Store from './state';
 import { waitForAfter } from './OpenContract';
 
 export const isSellAtMarketAvailable = () => {

@@ -31,10 +31,10 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
     const validateFields = values => {
         const errors = {};
         errors.data = [];
-        let fileUploaded = false;
+        let is_file_uploaded = false;
         values.data.map((element, index) => {
             element.files.forEach((file, i) => {
-                fileUploaded = fileUploaded === true || (file?.file !== null && file?.file !== undefined);
+                is_file_uploaded = is_file_uploaded === true || (file?.file !== null && file?.file !== undefined);
                 if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
                     errors.data[index] = {};
                     errors.data[index].files = [];
@@ -53,7 +53,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                 }
             });
         });
-        setIsDisabled(!fileUploaded || errors?.data?.length > 0);
+        setIsDisabled(!is_file_uploaded || errors?.data?.length > 0);
         return errors;
     };
     const handleSubmit = async e => {
@@ -75,23 +75,23 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
             formValues.forEach(async values => {
                 const files = values.files.flatMap(f => f.file).filter(f => f !== null);
                 if (files.length > 0) {
-                    const filesToProcess = await compressImageFiles(files);
-                    const processedFiles = await readFiles(filesToProcess, fileReadErrorMessage);
-                    if (typeof processedFiles === 'string') {
+                    const files_to_process = await compressImageFiles(files);
+                    const processed_files = await readFiles(files_to_process, fileReadErrorMessage);
+                    if (typeof processed_files === 'string') {
                         // eslint-disable-next-line no-console
-                        console.warn(processedFiles);
+                        console.warn(processed_files);
                     }
-                    processedFiles.forEach(async pF => {
-                        const fileToSends = pF;
-                        fileToSends.proof_of_ownership = {
+                    processed_files.forEach(async processed_file => {
+                        const files_to_send = processed_file;
+                        files_to_send.proof_of_ownership = {
                             details: {
                                 email: get_settings.email,
                                 identifier: values.identifier,
                             },
                             id: values.id,
                         };
-                        fileToSends.documentType = 'proof_of_ownership';
-                        const response = await uploader.upload(fileToSends);
+                        files_to_send.documentType = 'proof_of_ownership';
+                        const response = await uploader.upload(files_to_send);
                         if (response.warning) {
                             // eslint-disable-next-line no-console
                             console.warn(response);

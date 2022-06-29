@@ -20,7 +20,7 @@ export const SampleCreditCardModal = ({ is_open, onClose }) => {
                 </Text>
                 <img
                     src={getUrlBase('/public/images/common/sample-credit-card.png')}
-                    alt={'creditcardsample'}
+                    alt='creditcardsample'
                     className='sample_credit_card_modal-img'
                 />
             </React.Fragment>

@@ -34,7 +34,7 @@ const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error
         <div className={`file-uploader ${className}`}>
             <input
                 type='file'
-                accept={'image/png, image/jpeg, image/jpg, image/gif, application/pdf'}
+                accept='image/png, image/jpeg, image/jpg, application/pdf'
                 ref={hiddenFileInput}
                 onChange={handleChange}
                 className='hidden-input'

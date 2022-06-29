@@ -7,7 +7,7 @@ import { TMissingRealAccount } from './props.types';
 const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) => (
     <div className='cfd-dashboard__missing-real'>
         <div className='cfd-dashboard__missing-real-wrapper'>
-            <Text className='cfd-dashboard__missing-real--heading' as='h1' size='1.6rem' weight='700'>
+            <Text className='cfd-dashboard__missing-real--heading' as='h1' weight='bold' line_height='l'>
                 {platform === CFD_PLATFORMS.MT5 ? (
                     <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.' />
                 ) : (

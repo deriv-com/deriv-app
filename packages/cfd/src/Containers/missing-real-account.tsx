@@ -1,19 +1,19 @@
 import React from 'react';
 import { CFD_PLATFORMS } from '@deriv/shared';
-import { Button } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Button, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { TMissingRealAccount } from './props.types';
 
 const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) => (
     <div className='cfd-dashboard__missing-real'>
         <div className='cfd-dashboard__missing-real-wrapper'>
-            <h1 className='cfd-dashboard__missing-real--heading'>
+            <Text className='cfd-dashboard__missing-real--heading' as='h1' size='1.6rem' weight='700'>
                 {platform === CFD_PLATFORMS.MT5 ? (
                     <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.' />
                 ) : (
                     <Localize i18n_default_text='To create a Deriv X real account, create a Deriv real account first.' />
                 )}
-            </h1>
+            </Text>
         </div>
         <div>
             <Button className='cfd-dashboard__missing-real--button' onClick={onClickSignup} type='button' primary>

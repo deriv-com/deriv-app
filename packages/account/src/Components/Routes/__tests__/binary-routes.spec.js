@@ -18,7 +18,7 @@ jest.mock('Constants/routes-config', () => () => [{}]);
 describe('<BinaryRoutes />', () => {
     const history = createBrowserHistory();
 
-    it('should render BinaryRoutes with mocked route', () => {
+    it('should render BinaryRoutes with mocked route component', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <Router history={history}>

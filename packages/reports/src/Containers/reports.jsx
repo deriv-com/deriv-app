@@ -29,10 +29,11 @@ const Reports = ({
     setVisibilityRealityCheck,
     tab_index,
     toggleReports,
+    setIsReportsUrl,
 }) => {
     React.useEffect(() => {
         toggleReports(true);
-
+        setIsReportsUrl(true);
         return () => {
             setVisibilityRealityCheck(1);
             toggleReports(false);
@@ -131,4 +132,5 @@ export default connect(({ client, common, ui }) => ({
     setTabIndex: ui.setReportsTabIndex,
     tab_index: ui.reports_route_tab_index,
     toggleReports: ui.toggleReports,
+    setIsReportsUrl: ui.setIsReportsUrl,
 }))(withRouter(Reports));

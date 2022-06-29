@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Popover, Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getRoundedTickSizeBarrier } from '@deriv/shared';
 
 const INFO_TYPES = {
     MULTIP: 'multipliers',
@@ -89,7 +90,7 @@ const Info = ({
                     info_text: (
                         <Localize
                             i18n_default_text={'Barriers <0>±{{tick_size_barrier}}%</0>'}
-                            values={{ tick_size_barrier: tick_size_barrier.toFixed(5) }}
+                            values={{ tick_size_barrier: getRoundedTickSizeBarrier(tick_size_barrier) }}
                             components={[<span key={0} />]}
                         />
                     ),

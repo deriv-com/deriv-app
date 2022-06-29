@@ -5,13 +5,14 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
+import { getRoundedTickSizeBarrier } from '@deriv/shared';
 
 const StatsChartDisplay = ({ tick_size_barrier, ticks_count_since_loss_condition }) => {
     return (
         <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--stats-chart-display')}>
             <Text size='xxs' align='center'>
                 {localize('The last tick that exceeded {{tick_size_barrier}}%:', {
-                    tick_size_barrier: tick_size_barrier.toFixed(5),
+                    tick_size_barrier: getRoundedTickSizeBarrier(tick_size_barrier),
                 })}
             </Text>
             <Text size='xs' weight='bold'>

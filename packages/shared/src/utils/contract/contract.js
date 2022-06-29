@@ -103,6 +103,10 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
     return Math.round(percentage);
 };
 
+export const getRoundedTickSizeBarrier = tick_size_barrier => (tick_size_barrier + Number.EPSILON).toFixed(5);
+
+export const getGrowthRatePercentage = growth_rate => growth_rate * 100;
+
 export const getDisplayStatus = contract_info => {
     let status = 'purchased';
     if (isEnded(contract_info)) {

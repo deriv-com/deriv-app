@@ -1,7 +1,5 @@
 import React from 'react';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';

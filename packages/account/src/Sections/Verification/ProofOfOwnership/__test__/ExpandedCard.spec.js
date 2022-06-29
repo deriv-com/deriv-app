@@ -1,17 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ExpandedCard from '../ExpandedCard.jsx';
-
-const formatIdentifier = (id, type) => {
-    let formattedID = id;
-    if (type === 'IcCreditCard' || type === 'IcStockVisa' || type === 'IcStockMasterCard')
-        formattedID = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
-    else if (type === 'IcEwallet') return formattedID;
-    return formattedID
-        .replace(/\s/g, '')
-        .replace(/(\w{4})/g, '$1 ')
-        .trim();
-};
+import ExpandedCard, { formatIdentifier } from '../ExpandedCard.jsx';
 
 describe('ExpandedCard.jsx', () => {
     let cardDetails;

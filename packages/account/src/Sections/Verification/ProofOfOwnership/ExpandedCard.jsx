@@ -6,6 +6,17 @@ import { localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 import classNames from 'classnames';
 
+export const formatIdentifier = (id, type) => {
+    let formatted_id = id;
+    if (['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(s => s === type))
+        formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
+    else if (type === 'IcEwallet') return formatted_id;
+    return formatted_id
+        .replace(/\s/g, '')
+        .replace(/(\w{4})/g, '$1 ')
+        .trim();
+};
+
 const ExpandedCard = ({
     card_details,
     handleChange,
@@ -35,17 +46,6 @@ const ExpandedCard = ({
                 {localize('See example')}
             </span>
         );
-
-    const formatIdentifier = (id, type) => {
-        let formatted_id = id;
-        if (['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(s => s === type))
-            formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
-        else if (type === 'IcEwallet') return formatted_id;
-        return formatted_id
-            .replace(/\s/g, '')
-            .replace(/(\w{4})/g, '$1 ')
-            .trim();
-    };
 
     return (
         <>

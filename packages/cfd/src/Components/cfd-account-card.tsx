@@ -312,7 +312,10 @@ const CFDAccountCard = ({
                             <div className='cfd-account-card__item'>
                                 {existing_data?.display_balance && is_logged_in && (
                                     <div className='cfd-account-card__item--banner'>
-                                        <Localize i18n_default_text={existing_data.landing_company_short} />
+                                        {type.category === 'real' && (
+                                            <Localize i18n_default_text={existing_data.landing_company_short} />
+                                        )}
+                                        {type.category === 'demo' && <Localize i18n_default_text='Demo' />}
                                     </div>
                                 )}
                                 {existing_data?.display_balance && is_logged_in && (

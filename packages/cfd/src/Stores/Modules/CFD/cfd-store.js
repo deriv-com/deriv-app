@@ -138,8 +138,12 @@ export default class CFDStore extends BaseStore {
             } else {
                 this.demoCFDSignup();
             }
-        } else {
-            this.toggleJurisdictionModal();
+        } else if (platform === CFD_PLATFORMS.MT5) {
+            if (category === 'real') {
+                this.toggleJurisdictionModal();
+            } else {
+                this.demoCFDSignup();
+            }
         }
     }
 

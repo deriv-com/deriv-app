@@ -4,6 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }) => {
@@ -23,7 +24,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
                 }
                 className={is_appstore && 'account-management-dashboard'}
             >
-                {!is_from_external && redirect_button}
+                {!is_from_external && (redirect_button || <ContinueTradingButton />)}
             </IconMessageContent>
         );
     }

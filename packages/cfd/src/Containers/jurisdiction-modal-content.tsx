@@ -33,10 +33,10 @@ const JurisdictionModalContent = ({
     checked,
     setChecked,
 }: TJurisdictionModalContent) => {
+    console.log(jurisdiction_selected_card);
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
 
-    const [unselect_card, setUnselectCard] = React.useState<boolean>(false);
     const [number_of_cards] = React.useState(
         account_type === 'synthetic'
             ? number_of_synthetic_accounts_to_be_shown
@@ -51,8 +51,11 @@ const JurisdictionModalContent = ({
     const poi_none = poi_status === 'none';
 
     const cardSelection = (cardType: string) => {
-        setUnselectCard(!unselect_card);
-        return !unselect_card ? selectTypeOfCard(cardType) : selectTypeOfCard(undefined);
+        if (jurisdiction_selected_card === cardType) {
+            selectTypeOfCard(undefined);
+        } else {
+            selectTypeOfCard(cardType);
+        }
     };
 
     const Checkmark = () => (
@@ -340,7 +343,7 @@ const JurisdictionModalContent = ({
                         line_height='xs'
                         className='cfd-jurisdiction-card____jurisdiction-checkbox--description'
                     >
-                        I confirm and accept Deriv Investments (Europe) Limited \'s Terms and Conditions
+                        I confirm and accept Deriv Investments (Europe) Limited's Terms and Conditions
                     </Text>
                 </div>
             )}

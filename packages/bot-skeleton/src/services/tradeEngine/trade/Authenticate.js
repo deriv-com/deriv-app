@@ -32,9 +32,9 @@ export const loginAndGetBalance = token => {
                 }, 1500);
             }
             if (data.msg_type === 'authorize') {
-                $scope.account_info = data;
+                $scope.account_info = data.authorize;
                 $scope.token = token;
-                if (data?.loginid) {
+                if (data?.authorize?.loginid) {
                     observeBalance(data.loginid);
                 }
                 // Only subscribe to balance in browser, not for tests.

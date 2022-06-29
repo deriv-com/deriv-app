@@ -1,16 +1,16 @@
 import { getFormattedText } from '@deriv/shared';
 import { info } from '../utils/broadcast';
-import DBotStore from '../../../scratch/dbot-store';
 import ws from '../../api/ws';
+import $scope from '../utils/cliTools';
+import { updateBalanceAction } from './state/actions';
+import Store from './state';
 
 let balance_string = '';
 
 export const getBalance = type => {
-    // [Todo] remove DBotStore dependency and use ws
-    const { client } = DBotStore.instance;
-    const balance = (client && client.balance) || 0;
+    const { balance, currency } = Store.getState().client;
 
-    balance_string = getFormattedText(balance, client.currency, false);
+    balance_string = getFormattedText(balance, currency, false);
     return type === 'STR' ? balance_string : balance;
 };
 
@@ -20,7 +20,8 @@ export const observeBalance = loginid => {
             const {
                 balance: { balance: b, currency },
             } = data;
-
+            $scope.balance = Number(b, currency);
+            Store.dispatch(updateBalanceAction({ balance: b, currency }));
             balance_string = getFormattedText(b, currency);
 
             info({ accountID: loginid, balance: balance_string });

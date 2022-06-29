@@ -82,20 +82,13 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    blockUnblockUser(should_block, id) {
+    blockUnblockUser(should_block, advertiser_id) {
         this.setIsLoading(true);
 
-        requestWS(
-            should_block
-                ? {
-                      p2p_advertiser_relations: 1,
-                      add_blocked: [id],
-                  }
-                : {
-                      p2p_advertiser_relations: 1,
-                      remove_blocked: [id],
-                  }
-        ).then(response => {
+        requestWS({
+            p2p_advertiser_relations: 1,
+            [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
+        }).then(response => {
             if (response) {
                 if (!response.error) {
                     this.setIsBlockUserModalOpen(false);

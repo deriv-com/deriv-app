@@ -68,20 +68,6 @@ type TCFDRealAccountDisplayProps = {
     should_enable_add_button?: boolean;
 };
 
-const getRealFinancialStpBtnLbl = (
-    is_fully_authenticated: boolean,
-    is_pending_authentication: boolean,
-    has_required_credentials: boolean
-) => {
-    if (is_fully_authenticated && has_required_credentials) {
-        return <Localize i18n_default_text='Set your password' />;
-    } else if (is_pending_authentication) {
-        return <Localize i18n_default_text='Pending verification' />;
-    }
-
-    return <Localize i18n_default_text='Add real account' />;
-};
-
 const CFDRealAccountDisplay = ({
     has_real_account,
     is_accounts_switcher_on,

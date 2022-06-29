@@ -64,7 +64,6 @@ describe('<CFDRealAccountDisplay />', () => {
             isAccountOfTypeDisabled: jest.fn(() => false),
             isSyntheticCardVisible: jest.fn(() => true),
             isFinancialCardVisible: jest.fn(() => true),
-            isFinancialStpCardVisible: jest.fn(() => true),
             landing_companies: {
                 config: {
                     tax_details_required: 1,
@@ -281,19 +280,12 @@ describe('<CFDRealAccountDisplay />', () => {
             eu: 'CFDs',
             non_eu: 'Financial',
         };
-        const third_account_card = 'Financial STP';
 
         expect(screen.getByTestId('dt_cfd_real_accounts_display')).toBeInTheDocument();
 
         if (tested_case === TESTED_CASES.NON_EU_DMT5 || tested_case === TESTED_CASES.NON_EU_DXTRADE) {
             expect(screen.getByText(first_account_card)).toBeInTheDocument();
             expect(screen.getByText(second_account_card.non_eu)).toBeInTheDocument();
-        }
-        if (tested_case === TESTED_CASES.NON_EU_DXTRADE || tested_case === TESTED_CASES.EU) {
-            expect(screen.queryByText(third_account_card)).not.toBeInTheDocument();
-        }
-        if (tested_case === TESTED_CASES.NON_EU_DMT5) {
-            expect(screen.getByText(third_account_card)).toBeInTheDocument();
         } else if (tested_case === TESTED_CASES.EU) {
             expect(screen.queryByText(first_account_card)).not.toBeInTheDocument();
             expect(screen.getByText(second_account_card.eu)).toBeInTheDocument();
@@ -301,24 +293,21 @@ describe('<CFDRealAccountDisplay />', () => {
         }
     };
 
-    it('should render Synthetic, Financial & Financial STP cards with enabled buttons on DMT5 when is_logged_in=true & is_eu=false', () => {
+    it('should render Synthetic & Financial cards with enabled buttons on DMT5 when is_logged_in=true & is_eu=false', () => {
         render(<CFDRealAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
-        expect(add_real_account_buttons.length).toBe(3);
+        expect(add_real_account_buttons.length).toBe(2);
 
         fireEvent.click(add_real_account_buttons[0]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real' });
+        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real', platform: 'mt5' });
 
         fireEvent.click(add_real_account_buttons[1]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real' });
-
-        fireEvent.click(add_real_account_buttons[2]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial_stp', category: 'real' });
+        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real', platform: 'mt5' });
     });
 
-    it('should render Synthetic, Financial & Financial STP cards without "Add real account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Synthetic & Financial cards without "Add real account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -327,7 +316,6 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render a CFDs card only with enabled "Add real account" button on DMT5 when is_logged_in=true & is_eu=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_eu account_settings={account_settings_eu} />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
@@ -340,7 +328,6 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render a CFDs card only without "Add real account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
@@ -348,7 +335,6 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
-        props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
@@ -356,49 +342,46 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(add_real_account_buttons.length).toBe(2);
 
         fireEvent.click(add_real_account_buttons[0]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real' });
+        expect(props.onSelectAccount).toHaveBeenCalledWith({
+            type: 'synthetic',
+            category: 'real',
+            platform: 'dxtrade',
+        });
 
         fireEvent.click(add_real_account_buttons[1]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real' });
+        expect(props.onSelectAccount).toHaveBeenCalledWith({
+            type: 'financial',
+            category: 'real',
+            platform: 'dxtrade',
+        });
     });
 
     it('should render Synthetic & Financial cards without "Add real account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
-        props.isFinancialStpCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render 1 open account with an enabled password reset button, and "Fund transfer" & "Trade on web terminal" buttons', () => {
+    it('should render 1 open account with an enabled "Top up" ("Fund transfer" in Deriv X) & "Trade" buttons', () => {
         props.current_list['mt5.real.financial@p01_ts01'] = mt5_real_financial_account;
-        const { container, rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
+        const { rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        const dmt5_change_password_button = within(screen.getByRole('cell', { name: /•••••••••••••••/i })).getByRole(
-            'button'
-        );
-        const within_dmt5_financial = within(container.querySelector('#real-financial'));
-        const dmt5_fund_transfer_button = within_dmt5_financial.getByRole('button', { name: /fund transfer/i });
-        const dmt5_trade_on_web_terminal_button = within_dmt5_financial.getByRole('link', {
-            name: /trade on web terminal/i,
-        });
-        expect(dmt5_trade_on_web_terminal_button).toHaveAttribute(
+        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(1);
+        const dmt5_top_up_button = screen.getByRole('button', { name: /top up/i });
+        const dmt5_trade_button = screen.getByRole('link', { name: /trade/i });
+        expect(dmt5_trade_button).toHaveAttribute(
             'href',
             'https://trade.mql5.com/trade?servers=Deriv-Server&trade_server=Deriv-Server&login=1927245'
         );
 
-        fireEvent.click(dmt5_change_password_button);
-        expect(props.openPasswordManager).toHaveBeenCalledTimes(1);
-
-        fireEvent.click(dmt5_fund_transfer_button);
+        fireEvent.click(dmt5_top_up_button);
         expect(props.openAccountTransfer).toHaveBeenCalledWith(props.current_list['mt5.real.financial@p01_ts01'], {
             category: 'real',
             type: 'financial',
         });
 
-        props.isFinancialStpCardVisible = jest.fn(() => false);
         rerender(
             <CFDRealAccountDisplay
                 {...props}
@@ -409,112 +392,25 @@ describe('<CFDRealAccountDisplay />', () => {
             />
         );
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        const dxtrade_change_password_button = within(screen.getByRole('cell', { name: /•••••••••••••••/i })).getByRole(
-            'button'
-        );
-        const within_dxtrade_synthetic = within(container.querySelector('#real-synthetic'));
-        const dxtrade_fund_transfer_button = within_dxtrade_synthetic.getByRole('button', { name: /fund transfer/i });
-        const dxtrade_trade_on_web_terminal_button = within_dxtrade_synthetic.getByRole('link', {
-            name: /trade on web terminal/i,
-        });
-        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx.deriv.com');
-
-        fireEvent.click(dxtrade_change_password_button);
-        expect(props.openPasswordManager).toHaveBeenCalledTimes(2);
+        const dxtrade_fund_transfer_button = screen.getByRole('button', { name: /fund transfer/i });
+        const dxtrade_trade_button = screen.getByRole('link', { name: /trade/i });
+        expect(dxtrade_trade_button).toHaveAttribute('href', 'https://dx.deriv.com');
 
         fireEvent.click(dxtrade_fund_transfer_button);
         expect(props.openAccountTransfer).toHaveBeenCalledTimes(2);
     });
 
-    it('should show "Switch to your real account", which is needed to open Account Switcher, on Financial STP card when has_real_account=true & is_virtual=true', () => {
-        const { container } = render(<CFDRealAccountDisplay {...props} is_virtual />);
+    it('should show "Switch to your real account", which opens Account Switcher, on Deriv X cards when has_real_account=true & is_virtual=true', () => {
+        render(<CFDRealAccountDisplay {...props} is_virtual platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        const switch_to_real_account_link = within(container.querySelector('#real-financial_stp')).getByText(
-            'Switch to your real account'
-        );
+        expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
+        const switch_to_real_account_links = screen.getAllByText('Switch to your real account');
+        expect(switch_to_real_account_links.length).toBe(2);
 
-        fireEvent.click(switch_to_real_account_link);
+        fireEvent.click(switch_to_real_account_links[0]);
         expect(props.toggleShouldShowRealAccountsList).toHaveBeenCalledWith(true);
         expect(props.toggleAccountsDialog).toHaveBeenCalledWith(true);
-    });
-
-    it('should show a disabled "Pending verification" button on Financial STP card when is_pending_authentication is true', () => {
-        const { container } = render(<CFDRealAccountDisplay {...props} is_pending_authentication />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-        const within_stp = within(container.querySelector('#real-financial_stp'));
-        expect(within_stp.queryAllByRole('button', { name: /add real account/i })).toEqual([]);
-        const pending_verification_button = within_stp.getByRole('button', { name: /pending verification/i });
-        expect(pending_verification_button).toBeDisabled();
-    });
-
-    it('should show a "Set your password" button on Financial STP card when citizenship, tax residence & tax id (if required) are filled out & is_fully_authenticated=true', () => {
-        const { container, rerender } = render(<CFDRealAccountDisplay {...props} is_fully_authenticated />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(2);
-
-        const within_stp = within(container.querySelector('#real-financial_stp'));
-        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
-        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
-
-        const settings_with_empty_tax_id = {
-            citizen: 'id',
-            tax_residence: 'id',
-            tax_identification_number: '',
-        };
-        const landing_companies_with_unrequired_tax_id = { config: { tax_details_required: 0 } };
-        const residence_list_with_unrequired_tax_id = [{ value: 'id', tin_format: undefined }];
-        rerender(
-            <CFDRealAccountDisplay {...props} is_fully_authenticated account_settings={settings_with_empty_tax_id} />
-        );
-        expect(screen.queryByRole('button', { name: /set your password/i })).not.toBeInTheDocument();
-        expect(within_stp.getByRole('button', { name: /add real account/i })).toBeInTheDocument();
-
-        rerender(
-            <CFDRealAccountDisplay
-                {...props}
-                is_fully_authenticated
-                account_settings={settings_with_empty_tax_id}
-                landing_companies={landing_companies_with_unrequired_tax_id}
-                residence_list={[{ value: 'id', tin_format: ['^\\d{15}$'] }]}
-            />
-        );
-        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
-        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
-
-        rerender(
-            <CFDRealAccountDisplay
-                {...props}
-                is_fully_authenticated
-                account_settings={settings_with_empty_tax_id}
-                landing_companies={{ config: { tax_details_required: 1 } }}
-                residence_list={residence_list_with_unrequired_tax_id}
-            />
-        );
-        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
-        expect(within_stp.getByRole('button', { name: /set your password/i })).toBeInTheDocument();
-
-        rerender(<CFDRealAccountDisplay {...props} is_fully_authenticated account_settings={{}} />);
-        expect(screen.queryByRole('button', { name: /set your password/i })).not.toBeInTheDocument();
-        expect(within_stp.getByRole('button', { name: /add real account/i })).toBeInTheDocument();
-
-        rerender(
-            <CFDRealAccountDisplay
-                {...props}
-                is_fully_authenticated
-                account_settings={settings_with_empty_tax_id}
-                landing_companies={landing_companies_with_unrequired_tax_id}
-                residence_list={residence_list_with_unrequired_tax_id}
-            />
-        );
-        expect(within_stp.queryByRole('button', { name: /add real account/i })).not.toBeInTheDocument();
-
-        fireEvent.click(within_stp.getByRole('button', { name: /set your password/i }));
-        expect(props.openPasswordModal).toHaveBeenCalledWith({ category: 'real', type: 'financial_stp' });
     });
 
     it('should disable all "Add real account" buttons when has_cfd_account_error=true', () => {
@@ -524,38 +420,20 @@ describe('<CFDRealAccountDisplay />', () => {
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
         expect(add_real_account_buttons[0]).toBeDisabled();
         expect(add_real_account_buttons[1]).toBeDisabled();
-        expect(add_real_account_buttons[2]).toBeDisabled();
     });
 
-    it('should show "+ Add region" under Synthetic card with an open real account when can_have_more_real_synthetic_mt5=true', () => {
+    it('should show "+ Add account" under Synthetic card with an open real account when can_have_more_real_synthetic_mt5=true', () => {
         props.current_list['mt5.real.synthetic@p01_ts03'] = mt5_real_synthetic_account;
         render(<CFDRealAccountDisplay {...props} can_have_more_real_synthetic_mt5 />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
-        expect(add_real_account_buttons.length).toBe(2);
+        expect(add_real_account_buttons.length).toBe(1);
         expect(screen.getByText('+')).toBeInTheDocument();
-        const add_region_button = screen.getByText(/add region/i);
+        const add_region_button = screen.getByText(/add account/i);
 
         fireEvent.click(add_region_button);
         expect(props.onSelectAccount).toHaveBeenCalledTimes(1);
-    });
-
-    it('should show special specifications on Financial card when residence="au"', () => {
-        const { rerender, container } = render(<CFDRealAccountDisplay {...props} residence='au' />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        const within_financial = within(container.querySelector('#real-financial'));
-        expect(within_financial.getByRole('row', { name: /leverage up to 1:30/i })).toBeInTheDocument();
-        expect(within_financial.getByRole('row', { name: /margin call 100%/i })).toBeInTheDocument();
-        expect(within_financial.getByRole('row', { name: /stop out level 50%/i })).toBeInTheDocument();
-        expect(within_financial.getByRole('row', { name: /number of assets 100\+/i })).toBeInTheDocument();
-
-        props.isFinancialStpCardVisible = jest.fn(() => false);
-        rerender(<CFDRealAccountDisplay {...props} platform='dxtrade' residence='au' />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        expect(within_financial.getByRole('row', { name: /number of assets 90\+/i })).toBeInTheDocument();
     });
 
     it('should render enabled "Select" buttons instead of "Add real account" buttons when has_cfd_account=true', () => {
@@ -567,12 +445,9 @@ describe('<CFDRealAccountDisplay />', () => {
         const select_buttons = screen.getAllByText(/select/i);
 
         fireEvent.click(select_buttons[0]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real' });
+        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real', platform: 'mt5' });
 
         fireEvent.click(select_buttons[1]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real' });
-
-        fireEvent.click(select_buttons[2]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial_stp', category: 'real' });
+        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real', platform: 'mt5' });
     });
 });

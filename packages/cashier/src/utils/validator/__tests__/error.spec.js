@@ -3,7 +3,7 @@ import Errors from '../errors';
 
 describe('Error', () => {
     let errors;
-    beforeEach('Setting up Errors object', () => {
+    beforeEach(() => {
         errors = new Errors();
         errors.add('Error', 100);
     });

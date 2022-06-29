@@ -38,7 +38,7 @@ DerivRealAccountRequiredModal.propTypes = {
 
 export default connect(({ ui }) => ({
     is_open: ui.is_deriv_account_needed_modal_visible,
-    onClose: ui.toggleDerivAccountNeededModal,
+    onClose: ui.openDerivRealAccountNeededModal,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     openRealAccountSignup: ui.openRealAccountSignup,

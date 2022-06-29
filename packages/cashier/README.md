@@ -62,7 +62,7 @@ The features developed in this folder also has been exported through the webpack
 
 **store:** We use Mobx as state management tool in Cashier, and this is the place for putting the relevant store files. Also, for each store file we have a test file in **tests** folder.
 
-**utils:** We place all the common and helper methods which are required for the project in this folder.
+**utils:** We place all the common and helper methods which are required for the workspace in this folder.
 
 ## Troubleshooting
 

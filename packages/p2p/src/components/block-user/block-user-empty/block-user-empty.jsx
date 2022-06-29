@@ -1,9 +1,9 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import './block-user-empty.scss';
 
 const BlockUserEmpty = () => {
     const { my_profile_store } = useStores();
@@ -46,4 +46,4 @@ const BlockUserEmpty = () => {
     );
 };
 
-export default BlockUserEmpty;
+export default observer(BlockUserEmpty);

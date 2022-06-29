@@ -7,8 +7,8 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
-import BlockUserTable from '../advertiser-page/block-user/block-user-table/block-user-table';
-import BlockUserModal from '../advertiser-page/block-user/block-user-modal.jsx';
+import BlockUserTable from 'Components/block-user/block-user-table';
+import BlockUserModal from 'Components/block-user/block-user-modal';
 
 const MyProfileContent = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
@@ -16,7 +16,7 @@ const MyProfileContent = () => {
 
     const onSubmit = async () => {
         advertiser_page_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.unblockUser(my_profile_store.selected_blocked_user.id);
+        advertiser_page_store.blockUnblockUser(false, my_profile_store.selected_blocked_user.id);
         my_profile_store.getBlockedAdvertisersList();
     };
 
@@ -38,12 +38,14 @@ const MyProfileContent = () => {
                         page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => {
                             if (
-                                my_profile_store.selected_payment_method.length > 0 ||
-                                (formik_ref.current && formik_ref.current.dirty)
+                                (formik_ref.current && formik_ref.current.dirty) ||
+                                my_profile_store.selected_payment_method.length > 0
                             ) {
                                 my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
+                                my_profile_store.setShouldShowEditPaymentMethodForm(false);
                             }
                         }}
                     >

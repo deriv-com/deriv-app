@@ -5,8 +5,7 @@ import { observer } from 'mobx-react-lite';
 import BlockUserRow from './block-user-row.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { isMobile } from '@deriv/shared';
-import BlockUserEmpty from './block-user-empty.jsx';
-import '../block-user.scss';
+import BlockUserEmpty from 'Components/block-user/block-user-empty';
 
 const BlockUserTable = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
@@ -23,8 +22,8 @@ const BlockUserTable = () => {
         return <Loading is_fullscreen={isMobile()} />;
     }
 
-    if (my_profile_store.error_message) {
-        return <TableError message={my_profile_store.error_message} />;
+    if (advertiser_page_store.api_error_message) {
+        return <TableError message={my_profile_store.api_error_message} />;
     }
 
     if (my_profile_store.blocked_advertisers_list.length) {

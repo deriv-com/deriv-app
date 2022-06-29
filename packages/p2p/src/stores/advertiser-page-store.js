@@ -82,6 +82,32 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    blockUnblockUser(should_block, id) {
+        this.setIsLoading(true);
+
+        requestWS(
+            should_block
+                ? {
+                      p2p_advertiser_relations: 1,
+                      add_blocked: [id],
+                  }
+                : {
+                      p2p_advertiser_relations: 1,
+                      remove_blocked: [id],
+                  }
+        ).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setIsBlockUserModalOpen(false);
+                } else {
+                    this.setErrorMessage(response.error.message);
+                }
+            }
+            this.setIsLoading(false);
+        });
+    }
+
+    @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
         requestWS({
@@ -218,25 +244,5 @@ export default class AdvertiserPageStore extends BaseStore {
         } else {
             this.setShowAdPopup(true);
         }
-    }
-
-    @action.bound
-    unblockUser(blocked_advertiser_id) {
-        this.setIsLoading(true);
-
-        requestWS({
-            p2p_advertiser_relations: 1,
-            remove_blocked: [blocked_advertiser_id],
-        }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    this.getAdvertiserInfo();
-                    this.setIsBlockUserModalOpen(false);
-                } else {
-                    this.setErrorMessage(response.error);
-                }
-            }
-            this.setIsLoading(false);
-        });
     }
 }

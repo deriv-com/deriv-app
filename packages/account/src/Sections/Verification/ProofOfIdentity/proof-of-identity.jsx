@@ -48,8 +48,6 @@ export default connect(({ client, common, notifications }) => ({
     fetchResidenceList: client.fetchResidenceList,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
-    is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',
-    is_nigeria: client.residence === 'ng',
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,

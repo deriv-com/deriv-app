@@ -18,6 +18,7 @@ export default class GeneralStore extends BaseStore {
     @observable is_blocked = false;
     @observable is_listed = false;
     @observable is_loading = false;
+    @observable is_block_unblock_user_loading = false;
     @observable is_p2p_blocked_for_pa = false;
     @observable is_restricted = false;
     @observable nickname = null;
@@ -78,7 +79,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     blockUnblockUser(should_block, advertiser_id) {
         const { advertiser_page_store } = this.root_store;
-        advertiser_page_store.setIsLoading(true);
+        this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
             [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
@@ -90,7 +91,7 @@ export default class GeneralStore extends BaseStore {
                     advertiser_page_store.setErrorMessage(response.error);
                 }
             }
-            advertiser_page_store.setIsLoading(false);
+            this.setIsBlockUnblockUserLoading(false);
         });
     }
 
@@ -352,6 +353,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
     @action.bound

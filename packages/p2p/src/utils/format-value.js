@@ -69,5 +69,5 @@ const formatInput = (input, unit) => {
     if (plain_input.split('.')[1].length === 1) {
         return `${input}0 ${unit ? unit.trim() : ''}`;
     }
-    return `${input} ${unit ? unit.trim() : ''}`;
+    return `${input}${unit ? ` ${unit.trim()}` : ''}`;
 };

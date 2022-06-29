@@ -34,7 +34,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         let fileUploaded = false;
         values.data.map((element, index) => {
             element.files.forEach((file, i) => {
-                fileUploaded = fileUploaded === true || file?.file !== null;
+                fileUploaded = fileUploaded === true || (file?.file !== null && file?.file !== undefined);
                 if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
                     errors.data[index] = {};
                     errors.data[index].files = [];

@@ -3,7 +3,6 @@ import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
-import './block-user-overlay.scss';
 import PropTypes from 'prop-types';
 
 const BlockUserOverlay = ({ children, is_visible, onUnblock }) => {

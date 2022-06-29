@@ -14,7 +14,7 @@ const BlockUserModal = ({ is_advertiser_blocked, is_block_user_modal_open, onCan
             is_open={is_block_user_modal_open}
             small
             title={
-                <Text color='prominent' size='s' weig t='bold'>
+                <Text color='prominent' size='s' weight='bold'>
                     {is_advertiser_blocked ? (
                         <Localize
                             i18n_default_text='Unblock {{advertiser_details_name}}?'

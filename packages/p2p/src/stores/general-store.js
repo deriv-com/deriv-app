@@ -12,9 +12,13 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable block_unblock_user_error = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_advertiser_blocked = null;
     @observable is_blocked = false;
+    @observable is_block_unblock_user_loading = false;
+    @observable is_block_user_modal_open = false;
     @observable is_listed = false;
     @observable is_loading = false;
     @observable is_p2p_blocked_for_pa = false;
@@ -32,6 +36,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
+    @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -71,6 +76,31 @@ export default class GeneralStore extends BaseStore {
     @computed
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+    }
+
+    @action.bound
+    blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
+        const { advertiser_page_store } = this.root_store;
+        this.setIsBlockUnblockUserLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+            [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setIsBlockUserModalOpen(false);
+                    if (should_set_is_counterparty_blocked) {
+                        const { p2p_advertiser_relations } = response;
+                        advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
+                            p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
+                        );
+                    }
+                } else {
+                    this.setBlockUnblockUserError(response.error);
+                }
+            }
+            this.setIsBlockUnblockUserLoading(false);
+        });
     }
 
     @action.bound
@@ -314,6 +344,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setBlockUnblockUserError(block_unblock_user_error) {
+        this.block_unblock_user_error = block_unblock_user_error;
+    }
+
+    @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -324,8 +359,23 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsAdvertiserBlocked(is_advertiser_blocked) {
+        this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
+    @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
+    }
+
+    @action.bound
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
     @action.bound
@@ -351,6 +401,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
+    }
+
+    @action.bound
+    setIsModalOpen(is_modal_open) {
+        this.is_modal_open = is_modal_open;
     }
 
     @action.bound
@@ -465,6 +520,7 @@ export default class GeneralStore extends BaseStore {
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);

@@ -14,12 +14,12 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
-import BlockUserModal from './block-user/block-user-modal';
+import BlockUserModal from 'Components/block-user/block-user-modal';
 import classNames from 'classnames';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
-    const { advertiser_page_store, buy_sell_store } = useStores();
+    const { general_store, advertiser_page_store, buy_sell_store } = useStores();
 
     const {
         basic_verification,
@@ -27,7 +27,6 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
-        is_blocked,
         last_name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
@@ -45,7 +44,7 @@ const AdvertiserPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (advertiser_page_store.is_loading) {
+    if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -56,15 +55,23 @@ const AdvertiserPage = () => {
     return (
         <div
             className={classNames('advertiser-page', {
-                'advertiser-page--no-scroll': !!is_blocked,
+                'advertiser-page--no-scroll': !!advertiser_page_store.is_counterparty_advertiser_blocked,
             })}
         >
             <BlockUserModal
-                is_advertiser_blocked={!!is_blocked}
-                is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
-                onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}
-                onSubmit={advertiser_page_store.unblockUser}
+                is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked}
+                is_block_user_modal_open={general_store.is_block_user_modal_open}
+                onCancel={() => general_store.setIsBlockUserModalOpen(false)}
+                onSubmit={() =>
+                    general_store.blockUnblockUser(
+                        !advertiser_page_store.is_counterparty_advertiser_blocked,
+                        advertiser_page_store.advertiser_details_id
+                    )
+                }
             />
+            <button onClick={() => general_store.blockUnblockUser(true, advertiser_page_store.advertiser_details_id)}>
+                BLOCK ME
+            </button>
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
@@ -77,8 +84,8 @@ const AdvertiserPage = () => {
                 page_title={localize("Advertiser's page")}
             />
             <BlockUserOverlay
-                is_visible={!!is_blocked}
-                onUnblock={() => advertiser_page_store.setIsBlockUserModalOpen(true)}
+                is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked}
+                onUnblock={() => general_store.setIsBlockUserModalOpen(true)}
             >
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
@@ -12,7 +11,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore, TReactChangeEvent, TReactChildren } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
@@ -21,7 +20,7 @@ import { TAccountOption } from '../types';
 import './account-transfer-form.scss';
 
 type TAccountTransferBullet = {
-    children: React.ReactNode;
+    children: TReactChildren;
 };
 
 type TAccountTransferNote = {
@@ -62,7 +61,7 @@ type TAccountTransferForm = {
     converter_from_error: string;
     converter_to_amount: string;
     converter_to_error: string;
-    // Replace Array<object> with Array<TCryptoTransactions> when the component is converted to TS.
+    // TODO: Replace Array<object> with Array<TCryptoTransactions> when the component is converted to TS.
     crypto_transactions: Array<object>;
     error: object;
     is_crypto: boolean;
@@ -72,8 +71,8 @@ type TAccountTransferForm = {
     mt5_login_list: TAccountOption['mt5_login_list'];
     onChangeConverterFromAmount: () => void;
     onChangeConverterToAmount: () => void;
-    onChangeTransferFrom: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onChangeTransferTo: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeTransferFrom: (event: TReactChangeEvent) => void;
+    onChangeTransferTo: (event: TReactChangeEvent) => void;
     onMount: () => void;
     percentage: number;
     recentTransactionOnMount: () => void;
@@ -483,7 +482,7 @@ const AccountTransferForm = ({
             }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
-    }, [accounts_list, selected_to, selected_from]);
+    }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
@@ -510,7 +509,7 @@ const AccountTransferForm = ({
             );
             setSideNotes(side_notes);
         }
-    }, [transfer_fee, selected_from, selected_to, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]);
+    }, [transfer_fee, selected_from, selected_to, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]); // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         const getRemainingTransfers = () => {
@@ -530,7 +529,7 @@ const AccountTransferForm = ({
                 : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
         setTransferToHint(hint);
         resetConverter();
-    }, [selected_to, selected_from, account_limits]);
+    }, [selected_to, selected_from, account_limits]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className='cashier__wrapper account-transfer-form__wrapper' data-testid='dt_account_transfer_form_wrapper'>
@@ -581,7 +580,7 @@ const AccountTransferForm = ({
                                         list_height='404'
                                         name='transfer_from'
                                         value={selected_from.value}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        onChange={(e: TReactChangeEvent) => {
                                             onChangeTransferFrom(e);
                                             handleChange(e);
                                             setFieldValue('amount', '');
@@ -605,7 +604,7 @@ const AccountTransferForm = ({
                                         list_height='404'
                                         name='transfer_to'
                                         value={selected_to.value}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        onChange={(e: TReactChangeEvent) => {
                                             onChangeTransferTo(e);
                                             setFieldValue('amount', '');
                                             setFieldError('amount', '');
@@ -617,7 +616,7 @@ const AccountTransferForm = ({
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (
                                     <Field name='amount' validate={validateAmount}>
-                                        {(field: FieldProps) => (
+                                        {({ field }: FieldProps<string>) => (
                                             <Input
                                                 {...field}
                                                 onChange={(e: { target: { value: string } }) => {

@@ -4,7 +4,7 @@ import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 import './account-transfer-receipt.scss';
 
 type TAccountTransferReceipt = RouteComponentProps & {

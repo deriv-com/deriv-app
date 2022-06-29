@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
 import { Virtual } from 'Components/cashier-container';

@@ -3,7 +3,7 @@ import { Icon, Button, Text } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 import './account-transfer-no-account.scss';
 
 type TAccountTransferNoAccount = {

@@ -4,7 +4,7 @@ import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 
 type TAccountTransferLocked = {
     is_financial_account: boolean;

@@ -42,10 +42,7 @@ const ExpandedCard = ({
         if (['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(s => s === type))
             formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
         else if (type === 'IcEwallet') return formatted_id;
-        return formatted_id
-            .replace(/\s/g, '')
-            .replace(/(\w{4})/g, '$1 ')
-            .trim();
+        return formatted_id.replace(/\s/g, '').replace(/(\w{4})/g, '$1 ');
     };
     return (
         <>

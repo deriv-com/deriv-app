@@ -386,10 +386,10 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     onSubmit() {
-        const { advertiser_page_store } = this.root_store;
+        const { advertiser_page_store, general_store } = this.root_store;
 
         advertiser_page_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.blockUnblockUser(false, this.selected_blocked_user.id);
+        general_store.blockUnblockUser(false, this.selected_blocked_user.id);
         this.getBlockedAdvertisersList();
     }
 

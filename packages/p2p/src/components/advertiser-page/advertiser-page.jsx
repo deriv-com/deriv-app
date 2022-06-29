@@ -82,7 +82,7 @@ const AdvertiserPage = () => {
             />
             <BlockUserOverlay
                 is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked}
-                onUnblock={() => general_store.setIsBlockUserModalOpen(true)}
+                onClickUnblock={() => general_store.setIsBlockUserModalOpen(true)}
             >
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>

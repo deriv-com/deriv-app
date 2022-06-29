@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Icon, Input, Text } from '@deriv/components';
+import { Button, Icon, Input, MobileWrapper, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-withdraw-form.scss';
 
@@ -71,7 +72,9 @@ const PaymentAgentWithdrawForm = ({
                     <Localize i18n_default_text='Back to list' />
                 </Text>
             </div>
-
+            <MobileWrapper>
+                <PaymentAgentDisclaimer />
+            </MobileWrapper>
             <Formik
                 initialValues={{
                     account_number: '',
@@ -126,7 +129,6 @@ const PaymentAgentWithdrawForm = ({
                                     <Localize i18n_default_text='Continue' />
                                 </Button>
                             </div>
-                            <ErrorDialog error={error} />
                         </Form>
                     );
                 }}
@@ -137,6 +139,7 @@ const PaymentAgentWithdrawForm = ({
                     values={{ website_name }}
                 />
             </Text>
+            <ErrorDialog error={error} className='payment-agent-withdraw-form__error-dialog' />
         </div>
     );
 };

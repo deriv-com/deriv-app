@@ -119,7 +119,6 @@ const PaymentAgentCardWithdrawalDetails = ({
                             )
                         );
                     };
-
                     return (
                         <Form className='payment-agent-card__witdrawal-details__form'>
                             <Field name='amount'>

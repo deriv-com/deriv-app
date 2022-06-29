@@ -8,7 +8,6 @@
             display: grid;
             grid-template-columns: 1fr;
             grid-gap: 0.8rem;
-
             .dc-tabs__list--header--tabs--desktop {
                 @include mobile {
                     position: fixed;
@@ -19,7 +18,6 @@
                     padding: 1.6rem 3.5rem;
                 }
             }
-
             .dc-tabs__content {
                 margin-top: 7.2rem;
             }
@@ -49,12 +47,10 @@
                 margin-top: 1.6rem;
             }
         }
-
         &-selector {
             margin-bottom: 2.4rem;
             display: flex;
             justify-content: space-between;
-
             .cashier {
                 &__paragraph {
                     margin-right: 0.8rem;
@@ -87,7 +83,6 @@
     &__filter {
         min-width: 22.8rem;
         margin-top: 0;
-
         &-display {
             min-height: 3.2rem;
             min-width: 22.8rem;

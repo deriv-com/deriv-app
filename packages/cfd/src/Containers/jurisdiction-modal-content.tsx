@@ -213,7 +213,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
 
-                {number_of_cards >= 2 && (
+                {number_of_cards >= 3 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'Vanuatu',
@@ -250,7 +250,7 @@ const JurisdictionModalContent = ({
                         {Verification_statuses()}
                     </div>
                 )}
-                {number_of_cards >= 3 && (
+                {number_of_cards >= 4 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'Labuan',
@@ -291,7 +291,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
 
-                {number_of_cards >= 4 && (
+                {number_of_cards >= 2 && (
                     <div
                         className={classNames('cfd-jurisdiction-card', {
                             'cfd-jurisdiction-card--selected': jurisdiction_selected_card === 'SVG',
@@ -340,7 +340,7 @@ const JurisdictionModalContent = ({
                         line_height='xs'
                         className='cfd-jurisdiction-card____jurisdiction-checkbox--description'
                     >
-                        I confirm and accept Deriv Investments (Europe) Limited 's Terms and Conditions
+                        I confirm and accept Deriv Investments (Europe) Limited \'s Terms and Conditions
                     </Text>
                 </div>
             )}

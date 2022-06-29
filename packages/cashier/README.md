@@ -13,7 +13,7 @@ This project covers:
 
 Follow the instructions [here](../../README.md).
 
-## How to Work with the Project
+## How to Work with the cashier workspace
 
 To run and work on this workspace you need to use `npm run serve cashier` command along with `npm run serve core`.
 Webpack will watch changes in `cashier` so that if you made any changes in this package, it will automatically rebuild `cashier` and recompile `core`.

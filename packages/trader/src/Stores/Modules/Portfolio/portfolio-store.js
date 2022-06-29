@@ -64,8 +64,34 @@ export default class PortfolioStore extends BaseStore {
             return;
         }
         this.error = '';
-        if (response.portfolio.contracts) {
-            this.positions = response.portfolio.contracts
+
+        const dummy_current_time = Math.round(Date.now() / 1000); // 1656513908
+        const dummy_start_time = dummy_current_time - 7; // 1656513901
+        const dummy_end_time = dummy_current_time + 6; // 4810060799
+        const dummy_contracts = [
+            {
+                app_id: 17044,
+                buy_price: 10,
+                contract_id: 19459,
+                contract_type: 'ACC',
+                currency: 'USD',
+                date_start: dummy_start_time,
+                expiry_time: dummy_end_time,
+                longcode:
+                    'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+                payout: 27.45,
+                purchase_time: dummy_start_time,
+                shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
+                symbol: 'R_100',
+                transaction_id: 45479,
+            },
+        ];
+        let contracts;
+        if (this.root_store.modules.trade.is_accumulator) {
+            contracts = dummy_contracts;
+        } else contracts = response.portfolio.contracts;
+        if (contracts) {
+            this.positions = contracts
                 .map(pos => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
@@ -165,13 +191,130 @@ export default class PortfolioStore extends BaseStore {
             this.updateContractReplayStore(response);
             return;
         }
+        const dummy_current_time = Math.round(Date.now() / 1000); // 1656513908
+        const dummy_start_time = dummy_current_time - 7; // 1656513901
+        const dummy_end_time = dummy_current_time + 6; // 4810060799
+        const dummy_response = {
+            echo_req: {
+                proposal_open_contract: 1,
+                req_id: 32,
+                subscribe: 1,
+            },
+            msg_type: 'proposal_open_contract',
+            proposal_open_contract: {
+                account_id: 6528,
+                barrier_count: 2,
+                high_barrier: '19423.76',
+                low_barrier: '19391.76',
+                bid_price: 9.85,
+                buy_price: 10,
+                contract_id: 19459,
+                contract_type: 'ACC',
+                currency: 'USD',
+                current_spot: 19406.92,
+                current_spot_display_value: '19406.92',
+                current_spot_time: dummy_current_time,
+                date_expiry: dummy_end_time,
+                date_settlement: dummy_end_time + 1,
+                date_start: dummy_start_time,
+                display_name: 'Volatility 100 Index',
+                entry_spot: 19417.25,
+                entry_spot_display_value: '19417.25',
+                entry_tick: 19417.25,
+                entry_tick_display_value: '19417.25',
+                entry_tick_time: dummy_start_time + 1,
+                expiry_time: dummy_end_time,
+                id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+                is_expired: 0,
+                is_forward_starting: 0,
+                is_intraday: 1,
+                is_path_dependent: 1,
+                is_settleable: 0,
+                is_sold: 0,
+                is_valid_to_cancel: 0,
+                is_valid_to_sell: 1,
+                limit_order: {
+                    take_profit: {
+                        display_name: 'Take profit',
+                        order_amount: 150,
+                        order_date: dummy_start_time - 10,
+                        value: '19400.25',
+                    },
+                },
+                longcode:
+                    'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+                growth_rate: 0.01,
+                profit: -0.15,
+                profit_percentage: -1.5,
+                purchase_time: dummy_start_time,
+                shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
+                status: 'open',
+                tick_count: 10,
+                tick_stream: [
+                    {
+                        epoch: dummy_start_time + 1,
+                        tick: 19417.25,
+                        tick_display_value: '19417.25',
+                    },
+                    {
+                        epoch: dummy_start_time + 3,
+                        tick: 19414.86,
+                        tick_display_value: '19414.86',
+                    },
+                    {
+                        epoch: dummy_start_time + 5,
+                        tick: 19406.25,
+                        tick_display_value: '19406.25',
+                    },
+                    {
+                        epoch: dummy_current_time,
+                        tick: 19406.92,
+                        tick_display_value: '19406.92',
+                    },
+                ],
+                transaction_ids: {
+                    buy: 45479,
+                },
+                underlying: 'R_100',
+            },
+            req_id: 32,
+            subscription: {
+                id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+            },
+        };
+        let proposal, portfolio_position;
+        if (this.root_store.modules.trade.is_accumulator) {
+            proposal = dummy_response.proposal_open_contract;
+            portfolio_position = {
+                contract_info: dummy_response.proposal_open_contract,
+                details:
+                    'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+                display_name: 'Volatility 100 Index',
+                id: 19459,
+                indicative: 8.46,
+                payout: 27.45,
+                purchase: 10,
+                reference: 45479,
+                type: 'ACC',
+                is_unsupported: false,
+                high_barrier: 19423.76,
+                low_barrier: 19391.76,
+                entry_spot: 19417.25,
+                profit_loss: -0.15,
+                is_valid_to_sell: true,
+                status: 'loss',
+            };
 
-        const proposal = response.proposal_open_contract;
-        const portfolio_position = this.positions_map[proposal.contract_id];
+            this.updateContractTradeStore(dummy_response);
+            this.updateContractReplayStore(dummy_response);
+        } else {
+            proposal = response.proposal_open_contract;
+            portfolio_position = this.positions_map[proposal.contract_id];
 
-        if (!portfolio_position) return;
-        this.updateContractTradeStore(response);
-        this.updateContractReplayStore(response);
+            if (!portfolio_position) return;
+            this.updateContractTradeStore(response);
+            this.updateContractReplayStore(response);
+        }
 
         const formatted_position = formatPortfolioPosition(
             proposal,
@@ -221,9 +364,9 @@ export default class PortfolioStore extends BaseStore {
             }
         }
 
-        if (portfolio_position.contract_info.is_sold === 1) {
+        if (portfolio_position.contract_info.is_sold === 1 && !this.root_store.modules.trade.is_accumulator) {
             this.populateResultDetails(response);
-        }
+        } else if (portfolio_position.contract_info.is_sold === 1) this.populateResultDetails(dummy_response);
     }
 
     @action.bound
@@ -312,7 +455,104 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     populateResultDetails = response => {
-        const contract_response = response.proposal_open_contract;
+        const dummy_current_time = Math.round(Date.now() / 1000); // 1656513908
+        const dummy_start_time = dummy_current_time - 7; // 1656513901
+        const dummy_end_time = dummy_current_time + 6; // 4810060799
+        const dummy_response = {
+            echo_req: {
+                proposal_open_contract: 1,
+                req_id: 32,
+                subscribe: 1,
+            },
+            msg_type: 'proposal_open_contract',
+            proposal_open_contract: {
+                account_id: 6528,
+                barrier_count: 2,
+                high_barrier: '19423.76',
+                low_barrier: '19391.76',
+                bid_price: 9.85,
+                buy_price: 10,
+                contract_id: 19459,
+                contract_type: 'ACC',
+                currency: 'USD',
+                current_spot: 19406.92,
+                current_spot_display_value: '19406.92',
+                current_spot_time: dummy_current_time,
+                date_expiry: dummy_end_time,
+                date_settlement: dummy_end_time + 1,
+                date_start: dummy_start_time,
+                display_name: 'Volatility 100 Index',
+                entry_spot: 19417.25,
+                entry_spot_display_value: '19417.25',
+                entry_tick: 19417.25,
+                entry_tick_display_value: '19417.25',
+                entry_tick_time: dummy_start_time + 1,
+                expiry_time: dummy_end_time,
+                id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+                is_expired: 0,
+                is_forward_starting: 0,
+                is_intraday: 1,
+                is_path_dependent: 1,
+                is_settleable: 0,
+                is_sold: 0,
+                is_valid_to_cancel: 0,
+                is_valid_to_sell: 1,
+                limit_order: {
+                    take_profit: {
+                        display_name: 'Take profit',
+                        order_amount: 150,
+                        order_date: dummy_start_time - 10,
+                        value: '19400.25',
+                    },
+                },
+                longcode:
+                    'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+                growth_rate: 0.01,
+                profit: -0.15,
+                profit_percentage: -1.5,
+                purchase_time: dummy_start_time,
+                shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
+                status: 'open',
+                tick_count: 10,
+                tick_stream: [
+                    {
+                        epoch: dummy_start_time + 1,
+                        tick: 19417.25,
+                        tick_display_value: '19417.25',
+                    },
+                    {
+                        epoch: dummy_start_time + 3,
+                        tick: 19414.86,
+                        tick_display_value: '19414.86',
+                    },
+                    {
+                        epoch: dummy_start_time + 5,
+                        tick: 19406.25,
+                        tick_display_value: '19406.25',
+                    },
+                    {
+                        epoch: dummy_current_time,
+                        tick: 19406.92,
+                        tick_display_value: '19406.92',
+                    },
+                ],
+                transaction_ids: {
+                    buy: 45479,
+                },
+                underlying: 'R_100',
+            },
+            req_id: 32,
+            subscription: {
+                id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+            },
+        };
+        let contract_response;
+        if (this.root_store.modules.trade.is_accumulator) {
+            contract_response = dummy_response.proposal_open_contract;
+        } else {
+            contract_response = response.proposal_open_contract;
+        }
+
         const i = this.getPositionIndexById(contract_response.contract_id);
 
         if (!this.positions[i]) {
@@ -462,8 +702,34 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     setActivePositions() {
-        this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
-        this.all_positions = [...this.positions];
+        const dummy_current_time = Math.round(Date.now() / 1000); // 1656513908
+        const dummy_start_time = dummy_current_time - 7; // 1656513901
+        const dummy_end_time = dummy_current_time + 6; // 4810060799
+        const dummy_contracts = [
+            {
+                app_id: 17044,
+                buy_price: 10,
+                contract_id: 19459,
+                contract_type: 'ACC',
+                currency: 'USD',
+                date_start: dummy_start_time,
+                expiry_time: dummy_end_time,
+                longcode:
+                    'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+                payout: 27.45,
+                purchase_time: dummy_start_time,
+                shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
+                symbol: 'R_100',
+                transaction_id: 45479,
+            },
+        ];
+        if (this.root_store.modules.trade.is_accumulator) {
+            this.active_positions = dummy_contracts;
+            this.all_positions = [...dummy_contracts];
+        } else {
+            this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
+            this.all_positions = [...this.positions];
+        }
     }
 
     updatePositions = () => {

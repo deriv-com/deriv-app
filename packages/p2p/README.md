@@ -11,7 +11,6 @@ This repository is a workspace of [deriv-app](../../README.md) monorepo and cove
 ```
     cashier_p2p: '/cashier/p2p',
     cashier_p2p_verification: '/cashier/p2p/verification',
-    cashier_pa_transfer: '/cashier/payment-agent-transfer',
 ```
 
 ## How to Install the Project
@@ -20,8 +19,8 @@ You need to follow the instructions [here](../../README.md).
 
 ## How To Work With This Project
 
-To run and work on this workspace you need to use `npm run serve cfd` command along with `npm run serve core`.
-Webpack will watch changes in `p2p` so that if you made any changes in this package, it will automatically rebuild `p2p` and recompile `core`.
+To run and work on this workspace you need to run `npm run serve core` , `npm run serve cashier`, and `npm run serve p2p`.
+Webpack will watch changes in `p2p` and `cashier` so that if you made any changes in this package, it will automatically rebuild `p2p` and `cashier` and recompile `core`.
 
 **Libary usage:**
 

@@ -1,9 +1,23 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { RootStore } from 'Types';
+
+type TCashierLockedProps = {
+    account_status: {
+        cashier_validation: string;
+    };
+    accounts: { [k: string]: { excluded_until: string } };
+    current_currency_type: string;
+    is_cashier_locked: boolean;
+    is_deposit_locked: boolean;
+    is_identity_verification_needed: boolean;
+    is_system_maintenance: boolean;
+    is_withdrawal_locked: boolean;
+    loginid: string;
+};
 
 const CashierLocked = ({
     account_status,
@@ -15,7 +29,7 @@ const CashierLocked = ({
     is_withdrawal_locked,
     loginid,
     is_identity_verification_needed,
-}) => {
+}: TCashierLockedProps) => {
     const { cashier_validation } = account_status;
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
@@ -111,7 +125,13 @@ const CashierLocked = ({
                 <Localize
                     i18n_default_text='Please complete the <0>Appropriateness Test</0> to access your cashier.'
                     components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/financial-assessment'}
+                            data-testid='dt_financial_assessment_link'
+                        />,
                     ]}
                 />
             );
@@ -120,7 +140,13 @@ const CashierLocked = ({
                 <Localize
                     i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
                     components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/financial-assessment'}
+                            data-testid='dt_financial_assessment_link'
+                        />,
                     ]}
                 />
             );
@@ -189,7 +215,14 @@ const CashierLocked = ({
         message = (
             <Localize
                 i18n_default_text='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
-                components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        href={'/account/financial-assessment'}
+                        data-testid='dt_financial_assessment_link'
+                    />,
+                ]}
             />
         );
     } else if (is_withdrawal_locked && ask_authenticate) {
@@ -250,18 +283,7 @@ const CashierLocked = ({
     );
 };
 
-CashierLocked.propTypes = {
-    account_status: PropTypes.object,
-    accounts: PropTypes.object,
-    current_currency_type: PropTypes.string,
-    is_cashier_locked: PropTypes.bool,
-    is_deposit_locked: PropTypes.bool,
-    is_system_maintenance: PropTypes.bool,
-    is_withdrawal_locked: PropTypes.bool,
-    loginid: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     account_status: client.account_status,
     accounts: client.accounts,
     current_currency_type: client.current_currency_type,

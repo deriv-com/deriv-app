@@ -6,11 +6,11 @@ import * as constants from './state/constants';
 import { watchTicks } from './Ticks';
 import { checkLimits, clearStatistics } from './Total';
 import { expectInitArg } from '../utils/sanitize';
-import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import $scope, { initial_scope } from '../utils/cliTools';
 import Store from './state';
 import { loginAndGetBalance } from './Authenticate';
+import { createError } from '../utils/error';
 
 /* The watchScope function is called randomly and resets the prevTick
  * which leads to the same problem we try to solve. So prevTick is isolated

@@ -154,11 +154,11 @@
             transform: translateY(-16px);
         }
     }
-    // &__wrapper-accumulator {
-    //     margin: auto;
-    //     width: 22.4rem;
-    //     max-width: 22.4rem;
-    // }
+    &__wrapper-accumulator {
+        margin: auto;
+        width: 22.4rem;
+        max-width: 22.4rem;
+    }
     .purchase-price,
     .potential-payout {
         &-container {
@@ -330,6 +330,10 @@
         &__header {
             max-width: calc(100% - 2.4rem);
             line-height: 1.4;
+
+            &-long {
+                max-width: unset;
+            }
         }
         &__body {
             @include typeface(--small-left-bold-black);

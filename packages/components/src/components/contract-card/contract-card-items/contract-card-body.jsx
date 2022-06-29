@@ -185,7 +185,7 @@ const AccumulatorCardBody = ({
                     <strong>{tick_count}</strong>
                 </ContractCardItem>
                 {is_sold ? (
-                    <ContractCardItem header={getCardLabels().MAX_TICK_DURATION}>
+                    <ContractCardItem header={getCardLabels().MAX_TICK_DURATION} is_long>
                         <strong>{max_duration_ticks}</strong>
                     </ContractCardItem>
                 ) : (
@@ -253,78 +253,79 @@ const ContractCardBody = ({
     status,
     toggleCancellationWarning,
 }) => {
-    // const dummy_props = {
-    //     contract_info: {
-    //         account_id: 6528,
-    //         barrier_count: 2,
-    //         bid_price: 9.85,
-    //         buy_price: 10,
-    //         contract_id: 19459,
-    //         contract_type: 'ACC',
-    //         currency: 'USD',
-    //         current_spot: 8345.34,
-    //         current_spot_display_value: '8345.34',
-    //         current_spot_time: 1656407636,
-    //         date_expiry: 4810060799,
-    //         date_settlement: 4810060800,
-    //         date_start: 1656407458,
-    //         display_name: 'Volatility 100 Index',
-    //         entry_spot: 8345.43,
-    //         entry_spot_display_value: '8345.43',
-    //         entry_tick: 8345.43,
-    //         entry_tick_display_value: '8345.43',
-    //         entry_tick_time: 1656407458,
-    //         expiry_time: 4810060799,
-    //         id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-    //         is_expired: 0,
-    //         is_forward_starting: 0,
-    //         is_intraday: 0,
-    //         is_path_dependent: 1,
-    //         is_settleable: 0,
-    //         is_sold: 0,
-    //         is_valid_to_cancel: 0,
-    //         is_valid_to_sell: 1,
-    //         limit_order: {
-    //             take_profit: {
-    //                 display_name: 'Take profit',
-    //                 order_amount: 150,
-    //                 order_date: 1656407458,
-    //                 value: '12522.35',
-    //             },
-    //         },
-    //         longcode:
-    //             'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-    //         max_duration_ticks: 10,
-    //         growth_rate: 0.01,
-    //         profit: -0.15,
-    //         profit_percentage: -1.5,
-    //         purchase_time: 1656407458,
-    //         shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
-    //         status: 'open',
-    //         tick_count: 4,
-    //         tick_stream: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    //         transaction_ids: {
-    //             buy: 45479,
-    //         },
-    //         underlying: 'R_100',
-    //     },
-    //     contract_update: {
-    //         take_profit: {
-    //             display_name: 'Take profit',
-    //             order_amount: 150,
-    //             order_date: 1656407458,
-    //             value: '12522.35',
-    //         },
-    //     },
-    //     currency: 'USD',
-    //     current_focus: null,
-    //     has_progress_slider: false,
-    //     is_mobile: false,
-    //     is_accumulator: true,
-    //     is_sold: false,
-    //     server_time: '2022-06-28T09:13:58.552Z',
-    //     status: 'loss',
-    // };
+    const dummy_props = {
+        contract_info: {
+            account_id: 6528,
+            barrier_count: 2,
+            bid_price: 9.85,
+            buy_price: 10,
+            contract_id: 19459,
+            contract_type: 'ACC',
+            currency: 'USD',
+            current_spot: 8345.34,
+            current_spot_display_value: '8345.34',
+            current_spot_time: 1656407636,
+            date_expiry: 4810060799,
+            date_settlement: 4810060800,
+            date_start: 1656407458,
+            display_name: 'Volatility 100 Index',
+            entry_spot: 8345.43,
+            entry_spot_display_value: '8345.43',
+            entry_tick: 8345.43,
+            entry_tick_display_value: '8345.43',
+            entry_tick_time: 1656407458,
+            expiry_time: 4810060799,
+            id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+            is_expired: 0,
+            is_forward_starting: 0,
+            is_intraday: 0,
+            is_path_dependent: 1,
+            is_settleable: 0,
+            is_sold: 0,
+            is_valid_to_cancel: 0,
+            is_valid_to_sell: 1,
+            limit_order: {
+                take_profit: {
+                    display_name: 'Take profit',
+                    order_amount: 150,
+                    order_date: 1656407458,
+                    value: '12522.35',
+                },
+            },
+            longcode:
+                'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+            max_duration_ticks: 10,
+            growth_rate: 0.01,
+            profit: -0.15,
+            profit_percentage: -1.5,
+            purchase_time: 1656407458,
+            shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
+            status: 'open',
+            tick_count: 4,
+            tick_stream: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            transaction_ids: {
+                buy: 45479,
+            },
+            underlying: 'R_100',
+        },
+        contract_update: {
+            take_profit: {
+                display_name: 'Take profit',
+                order_amount: 150,
+                order_date: 1656407458,
+                value: '12522.35',
+            },
+        },
+        currency: 'USD',
+        current_focus: null,
+        has_progress_slider: false,
+        is_in_contract_details: false,
+        is_mobile: false,
+        is_accumulator: true,
+        is_sold: false,
+        server_time: '2022-06-28T09:13:58.552Z',
+        status: 'loss',
+    };
 
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
@@ -371,14 +372,14 @@ const ContractCardBody = ({
     } else if (is_accumulator) {
         card_body = (
             <AccumulatorCardBody
-                contract_info={contract_info}
-                contract_update={contract_update}
-                currency={currency}
+                contract_info={dummy_props.contract_info}
+                contract_update={dummy_props.contract_update}
+                currency={dummy_props.currency}
                 getCardLabels={getCardLabels}
-                is_sold={is_sold}
-                status={status}
+                is_sold={dummy_props.is_sold}
+                status={dummy_props.status}
                 progress_slider={progress_slider_mobile_el}
-                is_in_contract_details={is_in_contract_details}
+                is_in_contract_details={dummy_props.is_in_contract_details || is_in_contract_details}
             />
         );
     } else {

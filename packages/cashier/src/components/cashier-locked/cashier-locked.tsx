@@ -130,7 +130,7 @@ const CashierLocked = ({
                             className='link'
                             rel='noopener noreferrer'
                             href={'/account/financial-assessment'}
-                            data-testid='financial-assessment-link'
+                            data-testid='dt_financial_assessment_link'
                         />,
                     ]}
                 />
@@ -145,7 +145,7 @@ const CashierLocked = ({
                             className='link'
                             rel='noopener noreferrer'
                             href={'/account/financial-assessment'}
-                            data-testid='financial-assessment-link'
+                            data-testid='dt_financial_assessment_link'
                         />,
                     ]}
                 />
@@ -220,7 +220,7 @@ const CashierLocked = ({
                         key={0}
                         className='link'
                         href={'/account/financial-assessment'}
-                        data-testid='financial-assessment-link'
+                        data-testid='dt_financial_assessment_link'
                     />,
                 ]}
             />

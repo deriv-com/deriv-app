@@ -195,7 +195,7 @@ describe('<CashierLocked />', () => {
             />
         );
 
-        expect(screen.getByTestId('financial-assessment-link')).toHaveAttribute(
+        expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
             'href',
             '/account/financial-assessment'
         );
@@ -212,7 +212,7 @@ describe('<CashierLocked />', () => {
         );
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
-        expect(screen.getByTestId('financial-assessment-link')).toHaveAttribute(
+        expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
             'href',
             '/account/financial-assessment'
         );

@@ -166,11 +166,6 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    setIsBlockUserModalOpen(is_block_user_modal_open) {
-        this.is_block_user_modal_open = is_block_user_modal_open;
-    }
-
-    @action.bound
     setIsCounterpartyAdvertiserBlocked(is_counterparty_advertiser_blocked) {
         this.is_counterparty_advertiser_blocked = is_counterparty_advertiser_blocked;
     }

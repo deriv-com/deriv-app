@@ -1,0 +1,76 @@
+.transfer-confirm {
+    &__header {
+        margin-top: 1.4rem;
+        margin-bottom: 2.4rem;
+    }
+    &__column {
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+    }
+    &__row {
+        width: 40rem;
+        display: flex;
+        padding: 0.8rem 0;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--general-section-1);
+
+        > :last-child {
+            max-width: 50%;
+
+            &.description {
+                word-wrap: break-word;
+            }
+        }
+    }
+    &__warnings {
+        width: 40rem;
+        display: flex;
+        flex-direction: column;
+        margin: 2.4rem auto 1.8rem;
+        @include mobile {
+            margin-bottom: 1.2rem;
+        }
+
+        &-bullet {
+            background-color: var(--text-loss-danger);
+            border-radius: 100%;
+            margin-right: 0.8rem;
+            width: 0.4rem;
+            height: 0.4rem;
+            flex: none;
+            margin-top: 0.65rem;
+
+            &-wrapper {
+                display: flex;
+                margin-bottom: 1.1rem;
+            }
+        }
+    }
+    &__checkbox-label {
+        font-size: var(--text-size-xxs);
+    }
+    &__submit {
+        margin: 2.4rem auto;
+        width: 40rem;
+        display: flex;
+        justify-content: flex-end;
+
+        > :not(:first-child) {
+            margin-left: 0.8rem;
+        }
+    }
+
+    @include mobile {
+        &__row,
+        &__warnings,
+        &__checkbox,
+        &__submit {
+            width: 100%;
+        }
+    }
+}

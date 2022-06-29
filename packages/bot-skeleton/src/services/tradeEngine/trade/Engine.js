@@ -19,12 +19,12 @@ let prevTick;
 
 const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     // in case watch is called after stop is fired
-    if (store.getState().scope === stopScope) {
+    if (store.getState().single.scope === stopScope) {
         return Promise.resolve(false);
     }
     return new Promise(resolve => {
         const unsubscribe = store.subscribe(() => {
-            const newState = store.getState();
+            const newState = store.getState().single;
 
             if (newState.newTick === prevTick) return;
             prevTick = newState.newTick;

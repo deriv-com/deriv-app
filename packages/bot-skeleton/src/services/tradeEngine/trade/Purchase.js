@@ -15,7 +15,7 @@ let delayIndex = 0;
 
 export const purchase = contract_type => {
     // Prevent calling purchase twice
-    if (Store.getState().scope !== BEFORE_PURCHASE) {
+    if (Store.getState().single.scope !== BEFORE_PURCHASE) {
         return Promise.resolve();
     }
 
@@ -66,7 +66,7 @@ export const purchase = contract_type => {
             }
 
             const unsubscribe = Store.subscribe(() => {
-                const { scope, proposalsReady } = Store.getState();
+                const { scope, proposalsReady } = Store.getState().single;
                 if (scope === BEFORE_PURCHASE && proposalsReady) {
                     makeDelay().then(() => globalObserver.emit('REVERT', 'before'));
                     unsubscribe();

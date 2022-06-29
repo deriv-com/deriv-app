@@ -41,7 +41,7 @@ describe('Interface', () => {
         });
 
         it('context is inside before', () => {
-            expect(Store.getState().scope).equal('BEFORE_PURCHASE');
+            expect(Store.getState().single.scope).equal('BEFORE_PURCHASE');
         });
 
         it('Loop stayed on correctly', () => {

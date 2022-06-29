@@ -17,7 +17,7 @@ export const sellAtMarket = () => {
     globalObserver.emit('bot.sell');
 
     // Prevent calling sell twice
-    if (Store.getState().scope !== DURING_PURCHASE) {
+    if (Store.getState().single.scope !== DURING_PURCHASE) {
         return Promise.resolve();
     }
 

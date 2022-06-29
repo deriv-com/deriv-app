@@ -8,7 +8,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
 
 const BlockUserTable = () => {
-    const { advertiser_page_store, my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         my_profile_store.setBlockedAdvertisersList([]);
@@ -21,8 +21,8 @@ const BlockUserTable = () => {
         return <Loading is_fullscreen={isMobile()} />;
     }
 
-    if (advertiser_page_store.api_error_message) {
-        return <TableError message={my_profile_store.api_error_message} />;
+    if (general_store.block_unblock_user_error) {
+        return <TableError message={general_store.block_unblock_user_error} />;
     }
 
     if (my_profile_store.blocked_advertisers_list.length) {

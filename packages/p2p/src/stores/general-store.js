@@ -12,10 +12,13 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable block_unblock_user_error = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_advertiser_blocked = null;
     @observable is_blocked = false;
+    @observable is_block_unblock_user_loading = false;
+    @observable is_block_user_modal_open = false;
     @observable is_listed = false;
     @observable is_loading = false;
     @observable is_p2p_blocked_for_pa = false;
@@ -77,20 +80,19 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     blockUnblockUser(should_block, advertiser_id) {
-        const { advertiser_page_store } = this.root_store;
-        advertiser_page_store.setIsLoading(true);
+        this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
             [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    advertiser_page_store.setIsBlockUserModalOpen(false);
+                    this.setIsBlockUserModalOpen(false);
                 } else {
-                    advertiser_page_store.setErrorMessage(response.error);
+                    this.setBlockUnblockUserError(response.error);
                 }
             }
-            advertiser_page_store.setIsLoading(false);
+            this.setIsBlockUnblockUserLoading(false);
         });
     }
 
@@ -335,6 +337,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setBlockUnblockUserError(block_unblock_user_error) {
+        this.block_unblock_user_error = block_unblock_user_error;
+    }
+
+    @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -352,6 +359,16 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
+    }
+
+    @action.bound
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
     }
 
     @action.bound

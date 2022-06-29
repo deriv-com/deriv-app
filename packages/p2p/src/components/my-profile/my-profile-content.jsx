@@ -11,7 +11,7 @@ import BlockUserModal from 'Components/block-user/block-user-modal';
 import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
 
 const MyProfileContent = () => {
-    const { advertiser_page_store, my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     const formik_ref = React.useRef();
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
@@ -54,8 +54,8 @@ const MyProfileContent = () => {
                 <BlockUserModal
                     advertiser_name={my_profile_store.selected_blocked_user.name}
                     is_advertiser_blocked
-                    is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
-                    onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}
+                    is_block_user_modal_open={general_store.is_block_user_modal_open}
+                    onCancel={() => general_store.setIsBlockUserModalOpen(false)}
                     onSubmit={my_profile_store.onSubmit}
                 />
                 <DesktopWrapper>

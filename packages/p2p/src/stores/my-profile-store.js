@@ -378,17 +378,17 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     onClickUnblock(advertiser) {
-        const { advertiser_page_store } = this.root_store;
+        const { general_store } = this.root_store;
 
-        advertiser_page_store.setIsBlockUserModalOpen(true);
+        general_store.setIsBlockUserModalOpen(true);
         this.setSelectedBlockedUser(advertiser);
     }
 
     @action.bound
     onSubmit() {
-        const { advertiser_page_store, general_store } = this.root_store;
+        const { general_store } = this.root_store;
 
-        advertiser_page_store.setIsBlockUserModalOpen(false);
+        general_store.setIsBlockUserModalOpen(false);
         general_store.blockUnblockUser(false, this.selected_blocked_user.id);
         this.getBlockedAdvertisersList();
     }

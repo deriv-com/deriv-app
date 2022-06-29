@@ -90,7 +90,7 @@ const ProofOfAddressForm = ({
         const errors = {};
         const validateValues = validate(errors, values);
 
-        const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
+        const required_fields = ['address_line_1', 'address_city'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
         const permitted_characters = ". , ' : ; ( ) @ # / -";
@@ -361,7 +361,6 @@ const ProofOfAddressForm = ({
                                                                                 true
                                                                             )
                                                                         }
-                                                                        required
                                                                     />
                                                                 )}
                                                             </Field>
@@ -377,7 +376,6 @@ const ProofOfAddressForm = ({
                                                                 onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
-                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -392,7 +390,6 @@ const ProofOfAddressForm = ({
                                                         error={touched.address_state && errors.address_state}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        required
                                                     />
                                                 )}
                                             </fieldset>
@@ -407,7 +404,6 @@ const ProofOfAddressForm = ({
                                                     error={touched.address_postcode && errors.address_postcode}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    required
                                                 />
                                             </fieldset>
                                         </div>

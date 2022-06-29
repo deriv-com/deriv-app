@@ -228,6 +228,7 @@ const getCancelButtonLabel = ({ should_set_trading_password, error_type }: TCFDP
 
 const handlePasswordInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
+    // eslint-disable-next-line no-shadow
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
     setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void

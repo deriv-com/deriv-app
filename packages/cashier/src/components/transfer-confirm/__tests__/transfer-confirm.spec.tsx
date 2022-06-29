@@ -2,7 +2,7 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { fireEvent, render, screen } from '@testing-library/react';
-import Confirm from '../confirm.jsx';
+import TransferConfirm from '../transfer-confirm';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -12,7 +12,7 @@ jest.mock('Stores/connect', () => ({
 
 let modal_root_el;
 
-describe('<Confirm />', () => {
+describe('<TransferConfirm />', () => {
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -41,7 +41,7 @@ describe('<Confirm />', () => {
     };
 
     it('should show proper icon, header, messages and buttons', () => {
-        render(<Confirm {...props} />);
+        render(<TransferConfirm {...props} />);
 
         expect(screen.getByTestId('dti_confirm_details_icon')).toBeInTheDocument();
         expect(
@@ -59,7 +59,7 @@ describe('<Confirm />', () => {
     });
 
     it('should trigger onClick callback when the client clicks on Back button', () => {
-        render(<Confirm {...props} />);
+        render(<TransferConfirm {...props} />);
 
         const el_back_btn = screen.getByRole('button', { name: 'Back' });
         fireEvent.click(el_back_btn);
@@ -67,7 +67,7 @@ describe('<Confirm />', () => {
     });
 
     it('should trigger onClick callback when the client clicks on Confirm button', () => {
-        render(<Confirm {...props} />);
+        render(<TransferConfirm {...props} />);
 
         const el_confirm_btn = screen.getByRole('button', { name: 'Confirm' });
         fireEvent.click(el_confirm_btn);
@@ -75,13 +75,13 @@ describe('<Confirm />', () => {
     });
 
     it('should show error message', () => {
-        render(<Confirm {...props} error={{ message: 'Error message' }} />);
+        render(<TransferConfirm {...props} error={{ message: 'Error message' }} />);
 
         expect(screen.getByText('Error message')).toBeInTheDocument();
     });
 
     it('should show warning messages', () => {
-        render(<Confirm {...props} />);
+        render(<TransferConfirm {...props} />);
 
         expect(
             screen.getByText(
@@ -92,7 +92,7 @@ describe('<Confirm />', () => {
     });
 
     it('should show checkbox when is_payment_agent_transfer property is equal to true', () => {
-        render(<Confirm {...props} is_payment_agent_transfer />);
+        render(<TransferConfirm {...props} is_payment_agent_transfer />);
 
         expect(
             screen.getByLabelText('I confirm that I have checked and verified the client’s transfer information')
@@ -100,7 +100,7 @@ describe('<Confirm />', () => {
     });
 
     it('should enable "Transfer now" button when checkbox is checked', () => {
-        render(<Confirm {...props} is_payment_agent_transfer />);
+        render(<TransferConfirm {...props} is_payment_agent_transfer />);
 
         const el_checkbox_transfer_consent = screen.getByRole('checkbox');
         fireEvent.click(el_checkbox_transfer_consent);

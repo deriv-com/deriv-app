@@ -47,12 +47,6 @@ describe('<PaymentAgentList />', () => {
         renderWithRouter(<PaymentAgentList {...props} />);
 
         expect(screen.getByText('Payment agent deposit withdraw container')).toBeInTheDocument();
-        expect(screen.getByText('DISCLAIMER')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Deriv is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
-            )
-        ).toBeInTheDocument();
     });
 
     it('should show loader in Deposit tab', () => {

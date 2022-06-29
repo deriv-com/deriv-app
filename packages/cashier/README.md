@@ -66,7 +66,7 @@ The features developed in this folder also has been exported through the webpack
 
 ## Troubleshooting
 
--   **Icon missing:** If the icons are missing, you only need to build this project. You can do this by running the build command:
+-   **Icon missing:** If the icons are missing, you only need to build this workspace. You can do this by running the build command:
 
 ```
 npm run build

@@ -20,7 +20,7 @@ You need to follow the instructions [here](../../README.md).
 ## How To Work With This Project
 
 To run and work on this workspace you need to run `npm run serve core` , `npm run serve cashier`, and `npm run serve p2p`.
-Webpack will watch changes in `p2p` and `cashier` so that if you made any changes in this package, it will automatically rebuild `p2p` and `cashier` and recompile `core`.
+Webpack will watch changes in `p2p` and `cashier` so that if you made any changes in them, it will automatically rebuild `p2p` and `cashier` and recompile `core`.
 
 **Libary usage:**
 

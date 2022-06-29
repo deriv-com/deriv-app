@@ -53,7 +53,7 @@ We have a separate folder for each component.
 **constants:** We add the static data structures needed for the workspace here.
 We have a separate folder for each component.
 
-**containers:** This folder contains the wrappers we use for the whole project.
+**containers:** This folder contains the wrappers we use for the whole workspace.
 
 **pages:** This is the place for putting all the features which are visible through the browser. We have separate folder for each feature.
 The features developed in this folder also has been exported through the webpack for the use of other packages (like appstore).

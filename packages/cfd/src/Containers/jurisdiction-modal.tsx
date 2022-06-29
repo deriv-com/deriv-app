@@ -89,13 +89,13 @@ const JurisdictionModal = ({
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
 
-    const onSelectRealSynthetic = () => {
+    const onSelectRealAccount = () => {
         toggleJurisdictionModal();
-        const account_type = {
+        const type_of_account = {
             category: 'real',
-            type: 'financial',
+            type: `${account_type}`,
         };
-        openPasswordModal(account_type);
+        openPasswordModal(type_of_account);
     };
 
     return (
@@ -138,7 +138,7 @@ const JurisdictionModal = ({
                                     primary
                                     onClick={() => {
                                         if (jurisdiction_selected_card === 'SVG') {
-                                            onSelectRealSynthetic();
+                                            onSelectRealAccount();
                                         }
                                     }}
                                 >

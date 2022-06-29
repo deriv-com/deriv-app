@@ -200,8 +200,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
         if (props.is_logged_in) {
             ['demo', 'real'].forEach(account_type => {
-                const should_enable_tab =
-                    isSyntheticCardVisible(account_type) || isFinancialCardVisible() || isFinancialStpCardVisible();
+                const should_enable_tab = isSyntheticCardVisible(account_type) || isFinancialCardVisible();
 
                 if (account_type === 'real' && is_real_enabled !== should_enable_tab) {
                     setIsRealEnabled(should_enable_tab);
@@ -330,17 +329,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                 platform,
                 type: 'financial',
             })
-        );
-    };
-
-    const isFinancialStpCardVisible = () => {
-        const { platform, landing_companies, is_logged_in, is_eu_country } = props;
-
-        // Hiding card for logged out EU users
-        if (!is_logged_in && is_eu_country) return false;
-
-        return (
-            (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === CFD_PLATFORMS.MT5
         );
     };
 

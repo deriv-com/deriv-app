@@ -69,9 +69,6 @@ const AdvertiserPage = () => {
                     )
                 }
             />
-            <button onClick={() => general_store.blockUnblockUser(true, advertiser_page_store.advertiser_details_id)}>
-                BLOCK ME
-            </button>
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

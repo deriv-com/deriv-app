@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/types';
+import { RootStore } from 'Types';
 
 type TCashierLockedProps = {
     account_status: {

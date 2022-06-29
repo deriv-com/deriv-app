@@ -1,10 +1,9 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { useInterval } from '@deriv/components/src/hooks';
 import { RootStore, TReactChangeEvent, TReactChildren } from 'Types';
 import './crypto-fiat-converter.scss';
 

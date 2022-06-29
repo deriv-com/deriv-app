@@ -35,7 +35,7 @@ const ExpandedCard = ({
     };
 
     const exampleLink = () =>
-        ['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(icon => icon === card_details.icon) && (
+        ['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(icon => icon === card_details.icon) ? (
             <span
                 className='proof-of-ownership__card-open-desc-link'
                 key={0}
@@ -45,6 +45,8 @@ const ExpandedCard = ({
             >
                 {localize('See example')}
             </span>
+        ) : (
+            ''
         );
 
     return (

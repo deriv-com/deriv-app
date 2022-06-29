@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ExpandedCard, { formatIdentifier } from '../ExpandedCard.jsx';
+import ExpandedCard from '../ExpandedCard.jsx';
 
 describe('ExpandedCard.jsx', () => {
     let cardDetails;
@@ -11,7 +11,7 @@ describe('ExpandedCard.jsx', () => {
             creation_time: '9 o clock',
             id: 'abc12340',
             payment_method: 'credit_debit_card',
-            payment_method_identifier: 'credit_debit_card',
+            payment_method_identifier: '12345678910111213',
             title: 'Credit / Debit card',
             paragraphs: [
                 'Upload a photo of your card or bank statement showing your name and card number. Your card number must only show the first 6 and last 4 digits.',
@@ -31,12 +31,9 @@ describe('ExpandedCard.jsx', () => {
     });
     it('should format identifier', () => {
         render(<ExpandedCard card_details={cardDetails} identifier={cardDetails.payment_method_identifier} />);
-        const element = screen.getByDisplayValue(
-            formatIdentifier(cardDetails.payment_method_identifier, cardDetails.icon),
-            {
-                exact: true,
-            }
-        );
+        const element = screen.getByDisplayValue('1234 56XX XXXX 1121 3', {
+            exact: true,
+        });
         expect(element).toBeInTheDocument();
     });
 });

@@ -1,8 +1,10 @@
 import React from 'react';
+import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
+import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts } from './props.types';
@@ -97,7 +99,7 @@ const CFDDemoAccountDisplay = ({
             <Loading />
         </div>
     ) : (
-        <div className='cfd-demo-accounts-display'>
+        <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
             {isSyntheticCardVisible('demo') && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}

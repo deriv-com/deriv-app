@@ -76,7 +76,7 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
         </div>
         <Popover alignment='bottom' message={localize('Change Password')}>
             <Button
-                className='cfd-account-card__password-action toolbar__btn--icon'
+                className='cfd-account-card__password-action'
                 transparent
                 onClick={onClick}
                 icon={

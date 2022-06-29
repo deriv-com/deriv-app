@@ -132,7 +132,7 @@ const CFDRealAccountDisplay = ({
         if (citizen && tax_residence) {
             const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
             return (
-                is_tin_required ||
+                !is_tin_required ||
                 !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length
             );
         }
@@ -317,6 +317,7 @@ const CFDRealAccountDisplay = ({
 
     return (
         <div
+            data-testid='dt_cfd_real_accounts_display'
             className={classNames('cfd-real-accounts-display', {
                 'cfd-real-accounts-display--has-trade-servers': should_show_trade_servers,
             })}

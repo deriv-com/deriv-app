@@ -3,7 +3,11 @@
 ## Description
 
 This repository is a workspace of [deriv-app](../../README.md) monorepo and covers the [cashier](https://app.deriv.com/cashier/) page in app.deriv.com. (You need to be logged in to see the page.)
-This project covers Deposit, Withdraw and Transfer for both Fiat and Crypto
+This project covers:
+
+-   Deposit, Withdraw and Transfer (for both `Fiat` and `Crypto`)
+-   Deposit and withdraw for `payment agent`
+-   Deposit for `p2p` and `onRamp`
 
 ## How to Install the Project
 

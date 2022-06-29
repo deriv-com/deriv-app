@@ -12,13 +12,7 @@ import { connect } from 'Stores/connect';
 import PositionsDrawerCard from './PositionsDrawerCard';
 import { filterByContractType } from './helpers';
 
-const PositionsDrawerCardItem = ({
-    row: portfolio_position,
-    measure,
-    onHoverPosition,
-    is_new_row,
-    trade_contract_type,
-}) => {
+const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row }) => {
     const { in_prop } = useNewRowTransition(is_new_row);
 
     React.useEffect(() => {
@@ -38,11 +32,7 @@ const PositionsDrawerCardItem = ({
             onEntered={measure}
             unmountOnExit
         >
-            <div
-                className={classNames('dc-contract-card__wrapper', {
-                    'dc-contract-card__wrapper-accumulator': trade_contract_type === 'accumulator',
-                })}
-            >
+            <div className='dc-contract-card__wrapper'>
                 <PositionsDrawerCard
                     {...portfolio_position}
                     onMouseEnter={() => {
@@ -163,13 +153,7 @@ const PositionsDrawer = ({
     const body_content = (
         <DataList
             data_source={positions}
-            rowRenderer={args => (
-                <PositionsDrawerCardItem
-                    onHoverPosition={onHoverPosition}
-                    trade_contract_type={trade_contract_type}
-                    {...args}
-                />
-            )}
+            rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} />}
             keyMapper={row => row.id}
             row_gap={8}
         />

@@ -152,19 +152,26 @@ const AccumulatorCardBody = ({
     contract_update,
     currency,
     getCardLabels,
+    is_mobile,
     is_sold,
-    progress_slider_mobile_el,
+    has_progress_slider,
     status,
     is_in_contract_details,
 }) => {
     const { buy_price, bid_price, profit, limit_order, max_duration_ticks, tick_count } = contract_info;
 
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
-    const ticks_left = max_duration_ticks - tick_count;
+    const ticks_remaining = max_duration_ticks - tick_count;
 
     return (
         <React.Fragment>
-            <div className='dc-contract-card-items-wrapper'>
+            <div
+                className={classNames({
+                    'dc-contract-card-items-wrapper--mobile': is_mobile,
+                    'dc-contract-card-items-wrapper': !is_mobile,
+                    'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
+                })}
+            >
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
@@ -181,7 +188,7 @@ const AccumulatorCardBody = ({
                         <Money amount={bid_price} currency={currency} />
                     </div>
                 </ContractCardItem>
-                <ContractCardItem header={is_sold ? getCardLabels().NUMBER_OF_TICKS : getCardLabels().CURRENT_TICKS}>
+                <ContractCardItem header={is_sold ? getCardLabels().NUMBER_OF_TICKS : getCardLabels().TICKS_PASSED}>
                     <strong>{tick_count}</strong>
                 </ContractCardItem>
                 {is_sold ? (
@@ -189,8 +196,8 @@ const AccumulatorCardBody = ({
                         <strong>{max_duration_ticks}</strong>
                     </ContractCardItem>
                 ) : (
-                    <ContractCardItem header={getCardLabels().TICKS_LEFT}>
-                        <strong>{ticks_left}</strong>
+                    <ContractCardItem header={getCardLabels().TICKS_REMAINING}>
+                        <strong>{ticks_remaining}</strong>
                     </ContractCardItem>
                 )}
                 <ContractCardItem
@@ -213,18 +220,6 @@ const AccumulatorCardBody = ({
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                 </ContractCardItem>
             </div>
-            <MobileWrapper>
-                <div className='dc-contract-card__status'>
-                    {is_sold ? (
-                        <ResultStatusIcon
-                            getCardLabels={getCardLabels}
-                            is_contract_won={getDisplayStatus(contract_info) === 'won'}
-                        />
-                    ) : (
-                        progress_slider_mobile_el
-                    )}
-                </div>
-            </MobileWrapper>
         </React.Fragment>
     );
 };
@@ -376,9 +371,10 @@ const ContractCardBody = ({
                 contract_update={dummy_props.contract_update}
                 currency={dummy_props.currency}
                 getCardLabels={getCardLabels}
+                has_progress_slider={has_progress_slider}
+                is_mobile={is_mobile}
                 is_sold={dummy_props.is_sold}
                 status={dummy_props.status}
-                progress_slider={progress_slider_mobile_el}
                 is_in_contract_details={dummy_props.is_in_contract_details || is_in_contract_details}
             />
         );

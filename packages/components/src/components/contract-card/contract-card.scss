@@ -123,8 +123,8 @@
         }
     }
     &__wrapper {
-        margin: 0 1em;
-        max-width: 218px;
+        margin: 0 auto;
+        max-width: 22.4rem;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
@@ -153,11 +153,6 @@
             opacity: 0;
             transform: translateY(-16px);
         }
-    }
-    &__wrapper-accumulator {
-        margin: auto;
-        width: 22.4rem;
-        max-width: 22.4rem;
     }
     .purchase-price,
     .potential-payout {

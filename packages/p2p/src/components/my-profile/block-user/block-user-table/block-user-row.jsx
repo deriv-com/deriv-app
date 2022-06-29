@@ -1,20 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 import { Button, Table, Text } from '@deriv/components';
 import UserAvatar from 'Components/user/user-avatar';
 import { localize } from 'Components/i18next';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import '../block-user.scss';
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { advertiser_page_store, my_profile_store } = useStores();
-
-    const onClickUnblock = () => {
-        advertiser_page_store.setIsBlockUserModalOpen(true);
-        my_profile_store.setSelectedBlockedUser(advertiser);
-    };
-
+    const { my_profile_store } = useStores();
     return (
         <Table.Row className='block-user__row'>
             <Table.Cell>
@@ -28,7 +22,7 @@ const BlockUserRow = ({ row: advertiser }) => {
                 </div>
             </Table.Cell>
             <Table.Cell className='block-user__row-button'>
-                <Button secondary large onClick={onClickUnblock}>
+                <Button secondary large onClick={() => my_profile_store.onClickUnblock(advertiser)}>
                     {localize('Unblock')}
                 </Button>
             </Table.Cell>

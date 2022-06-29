@@ -7,18 +7,12 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
-import BlockUserTable from 'Components/block-user/block-user-table';
 import BlockUserModal from 'Components/block-user/block-user-modal';
+import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
 
 const MyProfileContent = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
     const formik_ref = React.useRef();
-
-    const onSubmit = async () => {
-        advertiser_page_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.blockUnblockUser(false, my_profile_store.selected_blocked_user.id);
-        my_profile_store.getBlockedAdvertisersList();
-    };
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
@@ -62,7 +56,7 @@ const MyProfileContent = () => {
                     is_advertiser_blocked
                     is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
                     onCancel={() => advertiser_page_store.setIsBlockUserModalOpen(false)}
-                    onSubmit={onSubmit}
+                    onSubmit={my_profile_store.onSubmit}
                 />
                 <DesktopWrapper>
                     <BlockUserTable />

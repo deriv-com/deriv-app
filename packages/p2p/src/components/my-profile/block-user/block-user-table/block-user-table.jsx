@@ -1,24 +1,23 @@
 import React from 'react';
-import { InfiniteDataList, Loading, Table } from '@deriv/components';
-import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
+import { InfiniteDataList, Loading, Table } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { useStores } from 'Stores';
 import BlockUserRow from './block-user-row.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
-import { isMobile } from '@deriv/shared';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
 
 const BlockUserTable = () => {
     const { advertiser_page_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
-        advertiser_page_store.setIsLoading(false);
         my_profile_store.setBlockedAdvertisersList([]);
         my_profile_store.getBlockedAdvertisersList();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (my_profile_store.is_loading || advertiser_page_store.is_loading) {
+    if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={isMobile()} />;
     }
 

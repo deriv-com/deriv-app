@@ -10,7 +10,6 @@
             "Pages/*": ["pages/*"],
             "Stores/*": ["stores/*"],
             "Types": ["types"],
-            "Types/*": ["types/*"],
             "Utils/*": ["utils/*"],
         },
         "outDir": "./dist",

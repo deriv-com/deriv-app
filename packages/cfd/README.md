@@ -1,7 +1,7 @@
 # CFD (contract for difference)
 
 This repository is a workspace of [deriv-app](../../README.md) monorepo and contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://app.deriv.com) website.
-This workspace covers the [DMT5](https://app.deriv.com/mt5) and [Deriv X](https://app.deriv.com/derivx) platforms.
+This workspace covers [DMT5](https://app.deriv.com/mt5) and [Deriv X](https://app.deriv.com/derivx) platforms.
 
 ## How to Install the Project
 
@@ -20,9 +20,6 @@ build
     ├── webpack-config.js
 src
     ├── _common
-    │   ├── ...
-    |   ├── utility.js
-    │
     ├── Components
     ├── Constants
     ├── Containers
@@ -40,9 +37,27 @@ src
 
 ```
 
+**Components:** This folder contains all the reusable components we need for developing the project.
+
+**Constants:** We add the static data structures needed for the project here.
+We have a separate folder for each component.
+
+**Containers:** This folder contains the wrappers we use for the whole project.
+
+**Helpers:** //TODO: complete this
+
+**Modules:** This folder contains the 404 page component.
+
+**Stores:** We use Mobx as state management tool in Cashier, and this is the place for putting the relevant store files. Also, for each store file we have a test file in **tests** folder.
+
+**templates:** //TODO: complete this
+
+**Utils:** We place all the common and helper methods which are required for the project in this folder.
+
 ## Troubleshooting
 
 -   **Icon missing:** If the icons are missing, you only need to build this project. You can do this by running the build command:
 
 ```console
 npm run build
+```

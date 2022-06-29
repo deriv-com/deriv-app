@@ -38,7 +38,7 @@ const JurisdictionModalContent = ({
 
     const [unselect_card, setUnselectCard] = React.useState<boolean>(false);
     const [number_of_cards] = React.useState(
-        account_type === 'Synthetic'
+        account_type === 'synthetic'
             ? number_of_synthetic_accounts_to_be_shown
             : number_of_financial_accounts_to_be_shown
     );

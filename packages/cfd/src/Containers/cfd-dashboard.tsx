@@ -562,7 +562,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 )}
                             </LoadTab>
                             <CompareAccountsModal platform={platform} is_demo_tab={is_demo_tab} />
-                            <JurisdictionModal platform={platform} />
+                            <JurisdictionModal platform={platform} openPasswordModal={openRealPasswordModal} />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon
                                     icon='IcAlertWarning'

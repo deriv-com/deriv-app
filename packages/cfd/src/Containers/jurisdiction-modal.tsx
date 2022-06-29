@@ -31,6 +31,11 @@ type TCompareAccountsReusedProps = {
     is_uk: boolean;
 };
 
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
 type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     account_type: string;
     authentication_status: {
@@ -44,10 +49,11 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     is_eu: boolean;
     is_eu_country: boolean;
     residence: string;
-    jurisdiction_selected_card: boolean;
+    jurisdiction_selected_card: string;
     toggleJurisdictionModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     is_fully_authenticated: boolean;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
 };
 
 const JurisdictionModal = ({
@@ -56,13 +62,13 @@ const JurisdictionModal = ({
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
-    is_loading,
     platform,
     is_eu,
     jurisdiction_selected_card,
     toggleJurisdictionModal,
     trading_platform_available_accounts,
     is_fully_authenticated,
+    openPasswordModal,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState<boolean>(false);
 
@@ -82,6 +88,15 @@ const JurisdictionModal = ({
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
+
+    const onSelectRealSynthetic = () => {
+        toggleJurisdictionModal();
+        const account_type = {
+            category: 'real',
+            type: 'financial',
+        };
+        openPasswordModal(account_type);
+    };
 
     return (
         <>
@@ -121,6 +136,11 @@ const JurisdictionModal = ({
                                         (is_eu && is_fully_authenticated && !checked)
                                     }
                                     primary
+                                    onClick={() => {
+                                        if (jurisdiction_selected_card === 'SVG') {
+                                            onSelectRealSynthetic();
+                                        }
+                                    }}
                                 >
                                     Next
                                 </Button>

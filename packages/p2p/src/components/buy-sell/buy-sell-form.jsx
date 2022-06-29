@@ -12,7 +12,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
-import { generateEffectiveRate } from 'Utils/format-value.js';
+import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value.js';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -53,6 +53,8 @@ const BuySellForm = props => {
         exchange_rate: floating_rate_store.exchange_rate,
     });
 
+    const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
+
     React.useEffect(
         () => {
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
@@ -75,7 +77,7 @@ const BuySellForm = props => {
 
             advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
-            buy_sell_store.setInitialReceiveAmount(effective_rate);
+            buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
@@ -359,8 +361,9 @@ const BuySellForm = props => {
                                                                 buy_sell_store.account_currency
                                                             );
                                                             setFieldValue('amount', input_amount);
+
                                                             buy_sell_store.setReceiveAmount(
-                                                                input_amount * effective_rate
+                                                                input_amount * calculated_rate
                                                             );
                                                         }
                                                     }}

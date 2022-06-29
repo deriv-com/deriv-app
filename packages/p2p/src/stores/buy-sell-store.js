@@ -5,7 +5,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
-import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
+import { removeTrailingZeros } from 'Utils/format-value.js';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
@@ -409,9 +409,7 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     setInitialReceiveAmount(initial_price) {
-        this.receive_amount = removeTrailingZeros(
-            roundOffDecimal(this.advert.min_order_amount_limit * initial_price, setDecimalPlaces(initial_price, 6))
-        );
+        this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
     }
 
     @action.bound

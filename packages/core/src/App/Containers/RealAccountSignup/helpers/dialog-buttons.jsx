@@ -120,6 +120,18 @@ const DialogDismissButton = ({ status, landing_company_shortcode, closeModal, sw
 
     return <Button secondary text={label} onClick={action} />;
 };
+
+DialogButtons.propTypes = {
+    status: PropTypes.number,
+    landing_company_shortcode: PropTypes.string,
+    is_fully_authenticated: PropTypes.bool,
+    closeModal: PropTypes.func,
+    closeModalAndOpenCashier: PropTypes.func,
+    closeModalAndOpenPOA: PropTypes.func,
+    closeModalAndOpenPOI: PropTypes.func,
+    switchToVirtual: PropTypes.func,
+};
+
 export const DialogButtons = ({
     status,
     landing_company_shortcode,
@@ -150,14 +162,4 @@ export const DialogButtons = ({
             />
         </div>
     );
-};
-
-DialogButtons.propTypes = {
-    status: PropTypes.number,
-    landing_company_shortcode: PropTypes.string,
-    is_fully_authenticated: PropTypes.bool,
-    closeModal: PropTypes.func,
-    closeModalAndOpenCashier: PropTypes.func,
-    closeModalAndOpenPOI: PropTypes.func,
-    switchToVirtual: PropTypes.func,
 };

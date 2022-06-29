@@ -97,6 +97,12 @@ Footer.propTypes = {
     landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
     toggleSettingsModal: PropTypes.func,
+    settings_extension: PropTypes.any, // don't know what this is for
+    is_virtual: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    footer_extensions: PropTypes.array,
 };
 
 export default withRouter(

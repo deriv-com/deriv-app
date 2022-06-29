@@ -100,8 +100,12 @@ const WelcomeColumn = ({
 const footer_text = localize('You can switch between CFDs, digital options, and multipliers at any time.');
 
 WelcomeColumn.propTypes = {
+    className: PropTypes.string,
     description: PropTypes.string,
+    footer_text: PropTypes.string,
     icons: PropTypes.array,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
     platforms: PropTypes.arrayOf(PropTypes.object),
     title: PropTypes.string,
 };

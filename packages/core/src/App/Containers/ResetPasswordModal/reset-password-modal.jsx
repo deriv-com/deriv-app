@@ -167,6 +167,7 @@ ResetPasswordModal.propTypes = {
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
     verification_code: PropTypes.string,
+    toggleResetPasswordModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({

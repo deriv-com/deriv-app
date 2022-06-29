@@ -334,6 +334,16 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
+
+    fetchStatesList: PropTypes.func,
+    fetchFinancialAssessment: PropTypes.func,
+    onClose: PropTypes.func,
+    setLoading: PropTypes.func,
+    setIsRiskWarningVisible: PropTypes.func,
+    real_account_signup_target: PropTypes.string,
+    is_loading: PropTypes.bool,
+    closeRealAccountSignup: PropTypes.func,
+    is_virtual: PropTypes.bool,
 };
 
 export default connect(({ client, notifications, ui }) => ({

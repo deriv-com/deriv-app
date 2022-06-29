@@ -227,6 +227,10 @@ DashboardPlatformHeader.propTypes = {
     should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
+    toggleSettingsModal: PropTypes.func,
+    location: PropTypes.object,
+    settings_extension: PropTypes.any, // not sure what this is for
+    is_settings_modal_on: PropTypes.bool,
 };
 
 export default connect(({ client, common, modules, notifications, ui }) => ({

@@ -1,6 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Input, Icon } from '@deriv/components';
+import classNames from 'classnames';
 
 const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error, validateField }) => {
     // Create a reference to the hidden file input element
@@ -58,12 +59,16 @@ const FileUploader = ({ handleFile, fileName, className, dataTestID, name, error
                         icon='IcCross'
                         color='black'
                         height='100%'
-                        className={`stack-top ${showButton ? 'remove-element' : ''}`}
+                        className={classNames('stack-top ', {
+                            'remove-element': showButton,
+                        })}
                     />
                 }
             />
             <Button
-                className={`proof-of-ownership__card-open-inputs-photo-btn ${showButton ? '' : 'remove-element'}`}
+                className={classNames('proof-of-ownership__card-open-inputs-photo-btn ', {
+                    'remove-element': !showButton,
+                })}
                 text={localize('Browse')}
                 onClick={handleClick}
                 primary

@@ -4,6 +4,7 @@ import FileUploader from './FileUploader.jsx';
 import { Input, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
+import classNames from 'classnames';
 
 const ExpandedCard = ({
     card_details,
@@ -91,11 +92,10 @@ const ExpandedCard = ({
                                     </div>
                                 )}
                                 <div
-                                    className={`proof-of-ownership__card-open-inputs-upload ${
-                                        !card_details.input_label ? 'expand' : ''
-                                    }
-                                        ${card_details.input_label !== null ? 'organise' : ''}
-                                    `}
+                                    className={classNames('proof-of-ownership__card-open-inputs-upload', {
+                                        expand: !card_details.input_label,
+                                        organise: card_details.input_label !== null,
+                                    })}
                                 >
                                     <FileUploader
                                         handleFile={handleUploadedFile}

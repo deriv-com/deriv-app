@@ -33,9 +33,9 @@ const PaymentAgentList = ({
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function' && !is_loading) {
-            setSideNotes([<PaymentAgentDisclaimer key={0} />]);
+            setSideNotes(!is_try_withdraw_successful ? [<PaymentAgentDisclaimer key={0} />] : []);
         }
-    }, [is_loading]);
+    }, [is_loading, is_try_withdraw_successful]);
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>

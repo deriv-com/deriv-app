@@ -362,13 +362,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
-        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
     }
 
     @action.bound
-    setIsBlockUserModalOpen(is_block_user_modal_open) {
-        this.is_block_user_modal_open = is_block_user_modal_open;
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
     @action.bound

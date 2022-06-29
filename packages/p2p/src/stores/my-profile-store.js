@@ -205,11 +205,7 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_relations: 1,
         }).then(response => {
-            if (!response.error) {
-                this.setBlockedAdvertisersList(response.p2p_advertiser_relations.blocked_advertisers);
-            } else {
-                this.setErrorMessage(response.error);
-            }
+            this.setBlockedAdvertisersList(response.p2p_advertiser_relations.blocked_advertisers);
             this.setIsLoading(false);
         });
     }

@@ -69,6 +69,17 @@ export const initTradeEngine = (...args) => {
     watchTicks(symbol);
 };
 
+export const sleep = (arg = 1) => {
+    return new Promise(
+        r =>
+            setTimeout(() => {
+                r();
+                setTimeout(() => globalObserver.emit('CONTINUE'), 0);
+            }, arg * 1000),
+        () => {}
+    );
+};
+
 export const startTradeEngine = tradeOptions => {
     if (!$scope.options) {
         throw createError('NotInitialized', localize('Bot.init is not called'));

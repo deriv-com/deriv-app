@@ -2,7 +2,7 @@ export { loginAndGetBalance } from './Authenticate';
 
 export { getBalance, observeBalance } from './Balance';
 
-export { initTradeEngine, startTradeEngine, stopTradeEngine, tradeEngineObserver, watch } from './Engine';
+export { initTradeEngine, sleep, startTradeEngine, stopTradeEngine, tradeEngineObserver, watch } from './Engine';
 
 export { isTradeAgainObserver } from './Observers';
 

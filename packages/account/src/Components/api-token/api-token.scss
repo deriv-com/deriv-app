@@ -116,13 +116,7 @@
         padding: 0 1.4rem 1.6rem;
 
         @include mobile {
-            margin-left: 1.2rem;
-
-            & .dc-timeline {
-                &__flex {
-                    margin-top: 2.4rem;
-                }
-            }
+            margin: 1.2rem;
         }
     }
     &__portal-footer {
@@ -163,7 +157,7 @@
         height: 100%;
     }
     &__delete-icon {
-        margin-left: 1rem;
+        margin: 0 1.6rem;
         @media screen and (max-width: 926px) {
             margin-top: calc(50% - 3.3rem);
         }

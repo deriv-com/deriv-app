@@ -17,13 +17,13 @@
         flex-basis: 95%;
         &-icons-container {
             display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem;
             align-items: center;
-            height: 3.2rem;
             margin-top: 1.6rem;
             .dc-icon {
                 width: 5rem;
-                height: 3rem;
-                margin-right: 1rem;
+                height: 3.2rem;
             }
         }
         &-further-information {
@@ -104,6 +104,7 @@
         }
         &-link {
             text-decoration: none;
+            word-break: break-word;
         }
     }
 }

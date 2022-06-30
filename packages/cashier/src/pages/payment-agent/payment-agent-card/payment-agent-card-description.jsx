@@ -3,7 +3,7 @@ import { toJS } from 'mobx';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
-import { hasNormalizedPaymentMethods, getNormalizedPaymentMethod } from './helpers';
+import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
 import { connect } from 'Stores/connect';
 import { Detail } from './paymen-agent-card-deposit-details';
 
@@ -32,15 +32,14 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
             )}
             {hasNormalizedPaymentMethods(payment_agent.supported_banks) && (
                 <div className='payment-agent-card__description-container-icons-container'>
-                    {payment_agent.supported_banks.map((supported_bank, idx) => {
-                        const normalized_payment_method = getNormalizedPaymentMethod(supported_bank.payment_method);
-                        return normalized_payment_method ? (
+                    {getUniquePaymentAgentSupportedBanks(payment_agent.supported_banks).map((bank, idx) => {
+                        return (
                             <Icon
                                 data_testid='dt_payment_method_icon'
                                 key={idx}
-                                icon={`IcCashier${normalized_payment_method}${is_dark_mode_on ? 'Dark' : 'Light'}`}
+                                icon={`IcCashier${bank}${is_dark_mode_on ? 'Dark' : 'Light'}`}
                             />
-                        ) : null;
+                        );
                     })}
                 </div>
             )}

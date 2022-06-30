@@ -59,6 +59,13 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
                 <Button
                     large
                     onClick={() => {
+                        // TODO: Refactor this later to accept onCancel props to make this component more reusable for custom routing
+                        if (my_profile_store.selected_payment_method) {
+                            // in quick add modal, if user has already selected a PM for a sell ad, navigate back to list of PM cards instead of closing the quick add modal
+                            my_ads_store.setShouldShowAddPaymentMethod(false);
+                        } else {
+                            my_ads_store.hideQuickAddModal();
+                        }
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.hideAddPaymentMethodForm();
                         my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);

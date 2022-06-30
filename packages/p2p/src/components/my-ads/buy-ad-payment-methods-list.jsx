@@ -1,18 +1,33 @@
 import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { Autocomplete, Icon } from '@deriv/components';
+import { Autocomplete, Icon, Text } from '@deriv/components';
 import { useStores } from 'Stores';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
 import './buy-ad-payment-methods-list.scss';
 
-const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
+const BuyAdPaymentMethodsList = ({
+    is_alignment_top = false,
+    list_portal_id,
+    should_show_hint = false,
+    selected_methods,
+    setSelectedMethods,
+}) => {
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
 
     const MAX_PAYMENT_METHOD_SELECTION = 3;
+
+    React.useEffect(() => {
+        return () => {
+            my_ads_store.payment_method_ids = [];
+            my_ads_store.payment_method_names = [];
+            setSelectedMethods([]);
+            setPaymentMethodsList([]);
+        };
+    }, []);
 
     React.useEffect(() => {
         setPaymentMethodsList(
@@ -83,7 +98,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                             autoComplete='off' // prevent chrome autocomplete
                                             className='quick-add-modal--input'
                                             data-lpignore='true'
-                                            is_alignment_top
+                                            is_alignment_top={is_alignment_top}
                                             leading_icon={
                                                 <Icon
                                                     icon={
@@ -95,7 +110,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                                 />
                                             }
                                             list_items={payment_methods_list}
-                                            list_portal_id='deriv_app'
+                                            list_portal_id={list_portal_id}
                                             onBlur={e => {
                                                 e.preventDefault();
                                                 const value = checkValidPaymentMethod(e.target.value);
@@ -139,10 +154,10 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                                 autoComplete='off' // prevent chrome autocomplete
                                                 className='quick-add-modal--input'
                                                 data-lpignore='true'
-                                                is_alignment_top
+                                                is_alignment_top={is_alignment_top}
                                                 leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                 list_items={payment_methods_list}
-                                                list_portal_id='deriv_app'
+                                                list_portal_id={list_portal_id}
                                                 onItemSelection={({ value }) => onClickPaymentMethodItem(value)}
                                                 onBlur={e => {
                                                     e.preventDefault();
@@ -158,6 +173,22 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                 </Field>
                             )}
                         </Formik>
+                    )}
+                {should_show_hint &&
+                    !selected_methods.includes('other') &&
+                    selected_methods.length < MAX_PAYMENT_METHOD_SELECTION && (
+                        <Localize
+                            i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                            components={[
+                                <Text key={0} color='less-prominent' size='xxs' />,
+                                <Text
+                                    key={1}
+                                    className='link'
+                                    size='xxs'
+                                    onClick={() => onClickPaymentMethodItem('other')}
+                                />,
+                            ]}
+                        />
                     )}
             </div>
         );
@@ -175,10 +206,10 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                                     autoComplete='off' // prevent chrome autocomplete
                                     className='quick-add-modal--input'
                                     data-lpignore='true'
-                                    is_alignment_top
+                                    is_alignment_top={is_alignment_top}
                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                     list_items={payment_methods_list}
-                                    list_portal_id='deriv_app'
+                                    list_portal_id={list_portal_id}
                                     onItemSelection={({ text, value }) => {
                                         setFieldValue('payment_method', value ? text : '');
                                         onClickPaymentMethodItem(value);
@@ -193,11 +224,23 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                     </Field>
                 )}
             </Formik>
+            {should_show_hint && (
+                <Localize
+                    i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                    components={[
+                        <Text key={0} color='less-prominent' size='xxs' />,
+                        <Text key={1} className='link' size='xxs' onClick={() => onClickPaymentMethodItem('other')} />,
+                    ]}
+                />
+            )}
         </div>
     );
 };
 
 BuyAdPaymentMethodsList.propTypes = {
+    is_alignment_top: PropTypes.bool,
+    list_portal_id: PropTypes.string,
+    should_show_hint: PropTypes.bool,
     selected_methods: PropTypes.array,
     setSelectedMethods: PropTypes.func,
 };

@@ -70,7 +70,14 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
         );
     }
 
-    return <BuyAdPaymentMethodsList selected_methods={selected_methods} setSelectedMethods={setSelectedMethods} />;
+    return (
+        <BuyAdPaymentMethodsList
+            is_alignment_top
+            list_portal_id='deriv_app'
+            selected_methods={selected_methods}
+            setSelectedMethods={setSelectedMethods}
+        />
+    );
 };
 
 export default observer(EditAdFormPaymentMethods);

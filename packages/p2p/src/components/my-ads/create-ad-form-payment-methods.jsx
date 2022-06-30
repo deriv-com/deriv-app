@@ -83,7 +83,12 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     }
 
     return (
-        <BuyAdPaymentMethodsList selected_methods={selected_buy_methods} setSelectedMethods={setSelectedBuyMethods} />
+        <BuyAdPaymentMethodsList
+            is_alignment_top
+            list_portal_id='deriv_app'
+            selected_methods={selected_buy_methods}
+            setSelectedMethods={setSelectedBuyMethods}
+        />
     );
 };
 

@@ -28,7 +28,13 @@
         display: flex;
     }
 
-    &--message {
-        margin-top: 1rem;
+    &--info {
+        margin-bottom: 1.3rem;
+    }
+
+    &--pointer-events {
+        & .dc-modal-header__close .dc-icon {
+            pointer-events: none;
+        }
     }
 }

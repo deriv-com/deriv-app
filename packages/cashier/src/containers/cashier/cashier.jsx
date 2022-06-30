@@ -14,7 +14,7 @@ import {
 import { localize } from '@deriv/translations';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountPromptDialog from './account-prompt-dialog';
+import AccountPromptDialog from 'Components/account-prompt-dialog';
 import ErrorDialog from 'Components/error-dialog';
 import './cashier.scss';
 

@@ -1,4 +1,4 @@
-import { observable, action, computed, reaction, when } from 'mobx';
+import { observable, action, computed, reaction, when, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { log_types, message_types } from '@deriv/bot-skeleton';
@@ -9,6 +9,21 @@ import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '
 
 export default class JournalStore {
     constructor(root_store) {
+        makeObservable(this, {
+            is_filter_dialog_visible: observable,
+            journal_filters: observable.shallow,
+            unfiltered_messages: observable.shallow,
+            toggleFilterDialog: action.bound,
+            onLogSuccess: action.bound,
+            onError: action.bound,
+            onNotify: action.bound,
+            pushMessage: action.bound,
+            filtered_messages: computed,
+            checked_filters: computed,
+            filterMessage: action.bound,
+            clear: action.bound,
+        });
+
         this.root_store = root_store;
         this.disposeReactionsFn = this.registerReactions();
 
@@ -25,16 +40,19 @@ export default class JournalStore {
 
     JOURNAL_CACHE = 'journal_cache';
 
-    @observable is_filter_dialog_visible = false;
-    @observable.shallow journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
-    @observable.shallow unfiltered_messages = getStoredItemsByUser(
-        this.JOURNAL_CACHE,
-        this.root_store.core.client.loginid,
-        []
-    );
+    is_filter_dialog_visible = false;
+
+    filters = [
+        { id: message_types.ERROR, label: localize('Errors') },
+        { id: message_types.NOTIFY, label: localize('Notifications') },
+        { id: message_types.SUCCESS, label: localize('System') },
+    ];
+
+    journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+    unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.root_store?.core.client.loginid, []);
 
     getServerTime() {
-        return this.root_store.core.common.server_time.get();
+        return this.root_store?.core.common.server_time.get();
     }
 
     playAudio = sound => {
@@ -44,29 +62,19 @@ export default class JournalStore {
         }
     };
 
-    filters = [
-        { id: message_types.ERROR, label: localize('Errors') },
-        { id: message_types.NOTIFY, label: localize('Notifications') },
-        { id: message_types.SUCCESS, label: localize('System') },
-    ];
-
-    @action.bound
     toggleFilterDialog() {
         this.is_filter_dialog_visible = !this.is_filter_dialog_visible;
     }
 
-    @action.bound
     onLogSuccess(message) {
         const { log_type, extra } = message;
         this.pushMessage(log_type, message_types.SUCCESS, '', extra);
     }
 
-    @action.bound
     onError(message) {
         this.pushMessage(message, message_types.ERROR);
     }
 
-    @action.bound
     onNotify(data) {
         const { run_panel, dbot } = this.root_store;
         const { message, className, message_type, sound, block_id, variable_name } = data;
@@ -86,7 +94,6 @@ export default class JournalStore {
         this.playAudio(sound);
     }
 
-    @action.bound
     pushMessage(message, message_type, className, extra = {}) {
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
@@ -96,7 +103,6 @@ export default class JournalStore {
         this.unfiltered_messages = this.unfiltered_messages.slice(); // force array update
     }
 
-    @computed
     get filtered_messages() {
         return (
             this.unfiltered_messages
@@ -109,12 +115,10 @@ export default class JournalStore {
         );
     }
 
-    @computed
     get checked_filters() {
         return this.journal_filters.filter(filter => filter != null);
     }
 
-    @action.bound
     filterMessage(checked, item_id) {
         if (checked) {
             this.journal_filters.push(item_id);
@@ -125,7 +129,6 @@ export default class JournalStore {
         storeSetting('journal_filter', this.journal_filters);
     }
 
-    @action.bound
     clear() {
         this.unfiltered_messages = this.unfiltered_messages.slice(0, 0);
     }
@@ -135,7 +138,7 @@ export default class JournalStore {
     }
 
     registerReactions() {
-        const { client } = this.root_store.core;
+        const { client } = this.root_store?.core;
 
         // Write journal messages to session storage on each change in unfiltered messages.
         const disposeWriteJournalMessageListener = reaction(

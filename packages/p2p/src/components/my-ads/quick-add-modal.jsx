@@ -29,6 +29,8 @@ const QuickAddModal = ({ advert }) => {
 
     const is_buy_advert = type === buy_sell.BUY;
 
+    const formik_ref = React.useRef();
+
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -73,9 +75,23 @@ const QuickAddModal = ({ advert }) => {
         }
     };
 
+    const setShouldCloseAllModals = should_close_all_modals => {
+        setSelectedMethods([]);
+        if (!should_close_all_modals) {
+            if (my_ads_store.should_show_add_payment_method) {
+                my_ads_store.setShouldShowAddPaymentMethod(false);
+            } else {
+                my_ads_store.hideQuickAddModal();
+            }
+        } else {
+            my_ads_store.setShouldShowAddPaymentMethod(false);
+            my_ads_store.hideQuickAddModal();
+        }
+    };
+
     React.useEffect(() => {
         setSelectedMethods([]);
-        my_ads_store.setShouldShowAddPaymentMethod(!my_profile_store?.advertiser_has_payment_methods);
+        my_ads_store.setShouldShowAddPaymentMethod(false);
 
         return () => {
             my_ads_store.payment_method_ids = [];
@@ -94,10 +110,7 @@ const QuickAddModal = ({ advert }) => {
                     is_flex
                     is_modal_open={my_ads_store.is_quick_add_modal_open}
                     page_header_text={localize('Add payment method')}
-                    pageHeaderReturnFn={() => {
-                        setSelectedMethods([]);
-                        my_ads_store.hideQuickAddModal();
-                    }}
+                    pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                     secondary
                     text={localize('Cancel')}
                     renderPageFooterChildren={() => (
@@ -105,16 +118,16 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => {
-                                    setSelectedMethods([]);
-                                    my_ads_store.hideQuickAddModal();
-                                }}
+                                onClick={setShouldCloseAllModals}
                                 secondary
                                 text={localize('Cancel')}
                             />
                             <Button
                                 className='quick-add-modal--button'
                                 has_effect
+                                is_disabled={
+                                    selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
+                                }
                                 large
                                 onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                                 primary
@@ -234,6 +247,22 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
+                    {selected_methods.length < 3 && (
+                        <div className='quick-add-modal--message'>
+                            <Localize
+                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                components={[
+                                    <Text key={0} color='less-prominent' size='xxs' />,
+                                    <Text
+                                        key={1}
+                                        className='link'
+                                        size='xxs'
+                                        onClick={() => onClickPaymentMethodItem('other')}
+                                    />,
+                                ]}
+                            />
+                        </div>
+                    )}
                 </MobileFullPageModal>
             );
         }
@@ -245,10 +274,7 @@ const QuickAddModal = ({ advert }) => {
                 is_flex
                 is_modal_open={my_ads_store.is_quick_add_modal_open}
                 page_header_text={localize('Add payment method')}
-                pageHeaderReturnFn={() => {
-                    setSelectedMethods([]);
-                    my_ads_store.hideQuickAddModal();
-                }}
+                pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                 secondary
                 text={localize('Cancel')}
                 renderPageFooterChildren={() =>
@@ -257,16 +283,16 @@ const QuickAddModal = ({ advert }) => {
                             <Button
                                 has_effect
                                 large
-                                onClick={() => {
-                                    setSelectedMethods([]);
-                                    my_ads_store.hideQuickAddModal();
-                                }}
+                                onClick={setShouldCloseAllModals}
                                 secondary
                                 text={localize('Cancel')}
                             />
                             <Button
                                 className='quick-add-modal--button'
                                 has_effect
+                                is_disabled={
+                                    selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0
+                                }
                                 large
                                 onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                                 primary
@@ -311,10 +337,13 @@ const QuickAddModal = ({ advert }) => {
         return (
             <Modal
                 className='p2p-my-ads__modal-error'
-                has_close_icon={false}
-                height='660px'
+                has_close_icon
+                height='452px'
                 is_open={my_ads_store.is_quick_add_modal_open}
                 title={localize('Add payment method')}
+                toggleModal={e => {
+                    if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
+                }}
             >
                 <Modal.Body>
                     <div className='p2p-my-ads__info'>
@@ -329,7 +358,7 @@ const QuickAddModal = ({ advert }) => {
                                 const payment_method_icon = method.replace(' ', '');
 
                                 return (
-                                    <Formik key={key} enableReinitialize initialValues={{}}>
+                                    <Formik innerRef={formik_ref} key={key} enableReinitialize initialValues={{}}>
                                         <Field name='payment_method'>
                                             {({ field }) => (
                                                 <Input
@@ -396,7 +425,7 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </React.Fragment>
                     ) : (
-                        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                        <Formik enableReinitialize innerRef={formik_ref} initialValues={{ payment_method: '' }}>
                             {() => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
@@ -428,21 +457,29 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
+                    {selected_methods.length < 3 && (
+                        <div className='quick-add-modal--message'>
+                            <Localize
+                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                components={[
+                                    <Text key={0} color='less-prominent' size='xxs' />,
+                                    <Text
+                                        key={1}
+                                        className='link'
+                                        size='xxs'
+                                        onClick={() => onClickPaymentMethodItem('other')}
+                                    />,
+                                ]}
+                            />
+                        </div>
+                    )}
                 </Modal.Body>
                 <Modal.Footer has_separator>
-                    <Button
-                        has_effect
-                        large
-                        onClick={() => {
-                            setSelectedMethods([]);
-                            my_ads_store.hideQuickAddModal();
-                        }}
-                        secondary
-                        text={localize('Cancel')}
-                    />
+                    <Button has_effect large onClick={setShouldCloseAllModals} secondary text={localize('Cancel')} />
 
                     <Button
                         has_effect
+                        is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0}
                         large
                         onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary
@@ -456,10 +493,13 @@ const QuickAddModal = ({ advert }) => {
     return (
         <Modal
             className='p2p-my-ads__modal-error'
-            has_close_icon={false}
+            has_close_icon
             height='660px'
             is_open={my_ads_store.is_quick_add_modal_open}
             title={localize('Add payment method')}
+            toggleModal={e => {
+                if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
+            }}
         >
             {my_ads_store.should_show_add_payment_method ? (
                 <Modal.Body
@@ -496,19 +536,11 @@ const QuickAddModal = ({ advert }) => {
             )}
             {!my_ads_store.should_show_add_payment_method && (
                 <Modal.Footer has_separator>
-                    <Button
-                        has_effect
-                        large
-                        onClick={() => {
-                            setSelectedMethods([]);
-                            my_ads_store.hideQuickAddModal();
-                        }}
-                        secondary
-                        text={localize('Cancel')}
-                    />
+                    <Button has_effect large onClick={setShouldCloseAllModals} secondary text={localize('Cancel')} />
 
                     <Button
                         has_effect
+                        is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0}
                         large
                         onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
                         primary
@@ -521,10 +553,7 @@ const QuickAddModal = ({ advert }) => {
                     <Button
                         has_effect
                         large
-                        onClick={() => {
-                            setSelectedMethods([]);
-                            my_ads_store.hideQuickAddModal();
-                        }}
+                        onClick={() => setShouldCloseAllModals(false)}
                         secondary
                         text={localize('Cancel')}
                     />

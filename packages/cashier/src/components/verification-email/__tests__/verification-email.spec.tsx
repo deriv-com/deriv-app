@@ -1,13 +1,24 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
-import VerificationEmail from '../verification-email.tsx';
+import VerificationEmail from '../verification-email';
+
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
 
 describe('<VerificationEmail />', () => {
-    const resendVerificationEmail = jest.fn();
-    const setIsResendClicked = jest.fn();
+    const mockProps = () => ({
+        is_resend_clicked: false,
+        is_withdrawal: false,
+        resendVerificationEmail: jest.fn(),
+        setIsResendClicked: jest.fn(),
+    });
 
     it('component should be rendered', () => {
-        render(<VerificationEmail />);
+        const props = mockProps();
+        render(<VerificationEmail {...props} />);
 
         expect(screen.getByText("We've sent you an email.")).toBeInTheDocument();
         expect(
@@ -16,7 +27,10 @@ describe('<VerificationEmail />', () => {
     });
 
     it("React.Fragment should be rendered if 'is_resend_clicked' prop is true", () => {
-        render(<VerificationEmail is_resend_clicked />);
+        const props = mockProps();
+        props.is_resend_clicked = true;
+
+        render(<VerificationEmail {...props} />);
         const btn = screen.getByRole('button');
 
         expect(screen.getByText("Didn't receive the email?")).toBeInTheDocument();
@@ -26,50 +40,34 @@ describe('<VerificationEmail />', () => {
         expect(btn).toHaveClass('verification-email__resend-button');
     });
 
-    it("resendVerificationEmail func should not be triggered when 'resend_timeout' prop is less than 60", () => {
-        const resend_timeout = 59;
-        render(
-            <VerificationEmail
-                is_resend_clicked
-                resend_timeout={resend_timeout}
-                resendVerificationEmail={resendVerificationEmail}
-            />
-        );
+    it('resendVerificationEmail func should be triggered when resend button in clicked', () => {
+        const props = mockProps();
+        props.is_resend_clicked = true;
 
-        const btn = screen.getByRole('button', { name: 'Resend email in 59s' });
-        fireEvent.click(btn);
-
-        expect(resendVerificationEmail).toHaveBeenCalledTimes(0);
-    });
-
-    it("resendVerificationEmail func should be triggered when 'resend_timeout' prop is more or equal 60", () => {
-        const resend_timeout = 60;
-        render(
-            <VerificationEmail
-                is_resend_clicked
-                resend_timeout={resend_timeout}
-                resendVerificationEmail={resendVerificationEmail}
-            />
-        );
+        render(<VerificationEmail {...props} />);
 
         const btn = screen.getByRole('button', { name: 'Resend email' });
         fireEvent.click(btn);
 
-        expect(resendVerificationEmail).toHaveBeenCalledTimes(1);
+        expect(props.resendVerificationEmail).toHaveBeenCalledTimes(1);
     });
 
     it("button with 'Didn't receive the email?' text should be rendered when 'is_resend_clicked' prop is false", () => {
-        render(<VerificationEmail is_resend_clicked={false} />);
+        const props = mockProps();
+
+        render(<VerificationEmail {...props} />);
 
         expect(screen.getByRole('button', { name: "Didn't receive the email?" })).toBeInTheDocument();
     });
 
     it('setIsResendClicked func should be triggered', () => {
-        render(<VerificationEmail is_resend_clicked={false} setIsResendClicked={setIsResendClicked} />);
+        const props = mockProps();
+
+        render(<VerificationEmail {...props} />);
 
         const btn = screen.getByRole('button', { name: "Didn't receive the email?" });
         fireEvent.click(btn);
 
-        expect(setIsResendClicked).toHaveBeenCalledTimes(1);
+        expect(props.setIsResendClicked).toHaveBeenCalledTimes(1);
     });
 });

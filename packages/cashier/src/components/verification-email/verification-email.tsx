@@ -1,18 +1,19 @@
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import ResendEmailButtonWrapper from 'Components/resend-email-button-wrapper';
 import './verification-email.scss';
 
 type TVerificationEmailProps = {
     is_resend_clicked: boolean;
-    resend_timeout: number;
+    is_withdrawal: boolean;
     resendVerificationEmail: () => void;
     setIsResendClicked: (is_resend_clicked: boolean) => void;
 };
 
 const VerificationEmail = ({
     is_resend_clicked,
-    resend_timeout,
+    is_withdrawal,
     resendVerificationEmail,
     setIsResendClicked,
 }: TVerificationEmailProps) => (
@@ -37,21 +38,9 @@ const VerificationEmail = ({
                             }
                         />
                     </Text>
-                    <Button
-                        className='verification-email__resend-button'
-                        classNameSpan='verification-email__resend-button-text'
-                        is_disabled={resend_timeout < 60}
-                        has_effect
-                        text={
-                            resend_timeout < 60
-                                ? localize('Resend email in {{seconds}}s', {
-                                      seconds: resend_timeout,
-                                  })
-                                : localize('Resend email')
-                        }
-                        onClick={resendVerificationEmail}
-                        primary
-                        large
+                    <ResendEmailButtonWrapper
+                        resendVerificationEmail={resendVerificationEmail}
+                        is_withdrawal={is_withdrawal}
                     />
                 </React.Fragment>
             ) : (

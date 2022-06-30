@@ -90,6 +90,10 @@ export const clearProposals = () => {
     Store.dispatch(clearProposalsAction());
 };
 
+export const getAskPrice = contract_type => Number(getProposal(contract_type).ask_price);
+
+export const getPayout = contract_type => Number(getProposal(contract_type).payout);
+
 export const getProposal = contract_type => {
     return $scope.data.proposals.find(
         proposal => proposal.contract_type === contract_type && proposal.purchase_reference === getPurchaseReference()

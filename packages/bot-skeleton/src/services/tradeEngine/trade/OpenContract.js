@@ -28,6 +28,8 @@ export const getSellPrice = () => {
     return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
 };
 
+export const isResult = result => getDetail(10) === result;
+
 export const observeOpenContract = () => {
     ws.onMessage().subscribe(({ data }) => {
         if (data.msg_type === 'proposal_open_contract') {
@@ -64,6 +66,8 @@ export const observeOpenContract = () => {
         }
     });
 };
+
+export const readDetails = i => getDetail(i - 1);
 
 export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
     $scope.contract_id = contract_id;

@@ -437,3 +437,11 @@ export const isDarkRgbColour = string_rgb => {
     return luma < 160;
 };
 /* eslint-enable */
+
+export const highlightBlock = block_id => {
+    const block = Blockly.derivWorkspace.getBlockById(block_id);
+
+    if (block) {
+        block.highlightExecutedBlock(block);
+    }
+};

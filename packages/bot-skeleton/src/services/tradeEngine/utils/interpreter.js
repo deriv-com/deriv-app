@@ -5,6 +5,7 @@ import { getInterface } from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import ws from '../../api/ws';
+import { highlightBlock } from '../../../scratch/utils';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
@@ -35,6 +36,7 @@ const timeMachineEnabled = () => $scope.options.timeMachineEnabled;
 const Interpreter = () => {
     const bot_interface = getInterface();
     bot_interface.tradeEngineObserver();
+    bot_interface.highlightBlock = highlightBlock;
     let interpreter = {};
     let onFinish;
 

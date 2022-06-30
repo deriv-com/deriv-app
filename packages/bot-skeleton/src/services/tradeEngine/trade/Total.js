@@ -53,7 +53,8 @@ export const getAccountStat = () => {
     return globalStat[accountID];
 };
 
-export const getTotalProfit = (toString, currency) => {
+export const getTotalProfit = toString => {
+    const currency = $scope.tradeOptions.currency;
     const accountStat = getAccountStat();
 
     return toString && accountStat.totalProfit !== 0

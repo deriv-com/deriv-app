@@ -74,14 +74,12 @@ const OrderDetails = observer(({ onPageReturn }) => {
             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
 
-    const decimal_place = setDecimalPlaces(rate, 6);
-
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;
     }
 
     const display_payment_amount = removeTrailingZeros(
-        formatMoney(local_currency, amount_display * roundOffDecimal(rate, decimal_place), true, decimal_place)
+        formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
 
     return (

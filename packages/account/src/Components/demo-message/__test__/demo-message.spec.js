@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import DemoMessage from '../demo-message';
+import DemoMessage from '../demo-message.jsx';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

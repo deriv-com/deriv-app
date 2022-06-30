@@ -63,6 +63,7 @@ IconMessageContent.propTypes = {
     className: PropTypes.string,
     full_width: PropTypes.bool,
     icon: PropTypes.object,
+    icon_row: PropTypes.object,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };

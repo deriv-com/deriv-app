@@ -155,7 +155,17 @@ export const PersonalDetailsForm = ({
             getSettings();
         }
         initializeFormValues();
-    }, [account_settings, is_eu, is_mf, is_social_signup]);
+    }, [
+        account_settings,
+        is_eu,
+        is_mf,
+        is_social_signup,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        isMounted,
+        setIsStateLoading,
+    ]);
 
     React.useEffect(() => {
         let timeout_id;
@@ -168,7 +178,7 @@ export const PersonalDetailsForm = ({
         return () => {
             clearTimeout(timeout_id);
         };
-    }, [start_on_submit_timeout.is_timeout_started]);
+    }, [start_on_submit_timeout, setIsSubmitSuccess]);
 
     const makeSettingsRequest = settings => {
         if (is_virtual) return { email_consent: +settings.email_consent };

@@ -23,7 +23,11 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
 };
 
 ErrorComponent.propTypes = {
+    header: PropTypes.element,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
+    redirect_label: PropTypes.element,
+    redirectOnClick: PropTypes.func,
+    should_show_refresh: PropTypes.bool,
     type: PropTypes.string,
 };
 

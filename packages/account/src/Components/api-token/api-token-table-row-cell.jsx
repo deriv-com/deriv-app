@@ -19,6 +19,7 @@ const ApiTokenTableRowCell = ({ className, children, should_bypass_text }) => {
 
 ApiTokenTableRowCell.propTypes = {
     children: PropTypes.any.isRequired,
+    className: PropTypes.string,
     should_bypass_text: PropTypes.bool,
 };
 

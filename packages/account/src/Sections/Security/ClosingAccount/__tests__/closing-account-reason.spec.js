@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, render, screen, waitFor, fireEvent, userEvent } from '@testing-library/react';
-import DeactivateAccountReason from '../deactivate-account-reason';
+import ClosingAccountReason from '../closing-account-reason';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -8,7 +8,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-describe('<DeactivateAccountReason />', () => {
+describe('<ClosingAccountReason />', () => {
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -21,14 +21,14 @@ describe('<DeactivateAccountReason />', () => {
     });
 
     test('Should render properly', async () => {
-        render(<DeactivateAccountReason />);
+        render(<ClosingAccountReason />);
         await waitFor(() => {
             screen.getAllByText(/Please tell us why you’re leaving/i);
         });
     });
 
     test('Should be disabled when no reason has been selected', async () => {
-        render(<DeactivateAccountReason />);
+        render(<ClosingAccountReason />);
 
         // clicking the checkbox twice to select and unselect
         fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
@@ -43,7 +43,7 @@ describe('<DeactivateAccountReason />', () => {
     });
 
     test('should reduce remaining chars', async () => {
-        render(<DeactivateAccountReason />);
+        render(<ClosingAccountReason />);
 
         expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
 

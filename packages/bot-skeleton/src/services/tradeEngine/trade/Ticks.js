@@ -112,3 +112,7 @@ export const watchTicks = symbol => {
         tickListenerKey = key;
     }
 };
+
+export const getLastDigitBinaryUtils = (value, pips) => {
+    return +value.toFixed(pips).slice(-1);
+};

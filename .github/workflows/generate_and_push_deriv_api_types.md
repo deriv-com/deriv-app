@@ -1,6 +1,6 @@
 # Generate and push Deriv API TypeScript types
 
-This action takes Deriv API's JSON schema (published at https://github.com/binary-com/websockets/tree/gh-pages/config/v3) and converts it into consumable TypeScript types. 
+This action takes Deriv API's JSON schema (published at https://github.com/binary-com/websockets/tree/gh-pages/config/v3) and converts it into consumable TypeScript types.
 
 If the action detects the contents of the generated `index.d.ts` file has changed, it will attempt to publish a new version of `@deriv/api-types` to the NPM registry (https://www.npmjs.com/package/@deriv/api-types).
 
@@ -10,5 +10,5 @@ After a new version has been published the action will automatically create a PR
 
 Required GitHub secrets:
 
-- `NPM_ACCESS_TOKEN`: To allow for automatic publishing of new version of `@deriv/api-types`
-- `PERSONAL_ACCESS_TOKEN`: (GitHub PAT) To allow the action to authenticate with Git for git operations.
+-   `NPM_ACCESS_TOKEN`: To allow for automatic publishing of new version of `@deriv/api-types`
+-   `PERSONAL_ACCESS_TOKEN`: (GitHub PAT) To allow the action to authenticate with Git for git operations.

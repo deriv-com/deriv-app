@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, when } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -23,7 +23,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_cancel_add_payment_method_modal_open = false;
     @observable is_cancel_edit_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
-    @observable is_delete_error_modal_open = false;
+    @observable is_delete_payment_method_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
@@ -62,6 +62,14 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list;
+    }
+
+    @computed
+    get payment_method_field_set() {
+        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
+        return this.selected_payment_method_fields.reduce((dict, field_data) => {
+            return { ...dict, [field_data[0]]: field_data[1].display_name };
+        }, {});
     }
 
     @computed
@@ -337,13 +345,16 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
-        }).then(response => {
+        }).then(async response => {
             this.setIsConfirmDeleteModalOpen(false);
             if (!response.error) {
                 this.getAdvertiserPaymentMethods();
             } else {
                 this.setDeleteErrorMessage(response.error.message);
-                this.setIsDeleteErrorModalOpen(true);
+                await when(
+                    () => !this.root_store.general_store.is_modal_open,
+                    () => this.setIsDeletePaymentMethodErrorModalOpen(true)
+                );
             }
         });
     }
@@ -500,8 +511,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
-        this.is_delete_error_modal_open = is_delete_error_modal_open;
+    setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
+        this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
     @action.bound

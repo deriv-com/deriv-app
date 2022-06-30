@@ -199,6 +199,14 @@
         flex-direction: column;
         padding: 1rem 1.6rem 0;
         width: 100vw;
+
+        &--scroll {
+            overflow: auto;
+        }
+
+        &--horizontal {
+            padding-right: 0rem;
+        }
     }
 
     &__table {
@@ -628,10 +636,6 @@
         }
     }
 
-    &__modal-body--scroll {
-        overflow: auto;
-    }
-
     .toggle-ads {
         align-items: center;
         display: flex;
@@ -671,4 +675,8 @@
             padding-bottom: 1rem;
         }
     }
+}
+
+.p2p-my-ads__modal-icon {
+    margin-right: 0.8rem;
 }

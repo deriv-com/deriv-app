@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes } from '@deriv/shared';
+import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Redirect } from 'App/Containers/Redirect';
@@ -9,35 +9,47 @@ import Endpoint from 'Modules/Endpoint';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Trader = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "trader" */ '@deriv/trader');
-});
+const Trader = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "trader" */ '@deriv/trader');
+    })
+);
 
-const CFD = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
-});
+const CFD = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
+    })
+);
 
-const Account = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "account" */ '@deriv/account');
-});
+const Account = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "account" */ '@deriv/account');
+    })
+);
 
-const Cashier = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
-});
+const Cashier = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
+    })
+);
 
-const Bot = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
-});
+const Bot = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
+    })
+);
 
-const AppStore = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
-});
+const AppStore = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
+    })
+);
 
 const getModules = ({ is_appstore }, is_social_signup) => {
     const modules = [
@@ -58,7 +70,7 @@ const getModules = ({ is_appstore }, is_social_signup) => {
             getTitle: () => localize('MT5'),
         },
         {
-            path: routes.account_deactivated,
+            path: routes.account_closed,
             component: Account,
             getTitle: () => localize('Account deactivated'),
         },
@@ -144,9 +156,9 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                             getTitle: () => localize('Two-factor authentication'),
                         },
                         {
-                            path: routes.deactivate_account,
+                            path: routes.closing_account,
                             component: Account,
-                            getTitle: () => localize('Deactivate account'),
+                            getTitle: () => localize('Close your account'),
                         },
                     ],
                 },
@@ -274,7 +286,7 @@ const getModules = ({ is_appstore }, is_social_signup) => {
 };
 
 const lazyLoadComplaintsPolicy = makeLazyLoader(
-    () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+    () => moduleLoader(() => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')),
     () => <Loading />
 );
 

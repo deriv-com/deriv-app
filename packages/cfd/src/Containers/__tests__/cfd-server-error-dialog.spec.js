@@ -30,7 +30,6 @@ describe('<CFDServerErrorDialog /> ', () => {
     it('should render the component properly', () => {
         const { container } = render(<CFDServerErrorDialog {...mock_props} />);
         expect(container.firstChild).toHaveClass('dc-dialog__wrapper dc-dialog__wrapper--enter');
-        screen.debug();
     });
 
     it('should render the proper text and error message', () => {

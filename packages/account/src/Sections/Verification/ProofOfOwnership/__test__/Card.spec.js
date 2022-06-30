@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import Card from '../Card.jsx';
 import React from 'react';
-import testData from './test-data';
+import test_data from './test-data';
 
 describe('Card.jsx', () => {
     let card;
     beforeAll(() => {
-        card = testData.requests[0];
+        card = test_data.requests[0];
     });
     it('Should render a card', () => {
         render(<Card card={card} index={0} handleBlur={jest.fn()} values={{}} setFieldValue={jest.fn()} error={{}} />);

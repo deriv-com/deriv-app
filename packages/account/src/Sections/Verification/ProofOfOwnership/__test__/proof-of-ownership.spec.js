@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ProofOfOwnership } from '../proof-of-ownership.jsx';
-import testData from './test-data';
+import test_data from './test-data';
 
 describe('proof-of-ownership.jsx', () => {
     let ownership_temp;
     beforeAll(() => {
-        ownership_temp = testData;
+        ownership_temp = test_data;
     });
     it('should render no poo required status page', () => {
         render(

@@ -12,19 +12,19 @@ import { isMobile, compressImageFiles, readFiles, WS } from '@deriv/shared';
 import Card from './Card.jsx';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 
-const getScrollOffset = (itemsCount = 0) => {
+const getScrollOffset = (items_count = 0) => {
     if (isMobile()) return '200px';
-    if (itemsCount <= 2) return '0px';
+    if (items_count <= 2) return '0px';
     return '80px';
 };
 const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
-    const initValues = {};
-    const [isDisabled, setIsDisabled] = React.useState(true);
-    initValues.data = cards?.map(item => {
+    const initial_values = {};
+    const [is_disabled, setIsDisabled] = React.useState(true);
+    initial_values.data = cards?.map(item => {
         return { id: item.id, files: [], identifier: item.payment_method_identifier };
     });
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
-    const formRef = useRef();
+    const form_ref = useRef();
     const fileReadErrorMessage = filename => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
@@ -61,13 +61,13 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
             e.preventDefault();
             e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
-            const { data: formValues } = formRef.current.values;
+            const { data: formValues } = form_ref.current.values;
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
             const { get_settings, error } = await WS.authorized.storage.getSettings();
             if (error) {
                 throw new Error(error);
             }
-            if (formRef.current.errors.length > 0) {
+            if (form_ref.current.errors.length > 0) {
                 // Only upload if no errors and a file has been attached
                 return;
             }
@@ -109,7 +109,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         }
     };
     return (
-        <Formik initialValues={initValues} validate={validateFields} innerRef={formRef}>
+        <Formik initialValues={initial_values} validate={validateFields} innerRef={form_ref}>
             {({ values, errors, handleChange, handleBlur, setFieldValue, validateField }) => (
                 <form className='proof-of-ownership' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={getScrollOffset(cards.length)}>
@@ -146,7 +146,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}
-                            is_disabled={isDisabled}
+                            is_disabled={is_disabled}
                             data-testid={'submit-button'}
                             has_effect
                             text={localize('Submit')}

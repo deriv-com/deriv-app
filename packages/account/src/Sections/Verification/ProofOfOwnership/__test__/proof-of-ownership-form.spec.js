@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import ProofOfOwnershipForm from '../proof-of-ownership-form.jsx';
-import testData from './test-data';
+import test_data from './test-data';
 
 describe('proof-of-ownership-form.jsx', () => {
     let cards;
     beforeAll(() => {
-        cards = testData;
+        cards = test_data;
     });
     it('should render a single card item inside the form', () => {
         render(<ProofOfOwnershipForm cards={[cards.requests[0]]} updateAccountStatus={jest.fn()} />);

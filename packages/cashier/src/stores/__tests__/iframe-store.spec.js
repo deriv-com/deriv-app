@@ -29,7 +29,7 @@ describe('IframeStore', () => {
         const spyRemoveOnIframeLoaded = jest.spyOn(iframe_store, 'removeOnIframeLoaded');
         iframe_store.setSessionTimeout(true);
 
-        expect(iframe_store.is_session_timeout).toBeTrue();
+        expect(iframe_store.is_session_timeout).toBeTruthy();
         expect(spyRemoveOnIframeLoaded).toHaveBeenCalledTimes(1);
     });
 

@@ -18,7 +18,7 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
         return () => {
             onChangePaymentMethod({ target: { value: '0' } });
         };
-    }, []);
+    }, [onChangePaymentMethod]);
 
     return (
         <React.Fragment>

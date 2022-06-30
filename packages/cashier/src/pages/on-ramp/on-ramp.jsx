@@ -140,7 +140,7 @@ const OnRamp = ({
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
-    is_cashier_default: PropTypes.bool,
+    is_cashier_onboarding: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     is_onramp_modal_open: PropTypes.bool,

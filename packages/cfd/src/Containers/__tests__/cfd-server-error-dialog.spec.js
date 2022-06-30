@@ -24,6 +24,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         error_type: 'error_type',
         has_cfd_error: true,
         is_cfd_success_dialog_enabled: false,
+        error_message: 'Sorry, an error occured while processing your request.',
     };
 
     it('should render the component properly', () => {
@@ -35,7 +36,7 @@ describe('<CFDServerErrorDialog /> ', () => {
     it('should render the proper text and error message', () => {
         render(<CFDServerErrorDialog {...mock_props} />);
         expect(screen.getByText(/Sorry, an error occured while processing your request/i)).toBeInTheDocument();
-        expect(screen.getByText(/OK/i)).toBeInTheDocument();
+        expect(screen.getByRole('button')).toHaveTextContent('OK');
         expect(screen.getByRole('heading')).toHaveTextContent(/Something’s not right/i);
     });
 
@@ -54,5 +55,10 @@ describe('<CFDServerErrorDialog /> ', () => {
         const ok_btn = screen.getByRole('button', { name: /OK/i });
         fireEvent.click(ok_btn);
         expect(mock_props.clearCFDError).toHaveBeenCalled();
+    });
+
+    it('should render the correct error message', () => {
+        render(<CFDServerErrorDialog {...mock_props} />);
+        expect(mock_props.error_message).toBe('Sorry, an error occured while processing your request.');
     });
 });

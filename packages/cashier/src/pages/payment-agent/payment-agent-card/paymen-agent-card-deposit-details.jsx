@@ -5,12 +5,12 @@ import React from 'react';
 import { Icon, Text, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-export const Detail = ({ action, children, className, has_red_color, icon, title }) => {
+export const Detail = ({ action, children, detail_class_name, has_red_color, icon, title }) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
         <div
             className={classNames('payment-agent-card__detail', {
-                [className]: !!className,
+                [detail_class_name]: !!detail_class_name,
             })}
         >
             {icon && (
@@ -54,7 +54,7 @@ export const Detail = ({ action, children, className, has_red_color, icon, title
 Detail.propTypes = {
     action: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.element, PropTypes.string]),
-    className: PropTypes.string,
+    detail_class_name: PropTypes.string,
     has_red_color: PropTypes.bool,
     icon: PropTypes.string,
     title: PropTypes.string,
@@ -100,7 +100,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
             {payment_agent.deposit_commission && (
                 <Detail
                     icon='CommissionDeposit'
-                    className='deposit-commission'
+                    detail_class_name='deposit-commission'
                     title={detail_titles.deposit_commission}
                 >
                     {`${payment_agent.deposit_commission}%`}
@@ -114,7 +114,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
             {payment_agent.withdrawal_commission && (
                 <Detail
                     icon='CommissionWithdrawal'
-                    className='withdrawal_commission'
+                    detail_class_name='withdrawal_commission'
                     title={detail_titles.withdrawal_commission}
                 >
                     {`${payment_agent.withdrawal_commission}%`}

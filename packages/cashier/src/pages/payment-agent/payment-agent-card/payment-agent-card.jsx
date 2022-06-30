@@ -23,6 +23,7 @@ const PaymentAgentCard = ({ is_deposit, payment_agent }) => {
 };
 
 PaymentAgentCard.propTypes = {
+    is_deposit: PropTypes.bool,
     payment_agent: PropTypes.object,
 };
 

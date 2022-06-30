@@ -102,7 +102,6 @@ PaymentAgentReceipt.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
     is_from_derivgo: PropTypes.bool,
-    loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetPaymentAgent: PropTypes.func,
 };
@@ -111,7 +110,6 @@ export default withRouter(
     connect(({ client, common, modules }) => ({
         currency: client.currency,
         is_from_derivgo: common.is_from_derivgo,
-        loginid: client.loginid,
         receipt: modules.cashier.payment_agent.receipt,
         resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
     }))(PaymentAgentReceipt)

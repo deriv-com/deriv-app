@@ -65,8 +65,8 @@ const PaymentAgentDetails = ({ className, payment_agent_phones, payment_agent_ur
 PaymentAgentDetails.propTypes = {
     className: PropTypes.string,
     payment_agent_email: PropTypes.string,
-    payment_agent_phone: PropTypes.string,
-    payment_agent_url: PropTypes.string,
+    payment_agent_phones: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    payment_agent_urls: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };
 
 export default PaymentAgentDetails;

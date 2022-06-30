@@ -1,0 +1,11 @@
+/** @define account-deactivated */
+.account-closed {
+    padding: 24px 95px;
+    color: var(--text-prominent);
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 44rem;
+    font-size: var(--text-size-s);
+}

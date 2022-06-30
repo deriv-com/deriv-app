@@ -22,12 +22,10 @@ import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 type TCFDPersonalDetailsFormProps = {
-    onSave: (index: number, values: TFormValues) => void;
     is_fully_authenticated: boolean;
     is_loading: boolean;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
-    onCancel: () => void;
     onSubmit: TOnSubmit;
     value: TFormValues;
     index: number;
@@ -206,12 +204,10 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, res
 };
 
 const CFDPersonalDetailsForm = ({
-    onSave,
     is_fully_authenticated,
     is_loading,
     landing_company,
     residence_list,
-    onCancel,
     onSubmit,
     value,
     index,
@@ -219,11 +215,6 @@ const CFDPersonalDetailsForm = ({
 }: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
-
-    const handleCancel = (values: TFormValues) => {
-        onSave(index, values);
-        onCancel();
-    };
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
@@ -269,8 +260,8 @@ const CFDPersonalDetailsForm = ({
                 const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
                 const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
                 const handleItemSelection = (item: ResidenceList[0], _field: string) => {
-                    const _value = item.value ? item.text : '';
-                    setFieldValue(_field, _value, true);
+                    const item_value = item.value ? item.text : '';
+                    setFieldValue(_field, item_value, true);
                 };
 
                 return (
@@ -293,7 +284,13 @@ const CFDPersonalDetailsForm = ({
                                     max_autoheight_offset='179px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                    <Text
+                                        as='p'
+                                        size='xxxs'
+                                        align='center'
+                                        className='details-form__description'
+                                        data-testid='dt_cfd_details_form_description'
+                                    >
                                         <Localize
                                             i18n_default_text={
                                                 'Any information you provide is confidential and will be used for verification purposes only.'
@@ -439,11 +436,9 @@ const CFDPersonalDetailsForm = ({
                                 <Modal.Footer is_bypassed={isMobile()}>
                                     {form_error && <FormSubmitErrorMessage message={form_error} />}
                                     <FormSubmitButton
-                                        cancel_label={localize('Previous')}
                                         is_disabled={isSubmitting || !isValid}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
-                                        onCancel={() => handleCancel(values)}
                                     />
                                 </Modal.Footer>
                             </form>

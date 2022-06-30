@@ -77,7 +77,7 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
         </div>
         <Popover alignment='bottom' message={localize('Change Password')}>
             <Button
-                className='cfd-account-card__password-action toolbar__btn--icon'
+                className='cfd-account-card__password-action'
                 transparent
                 onClick={onClick}
                 icon={
@@ -361,7 +361,7 @@ const CFDAccountCard = ({
                                 <Money
                                     amount={existing_data.display_balance}
                                     currency={existing_data.currency}
-                                    has_sign={existing_data.balance && existing_data.balance < 0}
+                                    has_sign={existing_data.balance ? existing_data.balance < 0 : false}
                                     show_currency
                                 />
                             </Text>

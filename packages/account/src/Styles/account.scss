@@ -1702,7 +1702,8 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     .onfido-sdk-ui-Camera-webcamContainer {
-        left: unset;
+        left: auto;
+        width: -webkit-fill-available;
     }
 }
 

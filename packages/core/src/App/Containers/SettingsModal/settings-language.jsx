@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Icon, Text } from '@deriv/components';
 import { Localize, getAllowedLanguages } from '@deriv/translations';
-import { initMoment } from '@deriv/shared';
 import { changeLanguage } from 'Utils/Language';
 import { connect } from 'Stores/connect';
 
@@ -62,7 +61,6 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                                 await changeLanguage(key, changeCurrentLanguage);
                                 await i18n.changeLanguage(key);
                                 toggleSettingsModal();
-                                initMoment();
                             }}
                             className={classNames('settings-language__language-link', {
                                 'settings-language__language-link--active': isCurrentLanguage(key, current_language),

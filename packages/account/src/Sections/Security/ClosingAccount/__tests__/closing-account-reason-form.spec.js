@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
-import DeactivateAccountReasonFrom from '../deactivate-account-reason-form';
+import ClosingAccountReasonFrom from '../closing-account-reason-form';
 
-describe('<DeactivateAccountReasonFrom />', () => {
+describe('<ClosingAccountReasonFrom />', () => {
     test('rendering and submitting a basic form', async () => {
         const handleSubmit = jest.fn();
         const validateFields = jest.fn();
@@ -14,7 +14,7 @@ describe('<DeactivateAccountReasonFrom />', () => {
         };
 
         render(
-            <DeactivateAccountReasonFrom
+            <ClosingAccountReasonFrom
                 onSubmit={handleSubmit}
                 validateFields={validateFields}
                 onChangeCheckbox={handleChangeCheckbox}

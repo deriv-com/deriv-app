@@ -1,10 +1,10 @@
 import { localize } from '@deriv/translations';
-import { proposalsReady, clearProposals as clearProposalsAction } from './state/actions';
-import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
-import { observer as globalObserver } from '../../../utils/observer';
-import ws from '../../api/ws';
-import $scope from '../utils/cliTools';
 import Store from './state';
+import { proposalsReady, clearProposals as clearProposalsAction } from './state/actions';
+import ws from '../../api/ws';
+import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
+import $scope from './state/scope';
+import { observer as globalObserver } from '../../../utils/observer';
 
 const requestProposals = () => {
     // Since there are two proposals (in most cases), an error may be logged twice, to avoid this

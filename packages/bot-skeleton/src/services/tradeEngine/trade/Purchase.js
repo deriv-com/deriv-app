@@ -1,15 +1,15 @@
+import { subscribeToOpenContract } from './open-contract';
+import { clearProposals, renewProposalsOnPurchase, selectProposal } from './proposal';
+import { updateAndReturnTotalRuns } from './total';
+import Store from './state';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
+import ws from '../../api/ws';
 import { contractStatus, info, log } from '../utils/broadcast';
+import $scope from './state/scope';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
-import ws from '../../api/ws';
-import $scope from '../utils/cliTools';
-import { subscribeToOpenContract } from './OpenContract';
-import Store from './state';
-import { clearProposals, renewProposalsOnPurchase, selectProposal } from './Proposal';
-import { updateAndReturnTotalRuns } from './Total';
 
 let delayIndex = 0;
 

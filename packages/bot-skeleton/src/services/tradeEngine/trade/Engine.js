@@ -1,15 +1,15 @@
 import { localize } from '@deriv/translations';
-import { observeOpenContract } from './OpenContract';
-import { checkProposalReady, observeProposals, makeProposals } from './Proposal';
+import { loginAndGetBalance } from './authenticate';
+import { observeOpenContract } from './open-contract';
+import { checkProposalReady, observeProposals, makeProposals } from './proposal';
+import { watchTicks } from './ticks';
+import { checkLimits, clearStatistics } from './total';
+import Store from './state';
 import { start } from './state/actions';
 import * as constants from './state/constants';
-import { watchTicks } from './Ticks';
-import { checkLimits, clearStatistics } from './Total';
 import { expectInitArg } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
-import $scope, { initial_scope } from '../utils/cliTools';
-import Store from './state';
-import { loginAndGetBalance } from './Authenticate';
+import $scope, { initial_scope } from './state/scope';
 import { createError } from '../utils/error';
 
 /* The watchScope function is called randomly and resets the prevTick

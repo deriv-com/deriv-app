@@ -1,8 +1,8 @@
-import { observeBalance } from './Balance';
+import { observeBalance } from './balance';
 import { doUntilDone } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
 import api from '../../api/ws';
-import $scope from '../utils/cliTools';
+import $scope from './state/scope';
 
 export const loginAndGetBalance = token => {
     if ($scope.token === token) {

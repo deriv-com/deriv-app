@@ -1,6 +1,6 @@
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
-import $scope from './cliTools';
+import $scope from '../trade/state/scope';
 import getInterface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';

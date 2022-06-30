@@ -1,7 +1,4 @@
-import ws from '../../api/ws';
-
 export const initial_scope = {
-    api: ws,
     balance: 0,
     contract_flags: {
         is_sold: false,

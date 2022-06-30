@@ -2,7 +2,7 @@ import { getRoundedNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { info, log } from '../utils/broadcast';
 import { log_types } from '../../../constants/messages';
-import $scope from '../utils/cliTools';
+import $scope from './state/scope';
 import { createError } from '../utils/error';
 
 const skeleton = {

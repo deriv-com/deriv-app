@@ -1,16 +1,16 @@
-export { loginAndGetBalance } from './Authenticate';
+export { loginAndGetBalance } from './authenticate';
 
-export { getBalance, observeBalance } from './Balance';
+export { getBalance, observeBalance } from './balance';
 
-export { candleField, candleValues, isCandleBlack } from './Candle';
+export { candleField, candleValues, isCandleBlack } from './candle';
 
-export { initTradeEngine, sleep, startTradeEngine, stopTradeEngine, tradeEngineObserver, watch } from './Engine';
+export { initTradeEngine, sleep, startTradeEngine, stopTradeEngine, tradeEngineObserver, watch } from './engine';
 
 export { default as indicators } from './indicators';
 
 export { dateTimeStringToTimestamp, getTime, miscAlert, miscConsole, miscPrompt, notify, notifyTelegram } from './misc';
 
-export { isTradeAgainObserver } from './Observers';
+export { isTradeAgainObserver } from './observers';
 
 export {
     getDetail,
@@ -20,7 +20,7 @@ export {
     observeOpenContract,
     subscribeToOpenContract,
     waitForAfter,
-} from './OpenContract';
+} from './open-contract';
 
 export {
     checkProposalReady,
@@ -34,11 +34,11 @@ export {
     observeProposals,
     renewProposalsOnPurchase,
     selectProposal,
-} from './Proposal';
+} from './proposal';
 
-export { purchase } from './Purchase';
+export { purchase } from './purchase';
 
-export { isSellAtMarketAvailable, sellAtMarket } from './Sell';
+export { isSellAtMarketAvailable, sellAtMarket } from './sell';
 
 export {
     checkDirection,
@@ -52,7 +52,7 @@ export {
     getPipSize,
     getTicks,
     watchTicks,
-} from './Ticks';
+} from './ticks';
 
 export {
     checkLimits,
@@ -62,4 +62,4 @@ export {
     getTotalRuns,
     updateAndReturnTotalRuns,
     updateTotals,
-} from './Total';
+} from './total';

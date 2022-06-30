@@ -1,12 +1,12 @@
+import { waitForAfter } from './open-contract';
+import Store from './state';
 import { DURING_PURCHASE } from './state/constants';
+import $scope from './state/scope';
 import { contractStatus, log } from '../utils/broadcast';
+import ws from '../../api/ws';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
-import ws from '../../api/ws';
-import $scope from '../utils/cliTools';
-import Store from './state';
-import { waitForAfter } from './OpenContract';
 
 export const isSellAtMarketAvailable = () => {
     const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;

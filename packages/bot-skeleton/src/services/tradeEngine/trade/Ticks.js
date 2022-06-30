@@ -1,14 +1,14 @@
 import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
+import { checkProposalReady } from './proposal';
+import Store from './state';
+import $scope from './state/scope';
 import * as constants from './state/constants';
 import { getDirection, getLastDigit as getLastDigitHelpers } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
-import { observer as globalObserver } from '../../../utils/observer';
-import TicksService from '../../api/ticks_service';
 import api from '../../api/ws';
-import $scope from '../utils/cliTools';
-import Store from './state';
-import { checkProposalReady } from './Proposal';
+import TicksService from '../../api/ticks_service';
+import { observer as globalObserver } from '../../../utils/observer';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);

@@ -1,12 +1,12 @@
 import { getRoundedNumber } from '@deriv/shared';
+import { updateTotals } from './total';
 import { sell, openContractReceived } from './state/actions';
-import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
-import { doUntilDone, createDetails } from '../utils/helpers';
-import DBotStore from '../../../scratch/dbot-store';
-import ws from '../../api/ws';
-import $scope from '../utils/cliTools';
 import Store from './state';
-import { updateTotals } from './Total';
+import { doUntilDone, createDetails } from '../utils/helpers';
+import $scope from './state/scope';
+import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
+import ws from '../../api/ws';
+import DBotStore from '../../../scratch/dbot-store';
 
 let afterPromise;
 

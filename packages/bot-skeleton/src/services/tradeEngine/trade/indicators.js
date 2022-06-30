@@ -9,7 +9,7 @@ import {
     relativeStrengthIndexArray as rsia,
     macdArray as macda,
 } from '@deriv/indicators';
-import { getPipSize } from '../Ticks';
+import { getPipSize } from './ticks';
 
 const decorate = (f, input, config, ...args) => {
     const pipSize = getPipSize();

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, HintBox, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, getFormattedText, isDesktop } from '@deriv/shared';
+import { formatMoney, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -80,6 +80,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
         return <Chat />;
     }
 
+    const display_payment_amount = removeTrailingZeros(
+        formatMoney(local_currency, amount_display * roundOffDecimal(rate, decimal_place), true, decimal_place)
+    );
+
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
             {should_show_lost_funds_banner && (
@@ -117,12 +121,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {removeTrailingZeros(
-                                        getFormattedText(
-                                            amount_display * roundOffDecimal(rate, decimal_place),
-                                            local_currency
-                                        )
-                                    )}
+                                    {display_payment_amount} {local_currency}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -152,12 +151,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={removeTrailingZeros(
-                                        getFormattedText(
-                                            amount_display * roundOffDecimal(rate, decimal_place),
-                                            local_currency
-                                        )
-                                    )}
+                                    value={`${display_payment_amount} ${local_currency}`}
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}

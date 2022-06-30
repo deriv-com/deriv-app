@@ -101,18 +101,28 @@ Before running or contribute to this project, you need to have the setup of the 
     npm run build
     ```
 
+<br />
+
 ## Packages
 
-| Package name   | Docs                                                                                                                | Version                                                                                                                                  |
-| :------------- | :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `Appstore`     | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/appstore/README.md)     | -                                                                                                                                        |
-| `Bot`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot/README.md)          | -                                                                                                                                        |
-| `Components`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/components/README.md)   | -                                                                                                                                        |
-| `Core`         | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/core/README.md)         | -                                                                                                                                        |
-| `P2P`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/p2p/README.md)          | [![npm](https://img.shields.io/npm/v/@deriv/p2p.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/@deriv/p2p)             |
-| `Shared`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/shared/README.md)       | -                                                                                                                                        |
-| `Trader`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/trader/README.md)       | -                                                                                                                                        |
-| `Translations` | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/translations/README.md) | -                                                                                                                                        |
+| Package name   | Docs                                                                                                                | Version                                                                                                                      |
+| :------------- | :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+| `Account`      | -                                                                                                                   | -                                                                                                                            |
+| `Appstore`     | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/appstore/README.md)     | -                                                                                                                            |
+| `Bot-skeleton` | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot-skeleton/README.md) | -                                                                                                                            |
+| `Bot-web-ui`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/bot-web-ui/README.md)   | -                                                                                                                            |
+| `Cashier`      | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/cashier/README.md)      | -                                                                                                                            |
+| `Cfd`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/cfd/README.md)          | -                                                                                                                            |
+| `Components`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/components/README.md)   | -                                                                                                                            |
+| `Core`         | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/core/README.md)         | -                                                                                                                            |
+| `Indicators`   | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/indicators/README.md)   | -                                                                                                                            |
+| `P2P`          | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/p2p/README.md)          | [![npm](https://img.shields.io/npm/v/@deriv/p2p.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/@deriv/p2p) |
+| `Publisher`    | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/publisher/README.md)    | -                                                                                                                            |
+| `Shared`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/shared/README.md)       | -                                                                                                                            |
+| `Trader`       | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/trader/README.md)       | -                                                                                                                            |
+| `Translations` | [![](https://img.shields.io/badge/API%20Docs-readme-orange.svg?style=flat-square)](packages/translations/README.md) | -                                                                                                                            |
+
+<br />
 
 ## Working With This Repo
 
@@ -134,9 +144,11 @@ All packages must contain the following scripts to perform the stated actions:
 [comment]: <> (| ❌ | `deploy:clean` | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages. |)
 [comment]: <> (| ❌ | `deploy:folder` | Runs `build` script, then pushes the output to the specified folder in GH Pages. |)
 
-**Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
+**Note: Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 
-### Package names
+<br />
+
+## Package names
 
 Each package is named with the `@deriv/` prefix, however for the scripts above, you do not need to add the `@deriv/` prefix as the scripts already prefix the 1st argument of the script with `@deriv/`. **However**, if you do use the `lerna` CLI directly, then you will need to use the full package name including the `@deriv/` prefix.
 
@@ -144,7 +156,7 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### Usage
 
-#### Configuring Hosts file
+### Configuring Hosts file
 
 In order to run our solution for the first time, you need to configure your `hosts` file:
 
@@ -153,7 +165,7 @@ In order to run our solution for the first time, you need to configure your `hos
 3. Add a new entry pointing to `127.0.0.1 localhost.binary.sx`.
 4. Save the file and proceed to the next step.
 
-#### Starting a Development Server
+### Starting a Development Server
 
 If you wish to work on Core, simply run `npm run serve core`.
 
@@ -163,7 +175,9 @@ But for working on any of the other packages (such as Trader, Bot, P2P), perform
 2. Run `npm run serve {package name}` in the first one. e.g.: `npm run serve translations`, `npm run serve bot`, etc.
 3. Then run `npm run serve core` in the second one.
 
-#### How to Clean Packages
+<br />
+
+### How to Clean Packages
 
 If you intend to remove `node_modules` folder(s) from the projects, please run `npm run clean` from the root of the project.
 
@@ -172,7 +186,13 @@ You can read more on the various lerna commands (and the [`clean` command](https
 
 **Note**: In case of facing permission denied error, please simply run `sudo chown -R $(whoami) .` from the root of the project.
 
-#### Examples of Script Usage
+### How to clear cache
+
+`npm cache clean -f`
+
+<br />
+
+### Examples of Script Usage
 
 If a script supports the "Package param", you can supply a `{package name}` for it to run the script in. At the moment, only 1 package name can be given to a script, if you wish to run in multiple, please use the `lerna` command that's used under the hood as per its docs.
 
@@ -190,7 +210,9 @@ npm run test:stylelint trader
 
 [comment]: <> (❌ Below command will not work as the script `deploy:clean` does not support "Package param" \(refer to the table in [Working With This Repo]\(#working-with-this-repo\)\): `bash npm run deploy:clean bot`)
 
-#### Release
+<br />
+
+## Release
 
 There are 2 types of release:
 
@@ -207,12 +229,16 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 2. Ensure you have a new (bumped) version of publishable packages (currently `@deriv/p2p`).
 3. Run `npm run publish:p2p`. The command publishes all bumped packages. However, right now the name includes the word `p2p` to signal the WIP status and that P2P is the only published package under this repo.
 
+<br />
+
 ## PR Guidelines
 
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)
     - Optional square bracket tag (e.g. `[WIP]`) can be at the end.
 2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
+
+<br />
 
 ## Test link deployment
 
@@ -229,6 +255,8 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 -   You can simply deploy to root of the `gh-pages` branch with: `npm run deploy`.
 -   You can clean (remove `br_` folders and clear root\) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean`
 -   You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`))
+
+<br />
 
 ## FAQ
 
@@ -260,3 +288,8 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
     1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
     2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
     3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).
+
+6. How can I regenerate `package-lock.json` file?
+
+    We have added `bootstrap:dev` to scripts. If you are updating or adding a package and you want to regenerate `package-lock.json` file, you should run this command
+    `npm run bootstrap:dev`

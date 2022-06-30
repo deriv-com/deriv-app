@@ -1,149 +1,83 @@
-import { localize } from '@deriv/translations';
 import React from 'react';
-import TradingAssessmentQuestion from './trading-assessment-question';
-import FormSubHeader from '../form-sub-header';
-import { Div100vhContainer, Text, Dropdown, DesktopWrapper, Button, Icon } from '@deriv/components';
-import {
-    trading_assessment,
-    cfd_trading_experience,
-    cfd_trades_placed,
-    other_trading_experiences,
-    trading_frequencies_past_12_months,
-    CFD_trading_allows_you,
-} from './utils';
+import { Div100vhContainer, Text, Icon, Button } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
+import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
+import { trading_assessment } from './trading-assessment-config';
+import FormBodySection from '../form-body-section/form-body-section';
 import './trading-assessment.scss';
-
-const TradingDropdownQuestion = () => {
-    const TradingExp = () => {
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Dropdown
-                        placeholder={cfd_trading_experience.question_text}
-                        list={cfd_trading_experience.answer_options}
-                        is_align_text_left
-                    />
-                </DesktopWrapper>
-            </React.Fragment>
-        );
-    };
-
-    const CFDTradesPlaced = () => {
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Dropdown
-                        placeholder={cfd_trades_placed.question_text}
-                        list={cfd_trades_placed.answer_options}
-                        is_align_text_left
-                    />
-                </DesktopWrapper>
-            </React.Fragment>
-        );
-    };
-
-    const OtherTradingExp = () => {
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Dropdown
-                        placeholder={other_trading_experiences.question_text}
-                        list={other_trading_experiences.answer_options}
-                        is_align_text_left
-                    />
-                </DesktopWrapper>
-            </React.Fragment>
-        );
-    };
-
-    const TradingFrequenciesPast12Months = () => {
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Dropdown
-                        placeholder={trading_frequencies_past_12_months.question_text}
-                        list={trading_frequencies_past_12_months.answer_options}
-                        is_align_text_left
-                    />
-                </DesktopWrapper>
-            </React.Fragment>
-        );
-    };
-
-    const CFDTradingAllowsYou = () => {
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Dropdown
-                        placeholder={CFD_trading_allows_you.question_text}
-                        list={CFD_trading_allows_you.answer_options}
-                        is_align_text_left
-                    />
-                </DesktopWrapper>
-            </React.Fragment>
-        );
-    };
-
-    return (
-        <React.Fragment>
-            <TradingExp />
-            <CFDTradesPlaced />
-            <OtherTradingExp />
-            <TradingFrequenciesPast12Months />
-            <CFDTradingAllowsYou />
-        </React.Fragment>
-    );
-};
 
 const TradingAssessment = () => {
     const [current_question, setCurrentQuestion] = React.useState(0);
+    const [is_next_button_disabled, setIsNextButtonDisabled] = React.useState(false);
+    const [is_prev_button_disabled, setIsPrevButtonDisabled] = React.useState(false);
 
+    const question_text = trading_assessment[current_question].question_text;
+    const answers_list = trading_assessment[current_question].answer_options;
+
+    // trading header functionality
+    // const handleNextButtonIsDisabled = () => {
+    //     if (current_question === trading_assessment.length) {
+    //         setIsNextButtonDisabled(true);
+    //     }
+    // };alr
     const handleNextButton = () => {
         const next_question = current_question + 1;
         if (next_question < trading_assessment.length) {
             setCurrentQuestion(next_question);
         }
+        if (current_question === trading_assessment.length) {
+            setIsNextButtonDisabled(true);
+        }
     };
+
+    // const handlePrevButtonIsDisabled = () => {
+    //     if (current_question === 0) {
+    //         setIsPrevButtonDisabled(true);
+    //     }
+    // };
     const handlePrevButton = () => {
         const prev_question = current_question - 1;
         if (prev_question >= 0) {
             setCurrentQuestion(prev_question);
         }
+        if (current_question === 0) {
+            setIsPrevButtonDisabled(true);
+        }
     };
-
     const trading_header = (
         <React.Fragment>
             <div className='trading-assessment__header'>
-                <Button onClick={handlePrevButton}>
-                    <Icon icon='IcChevronLeft' />
+                <Button onClick={handlePrevButton} transparent is_disabled={is_prev_button_disabled}>
+                    <Icon icon='IcChevronLeft' color={is_prev_button_disabled ? 'secondary' : 'black'} />
                 </Button>
                 <Text as='h1' color='prominent' weight='bold' size='xs'>
                     {current_question + 1} of {trading_assessment.length}
                 </Text>
-                <Button onClick={handleNextButton}>
-                    <Icon icon='IcChevronRight' />
+                <Button onClick={handleNextButton} transparent is_disabled={is_next_button_disabled}>
+                    <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
                 </Button>
             </div>
         </React.Fragment>
     );
     return (
-        <Div100vhContainer>
-            <FormSubHeader
-                title=''
-                description={`${localize(
-                    'In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.'
-                )}`}
-            />
-            <form className='trading-assessment__form'>
-                <div>
+        <Div100vhContainer className='trading-assessment__form'>
+            <form>
+                <FormBodySection
+                    has_side_note
+                    side_note={localize(
+                        'In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.'
+                    )}
+                >
                     {trading_header}
-                    <div>
-                        <TradingAssessmentQuestion current_question={current_question} />
+                    <div className='trading-assessment__wrapper'>
+                        {trading_assessment[current_question].type === 'dropdown' ? (
+                            <TradingAssessmentDropdownOption item={trading_assessment[current_question]} />
+                        ) : (
+                            <TradingAssessmentRadioOption question_text={question_text} answers_list={answers_list} />
+                        )}
                     </div>
-                    <div className='trading-assessment__dropdown'>
-                        <TradingDropdownQuestion />
-                    </div>
-                </div>
+                </FormBodySection>
             </form>
         </Div100vhContainer>
     );

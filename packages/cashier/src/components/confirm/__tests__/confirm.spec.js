@@ -50,8 +50,6 @@ describe('<Confirm />', () => {
         expect(screen.getByText(/before making your transfer/i)).toBeInTheDocument();
         expect(screen.getByText(/we/i)).toBeInTheDocument();
         expect(screen.getByText(/do not/i)).toBeInTheDocument();
-        expect(screen.getByText(/are/i)).toBeInTheDocument();
-        expect(screen.getByText(/correct/i)).toBeInTheDocument();
         expect(screen.getByText(/guarantee a refund if you make a wrong transfer/i)).toBeInTheDocument();
         expect(back_btn).toBeInTheDocument();
         expect(transfer_now_btn).toBeInTheDocument();

@@ -57,7 +57,7 @@ type TItemsState = {
     header: { [key: string]: string };
     body: typeof CFDPersonalDetailsForm | typeof CFDPOI | typeof CFDPOA;
     form_value: { [key: string]: string | undefined };
-    props: Array<string>;
+    props: Array<TItemsProps>;
 };
 
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';

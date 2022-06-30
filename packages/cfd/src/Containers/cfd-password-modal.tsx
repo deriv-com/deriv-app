@@ -23,14 +23,15 @@ import {
     MultiStep,
 } from '@deriv/components';
 import {
+    CFD_PLATFORMS,
+    getCFDPlatformLabel,
+    getErrorMessages,
+    getLegalEntityName,
+    isDesktop,
     isMobile,
     routes,
     validLength,
     validPassword,
-    getErrorMessages,
-    isDesktop,
-    getCFDPlatformLabel,
-    CFD_PLATFORMS,
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -273,7 +274,8 @@ const getCancelButtonLabel = ({
 };
 
 const handlePasswordInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
+    // eslint-disable-next-line no-shadow
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
     setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
@@ -553,7 +555,12 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
 
                         {props.is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
+                                <Localize
+                                    i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).'
+                                    values={{
+                                        legal_entity_name: getLegalEntityName('fx'),
+                                    }}
+                                />
                             </div>
                         )}
                         {props.error_type === 'PasswordError' && (

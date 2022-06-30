@@ -7,6 +7,7 @@ import {
     isMobile,
     routes,
     getCFDPlatformLabel,
+    getPlatformSettings,
     CFD_PLATFORMS,
     isLandingCompanyEnabled,
 } from '@deriv/shared';
@@ -120,6 +121,10 @@ type TCFDDashboardProps = RouteComponentProps & {
     dxtrade_disabled_signup_types: {
         real: boolean;
         demo: boolean;
+    };
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
     };
     has_real_account: boolean;
     NotificationMessages: ({ ...props }) => JSX.Element;
@@ -344,6 +349,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         country,
         createCFDAccount,
         current_list,
+        dxtrade_tokens,
         dxtrade_accounts_list_error,
         isAccountOfTypeDisabled,
         is_accounts_switcher_on,
@@ -437,7 +443,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 <Text
                                     as='p'
                                     className='cfd-dashboard__accounts-error-message'
-                                    lineHeight='l'
+                                    line_height='l'
                                     size='xxs'
                                     color='prominent'
                                     weight='normal'
@@ -579,6 +585,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 platform={platform}
                                 active_index={active_index}
                                 is_dark_mode_on={is_dark_mode_on}
+                                dxtrade_tokens={dxtrade_tokens}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -659,16 +666,27 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                     buttonSize={'medium'}
                     header={
                         <Localize
-                            i18n_default_text='DMT5 is not available in {{country}}'
-                            values={{ country: account_settings.residence }}
+                            i18n_default_text='{{platform_name_mt5}} is not available in {{country}}'
+                            values={{
+                                country: account_settings.residence,
+                                platform_name_mt5: getPlatformSettings('mt5').name,
+                            }}
                             components={[<br key={0} />]}
                         />
                     }
                     messages={[<Localize key={0} i18n_default_text='Please explore our other platforms.' />]}
                     redirect_urls={[routes.trade, routes.bot]}
                     redirect_labels={[
-                        <Localize key={0} i18n_default_text='Explore DTrader' />,
-                        <Localize key={1} i18n_default_text='Explore DBot' />,
+                        <Localize
+                            key={0}
+                            i18n_default_text='Explore {{platform_name_trader}}'
+                            values={{ platform_name_trader: getPlatformSettings('trader').name }}
+                        />,
+                        <Localize
+                            key={1}
+                            i18n_default_text='Explore {{platform_name_dbot}}'
+                            values={{ platform_name_dbot: getPlatformSettings('dbot').name }}
+                        />,
                     ]}
                 />
             )}
@@ -684,6 +702,7 @@ export default withRouter(
         client_email: client.email_address,
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
+        dxtrade_tokens: modules.cfd.dxtrade_tokens,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,

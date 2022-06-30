@@ -16,7 +16,7 @@ const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) =>
             </Text>
         </div>
         <div>
-            <Button className='cfd-dashboard__missing-real--button' onClick={onClickSignup} type='button' primary>
+            <Button className='cfd-dashboard__missing-real--button' onClick={onClickSignup} type='button' primary large>
                 <span className='btn__text'>
                     <Localize i18n_default_text='Create a Deriv account' />
                 </span>

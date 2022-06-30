@@ -494,7 +494,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                           dxtrade_disabled_signup_types.real ||
                                                           !!dxtrade_accounts_list_error
                                                 }
-                                                openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
                                                 account_status={account_status}
                                                 has_cfd_account={has_cfd_account}

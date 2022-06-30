@@ -33,6 +33,7 @@ const AppContent = () => {
         return <Verification should_wrap />;
     }
 
+    // TOOD: Refactor and change this on next release alongside discussion with design team regarding the tabs on advertiser page
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return <AdvertiserPage />;
     }

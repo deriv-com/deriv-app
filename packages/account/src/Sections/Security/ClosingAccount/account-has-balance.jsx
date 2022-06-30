@@ -13,31 +13,24 @@ const getCurrDxtradeAccount = (dxtrade_accounts_list, login_id) =>
     dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
 const Wrapper = ({ children, title, desc }) => (
-    <div className='deactivate-account-error'>
-        <Text
-            as='p'
-            line_height='s'
-            size='xs'
-            weight='bold'
-            color='prominent'
-            className='deactivate-account-error__title'
-        >
+    <div className='closing-account-error'>
+        <Text as='p' line_height='s' size='xs' weight='bold' color='prominent' className='closing-account-error__title'>
             {title}
         </Text>
         {desc && (
-            <Text as='p' size='xxs' className='deactivate-account-error__description'>
+            <Text as='p' size='xxs' className='closing-account-error__description'>
                 {desc}
             </Text>
         )}
-        <div className='deactivate-account-error__wrapper'>{children}</div>
+        <div className='closing-account-error__wrapper'>{children}</div>
     </div>
 );
 
 const Content = ({ currency_icon, loginid, title, value }) => (
-    <div className='deactivate-account-error__container'>
-        <div className='deactivate-account-error__account-details'>
+    <div className='closing-account-error__container'>
+        <div className='closing-account-error__account-details'>
             <Icon icon={currency_icon} size={24} />
-            <div className='deactivate-account-error__account'>
+            <div className='closing-account-error__account'>
                 <Text line_height='s' color='prominent' size='xs'>
                     {title}
                 </Text>
@@ -46,7 +39,7 @@ const Content = ({ currency_icon, loginid, title, value }) => (
                 </Text>
             </div>
         </div>
-        <Text className='deactivate-account-error__details' color='prominent' size='xs' line_height='s' align='right'>
+        <Text className='closing-account-error__details' color='prominent' size='xs' line_height='s' align='right'>
             {value}
         </Text>
     </div>
@@ -305,7 +298,7 @@ const AccountHasPendingConditions = ({
                 )}
             </ThemedScrollbars>
             <div>
-                <Button className='deactivate-account-error__button' primary onClick={onBackClick}>
+                <Button className='closing-account-error__button' primary onClick={onBackClick}>
                     {localize('OK')}
                 </Button>
             </div>

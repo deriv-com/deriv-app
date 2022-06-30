@@ -63,3 +63,5 @@ export {
     updateAndReturnTotalRuns,
     updateTotals,
 } from './total';
+
+export { default as $scope } from './state/scope';

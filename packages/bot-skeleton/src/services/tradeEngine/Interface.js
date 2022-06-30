@@ -18,6 +18,7 @@ import {
     getSellPrice,
     getTime,
     getTotalProfit,
+    getTotalRuns,
     initTradeEngine as init,
     isResult,
     isSellAtMarketAvailable as isSellAvailable,
@@ -34,7 +35,7 @@ import {
     stopTradeEngine as stop,
     tradeEngineObserver,
     watch,
-    getTotalRuns,
+    $scope,
     indicators,
 } from './trade';
 
@@ -79,6 +80,7 @@ const getInterface = () => {
             getOhlcFromEnd,
             getTicks,
         },
+        scope: $scope,
         ...indicators,
     };
 };

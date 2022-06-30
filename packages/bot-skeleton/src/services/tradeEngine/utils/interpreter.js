@@ -1,6 +1,5 @@
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
-import $scope from '../trade/state/scope';
 import getInterface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -18,8 +17,8 @@ JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
     this.initFunc_(this, this.global);
 };
 
-const botStarted = () => $scope.tradeOptions;
-const shouldRestartOnError = (errorName = '') =>
+const botStarted = $scope => $scope.tradeOptions;
+const shouldRestartOnError = ($scope, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && $scope.options.shouldRestartOnError;
 
 const shouldStopOnError = (errorName = '') => {
@@ -30,11 +29,12 @@ const shouldStopOnError = (errorName = '') => {
     return false;
 };
 
-const timeMachineEnabled = () => $scope.options.timeMachineEnabled;
+const timeMachineEnabled = $scope => $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
     const bot_interface = getInterface();
+    const $scope = bot_interface.scope;
     bot_interface.tradeEngineObserver();
     bot_interface.highlightBlock = highlightBlock;
     let interpreter = {};
@@ -111,7 +111,7 @@ const Interpreter = () => {
             'start',
             js_interpreter.nativeToPseudo((...args) => {
                 const { start } = bot_interface;
-                if (shouldRestartOnError()) {
+                if (shouldRestartOnError($scope)) {
                     $scope.startState = js_interpreter.takeStateSnapshot();
                 }
                 start(...args);
@@ -135,7 +135,7 @@ const Interpreter = () => {
             createAsync(js_interpreter, watchName => {
                 const { watch } = getInterface();
 
-                if (timeMachineEnabled()) {
+                if (timeMachineEnabled($scope)) {
                     const snapshot = interpreter.takeStateSnapshot();
                     if (watchName === 'before') {
                         $scope.beforeState = snapshot;
@@ -204,7 +204,7 @@ const Interpreter = () => {
                 }
 
                 $scope.is_error_triggered = true;
-                if (!shouldRestartOnError(e.code) || !botStarted()) {
+                if (!shouldRestartOnError($scope, e.code) || !botStarted($scope)) {
                     reject(e);
                     return;
                 }

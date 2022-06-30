@@ -34,7 +34,6 @@ type TCFDRealAccountDisplayProps = {
     has_cfd_account_error: boolean;
     is_fully_authenticated: boolean;
     account_settings: GetSettings;
-    openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
     standpoint: TStandPoint;
     is_loading?: boolean;
     is_logged_in: boolean;
@@ -90,7 +89,6 @@ const CFDRealAccountDisplay = ({
     has_cfd_account,
     openPasswordManager,
     account_settings,
-    openAccountNeededModal,
     platform,
     standpoint,
     is_logged_in,

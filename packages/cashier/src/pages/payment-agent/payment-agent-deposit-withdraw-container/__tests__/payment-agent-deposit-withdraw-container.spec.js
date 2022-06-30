@@ -77,7 +77,7 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
         expect(screen.getByText('Further information CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Payment Agent of CR90000002')).toBeInTheDocument();
         expect(screen.getByText('Further information CR90000002')).toBeInTheDocument();
-        expect(screen.getAllByTestId('dt_payment_method_icon').length).toBe(3);
+        expect(screen.getAllByTestId('dt_payment_method_icon').length).toBe(2);
     });
 
     it('should show proper header when is_deposit is equal to false', () => {

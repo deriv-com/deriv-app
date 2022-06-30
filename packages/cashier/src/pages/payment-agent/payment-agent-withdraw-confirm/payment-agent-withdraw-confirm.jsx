@@ -36,6 +36,7 @@ const PaymentAgentWithdrawConfirm = ({
             },
         ]}
         error={error}
+        is_payment_agent_withdraw
         onClickBack={() => {
             setIsTryWithdrawSuccessful(false);
         }}

@@ -40,7 +40,7 @@ const WarningBullet = ({ children }) => (
     </div>
 );
 
-const Confirm = ({ data, error, onClickBack, onClickConfirm }) => {
+const Confirm = ({ data, error, is_payment_agent_withdraw, onClickBack, onClickConfirm }) => {
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
     const warning_messages = [
@@ -79,7 +79,7 @@ const Confirm = ({ data, error, onClickBack, onClickConfirm }) => {
             <div className='confirm__warnings'>
                 {warning_messages.map((warning, idx) => (
                     <WarningBullet key={idx}>
-                        <Text as='p' size='xxs' color='loss-danger' align='left'>
+                        <Text as='p' size='xxs' line_height='m' color='loss-danger' align='left'>
                             {warning}
                         </Text>
                     </WarningBullet>
@@ -90,7 +90,11 @@ const Confirm = ({ data, error, onClickBack, onClickConfirm }) => {
                     name='transfer_consent'
                     value={is_transfer_consent_checked}
                     onChange={() => setIsTransferConsentChecked(!is_transfer_consent_checked)}
-                    label={localize('I confirm that I have verified the client’s transfer information.')}
+                    label={
+                        is_payment_agent_withdraw
+                            ? localize('I confirm that I have verified the payment agent’s transfer information.')
+                            : localize('I confirm that I have verified the client’s transfer information.')
+                    }
                     classNameLabel='confirm__checkbox-label'
                 />
             </div>
@@ -117,6 +121,7 @@ Confirm.propTypes = {
         })
     ),
     error: PropTypes.object,
+    is_payment_agent_withdraw: PropTypes.bool,
     onClickBack: PropTypes.func,
     onClickConfirm: PropTypes.func,
 };

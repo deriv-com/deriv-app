@@ -9,7 +9,7 @@ import { CoreStoreTypes } from 'Stores/root-store';
 type TAppProps = {
     passthrough: {
         root_store: CoreStoreTypes;
-        WS: Record<string, any>;
+        WS: any;
     };
 };
 

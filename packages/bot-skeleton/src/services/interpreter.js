@@ -1,10 +1,10 @@
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
-import getInterface from '../Interface';
-import { unrecoverable_errors } from '../../../constants/messages';
-import { observer as globalObserver } from '../../../utils/observer';
-import ws from '../../api/ws';
-import { highlightBlock } from '../../../scratch/utils';
+import getInterface from './tradeEngine/Interface';
+import { unrecoverable_errors } from '../constants/messages';
+import { observer as globalObserver } from '../utils/observer';
+import ws from './api/ws';
+import { highlightBlock } from '../scratch/utils';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);

@@ -280,7 +280,7 @@ const handlePasswordInputChange = (
     validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
     setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
 ) => {
-    handleChange(event);
+    handleChange(e);
     validateForm().then(() => {
         setFieldTouched('password', true);
     });

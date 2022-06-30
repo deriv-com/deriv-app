@@ -60,6 +60,19 @@ type TItemsState = {
     props: Array<TItemsProps>;
 };
 
+type TItemsProps =
+    | 'residence_list'
+    | 'is_fully_authenticated'
+    | 'landing_company'
+    | 'addNotificationByKey'
+    | 'authentication_status'
+    | 'refreshNotifications'
+    | 'removeNotificationMessage'
+    | 'removeNotificationByKey'
+    | 'states_list'
+    | 'get_settings'
+    | 'storeProofOfAddress';
+
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
 const index_lookup: TIndexLookupObject = {
     CFDPersonalDetailsForm: 0,

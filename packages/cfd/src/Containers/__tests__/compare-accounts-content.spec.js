@@ -170,4 +170,28 @@ describe('should render the CompareAccountsContent component properly', () => {
             screen.getByText('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)')
         ).toBeInTheDocument();
     });
+
+    it('should not see the Financial STP column in the DerivX platform', () => {
+        render(<CompareAccountsContent landing_companies={all_landing_companies} {...mock_props} platform='dxtrade' />);
+        expect(screen.queryByText('Financial STP')).not.toBeInTheDocument();
+    });
+
+    it('should render even if the user is not logged in', () => {
+        render(
+            <CompareAccountsContent landing_companies={all_landing_companies} {...mock_props} is_logged_in={false} />
+        );
+        expect(screen.queryByText(/Account currency/i)).toBeInTheDocument();
+    });
+
+    it('should render the column head from CFDs to Financial if is_eu is enabled', () => {
+        render(
+            <CompareAccountsContent
+                {...mock_props}
+                landing_companies={all_landing_companies}
+                is_eu={false}
+                platform='mt5'
+            />
+        );
+        expect(screen.getAllByText(/Financial/i)[0]).toBeInTheDocument();
+    });
 });

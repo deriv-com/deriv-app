@@ -153,7 +153,14 @@ describe('should render the CompareAccountsContent component properly', () => {
     });
 
     it('should render the correct content for the DerivX platform', () => {
-        render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} platform='dxtrade' />);
+        render(
+            <CompareAccountsContent
+                {...mock_props}
+                landing_companies={all_landing_companies}
+                platform='dxtrade'
+                residence='uk'
+            />
+        );
 
         expect(screen.getAllByText(/Account currency/i)[0]).toBeInTheDocument();
         expect(screen.getAllByText('EUR/GBP')[0]).toBeInTheDocument();

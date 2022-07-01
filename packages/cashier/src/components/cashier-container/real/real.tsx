@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 
-const Real = ({ iframe_height, iframe_url, clearIframe, is_loading }) => {
+type TRealProps = {
+    iframe_height: number | string;
+    iframe_url: string;
+    clearIframe: () => void;
+    is_loading: boolean;
+};
+
+const Real = ({ iframe_height, iframe_url, clearIframe, is_loading }: TRealProps) => {
     React.useEffect(() => {
         return () => {
             clearIframe();
@@ -19,18 +25,11 @@ const Real = ({ iframe_height, iframe_url, clearIframe, is_loading }) => {
                     src={iframe_url}
                     frameBorder='0'
                     scrolling='auto'
-                    data-testid='doughflow_section'
+                    data-testid='dt_doughflow_section'
                 />
             )}
         </div>
     );
-};
-
-Real.propTypes = {
-    iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    iframe_url: PropTypes.string,
-    clearIframe: PropTypes.func,
-    is_loading: PropTypes.bool,
 };
 
 export default Real;

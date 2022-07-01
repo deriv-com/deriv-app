@@ -200,6 +200,14 @@
         flex-direction: column;
         padding: 1rem 1.6rem 0;
         width: 100vw;
+
+        &--scroll {
+            overflow: auto;
+        }
+
+        &--horizontal {
+            padding-right: 0rem;
+        }
     }
 
     &__table {
@@ -663,11 +671,6 @@
                 }
             }
         }
-    }
-
-    &__modal-body--scroll {
-        overflow: auto;
-        margin-bottom: 7.5rem;
     }
 
     .toggle-ads {

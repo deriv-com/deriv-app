@@ -77,7 +77,7 @@ jobs:
 
             # lerna: To allow us to bootstrap the project.
             # json: To manually edit the target package's package.json
-            npm i -g lerna@latest json@latest
+            npm i -g lerna@latest json@latest npm@8
 
             package_name="@deriv/api-types"
             old_version=$(json -f packages/appstore/package.json -a dependencies."$package_name")

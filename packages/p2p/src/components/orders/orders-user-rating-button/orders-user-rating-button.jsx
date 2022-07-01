@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Icon } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
@@ -13,6 +14,11 @@ const OrdersUserRatingButton = ({ has_full_text, is_disabled }) => {
             )}
         </Button>
     );
+};
+
+OrdersUserRatingButton.PropTypes = {
+    has_full_text: PropTypes.bool,
+    is_disabled: PropTypes.bool,
 };
 
 export default OrdersUserRatingButton;

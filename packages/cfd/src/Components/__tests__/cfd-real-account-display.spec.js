@@ -110,7 +110,7 @@ describe('<CFDRealAccountDisplay />', () => {
                 virtual_company: 'virtual',
             },
             onSelectAccount: jest.fn(),
-            openAccountNeededModal: jest.fn(),
+            openDerivRealAccountNeededModal: jest.fn(),
             openAccountTransfer: jest.fn(),
             openPasswordManager: jest.fn(),
             openPasswordModal: jest.fn(),
@@ -131,6 +131,7 @@ describe('<CFDRealAccountDisplay />', () => {
                     value: 'ax',
                 },
             ],
+            should_enable_add_button: false,
             standpoint: {
                 financial_company: 'svg',
                 gaming_company: 'svg',
@@ -314,16 +315,18 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add real account" button on DMT5 when is_logged_in=true & is_eu=true', () => {
+    it('should render a CFDs card only with enabled "Add real account" button on DMT5 when is_logged_in=true, should_enable_add_button=true & is_eu=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} is_eu account_settings={account_settings_eu} />);
+        render(
+            <CFDRealAccountDisplay {...props} is_eu should_enable_add_button account_settings={account_settings_eu} />
+        );
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         const add_real_account_button = screen.getByRole('button', { name: /add real account/i });
         expect(add_real_account_button).toBeEnabled();
 
         fireEvent.click(add_real_account_button);
-        expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'real CFDs');
+        expect(props.openDerivRealAccountNeededModal).toHaveBeenCalledTimes(1);
     });
 
     it('should render a CFDs card only without "Add real account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {

@@ -34,7 +34,6 @@ type TCFDRealAccountDisplayProps = {
     has_cfd_account_error: boolean;
     is_fully_authenticated: boolean;
     account_settings: GetSettings;
-    openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
     standpoint: TStandPoint;
     is_loading?: boolean;
     is_logged_in: boolean;
@@ -90,7 +89,6 @@ const CFDRealAccountDisplay = ({
     has_cfd_account,
     openPasswordManager,
     account_settings,
-    openAccountNeededModal,
     platform,
     standpoint,
     is_logged_in,
@@ -140,22 +138,11 @@ const CFDRealAccountDisplay = ({
         return specifications[platform as keyof TSpecifications].real_financial_specs;
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
-    const onSelectRealSynthetic = () => {
+    const onSelectRealAccount = (type: string) => {
         if (should_enable_add_button) {
             openDerivRealAccountNeededModal();
-        } else if (is_eu && standpoint.malta && !has_malta_account) {
-            openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
         } else {
-            onSelectAccount({ type: 'synthetic', category: 'real', platform });
-        }
-    };
-    const onSelectRealFinancial = () => {
-        if (should_enable_add_button) {
-            openDerivRealAccountNeededModal();
-        } else if (is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
-        } else {
-            onSelectAccount({ type: 'financial', category: 'real', platform });
+            onSelectAccount({ type, category: 'real', platform });
         }
     };
 
@@ -226,7 +213,7 @@ const CFDRealAccountDisplay = ({
                               should_show_trade_servers={should_show_trade_servers}
                               existing_data={acc}
                               commission_message={localize('No commission')}
-                              onSelectAccount={onSelectRealSynthetic}
+                              onSelectAccount={() => onSelectRealAccount('synthetic')}
                               onPasswordManager={openPasswordManager}
                               onClickFund={onClickFundReal}
                               platform={platform}
@@ -253,7 +240,7 @@ const CFDRealAccountDisplay = ({
                       should_show_trade_servers={should_show_trade_servers}
                       existing_data={undefined}
                       commission_message={localize('No commission')}
-                      onSelectAccount={onSelectRealSynthetic}
+                      onSelectAccount={() => onSelectRealAccount('synthetic')}
                       onPasswordManager={openPasswordManager}
                       onClickFund={onClickFundReal}
                       platform={platform}
@@ -285,7 +272,7 @@ const CFDRealAccountDisplay = ({
                 ]
             }
             commission_message={localize('No commission')}
-            onSelectAccount={onSelectRealFinancial}
+            onSelectAccount={() => onSelectRealAccount('financial')}
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}

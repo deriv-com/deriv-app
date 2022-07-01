@@ -16,6 +16,7 @@ import {
     ConnectedApps,
     LoginHistory,
     AccountClosed,
+    DeactivateAccount,
 } from 'Sections';
 
 // Error Routes
@@ -29,6 +30,11 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
         is_authenticated: false,
         // Don't use `Localize` component since native html tag like `option` cannot render them
         getTitle: () => localize('Account closed'),
+    },
+    {
+        // TODO: Remove once mobile team has changed this link
+        path: routes.deactivate_account,
+        component: DeactivateAccount,
     },
     {
         path: routes.account,

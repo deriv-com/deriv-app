@@ -8,7 +8,6 @@ import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import 'Styles/proof-of-identity-submission.scss';
 
 const POISubmission = ({
     allow_poi_resubmission,

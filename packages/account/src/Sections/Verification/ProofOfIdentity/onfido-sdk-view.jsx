@@ -8,7 +8,6 @@ import { getLanguage, Localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
-import 'Styles/onfido-container.scss';
 
 const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, height, is_from_external }) => {
     const [api_error, setAPIError] = React.useState();

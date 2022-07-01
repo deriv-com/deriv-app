@@ -89,7 +89,7 @@ const OrderRow = ({ style, row: order }) => {
     const transaction_amount = `${Number(amount * rate).toFixed(2)} ${local_currency}`;
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
-    const order_user_rating_button_expiry_time = getExpiryTime(order_purchase_datetime);
+    const rating_button_expiry_time = getExpiryTime(order_purchase_datetime);
 
     if (isMobile()) {
         return (
@@ -181,10 +181,7 @@ const OrderRow = ({ style, row: order }) => {
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
                     ) : (
-                        <OrdersUserRatingButton
-                            has_full_text={false}
-                            is_disabled={order_user_rating_button_expiry_time > 24}
-                        />
+                        <OrdersUserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
                     )}
                 </Table.Cell>
             </Table.Row>

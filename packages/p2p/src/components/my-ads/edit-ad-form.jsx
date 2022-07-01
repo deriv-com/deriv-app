@@ -50,7 +50,7 @@ const EditAdForm = () => {
     const [is_cancel_edit_modal_open, setIsCancelEditModalOpen] = React.useState(false);
     const [is_payment_method_touched, setIsPaymentMethodTouched] = React.useState(false);
 
-    const set_initial_ad_rate = () => {
+    const setInitialAdRate = () => {
         if (my_ads_store.required_ad_type !== my_ads_store.selected_ad_type) {
             if (my_ads_store.required_ad_type === ad_type.FLOAT) {
                 return is_buy_advert ? '-0.01' : '+0.01';
@@ -110,6 +110,12 @@ const EditAdForm = () => {
                 my_ads_store.payment_method_ids.push(pm[0]);
             });
         }
+        if (my_ads_store.required_ad_type !== rate_type) {
+            const is_payment_method_available =
+                !!Object.keys({ ...payment_method_details }).length ||
+                !!Object.values({ ...payment_method_names }).length;
+            setIsPaymentMethodTouched(is_payment_method_available);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -130,7 +136,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
-                            rate_type: set_initial_ad_rate(),
+                            rate_type: setInitialAdRate(),
                             type,
                             is_active:
                                 rate_type !== floating_rate_store.rate_type && floating_rate_store.reached_target_date

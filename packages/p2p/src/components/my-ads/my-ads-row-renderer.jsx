@@ -9,6 +9,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
+import { generateEffectiveRate } from 'Utils/format-value.js';
 import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
@@ -35,14 +36,17 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
-
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
-    const display_effective_rate =
-        rate_type === ad_type.FIXED
-            ? price_display
-            : parseFloat(floating_rate_store.exchange_rate * (1 + rate_display / 100));
+
+    const { display_effective_rate } = generateEffectiveRate({
+        price: price_display,
+        rate_type,
+        rate: rate_display,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
 
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
 
@@ -155,7 +159,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </Text>
                             <Text color='profit-success' line_height='m' size='xs' weight='bold'>
                                 <div className='display-layout'>
-                                    {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
+                                    {display_effective_rate} {local_currency}
                                     {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
                                 </div>
                             </Text>
@@ -210,7 +214,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 </Table.Cell>
                 <Table.Cell className='p2p-my-ads__table-price'>
                     <div className='display-layout'>
-                        {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
+                        {display_effective_rate} {local_currency}
                         {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
                     </div>
                 </Table.Cell>

@@ -5,31 +5,28 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
+import { useStores } from 'Stores';
+import { removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
 
 const EditAdSummary = ({ offer_amount, price_rate, type }) => {
-    const { floating_rate_store, general_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
-    const market_feed = floating_rate_store.rate_type === ad_type.FLOAT ? floating_rate_store.exchange_rate : null;
+    const market_feed = my_ads_store.required_ad_type === ad_type.FLOAT ? floating_rate_store.exchange_rate : null;
 
     let display_price_rate = '';
     let display_total = '';
 
     if (price_rate) {
         display_price_rate = market_feed
-            ? formatMoney(local_currency_config.currency, parseFloat(market_feed * (1 + price_rate / 100)), true)
-            : formatMoney(local_currency_config.currency, price_rate, true);
+            ? roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), 6)
+            : price_rate;
     }
 
     if (offer_amount && price_rate) {
         display_total = market_feed
-            ? formatMoney(
-                  local_currency_config.currency,
-                  offer_amount * parseFloat(market_feed * (1 + price_rate / 100)),
-                  true
-              )
+            ? formatMoney(local_currency_config.currency, offer_amount * display_price_rate, true)
             : formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
     }
 
@@ -44,7 +41,9 @@ const EditAdSummary = ({ offer_amount, price_rate, type }) => {
             Object.assign(values, {
                 local_amount: display_total,
                 local_currency: local_currency_config.currency,
-                price_rate: display_price_rate,
+                price_rate: removeTrailingZeros(
+                    formatMoney(local_currency_config.currency, display_price_rate, true, 6)
+                ),
             });
 
             if (type === buy_sell.BUY) {

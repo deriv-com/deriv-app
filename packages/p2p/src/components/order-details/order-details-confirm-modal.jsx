@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Loading, Modal, Text } from '@deriv/components';
-import { getRoundedNumber, useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
+import { requestWS } from 'Utils/websocket';
+import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value.js';
 
 const OrderDetailsConfirmModal = ({
     order_information,
@@ -44,6 +45,8 @@ const OrderDetailsConfirmModal = ({
             })
             .finally(() => setIsProcessRequest(false));
     };
+
+    const rounded_rate = roundOffDecimal(rate, setDecimalPlaces(rate, 6));
 
     const getConfirmButtonText = () => {
         if (is_buy_order_for_user) {
@@ -85,7 +88,7 @@ const OrderDetailsConfirmModal = ({
                         <Localize
                             i18n_default_text='Have you paid {{amount}} {{currency}} to {{other_user_name}}?'
                             values={{
-                                amount: Number(amount * getRoundedNumber(rate)).toFixed(2),
+                                amount: Number(roundOffDecimal(amount * rounded_rate)).toFixed(2),
                                 currency: local_currency,
                                 other_user_name: other_user_details.name,
                             }}
@@ -106,7 +109,7 @@ const OrderDetailsConfirmModal = ({
                             <Localize
                                 i18n_default_text="I've received {{amount}} {{currency}}"
                                 values={{
-                                    amount: Number(amount * getRoundedNumber(rate)).toFixed(2),
+                                    amount: Number(roundOffDecimal(amount * rounded_rate)).toFixed(2),
                                     currency: local_currency,
                                 }}
                             />

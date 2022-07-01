@@ -11,7 +11,17 @@ const ItemWrapper = ({ children, should_wrap_items }) => {
     return children;
 };
 
-const RadioGroup = ({ className, name, onToggle, required, selected, should_wrap_items, children }) => {
+const RadioGroup = ({
+    is_left,
+    is_center,
+    className,
+    name,
+    onToggle,
+    required,
+    selected,
+    should_wrap_items,
+    children,
+}) => {
     const [selected_option, setSelectedOption] = React.useState(selected);
 
     const onChange = event => {
@@ -22,8 +32,16 @@ const RadioGroup = ({ className, name, onToggle, required, selected, should_wrap
         }
     };
 
+    const classes = classNames(
+        'dc-radio-group',
+        {
+            'dc-radio-group--is-center': is_center,
+            'dc-radio-group--is-left': is_left,
+        },
+        className
+    );
     return (
-        <div className={classNames('dc-radio-group', className)}>
+        <div className={classes}>
             {children.map((item, idx) => (
                 <ItemWrapper key={idx} should_wrap_items={should_wrap_items}>
                     <label
@@ -71,6 +89,8 @@ RadioGroup.propTypes = {
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
         })
     ),
+    is_left: PropTypes.bool,
+    is_center: PropTypes.bool,
     name: PropTypes.string,
     onToggle: PropTypes.func,
     required: PropTypes.bool,

@@ -14,37 +14,36 @@ const TradingAssessment = () => {
 
     const question_text = trading_assessment[current_question].question_text;
     const answers_list = trading_assessment[current_question].answer_options;
+    const end_question_index = trading_assessment.length - 1;
+    // console.log(current_question, '/', end_question_index);
 
-    // trading header functionality
-    // const handleNextButtonIsDisabled = () => {
-    //     if (current_question === trading_assessment.length) {
-    //         setIsNextButtonDisabled(true);
-    //     }
-    // };alr
+    React.useEffect(() => {
+        if (current_question === end_question_index) {
+            setIsNextButtonDisabled(true);
+            setIsPrevButtonDisabled(false);
+        }
+        if (current_question === 0) {
+            setIsPrevButtonDisabled(true);
+            setIsNextButtonDisabled(false);
+        } else {
+            setIsPrevButtonDisabled(false);
+            setIsNextButtonDisabled(false);
+        }
+    }, [current_question, is_next_button_disabled, is_prev_button_disabled]);
+
     const handleNextButton = () => {
         const next_question = current_question + 1;
         if (next_question < trading_assessment.length) {
             setCurrentQuestion(next_question);
         }
-        if (current_question === trading_assessment.length) {
-            setIsNextButtonDisabled(true);
-        }
     };
-
-    // const handlePrevButtonIsDisabled = () => {
-    //     if (current_question === 0) {
-    //         setIsPrevButtonDisabled(true);
-    //     }
-    // };
     const handlePrevButton = () => {
         const prev_question = current_question - 1;
         if (prev_question >= 0) {
             setCurrentQuestion(prev_question);
         }
-        if (current_question === 0) {
-            setIsPrevButtonDisabled(true);
-        }
     };
+
     const trading_header = (
         <React.Fragment>
             <div className='trading-assessment__header'>
@@ -55,7 +54,11 @@ const TradingAssessment = () => {
                     {current_question + 1} of {trading_assessment.length}
                 </Text>
                 <Button onClick={handleNextButton} transparent is_disabled={is_next_button_disabled}>
-                    <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
+                    <Icon
+                        icon='IcChevronRight'
+                        color={is_next_button_disabled ? 'secondary' : 'black'}
+                        style={{ visibility: current_question === end_question_index ? 'hidden' : 'block' }}
+                    />
                 </Button>
             </div>
         </React.Fragment>

@@ -25,6 +25,14 @@ export const trading_assessment = [
                     'I trade forex CFDs and other complex financial instruments regularly on other platforms.'
                 ),
             },
+            {
+                value: 'I have attended seminars, training, and/or workshops related to trading.',
+                text: localize('I have attended seminars, training, and/or workshops related to trading.'),
+            },
+            {
+                value: 'I am interested in trading but have very little experience.',
+                text: localize('I am interested in trading but have very little experience.'),
+            },
         ],
     },
     // start dropdown

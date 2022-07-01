@@ -1,26 +1,37 @@
 .trading-assessment {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    width: 72.2rem;
-    height: fit-content;
-
     &__form {
+        display: flex;
+        flex-direction: row;
         justify-content: center;
+        margin: 0 auto;
+        max-width: 72.2rem;
     }
-
     &__header {
+        margin-top: 2.4rem;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         max-width: 72.2rem;
         background-color: #d6dadb;
+        padding: 0.6rem 0.4rem;
     }
-    &__answer-wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
+    &__wrapper {
+        margin: 3.2rem auto auto;
+        max-width: 69rem;
+        &__question {
+            margin-inline: auto;
+            width: fit-content;
+            &--radio-group {
+                margin-top: 1.6rem;
+            }
+        }
+        &__dropdown {
+            margin-inline: auto;
+            width: 65.1rem;
+            &--list {
+                margin-bottom: 2.4rem;
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ import { DesktopWrapper, Dropdown } from '@deriv/components';
 
 const TradingAssessmentDropdownOption = ({ item }) => {
     return (
-        <div className='trading-assessment__wrapper__dropdown'>
+        <fieldset className='trading-assessment__wrapper__dropdown'>
             {item.questions.map(question => (
                 <DesktopWrapper key={question.question_text}>
                     <div className='trading-assessment__wrapper__dropdown--list'>
@@ -16,7 +16,7 @@ const TradingAssessmentDropdownOption = ({ item }) => {
                     </div>
                 </DesktopWrapper>
             ))}
-        </div>
+        </fieldset>
     );
 };
 

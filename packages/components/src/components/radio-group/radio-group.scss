@@ -1,9 +1,14 @@
 .dc-radio-group {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
     margin-top: 16px;
-
+    &--is-center {
+        flex-direction: row;
+        align-items: center;
+    }
+    &--is-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
     &__input {
         display: none;
     }

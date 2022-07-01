@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import ContractStore from './contract-store';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore from '../../base-store';
+import { getDummyPOCResponseForACC } from './Helpers/dummy_accumulators_data';
 
 export default class ContractReplayStore extends BaseStore {
     @observable chart_state = '';
@@ -94,29 +95,55 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     populateConfig(response) {
-        if (!this.switch_account_listener) return;
+        const dummy_response = getDummyPOCResponseForACC(Date.now());
 
-        if ('error' in response) {
-            const { code, message } = response.error;
-            this.has_error = true;
-            this.is_chart_loading = false;
-            this.error_message = message;
-            this.error_code = code;
-            return;
-        }
-        if (isEmptyObject(response.proposal_open_contract)) {
-            this.has_error = true;
-            this.error_message = localize(
-                "Sorry, you can't view this contract because it doesn't belong to this account."
-            );
-            this.should_forget_first = true;
-            this.is_chart_loading = false;
-            return;
-        }
-        if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
+        if (!this.switch_account_listener && !this.root_store.modules.trade.is_accumulator) return;
 
-        this.contract_info = response.proposal_open_contract;
-        this.contract_update = response.proposal_open_contract.limit_order;
+        if (this.root_store.modules.trade.is_accumulator) {
+            if ('error' in dummy_response) {
+                const { code, message } = dummy_response.error;
+                this.has_error = true;
+                this.is_chart_loading = false;
+                this.error_message = message;
+                this.error_code = code;
+                return;
+            }
+            if (isEmptyObject(dummy_response.proposal_open_contract)) {
+                this.has_error = true;
+                this.error_message = localize(
+                    "Sorry, you can't view this contract because it doesn't belong to this account."
+                );
+                this.should_forget_first = true;
+                this.is_chart_loading = false;
+                return;
+            }
+            if (+dummy_response.proposal_open_contract.contract_id !== this.contract_id) return;
+
+            this.contract_info = dummy_response.proposal_open_contract;
+            this.contract_update = dummy_response.proposal_open_contract.limit_order;
+        } else {
+            if ('error' in response) {
+                const { code, message } = response.error;
+                this.has_error = true;
+                this.is_chart_loading = false;
+                this.error_message = message;
+                this.error_code = code;
+                return;
+            }
+            if (isEmptyObject(response.proposal_open_contract)) {
+                this.has_error = true;
+                this.error_message = localize(
+                    "Sorry, you can't view this contract because it doesn't belong to this account."
+                );
+                this.should_forget_first = true;
+                this.is_chart_loading = false;
+                return;
+            }
+            if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
+
+            this.contract_info = response.proposal_open_contract;
+            this.contract_update = response.proposal_open_contract.limit_order;
+        }
 
         // Add indicative status for contract
         const prev_indicative = this.prev_indicative;
@@ -154,7 +181,9 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        if (this.contract_info.is_sold) {
+        if (this.contract_info.is_sold && this.root_store.modules.trade.is_accumulator) {
+            this.contract_store.cacheProposalOpenContractResponse(dummy_response);
+        } else if (this.contract_info.is_sold) {
             this.contract_store.cacheProposalOpenContractResponse(response);
         }
     }

@@ -20,6 +20,7 @@ import {
     getContractTypesConfig,
     getLocalizedBasis,
 } from '../Constants/contract';
+import { dummy_accumulator_in_contracts_for_available } from '../../Contract/Helpers/dummy_accumulators_data';
 
 const ContractType = (() => {
     let available_contract_types = {};
@@ -41,25 +42,10 @@ const ContractType = (() => {
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
-            const dummy_accumulator = {
-                accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
-                barrier_category: 'american',
-                barriers: 2,
-                contract_category: 'accumulator',
-                contract_category_display: 'Accumulate',
-                contract_display: 'Accumulators',
-                contract_type: 'ACC',
-                exchange_name: 'RANDOM',
-                expiry_type: 'intraday',
-                market: 'synthetic_index',
-                max_contract_duration: '1d',
-                min_contract_duration: '1m',
-                sentiment: 'inside',
-                start_type: 'spot',
-                submarket: 'random_index',
-                underlying_symbol: 'R_100',
-            };
-            const dummy_available_contracts_with_acc = [...r.contracts_for.available, dummy_accumulator];
+            const dummy_available_contracts_with_acc = [
+                ...r.contracts_for.available,
+                dummy_accumulator_in_contracts_for_available,
+            ];
 
             dummy_available_contracts_with_acc.forEach(contract => {
                 const type = Object.keys(contract_types).find(

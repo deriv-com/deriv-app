@@ -1,4 +1,5 @@
 import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+import { getDummyProposalInfoForACC } from '../../Contract/Helpers/dummy_accumulators_data';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -44,37 +45,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     if (store.contract_type === 'accumulator') {
         // dummy proposal info for accumulators:
-        return {
-            tick_size_barrier: 0.000409,
-            ticks_count_since_loss_condition: 13,
-            max_duration_ticks: 10,
-            max_payout: 0,
-            error_code: undefined,
-            error_field: undefined,
-            growth_rate: store.growth_rate,
-            has_error: false,
-            has_error_details: false,
-            has_increased: null,
-            id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-            limit_order: {
-                take_profit: {
-                    display_name: 'Take profit',
-                    order_amount: 89,
-                    order_date: 1655390008,
-                    value: '1471.48',
-                },
-            },
-            message:
-                'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-            obj_contract_basis: {
-                text: '',
-                value: '',
-            },
-            payout: 0,
-            profit: '-10.00',
-            returns: '-100.00%',
-            stake: '10.00',
-        };
+        return getDummyProposalInfoForACC(store.growth_rate);
     }
     return {
         commission,

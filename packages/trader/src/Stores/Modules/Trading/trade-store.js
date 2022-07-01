@@ -517,7 +517,6 @@ export default class TradeStore extends BaseStore {
             removeBarrier(this.barriers, key);
             return;
         }
-
         let purchase_spot_barrier = this.barriers.find(b => b.key === key);
         if (purchase_spot_barrier) {
             if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
@@ -608,30 +607,7 @@ export default class TradeStore extends BaseStore {
             this.is_purchasing_contract = true;
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
-                // processPurchase(proposal_id, price).then(
                 action(response => {
-                    // const response = {
-                    //     const dummy_response = {
-                    //     buy: {
-                    //         balance_after: 10018.99,
-                    //         buy_price: 10,
-                    //         contract_id: 175376893988,
-                    //         longcode:
-                    //             'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-                    //         payout: 0,
-                    //         purchase_time: 1656351535,
-                    //         shortcode: 'ACC_R_100_10.00_30_1656407458_4810060799_0_150.00',
-                    //         start_time: 1656351535,
-                    //         transaction_id: 350061244728,
-                    //     },
-                    //     echo_req: {
-                    //         buy: '2b88e20f-f976-a380-904d-04db08e10eeb',
-                    //         price: '10.00',
-                    //         req_id: 32,
-                    //     },
-                    //     msg_type: 'buy',
-                    //     req_id: 32,
-                    // };
                     if (!this.is_trade_component_mounted) {
                         this.enablePurchase();
                         this.is_purchasing_contract = false;
@@ -930,29 +906,6 @@ export default class TradeStore extends BaseStore {
         if (!isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
-            // const dummy_proposal = {
-            //     MULTUP: {
-            //         proposal: 1,
-            //         subscribe: 1,
-            //         amount: 10,
-            //         basis: 'stake',
-            //         contract_type: 'MULTUP',
-            //         currency: 'USD',
-            //         symbol: 'frxAUDJPY',
-            //         multiplier: 30,
-            //     },
-            //     MULTDOWN: {
-            //         proposal: 1,
-            //         subscribe: 1,
-            //         amount: 10,
-            //         basis: 'stake',
-            //         contract_type: 'MULTDOWN',
-            //         currency: 'USD',
-            //         symbol: 'frxAUDJPY',
-            //         multiplier: 30,
-            //     },
-            // };
-            // Object.keys(dummy_proposal).forEach(type => {
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
@@ -973,51 +926,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
-        // const response = {
-        // const dummy_response = {
-        //     echo_req: {
-        //         amount: 10,
-        //         basis: 'stake',
-        //         contract_type: 'ACC',
-        //         currency: 'USD',
-        //         duration_unit: 's',
-        //         limit_order: {
-        //             take_profit: 150,
-        //         },
-        //         growth_rate: 0.01,
-        //         product_type: 'basic',
-        //         proposal: 1,
-        //         req_id: 32,
-        //         subscribe: 1,
-        //         symbol: 'R_100',
-        //     },
-        //     msg_type: 'proposal',
-        //     proposal: {
-        //         ask_price: 10,
-        //         date_expiry: 4809974399,
-        //         date_start: 1656350092,
-        //         display_value: '10.00',
-        //         id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-        //         limit_order: {
-        //             take_profit: {
-        //                 display_name: 'Take profit',
-        //                 order_amount: 150,
-        //                 order_date: 1656350092,
-        //                 value: '9503.27',
-        //             },
-        //         },
-        //         longcode:
-        //             'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-        //         growth_rate: 0.01,
-        //         payout: 0,
-        //         spot: 19014.14,
-        //         spot_time: 1656350092,
-        //     },
-        //     req_id: 32,
-        //     subscription: {
-        //         id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-        //     },
-        // };
         const contract_type = response.echo_req.contract_type;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};

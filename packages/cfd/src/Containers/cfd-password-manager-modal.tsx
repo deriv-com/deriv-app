@@ -43,18 +43,20 @@ const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent)
     const [count, setCount] = React.useState<number>(count_from);
 
     React.useEffect(() => {
+        let interval: ReturnType<typeof setTimeout>;
+
         if (count !== 0) {
-            const interval = setTimeout(() => {
+            interval = setTimeout(() => {
                 setCount(count - 1);
             }, 1000);
-
-            return () => clearTimeout(interval);
+        } else {
+            onTimeout();
         }
 
-        onTimeout();
+        return () => {
+            clearTimeout(interval);
+        };
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        return () => {};
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
     return <span className='countdown'>{count}</span>;

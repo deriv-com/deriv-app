@@ -57,7 +57,11 @@ const Confirm = ({ data, error, is_payment_agent_withdraw, onClickBack, onClickC
     ];
 
     return (
-        <div className='cashier__wrapper--align-center'>
+        <div
+            className={classNames('cashier__wrapper--align-center', {
+                confirm: !is_payment_agent_withdraw,
+            })}
+        >
             <Icon icon='IcCashierRedWarning' className='confirm__warning-icon' data_testid='dt_red_warning_icon' />
             <Text
                 as='h2'

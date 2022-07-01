@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, Icon, Popover } from '@deriv/components';
+import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import ApiTokenContext from './api-token-context';
 
-const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left', disableApp, enableApp }) => {
+const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left' }) => {
     const { deleteToken } = React.useContext(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
+    const [is_loading, setIsLoading] = React.useState(false);
     const isMounted = useIsMounted();
     const timeout_ref = React.useRef(null);
 
@@ -17,8 +17,12 @@ const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left', disableApp, en
     const handleNo = () => setIsDeleting(false);
 
     const handleYes = () => {
+        setIsLoading(true);
         deleteToken(token.token).finally(() => {
-            if (isMounted()) setIsDeleting(false);
+            if (isMounted()) {
+                setIsLoading(false);
+                setIsDeleting(false);
+            }
         });
     };
 
@@ -35,24 +39,35 @@ const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left', disableApp, en
 
     return (
         <>
-            <Dialog
-                is_visible={is_deleting}
-                cancel_button_text={localize('Cancel')}
-                confirm_button_text={localize('Yes, delete')}
-                onCancel={handleNo}
-                onConfirm={handleYes}
-                className='da-api-token__dialog'
-                secondary_button_type='button'
-                primary_button_type='button'
-                title='Delete token'
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_closed_on_cancel
-                is_closed_on_confirm
-                portal_element_id='modal_root'
-            >
-                {localize('Are you sure you want to delete this token?')}
-            </Dialog>
+            <Modal is_open={is_deleting} small>
+                <Modal.Body>
+                    <Text as='h1' color='prominent' weight='bold' className='da-api-token__modal-title'>
+                        {localize('Delete token')}
+                    </Text>
+                    <Text as='p' color='prominent ' size='xs' line_height='m'>
+                        {localize('Are you sure you want to delete this token?')}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer className='da-api-token__modal-footer'>
+                    <Button
+                        className='dc-dialog__button'
+                        has_effect
+                        text={localize('Cancel')}
+                        onClick={handleNo}
+                        secondary
+                        large
+                    />
+                    <Button
+                        className='dc-dialog__button'
+                        has_effect
+                        text={localize('Yes, delete')}
+                        onClick={handleYes}
+                        primary
+                        large
+                        is_loading={is_loading}
+                    />
+                </Modal.Footer>
+            </Modal>
             <Popover
                 alignment={popoverAlignment}
                 classNameBubble='dc-clipboard__popover'
@@ -83,7 +98,4 @@ ApiTokenDeleteButton.propTypes = {
     popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
-export default connect(({ ui }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-}))(ApiTokenDeleteButton);
+export default ApiTokenDeleteButton;

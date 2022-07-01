@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
-import { Dialog, Icon, Text, Popover } from '@deriv/components';
+import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const WarningNoteBullet = ({ message }) => (
     <div className='da-api-token__bullet-wrapper'>
@@ -29,29 +28,25 @@ const WarningDialogMessage = () => (
     </>
 );
 
-const ApiTokenClipboard = ({
-    scopes,
-    text_copy,
-    info_message,
-    success_message,
-    popoverAlignment = 'bottom',
-    disableApp,
-    enableApp,
-}) => {
+const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popoverAlignment = 'bottom' }) => {
     const [is_copied, setIsCopied] = React.useState(false);
-    const [is_visible, setIsVisible] = React.useState(false);
+    const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
     let timeout_clipboard = null;
+    let timeout_clipboard_2 = null;
     const has_admin_scope = scopes.includes('Admin');
 
-    const toggleDialogVisibility = event => {
-        setIsVisible(!is_visible);
-        event.stopPropagation();
+    const toggleModalVisibility = () => {
+        setIsModalOpen(!is_modal_open);
     };
 
-    const togglePopupvisibility = () => {
-        setIsPopoverOpen(!is_popover_open);
+    const onMouseEnterHandler = () => {
+        if (!is_copied) setIsPopoverOpen(true);
+    };
+
+    const onMouseLeaveHandler = () => {
+        if (!is_copied) setIsPopoverOpen(false);
     };
 
     const copyToClipboard = text => {
@@ -64,67 +59,69 @@ const ApiTokenClipboard = ({
     };
 
     const onClick = () => {
-        setIsVisible(false);
+        setIsModalOpen(false);
         copyToClipboard(text_copy);
         setIsCopied(true);
         setIsPopoverOpen(true);
         timeout_clipboard = setTimeout(() => {
             if (isMounted()) {
                 setIsPopoverOpen(false);
+            }
+        }, 1900);
+        timeout_clipboard_2 = setTimeout(() => {
+            if (isMounted()) {
                 setIsCopied(false);
             }
-        }, 2000);
+        }, 2050);
+    };
+
+    const onClickHandler = () => {
+        if (has_admin_scope) {
+            toggleModalVisibility();
+        } else onClick();
     };
 
     React.useEffect(() => {
-        return () => clearTimeout(timeout_clipboard);
-    }, [timeout_clipboard]);
+        return () => {
+            clearTimeout(timeout_clipboard);
+            clearTimeout(timeout_clipboard_2);
+        };
+    }, [timeout_clipboard, timeout_clipboard_2]);
 
     return (
         <>
-            <Dialog
-                is_visible={is_visible}
-                confirm_button_text={localize('Ok')}
-                onConfirm={onClick}
-                className='da-api-token__dialog'
-                primary_button_type='button'
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_closed_on_cancel
-                is_closed_on_confirm
-                portal_element_id='modal_root'
-            >
-                <WarningDialogMessage />
-            </Dialog>
+            <Modal is_open={is_modal_open} small>
+                <Modal.Body>
+                    <WarningDialogMessage />
+                </Modal.Body>
+                <Modal.Footer className='da-api-token__modal-footer'>
+                    <Button
+                        className='dc-dialog__button'
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={onClick}
+                        primary
+                        large
+                    />
+                </Modal.Footer>
+            </Modal>
             <Popover
                 alignment={popoverAlignment}
                 classNameBubble='dc-clipboard__popover'
                 message={is_copied ? success_message : info_message}
                 is_open={is_popover_open}
-                relative_render={false}
                 zIndex={9999}
             >
-                {is_copied && (
-                    <Icon
-                        icon='IcCheckmarkCircle'
-                        custom_color='var(--status-success)'
-                        className='dc-clipboard'
-                        size={14}
-                        data_testid='dt_token_copied_icon'
-                    />
-                )}
-                {!is_copied && (
-                    <Icon
-                        icon='IcClipboard'
-                        custom_color='var(--text-prominent)'
-                        className='dc-clipboard'
-                        onClick={has_admin_scope ? toggleDialogVisibility : onClick}
-                        onMouseEnter={togglePopupvisibility}
-                        onMouseLeave={togglePopupvisibility}
-                        size={14}
-                        data_testid='dt_copy_token_icon'
-                    />
-                )}
+                <Icon
+                    icon={`${is_copied ? 'IcCheckmarkCircle' : 'IcClipboard'}`}
+                    custom_color={`${is_copied ? 'var(--status-success)' : 'var(--text-prominent)'}`}
+                    className='dc-clipboard'
+                    size={14}
+                    data_testid={`${is_copied ? 'dt_token_copied_icon' : 'dt_copy_token_icon'}`}
+                    onClick={onClickHandler}
+                    onMouseEnter={onMouseEnterHandler}
+                    onMouseLeave={onMouseLeaveHandler}
+                />
             </Popover>
         </>
     );
@@ -138,7 +135,4 @@ ApiTokenClipboard.propTypes = {
     popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
-export default connect(({ ui }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-}))(ApiTokenClipboard);
+export default ApiTokenClipboard;

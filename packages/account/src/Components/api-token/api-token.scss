@@ -174,14 +174,20 @@
         &-wrapper {
             display: flex;
             margin-bottom: 1.1rem;
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
         &-container {
             margin-top: 1.6rem;
             margin-left: 1rem;
         }
     }
-    &__dialog > div:first-child {
-        width: 44rem;
+    &__modal-title {
+        margin-bottom: 2.4rem;
+    }
+    &__modal-footer {
+        padding: 0 2.4rem 2.4rem !important;
     }
     &__pass-dot {
         background-color: var(--text-prominent);

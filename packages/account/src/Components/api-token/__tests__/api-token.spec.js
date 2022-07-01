@@ -3,12 +3,6 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken from '../api-token';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getPropertyValue: jest.fn().mockReturnValue([]),

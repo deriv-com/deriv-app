@@ -230,6 +230,16 @@
             }
         }
 
+        &-rating {
+            margin-left: auto;
+
+            &--star {
+                > svg {
+                    padding-right: 0.4rem;
+                }
+            }
+        }
+
         .dc-table__header {
             > .orders__table-grid {
                 padding: 0 2.4rem;

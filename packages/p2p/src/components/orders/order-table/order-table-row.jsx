@@ -10,6 +10,7 @@ import { Table, Text, Icon } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import OrdersUserRatingButton from '../orders-user-rating-button';
+import StarRating from 'Components/star-rating/star-rating';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -180,6 +181,20 @@ const OrderRow = ({ style, row: order }) => {
                 <Table.Cell>
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
+                    ) : order.review_details ? (
+                        <div className='orders__table-rating'>
+                            <StarRating
+                                empty_star_className='orders__table-rating--star'
+                                empty_star_icon='IcEmptyStar'
+                                full_star_className='orders__table-rating--star'
+                                full_star_icon='IcFullStar'
+                                initial_value={order.review_details.rating}
+                                is_readonly
+                                number_of_stars={5}
+                                should_allow_hover_effect={false}
+                                star_size={15}
+                            />
+                        </div>
                     ) : (
                         <OrdersUserRatingButton
                             has_full_text={false}

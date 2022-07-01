@@ -139,7 +139,7 @@ const PaymentAgentWithdrawForm = ({
                     values={{ website_name }}
                 />
             </Text>
-            <ErrorDialog error={error} className='payment-agent-withdraw-form__error-dialog' />
+            <ErrorDialog error={error} className='payment-agent-list__error-dialog' />
         </div>
     );
 };

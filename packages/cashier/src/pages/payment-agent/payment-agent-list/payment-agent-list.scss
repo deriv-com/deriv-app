@@ -88,4 +88,26 @@
             min-width: 22.8rem;
         }
     }
+    &__error-dialog {
+        .dc-dialog {
+            &__content {
+                font-size: var(--text-size-s);
+            }
+            &__header--title {
+                font-size: var(--text-size-sm);
+            }
+            @include mobile {
+                &__dialog {
+                    width: 100%;
+                    margin: 0 1.6rem;
+                }
+                &__content {
+                    font-size: var(--text-size-xxs);
+                }
+                &__header--title {
+                    font-size: var(--text-size-xs);
+                }
+            }
+        }
+    }
 }

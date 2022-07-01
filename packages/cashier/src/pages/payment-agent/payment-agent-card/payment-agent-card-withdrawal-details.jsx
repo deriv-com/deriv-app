@@ -146,11 +146,11 @@ const PaymentAgentCardWithdrawalDetails = ({
                             <Button type='submit' is_disabled={!isValid || isSubmitting} primary large>
                                 <Localize i18n_default_text='Continue' />
                             </Button>
-                            <ErrorDialog error={error} />
                         </Form>
                     );
                 }}
             </Formik>
+            <ErrorDialog error={error} className='payment-agent-list__error-dialog' />
         </div>
     );
 };

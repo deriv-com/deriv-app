@@ -53,6 +53,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     toggleJurisdictionModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     is_fully_authenticated: boolean;
+    is_pending_authentication: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
 };
 
@@ -68,6 +69,7 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     trading_platform_available_accounts,
     is_fully_authenticated,
+    is_pending_authentication,
     openPasswordModal,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState<boolean>(false);
@@ -126,6 +128,7 @@ const JurisdictionModal = ({
                                 poi_status={poi_status}
                                 is_eu={is_eu}
                                 is_fully_authenticated={is_fully_authenticated}
+                                is_pending_authentication={is_pending_authentication}
                                 checked={checked}
                                 setChecked={setChecked}
                             />
@@ -164,6 +167,7 @@ const JurisdictionModal = ({
                                 poi_status={poi_status}
                                 is_eu={is_eu}
                                 is_fully_authenticated={is_fully_authenticated}
+                                is_pending_authentication={is_pending_authentication}
                                 checked={checked}
                                 setChecked={setChecked}
                             />
@@ -176,20 +180,20 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
-    account_type: modules.cfd.account_type.type,
-    authentication_status: client.authentication_status,
-    disableApp: ui.disableApp,
+    is_eu: client.is_eu,
     enableApp: ui.enableApp,
+    disableApp: ui.disableApp,
+    residence: client.residence,
+    is_logged_in: client.is_logged_in,
+    is_eu_country: client.is_eu_country,
+    landing_companies: client.landing_companies,
+    account_type: modules.cfd.account_type.type,
+    is_loading: client.is_populating_mt5_account_list,
+    authentication_status: client.authentication_status,
+    is_fully_authenticated: client.is_fully_authenticated,
+    is_pending_authentication: client.is_pending_authentication,
+    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
+    jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
-    is_loading: client.is_populating_mt5_account_list,
-    is_eu: client.is_eu,
-    is_uk: client.is_uk,
-    is_eu_country: client.is_eu_country,
-    is_logged_in: client.is_logged_in,
-    landing_companies: client.landing_companies,
-    is_fully_authenticated: client.is_fully_authenticated,
-    residence: client.residence,
-    jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
 }))(JurisdictionModal);

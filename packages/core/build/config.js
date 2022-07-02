@@ -166,7 +166,7 @@ const generateSWConfig = is_release => ({
             options: {
                 cacheName: 'assets',
                 expiration: {
-                    maxEntries: 20,
+                    maxEntries: 15,
                 },
             },
         },

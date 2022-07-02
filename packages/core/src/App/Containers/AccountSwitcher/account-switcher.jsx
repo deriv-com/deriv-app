@@ -130,11 +130,7 @@ const AccountSwitcher = props => {
 
         if (props.is_eu && !has_required_account) {
             closeAccountsDialog();
-            props.openAccountNeededModal(
-                account_type === 'synthetic' ? props.standpoint.gaming_company : props.standpoint.financial_company,
-                account_type === 'synthetic' ? localize('Deriv Synthetic') : localize('Deriv Multipliers'),
-                account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('real CFDs')
-            );
+            props.openDerivRealAccountNeededModal();
         } else {
             if (should_redirect_fstp_password)
                 sessionStorage.setItem(
@@ -975,6 +971,7 @@ const account_switcher = withRouter(
         has_maltainvest_account: client.has_maltainvest_account,
         has_active_real_account: client.has_active_real_account,
         openAccountNeededModal: ui.openAccountNeededModal,
+        openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
         logoutClient: client.logout,
         landing_companies: client.landing_companies,
         upgradeable_landing_companies: client.upgradeable_landing_companies,

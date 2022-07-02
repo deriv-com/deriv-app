@@ -63,7 +63,6 @@ const JurisdictionModal = ({
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
-    platform,
     is_eu,
     jurisdiction_selected_card,
     toggleJurisdictionModal,
@@ -93,11 +92,27 @@ const JurisdictionModal = ({
 
     const onSelectRealAccount = () => {
         toggleJurisdictionModal();
+
         const type_of_account = {
             category: 'real',
             type: `${account_type}`,
         };
-        openPasswordModal(type_of_account);
+
+        switch (jurisdiction_selected_card) {
+            case 'svg':
+                openPasswordModal(type_of_account);
+                break;
+            case 'labuan':
+                return;
+            case 'bvi':
+                return;
+            case 'mf':
+                return;
+            case 'vanuatu':
+                return;
+            default:
+                return;
+        }
     };
 
     return (
@@ -136,9 +151,7 @@ const JurisdictionModal = ({
                                     }
                                     primary
                                     onClick={() => {
-                                        if (jurisdiction_selected_card === 'SVG') {
-                                            onSelectRealAccount();
-                                        }
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     <Localize i18n_default_text='Next' />

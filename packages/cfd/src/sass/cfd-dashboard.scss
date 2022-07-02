@@ -438,10 +438,13 @@
 
 .cfd-jurisdiction-card__wrapper {
     padding: 0;
+    margin-top: 2.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    @include desktop {
-        display: flex;
-        justify-content: center;
+    @include mobile {
+        flex-direction: column;
     }
 }
 
@@ -449,6 +452,7 @@
     border: solid 1px var(--border-normal);
     border-radius: 0.8rem;
     display: flex;
+    justify-content: center;
     flex-direction: column;
     min-height: 38rem;
     width: 27.6em;
@@ -492,12 +496,14 @@
         }
     }
 
-    & > h1 {
+    & > h2 {
         margin-top: 2.4rem;
-        font-size: 24px;
-        font-weight: bold;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 30px;
         color: #333333;
         margin-left: 1rem;
+        margin-left: 1.6rem;
     }
 
     &__footer {
@@ -549,21 +555,15 @@
         }
     }
 
-    &__bullet {
-        flex: none;
+    &__bullet-wrapper {
+        display: flex;
+        margin: 1.9rem 2.4rem 0.8rem 2.6rem;
+        line-height: 1.5;
+        font-size: 14px;
+        line-height: 20px;
 
-        &-wrapper {
-            display: flex;
-            margin-bottom: 0.8rem;
-            line-height: 1.5;
-            margin-top: 1.9rem;
-            font-size: 14px;
-            line-height: 20px;
-
-            &--checkmark {
-                margin-left: 0.5rem;
-                margin-right: 1rem;
-            }
+        &--checkmark {
+            margin-right: 1rem;
         }
     }
 

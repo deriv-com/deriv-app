@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { CFD_PLATFORMS } from '@deriv/shared';
@@ -102,14 +102,10 @@ const JurisdictionModal = ({
 
     return (
         <>
-            <div
-                className='cfd-compare-accounts-modal__wrapper'
-                style={{ marginTop: platform === CFD_PLATFORMS.DXTRADE ? '5rem' : '2.4rem' }}
-            >
+            <div>
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal
-                            className='cfd-dashboard__compare-accounts'
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_jurisdiction_modal_visible}
@@ -145,7 +141,7 @@ const JurisdictionModal = ({
                                         }
                                     }}
                                 >
-                                    Next
+                                    <Localize i18n_default_text='Next' />
                                 </Button>
                             </Modal.Footer>
                         </Modal>
@@ -153,10 +149,26 @@ const JurisdictionModal = ({
                     <MobileWrapper>
                         <MobileDialog
                             portal_element_id='deriv_app'
-                            title={localize('Compare accounts')}
-                            wrapper_classname='cfd-dashboard__compare-accounts'
+                            title={modal_title}
                             visible={is_jurisdiction_modal_visible}
                             onClose={toggleJurisdictionModal}
+                            footer={
+                                <Button
+                                    style={{ width: '100%' }}
+                                    disabled={
+                                        jurisdiction_selected_card === undefined ||
+                                        (is_eu && is_fully_authenticated && !checked)
+                                    }
+                                    primary
+                                    onClick={() => {
+                                        if (jurisdiction_selected_card === 'SVG') {
+                                            onSelectRealAccount();
+                                        }
+                                    }}
+                                >
+                                    <Localize i18n_default_text='Next' />
+                                </Button>
+                            }
                         >
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}

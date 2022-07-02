@@ -70,7 +70,7 @@ const JurisdictionCard = ({
     };
 
     const Checkmark = () => (
-        <Icon icon='IcCheckmark' className='cfd-jurisdiction-card__bullet-wrapper--checkmark' color='green' size={16} />
+        <Icon icon='IcCheckmark' className='cfd-jurisdiction-card__bullet-wrapper--checkmark' color='green' size={18} />
     );
 
     const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
@@ -138,18 +138,22 @@ const JurisdictionCard = ({
                         </p>
                     </div>
                 )}
-                <h1>
+                <h2>
                     <Localize
                         i18n_default_text={
                             jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].header
                         }
                     />
-                </h1>
+                </h2>
 
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].contents.map(item => (
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <Checkmark />
-                        <Localize i18n_default_text={item} />
+                        <div>
+                            <Checkmark />
+                        </div>
+                        <Text as='p' size='xs' line_height='xs'>
+                            <Localize i18n_default_text={item} />
+                        </Text>
                     </div>
                 ))}
 

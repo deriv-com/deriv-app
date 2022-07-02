@@ -151,12 +151,11 @@ const generateSWConfig = is_release => ({
         /^assetlinks.json/,
         /^.well-known\//,
         /^account\//,
-        /^js\/smartcharts\//,
+        /^js\//,
         /^bot\//,
         /^media\//,
         /^trader\//,
         /^cashier\//,
-        /^js\/core\.[a-z_]*-json\./,
         /^appstore\//,
         /^cfd\//,
     ],
@@ -165,7 +164,24 @@ const generateSWConfig = is_release => ({
             urlPattern: /public\/(images|sprites)\/(?!.*favicons).*$/,
             handler: 'CacheFirst',
             options: {
-                cacheName: 'images',
+                cacheName: 'assets',
+                expiration: {
+                    maxEntries: 20,
+                },
+            },
+        },
+        {
+            urlPattern: /js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/,
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'core-js-files',
+            },
+        },
+        {
+            urlPattern: /(account|appstore|bot|cfd|trader)\//,
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'packages-js-files',
                 expiration: {
                     maxEntries: 20,
                 },

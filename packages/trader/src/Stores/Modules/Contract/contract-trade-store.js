@@ -1,4 +1,4 @@
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, makeObservable, override } from 'mobx';
 import { isDesktop, isEnded, isMultiplierContract, LocalStore } from '@deriv/shared';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
 import ContractStore from './contract-store';
@@ -8,18 +8,37 @@ import BaseStore from '../../base-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
-    @observable.shallow contracts = [];
+    contracts = [];
     contracts_map = {};
-    @observable has_error = false;
-    @observable error_message = '';
+    has_error = false;
+    error_message = '';
 
     // Chart specific observables
-    @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
-    @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
+    granularity = +LocalStore.get('contract_trade.granularity') || 0;
+    chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
     constructor({ root_store }) {
         super({
             root_store,
+        });
+
+        makeObservable(this, {
+            contracts: observable.shallow,
+            has_error: observable,
+            error_message: observable,
+            granularity: observable,
+            chart_type: observable,
+            updateChartType: action.bound,
+            updateGranularity: action.bound,
+            markers_array: computed,
+            addContract: action.bound,
+            removeContract: action.bound,
+            accountSwitchListener: action.bound,
+            onUnmount: override,
+            updateProposal: action.bound,
+            last_contract: computed,
+            clearError: action.bound,
+            getContractById: action.bound,
         });
 
         this.onSwitchAccount(this.accountSwitchListener);
@@ -29,13 +48,11 @@ export default class ContractTradeStore extends BaseStore {
     // ----- Actions -----
     // -------------------
 
-    @action.bound
     updateChartType(type) {
         LocalStore.set('contract_trade.chart_type', type);
         this.chart_type = type;
     }
 
-    @action.bound
     updateGranularity(granularity) {
         const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
@@ -84,7 +101,6 @@ export default class ContractTradeStore extends BaseStore {
             });
     };
 
-    @computed
     get markers_array() {
         const markers = this.applicable_contracts()
             .map(c => c.marker)
@@ -96,7 +112,6 @@ export default class ContractTradeStore extends BaseStore {
         return markers;
     }
 
-    @action.bound
     addContract({
         barrier,
         contract_id,
@@ -130,13 +145,11 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
-    @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
         delete this.contracts_map[contract_id];
     }
 
-    @action.bound
     accountSwitchListener() {
         if (this.has_error) {
             this.clearError();
@@ -145,14 +158,12 @@ export default class ContractTradeStore extends BaseStore {
         return Promise.resolve();
     }
 
-    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         // TODO: don't forget the tick history when switching to contract-replay-store
     }
 
     // Called from portfolio
-    @action.bound
     updateProposal(response) {
         if ('error' in response) {
             this.has_error = true;
@@ -171,20 +182,17 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
-    @computed
     get last_contract() {
         const applicable_contracts = this.applicable_contracts();
         const length = applicable_contracts.length;
         return length > 0 ? applicable_contracts[length - 1] : {};
     }
 
-    @action.bound
     clearError() {
         this.error_message = '';
         this.has_error = false;
     }
 
-    @action.bound
     getContractById(contract_id) {
         return (
             this.contracts_map[contract_id] ||

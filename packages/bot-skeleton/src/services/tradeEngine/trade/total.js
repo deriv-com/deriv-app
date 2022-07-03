@@ -1,9 +1,8 @@
 import { getRoundedNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { info, log } from '../utils/broadcast';
 import { log_types } from '../../../constants/messages';
 import { $scope } from './state';
-import { createError } from '../utils/error';
+import { createError, info, log } from '../utils';
 
 const skeleton = {
     totalProfit: 0,

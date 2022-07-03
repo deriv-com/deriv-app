@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { notify } from '../../utils/broadcast';
+import { notify } from '../../utils';
 
 export const notifyTelegram = (access_token, chat_id, text) => {
     const url = `https://api.telegram.org/bot${access_token}/sendMessage`;

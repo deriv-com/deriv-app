@@ -5,14 +5,37 @@ import { checkProposalReady, observeProposals, makeProposals } from './proposal'
 import { watchTicks } from './ticks';
 import { checkLimits, clearStatistics } from './total';
 import Store, { constants, initial_scope, start, $scope } from './state';
-import { expectInitArg } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
-import { createError } from '../utils/error';
+import { createError } from '../utils';
 
 /* The watchScope function is called randomly and resets the prevTick
  * which leads to the same problem we try to solve. So prevTick is isolated
  */
 let prevTick;
+
+const expectOptions = options => {
+    const { symbol, contractTypes } = options;
+
+    if (!symbol) {
+        throw createError('OptionError', localize('Underlying market is not selected'));
+    }
+
+    if (!contractTypes[0]) {
+        throw createError('OptionError', localize('Contract type is not selected'));
+    }
+};
+
+export const expectInitArg = args => {
+    const [token, options] = args;
+
+    if (!token) {
+        throw createError('LoginError', localize('Please login'));
+    }
+
+    expectOptions(options);
+
+    return args;
+};
 
 const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     // in case watch is called after stop is fired

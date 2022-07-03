@@ -1,8 +1,7 @@
 import { getRoundedNumber, formatTime } from '@deriv/shared';
 import { updateTotals } from './total';
 import Store, { sell, openContractReceived, $scope } from './state';
-import { doUntilDone } from '../utils';
-import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
+import { doUntilDone, contractStatus, contract as broadcastContract } from '../utils';
 import ws from '../../api/ws';
 import DBotStore from '../../../scratch/dbot-store';
 

@@ -2,13 +2,20 @@ import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
 import Store, { constants, $scope } from './state';
-import { expectPositiveInteger } from '../utils/sanitize';
+import { isPositiveInteger, createError } from '../utils';
 import api from '../../api/ws';
 import TicksService from '../../api/ticks_service';
 import { observer as globalObserver } from '../../../utils/observer';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);
+
+const expectPositiveInteger = (num, msg) => {
+    if (!isPositiveInteger(num)) {
+        throw createError('PositiveIntegerExpected', msg);
+    }
+    return num;
+};
 
 export const checkDirection = dir => {
     return new Promise(resolve =>

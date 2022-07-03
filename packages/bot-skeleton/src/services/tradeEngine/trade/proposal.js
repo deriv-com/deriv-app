@@ -1,9 +1,48 @@
+import { isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope } from './state';
 import ws from '../../api/ws';
 import { getUUID } from '../../api/ticks_service';
-import { tradeOptionToProposal, doUntilDone } from '../utils';
+import { doUntilDone } from '../utils';
 import { observer as globalObserver } from '../../../utils/observer';
+
+const tradeOptionToProposal = (trade_option, purchase_reference) =>
+    trade_option.contractTypes.map(type => {
+        const proposal = {
+            amount: trade_option.amount,
+            basis: trade_option.basis,
+            contract_type: type,
+            currency: trade_option.currency,
+            duration: trade_option.duration,
+            duration_unit: trade_option.duration_unit,
+            multiplier: trade_option.multiplier,
+            passthrough: {
+                contract_type: type,
+                purchase_reference,
+            },
+            proposal: 1,
+            symbol: trade_option.symbol,
+        };
+        if (trade_option.prediction !== undefined) {
+            proposal.selected_tick = trade_option.prediction;
+        }
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
+            proposal.barrier = trade_option.prediction;
+        } else if (trade_option.barrierOffset !== undefined) {
+            proposal.barrier = trade_option.barrierOffset;
+        }
+        if (trade_option.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = trade_option.secondBarrierOffset;
+        }
+        if (['MULTUP', 'MULTDOWN'].includes(type)) {
+            proposal.duration = undefined;
+            proposal.duration_unit = undefined;
+        }
+        if (!isEmptyObject(trade_option.limit_order)) {
+            proposal.limit_order = trade_option.limit_order;
+        }
+        return proposal;
+    });
 
 const requestProposals = () => {
     // Since there are two proposals (in most cases), an error may be logged twice, to avoid this

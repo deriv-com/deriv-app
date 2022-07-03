@@ -1,4 +1,4 @@
-import { action, when } from 'mobx';
+import { action, when, makeObservable } from 'mobx';
 import { Pushwoosh } from 'web-push-notifications';
 import { getAppId, getBrandWebsiteName, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -12,12 +12,16 @@ export default class PushwooshStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
+
+        makeObservable(this, {
+            init: action.bound,
+            sendTags: action.bound,
+        });
     }
 
     /**
      * Pushes initialize event to pushwoosh
      */
-    @action.bound
     init = async () => {
         if (!this.is_applicable && this.has_initialized) return;
         await when(() => this.root_store.common.is_network_online);
@@ -55,7 +59,6 @@ export default class PushwooshStore extends BaseStore {
     /**
      * Set tags containing client to pushwoosh
      */
-    @action.bound
     sendTags = api => {
         api.getTags()
             .then(result => {

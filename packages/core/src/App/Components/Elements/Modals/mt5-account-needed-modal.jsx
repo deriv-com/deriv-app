@@ -52,9 +52,18 @@ const MT5AccountNeededModal = ({
 };
 
 MT5AccountNeededModal.propTypes = {
+    account_needed_modal_props: PropTypes.shape({
+        target: PropTypes.string,
+        target_label: PropTypes.string,
+        target_dmt5_label: PropTypes.string,
+    }),
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    is_eu: PropTypes.bool,
     is_open: PropTypes.bool,
-    required_account: PropTypes.object,
     onClose: PropTypes.func,
+    openRealAccountSignup: PropTypes.func,
+    required_account: PropTypes.object,
 };
 
 export default connect(({ client, ui }) => ({

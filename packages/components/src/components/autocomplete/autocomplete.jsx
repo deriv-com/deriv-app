@@ -310,9 +310,8 @@ Autocomplete.defaultProps = {
     not_found_text: 'No results found',
 };
 
-export default Autocomplete;
-
 Autocomplete.propTypes = {
+    className: PropTypes.string,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         PropTypes.arrayOf(
@@ -330,3 +329,5 @@ Autocomplete.propTypes = {
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,
 };
+
+export default Autocomplete;

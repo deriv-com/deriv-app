@@ -78,6 +78,8 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
 
 PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
+    toggleDrawer: PropTypes.func,
+    app_routing_history: PropTypes.array,
 };
 
 export { PlatformSwitcher as TestedPlatformSwitcher };

@@ -31,8 +31,13 @@ const AccountSwitcherMobile = props => {
 
 AccountSwitcherMobile.propTypes = {
     children: PropTypes.any,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    is_visible: PropTypes.bool,
+    is_upgrade_enabled: PropTypes.bool,
     onClose: PropTypes.func,
     title: PropTypes.string,
+    toggle: PropTypes.func,
     visible: PropTypes.bool,
     wrapperClassName: PropTypes.string,
 };

@@ -7,12 +7,25 @@ import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
+type TAvailableAccountAPI = [
+    {
+        market_type: string;
+        name: string;
+        requirements: {
+            signup: Array<string>;
+            withdrawal: Array<string>;
+        };
+        shortcode: string;
+        sub_account_type: string;
+    }
+];
+
 type TJurisdictionModalContent = {
     account_type: string;
     jurisdiction_selected_card: string | undefined;
     selectTypeOfCard: (card_type: string | undefined) => string | undefined;
-    synthetic_available_accounts: any[];
-    financial_available_accounts: any[];
+    synthetic_available_accounts: TAvailableAccountAPI;
+    financial_available_accounts: TAvailableAccountAPI;
     poa_status: string;
     poi_status: string;
     is_eu: boolean;
@@ -24,8 +37,8 @@ type TJurisdictionModalContent = {
 
 type TJurisdictionCard = {
     jurisdiction_selected_card: string | undefined;
-    synthetic_available_accounts: any[];
-    financial_available_accounts: any[];
+    synthetic_available_accounts: TAvailableAccountAPI;
+    financial_available_accounts: TAvailableAccountAPI;
     account_type: string;
     poa_status: string;
     poi_status: string;
@@ -56,10 +69,10 @@ const JurisdictionCard = ({
             : number_of_financial_accounts_to_be_shown
     );
 
-    const poa_verified = poa_status === 'verified';
-    const poa_none = poa_status === 'none';
-    const poi_verified = poi_status === 'verified';
-    const poi_none = poi_status === 'none';
+    const poa_verified = poa_status === PoaStatusCodes.verified;
+    const poa_none = poa_status === PoaStatusCodes.none;
+    const poi_verified = poi_status === PoaStatusCodes.verified;
+    const poi_none = poi_status === PoaStatusCodes.none;
 
     const cardSelection = (cardType: string) => {
         if (jurisdiction_selected_card === cardType) {
@@ -177,8 +190,11 @@ const JurisdictionModalContent = ({
     checked,
     setChecked,
 }: TJurisdictionModalContent) => {
-    const poa_none = poa_status === 'none';
-    const poi_none = poi_status === 'none';
+    const poa_none = poa_status === PoaStatusCodes.none;
+    const poi_none = poi_status === PoaStatusCodes.none;
+
+    console.log('synthethic', synthetic_available_accounts);
+    console.log('financial', financial_available_accounts);
 
     const cardsToBeShown = (type_of_card: string) => {
         const is_available =

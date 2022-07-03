@@ -138,9 +138,6 @@ const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
     exclude: [
         /CNAME$/,
-        /index\.html$/,
-        /404\.html$/,
-        /^localstorage-sync\.html$/,
         /\.map$/,
         /sitemap\.xml$/,
         /robots\.txt$/,
@@ -185,6 +182,13 @@ const generateSWConfig = is_release => ({
                 expiration: {
                     maxEntries: 20,
                 },
+            },
+        },
+        {
+            urlPattern: /^(index|404|bot|localstorage-sync)\.html$/,
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'html-files',
             },
         },
     ],

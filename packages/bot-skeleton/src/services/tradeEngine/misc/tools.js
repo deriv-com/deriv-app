@@ -1,4 +1,4 @@
-import { observer as globalObserver } from '../../../../utils/observer';
+import { observer as globalObserver } from '../../../utils/observer';
 
 export const notify = args => globalObserver.emit('ui.log.notify', args);
 

@@ -1,6 +1,6 @@
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
-import getInterface from './tradeEngine/Interface';
+import getInterface from './Interface';
 import { unrecoverable_errors } from '../constants/messages';
 import { observer as globalObserver } from '../utils/observer';
 import ws from './api/ws';

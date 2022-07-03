@@ -2,10 +2,10 @@ import { subscribeToOpenContract } from './open-contract';
 import { clearProposals, renewProposalsOnPurchase, selectProposal } from './proposal';
 import { updateAndReturnTotalRuns } from './total';
 import Store, { constants, purchaseSuccessful, $scope } from './state';
-import ws from '../../api/ws';
+import ws from '../api/ws';
 import { recoverFromError, doUntilDone, contractStatus, info, log } from './utils';
-import { log_types } from '../../../constants/messages';
-import { observer as globalObserver } from '../../../utils/observer';
+import { log_types } from '../../constants/messages';
+import { observer as globalObserver } from '../../utils/observer';
 
 let delayIndex = 0;
 

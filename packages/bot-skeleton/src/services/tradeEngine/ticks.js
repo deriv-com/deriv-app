@@ -3,9 +3,9 @@ import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
 import Store, { constants, $scope } from './state';
 import { isPositiveInteger, createError } from './utils';
-import api from '../../api/ws';
-import TicksService from '../../api/ticks_service';
-import { observer as globalObserver } from '../../../utils/observer';
+import api from '../api/ws';
+import TicksService from '../api/ticks_service';
+import { observer as globalObserver } from '../../utils/observer';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);

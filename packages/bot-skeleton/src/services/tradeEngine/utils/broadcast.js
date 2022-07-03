@@ -1,5 +1,5 @@
-import { observer as globalObserver } from '../../../../utils/observer';
-import { config } from '../../../../constants/config';
+import { observer as globalObserver } from '../../../utils/observer';
+import { config } from '../../../constants/config';
 
 export const contract = c => globalObserver.emit('bot.contract', c);
 

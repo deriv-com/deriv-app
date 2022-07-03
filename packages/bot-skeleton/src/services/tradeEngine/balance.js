@@ -1,6 +1,6 @@
 import { getFormattedText } from '@deriv/shared';
 import { info } from './utils';
-import ws from '../../api/ws';
+import ws from '../api/ws';
 import Store, { updateBalanceAction, $scope } from './state';
 
 let balance_string = '';

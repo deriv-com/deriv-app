@@ -37,7 +37,7 @@ import {
     watch,
     $scope,
     indicators,
-} from './trade';
+} from './tradeEngine';
 
 const getInterface = () => {
     return {

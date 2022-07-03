@@ -4,12 +4,9 @@ import { observeOpenContract } from './open-contract';
 import { checkProposalReady, observeProposals, makeProposals } from './proposal';
 import { watchTicks } from './ticks';
 import { checkLimits, clearStatistics } from './total';
-import Store from './state';
-import { start } from './state/actions';
-import * as constants from './state/constants';
+import Store, { constants, initial_scope, start, $scope } from './state';
 import { expectInitArg } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
-import $scope, { initial_scope } from './state/scope';
 import { createError } from '../utils/error';
 
 /* The watchScope function is called randomly and resets the prevTick

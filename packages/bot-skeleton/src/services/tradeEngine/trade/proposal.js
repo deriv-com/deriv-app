@@ -1,9 +1,7 @@
 import { localize } from '@deriv/translations';
-import Store from './state';
-import { proposalsReady, clearProposals as clearProposalsAction } from './state/actions';
+import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope } from './state';
 import ws from '../../api/ws';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
-import $scope from './state/scope';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const requestProposals = () => {

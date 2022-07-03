@@ -1,12 +1,9 @@
 import { subscribeToOpenContract } from './open-contract';
 import { clearProposals, renewProposalsOnPurchase, selectProposal } from './proposal';
 import { updateAndReturnTotalRuns } from './total';
-import Store from './state';
-import { purchaseSuccessful } from './state/actions';
-import { BEFORE_PURCHASE } from './state/constants';
+import Store, { constants, purchaseSuccessful, $scope } from './state';
 import ws from '../../api/ws';
 import { contractStatus, info, log } from '../utils/broadcast';
-import $scope from './state/scope';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -15,7 +12,7 @@ let delayIndex = 0;
 
 export const purchase = contract_type => {
     // Prevent calling purchase twice
-    if (Store.getState().single.scope !== BEFORE_PURCHASE) {
+    if (Store.getState().single.scope !== constants.BEFORE_PURCHASE) {
         return Promise.resolve();
     }
 
@@ -67,7 +64,7 @@ export const purchase = contract_type => {
 
             const unsubscribe = Store.subscribe(() => {
                 const { scope, proposalsReady } = Store.getState().single;
-                if (scope === BEFORE_PURCHASE && proposalsReady) {
+                if (scope === constants.BEFORE_PURCHASE && proposalsReady) {
                     makeDelay().then(() => globalObserver.emit('REVERT', 'before'));
                     unsubscribe();
                 }

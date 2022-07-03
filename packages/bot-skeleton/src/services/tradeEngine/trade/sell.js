@@ -1,7 +1,5 @@
 import { waitForAfter } from './open-contract';
-import Store from './state';
-import { DURING_PURCHASE } from './state/constants';
-import $scope from './state/scope';
+import Store, { constants, $scope } from './state';
 import { contractStatus, log } from '../utils/broadcast';
 import ws from '../../api/ws';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
@@ -17,7 +15,7 @@ export const sellAtMarket = () => {
     globalObserver.emit('bot.sell');
 
     // Prevent calling sell twice
-    if (Store.getState().single.scope !== DURING_PURCHASE) {
+    if (Store.getState().single.scope !== constants.DURING_PURCHASE) {
         return Promise.resolve();
     }
 

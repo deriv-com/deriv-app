@@ -64,4 +64,4 @@ export {
     updateTotals,
 } from './total';
 
-export { default as $scope } from './state/scope';
+export { $scope } from './state';

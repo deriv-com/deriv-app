@@ -1,9 +1,7 @@
 import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
-import Store from './state';
-import $scope from './state/scope';
-import * as constants from './state/constants';
+import Store, { constants, $scope } from './state';
 import { getDirection, getLastDigit as getLastDigitHelpers } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import api from '../../api/ws';

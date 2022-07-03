@@ -27,10 +27,8 @@ export const initial_scope = {
     initArgs: {},
 };
 
-export const createScope = () => {
+const createScope = () => {
     return initial_scope;
 };
 
-const $scope = createScope();
-
-export default $scope;
+export const $scope = createScope();

@@ -172,7 +172,6 @@ const CFDAccountCard = ({
     is_eu,
     onHover,
     platform,
-    specs,
     title,
     type,
     onSelectAccount,
@@ -182,6 +181,8 @@ const CFDAccountCard = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
+    //@ts-ignore
+    console.log(existing_data?.map(acc => acc.market_type));
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
     const has_popular_banner: boolean =

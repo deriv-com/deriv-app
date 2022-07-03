@@ -193,9 +193,6 @@ const JurisdictionModalContent = ({
     const poa_none = poa_status === PoaStatusCodes.none;
     const poi_none = poi_status === PoaStatusCodes.none;
 
-    console.log('synthethic', synthetic_available_accounts);
-    console.log('financial', financial_available_accounts);
-
     const cardsToBeShown = (type_of_card: string) => {
         const is_available =
             account_type === 'synthetic'

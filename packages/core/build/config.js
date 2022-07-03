@@ -136,26 +136,7 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [
-        /CNAME$/,
-        /\.map$/,
-        /sitemap\.xml$/,
-        /robots\.txt$/,
-        /manifest\.json$/,
-        /^public\//,
-        /^favicon\.ico$/,
-        /^apple-app-site-association/,
-        /^assetlinks.json/,
-        /^.well-known\//,
-        /^account\//,
-        /^js\//,
-        /^bot\//,
-        /^media\//,
-        /^trader\//,
-        /^cashier\//,
-        /^appstore\//,
-        /^cfd\//,
-    ],
+    exclude: [/^(?!css).*/],
     runtimeCaching: [
         {
             urlPattern: /^public\/(images|sprites)\/(?!.*favicons).*$/,

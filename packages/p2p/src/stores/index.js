@@ -10,14 +10,14 @@ import SendbirdStore from './sendbird-store';
 
 class RootStore {
     constructor() {
-        this.general_store = new GeneralStore(this); // Leave at the top!
-        this.advertiser_page_store = new AdvertiserPageStore(this);
-        this.buy_sell_store = new BuySellStore(this);
-        this.my_ads_store = new MyAdsStore(this);
-        this.my_profile_store = new MyProfileStore(this);
-        this.order_store = new OrderStore(this);
-        this.order_details_store = new OrderDetailsStore(this);
-        this.sendbird_store = new SendbirdStore(this);
+        this.general_store = new GeneralStore({ root_store: this }); // Leave at the top!
+        this.advertiser_page_store = new AdvertiserPageStore({ root_store: this });
+        this.buy_sell_store = new BuySellStore({ root_store: this });
+        this.my_ads_store = new MyAdsStore({ root_store: this });
+        this.my_profile_store = new MyProfileStore({ root_store: this });
+        this.order_store = new OrderStore({ root_store: this });
+        this.order_details_store = new OrderDetailsStore({ root_store: this });
+        this.sendbird_store = new SendbirdStore({ root_store: this });
     }
 }
 

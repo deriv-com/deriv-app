@@ -2,7 +2,7 @@ import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
 import Store, { constants, $scope } from './state';
-import { isPositiveInteger, createError } from '../utils';
+import { isPositiveInteger, createError } from './utils';
 import api from '../../api/ws';
 import TicksService from '../../api/ticks_service';
 import { observer as globalObserver } from '../../../utils/observer';

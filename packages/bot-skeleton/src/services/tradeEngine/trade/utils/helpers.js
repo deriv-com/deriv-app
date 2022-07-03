@@ -1,7 +1,7 @@
 import { findValueByKeyRecursively } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
-import { observer as globalObserver } from '../../../utils/observer';
+import { observer as globalObserver } from '../../../../utils/observer';
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;

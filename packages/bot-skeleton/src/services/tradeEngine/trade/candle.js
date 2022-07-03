@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { createError, isPositiveNumber, isPositiveInteger } from '../utils';
+import { createError, isPositiveNumber, isPositiveInteger } from './utils';
 
 const isCandle = candle =>
     candle instanceof Object &&

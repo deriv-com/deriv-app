@@ -6,7 +6,7 @@ import { watchTicks } from './ticks';
 import { checkLimits, clearStatistics } from './total';
 import Store, { constants, initial_scope, start, $scope } from './state';
 import { observer as globalObserver } from '../../../utils/observer';
-import { createError } from '../utils';
+import { createError } from './utils';
 
 /* The watchScope function is called randomly and resets the prevTick
  * which leads to the same problem we try to solve. So prevTick is isolated

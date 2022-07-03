@@ -1,5 +1,5 @@
 import { observeBalance } from './balance';
-import { doUntilDone } from '../utils';
+import { doUntilDone } from './utils';
 import { observer as globalObserver } from '../../../utils/observer';
 import api from '../../api/ws';
 import { $scope } from './state';

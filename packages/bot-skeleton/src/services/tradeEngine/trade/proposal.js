@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope } from './state';
 import ws from '../../api/ws';
 import { getUUID } from '../../api/ticks_service';
-import { doUntilDone } from '../utils';
+import { doUntilDone } from './utils';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const tradeOptionToProposal = (trade_option, purchase_reference) =>

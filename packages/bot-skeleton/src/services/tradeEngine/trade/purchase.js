@@ -3,7 +3,7 @@ import { clearProposals, renewProposalsOnPurchase, selectProposal } from './prop
 import { updateAndReturnTotalRuns } from './total';
 import Store, { constants, purchaseSuccessful, $scope } from './state';
 import ws from '../../api/ws';
-import { recoverFromError, doUntilDone, contractStatus, info, log } from '../utils';
+import { recoverFromError, doUntilDone, contractStatus, info, log } from './utils';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 

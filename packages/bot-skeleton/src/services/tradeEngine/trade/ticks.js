@@ -2,7 +2,6 @@ import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
 import Store, { constants, $scope } from './state';
-import { getDirection, getLastDigit as getLastDigitHelpers } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import api from '../../api/ws';
 import TicksService from '../../api/ticks_service';
@@ -17,8 +16,29 @@ export const checkDirection = dir => {
     );
 };
 
+export const getDirection = ticks => {
+    const { length } = ticks;
+    const [tickOld, tickNew] = ticks.slice(-2);
+
+    let direction = '';
+    if (length >= 2) {
+        direction = tickOld.quote < tickNew.quote ? 'rise' : direction;
+        direction = tickOld.quote > tickNew.quote ? 'fall' : direction;
+    }
+
+    return direction;
+};
+
 export const getLastDigit = () => {
     return new Promise(resolve => getLastTick(false, true).then(tick => resolve(getLastDigitHelpers(tick))));
+};
+
+export const getLastDigitHelpers = tick => {
+    let number_string = tick;
+    if (typeof number_string === 'number') {
+        number_string = String(number_string);
+    }
+    return Number(number_string[number_string.length - 1]);
 };
 
 export const getLastDigitList = () => {

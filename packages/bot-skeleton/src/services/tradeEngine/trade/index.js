@@ -42,7 +42,9 @@ export { isSellAtMarketAvailable, sellAtMarket } from './sell';
 
 export {
     checkDirection,
+    getDirection,
     getLastDigit,
+    getLastDigitHelpers,
     getLastDigitBinaryUtils,
     getLastDigitList,
     getLastDigitsFromList,

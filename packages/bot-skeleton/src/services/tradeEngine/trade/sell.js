@@ -2,7 +2,7 @@ import { waitForAfter } from './open-contract';
 import Store, { constants, $scope } from './state';
 import { contractStatus, log } from '../utils/broadcast';
 import ws from '../../api/ws';
-import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { recoverFromError, doUntilDone } from '../utils';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 

@@ -4,7 +4,7 @@ import { updateAndReturnTotalRuns } from './total';
 import Store, { constants, purchaseSuccessful, $scope } from './state';
 import ws from '../../api/ws';
 import { contractStatus, info, log } from '../utils/broadcast';
-import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { recoverFromError, doUntilDone } from '../utils';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 

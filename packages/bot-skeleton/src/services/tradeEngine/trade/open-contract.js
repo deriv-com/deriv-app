@@ -1,12 +1,32 @@
-import { getRoundedNumber } from '@deriv/shared';
+import { getRoundedNumber, formatTime } from '@deriv/shared';
 import { updateTotals } from './total';
 import Store, { sell, openContractReceived, $scope } from './state';
-import { doUntilDone, createDetails } from '../utils/helpers';
+import { doUntilDone } from '../utils';
 import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
 import ws from '../../api/ws';
 import DBotStore from '../../../scratch/dbot-store';
 
 let afterPromise;
+
+const createDetails = contract => {
+    const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
+    const profit = getRoundedNumber(sellPrice - buyPrice, currency);
+    const result = profit < 0 ? 'loss' : 'win';
+
+    return [
+        contract.transaction_ids.buy,
+        +contract.buy_price,
+        +contract.sell_price,
+        profit,
+        contract.contract_type,
+        formatTime(parseInt(`${contract.entry_tick_time}000`), 'HH:mm:ss'),
+        +contract.entry_tick,
+        formatTime(parseInt(`${contract.exit_tick_time}000`), 'HH:mm:ss'),
+        +contract.exit_tick,
+        +(contract.barrier ? contract.barrier : 0),
+        result,
+    ];
+};
 
 const setContractFlags = contract => {
     const { is_expired, is_valid_to_sell, is_sold } = contract;

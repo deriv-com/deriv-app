@@ -1,7 +1,8 @@
 import { localize } from '@deriv/translations';
 import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope } from './state';
 import ws from '../../api/ws';
-import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
+import { getUUID } from '../../api/ticks_service';
+import { tradeOptionToProposal, doUntilDone } from '../utils';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const requestProposals = () => {

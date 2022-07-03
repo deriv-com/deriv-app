@@ -1,6 +1,6 @@
 import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
-import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
+import { doUntilDone } from '../tradeEngine/utils';
 import { observer as globalObserver } from '../../utils/observer';
 
 const parseTick = tick => ({
@@ -37,6 +37,8 @@ const updateCandles = (candles, ohlc) => {
 };
 
 const getType = isCandle => (isCandle ? 'candles' : 'ticks');
+
+export const getUUID = () => `${new Date().getTime() * Math.random()}`;
 
 export default class TicksService {
     constructor(api) {

@@ -1,71 +1,7 @@
-import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject } from '@deriv/shared';
+import { findValueByKeyRecursively, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
-
-export const tradeOptionToProposal = (trade_option, purchase_reference) =>
-    trade_option.contractTypes.map(type => {
-        const proposal = {
-            amount: trade_option.amount,
-            basis: trade_option.basis,
-            contract_type: type,
-            currency: trade_option.currency,
-            duration: trade_option.duration,
-            duration_unit: trade_option.duration_unit,
-            multiplier: trade_option.multiplier,
-            passthrough: {
-                contract_type: type,
-                purchase_reference,
-            },
-            proposal: 1,
-            symbol: trade_option.symbol,
-        };
-        if (trade_option.prediction !== undefined) {
-            proposal.selected_tick = trade_option.prediction;
-        }
-        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
-            proposal.barrier = trade_option.prediction;
-        } else if (trade_option.barrierOffset !== undefined) {
-            proposal.barrier = trade_option.barrierOffset;
-        }
-        if (trade_option.secondBarrierOffset !== undefined) {
-            proposal.barrier2 = trade_option.secondBarrierOffset;
-        }
-        if (['MULTUP', 'MULTDOWN'].includes(type)) {
-            proposal.duration = undefined;
-            proposal.duration_unit = undefined;
-        }
-        if (!isEmptyObject(trade_option.limit_order)) {
-            proposal.limit_order = trade_option.limit_order;
-        }
-        return proposal;
-    });
-
-export const getDirection = ticks => {
-    const { length } = ticks;
-    const [tickOld, tickNew] = ticks.slice(-2);
-
-    let direction = '';
-    if (length >= 2) {
-        direction = tickOld.quote < tickNew.quote ? 'rise' : direction;
-        direction = tickOld.quote > tickNew.quote ? 'fall' : direction;
-    }
-
-    return direction;
-};
-
-export const getLastDigit = tick => {
-    let number_string = tick;
-    if (typeof number_string === 'number') {
-        number_string = String(number_string);
-    }
-    return Number(number_string[number_string.length - 1]);
-};
-
-export const getLastDigitForList = (tick, pip_size = 0) => {
-    const value = Number(tick).toFixed(pip_size);
-    return value[value.length - 1];
-};
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;
@@ -100,7 +36,7 @@ const getBackoffDelayInMs = (error, delay_index) => {
     return next_delay_in_seconds * 1000;
 };
 
-export const updateErrorMessage = error => {
+const updateErrorMessage = error => {
     if (error.error?.code === 'InputValidationFailed') {
         if (error.error.details?.duration) {
             error.error.message = localize('Duration must be a positive integer');
@@ -111,7 +47,7 @@ export const updateErrorMessage = error => {
     }
 };
 
-export const shouldThrowError = (error, errors_to_ignore = []) => {
+const shouldThrowError = (error, errors_to_ignore = []) => {
     if (!error.error) {
         return false;
     }
@@ -128,6 +64,23 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
     const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.error.code);
 
     return !is_ignorable_error;
+};
+
+export const doUntilDone = (promiseFn, errors_to_ignore) => {
+    let delay_index = 1;
+
+    return new Promise((resolve, reject) => {
+        const recoverFn = (error_code, makeDelay) => {
+            delay_index++;
+            makeDelay().then(repeatFn);
+        };
+
+        const repeatFn = () => {
+            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index).then(resolve).catch(reject);
+        };
+
+        repeatFn();
+    });
 };
 
 export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_index) => {
@@ -172,41 +125,40 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
     });
 };
 
-export const doUntilDone = (promiseFn, errors_to_ignore) => {
-    let delay_index = 1;
-
-    return new Promise((resolve, reject) => {
-        const recoverFn = (error_code, makeDelay) => {
-            delay_index++;
-            makeDelay().then(repeatFn);
+export const tradeOptionToProposal = (trade_option, purchase_reference) =>
+    trade_option.contractTypes.map(type => {
+        const proposal = {
+            amount: trade_option.amount,
+            basis: trade_option.basis,
+            contract_type: type,
+            currency: trade_option.currency,
+            duration: trade_option.duration,
+            duration_unit: trade_option.duration_unit,
+            multiplier: trade_option.multiplier,
+            passthrough: {
+                contract_type: type,
+                purchase_reference,
+            },
+            proposal: 1,
+            symbol: trade_option.symbol,
         };
-
-        const repeatFn = () => {
-            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index).then(resolve).catch(reject);
-        };
-
-        repeatFn();
+        if (trade_option.prediction !== undefined) {
+            proposal.selected_tick = trade_option.prediction;
+        }
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
+            proposal.barrier = trade_option.prediction;
+        } else if (trade_option.barrierOffset !== undefined) {
+            proposal.barrier = trade_option.barrierOffset;
+        }
+        if (trade_option.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = trade_option.secondBarrierOffset;
+        }
+        if (['MULTUP', 'MULTDOWN'].includes(type)) {
+            proposal.duration = undefined;
+            proposal.duration_unit = undefined;
+        }
+        if (!isEmptyObject(trade_option.limit_order)) {
+            proposal.limit_order = trade_option.limit_order;
+        }
+        return proposal;
     });
-};
-
-export const createDetails = contract => {
-    const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
-    const profit = getRoundedNumber(sellPrice - buyPrice, currency);
-    const result = profit < 0 ? 'loss' : 'win';
-
-    return [
-        contract.transaction_ids.buy,
-        +contract.buy_price,
-        +contract.sell_price,
-        profit,
-        contract.contract_type,
-        formatTime(parseInt(`${contract.entry_tick_time}000`), 'HH:mm:ss'),
-        +contract.entry_tick,
-        formatTime(parseInt(`${contract.exit_tick_time}000`), 'HH:mm:ss'),
-        +contract.exit_tick,
-        +(contract.barrier ? contract.barrier : 0),
-        result,
-    ];
-};
-
-export const getUUID = () => `${new Date().getTime() * Math.random()}`;

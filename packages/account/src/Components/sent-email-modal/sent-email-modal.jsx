@@ -152,7 +152,7 @@ const SentEmailModal = ({
                     <div
                         onClick={onClose}
                         className='send-email-template__close'
-                        data-testid='dt_send_email_template_close_test_id'
+                        data-testid='dt_send_email_template_close'
                     >
                         <Icon icon='IcCross' />
                     </div>

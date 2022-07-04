@@ -74,7 +74,7 @@ describe('<SentEmailModal/>', () => {
 
     it('should trigger onClose function when modal close button is clicked', () => {
         render(<SentEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
-        const btn = screen.getByTestId('dt_send_email_template_close_test_id');
+        const btn = screen.getByTestId('dt_send_email_template_close');
         fireEvent.click(btn);
 
         expect(onClose).toBeCalledTimes(1);

@@ -149,7 +149,9 @@ const generateSWConfig = is_release => ({
             },
         },
         {
-            urlPattern: /js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/,
+            urlPattern: ({ url }) => {
+                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
+            },
             handler: 'CacheFirst',
             options: {
                 cacheName: 'core-js-files',
@@ -166,7 +168,9 @@ const generateSWConfig = is_release => ({
             },
         },
         {
-            urlPattern: /(index|404|localstorage-sync)\.html$/,
+            urlPattern: ({ url }) => {
+                return url.pathname.match(/(index|404|localstorage-sync)\.html$/);
+            },
             handler: 'CacheFirst',
             options: {
                 cacheName: 'html-files',

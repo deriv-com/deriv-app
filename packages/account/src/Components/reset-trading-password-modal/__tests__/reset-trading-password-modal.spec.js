@@ -160,7 +160,7 @@ describe('<ResetTradingPasswordModal/>', () => {
             target: { value: 'hN795jCWkDtPy5' },
         });
 
-        fireEvent.click(screen.getByTestId('dc-password-input__visibility-icon'));
+        fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
         await waitFor(() => {
             expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
         });
@@ -176,9 +176,9 @@ describe('<ResetTradingPasswordModal/>', () => {
         fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
             target: { value: 'hN795jCWkDtPy5' },
         });
-        fireEvent.click(screen.getByTestId('dc-password-input__visibility-icon'));
+        fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
         await waitFor(() => {
-            fireEvent.click(screen.getByTestId('dc-password-input__visibility-icon'));
+            fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
             expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
         });
     });

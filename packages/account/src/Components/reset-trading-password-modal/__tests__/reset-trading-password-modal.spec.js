@@ -20,6 +20,15 @@ jest.mock('@deriv/shared', () => ({
     }),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+        location: { search: 'test' },
+        replace: mockFn,
+    }),
+}));
+
 const interactWithPasswordField = async (trigger_click = true) => {
     await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
     fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
@@ -176,5 +185,19 @@ describe('<ResetTradingPasswordModal/>', () => {
         await waitFor(() => {
             expect(mockFn).toHaveBeenCalled();
         });
+    });
+
+    it('should navigate to previous route when modal is closed ', () => {
+        const new_props = {
+            ...props,
+            is_visible: false,
+        };
+        render(
+            <Router history={history}>
+                <ResetTradingPasswordModal {...new_props} />
+            </Router>
+        );
+
+        expect(mockFn).toHaveBeenCalled();
     });
 });

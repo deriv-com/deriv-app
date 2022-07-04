@@ -20,6 +20,16 @@ jest.mock('@deriv/shared', () => ({
     }),
 }));
 
+const interactWithPasswordField = async (trigger_click = true) => {
+    await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
+    fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
+        target: { value: 'hN795jCWkDtPy5' },
+    });
+    if (trigger_click) {
+        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+    }
+};
+
 describe('<ResetTradingPasswordModal/>', () => {
     const props = {
         disableApp: jest.fn(),
@@ -64,12 +74,7 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
-        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+        await interactWithPasswordField();
 
         expect(await screen.findByText('Reset DMT5 password')).toBeInTheDocument();
     });
@@ -80,12 +85,7 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
-        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+        await interactWithPasswordField();
 
         expect(await screen.findByText('Test error')).toBeInTheDocument();
         expect(
@@ -99,12 +99,8 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
+        await interactWithPasswordField();
 
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
-        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
         await waitFor(() => {
             fireEvent.click(screen.getByRole('button', { name: /Ok/i }));
             expect(mockFn).toHaveBeenCalled();
@@ -118,12 +114,7 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
-        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+        await interactWithPasswordField();
 
         await waitFor(() => {
             expect(WS.getAccountStatus).toHaveBeenCalled();
@@ -136,12 +127,7 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
-        fireEvent.click(screen.getByRole('button', { name: /Create/i }));
+        await interactWithPasswordField();
 
         await waitFor(() => {
             fireEvent.click(screen.getByRole('button', { name: /Done/i }));
@@ -155,10 +141,7 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
+        await interactWithPasswordField(false);
 
         fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
         await waitFor(() => {
@@ -172,11 +155,9 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-        fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
-            target: { value: 'hN795jCWkDtPy5' },
-        });
+        await interactWithPasswordField(false);
         fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
+
         await waitFor(() => {
             fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
             expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
@@ -191,6 +172,7 @@ describe('<ResetTradingPasswordModal/>', () => {
         );
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
         fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+
         await waitFor(() => {
             expect(mockFn).toHaveBeenCalled();
         });

@@ -71,11 +71,6 @@
             }
             &-selector {
                 margin-bottom: 1.6rem;
-
-                /* postcss-bem-linter: ignore */
-                & .dc-input {
-                    width: 32.8rem;
-                }
                 /* postcss-bem-linter: ignore */
                 & .dc-select-native {
                     &__arrow {
@@ -96,6 +91,9 @@
                         }
                     }
                     &__picker {
+                        height: 3.2rem;
+                    }
+                    &__wrapper {
                         height: 3.2rem;
                     }
                 }

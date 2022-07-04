@@ -43,7 +43,7 @@ const PaymentAgentDepositWithdrawContainer = ({
             </div>
             <div className='payment-agent-list__list-selector'>
                 {supported_banks.length > 1 && (
-                    <div>
+                    <React.Fragment>
                         <DesktopWrapper>
                             <Dropdown
                                 id='payment_methods'
@@ -72,7 +72,7 @@ const PaymentAgentDepositWithdrawContainer = ({
                                 use_text={false}
                             />
                         </MobileWrapper>
-                    </div>
+                    </React.Fragment>
                 )}
             </div>
             {payment_agent_list.map((payment_agent, idx) => {

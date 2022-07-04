@@ -83,7 +83,7 @@ const PaymentAgentWithdrawForm = ({
                 validate={validateWithdrawalPassthrough}
                 onSubmit={onWithdrawalPassthrough}
             >
-                {({ errors, isSubmitting, isValid, touched }) => {
+                {({ errors, isSubmitting, isValid, touched, values, setFieldValue }) => {
                     return (
                         <Form className='payment-agent-withdraw-form__form'>
                             <Field name='account_number'>
@@ -98,6 +98,17 @@ const PaymentAgentWithdrawForm = ({
                                         required
                                         autoComplete='off'
                                         maxLength='30'
+                                        trailing_icon={
+                                            errors.account_number ===
+                                            localize('Please enter a valid account number. Example: CR123456789') ? (
+                                                <Icon
+                                                    icon='IcCloseCircleRed'
+                                                    onClick={() => {
+                                                        setFieldValue('account_number', '');
+                                                    }}
+                                                />
+                                            ) : null
+                                        }
                                     />
                                 )}
                             </Field>
@@ -125,7 +136,12 @@ const PaymentAgentWithdrawForm = ({
                                         />
                                     )}
                                 </Field>
-                                <Button type='submit' is_disabled={!isValid || isSubmitting} primary large>
+                                <Button
+                                    type='submit'
+                                    is_disabled={!isValid || isSubmitting || !values.account_number || !values.amount}
+                                    primary
+                                    large
+                                >
                                     <Localize i18n_default_text='Continue' />
                                 </Button>
                             </div>

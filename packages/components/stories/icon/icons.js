@@ -273,6 +273,7 @@ export const icons =
         'IcClipboard',
         'IcClockOutline',
         'IcClock',
+        'IcCloseCircleRed',
         'IcCloseCircle',
         'IcCloseLight',
         'IcCloudUpload',

@@ -24,6 +24,9 @@
             @include mobile {
                 margin: 1.6rem 0 5.2rem;
             }
+            .dc-icon {
+                cursor: pointer;
+            }
         }
         &-amount {
             display: flex;

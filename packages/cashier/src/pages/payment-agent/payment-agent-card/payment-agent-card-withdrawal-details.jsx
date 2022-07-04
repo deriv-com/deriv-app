@@ -87,7 +87,7 @@ const PaymentAgentCardWithdrawalDetails = ({
                 validate={validateWithdrawalPassthrough}
                 onSubmit={onWithdrawalPassthrough}
             >
-                {({ errors, isSubmitting, isValid, touched }) => {
+                {({ errors, isSubmitting, isValid, touched, values }) => {
                     const getHint = () => {
                         return (
                             payment_agent_list.find(pa => pa.value === payment_agent.paymentagent_loginid) && (
@@ -143,7 +143,12 @@ const PaymentAgentCardWithdrawalDetails = ({
                                     />
                                 )}
                             </Field>
-                            <Button type='submit' is_disabled={!isValid || isSubmitting} primary large>
+                            <Button
+                                type='submit'
+                                is_disabled={!isValid || isSubmitting || !values.amount}
+                                primary
+                                large
+                            >
                                 <Localize i18n_default_text='Continue' />
                             </Button>
                         </Form>

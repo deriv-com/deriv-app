@@ -182,8 +182,9 @@ const CFDAccountCard = ({
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
     console.log(existing_datas);
-    //@ts-ignore
-    const existing_data = type.category === 'real' ? existing_datas[0] : existing_datas;
+    const existing_data =
+        //@ts-ignore
+        type.category === 'real' ? (existing_datas?.length ? existing_datas[0] : undefined) : existing_datas;
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
     const has_popular_banner: boolean =

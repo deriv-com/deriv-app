@@ -19,6 +19,7 @@ import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal';
+import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
@@ -491,8 +492,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
                                                         : is_suspended_mt5_real_server ||
-                                                          dxtrade_disabled_signup_types.real ||
-                                                          !!dxtrade_accounts_list_error
+                                                        dxtrade_disabled_signup_types.real ||
+                                                        !!dxtrade_accounts_list_error
                                                 }
                                                 current_list={current_list}
                                                 account_status={account_status}
@@ -534,8 +535,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 platform === CFD_PLATFORMS.MT5
                                                     ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
                                                     : is_suspended_mt5_demo_server ||
-                                                      dxtrade_disabled_signup_types.demo ||
-                                                      !!dxtrade_accounts_list_error
+                                                    dxtrade_disabled_signup_types.demo ||
+                                                    !!dxtrade_accounts_list_error
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
@@ -556,6 +557,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             </LoadTab>
                             <CompareAccountsModal platform={platform} is_demo_tab={is_demo_tab} />
                             <JurisdictionModal platform={platform} openPasswordModal={openRealPasswordModal} />
+                            <CFDDbViOnBoarding />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon
                                     icon='IcAlertWarning'

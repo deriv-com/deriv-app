@@ -7,7 +7,7 @@ const proofOfIdentityConfig = ({ account_settings }, ProofOfIdentityForm) => {
             title: localize('Identity information'),
         },
         body: ProofOfIdentityForm,
-        props: { citizen: account_settings.citizen },
+        props: { citizen: account_settings.citizen || account_settings.country_code },
         passthrough: ['refreshNotifications', 'residence_list'],
     };
 };

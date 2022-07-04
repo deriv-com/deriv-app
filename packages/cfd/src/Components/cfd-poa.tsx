@@ -22,6 +22,7 @@ import {
     PoaUnverified,
     PoaSubmitted,
     PoaStatusCodes,
+    PoiPoaSubmitted
 } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
@@ -93,6 +94,8 @@ type TCFDPOAProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
+    toggleModal: () => void;
+
 };
 type TUpload = {
     upload: () => void;
@@ -101,6 +104,8 @@ type TUpload = {
 let file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>;
 
 const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
+    console.log('props of cfdpoa =', props);
+
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -275,12 +280,17 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
 
     // didMount hook
     React.useEffect(() => {
+
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
+
             WS.wait('states_list').then(() => {
+                console.log('hi');
+
                 const { get_account_status } = response;
                 const { document, identity } = get_account_status?.authentication!;
                 const __has_poi = !!(identity && identity.status === 'none');
-                setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi } }, () => {
+                const poi_status = (identity && identity.status)
+                setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi, poi_status } }, () => {
                     setIsLoading(false);
                     refreshNotifications();
                 });
@@ -303,9 +313,9 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     const {
         states_list,
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
+        toggleModal,
     } = props;
-
-    const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa } = form_state;
+    const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa, poi_status } = form_state;
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
 
@@ -401,10 +411,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                                                 list={states_list}
                                                                                 error={
                                                                                     touched[
-                                                                                        field.name as keyof TFormValues
+                                                                                    field.name as keyof TFormValues
                                                                                     ] &&
                                                                                     errors[
-                                                                                        field.name as keyof TFormValues
+                                                                                    field.name as keyof TFormValues
                                                                                     ]
                                                                                 }
                                                                                 name='address_state'
@@ -483,20 +493,23 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                     )}
                                     {poa_status !== PoaStatusCodes.none && !resubmit_poa && (
                                         <ThemedScrollbars height={height} is_bypassed={isMobile()}>
-                                            {submitted_poa && (
+                                            {(poi_status === 'pending' && poa_status === PoaStatusCodes.pending) &&
+                                                (<PoiPoaSubmitted toggleModal={toggleModal} />)
+                                            }
+                                            {/* {submitted_poa && (
                                                 <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.pending && (
+                                            )} */}
+                                            {/* {poa_status === PoaStatusCodes.pending && (
                                                 <PoaNeedsReview is_description_enabled={false} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.verified && (
+                                            )} */}
+                                            {/* {poa_status === PoaStatusCodes.verified && (
                                                 <PoaVerified is_description_enabled={false} has_poi={has_poi} />
                                             )}
                                             {poa_status === PoaStatusCodes.expired && (
                                                 <PoaExpired onClick={handleResubmit} />
                                             )}
                                             {(poa_status === PoaStatusCodes.rejected ||
-                                                poa_status === PoaStatusCodes.suspected) && <PoaUnverified />}
+                                                poa_status === PoaStatusCodes.suspected) && <PoaUnverified />} */}
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>

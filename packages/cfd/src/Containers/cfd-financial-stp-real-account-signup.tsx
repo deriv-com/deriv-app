@@ -4,7 +4,6 @@ import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa';
-import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import CFDPOI from '../Components/cfd-poi';
 import { LandingCompany, ResidenceList, GetSettings, StatesList } from '@deriv/api-types';
 import RootStore from 'Stores/index';
@@ -22,7 +21,6 @@ type TRemoveNotificationMessage = {
 };
 
 type TIndexLookupObject = {
-    CFDPersonalDetailsForm: number;
     CFDPOI: number;
     CFDPOA: number;
 };
@@ -47,6 +45,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddressArgs;
     toggleModal: () => void;
+    fetchStatesList: () => void
 };
 
 type TSetSubmiting = (isSubmitting: boolean) => void;
@@ -55,7 +54,7 @@ type TNextStep = (submitting: TSetSubmiting) => void;
 
 type TItemsState = {
     header: { [key: string]: string };
-    body: typeof CFDPersonalDetailsForm | typeof CFDPOI | typeof CFDPOA;
+    body: typeof CFDPOI | typeof CFDPOA;
     form_value: { [key: string]: string | undefined };
     props: Array<TItemsProps>;
 };
@@ -71,35 +70,25 @@ type TItemsProps =
     | 'removeNotificationByKey'
     | 'states_list'
     | 'get_settings'
-    | 'storeProofOfAddress';
+    | 'storeProofOfAddress'
+    | 'toggleModal';
 
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
 const index_lookup: TIndexLookupObject = {
-    CFDPersonalDetailsForm: 0,
     CFDPOI: 1,
     CFDPOA: 2,
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
+    console.log('amina', props);
+
     const { refreshNotifications } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
     const [is_loading, setIsLoading] = React.useState<boolean>(false);
+
     const [items, setItems] = React.useState<TItemsState[]>([
-        {
-            header: {
-                active_title: localize('Complete your personal details'),
-                title: localize('Personal details'),
-            },
-            body: CFDPersonalDetailsForm,
-            form_value: {
-                citizen: '',
-                tax_residence: '',
-                tax_identification_number: '',
-                account_opening_reason: '',
-            },
-            props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
-        },
+
         {
             header: {
                 active_title: localize('Complete your proof of identity'),
@@ -131,7 +120,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                 address_postcode: props.get_settings.address_postcode,
                 upload_file: '',
             },
-            props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+            props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications', 'toggleModal'],
         },
     ]);
 
@@ -145,9 +134,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         clearError();
         if (step + 1 < items.length) {
             setStep(step + 1);
-        } else {
-            props.openPendingDialog();
-            props.toggleModal();
+            // } else {
+            //     props.toggleModal();
         }
     };
 
@@ -161,71 +149,18 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         setSubmitting: TSetSubmiting,
         is_dirty = true
     ) => {
-        if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
-            // Set account settings
-            const data = await WS.setSettings(value);
-            if (data.error) {
-                setFormError(data.error.message);
-                setSubmitting(false);
-                return;
-            }
-            initiatePersonalDetails(setSubmitting);
-        }
-        if (index === 0) await WS.triggerMt5DryRun({ email: props.client_email });
         saveFormData(index, value);
         nextStep(setSubmitting);
-    };
-
-    const initiatePersonalDetails = async (setSubmitting?: TSetSubmiting) => {
-        // force request to update settings cache since settings have been updated
-        const response = await WS.authorized.storage.getSettings();
-
-        if (response.error) {
-            setFormError(response.error.message);
-            if (typeof setSubmitting === 'function') {
-                setSubmitting(false);
-            }
-            return;
-        }
-
-        const cloned: Array<TItemsState> = Object.assign([], items);
-        if (response.get_settings.citizen) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(response.get_settings.citizen);
-        }
-        if (response.get_settings.tax_residence) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
-                response.get_settings.tax_residence
-            );
-        }
-        if (response.get_settings.tax_identification_number) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
-                response.get_settings.tax_identification_number;
-        }
-        if (response.get_settings.account_opening_reason) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
-                response.get_settings.account_opening_reason;
-        }
-        setItems(cloned);
     };
 
     React.useEffect(() => {
         refreshNotifications();
     }, [items, refreshNotifications]);
 
-    const transform = (value: string | undefined) => {
-        const [result] = props.residence_list.filter(item => item.value === value);
-        return getPropertyValue(result, ['text']) || value;
-    };
-
     React.useEffect(() => {
-        if (state_index === index_lookup.CFDPersonalDetailsForm) {
-            setIsLoading(true);
-            initiatePersonalDetails().then(() => {
-                setIsLoading(false);
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        props.fetchStatesList();
     }, []);
+
 
     const getCurrent = (key?: TgetCurrentProps) => {
         return key ? items[state_index][key] : items[state_index];
@@ -234,11 +169,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
         const cloned_items: Array<TItemsState> = Object.assign([], items);
         cloned_items[index].form_value = value;
-        if (state_index === index_lookup.CFDPersonalDetailsForm) {
-            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(value.citizen);
-
-            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(value.tax_residence);
-        }
         setItems(cloned_items);
     };
     const BodyComponent = getCurrent('body') as TItemsState['body'];
@@ -257,32 +187,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             height_offset='40px'
         >
             <div className='cfd-financial-stp-modal__heading'>
-                {getCurrent() && (
-                    <>
-                        <DesktopWrapper>
-                            <FormProgress steps={items} current_step={step} />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <div className='cfd-financial-stp-modal__header-steps'>
-                                <h4 className='cfd-financial-stp-modal__header-steps-title'>
-                                    <Localize
-                                        i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
-                                        values={{
-                                            step: step + 1,
-                                            steps: items.length,
-                                            step_title: items[step].header.title,
-                                        }}
-                                    />
-                                </h4>
-                                {items[step].header.active_title && (
-                                    <h4 className='cfd-financial-stp-modal__header-steps-subtitle'>
-                                        {items[step].header.active_title}
-                                    </h4>
-                                )}
-                            </div>
-                        </MobileWrapper>
-                    </>
-                )}
             </div>
             <div className='cfd-financial-stp-modal__body'>
                 <BodyComponent
@@ -314,5 +218,6 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     removeNotificationByKey: notifications.removeNotificationByKey,
     residence_list: client.residence_list,
     states_list: client.states_list,
+    fetchStatesList: client.fetchStatesList,
     storeProofOfAddress: cfd.storeProofOfAddress,
 }))(CFDFinancialStpRealAccountSignup);

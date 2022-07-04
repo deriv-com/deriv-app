@@ -242,6 +242,7 @@ const AccountWizard = props => {
             document_type: document_type.id,
             issuing_country: country_code,
         };
+        console.log('document about to submit:', idv_submit_data);
         await WS.send(idv_submit_data);
     };
 
@@ -258,10 +259,12 @@ const AccountWizard = props => {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
 
-                const { document_type, document_number, country_code } = { ...form_values() };
-                if (document_type && document_number && country_code) {
+                const { document_type, document_number } = { ...form_values() };
+                if (document_type && document_number) {
+                    const country_code = props.account_settings.citizen || props.residence;
                     submitIDVData(document_type, document_number, country_code);
                 }
+
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {

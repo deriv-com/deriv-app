@@ -1,5 +1,5 @@
-import { ProofOfIdentityContainer } from '@deriv/account';
-import { GetAccountStatus } from '@deriv/api-types';
+import { ProofOfIdentityContainerforMt5 } from '@deriv/account';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -58,6 +58,8 @@ type TCFDPOIProps = {
     removeNotificationMessage: (key: TCFDNotificationMessage) => void;
     routeBackInApp: (history: Array<string>, additional_platform_path: TCFDAppRoutingHistory) => void;
     should_allow_authentication: boolean;
+    account_settings: GetSettings;
+    residence_list: ResidenceList;
 };
 
 const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }: TCFDPOIProps) => {
@@ -74,6 +76,9 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     const is_next_btn_disabled = !(
         ['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
     );
+    const citizen = props.account_settings.citizen || props.account_settings.residence;
+    const citizen_data = props.residence_list.find(item => item.value === citizen);
+    console.log('citi:', props.account_settings.citizen, 'reside:', props.account_settings.residence);
 
     return (
         <Formik
@@ -101,21 +106,19 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     height_offset='180px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ProofOfIdentityContainer
+                                    <ProofOfIdentityContainerforMt5
                                         {...props}
                                         height={height}
                                         is_from_external={true}
                                         onStateChange={(status: string) => setPOIState(status)}
+                                        citizen_data={citizen_data}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>
                                     <FormSubmitButton
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
                                         is_disabled={is_next_btn_disabled}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
-                                        onCancel={onCancel}
                                         form_error={form_error}
                                         onClick={() => {
                                             if (!is_next_btn_disabled) {
@@ -142,4 +145,6 @@ export default connect(({ client, common, notifications }: RootStore) => ({
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
+    account_settings: client.account_settings,
+    residence_list: client.residence_list,
 }))(CFDPOI);

@@ -55,6 +55,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     is_fully_authenticated: boolean;
     is_pending_authentication: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    toggleCFDVerificationModal: () => void;
 };
 
 const JurisdictionModal = ({
@@ -70,6 +71,7 @@ const JurisdictionModal = ({
     is_fully_authenticated,
     is_pending_authentication,
     openPasswordModal,
+    toggleCFDVerificationModal
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState<boolean>(false);
 
@@ -84,8 +86,8 @@ const JurisdictionModal = ({
     const modal_title = is_eu
         ? localize('Jurisdiction for your DMT5 CFDs account')
         : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
-              account_type: account_type === 'synthetic' ? 'Synthetic' : 'Financial',
-          });
+            account_type: account_type === 'synthetic' ? 'Synthetic' : 'Financial',
+        });
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
@@ -105,7 +107,7 @@ const JurisdictionModal = ({
             case 'labuan':
                 return;
             case 'bvi':
-                return;
+                toggleCFDVerificationModal()
             case 'mf':
                 return;
             case 'vanuatu':
@@ -145,10 +147,8 @@ const JurisdictionModal = ({
                             />
                             <Modal.Footer>
                                 <Button
-                                    disabled={
-                                        jurisdiction_selected_card === undefined ||
-                                        (is_eu && is_fully_authenticated && !checked)
-                                    }
+                                    disabled={jurisdiction_selected_card === undefined ||
+                                        (is_eu && is_fully_authenticated && !checked)}
                                     primary
                                     onClick={() => {
                                         onSelectRealAccount();
@@ -221,4 +221,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
+    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal
 }))(JurisdictionModal);

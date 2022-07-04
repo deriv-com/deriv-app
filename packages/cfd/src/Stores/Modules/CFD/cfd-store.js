@@ -30,6 +30,8 @@ export default class CFDStore extends BaseStore {
 
     @observable error_type = undefined;
 
+    @observable is_cfd_verification_modal_visible = false;
+
     constructor({ root_store }) {
         super({ root_store });
     }
@@ -230,9 +232,7 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     enableMt5FinancialStpModal() {
-        if (this.account_type.category === 'real' && this.account_type.type === 'financial_stp') {
-            this.is_mt5_financial_stp_modal_open = true;
-        }
+        this.is_mt5_financial_stp_modal_open = true;
     }
 
     @action.bound
@@ -532,5 +532,11 @@ export default class CFDStore extends BaseStore {
         }
 
         return response?.error?.message;
+    }
+
+    @action.bound
+    toggleCFDVerificationModal() {
+        console.log(this.is_cfd_verification_modal_visible);
+        this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
     }
 }

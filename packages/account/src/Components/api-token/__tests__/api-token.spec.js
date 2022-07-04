@@ -255,18 +255,6 @@ describe('<ApiToken/>', () => {
         await waitFor(() => {
             expect(yes_btn_1).not.toBeInTheDocument();
         });
-
-        const delete_btns_3 = await screen.findAllByTestId('dt_token_delete_icon');
-        fireEvent.click(delete_btns_3[0]);
-        const no_btn_2 = screen.getByRole('button', { name: /cancel/i });
-        expect(no_btn_2).toBeInTheDocument();
-        const yes_btn_2 = screen.getByRole('button', { name: /yes, delete/i });
-        expect(yes_btn_2).toBeInTheDocument();
-
-        act(() => jest.advanceTimersByTime(11000));
-
-        expect(no_btn_2).not.toBeInTheDocument();
-        expect(yes_btn_2).not.toBeInTheDocument();
     });
 
     it('should trigger hide/unhide icon and trigger copy icon, should show dialog only for admin scope', async () => {

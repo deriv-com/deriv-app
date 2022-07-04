@@ -358,6 +358,7 @@ import './common/ic-stop.svg';
 import './common/ic-success-reset-trading-password.svg';
 import './common/ic-success.svg';
 import './common/ic-theme.svg';
+import './common/ic-thumbs-up.svg';
 import './common/ic-trade.svg';
 import './common/ic-transactions.svg';
 import './common/ic-unarchive.svg';

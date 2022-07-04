@@ -365,6 +365,7 @@ export const icons =
         'IcSuccessResetTradingPassword',
         'IcSuccess',
         'IcTheme',
+        'IcThumbsUp',
         'IcTrade',
         'IcTransactions',
         'IcUnarchive',

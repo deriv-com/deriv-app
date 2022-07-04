@@ -1,7 +1,6 @@
 import { getFormattedText } from '@deriv/shared';
 import { info } from './utils';
-import ws from '../api/ws';
-import Store, { updateBalanceAction, $scope } from './state';
+import Store, { updateBalanceAction, $scope, Services } from './state';
 
 let balance_string = '';
 
@@ -13,7 +12,7 @@ export const getBalance = type => {
 };
 
 export const observeBalance = loginid => {
-    ws.onMessage().subscribe(({ data }) => {
+    Services.api.onMessage().subscribe(({ data }) => {
         if (data.msg_type === 'balance') {
             const {
                 balance: { balance: b, currency },

@@ -2,7 +2,6 @@ import { subscribeToOpenContract } from './open-contract';
 import { clearProposals, renewProposalsOnPurchase, selectProposal } from './proposal';
 import { updateAndReturnTotalRuns } from './total';
 import Store, { constants, purchaseSuccessful, $scope, Services } from './state';
-import ws from '../api/ws';
 import { recoverFromError, doUntilDone, contractStatus, info, log } from './utils';
 
 let delayIndex = 0;
@@ -39,7 +38,7 @@ export const purchase = contract_type => {
             buy_price: buy.buy_price,
         });
     };
-    const action = () => ws.send({ buy: id, price: askPrice });
+    const action = () => Services.api.send({ buy: id, price: askPrice });
     $scope.contract_flags.is_sold = false;
     contractStatus({
         id: 'contract.purchase_sent',

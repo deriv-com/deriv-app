@@ -8,6 +8,7 @@ import ws from './api/ws';
 import { highlightBlock } from '../scratch/utils';
 import { config } from '../constants/config';
 import DBotStore from '../scratch/dbot-store';
+import TicksService, { getUUID } from './api/ticks_service';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
@@ -36,12 +37,17 @@ const timeMachineEnabled = $scope => $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
+    const ticksService = new TicksService(ws);
+
     const bot_interface = getInterface(
+        ws,
+        ticksService,
         globalObserver,
         config,
         localize,
         log_types,
-        DBotStore?.instance?.populateConfig
+        DBotStore?.instance?.populateConfig,
+        getUUID
     );
     const $scope = bot_interface.scope;
     bot_interface.tradeEngineObserver();

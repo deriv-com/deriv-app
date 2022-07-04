@@ -40,12 +40,15 @@ import {
 } from './tradeEngine';
 import { Services } from './tradeEngine/state';
 
-const getInterface = (observer, config, localize, log_types, populateConfig) => {
+const getInterface = (ws, ticksService, observer, config, localize, log_types, populateConfig, getUUID) => {
+    Services.api = ws;
+    Services.ticksService = ticksService;
     Services.config = config;
     Services.localize = localize;
     Services.observer = observer;
     Services.log_types = log_types;
     Services.populateConfig = populateConfig;
+    Services.getUUID = getUUID;
 
     return {
         alert,

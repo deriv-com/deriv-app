@@ -1,9 +1,7 @@
 import { getRoundedNumber, formatTime } from '@deriv/shared';
 import { updateTotals } from './total';
-import Store, { sell, openContractReceived, $scope } from './state';
+import Store, { sell, openContractReceived, $scope, Services } from './state';
 import { doUntilDone, contractStatus, contract as broadcastContract } from './utils';
-import ws from '../api/ws';
-import DBotStore from '../../scratch/dbot-store';
 
 let afterPromise;
 
@@ -48,7 +46,7 @@ export const getSellPrice = () => {
 export const isResult = result => getDetail(10) === result;
 
 export const observeOpenContract = () => {
-    ws.onMessage().subscribe(({ data }) => {
+    Services.api.onMessage().subscribe(({ data }) => {
         if (data.msg_type === 'proposal_open_contract') {
             const contract = data.proposal_open_contract;
 
@@ -88,15 +86,14 @@ export const readDetails = i => getDetail(i - 1);
 
 export const subscribeToOpenContract = (contract_id = $scope.contract_id) => {
     $scope.contract_id = contract_id;
-    doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
+    doUntilDone(() => Services.api.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
         .then(data => {
-            const { populateConfig } = DBotStore.instance;
-            populateConfig(data.proposal_open_contract);
+            Services.populateConfig(data.proposal_open_contract);
             $scope.open_contract_id = data.proposal_open_contract.id;
         })
         .catch(error => {
             if (error.error.code !== 'AlreadySubscribed') {
-                doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
+                doUntilDone(() => Services.api.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
                     response => ($scope.open_contract_id = response.proposal_open_contract.id)
                 );
             }

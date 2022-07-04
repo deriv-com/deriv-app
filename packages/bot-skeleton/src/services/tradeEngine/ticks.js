@@ -2,11 +2,8 @@ import { getLast } from 'binary-utils';
 import { checkProposalReady } from './proposal';
 import Store, { constants, $scope, Services } from './state';
 import { isPositiveInteger, createError } from './utils';
-import api from '../api/ws';
-import TicksService from '../api/ticks_service';
 
 let tickListenerKey;
-const ticksService = new TicksService(api);
 
 const expectPositiveInteger = (num, msg) => {
     if (!isPositiveInteger(num)) {
@@ -17,7 +14,7 @@ const expectPositiveInteger = (num, msg) => {
 
 export const checkDirection = dir => {
     return new Promise(resolve =>
-        ticksService.request({ symbol: $scope.symbol }).then(ticks => resolve(getDirection(ticks) === dir))
+        Services.ticksService.request({ symbol: $scope.symbol }).then(ticks => resolve(getDirection(ticks) === dir))
     );
 };
 
@@ -59,7 +56,7 @@ export const getLastDigitsFromList = ticks => {
 
 export const getLastTick = (raw, toString = false) => {
     return new Promise(resolve =>
-        ticksService
+        Services.ticksService
             .request({ symbol: $scope.symbol })
             .then(ticks => {
                 let last_tick = raw ? getLast(ticks) : getLast(ticks).quote;
@@ -81,7 +78,7 @@ export const getOhlc = args => {
     const { granularity = $scope.options.candleInterval || 60, field } = args || {};
 
     return new Promise(resolve =>
-        ticksService
+        Services.ticksService
             .request({ symbol: $scope.symbol, granularity })
             .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc))
     );
@@ -96,12 +93,12 @@ export const getOhlcFromEnd = args => {
 };
 
 export const getPipSize = () => {
-    return ticksService.pipSizes[$scope.symbol];
+    return Services.ticksService.pipSizes[$scope.symbol];
 };
 
 export const getTicks = (toString = false) => {
     return new Promise(resolve => {
-        ticksService.request({ symbol: $scope.symbol }).then(ticks => {
+        Services.ticksService.request({ symbol: $scope.symbol }).then(ticks => {
             const ticks_list = ticks.map(tick => {
                 if (toString) {
                     return tick.quote.toFixed(getPipSize());
@@ -116,7 +113,7 @@ export const getTicks = (toString = false) => {
 
 export const watchTicks = symbol => {
     if (symbol && $scope.symbol !== symbol) {
-        ticksService.stopMonitor({
+        Services.ticksService.stopMonitor({
             symbol,
             key: tickListenerKey,
         });
@@ -128,7 +125,7 @@ export const watchTicks = symbol => {
             Store.dispatch({ type: constants.NEW_TICK, payload: epoch });
         };
 
-        const key = ticksService.monitor({ symbol, callback });
+        const key = Services.ticksService.monitor({ symbol, callback });
 
         $scope.symbol = symbol;
 

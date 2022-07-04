@@ -1,7 +1,5 @@
 import { isEmptyObject } from '@deriv/shared';
 import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope, Services } from './state';
-import ws from '../api/ws';
-import { getUUID } from '../api/ticks_service';
 import { doUntilDone } from './utils';
 
 const tradeOptionToProposal = (trade_option, purchase_reference) =>
@@ -49,7 +47,7 @@ const requestProposals = () => {
 
     Promise.all(
         $scope.proposal_templates.map(proposal => {
-            doUntilDone(() => ws.send(proposal)).catch(error => {
+            doUntilDone(() => Services.api.send(proposal)).catch(error => {
                 // We intercept ContractBuyValidationError as user may have specified
                 // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
                 // the other is valid. We will error on Purchase rather than here.
@@ -91,7 +89,7 @@ const unsubscribeProposals = () => {
                 return Promise.resolve();
             }
 
-            return doUntilDone(() => ws.forget(proposal.id)).then(() => {
+            return doUntilDone(() => Services.api.forget(proposal.id)).then(() => {
                 removeForgetProposalById(proposal.id);
             });
         })
@@ -166,14 +164,14 @@ export const makeProposals = trade_option => {
 
     // Generate a purchase reference when trade options are different from previous trade options.
     // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
-    $scope.purchase_reference = getUUID();
+    $scope.purchase_reference = Services.getUUID();
     $scope.trade_option = trade_option;
     $scope.proposal_templates = tradeOptionToProposal(trade_option, getPurchaseReference());
     renewProposalsOnPurchase();
 };
 
 export const observeProposals = () => {
-    ws.onMessage().subscribe(response => {
+    Services.api.onMessage().subscribe(response => {
         if (response.data.msg_type === 'proposal') {
             const { passthrough, proposal } = response.data;
             if (

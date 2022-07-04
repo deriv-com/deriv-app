@@ -1,14 +1,13 @@
 import { observeBalance } from './balance';
 import { doUntilDone } from './utils';
 import { $scope, Services } from './state';
-import api from '../api/ws';
 
 export const loginAndGetBalance = token => {
     if ($scope.token === token) {
         return Promise.resolve();
     }
 
-    doUntilDone(() => api.authorize(token)).catch(e => {
+    doUntilDone(() => Services.api.authorize(token)).catch(e => {
         Services.observer.emit('Error', e);
     });
     return new Promise(resolve => {
@@ -17,7 +16,7 @@ export const loginAndGetBalance = token => {
         // event, wait a couple seconds for the API to give us the correct "proposal_open_contract"
         // response, if there's none after x seconds. Send an explicit request, which _should_
         // solve the issue. This is a backup!
-        api.onMessage().subscribe(({ data }) => {
+        Services.api.onMessage().subscribe(({ data }) => {
             if (data.msg_type === 'transaction' && data.transaction.action === 'sell') {
                 $scope.transaction_recovery_timeout = setTimeout(() => {
                     const { contract } = $scope.data;
@@ -25,7 +24,7 @@ export const loginAndGetBalance = token => {
                     const is_open_contract = contract.status === 'open';
                     if (is_same_contract && is_open_contract) {
                         doUntilDone(() => {
-                            api.send({ proposal_open_contract: 1, contract_id: contract.contract_id });
+                            Services.api.send({ proposal_open_contract: 1, contract_id: contract.contract_id });
                         }, ['PriceMoved']);
                     }
                 }, 1500);
@@ -38,14 +37,14 @@ export const loginAndGetBalance = token => {
                 }
                 // Only subscribe to balance in browser, not for tests.
                 if (document) {
-                    doUntilDone(() => api.send({ balance: 1, subscribe: 1 })).then(r => {
+                    doUntilDone(() => Services.api.send({ balance: 1, subscribe: 1 })).then(r => {
                         $scope.balance = Number(r.balance.balance);
                         resolve();
                     });
                 } else {
                     resolve();
                 }
-                doUntilDone(() => api.send({ transaction: 1, subscribe: 1 }));
+                doUntilDone(() => Services.api.send({ transaction: 1, subscribe: 1 }));
             }
         });
     });

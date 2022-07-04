@@ -1,7 +1,6 @@
 import { waitForAfter } from './open-contract';
 import Store, { constants, $scope, Services } from './state';
 import { recoverFromError, doUntilDone, contractStatus, log } from './utils';
-import ws from '../api/ws';
 
 export const isSellAtMarketAvailable = () => {
     const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
@@ -40,9 +39,11 @@ export const sellAtMarket = () => {
         const contract_id = $scope.contract_id;
 
         const sellContractAndGetContractInfo = () => {
-            return doUntilDone(() => ws.send({ sell: contract_id, price: 0 }))
+            return doUntilDone(() => Services.api.send({ sell: contract_id, price: 0 }))
                 .then(sell_response => {
-                    doUntilDone(() => ws.send({ proposal_open_contract: 1, contract_id })).then(() => sell_response);
+                    doUntilDone(() => Services.api.send({ proposal_open_contract: 1, contract_id })).then(
+                        () => sell_response
+                    );
                 })
                 .catch(e => {
                     const error = e.error;
@@ -66,7 +67,7 @@ export const sellAtMarket = () => {
 
                     // For every other error, check whether the contract is not actually already sold.
                     return doUntilDone(() =>
-                        ws.send({
+                        Services.api.send({
                             proposal_open_contract: 1,
                             contract_id,
                         })

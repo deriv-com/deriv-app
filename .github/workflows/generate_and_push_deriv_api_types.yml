@@ -84,6 +84,7 @@ jobs:
             safe_old_version=$(echo $old_version | sed 's/[^a-zA-Z0-9.]//g')
 
             git checkout -b "$package_name"
+            git reset --hard $package_name master
 
             # "Manually" bump the version in package.json to accommodate 
             # Lerna's flexibility (or its lack thereof).

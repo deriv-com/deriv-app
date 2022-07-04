@@ -51,7 +51,6 @@ src
 We have a separate folder for each component.
 
 **constants:** We add the static data structures needed for the workspace here.
-We have a separate folder for each component.
 
 **containers:** This folder contains the wrappers we use for the whole workspace.
 

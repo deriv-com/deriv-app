@@ -37,7 +37,7 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
             <Popover
                 alignment='bottom'
                 classNameBubble='dc-clipboard__popover'
-                message={localize(should_show_token ? 'Hide this token' : 'Show this token')}
+                message={should_show_token ? localize('Hide this token') : localize('Show this token')}
             >
                 <Icon
                     icon={should_show_token ? 'IcPasswordEyeVisible' : 'IcPasswordEyeHide'}

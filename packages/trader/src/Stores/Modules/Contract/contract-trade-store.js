@@ -5,6 +5,7 @@ import ContractStore from './contract-store';
 import { isCallPut } from './Helpers/contract-type';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
 import BaseStore from '../../base-store';
+import { getDummyPOCResponseForACC } from './Helpers/dummy_accumulators_data';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -154,19 +155,26 @@ export default class ContractTradeStore extends BaseStore {
     // Called from portfolio
     @action.bound
     updateProposal(response) {
-        if ('error' in response) {
+        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        let contract_response;
+        if (this.root_store.modules.trade.is_accumulator) {
+            contract_response = dummy_response;
+        } else {
+            contract_response = response;
+        }
+        if ('error' in contract_response) {
             this.has_error = true;
-            this.error_message = response.error.message;
+            this.error_message = contract_response.error.message;
             return;
         }
         // Update the contract-store corresponding to this POC
-        if (response.proposal_open_contract) {
-            const contract_id = +response.proposal_open_contract.contract_id;
+        if (contract_response.proposal_open_contract) {
+            const contract_id = +contract_response.proposal_open_contract.contract_id;
             const contract = this.contracts_map[contract_id];
-            contract.populateConfig(response.proposal_open_contract);
-            if (response.proposal_open_contract.is_sold) {
+            contract.populateConfig(contract_response.proposal_open_contract);
+            if (contract_response.proposal_open_contract.is_sold) {
                 this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
-                contract.cacheProposalOpenContractResponse(response);
+                contract.cacheProposalOpenContractResponse(contract_response);
             }
         }
     }

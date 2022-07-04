@@ -33,9 +33,10 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
+import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
+import { getDummyProposalResponseForACC } from '../Contract/Helpers/dummy_accumulators_data';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m
@@ -120,6 +121,7 @@ export default class TradeStore extends BaseStore {
     @observable max_payout = 0;
     @observable ticks_count_since_loss_condition = 0;
     @observable tick_size_barrier = 0;
+    @observable acc_barriers = null;
 
     // Multiplier trade params
     @observable multiplier;
@@ -577,22 +579,40 @@ export default class TradeStore extends BaseStore {
         if (!proposal_info) {
             return;
         }
-        const { contract_type, barrier, barrier2, high_barrier, low_barrier } = proposal_info;
-
+        const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            this.main_barrier = new ChartBarrierStore(
-                barrier || high_barrier,
-                barrier2 || low_barrier,
-                this.onChartBarrierChange,
-                {
-                    color,
-                }
-            );
+            this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
+                color,
+            });
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
+        }
+    };
+
+    @action.bound
+    setAccumulatorsBarriers = ({ is_over }) => {
+        if (!is_over) {
+            const obj_barrier = {
+                key: 'acc_barriers',
+                title: 'acc_barriers',
+                color: BARRIER_COLORS.ORANGE,
+                draggable: false,
+                lineStyle: BARRIER_LINE_STYLES.DOTTED,
+                hidePriceLines: false,
+                hideOffscreenLine: true,
+                showOffscreenArrows: true,
+                isSingleBarrier: false,
+                opacityOnOverlap: 0,
+            };
+            this.barriers.push({
+                ...new ChartBarrierStore(this.barrier_1, this.barrier_2, null),
+                ...obj_barrier,
+            });
+        } else {
+            removeBarrier(this.barriers, 'acc_barriers');
         }
     };
 
@@ -616,6 +636,16 @@ export default class TradeStore extends BaseStore {
 
                     const last_digit = +this.last_digit;
                     if (response.error) {
+                        if (this.is_accumulator) {
+                            this.setAccumulatorsBarriers({
+                                is_over: false,
+                            });
+                            setTimeout(() => {
+                                this.setAccumulatorsBarriers({
+                                    is_over: true,
+                                });
+                            }, 10000);
+                        }
                         // using javascript to disable purchase-buttons manually to compensate for mobx lag
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
@@ -926,20 +956,27 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
-        const contract_type = response.echo_req.contract_type;
+        const dummy_response = getDummyProposalResponseForACC(Date.now());
+        let proposal_response;
+        if (this.root_store.modules.trade.is_accumulator) {
+            proposal_response = dummy_response;
+        } else {
+            proposal_response = response;
+        }
+        const contract_type = proposal_response.echo_req.contract_type;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         // add/update expiration or date_expiry for crypto indices from proposal
-        const date_expiry = response.proposal?.date_expiry;
+        const date_expiry = proposal_response.proposal?.date_expiry;
 
-        if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
+        if (!proposal_response.error && !!date_expiry && this.is_crypto_multiplier) {
             this.expiration = date_expiry;
         }
 
         this.proposal_info = {
             ...this.proposal_info,
-            [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
+            [contract_type]: getProposalInfo(this, proposal_response, obj_prev_contract_basis),
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
@@ -955,28 +992,28 @@ export default class TradeStore extends BaseStore {
         }
 
         if (this.is_accumulator && this.proposal_info && this.proposal_info.ACC) {
-            const { ticks_count_since_loss_condition, tick_size_barrier, max_duration_ticks, max_payout } =
-                this.proposal_info.ACC;
-            if (tick_size_barrier) {
-                this.tick_size_barrier = tick_size_barrier;
-            }
-            if (ticks_count_since_loss_condition) {
-                this.ticks_count_since_loss_condition = ticks_count_since_loss_condition;
-            }
-            if (max_duration_ticks) {
-                this.max_duration_ticks = max_duration_ticks;
-            }
-            if (max_payout) {
-                this.max_payout = max_payout;
-            }
+            const {
+                ticks_count_since_loss_condition,
+                tick_size_barrier,
+                max_duration_ticks,
+                max_payout,
+                high_barrier,
+                low_barrier,
+            } = this.proposal_info.ACC;
+            this.tick_size_barrier = tick_size_barrier;
+            this.ticks_count_since_loss_condition = ticks_count_since_loss_condition;
+            this.max_duration_ticks = max_duration_ticks;
+            this.max_payout = max_payout;
+            this.barrier_1 = high_barrier;
+            this.barrier_2 = low_barrier;
         }
 
-        if (!this.main_barrier || this.main_barrier.shade) {
-            this.setMainBarrier(response.echo_req);
+        if (!this.main_barrier || this.main_barrier?.shade) {
+            this.setMainBarrier(proposal_response.echo_req);
         }
 
         if (this.hovered_contract_type === contract_type) {
-            this.addTickByProposal(response);
+            this.addTickByProposal(proposal_response);
             setLimitOrderBarriers({
                 barriers: this.barriers,
                 contract_info: this.proposal_info[this.hovered_contract_type],
@@ -985,16 +1022,16 @@ export default class TradeStore extends BaseStore {
             });
         }
 
-        if (response.error) {
-            const error_id = getProposalErrorField(response);
+        if (proposal_response.error) {
+            const error_id = getProposalErrorField(proposal_response);
             if (error_id) {
-                this.setValidationErrorMessages(error_id, [response.error.message]);
+                this.setValidationErrorMessages(error_id, [proposal_response.error.message]);
             }
             // Commission for multipliers is normally set from proposal response.
             // But when we change the multiplier and if it is invalid, we don't get the proposal response to set the commission. We only get error message.
             // This is a work around to set the commission from error message.
             if (this.is_multiplier) {
-                const { message, details } = response.error;
+                const { message, details } = proposal_response.error;
                 const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
                 if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
@@ -1005,7 +1042,7 @@ export default class TradeStore extends BaseStore {
             // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
             // If we get an error message with code `AlreadySubscribed`, `forget_all` proposal will be called and all the existing subscriptions will be marked as complete in `deriv-api` and will subscribe to new proposals
-            if (response.error.code === 'AlreadySubscribed') {
+            if (proposal_response.error.code === 'AlreadySubscribed') {
                 this.refresh();
 
                 if (this.is_trade_component_mounted) {

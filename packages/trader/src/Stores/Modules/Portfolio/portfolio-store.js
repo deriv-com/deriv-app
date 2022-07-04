@@ -140,20 +140,34 @@ export default class PortfolioStore extends BaseStore {
 
     deepClone = obj => JSON.parse(JSON.stringify(obj));
     updateContractTradeStore(response) {
+        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        let contract_response;
+        if (this.root_store.modules.trade.is_accumulator) {
+            contract_response = dummy_response;
+        } else {
+            contract_response = response;
+        }
         const contract_trade = this.root_store.modules.contract_trade;
-        const has_poc = !isEmptyObject(response.proposal_open_contract);
-        const has_error = !!response.error;
+        const has_poc = !isEmptyObject(contract_response.proposal_open_contract);
+        const has_error = !!contract_response.error;
         if (!has_poc && !has_error) return;
         if (has_poc) {
-            contract_trade.addContract(this.deepClone(response.proposal_open_contract));
-            contract_trade.updateProposal(this.deepClone(response));
+            contract_trade.addContract(this.deepClone(contract_response.proposal_open_contract));
+            contract_trade.updateProposal(this.deepClone(contract_response));
         }
     }
 
     updateContractReplayStore(response) {
+        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        let contract_response;
+        if (this.root_store.modules.trade.is_accumulator) {
+            contract_response = dummy_response;
+        } else {
+            contract_response = response;
+        }
         const contract_replay = this.root_store.modules.contract_replay;
-        if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
-            contract_replay.populateConfig(response);
+        if (contract_replay.contract_id === contract_response.proposal_open_contract?.contract_id) {
+            contract_replay.populateConfig(contract_response);
         }
     }
 
@@ -172,7 +186,8 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     proposalOpenContractHandler(response) {
-        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        const now = Date.now();
+        const dummy_response = getDummyPOCResponseForACC(now);
 
         let proposal, portfolio_position;
         if (this.root_store.modules.trade.is_accumulator) {
@@ -182,25 +197,7 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             proposal = dummy_response.proposal_open_contract;
-            portfolio_position = {
-                contract_info: dummy_response.proposal_open_contract,
-                details:
-                    'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-                display_name: 'Volatility 100 Index',
-                id: 19459,
-                indicative: 8.46,
-                payout: 27.45,
-                purchase: 10,
-                reference: 45479,
-                type: 'ACC',
-                is_unsupported: false,
-                high_barrier: 19423.76,
-                low_barrier: 19391.76,
-                entry_spot: 19417.25,
-                profit_loss: -0.15,
-                is_valid_to_sell: true,
-                status: 'loss',
-            };
+            portfolio_position = getDummyAllPositionsForACC(now)[0];
 
             this.updateContractTradeStore(dummy_response);
             this.updateContractReplayStore(dummy_response);
@@ -230,8 +227,11 @@ export default class PortfolioStore extends BaseStore {
         const profit_loss = +proposal.profit;
 
         // fix for missing barrier and entry_spot in proposal_open_contract API response, only re-assign if valid
-        if (proposal.barrier) portfolio_position.barrier = +proposal.barrier;
-        if (proposal.entry_spot) portfolio_position.entry_spot = +proposal.entry_spot;
+        Object.entries(proposal).forEach(([key, value]) => {
+            if (key === 'barrier' || key === 'high_barrier' || key === 'low_barrier' || key === 'entry_spot') {
+                portfolio_position[key] = +value;
+            }
+        });
 
         // store contract proposal details that require modifiers
         portfolio_position.indicative = new_indicative;

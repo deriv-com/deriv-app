@@ -12,24 +12,24 @@ export const getDummyPOCResponseForACC = time_now => {
         proposal_open_contract: {
             account_id: 6528,
             barrier_count: 2,
-            high_barrier: '19423.76',
-            low_barrier: '19391.76',
+            high_barrier: 8970.04,
+            low_barrier: 8930.04,
             bid_price: 9.85,
             buy_price: 10,
             contract_id: 19459,
             contract_type: 'ACC',
             currency: 'USD',
-            current_spot: 19406.92,
-            current_spot_display_value: '19406.92',
+            current_spot: 8775.04,
+            current_spot_display_value: '8775.04',
             current_spot_time: dummy_current_time,
             date_expiry: dummy_end_time,
             date_settlement: dummy_end_time + 1,
             date_start: dummy_start_time,
             display_name: 'Volatility 100 Index',
-            entry_spot: 19417.25,
-            entry_spot_display_value: '19417.25',
-            entry_tick: 19417.25,
-            entry_tick_display_value: '19417.25',
+            entry_spot: 8782.32,
+            entry_spot_display_value: '8782.32',
+            entry_tick: 8782.32,
+            entry_tick_display_value: '8782.32',
             entry_tick_time: dummy_start_time + 1,
             expiry_time: dummy_end_time,
             id: '2b88e20f-f976-a380-904d-04db08e10eeb',
@@ -46,7 +46,7 @@ export const getDummyPOCResponseForACC = time_now => {
                     display_name: 'Take profit',
                     order_amount: 150,
                     order_date: dummy_start_time - 10,
-                    value: '19400.25',
+                    value: '8745.01',
                 },
             },
             longcode:
@@ -61,23 +61,23 @@ export const getDummyPOCResponseForACC = time_now => {
             tick_stream: [
                 {
                     epoch: dummy_start_time + 1,
-                    tick: 19417.25,
-                    tick_display_value: '19417.25',
+                    tick: 8782.32,
+                    tick_display_value: '8782.32',
                 },
                 {
                     epoch: dummy_start_time + 3,
-                    tick: 19414.86,
-                    tick_display_value: '19414.86',
+                    tick: 8776.32,
+                    tick_display_value: '8776.32',
                 },
                 {
                     epoch: dummy_start_time + 5,
-                    tick: 19406.25,
-                    tick_display_value: '19406.25',
+                    tick: 8769.32,
+                    tick_display_value: '8769.32',
                 },
                 {
                     epoch: dummy_current_time,
-                    tick: 19406.92,
-                    tick_display_value: '19406.92',
+                    tick: 8768.32,
+                    tick_display_value: '8768.32',
                 },
             ],
             transaction_ids: {
@@ -128,28 +128,28 @@ export const getDummyAllPositionsForACC = time_now => {
                     all_ticks: [
                         {
                             epoch: dummy_start_time - 9,
-                            tick: 19413.55,
-                            tick_display_value: '19413.55',
+                            tick: 8743.33,
+                            tick_display_value: '8743.33',
                         },
                         {
                             epoch: dummy_start_time - 7,
-                            tick: 19413.15,
-                            tick_display_value: '19413.15',
+                            tick: 8735.01,
+                            tick_display_value: '8735.01',
                         },
                         {
                             epoch: dummy_start_time - 5,
-                            tick: 19413.25,
-                            tick_display_value: '19413.25',
+                            tick: 8745.06,
+                            tick_display_value: '8745.06',
                         },
                         {
                             epoch: dummy_start_time - 3,
-                            tick: 19414.25,
-                            tick_display_value: '19414.25',
+                            tick: 8749.06,
+                            tick_display_value: '8749.06',
                         },
                         {
                             epoch: dummy_start_time - 1,
-                            tick: 19416.25,
-                            tick_display_value: '19416.25',
+                            tick: 8753.04,
+                            tick_display_value: '8753.04',
                         },
                         {
                             epoch: dummy_start_time,
@@ -160,45 +160,45 @@ export const getDummyAllPositionsForACC = time_now => {
                             epoch: dummy_start_time + 1,
                             flag: 'highlight_tick',
                             name: 'Entry Spot',
-                            tick: 19417.25,
-                            tick_display_value: '19417.25',
+                            tick: 8782.32,
+                            tick_display_value: '8782.32',
                         },
                         {
                             epoch: dummy_start_time + 3,
-                            tick: 19414.86,
-                            tick_display_value: '19414.86',
+                            tick: 8776.32,
+                            tick_display_value: '8776.32',
                         },
                         {
                             epoch: dummy_start_time + 5,
-                            tick: 19406.25,
-                            tick_display_value: '19406.25',
+                            tick: 8769.32,
+                            tick_display_value: '8769.32',
                         },
                         {
                             epoch: dummy_current_time,
-                            tick: 19406.92,
-                            tick_display_value: '19406.92',
+                            tick: 8768.32,
+                            tick_display_value: '8768.32',
                         },
                     ],
                 },
                 barrier_count: 2,
-                high_barrier: '19423.76',
-                low_barrier: '19391.76',
+                high_barrier: '8970.04',
+                low_barrier: '8930.04',
                 bid_price: 9.85,
                 buy_price: 10,
                 contract_id: 19459,
                 contract_type: 'ACC',
                 currency: 'USD',
-                current_spot: 19406.92,
-                current_spot_display_value: '19406.92',
+                current_spot: 8775.04,
+                current_spot_display_value: '8775.04',
                 current_spot_time: dummy_current_time,
                 date_expiry: dummy_end_time,
                 date_settlement: dummy_end_time + 1,
                 date_start: dummy_start_time,
                 display_name: 'Volatility 100 Index',
-                entry_spot: 19417.25,
-                entry_spot_display_value: '19417.25',
-                entry_tick: 19417.25,
-                entry_tick_display_value: '19417.25',
+                entry_spot: 8782.32,
+                entry_spot_display_value: '8782.32',
+                entry_tick: 8782.32,
+                entry_tick_display_value: '8782.32',
                 entry_tick_time: dummy_start_time + 1,
                 expiry_time: dummy_end_time,
                 id: '2b88e20f-f976-a380-904d-04db08e10eeb',
@@ -215,7 +215,7 @@ export const getDummyAllPositionsForACC = time_now => {
                         display_name: 'Take profit',
                         order_amount: 150,
                         order_date: dummy_start_time - 10,
-                        value: '19400.25',
+                        value: '8745.01',
                     },
                 },
                 longcode:
@@ -231,23 +231,23 @@ export const getDummyAllPositionsForACC = time_now => {
                 tick_stream: [
                     {
                         epoch: dummy_start_time + 1,
-                        tick: 19417.25,
-                        tick_display_value: '19417.25',
+                        tick: 8782.32,
+                        tick_display_value: '8782.32',
                     },
                     {
                         epoch: dummy_start_time + 3,
-                        tick: 19414.86,
-                        tick_display_value: '19414.86',
+                        tick: 8776.32,
+                        tick_display_value: '8776.32',
                     },
                     {
                         epoch: dummy_start_time + 5,
-                        tick: 19406.25,
-                        tick_display_value: '19406.25',
+                        tick: 8769.32,
+                        tick_display_value: '8769.32',
                     },
                     {
                         epoch: dummy_current_time,
-                        tick: 19406.92,
-                        tick_display_value: '19406.92',
+                        tick: 8768.32,
+                        tick_display_value: '8768.32',
                     },
                 ],
                 transaction_ids: {
@@ -268,9 +268,9 @@ export const getDummyAllPositionsForACC = time_now => {
             is_valid_to_sell: true,
             current_tick: 4,
             barrier_count: 2,
-            high_barrier: 19423.76,
-            low_barrier: 19391.76,
-            entry_spot: 19417.25,
+            high_barrier: 8970.04,
+            low_barrier: 8930.04,
+            entry_spot: 8782.32,
             is_loading: false,
             duration: 10,
             duration_unit: 'seconds',
@@ -279,38 +279,43 @@ export const getDummyAllPositionsForACC = time_now => {
         },
     ];
 };
-
-export const getDummyProposalInfoForACC = growth_rate => ({
-    tick_size_barrier: 0.000409,
-    ticks_count_since_loss_condition: 13,
-    max_duration_ticks: 10,
-    max_payout: 0,
-    error_code: undefined,
-    error_field: undefined,
-    growth_rate,
-    has_error: false,
-    has_error_details: false,
-    has_increased: null,
-    id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-    limit_order: {
-        take_profit: {
-            display_name: 'Take profit',
-            order_amount: 89,
-            order_date: 1655390008,
-            value: '1471.48',
+export const getDummyProposalInfoForACC = (growth_rate, time_now, response) => {
+    const dummy_current_time = Math.round(time_now / 1000); // 1656513908
+    const dummy_start_time = dummy_current_time - 7; // 1656513901
+    return {
+        tick_size_barrier: response.proposal.tick_size_barrier,
+        ticks_count_since_loss_condition: response.proposal.ticks_count_since_loss_condition,
+        max_duration_ticks: response.proposal.max_duration_ticks, // = tick_count in proposal_open_contract
+        max_payout: response.proposal.max_payout,
+        high_barrier: response.proposal.high_barrier,
+        low_barrier: response.proposal.low_barrier,
+        error_code: undefined,
+        error_field: undefined,
+        growth_rate,
+        has_error: false,
+        has_error_details: false,
+        has_increased: null,
+        id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+        limit_order: {
+            take_profit: {
+                display_name: 'Take profit',
+                order_amount: 150,
+                order_date: dummy_start_time - 10,
+                value: '8745.01',
+            },
         },
-    },
-    message:
-        'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-    obj_contract_basis: {
-        text: '',
-        value: '',
-    },
-    payout: 0,
-    profit: '-10.00',
-    returns: '-100.00%',
-    stake: '10.00',
-});
+        message:
+            'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+        obj_contract_basis: {
+            text: '',
+            value: '',
+        },
+        payout: 27.45,
+        profit: '-0.15',
+        returns: '-100.00%',
+        stake: '10.00',
+    };
+};
 
 export const dummy_accumulator_in_contracts_for_available = {
     accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
@@ -354,49 +359,60 @@ export const dummy_multupliers_proposal = {
     },
 };
 
-export const dummy_proposal_response_for_acc = {
-    echo_req: {
-        amount: 10,
-        basis: 'stake',
-        contract_type: 'ACC',
-        currency: 'USD',
-        duration_unit: 's',
-        limit_order: {
-            take_profit: 150,
-        },
-        growth_rate: 0.01,
-        product_type: 'basic',
-        proposal: 1,
-        req_id: 32,
-        subscribe: 1,
-        symbol: 'R_100',
-    },
-    msg_type: 'proposal',
-    proposal: {
-        ask_price: 10,
-        date_expiry: 4809974399,
-        date_start: 1656350092,
-        display_value: '10.00',
-        id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-        limit_order: {
-            take_profit: {
-                display_name: 'Take profit',
-                order_amount: 150,
-                order_date: 1656350092,
-                value: '9503.27',
+export const getDummyProposalResponseForACC = time_now => {
+    const dummy_current_time = Math.round(time_now / 1000); // 1656513908
+    const dummy_start_time = dummy_current_time - 7; // 1656513901
+    const dummy_end_time = dummy_current_time + 6; // 4810060799
+    return {
+        echo_req: {
+            amount: 10,
+            basis: 'stake',
+            contract_type: 'ACC',
+            currency: 'USD',
+            duration_unit: 's',
+            limit_order: {
+                take_profit: 150,
             },
+            growth_rate: 0.01,
+            product_type: 'basic',
+            proposal: 1,
+            req_id: 32,
+            subscribe: 1,
+            symbol: 'R_100',
         },
-        longcode:
-            'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
-        growth_rate: 0.01,
-        payout: 0,
-        spot: 19014.14,
-        spot_time: 1656350092,
-    },
-    req_id: 32,
-    subscription: {
-        id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-    },
+        msg_type: 'proposal',
+        proposal: {
+            tick_size_barrier: 0.000409,
+            ticks_count_since_loss_condition: 13,
+            max_duration_ticks: 10, // = tick_count in proposal_open_contract
+            max_payout: 0,
+            high_barrier: 8970.04,
+            low_barrier: 8930.04,
+            ask_price: 10,
+            date_expiry: dummy_end_time,
+            date_start: dummy_start_time,
+            display_value: '10.00',
+            id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+            limit_order: {
+                take_profit: {
+                    display_name: 'Take profit',
+                    order_amount: 150,
+                    order_date: dummy_start_time - 10,
+                    value: '8745.01',
+                },
+            },
+            longcode:
+                'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in Volatility 100 Index.',
+            growth_rate: 0.01,
+            payout: 27.45,
+            spot: 8768.32,
+            spot_time: dummy_current_time,
+        },
+        req_id: 32,
+        subscription: {
+            id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+        },
+    };
 };
 
 export const dummy_purchase_response_for_acc = {

@@ -103,12 +103,41 @@ const JurisdictionModal = ({
             type: account_type.type,
         };
         toggleJurisdictionModal();
-        if (poi_poa_verified) {
-            if (!has_real_mt5_login && !is_eu) {
-                toggleCFDPersonalDetailsModal();
-            }
-        } else if (jurisdiction_selected_card === 'svg') {
-            openPasswordModal(type_of_account);
+
+        switch (jurisdiction_selected_card) {
+            case 'svg':
+                openPasswordModal(type_of_account);
+                break;
+            case 'labuan':
+                if (poi_poa_verified) {
+                    if (!has_real_mt5_login && !is_eu) {
+                        toggleCFDPersonalDetailsModal();
+                    }
+                }
+                break;
+            case 'bvi':
+                if (poi_poa_verified) {
+                    if (!has_real_mt5_login && !is_eu) {
+                        toggleCFDPersonalDetailsModal();
+                    }
+                }
+                break;
+            case 'mf':
+                if (poi_poa_verified) {
+                    if (!has_real_mt5_login && !is_eu) {
+                        toggleCFDPersonalDetailsModal();
+                    }
+                }
+                break;
+            case 'vanuatu':
+                if (poi_poa_verified) {
+                    if (!has_real_mt5_login && !is_eu) {
+                        toggleCFDPersonalDetailsModal();
+                    }
+                }
+                break;
+            default:
+                return;
         }
     };
 
@@ -168,9 +197,7 @@ const JurisdictionModal = ({
                                     }
                                     primary
                                     onClick={() => {
-                                        if (jurisdiction_selected_card === 'SVG') {
-                                            onSelectRealAccount();
-                                        }
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     <Localize i18n_default_text='Next' />

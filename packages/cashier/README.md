@@ -7,7 +7,7 @@ This workspace covers:
 
 -   Deposit, Withdraw and Transfer (for both `Fiat` and `Crypto`)
 -   Deposit and withdraw with `Payment agents`
--   Deposit for `p2p` and `onRamp`
+-   Deposit with `p2p` and `onRamp`
 
 ## How to Install the Project
 

@@ -1,7 +1,7 @@
-import { localize } from '@deriv/translations';
+import { Services } from '../state';
 
 export const dateTimeStringToTimestamp = datetime_string => {
-    const invalid_msg = localize('Invalid date/time: {{ datetime_string }}', { datetime_string });
+    const invalid_msg = Services.localize('Invalid date/time: {{ datetime_string }}', { datetime_string });
 
     if (typeof datetime_string !== 'string') {
         return invalid_msg;

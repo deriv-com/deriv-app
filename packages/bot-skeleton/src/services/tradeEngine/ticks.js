@@ -1,5 +1,4 @@
 import { getLast } from 'binary-utils';
-import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
 import Store, { constants, $scope, Services } from './state';
 import { isPositiveInteger, createError } from './utils';
@@ -91,7 +90,7 @@ export const getOhlc = args => {
 export const getOhlcFromEnd = args => {
     const { index: i = 1 } = args || {};
 
-    const index = expectPositiveInteger(Number(i), localize('Index must be a positive integer'));
+    const index = expectPositiveInteger(Number(i), Services.localize('Index must be a positive integer'));
 
     return new Promise(resolve => getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
 };

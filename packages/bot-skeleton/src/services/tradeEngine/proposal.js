@@ -1,5 +1,4 @@
 import { isEmptyObject } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope, Services } from './state';
 import ws from '../api/ws';
 import { getUUID } from '../api/ticks_service';
@@ -198,7 +197,7 @@ export const selectProposal = contract_type => {
     const { proposals } = $scope.data;
 
     if (proposals.length === 0) {
-        throw Error(localize('Proposals are not ready'));
+        throw Error(Services.localize('Proposals are not ready'));
     }
 
     const to_buy = proposals.find(proposal => {
@@ -218,7 +217,7 @@ export const selectProposal = contract_type => {
     });
 
     if (!to_buy) {
-        throw new Error(localize('Selected proposal does not exist'));
+        throw new Error(Services.localize('Selected proposal does not exist'));
     }
 
     return {

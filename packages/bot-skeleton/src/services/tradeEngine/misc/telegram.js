@@ -1,9 +1,9 @@
-import { localize } from '@deriv/translations';
 import { notify } from '../utils';
+import { Services } from '../state';
 
 export const notifyTelegram = (access_token, chat_id, text) => {
     const url = `https://api.telegram.org/bot${access_token}/sendMessage`;
-    const onError = () => notify('warn', localize('The Telegram notification could not be sent'));
+    const onError = () => notify('warn', Services.localize('The Telegram notification could not be sent'));
 
     fetch(url, {
         method: 'POST',

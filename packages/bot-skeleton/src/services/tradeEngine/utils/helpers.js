@@ -1,5 +1,4 @@
 import { findValueByKeyRecursively } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { Services } from '../state';
 
@@ -10,24 +9,27 @@ const getBackoffDelayInMs = (error, delay_index) => {
 
     if (error.error.code === 'RateLimit') {
         logError(
-            localize('You are rate limited for: {{ message_type }}, retrying in {{ delay }}s (ID: {{ request }})', {
-                message_type: error.msg_type,
-                delay: next_delay_in_seconds,
-                request: error.echo_req.req_id,
-            })
+            Services.localize(
+                'You are rate limited for: {{ message_type }}, retrying in {{ delay }}s (ID: {{ request }})',
+                {
+                    message_type: error.msg_type,
+                    delay: next_delay_in_seconds,
+                    request: error.echo_req.req_id,
+                }
+            )
         );
     } else if (error.error.code === 'DisconnectError') {
         logError(
-            localize('You are disconnected, retrying in {{ delay }}s', {
+            Services.localize('You are disconnected, retrying in {{ delay }}s', {
                 delay: next_delay_in_seconds,
             })
         );
     } else if (error.error.code === 'MarketIsClosed') {
-        logError(localize('This market is presently closed.'));
+        logError(Services.localize('This market is presently closed.'));
     } else {
         logError(
-            localize('Request failed for: {{ message_type }}, retrying in {{ delay }}s', {
-                message_type: error.msg_type || localize('unknown'),
+            Services.localize('Request failed for: {{ message_type }}, retrying in {{ delay }}s', {
+                message_type: error.msg_type || Services.localize('unknown'),
                 delay: next_delay_in_seconds,
             })
         );
@@ -39,10 +41,10 @@ const getBackoffDelayInMs = (error, delay_index) => {
 const updateErrorMessage = error => {
     if (error.error?.code === 'InputValidationFailed') {
         if (error.error.details?.duration) {
-            error.error.message = localize('Duration must be a positive integer');
+            error.error.message = Services.localize('Duration must be a positive integer');
         }
         if (error.error.details?.amount) {
-            error.error.message = localize('Amount must be a positive number.');
+            error.error.message = Services.localize('Amount must be a positive number.');
         }
     }
 };

@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import { loginAndGetBalance } from './authenticate';
 import { observeOpenContract } from './open-contract';
 import { checkProposalReady, observeProposals, makeProposals } from './proposal';
@@ -16,11 +15,11 @@ const expectOptions = options => {
     const { symbol, contractTypes } = options;
 
     if (!symbol) {
-        throw createError('OptionError', localize('Underlying market is not selected'));
+        throw createError('OptionError', Services.localize('Underlying market is not selected'));
     }
 
     if (!contractTypes[0]) {
-        throw createError('OptionError', localize('Contract type is not selected'));
+        throw createError('OptionError', Services.localize('Contract type is not selected'));
     }
 };
 
@@ -28,7 +27,7 @@ export const expectInitArg = args => {
     const [token, options] = args;
 
     if (!token) {
-        throw createError('LoginError', localize('Please login'));
+        throw createError('LoginError', Services.localize('Please login'));
     }
 
     expectOptions(options);
@@ -101,7 +100,7 @@ export const sleep = (arg = 1) => {
 
 export const startTradeEngine = tradeOptions => {
     if (!$scope.options) {
-        throw createError('NotInitialized', localize('Bot.init is not called'));
+        throw createError('NotInitialized', Services.localize('Bot.init is not called'));
     }
 
     Services.observer.emit('bot.running');

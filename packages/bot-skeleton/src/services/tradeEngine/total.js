@@ -1,7 +1,6 @@
 import { getRoundedNumber } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { log_types } from '../../constants/messages';
-import { $scope } from './state';
+import { $scope, Services } from './state';
 import { createError, info, log } from './utils';
 
 const skeleton = {
@@ -26,10 +25,10 @@ export const checkLimits = tradeOption => {
 
     if (maxLoss && maxTrades) {
         if ($scope.session.runs >= maxTrades) {
-            throw createError('CustomLimitsReached', localize('Maximum number of trades reached'));
+            throw createError('CustomLimitsReached', Services.localize('Maximum number of trades reached'));
         }
         if ($scope.session.profit <= -maxLoss) {
-            throw createError('CustomLimitsReached', localize('Maximum loss amount reached'));
+            throw createError('CustomLimitsReached', Services.localize('Maximum loss amount reached'));
         }
     }
 };

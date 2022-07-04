@@ -40,8 +40,11 @@ import {
 } from './tradeEngine';
 import { Services } from './tradeEngine/state';
 
-const getInterface = observer => {
+const getInterface = (observer, config, localize) => {
+    Services.config = config;
+    Services.localize = localize;
     Services.observer = observer;
+
     return {
         alert,
         candleField,

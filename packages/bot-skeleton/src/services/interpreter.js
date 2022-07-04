@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import getInterface from './Interface';
@@ -5,6 +6,7 @@ import { unrecoverable_errors } from '../constants/messages';
 import { observer as globalObserver } from '../utils/observer';
 import ws from './api/ws';
 import { highlightBlock } from '../scratch/utils';
+import { config } from '../constants/config';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
@@ -33,7 +35,7 @@ const timeMachineEnabled = $scope => $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    const bot_interface = getInterface(globalObserver);
+    const bot_interface = getInterface(globalObserver, config, localize);
     const $scope = bot_interface.scope;
     bot_interface.tradeEngineObserver();
     bot_interface.highlightBlock = highlightBlock;

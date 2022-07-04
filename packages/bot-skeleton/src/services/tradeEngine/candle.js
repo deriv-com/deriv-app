@@ -1,5 +1,5 @@
-import { localize } from '@deriv/translations';
 import { createError, isPositiveNumber, isPositiveInteger } from './utils';
+import { Services } from './state';
 
 const isCandle = candle =>
     candle instanceof Object &&
@@ -8,14 +8,14 @@ const isCandle = candle =>
 
 const expectCandle = candle => {
     if (!isCandle(candle)) {
-        throw createError('CandleExpected', localize('Given candle is not valid'));
+        throw createError('CandleExpected', Services.localize('Given candle is not valid'));
     }
     return candle;
 };
 
 const expectCandles = candles => {
     if (!(candles instanceof Array) || !candles.every(c => isCandle(c))) {
-        throw createError('CandleListExpected', localize('Given candle list is not valid'));
+        throw createError('CandleListExpected', Services.localize('Given candle list is not valid'));
     }
     return candles;
 };

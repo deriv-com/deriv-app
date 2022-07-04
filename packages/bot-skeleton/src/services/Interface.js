@@ -40,10 +40,12 @@ import {
 } from './tradeEngine';
 import { Services } from './tradeEngine/state';
 
-const getInterface = (observer, config, localize) => {
+const getInterface = (observer, config, localize, log_types, populateConfig) => {
     Services.config = config;
     Services.localize = localize;
     Services.observer = observer;
+    Services.log_types = log_types;
+    Services.populateConfig = populateConfig;
 
     return {
         alert,

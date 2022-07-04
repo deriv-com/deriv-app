@@ -2,7 +2,6 @@ import { waitForAfter } from './open-contract';
 import Store, { constants, $scope, Services } from './state';
 import { recoverFromError, doUntilDone, contractStatus, log } from './utils';
 import ws from '../api/ws';
-import { log_types } from '../../constants/messages';
 
 export const isSellAtMarketAvailable = () => {
     const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
@@ -18,7 +17,7 @@ export const sellAtMarket = () => {
     }
 
     if (!isSellAtMarketAvailable()) {
-        log(log_types.NOT_OFFERED);
+        log(Services.log_types.NOT_OFFERED);
         return Promise.resolve();
     }
 
@@ -30,7 +29,7 @@ export const sellAtMarket = () => {
 
             if (sell_response) {
                 const { sold_for } = sell_response.sell;
-                log(log_types.SELL, { sold_for });
+                log(Services.log_types.SELL, { sold_for });
             }
 
             contractStatus('purchase.sold');

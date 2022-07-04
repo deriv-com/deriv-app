@@ -1,5 +1,4 @@
 import { getRoundedNumber } from '@deriv/shared';
-import { log_types } from '../../constants/messages';
 import { $scope, Services } from './state';
 import { createError, info, log } from './utils';
 
@@ -104,5 +103,5 @@ export const updateTotals = contract => {
         totalPayout: accountStat.totalPayout,
     });
 
-    log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
+    log(win ? Services.log_types.PROFIT : Services.log_types.LOST, { currency, profit });
 };

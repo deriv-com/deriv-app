@@ -4,7 +4,6 @@ import { updateAndReturnTotalRuns } from './total';
 import Store, { constants, purchaseSuccessful, $scope, Services } from './state';
 import ws from '../api/ws';
 import { recoverFromError, doUntilDone, contractStatus, info, log } from './utils';
-import { log_types } from '../../constants/messages';
 
 let delayIndex = 0;
 
@@ -31,7 +30,7 @@ export const purchase = contract_type => {
         Store.dispatch(purchaseSuccessful());
         renewProposalsOnPurchase();
         delayIndex = 0;
-        log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
+        log(Services.log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
         info({
             accountID: $scope.account_info.loginid,
             totalRuns: updateAndReturnTotalRuns(),

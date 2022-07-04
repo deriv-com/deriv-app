@@ -139,7 +139,7 @@ const generateSWConfig = is_release => ({
     exclude: [/^(?!css).*/],
     runtimeCaching: [
         {
-            urlPattern: /^public\/(images|sprites)\/(?!.*favicons).*$/,
+            urlPattern: /public\/(images|sprites)\/(?!.*favicons).*$/,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'assets',
@@ -149,14 +149,14 @@ const generateSWConfig = is_release => ({
             },
         },
         {
-            urlPattern: /^js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/,
+            urlPattern: /js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'core-js-files',
             },
         },
         {
-            urlPattern: /^(account|appstore|bot|cashier|cfd|trader)\//,
+            urlPattern: /(account|appstore|bot|cashier|cfd|trader)\//,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'packages-js-files',
@@ -166,7 +166,7 @@ const generateSWConfig = is_release => ({
             },
         },
         {
-            urlPattern: /^(index|404|bot|localstorage-sync)\.html$/,
+            urlPattern: /(index|404|localstorage-sync)\.html$/,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'html-files',

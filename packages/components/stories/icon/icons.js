@@ -377,6 +377,7 @@ export const icons =
         'IcUnsavedChanges',
         'IcUpDownSolid',
         'IcUpsDowns',
+        'IcUserBlockedOutline',
         'IcUserOutline',
         'IcUser',
         'IcUtility',

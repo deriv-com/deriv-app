@@ -370,6 +370,7 @@ import './common/ic-unsaved-changes-dashboard.svg';
 import './common/ic-unsaved-changes.svg';
 import './common/ic-up-down-solid.svg';
 import './common/ic-ups-downs.svg';
+import './common/ic-user-blocked-outline.svg';
 import './common/ic-user-outline.svg';
 import './common/ic-user.svg';
 import './common/ic-utility.svg';

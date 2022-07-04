@@ -33,7 +33,7 @@ const timeMachineEnabled = $scope => $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    const bot_interface = getInterface();
+    const bot_interface = getInterface(globalObserver);
     const $scope = bot_interface.scope;
     bot_interface.tradeEngineObserver();
     bot_interface.highlightBlock = highlightBlock;

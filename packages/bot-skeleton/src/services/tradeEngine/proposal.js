@@ -1,10 +1,9 @@
 import { isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope } from './state';
+import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope, Services } from './state';
 import ws from '../api/ws';
 import { getUUID } from '../api/ticks_service';
 import { doUntilDone } from './utils';
-import { observer as globalObserver } from '../../utils/observer';
 
 const tradeOptionToProposal = (trade_option, purchase_reference) =>
     trade_option.contractTypes.map(type => {
@@ -67,7 +66,7 @@ const requestProposals = () => {
                 }
                 if (!has_informed_error) {
                     has_informed_error = true;
-                    globalObserver.emit('Error', error.error);
+                    Services.observer.emit('Error', error.error);
                 }
                 return null;
             });

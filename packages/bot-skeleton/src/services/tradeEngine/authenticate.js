@@ -1,8 +1,7 @@
 import { observeBalance } from './balance';
 import { doUntilDone } from './utils';
-import { $scope } from './state';
+import { $scope, Services } from './state';
 import api from '../api/ws';
-import { observer as globalObserver } from '../../utils/observer';
 
 export const loginAndGetBalance = token => {
     if ($scope.token === token) {
@@ -10,7 +9,7 @@ export const loginAndGetBalance = token => {
     }
 
     doUntilDone(() => api.authorize(token)).catch(e => {
-        globalObserver.emit('Error', e);
+        Services.observer.emit('Error', e);
     });
     return new Promise(resolve => {
         // Try to recover from a situation where API doesn't give us a correct response on

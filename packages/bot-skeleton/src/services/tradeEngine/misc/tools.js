@@ -1,6 +1,6 @@
-import { observer as globalObserver } from '../../../utils/observer';
+import { Services } from '../state';
 
-export const notify = args => globalObserver.emit('ui.log.notify', args);
+export const notify = args => Services.observer.emit('ui.log.notify', args);
 
 export const miscAlert = (...args) => alert(...args);
 

@@ -38,8 +38,10 @@ import {
     $scope,
     indicators,
 } from './tradeEngine';
+import { Services } from './tradeEngine/state';
 
-const getInterface = () => {
+const getInterface = observer => {
+    Services.observer = observer;
     return {
         alert,
         candleField,

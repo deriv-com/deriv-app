@@ -1,11 +1,10 @@
 import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import { checkProposalReady } from './proposal';
-import Store, { constants, $scope } from './state';
+import Store, { constants, $scope, Services } from './state';
 import { isPositiveInteger, createError } from './utils';
 import api from '../api/ws';
 import TicksService from '../api/ticks_service';
-import { observer as globalObserver } from '../../utils/observer';
 
 let tickListenerKey;
 const ticksService = new TicksService(api);
@@ -72,7 +71,7 @@ export const getLastTick = (raw, toString = false) => {
             })
             .catch(e => {
                 if (e.code === 'MarketIsClosed') {
-                    globalObserver.emit('Error', e);
+                    Services.observer.emit('Error', e);
                     resolve(e.code);
                 }
             })

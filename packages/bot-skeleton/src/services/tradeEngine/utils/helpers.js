@@ -1,7 +1,7 @@
 import { findValueByKeyRecursively } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
-import { observer as globalObserver } from '../../../utils/observer';
+import { Services } from '../state';
 
 const getBackoffDelayInMs = (error, delay_index) => {
     const base_delay = 2.5;
@@ -97,12 +97,12 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                     error.error.code,
                     () =>
                         new Promise(recoverResolve => {
-                            const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
+                            const getGlobalTimeouts = () => Services.observer.getState('global_timeouts') ?? [];
 
                             const timeout = setTimeout(() => {
                                 const global_timeouts = getGlobalTimeouts();
                                 delete global_timeouts[timeout];
-                                globalObserver.setState(global_timeouts);
+                                Services.observer.setState(global_timeouts);
                                 recoverResolve();
                             }, getBackoffDelayInMs(error, delay_index));
 
@@ -115,7 +115,7 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                                 msg_type,
                             };
 
-                            globalObserver.setState({ global_timeouts });
+                            Services.observer.setState({ global_timeouts });
                         })
                 );
             });

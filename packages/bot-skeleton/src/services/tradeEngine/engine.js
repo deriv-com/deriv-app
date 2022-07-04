@@ -4,9 +4,8 @@ import { observeOpenContract } from './open-contract';
 import { checkProposalReady, observeProposals, makeProposals } from './proposal';
 import { watchTicks } from './ticks';
 import { checkLimits, clearStatistics } from './total';
-import Store, { constants, initial_scope, start, $scope } from './state';
+import Store, { constants, initial_scope, start, $scope, Services } from './state';
 import { createError } from './utils';
-import { observer as globalObserver } from '../../utils/observer';
 
 /* The watchScope function is called randomly and resets the prevTick
  * which leads to the same problem we try to solve. So prevTick is isolated
@@ -94,7 +93,7 @@ export const sleep = (arg = 1) => {
         r =>
             setTimeout(() => {
                 r();
-                setTimeout(() => globalObserver.emit('CONTINUE'), 0);
+                setTimeout(() => Services.observer.emit('CONTINUE'), 0);
             }, arg * 1000),
         () => {}
     );
@@ -105,7 +104,7 @@ export const startTradeEngine = tradeOptions => {
         throw createError('NotInitialized', localize('Bot.init is not called'));
     }
 
-    globalObserver.emit('bot.running');
+    Services.observer.emit('bot.running');
 
     $scope.tradeOptions = tradeOptions;
     Store.dispatch(start());
@@ -119,7 +118,7 @@ export const stopTradeEngine = () => {
 };
 
 export const tradeEngineObserver = () => {
-    globalObserver.register('statistics.clear', clearStatistics);
+    Services.observer.register('statistics.clear', clearStatistics);
     observeOpenContract();
     observeProposals();
 };

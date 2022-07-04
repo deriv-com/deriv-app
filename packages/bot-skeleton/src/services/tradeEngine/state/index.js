@@ -14,8 +14,9 @@ export {
     updateBalanceAction,
 } from './actions';
 
+export { default as Services } from './services';
+
 export { $scope, initial_scope } from './scope';
 
 const Store = createStore(rootReducer, applyMiddleware(thunk));
-
 export default Store;

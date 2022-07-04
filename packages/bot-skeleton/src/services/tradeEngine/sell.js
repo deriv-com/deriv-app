@@ -1,9 +1,8 @@
 import { waitForAfter } from './open-contract';
-import Store, { constants, $scope } from './state';
+import Store, { constants, $scope, Services } from './state';
 import { recoverFromError, doUntilDone, contractStatus, log } from './utils';
 import ws from '../api/ws';
 import { log_types } from '../../constants/messages';
-import { observer as globalObserver } from '../../utils/observer';
 
 export const isSellAtMarketAvailable = () => {
     const { is_sold, is_sell_available, is_expired } = $scope.contract_flags;
@@ -11,7 +10,7 @@ export const isSellAtMarketAvailable = () => {
 };
 
 export const sellAtMarket = () => {
-    globalObserver.emit('bot.sell');
+    Services.observer.emit('bot.sell');
 
     // Prevent calling sell twice
     if (Store.getState().single.scope !== constants.DURING_PURCHASE) {
@@ -102,7 +101,7 @@ export const sellAtMarket = () => {
 
         // If above checkbox not checked, try to recover from sell error.
         const recoverFn = (error_code, makeDelay) => {
-            return makeDelay().then(() => globalObserver.emit('REVERT', 'during'));
+            return makeDelay().then(() => Services.observer.emit('REVERT', 'during'));
         };
         return recoverFromError(sellContractAndGetContractInfo, recoverFn, errors_to_ignore, delay_index++).then(
             sell_response => onContractSold(sell_response)

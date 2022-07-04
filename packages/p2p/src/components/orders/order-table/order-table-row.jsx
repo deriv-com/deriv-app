@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { secondsToTimer } from 'Utils/date-time';
+import { getExpiryTime, secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
@@ -22,6 +22,26 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
                 {order_purchase_datetime}
             </Text>
         </React.Fragment>
+    );
+};
+
+const RatingCellRenderer = ({ rating, rating_button_expiry_time, review_details }) => {
+    return review_details ? (
+        <div className='orders__table-rating'>
+            <StarRating
+                empty_star_className='orders__table-rating--star'
+                empty_star_icon='IcEmptyStar'
+                full_star_className='orders__table-rating--star'
+                full_star_icon='IcFullStar'
+                initial_value={rating}
+                is_readonly
+                number_of_stars={5}
+                should_allow_hover_effect={false}
+                star_size={15}
+            />
+        </div>
+    ) : (
+        <OrdersUserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
     );
 };
 
@@ -90,7 +110,7 @@ const OrderRow = ({ style, row: order }) => {
     const transaction_amount = `${Number(amount * rate).toFixed(2)} ${local_currency}`;
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
-    const order_user_rating_button_expiry_time = Math.abs(new Date() - new Date(order_purchase_datetime)) / 36e5;
+    const rating_button_expiry_time = getExpiryTime(order_purchase_datetime);
 
     if (isMobile()) {
         return (
@@ -129,17 +149,25 @@ const OrderRow = ({ style, row: order }) => {
                                 {remaining_time}
                             </Text>
                         )}
-                        <div className='orders__mobile-chat'>
-                            <Icon
-                                icon='IcChat'
-                                height={15}
-                                width={16}
-                                onClick={() => {
-                                    sendbird_store.setShouldShowChatModal(true);
-                                    sendbird_store.setShouldShowChatOnOrders(true);
-                                }}
+                        {general_store.is_active_tab ? (
+                            <div className='orders__mobile-chat'>
+                                <Icon
+                                    icon='IcChat'
+                                    height={15}
+                                    width={16}
+                                    onClick={() => {
+                                        sendbird_store.setShouldShowChatModal(true);
+                                        sendbird_store.setShouldShowChatOnOrders(true);
+                                    }}
+                                />
+                            </div>
+                        ) : (
+                            <RatingCellRenderer
+                                rating={order.review_details?.rating}
+                                rating_button_expiry_time={rating_button_expiry_time}
+                                review_details={order.review_details}
                             />
-                        </div>
+                        )}
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title
@@ -181,24 +209,11 @@ const OrderRow = ({ style, row: order }) => {
                 <Table.Cell>
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
-                    ) : order.review_details ? (
-                        <div className='orders__table-rating'>
-                            <StarRating
-                                empty_star_className='orders__table-rating--star'
-                                empty_star_icon='IcEmptyStar'
-                                full_star_className='orders__table-rating--star'
-                                full_star_icon='IcFullStar'
-                                initial_value={order.review_details.rating}
-                                is_readonly
-                                number_of_stars={5}
-                                should_allow_hover_effect={false}
-                                star_size={15}
-                            />
-                        </div>
                     ) : (
-                        <OrdersUserRatingButton
-                            has_full_text={false}
-                            is_disabled={order_user_rating_button_expiry_time > 24}
+                        <RatingCellRenderer
+                            rating={order.review_details?.rating}
+                            rating_button_expiry_time={rating_button_expiry_time}
+                            review_details={order.review_details}
                         />
                     )}
                 </Table.Cell>

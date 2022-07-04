@@ -18,6 +18,18 @@ export const getFormattedDateString = (date_obj, is_local = false, has_seconds =
     return `${day} ${month} ${year}, ${time_without_sec}`;
 };
 
+export const getExpiryTime = epoch_string => {
+    if (typeof epoch_string !== 'string') {
+        throw Error('getExpiryTime argument needs a string');
+    }
+
+    // get current date, minus with order purchased date to get total
+    // hours since the order was created to current date
+    const expiryTime = Math.abs(new Date() - new Date(epoch_string)) / 36e5;
+
+    return expiryTime;
+};
+
 export const convertToMillis = epoch => {
     if (typeof epoch !== 'number') {
         throw Error('getLocalEpoch argument needs a number');

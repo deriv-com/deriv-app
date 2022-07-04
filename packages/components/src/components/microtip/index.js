@@ -1,3 +1,3 @@
-import Microtip from "./microtip";
+import Microtip from './microtip';
 
 export default Microtip;

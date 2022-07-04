@@ -9,8 +9,7 @@ import { useStores } from 'Stores';
 import { Icon, Table, Text } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import OrdersUserRatingButton from '../orders-user-rating-button';
-import StarRating from 'Components/star-rating';
+import RatingCellRenderer from 'Components/rating-cell-renderer';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -23,32 +22,6 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
             </Text>
         </React.Fragment>
     );
-};
-
-const RatingCellRenderer = ({ rating, rating_button_expiry_time, review_details }) => {
-    return review_details ? (
-        <div className='orders__table-rating'>
-            <StarRating
-                empty_star_className='orders__table-rating--star'
-                empty_star_icon='IcEmptyStar'
-                full_star_className='orders__table-rating--star'
-                full_star_icon='IcFullStar'
-                initial_value={rating}
-                is_readonly
-                number_of_stars={5}
-                should_allow_hover_effect={false}
-                star_size={11}
-            />
-        </div>
-    ) : (
-        <OrdersUserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
-    );
-};
-
-RatingCellRenderer.propTypes = {
-    rating: PropTypes.number,
-    rating_button_expiry_time: PropTypes.number,
-    review_details: PropTypes.object,
 };
 
 const OrderRow = ({ style, row: order }) => {

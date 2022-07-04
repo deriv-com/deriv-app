@@ -24,7 +24,8 @@ const POISubmissionForMT5 = ({
     onStateChange,
     redirect_button,
     refreshNotifications,
-    citizen_data
+    citizen_data,
+    has_idv_error
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -45,7 +46,6 @@ const POISubmissionForMT5 = ({
             }
             setSubmissionStatus(submission_status_code.submitting);
         }
-        console.log(citizen_data);
     }, [citizen_data])
 
 
@@ -89,6 +89,7 @@ const POISubmissionForMT5 = ({
                             citizen_data={citizen_data}
                             // value={value}
                             onNext={handleIdvSubmit}
+                            has_idv_error={has_idv_error}
                         />
                     );
                 case service_code.onfido: {
@@ -97,14 +98,16 @@ const POISubmissionForMT5 = ({
                     const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
 
                     return (
-                        <OnfidoUpload
-                            country_code={country_code}
-                            documents_supported={documents_supported}
-                            handleViewComplete={handleViewComplete}
-                            height={height}
-                            is_from_external={is_from_external}
-                            refreshNotifications={refreshNotifications}
-                        />
+                        <>
+                            <OnfidoUpload
+                                country_code={country_code}
+                                documents_supported={documents_supported}
+                                handleViewComplete={handleViewComplete}
+                                height={height}
+                                is_from_external={is_from_external}
+                                refreshNotifications={refreshNotifications}
+                            />
+                        </>
 
                     );
                 }

@@ -178,11 +178,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         return errors;
     };
 
-    const handleCancel = (values: TFormValues) => {
-        onSave(index, values);
-        onCancel();
-    };
-
     const onFileDrop = (
         files: TObjDocumentFile,
         error_message: string,
@@ -316,6 +311,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         toggleModal,
     } = props;
     const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa, poi_status } = form_state;
+
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
 
@@ -513,10 +509,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>
-                                        {(poa_status === PoaStatusCodes.verified || is_form_visible) && (
+                                        {(poa_status === PoaStatusCodes.none || is_form_visible) && (
                                             <FormSubmitButton
-                                                has_cancel
-                                                cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     isFormDisabled(dirty, errors) ||
                                                     (poa_status !== PoaStatusCodes.verified &&
@@ -532,7 +526,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}
                                                 form_error={form_error}
-                                                onCancel={() => handleCancel(values as TFormValues)}
                                             />
                                         )}
                                     </Modal.Footer>

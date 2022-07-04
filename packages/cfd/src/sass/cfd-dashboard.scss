@@ -1133,17 +1133,18 @@
 }
 
 .cfd-financial-stp-modal {
-    display: grid;
-    grid-template-rows: 13rem minmax(10rem, 1fr);
+    display: flex;
     height: 100%;
     position: relative;
     width: 100%;
-
     .dc-modal-footer {
         position: fixed;
         padding: unset;
         bottom: 1.6rem;
         right: 1.6rem;
+    }
+    &__body {
+        width: 100%;
     }
 
     &__form {

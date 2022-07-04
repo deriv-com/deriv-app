@@ -1,6 +1,6 @@
 import { ProofOfIdentityContainerforMt5 } from '@deriv/account';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal } from '@deriv/components';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, Button } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Formik, FormikHelpers as FormikActions } from 'formik';
@@ -41,7 +41,6 @@ type TCFDPOIProps = {
     authentication_status: TCFDAuthenticationStatusProps;
     form_error?: string;
     index: number;
-    onCancel: () => void;
     onSubmit: (index: number, value: TCFDValue, setSubmitting: boolean | ((isSubmitting: boolean) => void)) => void;
     value: TCFDValue;
     account_status?: GetAccountStatus;
@@ -62,7 +61,7 @@ type TCFDPOIProps = {
     residence_list: ResidenceList;
 };
 
-const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }: TCFDPOIProps) => {
+const CFDPOI = ({ authentication_status, form_error, index, onSubmit, value, ...props }: TCFDPOIProps) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState<string>('none');
     const validateForm = React.useCallback(() => {
@@ -91,7 +90,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
             }
         >
             {({ handleSubmit }) => (
-                <AutoHeightWrapper default_height={200}>
+                <AutoHeightWrapper default_height={560}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
                         <form
                             ref={setRef}
@@ -115,7 +114,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>
-                                    <FormSubmitButton
+                                    <Button
                                         is_disabled={is_next_btn_disabled}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
@@ -133,8 +132,9 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                 </AutoHeightWrapper>
             )}
         </Formik>
-    );
-};
+    )
+}
+
 
 export default connect(({ client, common, notifications }: RootStore) => ({
     account_status: client.account_status,

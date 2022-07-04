@@ -95,8 +95,11 @@ const ProofOfIdentityContainerforMt5 = ({
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
     );
-    console.log(identity_status, has_require_submission, allow_poi_resubmission);
-    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
+
+    const idv_resubmission_cases = ['rejected', 'suspected', 'expired']
+    const has_idv_error = (identity_last_attempt?.service && service_code.idv && idv_resubmission_cases.includes(idv.status))
+
+    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission || has_idv_error) {
         return (
             <POISubmissionForMT5
                 allow_poi_resubmission={allow_poi_resubmission}
@@ -115,6 +118,7 @@ const ProofOfIdentityContainerforMt5 = ({
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
                 citizen_data={citizen_data}
+                has_idv_error={has_idv_error}
             />
         );
     } else if (
@@ -156,16 +160,16 @@ const ProofOfIdentityContainerforMt5 = ({
     }
 
     switch (identity_last_attempt.service) {
-        case service_code.idv:
-            return (
-                <IdvContainer
-                    handleRequireSubmission={handleRequireSubmission}
-                    idv={idv}
-                    is_from_external={!!is_from_external}
-                    needs_poa={needs_poa}
-                    redirect_button={redirect_button}
-                />
-            );
+        // case service_code.idv:
+        //     return (
+        //         <IdvContainer
+        //             handleRequireSubmission={handleRequireSubmission}
+        //             idv={idv}
+        //             is_from_external={!!is_from_external}
+        //             needs_poa={needs_poa}
+        //             redirect_button={redirect_button}
+        //         />
+        //     );
         case service_code.onfido:
             return (
                 <Onfido

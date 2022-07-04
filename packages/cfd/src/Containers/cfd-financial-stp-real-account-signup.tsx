@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
@@ -80,8 +80,6 @@ const index_lookup: TIndexLookupObject = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    console.log('amina', props);
-
     const { refreshNotifications } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
@@ -132,11 +130,14 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const nextStep: TNextStep = () => {
         clearError();
+        console.log('here  next');
+
         if (step + 1 < items.length) {
             setStep(step + 1);
-            // } else {
-            //     props.toggleModal();
+
         }
+
+
     };
 
     const prevStep = () => {
@@ -147,10 +148,10 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         index: number,
         value: { [key: string]: string | undefined },
         setSubmitting: TSetSubmiting,
-        is_dirty = true
     ) => {
         saveFormData(index, value);
         nextStep(setSubmitting);
+
     };
 
     React.useEffect(() => {
@@ -170,6 +171,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         const cloned_items: Array<TItemsState> = Object.assign([], items);
         cloned_items[index].form_value = value;
         setItems(cloned_items);
+        console.log(cloned_items);
+
     };
     const BodyComponent = getCurrent('body') as TItemsState['body'];
     const form_value = getCurrent('form_value');
@@ -186,8 +189,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             is_disabled={isDesktop()}
             height_offset='40px'
         >
-            <div className='cfd-financial-stp-modal__heading'>
-            </div>
+
             <div className='cfd-financial-stp-modal__body'>
                 <BodyComponent
                     value={form_value}

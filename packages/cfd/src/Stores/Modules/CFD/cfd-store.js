@@ -536,7 +536,6 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     toggleCFDVerificationModal() {
-        console.log(this.is_cfd_verification_modal_visible);
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
     }
 }

@@ -105,15 +105,16 @@ const JurisdictionModal = ({
                 openPasswordModal(type_of_account);
                 break;
             case 'labuan':
-                return;
+                break;
             case 'bvi':
                 toggleCFDVerificationModal()
+                break;
             case 'mf':
-                return;
+                break;
             case 'vanuatu':
-                return;
+                break;
             default:
-                return;
+                break;
         }
     };
 

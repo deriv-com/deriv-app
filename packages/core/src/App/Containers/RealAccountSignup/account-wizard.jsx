@@ -242,7 +242,6 @@ const AccountWizard = props => {
             document_type: document_type.id,
             issuing_country: country_code,
         };
-        console.log('document about to submit:', idv_submit_data);
         await WS.send(idv_submit_data);
     };
 

@@ -48,7 +48,7 @@ const BuySellRow = ({ row: advert }) => {
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
 
-    const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
+    const rating_average_decimal = rating_average ? Number(rating_average.toFixed(1)) : null;
 
     if (isMobile()) {
         return (
@@ -75,8 +75,8 @@ const BuySellRow = ({ row: advert }) => {
                             </Text>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
-                        {!!rating_count && !!rating_average ? (
-                            <div className='buy-sell-row__rating'>
+                        <div className='buy-sell-row__rating'>
+                            {!!rating_count && !!rating_average ? (
                                 <StarRating
                                     empty_star_className='buy-sell-row__rating--star'
                                     empty_star_icon='IcEmptyStar'
@@ -88,14 +88,12 @@ const BuySellRow = ({ row: advert }) => {
                                     should_allow_hover_effect={false}
                                     star_size={14}
                                 />
-                            </div>
-                        ) : (
-                            <div className='buy-sell-row__rating'>
+                            ) : (
                                 <Text color='less-prominent' size='xxs'>
                                     <Localize i18n_default_text='Not rated yet' />
                                 </Text>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                     <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
                 </div>
@@ -177,8 +175,8 @@ const BuySellRow = ({ row: advert }) => {
                             </div>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
-                        {!!rating_count && !!rating_average ? (
-                            <div className='buy-sell-row__rating'>
+                        <div className='buy-sell-row__rating'>
+                            {!!rating_count && !!rating_average ? (
                                 <StarRating
                                     empty_star_className='buy-sell-row__rating--star'
                                     empty_star_icon='IcEmptyStar'
@@ -190,14 +188,12 @@ const BuySellRow = ({ row: advert }) => {
                                     should_allow_hover_effect={false}
                                     star_size={14}
                                 />
-                            </div>
-                        ) : (
-                            <div className='buy-sell-row__rating'>
+                            ) : (
                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
                                     <Localize i18n_default_text='Not rated yet' />
                                 </Text>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             </Table.Cell>

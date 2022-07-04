@@ -88,67 +88,73 @@ const Interpreter = () => {
     }
 
     function initFunc(js_interpreter, scope) {
-        const { getTicksInterface, alert, prompt, sleep, console: custom_console } = bot_interface;
-        const ticks_interface = getTicksInterface;
-
-        js_interpreter.setProperty(scope, 'console', js_interpreter.nativeToPseudo(custom_console));
-        js_interpreter.setProperty(scope, 'alert', js_interpreter.nativeToPseudo(alert));
-        js_interpreter.setProperty(scope, 'prompt', js_interpreter.nativeToPseudo(prompt));
-        js_interpreter.setProperty(
-            scope,
-            'getPurchaseReference',
-            js_interpreter.nativeToPseudo(bot_interface.getPurchaseReference)
-        );
-
         const pseudo_bot_interface = js_interpreter.nativeToPseudo(bot_interface);
-
-        Object.entries(ticks_interface).forEach(([name, f]) =>
-            js_interpreter.setProperty(pseudo_bot_interface, name, createAsync(js_interpreter, f))
-        );
-
-        js_interpreter.setProperty(
-            pseudo_bot_interface,
-            'start',
-            js_interpreter.nativeToPseudo((...args) => {
-                const { start } = bot_interface;
-                if (shouldRestartOnError($scope)) {
-                    $scope.startState = js_interpreter.takeStateSnapshot();
-                }
-                start(...args);
-            })
-        );
-
-        js_interpreter.setProperty(
-            pseudo_bot_interface,
-            'purchase',
-            createAsync(js_interpreter, bot_interface.purchase)
-        );
-        js_interpreter.setProperty(
-            pseudo_bot_interface,
-            'sellAtMarket',
-            createAsync(js_interpreter, bot_interface.sellAtMarket)
-        );
-        js_interpreter.setProperty(scope, 'Bot', pseudo_bot_interface);
-        js_interpreter.setProperty(
-            scope,
-            'watch',
-            createAsync(js_interpreter, watchName => {
-                const { watch } = getInterface();
-
-                if (timeMachineEnabled($scope)) {
-                    const snapshot = interpreter.takeStateSnapshot();
-                    if (watchName === 'before') {
-                        $scope.beforeState = snapshot;
-                    } else {
-                        $scope.duringState = snapshot;
+        // Add methods to the sandbox;
+        const interpreter_properties = {
+            console: { type: 'pseudo', scope, custom_func: bot_interface.console },
+            alert: { type: 'pseudo', scope, custom_func: bot_interface.alert },
+            prompt: { type: 'pseudo', scope, custom_func: bot_interface.prompt },
+            sleep: { type: 'async', scope, custom_func: bot_interface.sleep },
+            getPurchaseReference: { type: 'pseudo', scope, custom_func: bot_interface.getPurchaseReference },
+            purchase: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.purchase },
+            sellAtMarket: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.sellAtMarket },
+            checkDirection: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.checkDirection },
+            getLastDigit: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.getLastDigit },
+            getLastDigitList: {
+                type: 'async',
+                scope: pseudo_bot_interface,
+                custom_func: bot_interface.getLastDigitList,
+            },
+            getLastTick: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.getLastTick },
+            getOhlc: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.getOhlc },
+            getOhlcFromEnd: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.getOhlcFromEnd },
+            getTicks: { type: 'async', scope: pseudo_bot_interface, custom_func: bot_interface.getTicks },
+            Bot: {
+                type: 'pure',
+                scope,
+                custom_func: pseudo_bot_interface,
+            },
+            start: {
+                type: 'pseudo',
+                scope: pseudo_bot_interface,
+                custom_func: (...args) => {
+                    if (shouldRestartOnError($scope)) {
+                        $scope.startState = js_interpreter.takeStateSnapshot();
                     }
-                }
+                    bot_interface.start(...args);
+                },
+            },
+            watch: {
+                type: 'async',
+                scope,
+                custom_func: watchName => {
+                    if (timeMachineEnabled($scope)) {
+                        const snapshot = interpreter.takeStateSnapshot();
+                        if (watchName === 'before') {
+                            $scope.beforeState = snapshot;
+                        } else {
+                            $scope.duringState = snapshot;
+                        }
+                    }
+                    return bot_interface.watch(watchName);
+                },
+            },
+        };
 
-                return watch(watchName);
-            })
-        );
-
-        js_interpreter.setProperty(scope, 'sleep', createAsync(js_interpreter, sleep));
+        Object.keys(interpreter_properties).forEach(property => {
+            const item = interpreter_properties[property];
+            let custom_func;
+            if (item.type === 'pseudo') {
+                custom_func = js_interpreter.nativeToPseudo(item.custom_func);
+            }
+            if (item.type === 'async') {
+                custom_func = createAsync(js_interpreter, item.custom_func);
+            }
+            if (item.type === 'pure') {
+                custom_func = item.custom_func;
+            }
+            js_interpreter.setProperty(item.scope, property, custom_func);
+        });
     }
 
     function stop() {

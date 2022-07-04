@@ -457,6 +457,11 @@
     min-height: 38rem;
     width: 27.6em;
     position: relative;
+
+    &--disabled {
+        border: solid 1px var(--border-disabled);
+    }
+
     @include desktop {
         height: 100%;
         margin: 0 1.6rem;
@@ -496,13 +501,8 @@
         }
     }
 
-    & > h2 {
+    &__h2-header {
         margin-top: 2.4rem;
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 30px;
-        color: #333333;
-        margin-left: 1rem;
         margin-left: 1.6rem;
     }
 
@@ -548,7 +548,6 @@
         margin-bottom: 1rem;
 
         & > p {
-            color: #377cfc;
             font-size: 16px;
             line-height: 24px;
             text-align: center;

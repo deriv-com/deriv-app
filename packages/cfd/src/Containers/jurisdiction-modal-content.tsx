@@ -69,6 +69,8 @@ const JurisdictionCard = ({
             : number_of_financial_accounts_to_be_shown
     );
 
+    const [disabled] = React.useState(false);
+
     const poa_verified = poa_status === PoaStatusCodes.verified;
     const poa_none = poa_status === PoaStatusCodes.none;
     const poi_verified = poi_status === PoaStatusCodes.verified;
@@ -83,7 +85,12 @@ const JurisdictionCard = ({
     };
 
     const Checkmark = () => (
-        <Icon icon='IcCheckmark' className='cfd-jurisdiction-card__bullet-wrapper--checkmark' color='green' size={18} />
+        <Icon
+            icon='IcCheckmark'
+            className='cfd-jurisdiction-card__bullet-wrapper--checkmark'
+            color={disabled ? 'disabled' : 'green'}
+            size={18}
+        />
     );
 
     const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
@@ -92,37 +99,52 @@ const JurisdictionCard = ({
         <>
             {poa_none && poi_none && (
                 <div className='cfd-jurisdiction-card__footer'>
-                    <p>
+                    <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address' />
-                    </p>
+                    </Text>
                 </div>
             )}
             {is_pending_authentication && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <p className='cfd-jurisdiction-card__verification-status--pending'>
+                    <Text
+                        size='xxxs'
+                        color={disabled ? 'less-prominent' : 'prominent'}
+                        className='cfd-jurisdiction-card__verification-status--pending'
+                    >
                         <Localize i18n_default_text='Pending verification' />
-                    </p>
+                    </Text>
                 </div>
             )}
             {is_fully_authenticated && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <p className='cfd-jurisdiction-card__verification-status--verified'>
+                    <Text
+                        size='xxxs'
+                        color={disabled ? 'less-prominent' : 'prominent'}
+                        className='cfd-jurisdiction-card__verification-status--verified'
+                    >
                         <Localize i18n_default_text='Verified' />
-                    </p>
+                    </Text>
                 </div>
             )}
             {poi_none && poa_verified && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                    <Text
+                        size='xxxs'
+                        color={disabled ? 'less-prominent' : 'prominent'}
+                        className='cfd-jurisdiction-card__verification-status--POA_POI'
+                    >
                         <Localize i18n_default_text='Check your proof of identity' />
-                    </p>
+                    </Text>
                 </div>
             )}
             {poa_none && poi_verified && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <p className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                    <Text
+                        color={disabled ? 'less-prominent' : 'prominent'}
+                        className='cfd-jurisdiction-card__verification-status--POA_POI'
+                    >
                         <Localize i18n_default_text='Check your proof of address' />
-                    </p>
+                    </Text>
                 </div>
             )}
         </>
@@ -138,31 +160,38 @@ const JurisdictionCard = ({
                 style={OneOrTwoCards ? { width: '32em' } : { width: '27.6em' }}
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
-                    <div className='cfd-jurisdiction-card__over-header'>
-                        <p>
+                    <div className={classNames('cfd-jurisdiction-card__over-header')}>
+                        <Text as='p' color={disabled ? 'less-prominent' : 'blue'}>
                             <Localize
                                 i18n_default_text={
                                     jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents]
                                         .over_header
                                 }
                             />
-                        </p>
+                        </Text>
                     </div>
                 )}
-                <h2>
+                <Text
+                    as='h2'
+                    color={disabled ? 'less-prominent' : 'prominent'}
+                    weight='bold'
+                    size='m'
+                    line-height='m'
+                    className='cfd-jurisdiction-card__h2-header'
+                >
                     <Localize
                         i18n_default_text={
                             jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].header
                         }
                     />
-                </h2>
+                </Text>
 
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].contents.map(item => (
                     <div className='cfd-jurisdiction-card__bullet-wrapper'>
                         <div>
                             <Checkmark />
                         </div>
-                        <Text as='p' size='xs' line_height='xs'>
+                        <Text as='p' size='xs' line_height='xs' color={disabled ? 'less-prominent' : 'prominent'}>
                             <Localize i18n_default_text={item} />
                         </Text>
                     </div>

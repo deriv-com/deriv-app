@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentCard from '../payment-agent-card';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 
 const PaymentAgentDepositWithdrawContainer = ({
     is_deposit,
@@ -21,6 +21,9 @@ const PaymentAgentDepositWithdrawContainer = ({
 
     return (
         <React.Fragment>
+            <MobileWrapper>
+                <PaymentAgentDisclaimer />
+            </MobileWrapper>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>
@@ -33,17 +36,11 @@ const PaymentAgentDepositWithdrawContainer = ({
                 )}
             </div>
             <div className='payment-agent-list__list-selector'>
-                <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s' className='cashier__paragraph'>
-                    <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
-                </Text>
                 {supported_banks.length > 1 && (
                     <div>
                         <DesktopWrapper>
                             <Dropdown
                                 id='payment_methods'
-                                className='payment-agent-list__drop-down payment-agent-list__filter'
-                                classNameDisplay='cashier__drop-down-display payment-agent-list__filter-display'
-                                classNameDisplaySpan='cashier__drop-down-display-span'
                                 classNameItems='cashier__drop-down-items'
                                 list={list_with_default}
                                 name='payment_methods'
@@ -53,7 +50,7 @@ const PaymentAgentDepositWithdrawContainer = ({
                         </DesktopWrapper>
                         <MobileWrapper>
                             <SelectNative
-                                placeholder={localize('Please select')}
+                                placeholder={localize('All payment methods')}
                                 name='payment_methods'
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}

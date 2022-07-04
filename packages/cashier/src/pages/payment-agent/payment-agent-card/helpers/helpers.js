@@ -14,7 +14,13 @@ export const getNormalizedPaymentMethod = payment_method => {
 export const hasNormalizedPaymentMethods = all_payment_methods => {
     if (all_payment_methods.length > 0) {
         return !all_payment_methods.every(method => getNormalizedPaymentMethod(method.payment_method) === '');
-    } 
-        return false;
-    
+    }
+    return false;
+};
+
+export const getUniquePaymentAgentSupportedBanks = supported_banks => {
+    const normalized_payment_methods = supported_banks
+        .map(bank => getNormalizedPaymentMethod(bank.payment_method))
+        .filter(Boolean);
+    return [...new Set(normalized_payment_methods)];
 };

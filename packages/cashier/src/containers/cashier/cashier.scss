@@ -271,9 +271,8 @@
         }
 
         &-button {
-            min-width: 25.8rem;
-            padding: 6px 16px;
-            margin-right: 0.1rem;
+            min-width: 25.6rem;
+            padding: 6px 8px;
         }
         .acc-prompt-dialog {
             padding: 0 1rem;
@@ -319,5 +318,10 @@
 
     &__side-note {
         min-width: 20rem;
+    }
+
+    .dc-vertical-tab__content-side-note-item {
+        position: sticky;
+        top: calc(2.4rem + 41px);
     }
 }

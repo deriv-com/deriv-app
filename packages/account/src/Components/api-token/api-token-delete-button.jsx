@@ -5,12 +5,11 @@ import { useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 
-const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left' }) => {
+const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
     const { deleteToken } = React.useContext(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const isMounted = useIsMounted();
-    const timeout_ref = React.useRef(null);
 
     const getConfirmationBeforeDelete = () => setIsDeleting(true);
 
@@ -25,17 +24,6 @@ const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left' }) => {
             }
         });
     };
-
-    React.useEffect(() => {
-        if (is_deleting) {
-            timeout_ref.current = setTimeout(() => {
-                if (isMounted()) setIsDeleting(false);
-            }, 10000);
-        } else {
-            clearTimeout(timeout_ref.current);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_deleting]);
 
     return (
         <>
@@ -69,7 +57,7 @@ const ApiTokenDeleteButton = ({ token, popoverAlignment = 'left' }) => {
                 </Modal.Footer>
             </Modal>
             <Popover
-                alignment={popoverAlignment}
+                alignment={popover_alignment}
                 classNameBubble='dc-clipboard__popover'
                 message={localize('Delete this token')}
                 relative_render={false}
@@ -95,7 +83,7 @@ ApiTokenDeleteButton.propTypes = {
         scopes: PropTypes.array.isRequired,
         token: PropTypes.string.isRequired,
     }).isRequired,
-    popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+    popover_alignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
 export default ApiTokenDeleteButton;

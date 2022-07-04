@@ -16,7 +16,7 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
     const [should_show_token, setShouldShowToken] = React.useState(false);
 
     const toggleTokenVisibility = () => {
-        setShouldShowToken(!should_show_token);
+        setShouldShowToken(prev_value => !prev_value);
     };
 
     return (
@@ -37,7 +37,7 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
             <Popover
                 alignment='bottom'
                 classNameBubble='dc-clipboard__popover'
-                message={should_show_token ? 'Hide this token' : 'Show this token'}
+                message={localize(should_show_token ? 'Hide this token' : 'Show this token')}
             >
                 <Icon
                     icon={should_show_token ? 'IcPasswordEyeVisible' : 'IcPasswordEyeHide'}

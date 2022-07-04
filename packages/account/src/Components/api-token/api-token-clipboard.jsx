@@ -28,7 +28,7 @@ const WarningDialogMessage = () => (
     </>
 );
 
-const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popoverAlignment = 'bottom' }) => {
+const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popover_alignment = 'bottom' }) => {
     const [is_copied, setIsCopied] = React.useState(false);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
@@ -58,6 +58,10 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
         textField.remove();
     };
 
+    /* two timeouts help to prevent popup window blinking. 
+    without early hiding the popup we will see shortly the description message like during hovering. 
+    this bug appears when popup is handled outside like here
+    */
     const onClick = () => {
         setIsModalOpen(false);
         copyToClipboard(text_copy);
@@ -106,7 +110,7 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
                 </Modal.Footer>
             </Modal>
             <Popover
-                alignment={popoverAlignment}
+                alignment={popover_alignment}
                 classNameBubble='dc-clipboard__popover'
                 message={is_copied ? success_message : info_message}
                 is_open={is_popover_open}
@@ -132,7 +136,7 @@ ApiTokenClipboard.propTypes = {
     text_copy: PropTypes.string,
     info_message: PropTypes.string,
     success_message: PropTypes.string,
-    popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+    popover_alignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
 export default ApiTokenClipboard;

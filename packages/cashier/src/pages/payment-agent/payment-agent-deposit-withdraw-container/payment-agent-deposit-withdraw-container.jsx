@@ -19,6 +19,12 @@ const PaymentAgentDepositWithdrawContainer = ({
         ...supported_banks,
     ];
 
+    React.useEffect(() => {
+        return () => {
+            onChangePaymentMethod({ target: { value: '0' } });
+        };
+    }, []);
+
     return (
         <React.Fragment>
             <MobileWrapper>

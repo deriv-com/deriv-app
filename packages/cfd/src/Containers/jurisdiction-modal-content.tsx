@@ -186,16 +186,18 @@ const JurisdictionCard = ({
                     />
                 </Text>
 
-                {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].contents.map(item => (
-                    <div className='cfd-jurisdiction-card__bullet-wrapper'>
-                        <div>
-                            <Checkmark />
+                {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].contents.map(
+                    (item, index) => (
+                        <div className='cfd-jurisdiction-card__bullet-wrapper' key={index}>
+                            <div>
+                                <Checkmark />
+                            </div>
+                            <Text as='p' size='xs' line_height='xs' color={disabled ? 'less-prominent' : 'prominent'}>
+                                <Localize i18n_default_text={item} />
+                            </Text>
                         </div>
-                        <Text as='p' size='xs' line_height='xs' color={disabled ? 'less-prominent' : 'prominent'}>
-                            <Localize i18n_default_text={item} />
-                        </Text>
-                    </div>
-                ))}
+                    )
+                )}
 
                 <VerificationStatuses />
             </div>
@@ -344,7 +346,7 @@ const JurisdictionModalContent = ({
                         line_height='xs'
                         className='cfd-jurisdiction-card____jurisdiction-checkbox--description'
                     >
-                        I confirm and accept Deriv Investments (Europe) Limited's Terms and Conditions
+                        I confirm and accept Deriv Investments (Europe) Limited&#39;s Terms and Conditions
                     </Text>
                 </div>
             )}

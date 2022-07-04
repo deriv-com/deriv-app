@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
-import { Icon, Popover } from '@deriv/components';
+import { Popover, Icon } from '@deriv/components';
 import { deriv_urls } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { liveChatInitialization } from './live-chat';

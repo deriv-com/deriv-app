@@ -118,6 +118,7 @@ export default class PaymentAgentStore {
                     max_withdrawal: payment_agent.max_withdrawal,
                     min_withdrawal: payment_agent.min_withdrawal,
                     name: payment_agent.name,
+                    paymentagent_loginid: payment_agent.paymentagent_loginid,
                     phones: payment_agent?.phone_numbers || payment_agent?.telephone,
                     supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,

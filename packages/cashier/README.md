@@ -6,7 +6,7 @@ This repository is a workspace of [deriv-app](../../README.md) monorepo and cove
 This workspace covers:
 
 -   Deposit, Withdraw and Transfer (for both `Fiat` and `Crypto`)
--   Deposit and withdraw for `payment agent`
+-   Deposit and withdraw with `Payment agents`
 -   Deposit for `p2p` and `onRamp`
 
 ## How to Install the Project

@@ -119,7 +119,7 @@ export const changeLanguage = async (lang, cb) => {
     // TODO: uncomment this when translations are ready
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
-        i18n.changeLanguage(lang, () => {
+        await i18n.changeLanguage(lang, () => {
             localStorage.setItem(LANGUAGE_KEY, lang);
             cb(lang);
         });
@@ -171,6 +171,5 @@ export const useOnLoadTranslation = () => {
     }, []);
 
     initMoment(i18n.language);
-
     return [is_loaded, setLoaded];
 };

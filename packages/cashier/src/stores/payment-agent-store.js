@@ -20,7 +20,6 @@ export default class PaymentAgentStore {
             receipt: observable,
             selected_bank: observable,
             supported_banks: observable,
-            verification: observable,
             active_tab_index: observable,
             all_payment_agent_list: observable,
             setActiveTabIndex: action.bound,
@@ -51,6 +50,7 @@ export default class PaymentAgentStore {
             requestPaymentAgentWithdraw: action.bound,
         });
 
+        this.verification = new VerificationStore({ root_store, WS });
         this.root_store = root_store;
         this.WS = WS;
     }
@@ -68,7 +68,6 @@ export default class PaymentAgentStore {
     receipt = {};
     selected_bank = 0;
     supported_banks = [];
-    verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     active_tab_index = 0;
     all_payment_agent_list = [];
 

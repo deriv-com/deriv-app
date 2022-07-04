@@ -15,7 +15,6 @@ export default class WithdrawStore {
             error: observable,
             is_10k_withdrawal_limit_reached: observable,
             is_withdraw_confirmed: observable,
-            verification: observable,
             withdraw_amount: observable,
             max_withdraw_amount: observable,
             crypto_config: observable,
@@ -38,6 +37,7 @@ export default class WithdrawStore {
             account_platform_icon: computed,
         });
 
+        this.verification = new VerificationStore({ root_store, WS });
         this.root_store = root_store;
         this.WS = WS;
     }
@@ -47,7 +47,6 @@ export default class WithdrawStore {
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached = undefined;
     is_withdraw_confirmed = false;
-    verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     withdraw_amount = '';
     max_withdraw_amount = 0;
     crypto_config = {};

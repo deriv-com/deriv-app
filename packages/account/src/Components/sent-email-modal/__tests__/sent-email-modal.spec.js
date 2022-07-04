@@ -3,9 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import SentEmailModal from '../sent-email-modal';
 
-const onClose = jest.fn();
-const onClickSendEmail = jest.fn();
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(),
@@ -13,6 +10,9 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<SentEmailModal/>', () => {
+    const onClose = jest.fn();
+    const onClickSendEmail = jest.fn();
+
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -31,7 +31,7 @@ describe('<SentEmailModal/>', () => {
         render(<SentEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
 
         expect(
-            screen.getByText(/Please click on the link in the email to change your DMT5 password./i)
+            screen.getByText(/please click on the link in the email to change your dmt5 password./i)
         ).toBeInTheDocument();
     });
 
@@ -40,7 +40,7 @@ describe('<SentEmailModal/>', () => {
             <SentEmailModal identifier_title='dxtrade' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />
         );
 
-        expect(screen.getByText(/Deriv X/i)).toBeInTheDocument();
+        expect(screen.getByText(/deriv x/i)).toBeInTheDocument();
     });
 
     it('should render SentEmailModal component to change password through google account', () => {
@@ -49,7 +49,7 @@ describe('<SentEmailModal/>', () => {
         );
 
         expect(
-            screen.getByText(/Check your Google account email and click the link in the email to proceed./i)
+            screen.getByText(/check your google account email and click the link in the email to proceed./i)
         ).toBeInTheDocument();
     });
 
@@ -63,18 +63,18 @@ describe('<SentEmailModal/>', () => {
             />
         );
 
-        expect(screen.getByText(/Check your email and click the link in the email to proceed./i)).toBeInTheDocument();
+        expect(screen.getByText(/check your email and click the link in the email to proceed./i)).toBeInTheDocument();
     });
 
     it('should display default message when no appropriate identifier_title is passed', () => {
         render(<SentEmailModal identifier_title='' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
 
-        expect(screen.getByText(/Please click on the link in the email to reset your password/i)).toBeInTheDocument();
+        expect(screen.getByText(/please click on the link in the email to reset your password/i)).toBeInTheDocument();
     });
 
     it('should trigger onClose function when modal close button is clicked', () => {
         render(<SentEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
-        const btn = screen.getByTestId('dt-send-email-template-close-test-id');
+        const btn = screen.getByTestId('dt_send_email_template_close_test_id');
         fireEvent.click(btn);
 
         expect(onClose).toBeCalledTimes(1);
@@ -91,7 +91,7 @@ describe('<SentEmailModal/>', () => {
             />
         );
 
-        expect(screen.getByText(/Check your email and click the link in the email to proceed./i)).toBeInTheDocument();
+        expect(screen.getByText(/check your email and click the link in the email to proceed./i)).toBeInTheDocument();
     });
 
     it('should not have model content when is_open is false', () => {
@@ -105,7 +105,7 @@ describe('<SentEmailModal/>', () => {
         );
 
         expect(
-            screen.queryByText(/Please click on the link in the email to change your DMT5 password./i)
+            screen.queryByText(/please click on the link in the email to change your dmt5 password./i)
         ).not.toBeInTheDocument();
     });
 
@@ -119,7 +119,7 @@ describe('<SentEmailModal/>', () => {
                 onClickSendEmail={onClickSendEmail}
             />
         );
-        fireEvent.click(screen.getByRole('button', { name: /Didn't receive the email?/i }));
+        fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
 
         expect(screen.getByText(/live chat/i)).toBeInTheDocument();
     });
@@ -134,7 +134,7 @@ describe('<SentEmailModal/>', () => {
                 onClickSendEmail={onClickSendEmail}
             />
         );
-        fireEvent.click(screen.getByRole('button', { name: /Didn't receive the email?/i }));
+        fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
         fireEvent.click(screen.getByText(/live chat/i));
 
         expect(onClose).toBeCalledTimes(1);
@@ -150,8 +150,8 @@ describe('<SentEmailModal/>', () => {
                 onClickSendEmail={onClickSendEmail}
             />
         );
-        fireEvent.click(screen.getByRole('button', { name: /Didn't receive the email?/i }));
-        fireEvent.click(screen.getByRole('button', { name: /Resend email/i }));
+        fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
+        fireEvent.click(screen.getByRole('button', { name: /resend email/i }));
 
         expect(onClickSendEmail).toBeCalledTimes(1);
     });

@@ -25,9 +25,9 @@ export const getExpiryTime = epoch_string => {
 
     // get current date, minus with order purchased date to get total
     // hours since the order was created to current date
-    const expiryTime = Math.abs(new Date() - new Date(epoch_string)) / 36e5;
+    const expiry_time = Math.abs(new Date() - new Date(epoch_string)) / 36e5;
 
-    return expiryTime;
+    return expiry_time;
 };
 
 export const convertToMillis = epoch => {

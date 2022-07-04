@@ -6,11 +6,11 @@ import { getExpiryTime, secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
-import { Table, Text, Icon } from '@deriv/components';
-import { isMobile, formatMoney } from '@deriv/shared';
+import { Icon, Table, Text } from '@deriv/components';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import OrdersUserRatingButton from '../orders-user-rating-button';
-import StarRating from 'Components/star-rating/star-rating';
+import StarRating from 'Components/star-rating';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -37,12 +37,18 @@ const RatingCellRenderer = ({ rating, rating_button_expiry_time, review_details 
                 is_readonly
                 number_of_stars={5}
                 should_allow_hover_effect={false}
-                star_size={15}
+                star_size={11}
             />
         </div>
     ) : (
         <OrdersUserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
     );
+};
+
+RatingCellRenderer.propTypes = {
+    rating: PropTypes.number,
+    rating_button_expiry_time: PropTypes.number,
+    review_details: PropTypes.object,
 };
 
 const OrderRow = ({ style, row: order }) => {

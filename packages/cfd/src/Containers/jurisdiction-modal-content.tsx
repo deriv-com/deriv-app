@@ -245,7 +245,7 @@ const JurisdictionModalContent = ({
                     />
                 )}
 
-                {cardsToBeShown('mf') && is_eu && (
+                {cardsToBeShown('maltainvest') && is_eu && (
                     <JurisdictionCard
                         type_of_card='mf'
                         jurisdiction_selected_card={jurisdiction_selected_card}

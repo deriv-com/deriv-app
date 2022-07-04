@@ -130,14 +130,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const nextStep: TNextStep = () => {
         clearError();
-        console.log('here  next');
-
         if (step + 1 < items.length) {
             setStep(step + 1);
-
         }
-
-
     };
 
     const prevStep = () => {

@@ -12,52 +12,30 @@ type TVerificationModalProps = {
     enableApp: () => void;
     is_cfd_verification_modal_visible: boolean;
     toggleCFDVerificationModal: () => void;
-    // residence_list: ResidenceList;
-    // account_settings: GetSettings;
-    // account_status: GetAccountStatus;
-    // residence: string
-    // refreshNotifications: () => void;
 };
-
-
 
 const CFDDbViOnBoarding = ({
     disableApp,
     enableApp,
     is_cfd_verification_modal_visible,
     toggleCFDVerificationModal,
-    // residence_list,
-    // account_settings,
-    // account_status,
-    // residence,
-    // refreshNotifications,
-}: TVerificationModalProps) => {
+}: TVerificationModalProps) =>
 
+    <React.Suspense fallback={<UILoader />}>
+        <Modal
+            className='cfd-verification-modal'
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_open={is_cfd_verification_modal_visible}
+            title={localize('Submit your proof of identity and address')}
+            toggleModal={toggleCFDVerificationModal}
+            height='700px'
+            width='996px'
+        >
+            <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal}></CFDFinancialStpRealAccountSignup>
+        </Modal>
+    </React.Suspense>
 
-
-    const handleNext = () => {
-        console.log('handleNext');
-    }
-
-
-    return (
-
-        <React.Suspense fallback={<UILoader />}>
-            <Modal
-                className='cfd-verification-modal'
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_open={is_cfd_verification_modal_visible}
-                title={localize('Submit your proof of identity and address')}
-                toggleModal={toggleCFDVerificationModal}
-                height='700px'
-                width='996px'
-            >
-                <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal}></CFDFinancialStpRealAccountSignup>
-            </Modal>
-        </React.Suspense>
-    )
-}
 
 
 

@@ -1,11 +1,22 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ResendEmailButtonWrapper from 'Components/resend-email-button-wrapper';
 import './verification-email.scss';
 
-const VerificationEmail = ({ is_resend_clicked, is_withdrawal, resendVerificationEmail, setIsResendClicked }) => (
+type TVerificationEmailProps = {
+    is_resend_clicked: boolean;
+    is_withdrawal: boolean;
+    resendVerificationEmail: () => void;
+    setIsResendClicked: (is_resend_clicked: boolean) => void;
+};
+
+const VerificationEmail = ({
+    is_resend_clicked,
+    is_withdrawal,
+    resendVerificationEmail,
+    setIsResendClicked,
+}: TVerificationEmailProps) => (
     <div className='verification-email'>
         <Icon icon='IcEmailSent' className='verification-email__icon' size={128} />
         <Text as='p' weight='bold' align='center' className='verification-email__title'>
@@ -42,12 +53,5 @@ const VerificationEmail = ({ is_resend_clicked, is_withdrawal, resendVerificatio
         </div>
     </div>
 );
-
-VerificationEmail.propTypes = {
-    is_resend_clicked: PropTypes.bool,
-    is_withdrawal: PropTypes.bool,
-    resendVerificationEmail: PropTypes.func,
-    setIsResendClicked: PropTypes.func,
-};
 
 export default VerificationEmail;

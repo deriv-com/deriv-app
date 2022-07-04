@@ -128,17 +128,26 @@ const OrderRow = ({ style, row: order }) => {
                                 {remaining_time}
                             </Text>
                         )}
-                        <div className='orders__mobile-chat'>
-                            <Icon
-                                icon='IcChat'
-                                height={15}
-                                width={16}
-                                onClick={() => {
-                                    sendbird_store.setShouldShowChatModal(true);
-                                    sendbird_store.setShouldShowChatOnOrders(true);
-                                }}
-                            />
-                        </div>
+                        {general_store.is_active_tab ? (
+                            <div className='orders__mobile-chat'>
+                                <Icon
+                                    icon='IcChat'
+                                    height={15}
+                                    width={16}
+                                    onClick={() => {
+                                        sendbird_store.setShouldShowChatModal(true);
+                                        sendbird_store.setShouldShowChatOnOrders(true);
+                                    }}
+                                />
+                            </div>
+                        ) : (
+                            <div className='orders__mobile-chat'>
+                                <OrdersUserRatingButton
+                                    has_full_text={false}
+                                    is_disabled={rating_button_expiry_time > 24}
+                                />
+                            </div>
+                        )}
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title

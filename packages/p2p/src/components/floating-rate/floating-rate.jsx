@@ -6,6 +6,7 @@ import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { setDecimalPlaces, removeTrailingZeros } from 'Utils/format-value.js';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -92,7 +93,8 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} = {formatMoney(local_currency, floating_rate_store.exchange_rate, true)}{' '}
+                        1 {fiat_currency} ={' '}
+                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}{' '}
                         {local_currency}
                     </Text>
                 </div>
@@ -117,7 +119,11 @@ const FloatingRate = ({
                     line_height='xs'
                     className='floating-rate__hint'
                 >
-                    {localize('Your rate is')} = {formatMoney(local_currency, market_feed, true)} {local_currency}
+                    {localize('Your rate is')} ={' '}
+                    {removeTrailingZeros(
+                        formatMoney(local_currency, market_feed, true, setDecimalPlaces(market_feed, 6))
+                    )}{' '}
+                    {local_currency}
                 </Text>
             )}
         </div>

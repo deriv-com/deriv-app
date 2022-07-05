@@ -25,7 +25,6 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -33,6 +32,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
+    @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -382,6 +382,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsModalOpen(is_modal_open) {
+        this.is_modal_open = is_modal_open;
+    }
+
+    @action.bound
     setNickname(nickname) {
         this.nickname = nickname;
     }
@@ -405,30 +410,19 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setOrderTimeOut(time) {
-        this.order_timeout = time;
-    }
-
-    @action.bound
     setP2PConfig() {
         const { floating_rate_store } = this.root_store;
         requestWS({ website_status: 1 }).then(response => {
             if (!!response && response.error) {
                 floating_rate_store.setApiErrorMessage(response.error.message);
             } else {
-                const {
-                    fixed_rate_adverts,
-                    float_rate_adverts,
-                    float_rate_offset_limit,
-                    fixed_rate_adverts_end_date,
-                    order_payment_period,
-                } = response.website_status.p2p_config;
+                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
+                    response.website_status.p2p_config;
                 floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
                 floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
                 floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
                 floating_rate_store.setApiErrorMessage(null);
-                this.setOrderTimeOut(order_payment_period);
             }
         });
     }

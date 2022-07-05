@@ -1,10 +1,11 @@
 import { action, computed, observable, reaction } from 'mobx';
-import { formatMoney, getDecimalPlaces, getRoundedNumber, isMobile } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import { removeTrailingZeros } from 'Utils/format-value.js';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
@@ -408,10 +409,7 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     setInitialReceiveAmount(initial_price) {
-        this.receive_amount = getRoundedNumber(
-            this.advert.min_order_amount_limit * initial_price,
-            this.advert.local_currency
-        );
+        this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
     }
 
     @action.bound

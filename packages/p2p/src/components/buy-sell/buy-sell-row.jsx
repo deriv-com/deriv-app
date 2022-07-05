@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Table, Text, Button, Icon } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
-import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
+import { generateEffectiveRate } from 'Utils/format-value.js';
 import './buy-sell-row.scss';
 import TradeBadge from '../trade-badge';
 
@@ -49,8 +49,13 @@ const BuySellRow = ({ row: advert }) => {
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
-    const display_effective_rate =
-        rate_type === ad_type.FIXED ? price_display : parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100));
+    const { display_effective_rate } = generateEffectiveRate({
+        price: price_display,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
 
     if (isMobile()) {
         return (
@@ -97,7 +102,7 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
-                            {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
+                            {display_effective_rate} {local_currency}
                         </Text>
                         <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
@@ -182,7 +187,7 @@ const BuySellRow = ({ row: advert }) => {
             </Table.Cell>
             <Table.Cell>
                 <Text color='profit-success' size='xs' line-height='m' weight='bold'>
-                    {formatMoney(local_currency, display_effective_rate, true)} {local_currency}
+                    {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
             <Table.Cell>

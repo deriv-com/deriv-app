@@ -42,9 +42,8 @@ const App = props => {
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
-        return () => {
-            general_store.onUnmount();
-        };
+
+        return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

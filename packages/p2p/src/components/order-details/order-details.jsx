@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, HintBox, Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText, isDesktop, getRoundedNumber } from '@deriv/shared';
+import { formatMoney, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -15,6 +15,7 @@ import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
+import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
@@ -72,9 +73,14 @@ const OrderDetails = observer(({ onPageReturn }) => {
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
+
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;
     }
+
+    const display_payment_amount = removeTrailingZeros(
+        formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
+    );
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
@@ -113,7 +119,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {getFormattedText(amount_display * getRoundedNumber(rate), local_currency)}
+                                    {display_payment_amount} {local_currency}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -143,11 +149,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={getFormattedText(amount_display * getRoundedNumber(rate), local_currency)}
+                                    value={`${display_payment_amount} ${local_currency}`}
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={getFormattedText(rate, local_currency)}
+                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>

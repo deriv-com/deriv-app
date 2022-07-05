@@ -9,6 +9,7 @@ import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
+import { generateErrorDialogTitle } from 'Utils/adverts.js';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
@@ -71,7 +72,7 @@ const MyAdsTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
         return () => {
-            my_ads_store.setMissingPaymentMethods(false);
+            my_ads_store.setApiErrorCode(null);
             floating_rate_store.setChangeAdAlert(false);
         };
     }, []);
@@ -88,19 +89,6 @@ const MyAdsTable = () => {
         return (
             <React.Fragment>
                 {selected_advert && <QuickAddModal advert={selected_advert} />}
-                {my_ads_store.has_missing_payment_methods && (
-                    <div className='p2p-my-ads__warning'>
-                        <HintBox
-                            icon='IcAlertWarning'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
-                                </Text>
-                            }
-                            is_warn
-                        />
-                    </div>
-                )}
                 {floating_rate_store.change_ad_alert && (
                     <div className='p2p-my-ads__warning'>
                         <HintBox
@@ -173,7 +161,7 @@ const MyAdsTable = () => {
                     has_close_icon={false}
                     is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
                     small
-                    title={localize('Something’s not right')}
+                    title={generateErrorDialogTitle(my_ads_store.error_code)}
                 >
                     <Modal.Body>
                         <Text as='p' size='xs' color='prominent'>
@@ -195,7 +183,7 @@ const MyAdsTable = () => {
                     has_close_icon={false}
                     is_open={my_ads_store.is_quick_add_error_modal_open}
                     small
-                    title={localize('Something’s not right')}
+                    title={generateErrorDialogTitle(my_ads_store.error_code)}
                 >
                     <Modal.Body>
                         <Text as='p' size='xs' color='prominent'>

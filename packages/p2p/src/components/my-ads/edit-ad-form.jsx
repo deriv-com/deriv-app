@@ -6,12 +6,14 @@ import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared'
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
 import FloatingRate from 'Components/floating-rate';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
-import { useStores } from 'Stores';
+import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts.js';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
@@ -50,7 +52,7 @@ const EditAdForm = () => {
     const [is_cancel_edit_modal_open, setIsCancelEditModalOpen] = React.useState(false);
     const [is_payment_method_touched, setIsPaymentMethodTouched] = React.useState(false);
 
-    const set_initial_ad_rate = () => {
+    const setInitialAdRate = () => {
         if (my_ads_store.required_ad_type !== my_ads_store.selected_ad_type) {
             if (my_ads_store.required_ad_type === ad_type.FLOAT) {
                 return is_buy_advert ? '-0.01' : '+0.01';
@@ -85,6 +87,9 @@ const EditAdForm = () => {
 
     const toggleEditAdCancelModal = is_cancel_edit =>
         is_cancel_edit ? my_ads_store.setShowEditAdForm(false) : setIsCancelEditModalOpen(false);
+    const is_api_error = [api_error_codes.ADVERT_SAME_LIMITS, api_error_codes.DUPLICATE_ADVERT].includes(
+        my_ads_store.error_code
+    );
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -110,6 +115,13 @@ const EditAdForm = () => {
                 my_ads_store.payment_method_ids.push(pm[0]);
             });
         }
+        if (my_ads_store.required_ad_type !== rate_type) {
+            const is_payment_method_available =
+                !!Object.keys({ ...payment_method_details }).length ||
+                !!Object.values({ ...payment_method_names }).length;
+            setIsPaymentMethodTouched(is_payment_method_available);
+        }
+        return () => my_ads_store.setApiErrorCode(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -130,7 +142,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
-                            rate_type: set_initial_ad_rate(),
+                            rate_type: setInitialAdRate(),
                             type,
                             is_active:
                                 rate_type !== floating_rate_store.rate_type && floating_rate_store.reached_target_date
@@ -449,17 +461,17 @@ const EditAdForm = () => {
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}
-                title={localize('Something’s not right')}
+                title={generateErrorDialogTitle(my_ads_store.error_code)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>
-                        {my_ads_store.edit_ad_form_error}
+                        {generateErrorDialogBody(my_ads_store.error_code, my_ads_store.edit_ad_form_error)}
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('{{text}}', { text: is_api_error ? 'Update ad' : 'Ok' })}
                         onClick={() => my_ads_store.setIsEditAdErrorModalVisible(false)}
                         primary
                         large

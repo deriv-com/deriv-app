@@ -1,8 +1,9 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
-import { getRoundedNumber, getFormattedText, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -11,7 +12,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
-import classNames from 'classnames';
+import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value.js';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -44,8 +45,15 @@ const BuySellForm = props => {
         cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
 
-    const effective_rate =
-        rate_type === ad_type.FLOAT ? parseFloat(floating_rate_store.exchange_rate * (1 + rate / 100)) : price;
+    const { effective_rate, display_effective_rate } = generateEffectiveRate({
+        price,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
+
+    const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
 
     React.useEffect(
         () => {
@@ -69,7 +77,7 @@ const BuySellForm = props => {
 
             advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
-            buy_sell_store.setInitialReceiveAmount(getRoundedNumber(effective_rate, buy_sell_store.account_currency));
+            buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
@@ -155,7 +163,7 @@ const BuySellForm = props => {
                                             />
                                         </Text>
                                         <Text as='p' color='general' line_height='m' size='xs'>
-                                            {getFormattedText(effective_rate, local_currency)}
+                                            {display_effective_rate} {local_currency}
                                         </Text>
                                     </div>
                                 </div>
@@ -250,53 +258,63 @@ const BuySellForm = props => {
                                                         should_disable_field,
                                                 })}
                                             >
-                                                {payment_method_names?.map((add_payment_method, key) => {
-                                                    const matching_payment_methods =
-                                                        my_profile_store.advertiser_payment_methods_list.filter(
-                                                            pm => pm.display_name === add_payment_method
-                                                        );
-                                                    return matching_payment_methods.length > 0 ? (
-                                                        matching_payment_methods.map(payment_method => (
+                                                {payment_method_names
+                                                    ?.map((add_payment_method, key) => {
+                                                        const matching_payment_methods =
+                                                            my_profile_store.advertiser_payment_methods_list.filter(
+                                                                pm => pm.display_name === add_payment_method
+                                                            );
+                                                        return matching_payment_methods.length > 0 ? (
+                                                            matching_payment_methods.map(payment_method => (
+                                                                <PaymentMethodCard
+                                                                    is_vertical_ellipsis_visible={false}
+                                                                    key={key}
+                                                                    medium
+                                                                    onClick={() =>
+                                                                        onClickPaymentMethodCard(payment_method)
+                                                                    }
+                                                                    payment_method={payment_method}
+                                                                    style={
+                                                                        selected_methods.includes(payment_method.ID)
+                                                                            ? style
+                                                                            : {}
+                                                                    }
+                                                                    disabled={should_disable_field}
+                                                                />
+                                                            ))
+                                                        ) : (
                                                             <PaymentMethodCard
-                                                                is_vertical_ellipsis_visible={false}
+                                                                add_payment_method={add_payment_method}
+                                                                is_add
                                                                 key={key}
                                                                 medium
-                                                                onClick={() => onClickPaymentMethodCard(payment_method)}
-                                                                payment_method={payment_method}
-                                                                style={
-                                                                    selected_methods.includes(payment_method.ID)
-                                                                        ? style
-                                                                        : {}
-                                                                }
+                                                                onClickAdd={() => {
+                                                                    if (!should_disable_field) {
+                                                                        // eslint-disable-next-line max-len
+                                                                        my_profile_store.setSelectedPaymentMethodDisplayName(
+                                                                            add_payment_method
+                                                                        );
+                                                                        // eslint-disable-next-line max-len
+                                                                        my_profile_store.setShouldShowAddPaymentMethodForm(
+                                                                            true
+                                                                        );
+                                                                    }
+                                                                }}
                                                                 disabled={should_disable_field}
+                                                                style={{
+                                                                    cursor: should_disable_field
+                                                                        ? 'not-allowed'
+                                                                        : 'pointer',
+                                                                }}
                                                             />
-                                                        ))
-                                                    ) : (
-                                                        <PaymentMethodCard
-                                                            add_payment_method={add_payment_method}
-                                                            is_add={true}
-                                                            key={key}
-                                                            medium
-                                                            onClickAdd={() => {
-                                                                if (!should_disable_field) {
-                                                                    // eslint-disable-next-line max-len
-                                                                    my_profile_store.setSelectedPaymentMethodDisplayName(
-                                                                        add_payment_method
-                                                                    );
-                                                                    my_profile_store.setShouldShowAddPaymentMethodForm(
-                                                                        true
-                                                                    );
-                                                                }
-                                                            }}
-                                                            disabled={should_disable_field}
-                                                            style={{
-                                                                cursor: should_disable_field
-                                                                    ? 'not-allowed'
-                                                                    : 'pointer',
-                                                            }}
-                                                        />
-                                                    );
-                                                })}
+                                                        );
+                                                    })
+                                                    .sort(payment_method_card_node =>
+                                                        Array.isArray(payment_method_card_node) &&
+                                                        !payment_method_card_node[0].props?.is_add
+                                                            ? -1
+                                                            : 1
+                                                    )}
                                             </div>
                                         </div>
                                         <div className='buy-sell__modal-line' />
@@ -352,17 +370,10 @@ const BuySellForm = props => {
                                                                 event.target.value,
                                                                 buy_sell_store.account_currency
                                                             );
+                                                            setFieldValue('amount', input_amount);
 
-                                                            setFieldValue('amount', getRoundedNumber(input_amount));
                                                             buy_sell_store.setReceiveAmount(
-                                                                getRoundedNumber(
-                                                                    input_amount *
-                                                                        getRoundedNumber(
-                                                                            effective_rate,
-                                                                            buy_sell_store.account_currency
-                                                                        ),
-                                                                    buy_sell_store.account_currency
-                                                                )
+                                                                input_amount * calculated_rate
                                                             );
                                                         }
                                                     }}

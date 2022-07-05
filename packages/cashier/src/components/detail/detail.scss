@@ -1,0 +1,23 @@
+.detail {
+    display: flex;
+    @include mobile {
+        &.deposit-commission {
+            order: 5;
+        }
+
+        &.withdrawal_commission {
+            order: 6;
+        }
+    }
+    &__icon-wrapper {
+        margin-right: 0.8rem;
+        .dc-icon {
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+    }
+    &__link {
+        text-decoration: none;
+        word-break: break-word;
+    }
+}

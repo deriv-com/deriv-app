@@ -97,7 +97,7 @@ Footer.propTypes = {
     landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
     toggleSettingsModal: PropTypes.func,
-    settings_extension: PropTypes.any, // don't know what this is for
+    settings_extension: PropTypes.array,
     is_virtual: PropTypes.bool,
     is_eu: PropTypes.bool,
     disableApp: PropTypes.func,

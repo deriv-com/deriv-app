@@ -229,7 +229,7 @@ DashboardPlatformHeader.propTypes = {
     is_social_signup: PropTypes.bool,
     toggleSettingsModal: PropTypes.func,
     location: PropTypes.object,
-    settings_extension: PropTypes.any, // not sure what this is for
+    settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
 };
 

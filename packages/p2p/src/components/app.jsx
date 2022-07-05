@@ -42,7 +42,7 @@ const App = props => {
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
-        general_store.setP2PConfig();
+
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

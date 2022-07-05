@@ -97,12 +97,29 @@ const CreateAdForm = () => {
         return (
             <MobileFullPageModal
                 body_className='buy-sell__modal-body'
-                className='p2p-my-ads__form'
+                className='buy-sell__modal'
                 height_offset='80px'
                 is_flex
                 is_modal_open={true}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={'hi'}
+                renderPageFooterChildren={() => (
+                    <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
+                        <Button
+                            className='p2p-my-ads__form-button'
+                            secondary
+                            large
+                            onClick={() => my_ads_store.setShowAdForm(false)}
+                            type='button'
+                        >
+                            <Localize i18n_default_text='Cancel' />
+                        </Button>
+                        <Button className='p2p-my-ads__form-button' primary large>
+                            <Localize i18n_default_text='Post ad' />
+                        </Button>
+                    </div>
+                )}
+                page_footer_className={'p2p-my-ads__form-container p2p-my-ads__form-footer'}
             >
                 <Formik
                     initialValues={{
@@ -122,7 +139,7 @@ const CreateAdForm = () => {
                         offer_amount: true,
                     }}
                 >
-                    {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                    {({ errors, handleChange, setFieldValue, touched, values }) => {
                         const is_sell_advert = values.type === buy_sell.SELL;
 
                         const onChangeAdTypeHandler = user_input => {
@@ -385,25 +402,6 @@ const CreateAdForm = () => {
                                         onSelectPaymentMethods={handleSelectPaymentMethods}
                                         is_sell_advert={is_sell_advert}
                                     />
-                                    <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                        <Button
-                                            className='p2p-my-ads__form-button'
-                                            secondary
-                                            large
-                                            onClick={() => my_ads_store.setShowAdForm(false)}
-                                            type='button'
-                                        >
-                                            <Localize i18n_default_text='Cancel' />
-                                        </Button>
-                                        <Button
-                                            className='p2p-my-ads__form-button'
-                                            primary
-                                            large
-                                            is_disabled={isSubmitting || !isValid || !selected_methods.length}
-                                        >
-                                            <Localize i18n_default_text='Post ad' />
-                                        </Button>
-                                    </div>
                                 </Form>
                             </div>
                         );

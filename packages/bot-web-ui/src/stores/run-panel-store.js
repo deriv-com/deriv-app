@@ -418,7 +418,7 @@ export default class RunPanelStore {
         if (this.error_type === error_types.RECOVERABLE_ERRORS) {
             // Bot should indicate it started in below cases:
             // - When error happens it's a recoverable error
-            const { shouldRestartOnError, timeMachineEnabled } = this.dbot.interpreter.bot.tradeEngine.options;
+            const { shouldRestartOnError, timeMachineEnabled } = this.dbot.interpreter.$scope.options;
             const is_bot_recoverable = shouldRestartOnError || timeMachineEnabled;
 
             if (is_bot_recoverable) {

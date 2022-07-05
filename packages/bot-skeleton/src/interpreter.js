@@ -63,6 +63,7 @@ const Interpreter = () => {
         shared
     );
     const $scope = bot_interface.scope;
+
     bot_interface.tradeEngineObserver();
     bot_interface.highlightBlock = highlightBlock;
     let interpreter = {};
@@ -214,7 +215,6 @@ const Interpreter = () => {
         } else if (connection.readyState === 1) {
             connection.close();
         }
-
         $scope.stopped = true;
         $scope.is_error_triggered = false;
         globalObserver.emit('bot.stop');
@@ -242,7 +242,6 @@ const Interpreter = () => {
                     reject(e);
                     return;
                 }
-
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = $scope;
 
@@ -253,7 +252,6 @@ const Interpreter = () => {
                 start(tradeOptions);
                 revert($scope.startState);
             };
-
             globalObserver.register('Error', onError);
             interpreter = new JSInterpreter(code, initFunc);
             onFinish = resolve;
@@ -262,7 +260,7 @@ const Interpreter = () => {
         });
     }
 
-    return { stop, run, terminateSession };
+    return { stop, run, terminateSession, $scope };
 };
 export default Interpreter;
 

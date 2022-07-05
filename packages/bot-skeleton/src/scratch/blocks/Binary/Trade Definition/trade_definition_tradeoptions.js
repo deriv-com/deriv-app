@@ -4,6 +4,7 @@ import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 import { config } from '../../../../constants';
 import ApiHelpers from '../../../../services/api/api-helpers';
+import { getStakePayoutLimits } from '../../../../services/api';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
@@ -228,9 +229,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     updateAmountLimits() {
-        const { account_limits } = ApiHelpers.instance;
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
-        account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
+        getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
             if (!this.getField('AMOUNT_LIMITS')) {
                 return;
             }

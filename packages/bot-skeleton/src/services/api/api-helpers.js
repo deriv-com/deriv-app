@@ -1,7 +1,6 @@
 import TradingTimes from './trading-times';
 import ContractsFor from './contracts-for';
 import ActiveSymbols from './active-symbols';
-import AccountLimits from './account-limits';
 
 class ApiHelpers {
     static singleton = null;
@@ -10,7 +9,6 @@ class ApiHelpers {
         this.trading_times = new TradingTimes(api_helpers_store);
         this.contracts_for = new ContractsFor(api_helpers_store);
         this.active_symbols = new ActiveSymbols(api_helpers_store.ws, this.trading_times);
-        this.account_limits = new AccountLimits(api_helpers_store);
     }
 
     static setInstance(api_helpers_store) {

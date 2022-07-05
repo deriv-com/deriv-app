@@ -13,8 +13,7 @@ import { config, log_types, unrecoverable_errors } from './constants';
 import { observer as globalObserver } from './utils';
 import api from './services/api/ws';
 import TicksService, { getUUID } from './services/api/ticks_service';
-import DBotStore from './scratch/dbot-store';
-import { highlightBlock } from './scratch/utils';
+import { DBotStore, highlightBlock } from './scratch';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);

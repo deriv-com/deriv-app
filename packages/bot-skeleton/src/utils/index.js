@@ -5,4 +5,4 @@ export { default as importExternal } from './html-helper';
 export { getSavedWorkspaces, saveWorkspaceToRecent, removeExistingWorkspace } from './local-storage';
 export { observer } from './observer';
 export { default as PendingPromise } from './pending-promise';
-export { hasAllRequiredBlocks, onWorkspaceResize, removeLimitedBlocks } from './workspace';
+export { onWorkspaceResize, removeLimitedBlocks } from './workspace';

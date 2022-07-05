@@ -2,7 +2,7 @@ import { localize, getLanguage } from '@deriv/translations';
 import trackAndEmitError from './error';
 import { observer as globalObserver } from './observer';
 import { config } from '../constants';
-import { loadWorkspace, loadBlocks } from '../scratch/utils';
+import { loadWorkspace, loadBlocks } from '../scratch';
 
 class GoogleDrive {
     constructor() {

@@ -5,31 +5,56 @@ import { config, log_types } from '../../constants';
 import { observer as globalObserver, removeLimitedBlocks, saveWorkspaceToRecent } from '../../utils';
 import DBotStore from '../dbot-store';
 
-export const updateWorkspaceName = () => {
-    const { save_modal } = DBotStore.instance;
-
-    const file_name = save_modal.bot_name ?? config.default_file_name;
-
-    if (document.title.indexOf('-') > -1) {
-        const string_to_replace = document.title.substr(document.title.indexOf('-'));
-        const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
-
-        document.title = new_document_title;
-    } else {
-        document.title += ` - ${file_name}`;
+const addDomAsBlock = (el_block, parent_block = null) => {
+    if (el_block.tagName.toLowerCase() === 'variables') {
+        return Blockly.Xml.domToVariables(el_block, Blockly.derivWorkspace);
     }
+
+    const block_type = el_block.getAttribute('type');
+    const block_conversion = new BlockConversion();
+    const block_xml = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
+
+    // Fix legacy Blockly `varid` attribute.
+    Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
+        if (el.hasAttribute('varid')) {
+            el.setAttribute('varId', el.getAttribute('varid'));
+        }
+    });
+
+    removeLimitedBlocks(Blockly.derivWorkspace, block_type);
+
+    const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
+
+    if (parent_block) {
+        parent_block.blocks_added_by_me.push(block);
+    }
+
+    return block;
 };
 
-export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
+const addLoaderBlocksFirst = xml => {
+    return new Promise((resolve, reject) => {
+        const promises = [];
 
-export const oppositesToDropdownOptions = opposite_name => {
-    return opposite_name.map(contract_type => {
-        // i.e. [['CALL', localize('Rise')]] becomes [[localize('Rise'), 'CALL']];
-        return Object.entries(contract_type)[0].reverse();
+        Array.from(xml.children).forEach(el_block => {
+            const block_type = el_block.getAttribute('type');
+
+            if (block_type === 'loader') {
+                el_block.remove();
+                const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);
+                promises.push(loadBlocksFromRemote(loader)); // eslint-disable-line no-use-before-define
+            }
+        });
+
+        if (promises.length) {
+            Promise.all(promises).then(resolve, reject);
+        } else {
+            resolve([]);
+        }
     });
 };
 
-export const cleanUpOnLoad = (blocks_to_clean, drop_event, workspace) => {
+const cleanUpOnLoad = (blocks_to_clean, drop_event, workspace) => {
     const { clientX = 0, clientY = 0 } = drop_event || {};
     const toolbar_height = 76;
     const blockly_metrics = workspace.getMetrics();
@@ -42,12 +67,92 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event, workspace) => {
     workspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
-export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
-    xmlDom.setAttribute('is_dbot', 'true');
-    xmlDom.setAttribute('collection', collection ? 'true' : 'false');
+const loadBlocksFromHeader = (xml_string, block) => {
+    // eslint-disable-next-line consistent-return
+    return new Promise((resolve, reject) => {
+        let xml;
 
-    const data = Blockly.Xml.domToPrettyText(xmlDom);
-    saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
+        try {
+            xml = Blockly.Xml.textToDom(xml_string);
+        } catch (error) {
+            return reject(localize('Unrecognized file format'));
+        }
+
+        try {
+            const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
+
+            if (!is_collection) {
+                reject(localize('Remote blocks to load must be a collection.'));
+            }
+
+            addLoaderBlocksFirst(xml)
+                .then(() => {
+                    Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
+                    resolve();
+                })
+                .catch(() => {
+                    reject();
+                });
+        } catch (e) {
+            reject(localize('Unable to load the block file.'));
+        }
+    });
+};
+
+export const hasAllRequiredBlocks = workspace => {
+    const blocks_in_workspace = workspace.getAllBlocks();
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
+    const { mandatoryMainBlocks } = config;
+    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
+    const all_block_types = blocks_in_workspace.map(block => block.type);
+    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
+
+    return has_all_required_blocks;
+};
+
+export const emptyTextValidator = input => {
+    return !input || input === "''";
+};
+
+export const isAllRequiredBlocksEnabled = workspace => {
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
+    const { mandatoryMainBlocks } = config;
+    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
+
+    const enabled_blocks_types = workspace
+        .getAllBlocks()
+        .filter(block => !block.disabled)
+        .map(block => block.type);
+
+    return required_block_types.every(required_type => enabled_blocks_types.includes(required_type));
+};
+
+/* eslint-disable no-bitwise */
+export const isDarkRgbColour = string_rgb => {
+    const values = string_rgb.substring(1);
+    const rgb = parseInt(values, 16);
+    const red = (rgb >> 16) & 0xff;
+    const green = (rgb >> 8) & 0xff;
+    const blue = (rgb >> 0) & 0xff;
+    const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    return luma < 160;
+};
+/* eslint-enable */
+
+export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
+
+export const highlightBlock = block_id => {
+    const block = Blockly.derivWorkspace.getBlockById(block_id);
+
+    if (block) {
+        block.highlightExecutedBlock(block);
+    }
 };
 
 export const load = ({
@@ -170,45 +275,6 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
-export const loadWorkspace = async (xml, event_group, workspace) => {
-    Blockly.Events.setGroup(event_group);
-    await workspace.asyncClear();
-
-    Blockly.Xml.domToWorkspace(xml, workspace);
-};
-
-const loadBlocksFromHeader = (xml_string, block) => {
-    // eslint-disable-next-line consistent-return
-    return new Promise((resolve, reject) => {
-        let xml;
-
-        try {
-            xml = Blockly.Xml.textToDom(xml_string);
-        } catch (error) {
-            return reject(localize('Unrecognized file format'));
-        }
-
-        try {
-            const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
-
-            if (!is_collection) {
-                reject(localize('Remote blocks to load must be a collection.'));
-            }
-
-            addLoaderBlocksFirst(xml)
-                .then(() => {
-                    Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
-                    resolve();
-                })
-                .catch(() => {
-                    reject();
-                });
-        } catch (e) {
-            reject(localize('Unable to load the block file.'));
-        }
-    });
-};
-
 export const loadBlocksFromRemote = block => {
     // eslint-disable-next-line consistent-return
     return new Promise((resolve, reject) => {
@@ -252,100 +318,11 @@ export const loadBlocksFromRemote = block => {
     });
 };
 
-export const addLoaderBlocksFirst = xml => {
-    return new Promise((resolve, reject) => {
-        const promises = [];
+export const loadWorkspace = async (xml, event_group, workspace) => {
+    Blockly.Events.setGroup(event_group);
+    await workspace.asyncClear();
 
-        Array.from(xml.children).forEach(el_block => {
-            const block_type = el_block.getAttribute('type');
-
-            if (block_type === 'loader') {
-                el_block.remove();
-                const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);
-                promises.push(loadBlocksFromRemote(loader)); // eslint-disable-line no-use-before-define
-            }
-        });
-
-        if (promises.length) {
-            Promise.all(promises).then(resolve, reject);
-        } else {
-            resolve([]);
-        }
-    });
-};
-
-export const addDomAsBlock = (el_block, parent_block = null) => {
-    if (el_block.tagName.toLowerCase() === 'variables') {
-        return Blockly.Xml.domToVariables(el_block, Blockly.derivWorkspace);
-    }
-
-    const block_type = el_block.getAttribute('type');
-    const block_conversion = new BlockConversion();
-    const block_xml = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
-
-    // Fix legacy Blockly `varid` attribute.
-    Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
-        if (el.hasAttribute('varid')) {
-            el.setAttribute('varId', el.getAttribute('varid'));
-        }
-    });
-
-    removeLimitedBlocks(Blockly.derivWorkspace, block_type);
-
-    const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
-
-    if (parent_block) {
-        parent_block.blocks_added_by_me.push(block);
-    }
-
-    return block;
-};
-
-export const hasAllRequiredBlocks = workspace => {
-    const blocks_in_workspace = workspace.getAllBlocks();
-    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
-    const mandatory_tradeoptions_block =
-        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
-    const { mandatoryMainBlocks } = config;
-    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
-    const all_block_types = blocks_in_workspace.map(block => block.type);
-    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
-
-    return has_all_required_blocks;
-};
-
-export const isAllRequiredBlocksEnabled = workspace => {
-    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
-    const mandatory_tradeoptions_block =
-        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
-    const { mandatoryMainBlocks } = config;
-    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
-
-    const enabled_blocks_types = workspace
-        .getAllBlocks()
-        .filter(block => !block.disabled)
-        .map(block => block.type);
-
-    return required_block_types.every(required_type => enabled_blocks_types.includes(required_type));
-};
-
-export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
-    const ws_metrics = workspace.getMetrics();
-
-    let scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
-    let scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
-
-    if (is_horizontal) {
-        scroll_x += is_chronological ? scroll_amount : -scroll_amount;
-        scroll_y += -20;
-    } else {
-        scroll_x += -20;
-        scroll_y += is_chronological ? scroll_amount : -scroll_amount;
-    }
-
-    workspace.scrollbar.set(scroll_x, scroll_y);
+    Blockly.Xml.domToWorkspace(xml, workspace);
 };
 
 /**
@@ -390,6 +367,31 @@ export const runInvisibleEvents = callbackFn => {
     Blockly.Events.enable();
 };
 
+export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
+    xmlDom.setAttribute('is_dbot', 'true');
+    xmlDom.setAttribute('collection', collection ? 'true' : 'false');
+
+    const data = Blockly.Xml.domToPrettyText(xmlDom);
+    saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
+};
+
+export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
+    const ws_metrics = workspace.getMetrics();
+
+    let scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
+    let scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
+
+    if (is_horizontal) {
+        scroll_x += is_chronological ? scroll_amount : -scroll_amount;
+        scroll_y += -20;
+    } else {
+        scroll_x += -20;
+        scroll_y += is_chronological ? scroll_amount : -scroll_amount;
+    }
+
+    workspace.scrollbar.set(scroll_x, scroll_y);
+};
+
 export const updateDisabledBlocks = (workspace, event) => {
     if (event.type === Blockly.Events.END_DRAG) {
         workspace.getAllBlocks().forEach(block => {
@@ -419,26 +421,17 @@ export const updateDisabledBlocks = (workspace, event) => {
     }
 };
 
-export const emptyTextValidator = input => {
-    return !input || input === "''";
-};
+export const updateWorkspaceName = () => {
+    const { save_modal } = DBotStore.instance;
 
-/* eslint-disable no-bitwise */
-export const isDarkRgbColour = string_rgb => {
-    const values = string_rgb.substring(1);
-    const rgb = parseInt(values, 16);
-    const red = (rgb >> 16) & 0xff;
-    const green = (rgb >> 8) & 0xff;
-    const blue = (rgb >> 0) & 0xff;
-    const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-    return luma < 160;
-};
-/* eslint-enable */
+    const file_name = save_modal.bot_name ?? config.default_file_name;
 
-export const highlightBlock = block_id => {
-    const block = Blockly.derivWorkspace.getBlockById(block_id);
+    if (document.title.indexOf('-') > -1) {
+        const string_to_replace = document.title.substr(document.title.indexOf('-'));
+        const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
 
-    if (block) {
-        block.highlightExecutedBlock(block);
+        document.title = new_document_title;
+    } else {
+        document.title += ` - ${file_name}`;
     }
 };

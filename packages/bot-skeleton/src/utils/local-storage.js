@@ -1,6 +1,6 @@
 import LZString from 'lz-string';
 import localForage from 'localforage';
-import DBotStore from '../scratch/dbot-store';
+import { DBotStore } from '../scratch';
 import { save_types } from '../constants';
 
 export const getSavedWorkspaces = async () => {

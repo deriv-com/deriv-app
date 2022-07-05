@@ -1,4 +1,3 @@
-import { getFormattedText } from '@deriv/shared';
 import { info } from './utils';
 import Store, { updateBalanceAction, $scope, Services } from './state';
 
@@ -7,7 +6,7 @@ let balance_string = '';
 export const getBalance = type => {
     const { balance, currency } = Store.getState().client;
 
-    balance_string = getFormattedText(balance, currency, false);
+    balance_string = Services.shared.getFormattedText(balance, currency, false);
     return type === 'STR' ? balance_string : balance;
 };
 
@@ -19,7 +18,7 @@ export const observeBalance = loginid => {
             } = data;
             $scope.balance = Number(b, currency);
             Store.dispatch(updateBalanceAction({ balance: b, currency }));
-            balance_string = getFormattedText(b, currency);
+            balance_string = Services.shared.getFormattedText(b, currency);
 
             info({ accountID: loginid, balance: balance_string });
         }

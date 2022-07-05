@@ -1,4 +1,3 @@
-import { getRoundedNumber, formatTime } from '@deriv/shared';
 import { updateTotals } from './total';
 import Store, { sell, openContractReceived, $scope, Services } from './state';
 import { doUntilDone, contractStatus, contract as broadcastContract } from './utils';
@@ -7,7 +6,7 @@ let afterPromise;
 
 const createDetails = contract => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
-    const profit = getRoundedNumber(sellPrice - buyPrice, currency);
+    const profit = Services.shared.getRoundedNumber(sellPrice - buyPrice, currency);
     const result = profit < 0 ? 'loss' : 'win';
 
     return [
@@ -16,9 +15,9 @@ const createDetails = contract => {
         +contract.sell_price,
         profit,
         contract.contract_type,
-        formatTime(parseInt(`${contract.entry_tick_time}000`), 'HH:mm:ss'),
+        Services.shared.formatTime(parseInt(`${contract.entry_tick_time}000`), 'HH:mm:ss'),
         +contract.entry_tick,
-        formatTime(parseInt(`${contract.exit_tick_time}000`), 'HH:mm:ss'),
+        Services.shared.formatTime(parseInt(`${contract.exit_tick_time}000`), 'HH:mm:ss'),
         +contract.exit_tick,
         +(contract.barrier ? contract.barrier : 0),
         result,
@@ -40,7 +39,7 @@ export const getDetail = i => createDetails($scope.data.contract)[i];
 
 export const getSellPrice = () => {
     const { bid_price: bidPrice, buy_price: buyPrice, currency } = $scope.data.contract;
-    return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
+    return Services.shared.getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
 };
 
 export const isResult = result => getDetail(10) === result;

@@ -1,4 +1,3 @@
-import { isEmptyObject } from '@deriv/shared';
 import Store, { proposalsReady, clearProposals as clearProposalsAction, $scope, Services } from './state';
 import { doUntilDone } from './utils';
 
@@ -34,7 +33,7 @@ const tradeOptionToProposal = (trade_option, purchase_reference) =>
             proposal.duration = undefined;
             proposal.duration_unit = undefined;
         }
-        if (!isEmptyObject(trade_option.limit_order)) {
+        if (!Services.shared.isEmptyObject(trade_option.limit_order)) {
             proposal.limit_order = trade_option.limit_order;
         }
         return proposal;

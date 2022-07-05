@@ -1,10 +1,17 @@
 import { localize } from '@deriv/translations';
-import { cloneThorough } from '@deriv/shared';
+import {
+    cloneThorough,
+    findValueByKeyRecursively,
+    getFormattedText,
+    formatTime,
+    getRoundedNumber,
+    isEmptyObject,
+} from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import getInterface from './Interface';
 import { unrecoverable_errors, log_types } from '../constants/messages';
 import { observer as globalObserver } from '../utils/observer';
-import ws from './api/ws';
+import api from './api/ws';
 import { highlightBlock } from '../scratch/utils';
 import { config } from '../constants/config';
 import DBotStore from '../scratch/dbot-store';
@@ -37,17 +44,25 @@ const timeMachineEnabled = $scope => $scope.options.timeMachineEnabled;
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    const ticksService = new TicksService(ws);
-
+    const shared = {
+        findValueByKeyRecursively,
+        formatTime,
+        getFormattedText,
+        getRoundedNumber,
+        isEmptyObject,
+    };
+    const ticksService = new TicksService(api);
+    // [Todo] Needs to reduce the number of inputs
     const bot_interface = getInterface(
-        ws,
+        api,
         ticksService,
         globalObserver,
         config,
         localize,
         log_types,
         DBotStore?.instance?.populateConfig,
-        getUUID
+        getUUID,
+        shared
     );
     const $scope = bot_interface.scope;
     bot_interface.tradeEngineObserver();
@@ -195,7 +210,7 @@ const Interpreter = () => {
     }
 
     function terminateSession() {
-        const { connection } = ws;
+        const { connection } = api;
         if (connection.readyState === 0) {
             connection.addEventListener('open', () => connection.close());
         } else if (connection.readyState === 1) {

@@ -1,4 +1,3 @@
-import { findValueByKeyRecursively } from '@deriv/shared';
 import { error as logError } from './broadcast';
 import { Services } from '../state';
 
@@ -110,7 +109,7 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
 
                             const global_timeouts = getGlobalTimeouts();
                             const cancellable_timeouts = ['buy'];
-                            const msg_type = findValueByKeyRecursively(error, 'msg_type');
+                            const msg_type = Services.shared.findValueByKeyRecursively(error, 'msg_type');
 
                             global_timeouts[timeout] = {
                                 is_cancellable: cancellable_timeouts.includes(msg_type),

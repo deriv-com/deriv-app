@@ -40,7 +40,7 @@ import {
 } from './tradeEngine';
 import { Services } from './tradeEngine/state';
 
-const getInterface = (ws, ticksService, observer, config, localize, log_types, populateConfig, getUUID) => {
+const getInterface = (ws, ticksService, observer, config, localize, log_types, populateConfig, getUUID, shared) => {
     Services.api = ws;
     Services.ticksService = ticksService;
     Services.config = config;
@@ -49,6 +49,7 @@ const getInterface = (ws, ticksService, observer, config, localize, log_types, p
     Services.log_types = log_types;
     Services.populateConfig = populateConfig;
     Services.getUUID = getUUID;
+    Services.shared = shared;
 
     return {
         alert,

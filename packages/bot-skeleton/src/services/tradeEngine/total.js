@@ -1,4 +1,3 @@
-import { getRoundedNumber } from '@deriv/shared';
 import { $scope, Services } from './state';
 import { createError, info, log } from './utils';
 
@@ -55,7 +54,7 @@ export const getTotalProfit = toString => {
     const accountStat = getAccountStat();
 
     return toString && accountStat.totalProfit !== 0
-        ? getRoundedNumber(+accountStat.totalProfit, currency)
+        ? Services.shared.getRoundedNumber(+accountStat.totalProfit, currency)
         : +accountStat.totalProfit;
 };
 
@@ -74,7 +73,7 @@ export const updateAndReturnTotalRuns = () => {
 export const updateTotals = contract => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
-    const profit = getRoundedNumber(Number(sellPrice) - Number(buyPrice), currency);
+    const profit = Services.shared.getRoundedNumber(Number(sellPrice) - Number(buyPrice), currency);
 
     const win = profit > 0;
 
@@ -84,13 +83,22 @@ export const updateTotals = contract => {
 
     accountStat.totalLosses += !win ? 1 : 0;
 
-    $scope.session.profit = getRoundedNumber(Number($scope.session.profit) + Number(profit), currency);
+    $scope.session.profit = Services.shared.getRoundedNumber(Number($scope.session.profit) + Number(profit), currency);
 
-    accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
+    accountStat.totalProfit = Services.shared.getRoundedNumber(
+        Number(accountStat.totalProfit) + Number(profit),
+        currency
+    );
 
-    accountStat.totalStake = getRoundedNumber(Number(accountStat.totalStake) + Number(buyPrice), currency);
+    accountStat.totalStake = Services.shared.getRoundedNumber(
+        Number(accountStat.totalStake) + Number(buyPrice),
+        currency
+    );
 
-    accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice), currency);
+    accountStat.totalPayout = Services.shared.getRoundedNumber(
+        Number(accountStat.totalPayout) + Number(sellPrice),
+        currency
+    );
 
     info({
         profit,

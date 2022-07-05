@@ -2,6 +2,19 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
 import { CFDRealAccountDisplay } from '../cfd-real-account-display';
 
+const mock_connect_props = {
+    dxtrade_tokens: {
+        demo: '',
+        real: '',
+    },
+};
+
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
+}));
+
 describe('<CFDRealAccountDisplay />', () => {
     const TESTED_CASES = {
         EU: 'eu',

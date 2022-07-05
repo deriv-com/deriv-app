@@ -37,8 +37,8 @@ import {
     watch,
     $scope,
     indicators,
+    Services,
 } from './tradeEngine';
-import { Services } from './tradeEngine/state';
 
 const getInterface = (ws, ticksService, observer, config, localize, log_types, populateConfig, getUUID, shared) => {
     Services.api = ws;

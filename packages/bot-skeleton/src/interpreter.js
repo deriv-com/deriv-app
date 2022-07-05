@@ -8,14 +8,14 @@ import {
     isEmptyObject,
 } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
-import getInterface from './Interface';
-import { unrecoverable_errors, log_types } from '../constants/messages';
-import { observer as globalObserver } from '../utils/observer';
-import api from './api/ws';
-import { highlightBlock } from '../scratch/utils';
-import { config } from '../constants/config';
-import DBotStore from '../scratch/dbot-store';
-import TicksService, { getUUID } from './api/ticks_service';
+import getInterface from './services';
+import { unrecoverable_errors, log_types } from './constants/messages';
+import { config } from './constants/config';
+import { observer as globalObserver } from './utils/observer';
+import api from './services/api/ws';
+import TicksService, { getUUID } from './services/api/ticks_service';
+import DBotStore from './scratch/dbot-store';
+import { highlightBlock } from './scratch/utils';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);

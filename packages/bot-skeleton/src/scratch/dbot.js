@@ -8,7 +8,7 @@ import { config } from '../constants/config';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
-import Interpreter from '../services/interpreter';
+import Interpreter from '../interpreter';
 
 class DBot {
     constructor() {

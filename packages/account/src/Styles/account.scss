@@ -2511,5 +2511,17 @@ $MIN_HEIGHT_FLOATING: calc(
 .remove-element {
     display: none;
 }
-
+.proof-of-ownership {
+    &__container {
+        text-align: center;
+        padding: 2rem auto;
+        width: 100%;
+        > * {
+            text-align: center;
+            display: block;
+            margin: 2rem auto;
+            text-align: center;
+        }
+    }
+}
 /* stylelint-enable */

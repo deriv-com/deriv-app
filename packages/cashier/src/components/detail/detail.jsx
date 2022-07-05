@@ -17,33 +17,35 @@ const Detail = ({ action, children, className, has_red_color, icon, title }) => 
                     <Icon icon={`IcCashier${icon}`} />
                 </div>
             )}
-            {detail.map((child, id) => (
-                <div key={id}>
-                    {title && (
-                        <Text as='p' line_height='s' size='xs'>
-                            {title}
-                        </Text>
-                    )}
-                    {action || !title ? (
-                        <Text
-                            as='a'
-                            color={has_red_color ? 'red' : 'prominent'}
-                            href={`${action ? `${action}:` : ''}${child}`}
-                            line_height='s'
-                            size={!title ? 'xxs' : 'xs'}
-                            weight='bold'
-                            className='detail__link'
-                        >
-                            {child}
-                            {id === detail.length - 1 ? '' : ', '}
-                        </Text>
-                    ) : (
-                        <Text as='p' line_height='s' size='xs' weight='bold'>
-                            {child}
-                        </Text>
-                    )}
-                </div>
-            ))}
+            <div>
+                {detail.map((child, id) => (
+                    <React.Fragment key={id}>
+                        {title && (
+                            <Text as='p' line_height='s' size='xs'>
+                                {title}
+                            </Text>
+                        )}
+                        {action || !title ? (
+                            <Text
+                                as='a'
+                                color={has_red_color ? 'red' : 'prominent'}
+                                href={`${action ? `${action}:` : ''}${child}`}
+                                line_height='s'
+                                size={!title ? 'xxs' : 'xs'}
+                                weight='bold'
+                                className='detail__link'
+                            >
+                                {child}
+                                {id === detail.length - 1 ? '' : ', '}
+                            </Text>
+                        ) : (
+                            <Text as='p' line_height='s' size='xs' weight='bold'>
+                                {child}
+                            </Text>
+                        )}
+                    </React.Fragment>
+                ))}
+            </div>
         </div>
     );
 };

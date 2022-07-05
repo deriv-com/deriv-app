@@ -267,6 +267,10 @@
         min-width: 15rem;
         width: 100%;
 
+        &:not(.cfd-personal-details-modal__form *) {
+            margin-top: unset;
+        }
+
         // keep <select /> element on top of .dc_dropdown__label
     }
     &--has-placeholder {

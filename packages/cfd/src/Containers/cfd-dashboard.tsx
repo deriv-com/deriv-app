@@ -126,6 +126,10 @@ type TCFDDashboardProps = {
         real: boolean;
         demo: boolean;
     };
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
     has_real_account: boolean;
     NotificationMessages: ({ ...props }) => JSX.Element;
     platform: 'mt5' | 'dxtrade';
@@ -339,6 +343,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         country,
         createCFDAccount,
         current_list,
+        dxtrade_tokens,
         dxtrade_accounts_list_error,
         isAccountOfTypeDisabled,
         is_accounts_switcher_on,
@@ -577,6 +582,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 platform={platform}
                                 active_index={active_index}
                                 is_dark_mode_on={is_dark_mode_on}
+                                dxtrade_tokens={dxtrade_tokens}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -693,6 +699,7 @@ export default withRouter(
         client_email: client.email_address,
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
+        dxtrade_tokens: modules.cfd.dxtrade_tokens,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,

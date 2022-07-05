@@ -223,41 +223,50 @@ const BuySellForm = props => {
                                             )}
                                         </Text>
                                         <div className='buy-sell__modal--sell-payment-methods'>
-                                            {payment_method_names?.map((add_payment_method, key) => {
-                                                const matching_payment_methods =
-                                                    my_profile_store.advertiser_payment_methods_list.filter(
-                                                        pm => pm.display_name === add_payment_method
-                                                    );
-                                                return matching_payment_methods.length > 0 ? (
-                                                    matching_payment_methods.map(payment_method => (
+                                            {payment_method_names
+                                                ?.map((add_payment_method, key) => {
+                                                    const matching_payment_methods =
+                                                        my_profile_store.advertiser_payment_methods_list.filter(
+                                                            pm => pm.display_name === add_payment_method
+                                                        );
+                                                    return matching_payment_methods.length > 0 ? (
+                                                        matching_payment_methods.map(payment_method => (
+                                                            <PaymentMethodCard
+                                                                is_vertical_ellipsis_visible={false}
+                                                                key={key}
+                                                                medium
+                                                                onClick={() => onClickPaymentMethodCard(payment_method)}
+                                                                payment_method={payment_method}
+                                                                style={
+                                                                    selected_methods.includes(payment_method.ID)
+                                                                        ? style
+                                                                        : {}
+                                                                }
+                                                            />
+                                                        ))
+                                                    ) : (
                                                         <PaymentMethodCard
-                                                            is_vertical_ellipsis_visible={false}
+                                                            add_payment_method={add_payment_method}
+                                                            is_add
                                                             key={key}
                                                             medium
-                                                            onClick={() => onClickPaymentMethodCard(payment_method)}
-                                                            payment_method={payment_method}
-                                                            style={
-                                                                selected_methods.includes(payment_method.ID)
-                                                                    ? style
-                                                                    : {}
-                                                            }
+                                                            onClickAdd={() => {
+                                                                my_profile_store.setSelectedPaymentMethodDisplayName(
+                                                                    add_payment_method
+                                                                );
+                                                                my_profile_store.setShouldShowAddPaymentMethodForm(
+                                                                    true
+                                                                );
+                                                            }}
                                                         />
-                                                    ))
-                                                ) : (
-                                                    <PaymentMethodCard
-                                                        add_payment_method={add_payment_method}
-                                                        is_add={true}
-                                                        key={key}
-                                                        medium
-                                                        onClickAdd={() => {
-                                                            my_profile_store.setSelectedPaymentMethodDisplayName(
-                                                                add_payment_method
-                                                            );
-                                                            my_profile_store.setShouldShowAddPaymentMethodForm(true);
-                                                        }}
-                                                    />
-                                                );
-                                            })}
+                                                    );
+                                                })
+                                                .sort(payment_method_card_node =>
+                                                    Array.isArray(payment_method_card_node) &&
+                                                    !payment_method_card_node[0].props?.is_add
+                                                        ? -1
+                                                        : 1
+                                                )}
                                         </div>
                                     </div>
                                 )}

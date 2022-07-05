@@ -1,5 +1,5 @@
 import { config } from '../../constants';
-import { removeLimitedBlocks } from '../../utils/workspace';
+import { removeLimitedBlocks } from '../../utils';
 import DBotStore from '../dbot-store';
 
 /**

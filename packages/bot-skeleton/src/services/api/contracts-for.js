@@ -1,5 +1,5 @@
 import { config } from '../../constants';
-import PendingPromise from '../../utils/pending-promise';
+import { PendingPromise } from '../../utils';
 
 export default class ContractsFor {
     constructor({ ws, server_time }) {

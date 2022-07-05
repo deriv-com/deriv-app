@@ -1,4 +1,4 @@
-import PendingPromise from '../../utils/pending-promise';
+import { PendingPromise } from '../../utils';
 
 const ServerTime = (() => {
     let clock_started = false;

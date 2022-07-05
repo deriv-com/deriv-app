@@ -2,9 +2,7 @@ import { localize } from '@deriv/translations';
 import { saveAs } from '../shared';
 import BlockConversion from '../backward-compatibility';
 import { config, log_types } from '../../constants';
-import { observer as globalObserver } from '../../utils/observer';
-import { removeLimitedBlocks } from '../../utils/workspace';
-import { saveWorkspaceToRecent } from '../../utils/local-storage';
+import { observer as globalObserver, removeLimitedBlocks, saveWorkspaceToRecent } from '../../utils';
 import DBotStore from '../dbot-store';
 
 export const updateWorkspaceName = () => {

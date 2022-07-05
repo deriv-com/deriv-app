@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import PendingPromise from '../../utils/pending-promise';
+import { PendingPromise } from '../../utils';
 import { config } from '../../constants';
 
 export default class ActiveSymbols {

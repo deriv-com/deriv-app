@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const timeSince = timestamp => {
+const timeSince = timestamp => {
     const now = new Date();
     const secondPast = (now.getTime() - timestamp) / 1000;
 
@@ -23,3 +23,5 @@ export const timeSince = timestamp => {
     const year = `${timestampDate.getFullYear() === now.getFullYear() ? '' : ' '}${timestampDate.getFullYear()}`;
     return `${day} ${month}${year}`;
 };
+
+export default timeSince;

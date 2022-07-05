@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
 import { doUntilDone } from '../tradeEngine/utils';
-import { observer as globalObserver } from '../../utils/observer';
+import { observer as globalObserver } from '../../utils';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,

@@ -10,7 +10,7 @@ import {
 import JSInterpreter from '@deriv/js-interpreter';
 import getInterface from './services';
 import { config, log_types, unrecoverable_errors } from './constants';
-import { observer as globalObserver } from './utils/observer';
+import { observer as globalObserver } from './utils';
 import api from './services/api/ws';
 import TicksService, { getUUID } from './services/api/ticks_service';
 import DBotStore from './scratch/dbot-store';

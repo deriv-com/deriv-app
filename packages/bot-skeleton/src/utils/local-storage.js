@@ -3,6 +3,14 @@ import localForage from 'localforage';
 import DBotStore from '../scratch/dbot-store';
 import { save_types } from '../constants';
 
+export const getSavedWorkspaces = async () => {
+    try {
+        return JSON.parse(LZString.decompress(await localForage.getItem('saved_workspaces'))) || [];
+    } catch (e) {
+        return [];
+    }
+};
+
 /**
  * Save workspace to localStorage
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
@@ -45,14 +53,6 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
     }
 
     localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
-};
-
-export const getSavedWorkspaces = async () => {
-    try {
-        return JSON.parse(LZString.decompress(await localForage.getItem('saved_workspaces'))) || [];
-    } catch (e) {
-        return [];
-    }
 };
 
 export const removeExistingWorkspace = async workspace_id => {

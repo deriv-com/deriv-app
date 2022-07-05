@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
-import { observer as globalObserver } from '../../../../../utils/observer';
+import { observer as globalObserver } from '../../../../../utils';
 import { log_types } from '../../../../../constants';
 
 Blockly.Blocks.loader = {

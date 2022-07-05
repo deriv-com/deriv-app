@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { config } from '../constants/config';
+import { config } from '../constants';
 
 // TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.
 export const getContractTypeName = contract => {

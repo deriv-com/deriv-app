@@ -1,4 +1,4 @@
-import { config } from '../../constants/config';
+import { config } from '../../constants';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import DBotStore from '../dbot-store';
 

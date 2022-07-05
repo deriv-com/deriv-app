@@ -9,8 +9,7 @@ import {
 } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import getInterface from './services';
-import { unrecoverable_errors, log_types } from './constants/messages';
-import { config } from './constants/config';
+import { config, log_types, unrecoverable_errors } from './constants';
 import { observer as globalObserver } from './utils/observer';
 import api from './services/api/ws';
 import TicksService, { getUUID } from './services/api/ticks_service';

@@ -1,7 +1,7 @@
 import LZString from 'lz-string';
 import localForage from 'localforage';
 import DBotStore from '../scratch/dbot-store';
-import { save_types } from '../constants/save-type';
+import { save_types } from '../constants';
 
 /**
  * Save workspace to localStorage

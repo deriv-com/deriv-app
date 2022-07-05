@@ -1,5 +1,5 @@
 import filesaver from 'file-saver';
-import { config } from '../constants/config';
+import { config } from '../constants';
 
 export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });

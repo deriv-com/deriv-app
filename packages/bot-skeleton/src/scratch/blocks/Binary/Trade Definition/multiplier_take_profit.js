@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { config } from '../../../../constants/config';
+import { config } from '../../../../constants';
 
 Blockly.Blocks.multiplier_take_profit = {
     init() {

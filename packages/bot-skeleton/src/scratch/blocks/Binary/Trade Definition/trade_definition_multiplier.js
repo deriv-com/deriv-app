@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
 import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
-import { config } from '../../../../constants/config';
+import { config } from '../../../../constants';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_multiplier = {

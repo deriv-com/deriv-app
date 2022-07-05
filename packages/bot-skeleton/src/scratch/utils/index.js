@@ -1,12 +1,11 @@
 import { localize } from '@deriv/translations';
 import { saveAs } from '../shared';
 import BlockConversion from '../backward-compatibility';
-import { config } from '../../constants/config';
+import { config, log_types } from '../../constants';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
-import { log_types } from '../../constants/messages';
 
 export const updateWorkspaceName = () => {
     const { save_modal } = DBotStore.instance;

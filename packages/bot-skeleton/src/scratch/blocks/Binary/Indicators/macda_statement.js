@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { config } from '../../../../constants/config';
+import { config } from '../../../../constants';
 
 Blockly.Blocks.macda_statement = {
     protected_statements: ['STATEMENT'],

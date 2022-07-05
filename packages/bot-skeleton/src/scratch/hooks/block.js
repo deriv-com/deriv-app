@@ -1,4 +1,4 @@
-import { config } from '../../constants/config';
+import { config } from '../../constants';
 
 // Structure is { '<outerHtml />': { height: 1, width: 1 } }
 Blockly.Block.Dimensions = {};

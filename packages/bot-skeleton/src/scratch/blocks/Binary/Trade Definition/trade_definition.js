@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
-import { config } from '../../../../constants/config';
+import { config } from '../../../../constants';
 
 Blockly.Blocks.trade_definition = {
     init() {

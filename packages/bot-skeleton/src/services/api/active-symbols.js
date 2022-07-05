@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import PendingPromise from '../../utils/pending-promise';
-import { config } from '../../constants/config';
+import { config } from '../../constants';
 
 export default class ActiveSymbols {
     constructor(ws, trading_times) {

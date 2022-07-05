@@ -243,7 +243,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                                         <InlineNoteWithIcon
                                                             icon='IcAlertWarning'
                                                             message={localize(
-                                                                'Do not share tokens with the Admin scope with unauthorised parties.'
+                                                                'To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.'
                                                             )}
                                                             title={localize('Note')}
                                                         />

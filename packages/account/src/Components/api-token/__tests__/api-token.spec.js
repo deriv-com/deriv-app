@@ -30,6 +30,8 @@ afterAll(() => {
 describe('<ApiToken/>', () => {
     const admin_scope_description =
         'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more.';
+    const admin_scope_note =
+        'To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.';
     const learn_more_title = 'Learn more about API token';
     const read_scope_description =
         'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.';
@@ -78,6 +80,7 @@ describe('<ApiToken/>', () => {
         expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
 
         expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
         expect(await screen.findByText(trading_info_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
         expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
@@ -98,6 +101,7 @@ describe('<ApiToken/>', () => {
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
         expect(screen.queryByText(admin_scope_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(admin_scope_note)).not.toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
         expect(screen.queryByText(trading_info_scope_description)).not.toBeInTheDocument();
         expect(screen.queryByText(select_scopes_msg)).not.toBeInTheDocument();
@@ -116,6 +120,7 @@ describe('<ApiToken/>', () => {
         render(<ApiToken {...mock_props} />);
 
         expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
         expect(await screen.findByText(trading_info_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
         expect(await screen.findByText(token_creation_description)).toBeInTheDocument();

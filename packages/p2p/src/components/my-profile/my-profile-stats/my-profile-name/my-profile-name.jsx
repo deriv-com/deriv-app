@@ -48,9 +48,7 @@ const MyProfileName = () => {
                                 <React.Fragment>
                                     <div className='my-profile-name--rating__row'>
                                         <StarRating
-                                            empty_star_className='my-profile-name--rating--star'
                                             empty_star_icon='IcEmptyStar'
-                                            full_star_className='my-profile-name--rating--star'
                                             full_star_icon='IcFullStar'
                                             initial_value={rating_average_decimal}
                                             is_readonly

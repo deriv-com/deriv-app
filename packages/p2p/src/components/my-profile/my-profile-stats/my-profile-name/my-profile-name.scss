@@ -34,10 +34,6 @@
         flex-direction: row;
         padding: 0.8rem 0;
 
-        @include mobile {
-            white-space: initial;
-        }
-
         &__row {
             align-items: center;
             border-right: 1px solid var(--general-section-1);
@@ -50,12 +46,6 @@
 
             &:last-child {
                 border-right: unset;
-            }
-        }
-
-        &--star {
-            > svg {
-                padding-right: 0.1rem;
             }
         }
     }

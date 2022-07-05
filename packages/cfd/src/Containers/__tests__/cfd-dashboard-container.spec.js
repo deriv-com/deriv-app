@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fire, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import CFDDashboardContainer from '../cfd-dashboard-container';
 
 jest.mock('@deriv/components', () => {
@@ -13,7 +13,7 @@ jest.mock('@deriv/components', () => {
 describe('CFDDashboardContainer', () => {
     const mock_props = {
         platform: 'mt5',
-        active_index: 0,
+        active_index: {},
         is_dark_mode_on: false,
     };
 
@@ -88,7 +88,7 @@ describe('CFDDashboardContainer', () => {
     });
 
     it('should download/redirect the correct file for DerivX', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
+        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' active_index={0} />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
         expect(screen.getByText(/IcInstallationGoogle/i).closest('a')).toHaveAttribute(
             'href',
@@ -100,11 +100,11 @@ describe('CFDDashboardContainer', () => {
         );
     });
     it('should render demo account dashboard and the demo link for derivx web terminal if active_index is 1 ', () => {
-        render(<CFDDashboardContainer {...mock_props} active_index='1' platform='dxtrade' />);
+        render(<CFDDashboardContainer {...mock_props} active_index={1} platform='dxtrade' />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx-demo.deriv.com/');
     });
     it('should render the real account link for web terminal if active_index is 0', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
+        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' active_index={0} />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
     });
 });

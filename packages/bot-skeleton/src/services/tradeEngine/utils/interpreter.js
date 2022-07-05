@@ -33,7 +33,7 @@ const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options
 
 // TODO chek beforState & duringState & startState
 const Interpreter = () => {
-    let $scope = createScope();
+    const $scope = createScope();
     let bot = Interface($scope);
     let interpreter = {};
     let onFinish;
@@ -43,9 +43,7 @@ const Interpreter = () => {
     );
 
     function init() {
-        $scope = createScope();
         bot = Interface($scope);
-        interpreter = {};
         onFinish = () => {};
     }
 

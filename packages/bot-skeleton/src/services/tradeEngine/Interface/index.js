@@ -26,12 +26,6 @@ const Interface = $scope => {
             sleep: (...args) => sleep(observer, ...args),
             alert: (...args) => alert(...args), // eslint-disable-line no-alert
             prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
-            console: {
-                log(...args) {
-                    // eslint-disable-next-line no-console
-                    console.log(new Date().toLocaleTimeString(), ...args);
-                },
-            },
         };
     };
     return { tradeEngine, observer, getInterface };

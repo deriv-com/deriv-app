@@ -159,7 +159,7 @@ const CFDAccountCard = ({
     commission_message,
     descriptor,
     is_hovered,
-    existing_datas,
+    existing_accounts_data,
     has_banner,
     has_cfd_account,
     has_cfd_account_error,
@@ -181,10 +181,14 @@ const CFDAccountCard = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
-    console.log(existing_datas);
     const existing_data =
-        //@ts-ignore
-        type.category === 'real' ? (existing_datas?.length ? existing_datas[0] : undefined) : existing_datas;
+        type.category === 'real'
+            ? //@ts-ignore
+              existing_accounts_data?.length
+                ? //@ts-ignore
+                  existing_accounts_data[0]
+                : undefined
+            : existing_accounts_data;
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
     const has_popular_banner: boolean =

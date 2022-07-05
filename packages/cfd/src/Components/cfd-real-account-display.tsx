@@ -186,7 +186,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const existing_data_accounts = (acc_type: 'synthetic' | 'financial@') => {
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial@') => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
             ? (Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
@@ -212,7 +212,7 @@ const CFDRealAccountDisplay = ({
             }}
             is_logged_in={is_logged_in}
             should_show_trade_servers={should_show_trade_servers}
-            existing_datas={existing_data_accounts('synthetic')}
+            existing_accounts_data={existing_accounts_data('synthetic')}
             commission_message={localize('No commission')}
             onSelectAccount={() => onSelectRealAccount('synthetic')}
             onPasswordManager={openPasswordManager}
@@ -235,7 +235,7 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_datas={existing_data_accounts('financial@')}
+            existing_accounts_data={existing_accounts_data('financial@')}
             commission_message={localize('No commission')}
             onSelectAccount={() => onSelectRealAccount('financial')}
             onPasswordManager={openPasswordManager}

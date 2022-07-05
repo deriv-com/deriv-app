@@ -194,7 +194,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render 1 open account with an enabled "Top up" ("Fund top up" for Deriv X) & "Trade on web terminal" buttons', () => {
+    it('should render 1 open account with an enabled "Top up" ("Fund top up" for Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
         props.current_list['mt5.demo.financial@p01_ts02'] = mt5_demo_financial_account;
         const { container, rerender } = render(<CFDDemoAccountDisplay {...props} />);
 
@@ -223,12 +223,8 @@ describe('<CFDDemoAccountDisplay />', () => {
             />
         );
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx-demo.deriv.com/');
-        const within_dxtrade_synthetic = within(container.querySelector('#demo-synthetic'));
-        const dxtrade_fund_top_up_button = within_dxtrade_synthetic.getByRole('button', { name: /fund top up/i });
-        const dxtrade_trade_on_web_terminal_button = within_dxtrade_synthetic.getByRole('link', {
-            name: /trade on web terminal/i,
-        });
+        const dxtrade_fund_top_up_button = screen.getByRole('button', { name: /fund top up/i });
+        const dxtrade_trade_on_web_terminal_button = screen.getByRole('link', { name: /trade on web terminal/i });
         expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx-demo.deriv.com');
 
         fireEvent.click(dxtrade_fund_top_up_button);

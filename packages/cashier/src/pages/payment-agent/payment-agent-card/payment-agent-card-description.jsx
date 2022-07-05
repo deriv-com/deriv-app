@@ -27,7 +27,7 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
             )}
             {payment_agent_urls && (
                 <Detail target='_blank' rel='noopener noreferrer' has_red_color>
-                    {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
+                    {payment_agent_urls.map(url => url.url)}
                 </Detail>
             )}
             {hasNormalizedPaymentMethods(payment_agent.supported_banks) && (

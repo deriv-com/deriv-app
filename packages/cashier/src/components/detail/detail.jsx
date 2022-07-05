@@ -18,13 +18,13 @@ const Detail = ({ action, children, className, has_red_color, icon, title }) => 
                 </div>
             )}
             <div>
+                {title && (
+                    <Text as='p' line_height='s' size='xs'>
+                        {title}
+                    </Text>
+                )}
                 {detail.map((child, id) => (
                     <React.Fragment key={id}>
-                        {title && (
-                            <Text as='p' line_height='s' size='xs'>
-                                {title}
-                            </Text>
-                        )}
                         {action || !title ? (
                             <Text
                                 as='a'

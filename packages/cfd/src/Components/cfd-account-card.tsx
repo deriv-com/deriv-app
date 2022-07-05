@@ -374,7 +374,7 @@ const CFDAccountCardComponent = ({
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'real' &&
                             //@ts-ignore
-                            existing_datas?.map(acc => (
+                            existing_accounts_data?.map(acc => (
                                 <div className='cfd-account-card__item'>
                                     {existing_data?.display_balance && is_logged_in && (
                                         <div className='cfd-account-card__item--banner'>

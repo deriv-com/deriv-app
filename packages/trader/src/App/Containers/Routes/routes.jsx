@@ -46,8 +46,6 @@ const Routes = ({
     passthrough,
     setPromptHandler,
     setTradeMountingPolicy,
-    is_reports_url,
-    setIsReportsUrl,
 }) => {
     React.useEffect(() => {
         if (setPromptHandler) {
@@ -97,11 +95,7 @@ const Routes = ({
     }, []);
 
     React.useEffect(() => {
-        if (is_reports_url) {
-            setIsReportsUrl(false);
-            return;
-        }
-        onUnmountPortfolio();
+        return () => onUnmountPortfolio();
     }, [onUnmountPortfolio]);
 
     if (has_error) return <Error {...error} />;
@@ -131,7 +125,5 @@ export default withRouter(
         is_logging_in: client.is_logging_in,
         setPromptHandler: ui.setPromptHandler,
         setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
-        is_reports_url: ui.is_reports_url,
-        setIsReportsUrl: ui.setIsReportsUrl,
     }))(Routes)
 );

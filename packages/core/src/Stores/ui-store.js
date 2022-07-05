@@ -16,9 +16,6 @@ export default class UIStore extends BaseStore {
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_cancellation_warning = true;
 
-    // Check previous url to don't unmount portfolio when navigate from reports to trader
-    @observable is_reports_url = false;
-
     // Extensions
     @observable footer_extensions = [];
     @observable header_extension = undefined;
@@ -195,11 +192,6 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
-
-    @action.bound
-    setIsReportsUrl(is_reports_url) {
-        this.is_reports_url = is_reports_url;
-    }
 
     @action.bound
     init(notification_messages) {

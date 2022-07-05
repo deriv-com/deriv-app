@@ -452,10 +452,13 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onUnmount() {
-        this.disposePreSwitchAccount();
-        this.disposeSwitchAccount();
-        this.disposeLogout();
-        this.clearTable();
+        const is_reports_path = /^\/reports/.test(window.location.pathname);
+        if (!is_reports_path) {
+            this.clearTable();
+            this.disposePreSwitchAccount();
+            this.disposeSwitchAccount();
+            this.disposeLogout();
+        }
     }
 
     getPositionIndexById(contract_id) {

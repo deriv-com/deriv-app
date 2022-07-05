@@ -7,10 +7,20 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
+import BlockUserEmpty from 'Components/block-user/block-user-empty';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
     const formik_ref = React.useRef();
+
+    const generatePageHeaderText = () => {
+        if (my_profile_store.should_show_add_payment_method_form) {
+            return localize('Add payment method');
+        } else if (my_profile_store.should_show_edit_payment_method_form) {
+            return localize('Edit payment method');
+        }
+        return localize('Payment methods');
+    };
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
@@ -24,18 +34,20 @@ const MyProfileContent = () => {
                     <MobileFullPageModal
                         body_className='payment-methods-list__modal'
                         height_offset='80px'
-                        is_flex
                         is_modal_open
+                        is_flex
                         page_header_className='buy-sell__modal-header'
-                        page_header_text={localize('Payment methods')}
+                        page_header_text={generatePageHeaderText()}
                         pageHeaderReturnFn={() => {
                             if (
-                                my_profile_store.selected_payment_method.length > 0 ||
-                                (formik_ref.current && formik_ref.current.dirty)
+                                (formik_ref.current && formik_ref.current.dirty) ||
+                                my_profile_store.selected_payment_method.length > 0
                             ) {
                                 my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
+                                my_profile_store.setShouldShowEditPaymentMethodForm(false);
                             }
                         }}
                     >
@@ -44,6 +56,9 @@ const MyProfileContent = () => {
                 </MobileWrapper>
             </React.Fragment>
         );
+    } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
+        // TODO: Add search box and integrate list of blocked users once blocked user list is merged
+        return <BlockUserEmpty />;
     }
     return <MyProfileStats />;
 };

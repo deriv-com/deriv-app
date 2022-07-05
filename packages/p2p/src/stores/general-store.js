@@ -12,9 +12,13 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable block_unblock_user_error = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_advertiser_blocked = null;
     @observable is_blocked = false;
+    @observable is_block_unblock_user_loading = false;
+    @observable is_block_user_modal_open = false;
     @observable is_listed = false;
     @observable is_loading = false;
     @observable is_p2p_blocked_for_pa = false;
@@ -24,7 +28,6 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -32,6 +35,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
+    @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -71,6 +75,24 @@ export default class GeneralStore extends BaseStore {
     @computed
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+    }
+
+    @action.bound
+    blockUnblockUser(should_block, advertiser_id) {
+        this.setIsBlockUnblockUserLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+            [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setIsBlockUserModalOpen(false);
+                } else {
+                    this.setBlockUnblockUserError(response.error);
+                }
+            }
+            this.setIsBlockUnblockUserLoading(false);
+        });
     }
 
     @action.bound
@@ -314,6 +336,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setBlockUnblockUserError(block_unblock_user_error) {
+        this.block_unblock_user_error = block_unblock_user_error;
+    }
+
+    @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -324,8 +351,23 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsAdvertiserBlocked(is_advertiser_blocked) {
+        this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
+    @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
+    }
+
+    @action.bound
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
     @action.bound
@@ -354,6 +396,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsModalOpen(is_modal_open) {
+        this.is_modal_open = is_modal_open;
+    }
+
+    @action.bound
     setNickname(nickname) {
         this.nickname = nickname;
     }
@@ -374,21 +421,6 @@ export default class GeneralStore extends BaseStore {
 
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
-    }
-
-    @action.bound
-    setOrderTimeOut(time) {
-        this.order_timeout = time;
-    }
-
-    @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { order_payment_period } = response.website_status?.p2p_config;
-                this.setOrderTimeOut(order_payment_period);
-            }
-        });
     }
 
     @action.bound
@@ -465,6 +497,7 @@ export default class GeneralStore extends BaseStore {
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);

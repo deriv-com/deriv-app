@@ -85,13 +85,13 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const formik_ref = React.useRef();
 
     const BuySellFormError = () => {
-        return buy_sell_store.form_error_code === 'OrderAlreadyExists' ? (
+        return buy_sell_store.form_error_code === 'OrderCreateFailClientBalance' ? (
             <HintBox
                 className='buy-sell__modal-danger'
                 icon='IcAlertDanger'
                 message={
                     <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {error_message}
+                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
                     </Text>
                 }
                 is_danger
@@ -102,7 +102,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 icon='IcAlertDanger'
                 message={
                     <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                        {error_message}
                     </Text>
                 }
                 is_danger
@@ -173,7 +173,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             >
                 {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm formik_ref={formik_ref} should_fixed_footer should_show_separated_footer />
+                    <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={selected_ad}

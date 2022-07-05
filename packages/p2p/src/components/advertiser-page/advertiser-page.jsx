@@ -14,11 +14,11 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
-import BlockUserModal from './block-user/block-user-modal.jsx';
+import BlockUserModal from 'Components/block-user/block-user-modal';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
-    const { advertiser_page_store, buy_sell_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store } = useStores();
 
     const {
         basic_verification,
@@ -36,7 +36,7 @@ const AdvertiserPage = () => {
     const joined_since = daysSince(created_time);
 
     const onCancel = () => {
-        advertiser_page_store.setIsBlockUserModalOpen(false);
+        general_store.setIsBlockUserModalOpen(false);
         advertiser_page_store.setIsDropdownMenuVisible(false);
     };
 
@@ -53,7 +53,7 @@ const AdvertiserPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (advertiser_page_store.is_loading) {
+    if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -66,9 +66,9 @@ const AdvertiserPage = () => {
             <BlockUserModal
                 advertiser_name={name}
                 is_advertiser_blocked={is_blocked}
-                is_block_user_modal_open={advertiser_page_store.is_block_user_modal_open}
+                is_block_user_modal_open={general_store.is_block_user_modal_open}
                 onCancel={onCancel}
-                onSubmit={() => advertiser_page_store.blockUser(id)}
+                onSubmit={() => general_store.blockUnblockUser(true, id)}
             />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}

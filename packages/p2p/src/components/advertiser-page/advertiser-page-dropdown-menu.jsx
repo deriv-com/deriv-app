@@ -6,13 +6,13 @@ import { observer } from 'mobx-react-lite';
 import './advertiser-page.scss';
 
 const AdvertiserPageDropdownMenu = () => {
-    const { advertiser_page_store } = useStores();
+    const { advertiser_page_store, general_store } = useStores();
 
     const { is_blocked } = advertiser_page_store.advertiser_info;
 
     const showBlockUserModal = () => {
         if (!is_blocked) {
-            advertiser_page_store.setIsBlockUserModalOpen(true);
+            general_store.setIsBlockUserModalOpen(true);
         }
     };
 

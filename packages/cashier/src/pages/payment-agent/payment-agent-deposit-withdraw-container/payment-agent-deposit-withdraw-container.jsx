@@ -8,6 +8,7 @@ import PaymentAgentCard from '../payment-agent-card';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 
 const PaymentAgentDepositWithdrawContainer = ({
+    is_dark_mode_on,
     is_deposit,
     onChangePaymentMethod,
     payment_agent_list,
@@ -76,13 +77,21 @@ const PaymentAgentDepositWithdrawContainer = ({
                 )}
             </div>
             {payment_agent_list.map((payment_agent, idx) => {
-                return <PaymentAgentCard key={idx} is_deposit={is_deposit} payment_agent={payment_agent} />;
+                return (
+                    <PaymentAgentCard
+                        key={idx}
+                        is_dark_mode_on={is_dark_mode_on}
+                        is_deposit={is_deposit}
+                        payment_agent={payment_agent}
+                    />
+                );
             })}
         </React.Fragment>
     );
 };
 
 PaymentAgentDepositWithdrawContainer.propTypes = {
+    is_dark_mode_on: PropTypes.bool,
     is_deposit: PropTypes.bool,
     onChangePaymentMethod: PropTypes.func,
     payment_agent_list: PropTypes.array,
@@ -90,7 +99,8 @@ PaymentAgentDepositWithdrawContainer.propTypes = {
     supported_banks: MobxPropTypes.arrayOrObservableArray,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
+    is_dark_mode_on: ui.is_dark_mode_on,
     onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
     payment_agent_list: modules.cashier.payment_agent.filtered_list,
     selected_bank: modules.cashier.payment_agent.selected_bank,

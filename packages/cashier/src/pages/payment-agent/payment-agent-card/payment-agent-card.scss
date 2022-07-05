@@ -11,6 +11,9 @@
     & .dc-expansion-panel__header-chevron-icon {
         flex-basis: 5%;
     }
+    &__dark-mode {
+        background-color: var(--general-section-1);
+    }
     &__description-container {
         display: flex;
         flex-direction: column;

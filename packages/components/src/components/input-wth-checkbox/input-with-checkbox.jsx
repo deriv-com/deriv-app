@@ -17,6 +17,7 @@ const InputWithCheckbox = ({
     defaultChecked,
     error_message_alignment,
     error_messages,
+    is_checkbox_hidden,
     is_disabled,
     is_single_currency,
     is_negative_disabled,
@@ -131,6 +132,7 @@ const InputWithCheckbox = ({
             className={`${name}-checkbox__input`}
             ref={checkboxRef}
             id={`dc_${name}-checkbox_input`}
+            is_checkbox_hidden={is_checkbox_hidden}
             onChange={changeValue}
             name={checkboxName}
             label={label}
@@ -188,6 +190,7 @@ InputWithCheckbox.propTypes = {
     defaultChecked: PropTypes.bool,
     error_messages: PropTypes.array,
     info_component: PropTypes.node,
+    is_checkbox_hidden: PropTypes.bool,
     is_negative_disabled: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     is_input_hidden: PropTypes.bool,

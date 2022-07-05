@@ -7,6 +7,7 @@ export class ChartBarrierStore {
     @observable lineStyle;
     @observable shade;
     @observable shadeColor;
+    @observable squareShade;
 
     @observable high;
     @observable low;

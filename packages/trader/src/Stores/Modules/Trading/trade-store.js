@@ -33,7 +33,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
+import { BARRIER_COLORS, CONTRACT_SHADES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 import { getDummyProposalResponseForACC } from '../Contract/Helpers/dummy_accumulators_data';
@@ -497,9 +497,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onHoverPurchase(is_over, contract_type) {
-        if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
+        if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier && !this.is_accumulator) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
-        } else if (!is_over && this.main_barrier && !this.is_multiplier) {
+        } else if (!is_over && this.main_barrier && !this.is_multiplier && !this.is_accumulator) {
             this.main_barrier.updateBarrierShade(false, contract_type);
         }
 
@@ -594,25 +594,32 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     setAccumulatorsBarriers = ({ is_over }) => {
+        const acc_barriers_key = 'acc_barriers';
+        const is_loss = true;
         if (!is_over) {
-            const obj_barrier = {
-                key: 'acc_barriers',
-                title: 'acc_barriers',
-                color: BARRIER_COLORS.ORANGE,
-                draggable: false,
-                lineStyle: BARRIER_LINE_STYLES.DOTTED,
-                hidePriceLines: false,
-                hideOffscreenLine: true,
-                showOffscreenArrows: true,
-                isSingleBarrier: false,
-                opacityOnOverlap: 0,
-            };
-            this.barriers.push({
-                ...new ChartBarrierStore(this.barrier_1, this.barrier_2, null),
-                ...obj_barrier,
-            });
+            const acc_barriers = this.barriers?.find(b => b.key === acc_barriers_key);
+
+            if (acc_barriers && is_loss) {
+                acc_barriers.shade = 'OUTSIDE';
+                acc_barriers.shadeColor = BARRIER_COLORS.RED;
+            } else {
+                const obj_barrier = {
+                    key: acc_barriers_key,
+                    title: acc_barriers_key,
+                    shade: CONTRACT_SHADES.ACC,
+                    shadeColor: BARRIER_COLORS.ACC_GREEN,
+                    squareShade: true,
+                    hidePriceLines: true,
+                    draggable: false,
+                    isSingleBarrier: false,
+                };
+                this.barriers.push({
+                    ...new ChartBarrierStore(this.barrier_1, this.barrier_2, null),
+                    ...obj_barrier,
+                });
+            }
         } else {
-            removeBarrier(this.barriers, 'acc_barriers');
+            removeBarrier(this.barriers, acc_barriers_key);
         }
     };
 
@@ -640,11 +647,11 @@ export default class TradeStore extends BaseStore {
                             this.setAccumulatorsBarriers({
                                 is_over: false,
                             });
-                            setTimeout(() => {
-                                this.setAccumulatorsBarriers({
-                                    is_over: true,
-                                });
-                            }, 10000);
+                            // setTimeout(() => {
+                            //     this.setAccumulatorsBarriers({
+                            //         is_over: true,
+                            //     });
+                            // }, 10000);
                         }
                         // using javascript to disable purchase-buttons manually to compensate for mobx lag
                         this.disablePurchaseButtons();

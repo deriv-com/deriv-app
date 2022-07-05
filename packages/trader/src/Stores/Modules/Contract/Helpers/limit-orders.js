@@ -1,10 +1,10 @@
-import { isMultiplierContract } from '@deriv/shared';
+import { isAccumulatorContract, isMultiplierContract } from '@deriv/shared';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../../SmartChart/Constants/barriers';
 import { ChartBarrierStore } from '../../SmartChart/chart-barrier-store';
 import { removeBarrier } from '../../SmartChart/Helpers/barriers';
 
 const isLimitOrderBarrierSupported = (contract_type, contract_info) =>
-    isMultiplierContract(contract_type) && contract_info.limit_order;
+    (isMultiplierContract(contract_type) || isAccumulatorContract(contract_type)) && contract_info.limit_order;
 
 export const LIMIT_ORDER_TYPES = {
     STOP_OUT: 'stop_out',

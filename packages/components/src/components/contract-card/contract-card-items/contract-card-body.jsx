@@ -148,13 +148,21 @@ const MultiplierCardBody = ({
 };
 
 const AccumulatorCardBody = ({
+    addToast,
+    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
+    current_focus,
+    error_message_alignment,
     getCardLabels,
+    getContractById,
     is_mobile,
     is_sold,
     has_progress_slider,
+    onMouseLeave,
+    removeToast,
+    setCurrentFocus,
     status,
     is_in_contract_details,
 }) => {
@@ -162,6 +170,7 @@ const AccumulatorCardBody = ({
 
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const ticks_remaining = tick_count - tick_stream.length;
+    const is_valid_to_sell = isValidToSell(contract_info);
 
     return (
         <React.Fragment>
@@ -218,6 +227,22 @@ const AccumulatorCardBody = ({
                 </ContractCardItem>
                 <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                    {is_valid_to_sell && (
+                        <ToggleCardDialog
+                            addToast={addToast}
+                            connectWithContractUpdate={connectWithContractUpdate}
+                            contract_id={contract_info.contract_id}
+                            current_focus={current_focus}
+                            error_message_alignment={error_message_alignment}
+                            getCardLabels={getCardLabels}
+                            getContractById={getContractById}
+                            is_accumulator
+                            onMouseLeave={onMouseLeave}
+                            removeToast={removeToast}
+                            setCurrentFocus={setCurrentFocus}
+                            status={status}
+                        />
+                    )}
                 </ContractCardItem>
             </div>
         </React.Fragment>
@@ -293,14 +318,22 @@ const ContractCardBody = ({
     } else if (is_accumulator) {
         card_body = (
             <AccumulatorCardBody
+                addToast={addToast}
+                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
+                current_focus={current_focus}
+                error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
+                getContractById={getContractById}
                 has_progress_slider={has_progress_slider}
                 is_mobile={is_mobile}
                 is_sold={is_sold}
+                onMouseLeave={onMouseLeave}
                 status={status}
+                removeToast={removeToast}
+                setCurrentFocus={setCurrentFocus}
                 is_in_contract_details={is_in_contract_details}
             />
         );

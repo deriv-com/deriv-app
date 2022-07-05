@@ -470,6 +470,9 @@
             padding-bottom: 0.4rem;
         }
     }
+    &__take-profit {
+        position: relative;
+    }
     &__buy-price {
         grid-area: buy-price;
     }

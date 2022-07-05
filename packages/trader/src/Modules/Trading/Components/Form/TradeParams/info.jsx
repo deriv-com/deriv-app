@@ -123,12 +123,12 @@ const Info = ({
                 {
                     info_text: (
                         <Localize
-                            i18n_default_text={'Maximum Payout<0>{{max_payout}} {{currency}}</0>'}
+                            i18n_default_text={'Maximum payout:<0>{{max_payout}} {{currency}}</0>'}
                             values={{ max_payout: max_payout?.toFixed(2), currency }}
                             components={[
                                 <Text
                                     key={0}
-                                    styles={{ marginLeft: '8px', borderBottom: 'none' }}
+                                    styles={{ marginLeft: '4px', borderBottom: 'none' }}
                                     size={max_payout_text_size || 'xxxs'}
                                 />,
                             ]}

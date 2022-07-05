@@ -297,6 +297,10 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 9px;
             margin-bottom: 2rem;
 
+            .cfd-personal-details-modal__form & {
+                margin: unset;
+            }
+
             &--2-cols {
                 display: grid;
                 grid-template-columns: 1fr 1fr;

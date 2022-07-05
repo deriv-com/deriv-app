@@ -5,6 +5,7 @@ import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
+    @observable is_cfd_personal_details_modal_visible = false;
     @observable is_jurisdiction_modal_visible = false;
 
     @observable account_type = {
@@ -547,6 +548,10 @@ export default class CFDStore extends BaseStore {
                 );
             }
         });
+    }
+
+    toggleCFDPersonalDetailsModal() {
+        this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {

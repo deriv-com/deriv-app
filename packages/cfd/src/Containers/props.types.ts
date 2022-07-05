@@ -1,7 +1,20 @@
 import { History } from 'history';
-import { DetailsOfEachMT5Loginid, VerifyEmailResponse } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList, VerifyEmailResponse } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+
+export type TCFDPersonalDetailsModalProps = {
+    enableApp: () => void;
+    client_email: string;
+    disableApp: () => void;
+    is_open: boolean;
+    openPasswordModal: () => void;
+    toggleCFDPersonalDetailsModal: () => void;
+    toggleJurisdictionModal: () => void;
+    is_fully_authenticated: boolean;
+    landing_company: LandingCompany;
+    residence_list: ResidenceList;
+};
 
 type CFD_Platform = 'dxtrade' | 'mt5';
 

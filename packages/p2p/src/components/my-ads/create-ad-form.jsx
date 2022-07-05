@@ -386,7 +386,7 @@ const CreateAdForm = () => {
                                             onSelectPaymentMethods={handleSelectPaymentMethods}
                                             is_sell_advert={is_sell_advert}
                                         />
-                                        <React.Fragment>
+                                        <div className='p2p-my-ads__form-footer'>
                                             <Button.Group>
                                                 <Button
                                                     secondary
@@ -404,7 +404,7 @@ const CreateAdForm = () => {
                                                     <Localize i18n_default_text='Post ad' />
                                                 </Button>
                                             </Button.Group>
-                                        </React.Fragment>
+                                        </div>
                                     </CreateAdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>

@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { ProofOfOwnership } from '../proof-of-ownership.jsx';
 import test_data from './test-data';
 
+jest.mock('../../Assets/ic-poo-rejected.svg', () => jest.fn(() => 'PooRejectedIcon'));
 describe('proof-of-ownership.jsx', () => {
     let ownership_temp;
     beforeAll(() => {
@@ -61,7 +62,7 @@ describe('proof-of-ownership.jsx', () => {
                 updateAccountStatus={jest.fn()}
             />
         );
-        const element = screen.getByText('Proof of ownership verification failed', { exact: true });
+        const element = screen.getByTestId('try-again-button', { exact: true });
         expect(element).toBeInTheDocument();
     });
     it('should render ProofOfOwnershipForm', () => {

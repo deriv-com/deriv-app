@@ -16,6 +16,7 @@ export const POORejetced = ({ handleRequireSubmission }) => {
                 large
                 text={localize('Try again')}
                 primary
+                data-testid='try-again-button'
             />
         </div>
     );

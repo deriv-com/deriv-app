@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
-import { Popover, Icon } from '@deriv/components';
+import { Icon, Microtip } from '@deriv/components';
 import { deriv_urls } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { liveChatInitialization } from './live-chat';
@@ -156,15 +156,9 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                                 window.LiveChatWidget?.call('maximize');
                             }}
                         >
-                            <Popover
-                                className='footer__link'
-                                classNameBubble='help-centre__tooltip'
-                                alignment='top'
-                                message={localize('Live chat')}
-                                zIndex={9999}
-                            >
+                            <Microtip alignment='top' label={localize('Live chat')} target_className='footer__link'>
                                 <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
-                            </Popover>
+                            </Microtip>
                         </div>
                     )}
                 </React.Fragment>

@@ -74,7 +74,7 @@ const PaymentAgentTransferReceipt = ({
                 />
             )}
             <Button
-                className='cashier__form-submit-button'
+                className='cashier__form-submit-button cashier__done-button'
                 has_effect
                 text={localize('Make a new transfer')}
                 onClick={resetPaymentAgentTransfer}

@@ -1,64 +1,9 @@
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { toJS } from 'mobx';
 import React from 'react';
-import { Icon, Text, Money } from '@deriv/components';
+import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
-
-export const Detail = ({ action, children, className, has_red_color, icon, title }) => {
-    const detail = Array.isArray(children) ? children : [children];
-    return (
-        <div
-            className={classNames('payment-agent-card__detail', {
-                [className]: !!className,
-            })}
-        >
-            {icon && (
-                <div className='payment-agent-card__detail-icon-container'>
-                    <Icon icon={`IcCashier${icon}`} />
-                </div>
-            )}
-            <div>
-                {detail.map((child, id) => (
-                    <React.Fragment key={id}>
-                        {title && (
-                            <Text as='p' line_height='s' size='xs'>
-                                {title}
-                            </Text>
-                        )}
-                        {action || !title ? (
-                            <Text
-                                as='a'
-                                color={has_red_color ? 'red' : 'prominent'}
-                                href={`${action ? `${action}:` : ''}${child}`}
-                                line_height='s'
-                                size={!title ? 'xxs' : 'xs'}
-                                weight='bold'
-                                className='payment-agent-card__detail-link'
-                            >
-                                {child}
-                                {id === detail.length - 1 ? '' : ', '}
-                            </Text>
-                        ) : (
-                            <Text as='p' line_height='s' size='xs' weight='bold'>
-                                {child}
-                            </Text>
-                        )}
-                    </React.Fragment>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-Detail.propTypes = {
-    action: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element, PropTypes.string]),
-    className: PropTypes.string,
-    has_red_color: PropTypes.bool,
-    icon: PropTypes.string,
-    title: PropTypes.string,
-};
+import Detail from 'Components/detail';
 
 const PaymentAgentCardDetails = ({ payment_agent }) => {
     const payment_agent_phones = toJS(payment_agent.phones);

@@ -37,7 +37,7 @@
         column-gap: 1rem;
         row-gap: 0.8rem;
         margin-top: 3.2rem;
-        & > .payment-agent-card__detail:nth-child(-n + 2) {
+        & > .detail:nth-child(-n + 2) {
             margin-bottom: 2.4rem;
             @include mobile {
                 margin-bottom: 0;
@@ -46,29 +46,6 @@
         @include mobile {
             grid-template-columns: 1fr;
             margin-top: 2.4rem;
-        }
-    }
-    &__detail {
-        display: flex;
-        @include mobile {
-            &.deposit-commission {
-                order: 5;
-            }
-
-            &.withdrawal_commission {
-                order: 6;
-            }
-        }
-        &-icon-container {
-            margin-right: 0.8rem;
-            .dc-icon {
-                width: 3.2rem;
-                height: 3.2rem;
-            }
-        }
-        &-link {
-            text-decoration: none;
-            word-break: break-word;
         }
     }
 }

@@ -5,7 +5,7 @@ import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
 import { connect } from 'Stores/connect';
-import { Detail } from './paymen-agent-card-deposit-details';
+import Detail from 'Components/detail';
 
 const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
     const payment_agent_urls = toJS(payment_agent.urls);

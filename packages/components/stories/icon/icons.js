@@ -232,6 +232,7 @@ export const icons =
         'IcDeriv',
         'IcDesktop',
         'IcDigits',
+        'IcDocsSubmit',
         'IcDownload',
         'IcDp2p',
         'IcDrivingLicenseDashboard',

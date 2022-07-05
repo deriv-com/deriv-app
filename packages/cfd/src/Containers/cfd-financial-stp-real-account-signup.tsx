@@ -1,12 +1,13 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
-import { LandingCompany, ResidenceList, GetSettings, StatesList } from '@deriv/api-types';
+import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
 import RootStore from 'Stores/index';
+
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -46,6 +47,8 @@ type TCFDFinancialStpRealAccountSignupProps = {
     storeProofOfAddress: TStoreProofOfAddressArgs;
     toggleModal: () => void;
     fetchStatesList: () => void
+    account_status: GetAccountStatus
+    onFinish: () => void
 };
 
 type TSetSubmiting = (isSubmitting: boolean) => void;
@@ -71,7 +74,8 @@ type TItemsProps =
     | 'states_list'
     | 'get_settings'
     | 'storeProofOfAddress'
-    | 'toggleModal';
+    | 'toggleModal'
+
 
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
 const index_lookup: TIndexLookupObject = {
@@ -80,13 +84,14 @@ const index_lookup: TIndexLookupObject = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
+    console.log(props.onFinish);
+
     const { refreshNotifications } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
     const [is_loading, setIsLoading] = React.useState<boolean>(false);
 
     const [items, setItems] = React.useState<TItemsState[]>([
-
         {
             header: {
                 active_title: localize('Complete your proof of identity'),
@@ -127,11 +132,16 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const clearError = () => {
         setFormError('');
     };
-
-    const nextStep: TNextStep = () => {
+    const nextStep: TNextStep = async () => {
         clearError();
+
+        console.log('inside next', step);
+
         if (step + 1 < items.length) {
             setStep(step + 1);
+        }
+        else {
+            props.onFinish();
         }
     };
 
@@ -145,8 +155,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         setSubmitting: TSetSubmiting,
     ) => {
         saveFormData(index, value);
-        nextStep(setSubmitting);
+        console.log('update value', index, value);
 
+        nextStep(setSubmitting);
     };
 
     React.useEffect(() => {
@@ -166,7 +177,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         const cloned_items: Array<TItemsState> = Object.assign([], items);
         cloned_items[index].form_value = value;
         setItems(cloned_items);
-        console.log(cloned_items);
+        console.log(items);
 
     };
     const BodyComponent = getCurrent('body') as TItemsState['body'];
@@ -176,6 +187,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         return Object.assign(arr, { [item]: props[item as keyof TCFDFinancialStpRealAccountSignupProps] });
     }, {});
     const height = 'auto';
+
 
     return (
         <Div100vhContainer
@@ -217,4 +229,5 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     states_list: client.states_list,
     fetchStatesList: client.fetchStatesList,
     storeProofOfAddress: cfd.storeProofOfAddress,
+    account_status: client.account_status,
 }))(CFDFinancialStpRealAccountSignup);

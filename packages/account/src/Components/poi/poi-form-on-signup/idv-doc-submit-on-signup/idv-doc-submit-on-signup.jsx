@@ -17,7 +17,7 @@ import { isDesktop, formatInput, isMobile } from '@deriv/shared';
 import { getDocumentData, getRegex } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from '../../../../Assets/ic-document-submit-icon.svg';
 
-export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value }) => {
+export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -132,6 +132,17 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                             <Text className='proof-of-identity__text btm-spacer' size='xs'>
                                                 {localize('Please select the document type and enter the ID number.')}
                                             </Text>
+                                            {(has_idv_error && !is_doc_selected) &&
+                                                <>
+                                                    <Text className='proof-of-identity btm-spacer' size='xs' align='center' color='loss-danger'>
+                                                        {localize('We were unable to verify your ID with the details you provided.')}
+                                                    </Text>
+                                                    <Text className='proof-of-identity btm-spacer' size='xs' align='center' color='loss-danger'>
+                                                        {localize('Please check and resubmit or choose a different document type.')}
+                                                    </Text>
+                                                </>
+
+                                            }
                                             <div className='proof-of-identity__inner-container btm-spacer'>
                                                 <div className='proof-of-identity__fieldset-container'>
                                                     <fieldset className='proof-of-identity__fieldset'>

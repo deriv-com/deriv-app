@@ -104,8 +104,6 @@ type TUpload = {
 let file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>;
 
 const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
-    console.log('props of cfdpoa =', props);
-
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -248,28 +246,32 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 actions.setSubmitting(false);
                 return;
             }
-            const { identity } = get_account_status.authentication;
-            const _has_poi = !(identity && identity.status === 'none');
-            if (_has_poi) {
-                onProceed();
-            } else {
-                setFormState({
-                    ...form_state,
-                    ...{
-                        form_error: localize(
-                            'Identity confirmation failed. You will be redirected to the previous step.'
-                        ),
-                    },
-                });
-                setTimeout(() => {
-                    handleCancel(get_settings);
-                }, 3000);
-            }
+            // const { identity } = get_account_status.authentication;
+            // const _has_poi = !(identity && identity.status === 'none');
+            // if (_has_poi) {
+            console.log('inside has poi');
+
+            onProceed();
+            // } else {
+            // setFormState({
+            //     ...form_state,
+            //     ...{
+            //         form_error: localize(
+            //             'Identity confirmation failed. You will be redirected to the previous step.'
+            //         ),
+            //     },
+            // });
+            // setTimeout(() => {
+            //     handleCancel(get_settings);
+            // }, 3000);
+            // }
         } catch (e: unknown) {
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
         actions.setSubmitting(false);
         onSave(index, values);
+        console.log('submit value', index, values);
+
         onSubmit(index, values, actions.setSubmitting);
     };
 
@@ -277,11 +279,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     React.useEffect(() => {
 
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
-
             WS.wait('states_list').then(() => {
-                console.log('hi');
-
                 const { get_account_status } = response;
+                console.log('here');
+
                 const { document, identity } = get_account_status?.authentication!;
                 const __has_poi = !!(identity && identity.status === 'none');
                 const poi_status = (identity && identity.status)
@@ -487,27 +488,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                             </div>
                                         </ThemedScrollbars>
                                     )}
-                                    {poa_status !== PoaStatusCodes.none && !resubmit_poa && (
-                                        <ThemedScrollbars height={height} is_bypassed={isMobile()}>
-                                            {(poi_status === 'pending' && poa_status === PoaStatusCodes.pending) &&
-                                                (<PoiPoaSubmitted toggleModal={toggleModal} />)
-                                            }
-                                            {/* {submitted_poa && (
-                                                <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
-                                            )} */}
-                                            {/* {poa_status === PoaStatusCodes.pending && (
-                                                <PoaNeedsReview is_description_enabled={false} />
-                                            )} */}
-                                            {/* {poa_status === PoaStatusCodes.verified && (
-                                                <PoaVerified is_description_enabled={false} has_poi={has_poi} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.expired && (
-                                                <PoaExpired onClick={handleResubmit} />
-                                            )}
-                                            {(poa_status === PoaStatusCodes.rejected ||
-                                                poa_status === PoaStatusCodes.suspected) && <PoaUnverified />} */}
-                                        </ThemedScrollbars>
-                                    )}
+
                                     <Modal.Footer is_bypassed={isMobile()}>
                                         {(poa_status === PoaStatusCodes.none || is_form_visible) && (
                                             <FormSubmitButton

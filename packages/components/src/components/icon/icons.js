@@ -225,6 +225,7 @@ import './common/ic-deriv-outline.svg';
 import './common/ic-deriv.svg';
 import './common/ic-desktop.svg';
 import './common/ic-digits.svg';
+import './common/ic-docs-submit.svg';
 import './common/ic-download.svg';
 import './common/ic-dp2p.svg';
 import './common/ic-driving-license-dashboard.svg';

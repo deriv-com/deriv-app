@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
+import { Modal, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
-
+import { PoiPoaSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
-import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
+import { WS } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup'
 
 type TVerificationModalProps = {
@@ -19,23 +19,42 @@ const CFDDbViOnBoarding = ({
     enableApp,
     is_cfd_verification_modal_visible,
     toggleCFDVerificationModal,
-}: TVerificationModalProps) =>
+}: TVerificationModalProps) => {
+    const [showSubmitted, setShowSubmitted] = React.useState(false);
 
-    <React.Suspense fallback={<UILoader />}>
-        <Modal
-            className='cfd-verification-modal'
-            disableApp={disableApp}
-            enableApp={enableApp}
-            is_open={is_cfd_verification_modal_visible}
-            title={localize('Submit your proof of identity and address')}
-            toggleModal={toggleCFDVerificationModal}
-            height='700px'
-            width='996px'
-        >
-            <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal}></CFDFinancialStpRealAccountSignup>
-        </Modal>
-    </React.Suspense>
+    React.useEffect(() => {
+        WS.authorized.getAccountStatus().then((response) => {
+            const { get_account_status } = response;
+            const identity_status = get_account_status.authentication.identity.status;
+            const document_status = get_account_status.authentication.document.status;
+            console.log(identity_status, document_status);
+            if ((identity_status !== 'none') && (document_status !== 'none')) {
+                setShowSubmitted(true)
+            }
+        })
+    }, []);
 
+    return (
+        <React.Suspense fallback={<UILoader />}>
+            <Modal
+                className='cfd-financial-stp-modal'
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_open={is_cfd_verification_modal_visible}
+                title={localize('Submit your proof of identity and address')}
+                toggleModal={toggleCFDVerificationModal}
+                height='700px'
+                width='996px'
+            >
+                {showSubmitted ?
+                    <PoiPoaSubmitted onClick={toggleCFDVerificationModal} /> :
+                    <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal} onFinish={() => { setShowSubmitted(true) }}></CFDFinancialStpRealAccountSignup>
+                }
+            </Modal>
+        </React.Suspense>
+
+    )
+}
 
 
 
@@ -49,10 +68,5 @@ export default connect(({ modules, ui, client, notifications }: RootStore) => ({
     enableApp: ui.enableApp,
     is_cfd_verification_modal_visible: modules.cfd.is_cfd_verification_modal_visible,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-    // residence_list: client.residence_list,
-    // account_settings: client.account_settings,
-    // account_status: client.account_status,
-    // residence: client.residence,
-    // refreshNotifications: notifications.refreshNotifications,
 
 }))(CFDDbViOnBoarding); 

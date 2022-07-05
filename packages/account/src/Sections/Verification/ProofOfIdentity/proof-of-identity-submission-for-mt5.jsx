@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
-// import CountrySelector from 'Components/poi/poi-country-selector';
-// import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup.jsx';
+import { Button, Modal, AutoHeightWrapper } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const POISubmissionForMT5 = ({
     allow_poi_resubmission,
@@ -49,9 +49,11 @@ const POISubmissionForMT5 = ({
     }, [citizen_data])
 
 
-    const handleViewComplete = () => {
+    const handlePOIComplete = () => {
+        console.log('here');
         if (onStateChange && typeof onStateChange === 'function') {
             onStateChange(identity_status_codes.pending);
+            console.log('pending');
         }
         setSubmissionStatus(submission_status_code.complete);
 
@@ -69,14 +71,21 @@ const POISubmissionForMT5 = ({
         };
 
         WS.send(submit_data).then(response => {
-            if (response.error) {
-                // 
-                console.log(response.error);
-                return;
-            }
-            handleViewComplete();
+            // if (response.error) {
+            //     // 
+            //     console.log(response.error);
+            //     return;
+            // }
+            handlePOIComplete();
         })
     }
+
+    const handleOnfidoSubmit = () => {
+        setNextButtonDisabled(false);
+        console.log('onfio submit');
+    }
+
+    const [is_next_btn_disabled, setNextButtonDisabled] = React.useState(true);
 
     switch (submission_status) {
 
@@ -98,17 +107,28 @@ const POISubmissionForMT5 = ({
                     const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
 
                     return (
-                        <>
-                            <OnfidoUpload
-                                country_code={country_code}
-                                documents_supported={documents_supported}
-                                handleViewComplete={handleViewComplete}
-                                height={height}
-                                is_from_external={is_from_external}
-                                refreshNotifications={refreshNotifications}
-                            />
-                        </>
-
+                        <AutoHeightWrapper default_height={500} height_offset={50}>
+                            {({ setRef, height }) => (
+                                <div ref={setRef} style={{ height }}>
+                                    <OnfidoUpload
+                                        country_code={country_code}
+                                        documents_supported={documents_supported}
+                                        handleViewComplete={handlePOIComplete}
+                                        height={height}
+                                        is_from_external={is_from_external}
+                                        refreshNotifications={refreshNotifications}
+                                    />
+                                    <Modal.Footer is_bypassed={isMobile()}>
+                                        <Button
+                                            primary
+                                            is_disabled={is_next_btn_disabled}
+                                            is_absolute={isMobile()}
+                                            onClick={handlePOIComplete}
+                                            text={localize('Next')}
+                                        />
+                                    </Modal.Footer>
+                                </div>)}
+                        </AutoHeightWrapper>
                     );
                 }
                 case service_code.manual:

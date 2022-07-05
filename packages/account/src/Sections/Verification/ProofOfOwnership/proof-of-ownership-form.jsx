@@ -34,7 +34,8 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         let is_file_uploaded = false;
         values.data.map((element, index) => {
             element.files.forEach((file, i) => {
-                is_file_uploaded = is_file_uploaded === true || (file?.file !== null && file?.file !== undefined);
+                is_file_uploaded =
+                    is_file_uploaded === true || (file?.file !== null && file?.file !== undefined && file?.file !== '');
                 if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
                     errors.data[index] = {};
                     errors.data[index].files = [];
@@ -56,11 +57,9 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         setIsDisabled(!is_file_uploaded || errors?.data?.length > 0);
         return errors;
     };
-    const handleSubmit = async e => {
+    const handleSubmit = async () => {
         try {
-            e.preventDefault();
-            e.stopPropagation();
-            e.nativeEvent.stopImmediatePropagation();
+            setFormState({ ...form_state, ...{ is_btn_loading: true } });
             const { data: formValues } = form_ref.current.values;
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
             const { get_settings, error } = await WS.authorized.storage.getSettings();
@@ -71,9 +70,8 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                 // Only upload if no errors and a file has been attached
                 return;
             }
-            setFormState({ ...form_state, ...{ is_btn_loading: true } });
             formValues.forEach(async values => {
-                const files = values.files.flatMap(f => f.file).filter(f => f !== null);
+                const files = values.files.flatMap(f => f.file).filter(f => f !== null && f !== '');
                 if (files.length > 0) {
                     const files_to_process = await compressImageFiles(files);
                     const processed_files = await readFiles(files_to_process, fileReadErrorMessage);
@@ -95,23 +93,29 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                         if (response.warning) {
                             // eslint-disable-next-line no-console
                             console.warn(response);
-                        } else {
-                            updateAccountStatus();
                         }
+                        setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                        updateAccountStatus();
                     });
                 }
             });
         } catch (err) {
             // eslint-disable-next-line no-console
             console.warn(err);
-        } finally {
             setFormState({ ...form_state, ...{ is_btn_loading: false } });
         }
     };
     return (
         <Formik initialValues={initial_values} validate={validateFields} innerRef={form_ref}>
             {({ values, errors, handleChange, handleBlur, setFieldValue, validateField }) => (
-                <form className='proof-of-ownership' onSubmit={handleSubmit}>
+                <form
+                    className='proof-of-ownership'
+                    onSubmit={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.nativeEvent.stopImmediatePropagation();
+                    }}
+                >
                     <FormBody scroll_offset={getScrollOffset(cards.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
                         <FormBodySection>
@@ -153,6 +157,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                             large
                             primary
                             is_loading={form_state.is_btn_loading}
+                            onClick={handleSubmit}
                         />
                     </FormFooter>
                 </form>

@@ -27,7 +27,7 @@ const FileUploader = ({ handleFile, file_name, class_name, data_test_id, name, e
         setShowButton(!show_button);
         e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
         e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
-        handleFile(name, null);
+        handleFile(name, '');
         validateField('files');
     };
     return (

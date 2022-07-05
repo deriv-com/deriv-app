@@ -96,7 +96,11 @@ const ExpandedCard = ({
                                 >
                                     <FileUploader
                                         handleFile={handleUploadedFile}
-                                        file_name={values?.data?.[index]?.files[i]?.file?.name}
+                                        file_name={
+                                            values?.data?.[index]?.files[i]?.file?.name
+                                                ? values?.data?.[index]?.files[i]?.file?.name
+                                                : ''
+                                        }
                                         data_test_id={`uploader-${values?.data?.[index]?.files[i]?.id}`}
                                         class_name='proof-of-ownership__card-open-inputs-photo'
                                         name={`data[${index}].files[${i}].file`}

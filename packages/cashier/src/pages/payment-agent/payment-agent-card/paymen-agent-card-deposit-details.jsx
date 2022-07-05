@@ -20,9 +20,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
         <div className='payment-agent-card__deposit-details-container'>
             {payment_agent_phones && (
                 <Detail action='tel' icon='Phone' title={detail_titles.phone_number}>
-                    {Array.isArray(payment_agent.phones)
-                        ? payment_agent.phones.map(phone => phone.phone_number)
-                        : payment_agent.phones}
+                    {payment_agent.phones.map(phone => phone.phone_number)}
                 </Detail>
             )}
             {payment_agent.email && (

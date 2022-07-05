@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { RootStore } from 'Types';
 
-const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
+type TNoBalanceProps = RouteComponentProps & {
+    currency: string;
+    is_deposit_locked: boolean;
+    setTabIndex: (tab_index: number) => void;
+};
+
+const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }: TNoBalanceProps) => {
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         setTabIndex(0);
@@ -41,15 +47,10 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }) => {
     );
 };
 
-NoBalance.propTypes = {
-    currency: PropTypes.string,
-    history: PropTypes.object,
-    is_deposit_locked: PropTypes.bool,
-    setTabIndex: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
-    currency: client.currency,
-    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
-    setTabIndex: modules.cashier.general_store.setCashierTabIndex,
-}))(withRouter(NoBalance));
+export default withRouter(
+    connect(({ client, modules }: RootStore) => ({
+        currency: client.currency,
+        is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
+        setTabIndex: modules.cashier.general_store.setCashierTabIndex,
+    }))(NoBalance)
+);

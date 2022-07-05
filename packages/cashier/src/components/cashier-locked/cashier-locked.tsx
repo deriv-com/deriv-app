@@ -6,9 +6,11 @@ import { formatDate } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { RootStore } from 'Types';
 
+type TAccount = NonNullable<Authorize['account_list']>[0];
+
 type TCashierLockedProps = {
     account_status: GetAccountStatus;
-    accounts: { [k: string]: Array<Authorize['account_list']> };
+    accounts: { [k: string]: TAccount };
     current_currency_type: string;
     is_cashier_locked: boolean;
     is_deposit_locked: boolean;
@@ -17,20 +19,6 @@ type TCashierLockedProps = {
     is_withdrawal_locked: boolean;
     loginid: string;
 };
-
-// type TCashierLockedProps = {
-//     account_status: {
-//         cashier_validation: string;
-//     };
-//     accounts: { [k: string]: { excluded_until: string } };
-//     current_currency_type: string;
-//     is_cashier_locked: boolean;
-//     is_deposit_locked: boolean;
-//     is_identity_verification_needed: boolean;
-//     is_system_maintenance: boolean;
-//     is_withdrawal_locked: boolean;
-//     loginid: string;
-// };
 
 const CashierLocked = ({
     account_status,

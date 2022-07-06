@@ -57,9 +57,10 @@
     }
     &__clipboard-wrapper {
         display: flex;
+        justify-content: flex-end;
         align-items: center;
         gap: 1rem;
-        padding: 0 1rem;
+        padding-right: 1.3rem;
         height: 2.1rem;
         @media screen and (max-width: 926px) {
             padding-left: 0;
@@ -87,6 +88,7 @@
 
             &--name {
                 max-width: 15rem;
+                padding-right: 1.3rem;
                 > .dc-text {
                     word-break: break-all;
                 }

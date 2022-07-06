@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, FormSubmitErrorMessage, useStateCallback } from '@deriv/components';
 import { Formik } from 'formik';
@@ -25,12 +25,17 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
     });
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
     const form_ref = useRef();
+    const [document_upload_errors, setDocumentUploadErrors] = useState();
+    useEffect(() => {
+        setDocumentUploadErrors([]);
+    }, []);
     const fileReadErrorMessage = filename => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
     const validateFields = values => {
+        const checked_indices = [];
         const errors = {};
-        errors.data = [];
+        errors.data = [...document_upload_errors];
         let is_file_uploaded;
         values.data.map((element, index) => {
             is_file_uploaded = false;
@@ -53,12 +58,32 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                     };
                 }
             });
+            if (is_file_uploaded === true) {
+                checked_indices.push(index);
+            }
         });
+        is_file_uploaded = checked_indices.length === values.data.length;
+        if (errors?.data?.every(element => element === undefined)) {
+            errors.data = [];
+            setDocumentUploadErrors(errors?.data);
+        }
         setIsDisabled(!is_file_uploaded || errors?.data?.length > 0);
         return errors;
     };
     const disableSubmitButton = () => {
         setIsDisabled(true);
+    };
+    const updateErrors = (index, sub_index) => {
+        const errors = {};
+        errors.data = [...document_upload_errors];
+        if (typeof errors.data[index] === 'object') {
+            errors.data[index].files[sub_index] = undefined;
+            const other_files = errors.data[index].files.some(file => file !== undefined);
+            if (!other_files) {
+                errors.data[index] = undefined;
+            }
+        }
+        setDocumentUploadErrors(errors?.data);
     };
     const handleSubmit = async () => {
         try {
@@ -73,7 +98,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                 // Only upload if no errors and a file has been attached
                 return;
             }
-            formValues.forEach(async values => {
+            formValues.forEach(async (values, index) => {
                 const files = values.files.flatMap(f => f.file).filter(f => f !== null && f !== '');
                 if (files.length > 0) {
                     const files_to_process = await compressImageFiles(files);
@@ -82,7 +107,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                         // eslint-disable-next-line no-console
                         console.warn(processed_files);
                     }
-                    processed_files.forEach(async processed_file => {
+                    processed_files.forEach(async (processed_file, sub_index) => {
                         const files_to_send = processed_file;
                         files_to_send.proof_of_ownership = {
                             details: {
@@ -94,8 +119,22 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                         files_to_send.documentType = 'proof_of_ownership';
                         const response = await uploader.upload(files_to_send);
                         if (response.warning) {
-                            // eslint-disable-next-line no-console
-                            console.warn(response);
+                            if (response.warning.trim() === 'DuplicateUpload') {
+                                form_ref.current.errors.data = document_upload_errors;
+                                if (typeof form_ref.current.errors.data[index] !== 'object') {
+                                    form_ref.current.errors.data[index] = {};
+                                }
+                                form_ref.current.errors.data[index].files = Array.isArray(
+                                    form_ref.current.errors.data[index].files
+                                )
+                                    ? form_ref.current.errors.data[index].files
+                                    : [];
+                                form_ref.current.errors.data[index].files[sub_index] = {
+                                    file: localize(response.message),
+                                };
+                                setDocumentUploadErrors(form_ref.current.errors.data);
+                                form_ref.current.validateForm();
+                            }
                         }
                         setFormState({ ...form_state, ...{ is_btn_loading: false } });
                         updateAccountStatus();
@@ -142,6 +181,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                                                 setFieldValue={setFieldValue}
                                                 validateField={validateField}
                                                 disableSubmitButton={disableSubmitButton}
+                                                updateErrors={updateErrors}
                                             />
                                         </div>
                                     );

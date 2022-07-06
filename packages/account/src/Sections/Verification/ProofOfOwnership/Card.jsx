@@ -15,6 +15,7 @@ const Card = ({
     error,
     validateField,
     disableSubmitButton,
+    updateErrors,
 }) => {
     const onClickHandler = e => {
         e.preventDefault();
@@ -69,6 +70,7 @@ const Card = ({
                     error={error}
                     validateField={validateField}
                     disableSubmitButton={disableSubmitButton}
+                    updateErrors={updateErrors}
                 />
             )}
         </div>
@@ -85,6 +87,7 @@ Card.propTypes = {
     error: PropTypes.object,
     validateField: PropTypes.func,
     disableSubmitButton: PropTypes.func,
+    updateErrors: PropTypes.func,
 };
 
 export default Card;

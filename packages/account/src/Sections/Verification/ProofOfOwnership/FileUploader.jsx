@@ -12,6 +12,9 @@ const FileUploader = ({
     error,
     validateField,
     disableSubmitButton,
+    index,
+    sub_index,
+    updateErrors,
 }) => {
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
@@ -37,6 +40,7 @@ const FileUploader = ({
         e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
         e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
         handleFile(name, '');
+        updateErrors(index, sub_index);
         validateField('files');
         disableSubmitButton();
     };

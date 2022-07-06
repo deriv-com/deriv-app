@@ -195,6 +195,7 @@ export const icons = {
         'IcCashierXanpoolSmallLight',
         'IcCashierZenithbankDark',
         'IcCashierZenithbankLight',
+        'IcCashier',
     ],
     common: [
         'IcAccountError',

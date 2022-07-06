@@ -182,6 +182,7 @@ export const icons =
         'IcBank',
         'IcBell',
         'IcBlackWarning',
+        'IcBlock',
         'IcBox',
         'IcCalendarDatefrom',
         'IcCalendarDateto',

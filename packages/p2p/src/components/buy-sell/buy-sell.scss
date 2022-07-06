@@ -5,6 +5,8 @@
     flex-direction: column;
 
     &__advertiser-page-return {
+        margin-top: unset;
+
         .dc-text {
             align-self: flex-start;
         }

@@ -131,6 +131,23 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
+const draw_partial_shade = ({ ctx, color, start, top, bottom, is_between_shade, is_bottom_shade }) => {
+    // 16% opacity test
+    const color_with_opacity = `${color}29`;
+    const gradient = ctx.createLinearGradient(start.left, top, start.left, bottom);
+
+    if (is_between_shade) {
+        gradient.addColorStop(0, color_with_opacity);
+        gradient.addColorStop(1, color_with_opacity);
+    } else {
+        gradient.addColorStop(0, is_bottom_shade ? color_with_opacity : 'rgba(255,255,255,0)');
+        gradient.addColorStop(1, is_bottom_shade ? 'rgba(255,255,255,0)' : color_with_opacity);
+    }
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(start.left, top, ctx.canvas.width - start.left - 88, Math.abs(bottom - top));
+};
+
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     const scale = calc_scale(zoom);
     const size = Math.floor(scale * 3 + 7);
@@ -159,13 +176,13 @@ const TickContract = RawMarkerMaker(
     ({
         ctx: context,
         canvas_height: canvas_fixed_height,
-        points: [start, ...ticks],
-        prices: [barrier], // TODO: support two barrier contracts
+        points: [start, current_spot_time, ...ticks],
+        prices: [barrier, barrier_2], // TODO: support two barrier contracts
         is_last_contract,
         is_dark_theme,
         granularity,
         contract_info: {
-            // contract_type,
+            contract_type,
             // exit_tick_time,
             status,
             profit,
@@ -192,9 +209,10 @@ const TickContract = RawMarkerMaker(
         const scale = calc_scale(start.zoom);
 
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
-        if (barrier) {
-            barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
-        }
+
+        [barrier, barrier_2].filter(Boolean).forEach(b => {
+            b = Math.min(Math.max(b, 2), canvas_height - 32); // eslint-disable-line
+        });
 
         if (draw_start_line) {
             render_label({
@@ -218,6 +236,7 @@ const TickContract = RawMarkerMaker(
             return;
         }
         const entry = ticks[0];
+        const previous_tick = ticks[ticks.findIndex(t => t.epoch === current_spot_time.epoch) - 1 || 0];
         const exit = ticks[ticks.length - 1];
 
         // barrier line
@@ -310,6 +329,36 @@ const TickContract = RawMarkerMaker(
             });
         }
         ctx.restore();
+
+        if (contract_type === 'ACC' && !is_sold) {
+            const status_color = get_color({ status, is_dark_theme, profit });
+            if (profit > 0) {
+                draw_partial_shade({
+                    ctx,
+                    start: previous_tick,
+                    color: status_color,
+                    top: barrier,
+                    bottom: barrier_2,
+                    is_between_shade: true,
+                });
+            } else {
+                draw_partial_shade({
+                    ctx,
+                    start: previous_tick,
+                    color: status_color,
+                    top: barrier - 165 * scale,
+                    bottom: barrier,
+                });
+                draw_partial_shade({
+                    ctx,
+                    start: previous_tick,
+                    color: status_color,
+                    top: barrier_2,
+                    bottom: barrier_2 + 165 * scale,
+                    is_bottom_shade: true,
+                });
+            }
+        }
     }
 );
 

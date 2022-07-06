@@ -1,7 +1,7 @@
 .on-ramp {
     &__page-header {
         margin-bottom: 1.7rem;
-        @include mobile {
+        @media (max-width: 926px) {
             margin: 1.7rem;
         }
     }
@@ -26,12 +26,13 @@
         padding: 1.6rem 1.6rem 0.8rem;
         border-radius: 0.8rem;
         display: grid;
-        width: -moz-available;
+        width: 100%;
         grid-column-gap: 2.4rem;
         grid-template-areas: (
             'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
         );
-        @include mobile {
+
+        @media (max-width: 926px) {
             grid-template-areas: (
                 'logo name name name' 'logo description description description'
                     'logo description description description' 'payment-icons payment-icons payment-icons buy'

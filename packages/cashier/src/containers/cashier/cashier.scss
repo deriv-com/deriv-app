@@ -32,6 +32,12 @@
                 height: inherit;
             }
 
+            @media (max-width: 926px) {
+                width: auto;
+                height: auto;
+                margin: 0 1.6rem;
+            }
+
             .inline-icon .color1-fill {
                 fill: var(--text-general);
             }
@@ -49,6 +55,10 @@
             align-items: center;
         }
         &--is-mobile {
+            @media (max-width: 926px) {
+                width: 100vw;
+            }
+
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;

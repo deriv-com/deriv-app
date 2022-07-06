@@ -1,18 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDDashboardContainer from '../cfd-dashboard-container';
-const mock_connect_props = {
-    dxtrade_tokens: {
-        demo: '',
-        real: '',
-    },
-};
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -27,6 +15,10 @@ describe('CFDDashboardContainer', () => {
         platform: 'mt5',
         active_index: 0,
         is_dark_mode_on: false,
+        dxtrade_tokens: {
+            demo: '',
+            real: '',
+        },
     };
 
     it('should render <CFDDashboardContainer /> correctly', () => {

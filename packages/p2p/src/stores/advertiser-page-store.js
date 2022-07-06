@@ -95,7 +95,7 @@ export default class AdvertiserPageStore extends BaseStore {
                 const { p2p_advertiser_info } = response;
 
                 this.setAdvertiserInfo(p2p_advertiser_info);
-                this.setIsCounterpartyAdvertiserBlocked(p2p_advertiser_info.is_blocked);
+                this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {

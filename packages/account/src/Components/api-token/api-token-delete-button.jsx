@@ -9,9 +9,21 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
     const { deleteToken } = React.useContext(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
+    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
 
-    const getConfirmationBeforeDelete = () => setIsDeleting(true);
+    const getConfirmationBeforeDelete = () => {
+        setIsPopoverOpen(false);
+        setIsDeleting(true);
+    };
+
+    const onMouseEnterHandler = () => {
+        if (!is_deleting) setIsPopoverOpen(true);
+    };
+
+    const onMouseLeaveHandler = () => {
+        if (!is_deleting) setIsPopoverOpen(false);
+    };
 
     const handleNo = () => setIsDeleting(false);
 
@@ -62,6 +74,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
                 message={localize('Delete this token')}
                 relative_render={false}
                 zIndex={9999}
+                is_open={is_popover_open}
             >
                 <Icon
                     icon={'IcDelete'}
@@ -70,6 +83,8 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
                     onClick={getConfirmationBeforeDelete}
                     size={14}
                     data_testid='dt_token_delete_icon'
+                    onMouseEnter={onMouseEnterHandler}
+                    onMouseLeave={onMouseLeaveHandler}
                 />
             </Popover>
         </>

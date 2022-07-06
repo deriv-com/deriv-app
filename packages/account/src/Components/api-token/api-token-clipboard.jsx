@@ -37,10 +37,6 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
     let timeout_clipboard_2 = null;
     const has_admin_scope = scopes.includes('Admin');
 
-    const toggleModalVisibility = () => {
-        setIsModalOpen(!is_modal_open);
-    };
-
     const onMouseEnterHandler = () => {
         if (!is_copied) setIsPopoverOpen(true);
     };
@@ -81,7 +77,7 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
 
     const onClickHandler = () => {
         if (has_admin_scope) {
-            toggleModalVisibility();
+            setIsModalOpen(true);
         } else onClick();
     };
 

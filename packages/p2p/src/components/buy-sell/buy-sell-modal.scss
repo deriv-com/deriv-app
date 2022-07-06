@@ -175,6 +175,12 @@
 
     &--error-message {
         padding: 0 2.4rem;
+
+        @include mobile {
+            &:first-child {
+                margin-top: 1.4rem;
+            }
+        }
     }
 }
 

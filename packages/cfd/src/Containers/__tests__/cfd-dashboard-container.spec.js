@@ -25,7 +25,7 @@ jest.mock('@deriv/components', () => {
 describe('CFDDashboardContainer', () => {
     const mock_props = {
         platform: 'mt5',
-        active_index: {},
+        active_index: 0,
         is_dark_mode_on: false,
     };
 
@@ -114,9 +114,10 @@ describe('CFDDashboardContainer', () => {
     it('should render demo account dashboard and the demo link for derivx web terminal if active_index is 1 ', () => {
         render(<CFDDashboardContainer {...mock_props} active_index={1} platform='dxtrade' />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx-demo.deriv.com/');
+        screen.debug();
     });
     it('should render the real account link for web terminal if active_index is 0', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' active_index={0} />);
+        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
     });
 });

@@ -104,7 +104,7 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
             )}
-            {is_pending_authentication && jurisdiction_selected_card !== 'svg' && (
+            {is_pending_authentication && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
                     <Text
                         size='xxxs'
@@ -115,8 +115,7 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
             )}
-
-            {is_pending_authentication && jurisdiction_selected_card === 'svg' && (
+            {is_pending_authentication && type_of_card === 'svg' && (
                 <div className='cfd-jurisdiction-card__footer'>
                     <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />

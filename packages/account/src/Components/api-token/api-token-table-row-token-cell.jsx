@@ -29,7 +29,7 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
                 <HiddenPasswordDots />
             )}
             <ApiTokenClipboard
-                info_message={localize('Click here to copy token')}
+                info_message={localize('Copy this token')}
                 success_message={localize('Token copied!')}
                 text_copy={token}
                 scopes={scopes}

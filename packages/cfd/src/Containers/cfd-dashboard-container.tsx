@@ -11,7 +11,7 @@ import {
 import { TCFDDashboardContainer } from './props.types';
 
 const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on, dxtrade_tokens }: TCFDDashboardContainer) => (
-    <div className='cfd-dashboard__download-center'>
+    <div className='cfd-dashboard__download-center' data-testid='dt_cfd_dashboard_download_center_container'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'

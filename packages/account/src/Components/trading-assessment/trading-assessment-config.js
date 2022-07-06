@@ -8,6 +8,7 @@ export const trading_assessment = [
             { value: 'Yes', text: localize('Yes') },
             { value: 'No', text: localize('No') },
         ],
+        answer: 'Yes',
     },
     {
         question_text: 'How much knowledge and experience do you have in relation to online trading?',
@@ -33,6 +34,15 @@ export const trading_assessment = [
                 value: 'I am interested in trading but have very little experience.',
                 text: localize('I am interested in trading but have very little experience.'),
             },
+            {
+                value: 'I have no knowledge and experience in trading at all.',
+                text: localize('I have no knowledge and experience in trading at all.'),
+            },
+        ],
+        answer: [
+            'I have an academic degree, professional certification, and/or work experience related to financial services.',
+            'I trade forex CFDs and other complex financial instruments regularly on other platforms.',
+            'I have attended seminars, training, and/or workshops related to trading.',
         ],
     },
     // start dropdown
@@ -163,6 +173,7 @@ export const trading_assessment = [
                 text: localize('Make a long-term investment for a guaranteed profit.'),
             },
         ],
+        answer: 'Speculate on the price movement of an asset without actually owning it.',
     },
     {
         question_text: 'How does leverage affect CFD trading?',
@@ -184,6 +195,7 @@ export const trading_assessment = [
                 ),
             },
         ],
+        answer: 'Leverage prevents you from opening large positions.',
     },
     {
         question_text:
@@ -211,6 +223,7 @@ export const trading_assessment = [
                 text: localize('Make a guaranteed profit on your trade.'),
             },
         ],
+        answer: 'Close your trade automatically when the loss is equal to or more than a specified amount, as long as there is adequate market liquidity.',
     },
     {
         question_text: 'When do you need to pay an initial margin?',
@@ -227,5 +240,6 @@ export const trading_assessment = [
             },
             { value: 'All of the above', text: localize('All of the above') },
         ],
+        answer: 'When opening a leveraged CFD trade',
     },
 ];

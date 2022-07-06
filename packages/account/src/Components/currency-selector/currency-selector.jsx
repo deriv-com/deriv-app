@@ -135,119 +135,119 @@ const CurrencySelector = ({
     }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
 
     return (
-        <Formik
-            innerRef={selected_step_ref}
-            initialValues={props.value}
-            onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
-            }}
-            validate={handleValidate}
-        >
-            {({ handleSubmit, values, errors, touched }) => (
-                <AutoHeightWrapper default_height={450}>
-                    {({ setRef, height }) => (
-                        <form
-                            ref={setRef}
-                            onSubmit={handleSubmit}
-                            className='currency-selector'
-                            data-testid='currency_selector_form'
-                        >
-                            <Div100vhContainer>
-                                <TradingAssessment />
-                            </Div100vhContainer>
-                            {/* <Div100vhContainer
-                                className={classNames('currency-selector__container', {
-                                    'currency-selector__container--no-top-margin':
-                                        !has_currency && has_real_account && isMobile(),
-                                })}
-                                height_offset={getHeightOffset()}
-                                is_disabled={isDesktop()}
-                            >
-                                <ThemedScrollbars height={height}>
-                                    {!!reorderCurrencies(fiat)?.length && (
-                                        <React.Fragment>
-                                            <RadioButtonGroup
-                                                id='currency'
-                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                label={localize('Fiat currencies')}
-                                                is_fiat
-                                                value={values.currency}
-                                                error={errors.currency}
-                                                touched={touched.currency}
-                                                item_count={reorderCurrencies(fiat).length}
-                                                description={description}
-                                                has_fiat={should_disable_fiat && has_fiat}
-                                            >
-                                                {reorderCurrencies(fiat).map(currency => (
-                                                    <Field
-                                                        key={currency.value}
-                                                        component={RadioButton}
-                                                        name='currency'
-                                                        id={currency.value}
-                                                        label={currency.name}
-                                                        selected={should_disable_fiat && has_fiat}
-                                                    />
-                                                ))}
-                                            </RadioButtonGroup>
-                                            {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
-                                        </React.Fragment>
-                                    )}
-                                    {!!reorderCurrencies(crypto, 'crypto')?.length && (
-                                        <React.Fragment>
-                                            <RadioButtonGroup
-                                                id='currency'
-                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                label={localize('Cryptocurrencies')}
-                                                value={values.currency}
-                                                error={errors.currency}
-                                                touched={touched.currency}
-                                                item_count={reorderCurrencies(crypto, 'crypto').length}
-                                                description={description}
-                                            >
-                                                {reorderCurrencies(crypto, 'crypto').map(currency => (
-                                                    <Field
-                                                        key={currency.value}
-                                                        component={RadioButton}
-                                                        selected={
-                                                            available_crypto_currencies?.filter(
-                                                                ({ value }) => value === currency.value
-                                                            )?.length === 0
-                                                        }
-                                                        name='currency'
-                                                        id={currency.value}
-                                                        label={currency.name}
-                                                    />
-                                                ))}
-                                            </RadioButtonGroup>
-                                        </React.Fragment>
-                                    )}
-                                </ThemedScrollbars>
-                            </Div100vhContainer> */}
-                            <Modal.Footer is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    className={
-                                        set_currency
-                                            ? 'currency-selector--set-currency'
-                                            : 'currency-selector--deriv-account'
-                                    }
-                                    is_disabled={isSubmitDisabled(values)}
-                                    is_center={false}
-                                    is_absolute={set_currency || is_appstore}
-                                    label={getSubmitLabel()}
-                                    {...(has_cancel
-                                        ? {
-                                              cancel_label: localize('Previous'),
-                                              has_cancel: true,
-                                              onCancel: () => handleCancel(values),
-                                          }
-                                        : {})}
-                                />
-                            </Modal.Footer>
-                        </form>
-                    )}
-                </AutoHeightWrapper>
-            )}
-        </Formik>
+        // <Formik
+        //     innerRef={selected_step_ref}
+        //     initialValues={props.value}
+        //     onSubmit={(values, actions) => {
+        //         onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
+        //     }}
+        //     validate={handleValidate}
+        // >
+        //     {({ handleSubmit, values, errors, touched }) => (
+        //         <AutoHeightWrapper default_height={450}>
+        //             {({ setRef, height }) => (
+        //                 <form
+        //                     ref={setRef}
+        //                     onSubmit={handleSubmit}
+        //                     className='currency-selector'
+        //                     data-testid='currency_selector_form'
+        //                 >
+        <Div100vhContainer>
+            <TradingAssessment />
+        </Div100vhContainer>
+        // <Div100vhContainer
+        //     className={classNames('currency-selector__container', {
+        //         'currency-selector__container--no-top-margin':
+        //             !has_currency && has_real_account && isMobile(),
+        //     })}
+        //     height_offset={getHeightOffset()}
+        //     is_disabled={isDesktop()}
+        // >
+        //     <ThemedScrollbars height={height}>
+        //         {!!reorderCurrencies(fiat)?.length && (
+        //             <React.Fragment>
+        //                 <RadioButtonGroup
+        //                     id='currency'
+        //                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+        //                     label={localize('Fiat currencies')}
+        //                     is_fiat
+        //                     value={values.currency}
+        //                     error={errors.currency}
+        //                     touched={touched.currency}
+        //                     item_count={reorderCurrencies(fiat).length}
+        //                     description={description}
+        //                     has_fiat={should_disable_fiat && has_fiat}
+        //                 >
+        //                     {reorderCurrencies(fiat).map(currency => (
+        //                         <Field
+        //                             key={currency.value}
+        //                             component={RadioButton}
+        //                             name='currency'
+        //                             id={currency.value}
+        //                             label={currency.name}
+        //                             selected={should_disable_fiat && has_fiat}
+        //                         />
+        //                     ))}
+        //                 </RadioButtonGroup>
+        //                 {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
+        //             </React.Fragment>
+        //         )}
+        //         {!!reorderCurrencies(crypto, 'crypto')?.length && (
+        //             <React.Fragment>
+        //                 <RadioButtonGroup
+        //                     id='currency'
+        //                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+        //                     label={localize('Cryptocurrencies')}
+        //                     value={values.currency}
+        //                     error={errors.currency}
+        //                     touched={touched.currency}
+        //                     item_count={reorderCurrencies(crypto, 'crypto').length}
+        //                     description={description}
+        //                 >
+        //                     {reorderCurrencies(crypto, 'crypto').map(currency => (
+        //                         <Field
+        //                             key={currency.value}
+        //                             component={RadioButton}
+        //                             selected={
+        //                                 available_crypto_currencies?.filter(
+        //                                     ({ value }) => value === currency.value
+        //                                 )?.length === 0
+        //                             }
+        //                             name='currency'
+        //                             id={currency.value}
+        //                             label={currency.name}
+        //                         />
+        //                     ))}
+        //                 </RadioButtonGroup>
+        //             </React.Fragment>
+        //         )}
+        //     </ThemedScrollbars>
+        // </Div100vhContainer>
+        //                     <Modal.Footer is_bypassed={isMobile()}>
+        //                         <FormSubmitButton
+        //                             className={
+        //                                 set_currency
+        //                                     ? 'currency-selector--set-currency'
+        //                                     : 'currency-selector--deriv-account'
+        //                             }
+        //                             is_disabled={isSubmitDisabled(values)}
+        //                             is_center={false}
+        //                             is_absolute={set_currency || is_appstore}
+        //                             label={getSubmitLabel()}
+        //                             {...(has_cancel
+        //                                 ? {
+        //                                       cancel_label: localize('Previous'),
+        //                                       has_cancel: true,
+        //                                       onCancel: () => handleCancel(values),
+        //                                   }
+        //                                 : {})}
+        //                         />
+        //                     </Modal.Footer>
+        //                 </form>
+        //             )}
+        //         </AutoHeightWrapper>
+        //     )}
+        // </Formik>
     );
 };
 

@@ -171,13 +171,9 @@
 
     &--layout {
         padding: unset;
-        margin-top: -2.4rem;
     }
 
     &--error-message {
-        &:first-child {
-            margin-top: 1.4rem;
-        }
         padding: 0 2.4rem;
     }
 }

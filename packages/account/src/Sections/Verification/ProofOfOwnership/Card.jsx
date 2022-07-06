@@ -5,7 +5,17 @@ import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
 
-const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error, validateField }) => {
+const Card = ({
+    card,
+    handleChange,
+    handleBlur,
+    values,
+    setFieldValue,
+    index,
+    error,
+    validateField,
+    disableSubmitButton,
+}) => {
     const onClickHandler = e => {
         e.preventDefault();
         setIsOpen(!is_open);
@@ -58,6 +68,7 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
                     index={index}
                     error={error}
                     validateField={validateField}
+                    disableSubmitButton={disableSubmitButton}
                 />
             )}
         </div>
@@ -73,6 +84,7 @@ Card.propTypes = {
     index: PropTypes.number,
     error: PropTypes.object,
     validateField: PropTypes.func,
+    disableSubmitButton: PropTypes.func,
 };
 
 export default Card;

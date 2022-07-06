@@ -31,11 +31,11 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
     const validateFields = values => {
         const errors = {};
         errors.data = [];
-        let is_file_uploaded = false;
+        let is_file_uploaded;
         values.data.map((element, index) => {
+            is_file_uploaded = false;
             element.files.forEach((file, i) => {
-                is_file_uploaded =
-                    is_file_uploaded === true || (file?.file !== null && file?.file !== undefined && file?.file !== '');
+                is_file_uploaded = file?.file !== '';
                 if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
                     errors.data[index] = {};
                     errors.data[index].files = [];
@@ -56,6 +56,9 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         });
         setIsDisabled(!is_file_uploaded || errors?.data?.length > 0);
         return errors;
+    };
+    const disableSubmitButton = () => {
+        setIsDisabled(true);
     };
     const handleSubmit = async () => {
         try {
@@ -138,6 +141,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                                                 card={card}
                                                 setFieldValue={setFieldValue}
                                                 validateField={validateField}
+                                                disableSubmitButton={disableSubmitButton}
                                             />
                                         </div>
                                     );

@@ -3,7 +3,16 @@ import { localize } from '@deriv/translations';
 import { Button, Input, Icon } from '@deriv/components';
 import classNames from 'classnames';
 
-const FileUploader = ({ handleFile, file_name, class_name, data_test_id, name, error, validateField }) => {
+const FileUploader = ({
+    handleFile,
+    file_name,
+    class_name,
+    data_test_id,
+    name,
+    error,
+    validateField,
+    disableSubmitButton,
+}) => {
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
     const [show_button, setShowButton] = React.useState(true);
@@ -29,6 +38,7 @@ const FileUploader = ({ handleFile, file_name, class_name, data_test_id, name, e
         e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
         handleFile(name, '');
         validateField('files');
+        disableSubmitButton();
     };
     return (
         <div className={`file-uploader ${class_name}`}>

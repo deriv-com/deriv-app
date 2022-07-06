@@ -16,6 +16,7 @@ const ExpandedCard = ({
     index,
     error,
     validateField,
+    disableSubmitButton,
 }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
     const controls_to_show = [...Array(card_details?.documents_required).keys()];
@@ -106,6 +107,7 @@ const ExpandedCard = ({
                                         name={`data[${index}].files[${i}].file`}
                                         error={error?.files[i]?.file}
                                         validateField={validateField}
+                                        disableSubmitButton={disableSubmitButton}
                                     />
                                 </div>
                             </React.Fragment>
@@ -133,6 +135,7 @@ ExpandedCard.propTypes = {
     index: PropTypes.number,
     error: PropTypes.object,
     validateField: PropTypes.func,
+    disableSubmitButton: PropTypes.func,
 };
 
 export default ExpandedCard;

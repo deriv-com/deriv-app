@@ -57,9 +57,9 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                         <span
                             id={`dt_settings_${key}_button`}
                             key={key}
-                            onClick={() => {
-                                changeLanguage(key, changeCurrentLanguage);
-                                i18n.changeLanguage(key);
+                            onClick={async () => {
+                                await changeLanguage(key, changeCurrentLanguage);
+                                await i18n.changeLanguage(key);
                                 toggleSettingsModal();
                             }}
                             className={classNames('settings-language__language-link', {

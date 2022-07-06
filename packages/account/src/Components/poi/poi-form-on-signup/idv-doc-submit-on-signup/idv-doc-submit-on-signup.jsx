@@ -56,7 +56,15 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     }, [country_code, document_data]);
 
     const initial_form_values = {
-        document_type: value ? value.document_type : {},
+        document_type: value ? value.document_type :
+            {
+                id: '',
+                text: '',
+                value: '',
+                example_format: '',
+                sample_image: '',
+            },
+
         document_number: value ? value.document_number : '',
     };
 

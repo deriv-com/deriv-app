@@ -16,13 +16,7 @@ import {
 import {
     FileUploaderContainer,
     FormSubHeader,
-    PoaExpired,
-    PoaNeedsReview,
-    PoaVerified,
-    PoaUnverified,
-    PoaSubmitted,
     PoaStatusCodes,
-    PoiPoaSubmitted
 } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
@@ -246,32 +240,13 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 actions.setSubmitting(false);
                 return;
             }
-            // const { identity } = get_account_status.authentication;
-            // const _has_poi = !(identity && identity.status === 'none');
-            // if (_has_poi) {
-            console.log('inside has poi');
-
             onProceed();
-            // } else {
-            // setFormState({
-            //     ...form_state,
-            //     ...{
-            //         form_error: localize(
-            //             'Identity confirmation failed. You will be redirected to the previous step.'
-            //         ),
-            //     },
-            // });
-            // setTimeout(() => {
-            //     handleCancel(get_settings);
-            // }, 3000);
-            // }
         } catch (e: unknown) {
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
         actions.setSubmitting(false);
         onSave(index, values);
         console.log('submit value', index, values);
-
         onSubmit(index, values, actions.setSubmitting);
     };
 
@@ -302,16 +277,12 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         return Object.keys(errors).length !== 0;
     };
 
-    const handleResubmit = () => {
-        setFormState({ ...form_state, ...{ resubmit_poa: true } });
-    };
-
     const {
         states_list,
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
         toggleModal,
     } = props;
-    const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa, poi_status } = form_state;
+    const { form_error, poa_status, resubmit_poa } = form_state;
 
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);

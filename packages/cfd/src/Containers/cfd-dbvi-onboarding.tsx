@@ -5,6 +5,7 @@ import RootStore from 'Stores/index';
 import { PoiPoaSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import { WS } from '@deriv/shared';
+import { AccountStatusResponse } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup'
 
 type TVerificationModalProps = {
@@ -20,19 +21,26 @@ const CFDDbViOnBoarding = ({
     is_cfd_verification_modal_visible,
     toggleCFDVerificationModal,
 }: TVerificationModalProps) => {
-    const [showSubmitted, setShowSubmitted] = React.useState(false);
+    const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
 
-    React.useEffect(() => {
-        WS.authorized.getAccountStatus().then((response) => {
+    const get_account_status = () => {
+        WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
-            const identity_status = get_account_status.authentication.identity.status;
-            const document_status = get_account_status.authentication.document.status;
-            console.log(identity_status, document_status);
-            if ((identity_status !== 'none') && (document_status !== 'none')) {
-                setShowSubmitted(true)
+            if (get_account_status?.authentication) {
+                const identity_status = get_account_status?.authentication?.identity?.status;
+                const document_status = get_account_status?.authentication?.document?.status;
+                console.log(identity_status, document_status);
+
+                if ((identity_status === 'pending' || identity_status === 'verified') &&
+                    (document_status === 'pending' || document_status === 'verified')) {
+                    setShowSubmittedModal(true)
+                }
+                else {
+                    setShowSubmittedModal(false)
+                }
             }
         })
-    }, []);
+    }
 
     return (
         <React.Suspense fallback={<UILoader />}>
@@ -45,10 +53,11 @@ const CFDDbViOnBoarding = ({
                 toggleModal={toggleCFDVerificationModal}
                 height='700px'
                 width='996px'
+                onMount={() => get_account_status()}
             >
-                {showSubmitted ?
-                    <PoiPoaSubmitted onClick={toggleCFDVerificationModal} /> :
-                    <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal} onFinish={() => { setShowSubmitted(true) }}></CFDFinancialStpRealAccountSignup>
+                {showSubmittedModal ?
+                    <PoiPoaSubmitted onClickOK={toggleCFDVerificationModal} /> :
+                    <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal} onFinish={() => { setShowSubmittedModal(true) }}></CFDFinancialStpRealAccountSignup>
                 }
             </Modal>
         </React.Suspense>
@@ -56,17 +65,9 @@ const CFDDbViOnBoarding = ({
     )
 }
 
-
-
-
-
-
-
-
-export default connect(({ modules, ui, client, notifications }: RootStore) => ({
+export default connect(({ modules, ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_cfd_verification_modal_visible: modules.cfd.is_cfd_verification_modal_visible,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-
 }))(CFDDbViOnBoarding); 

@@ -175,9 +175,7 @@ const JurisdictionModal = ({
                                     }
                                     primary
                                     onClick={() => {
-                                        if (jurisdiction_selected_card === 'SVG') {
-                                            onSelectRealAccount();
-                                        }
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     <Localize i18n_default_text='Next' />

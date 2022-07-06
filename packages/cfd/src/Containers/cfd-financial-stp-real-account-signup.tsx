@@ -84,48 +84,56 @@ const index_lookup: TIndexLookupObject = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    console.log(props.onFinish);
-
-    const { refreshNotifications } = props;
+    const { refreshNotifications, authentication_status } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
     const [is_loading, setIsLoading] = React.useState<boolean>(false);
 
-    const [items, setItems] = React.useState<TItemsState[]>([
-        {
-            header: {
-                active_title: localize('Complete your proof of identity'),
-                title: localize('Proof of identity'),
-            },
-            body: CFDPOI,
-            form_value: {
-                poi_state: 'unknown',
-            },
-            props: [
-                'addNotificationByKey',
-                'authentication_status',
-                'refreshNotifications',
-                'removeNotificationMessage',
-                'removeNotificationByKey',
-            ],
+    const poi_config = {
+        header: {
+            active_title: localize('Complete your proof of identity'),
+            title: localize('Proof of identity'),
         },
-        {
-            header: {
-                active_title: localize('Complete your proof of address'),
-                title: localize('Proof of address'),
-            },
-            body: CFDPOA,
-            form_value: {
-                address_line_1: props.get_settings.address_line_1,
-                address_line_2: props.get_settings.address_line_2,
-                address_city: props.get_settings.address_city,
-                address_state: props.get_settings.address_state,
-                address_postcode: props.get_settings.address_postcode,
-                upload_file: '',
-            },
-            props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications', 'toggleModal'],
+        body: CFDPOI,
+        form_value: {
+            poi_state: 'unknown',
         },
-    ]);
+        props: [
+            'addNotificationByKey',
+            'authentication_status',
+            'refreshNotifications',
+            'removeNotificationMessage',
+            'removeNotificationByKey',
+        ],
+    }
+
+    const poa_config = {
+        header: {
+            active_title: localize('Complete your proof of address'),
+            title: localize('Proof of address'),
+        },
+        body: CFDPOA,
+        form_value: {
+            address_line_1: props.get_settings.address_line_1,
+            address_line_2: props.get_settings.address_line_2,
+            address_city: props.get_settings.address_city,
+            address_state: props.get_settings.address_state,
+            address_postcode: props.get_settings.address_postcode,
+            upload_file: '',
+        },
+        props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications', 'toggleModal'],
+    }
+
+    const shouldshowPOI = !(authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified')
+    const shouldshowPOA = !(authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified')
+    console.log(authentication_status);
+
+    const verification_configs = [
+        ...(shouldshowPOI ? [poi_config] : []),
+        ...(shouldshowPOA ? [poa_config] : [])
+    ]
+    const [items, setItems] = React.useState(verification_configs)
+    console.log(items);
 
     const state_index = step;
 
@@ -134,9 +142,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
     const nextStep: TNextStep = async () => {
         clearError();
-
-        console.log('inside next', step);
-
         if (step + 1 < items.length) {
             setStep(step + 1);
         }
@@ -156,7 +161,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     ) => {
         saveFormData(index, value);
         console.log('update value', index, value);
-
         nextStep(setSubmitting);
     };
 
@@ -174,6 +178,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
+        console.log(index, value);
+
         const cloned_items: Array<TItemsState> = Object.assign([], items);
         cloned_items[index].form_value = value;
         setItems(cloned_items);
@@ -196,7 +202,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             is_disabled={isDesktop()}
             height_offset='40px'
         >
-
             <div className='cfd-financial-stp-modal__body'>
                 <BodyComponent
                     value={form_value}

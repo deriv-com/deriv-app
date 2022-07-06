@@ -16,7 +16,6 @@ import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
-import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal';
 import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
@@ -636,12 +635,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
                         <CFDServerErrorDialog />
-                        {platform === CFD_PLATFORMS.MT5 && (
-                            <React.Fragment>
-                                <MT5AccountOpeningRealFinancialStpModal />
-                                <CFDFinancialStpPendingDialog />
-                            </React.Fragment>
-                        )}
                         <CFDResetPasswordModal platform={platform} />
                         <ResetTradingPasswordModal
                             platform={platform}

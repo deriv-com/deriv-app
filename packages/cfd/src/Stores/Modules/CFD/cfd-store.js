@@ -550,6 +550,7 @@ export default class CFDStore extends BaseStore {
         });
     }
 
+    @action.bound
     toggleCFDPersonalDetailsModal() {
         this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }

@@ -104,7 +104,7 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
             )}
-            {is_pending_authentication && (
+            {is_pending_authentication && jurisdiction_selected_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
                     <Text
                         size='xxxs'

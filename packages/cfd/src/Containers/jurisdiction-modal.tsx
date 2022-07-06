@@ -170,7 +170,11 @@ const JurisdictionModal = ({
                             />
                             <Modal.Footer>
                                 <Button
-                                    disabled={(poi_poa_verified && !checked) || !jurisdiction_selected_card}
+                                    disabled={
+                                        (poi_poa_verified && !checked) ||
+                                        !jurisdiction_selected_card ||
+                                        (jurisdiction_selected_card === 'bvi' && is_pending_authentication)
+                                    }
                                     primary
                                     onClick={() => {
                                         onSelectRealAccount();

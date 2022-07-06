@@ -244,10 +244,8 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         } catch (e: unknown) {
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
-        actions.setSubmitting(false);
         onSave(index, values);
-        console.log('submit value', index, values);
-        onSubmit(index, values, actions.setSubmitting);
+        onSubmit(index, values, false);
     };
 
     // didMount hook

@@ -18,7 +18,7 @@ const POISubmissionForMT5 = ({
     citizen_data,
     has_idv_error
 }) => {
-    const [submission_status, setSubmissionStatus] = React.useState(); // submitting, complete
+    const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
 
     React.useEffect(() => {
@@ -44,8 +44,6 @@ const POISubmissionForMT5 = ({
         if (onStateChange && typeof onStateChange === 'function') {
             onStateChange(identity_status_codes.pending);
         }
-        setSubmissionStatus(submission_status_code.complete);
-
         WS.authorized.getAccountStatus().then(() => {
             refreshNotifications();
         });

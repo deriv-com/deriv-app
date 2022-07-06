@@ -238,15 +238,45 @@ const JurisdictionModalContent = ({
     const ModalFootNote = () => {
         return (
             <>
-                {poa_none && poi_none && jurisdiction_selected_card === 'BVI' && (
-                    <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
-                        <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
-                    </Text>
-                )}
-                {poa_none && poi_none && jurisdiction_selected_card === 'SVG' && (
+                {poa_none &&
+                    poi_none &&
+                    jurisdiction_selected_card !== 'svg' &&
+                    jurisdiction_selected_card !== 'labuan' && (
+                        <Text
+                            as='p'
+                            align='center'
+                            size='xs'
+                            line_height='xs'
+                            className='cfd-jurisdiction-card__footnote'
+                        >
+                            <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
+                        </Text>
+                    )}
+                {jurisdiction_selected_card === 'svg' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
+                        </Text>
+                    </div>
+                )}
+                {is_fully_authenticated && jurisdiction_selected_card === 'bvi' && (
+                    <div className='cfd-jurisdiction-card__footnote'>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize i18n_default_text='Add your DMT5 Financial account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).' />
+                        </Text>
+                    </div>
+                )}
+                {is_fully_authenticated && jurisdiction_selected_card === 'vanuatu' && (
+                    <div className='cfd-jurisdiction-card__footnote'>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize i18n_default_text='Add Your DMT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.' />
+                        </Text>
+                    </div>
+                )}
+                {jurisdiction_selected_card === 'labuan' && (
+                    <div className='cfd-jurisdiction-card__footnote'>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize i18n_default_text='Add your DMT5 Financial STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).' />
                         </Text>
                     </div>
                 )}
@@ -260,6 +290,21 @@ const JurisdictionModalContent = ({
             </>
         );
     };
+
+    const ModalCheckbox = ({
+        setChecked,
+        checked,
+    }: {
+        setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+        checked: boolean;
+    }) => (
+        <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
+            <Checkbox onChange={() => setChecked(!checked)} value={checked} />
+            <Text as='p' align='center' size='xs' line_height='xs'>
+                I confirm and accept Deriv (V) Ltd 's Terms and Conditions
+            </Text>
+        </div>
+    );
 
     return (
         <>
@@ -340,19 +385,15 @@ const JurisdictionModalContent = ({
             </div>
             <ModalFootNote />
             {is_eu && is_fully_authenticated && jurisdiction_selected_card === 'malta' && (
-                <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
-                    <Checkbox onChange={() => setChecked(!checked)} />
-                    <Text
-                        as='p'
-                        align='center'
-                        size='xs'
-                        line_height='xs'
-                        className='cfd-jurisdiction-card____jurisdiction-checkbox--description'
-                    >
-                        I confirm and accept Deriv Investments (Europe) Limited&#39;s Terms and Conditions
-                    </Text>
-                </div>
+                <ModalCheckbox checked={checked} setChecked={setChecked} />
             )}
+            {is_fully_authenticated && jurisdiction_selected_card === 'bvi' && (
+                <ModalCheckbox checked={checked} setChecked={setChecked} />
+            )}
+            {is_fully_authenticated && jurisdiction_selected_card === 'vanuatu' && (
+                <ModalCheckbox checked={checked} setChecked={setChecked} />
+            )}
+            {jurisdiction_selected_card === 'labuan' && <ModalCheckbox checked={checked} setChecked={setChecked} />}
         </>
     );
 };

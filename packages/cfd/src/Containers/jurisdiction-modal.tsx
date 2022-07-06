@@ -171,7 +171,8 @@ const JurisdictionModal = ({
                             <Modal.Footer>
                                 <Button
                                     disabled={
-                                        (poi_poa_verified && !checked) ||
+                                        (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
+                                        (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
                                         (jurisdiction_selected_card !== 'svg' && is_pending_authentication)
                                     }

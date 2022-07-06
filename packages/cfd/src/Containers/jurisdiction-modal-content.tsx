@@ -106,13 +106,11 @@ const JurisdictionCard = ({
             )}
             {is_pending_authentication && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <Text
-                        size='xxxs'
-                        color={disabled ? 'less-prominent' : 'prominent'}
-                        className='cfd-jurisdiction-card__verification-status--pending'
-                    >
-                        <Localize i18n_default_text='Pending verification' />
-                    </Text>
+                    <div className='cfd-jurisdiction-card__verification-status--pending'>
+                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
+                            <Localize i18n_default_text='Pending verification' />
+                        </Text>
+                    </div>
                 </div>
             )}
             {is_pending_authentication && type_of_card === 'svg' && (
@@ -246,20 +244,18 @@ const JurisdictionModalContent = ({
                     </Text>
                 )}
                 {poa_none && poi_none && jurisdiction_selected_card === 'SVG' && (
-                    <Text as='p' align='center' size='xs' line_height='xs' className='cfd-jurisdiction-card__footnote'>
-                        <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
-                    </Text>
+                    <div className='cfd-jurisdiction-card__footnote'>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
+                        </Text>
+                    </div>
                 )}
                 {is_pending_authentication && (
-                    <Text
-                        as='p'
-                        align='center'
-                        size='xs'
-                        line_height='xs'
-                        className='cfd-jurisdiction-card__footnote--pending'
-                    >
-                        <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
-                    </Text>
+                    <div className='cfd-jurisdiction-card__footnote--pending'>
+                        <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
+                            <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
+                        </Text>
+                    </div>
                 )}
             </>
         );

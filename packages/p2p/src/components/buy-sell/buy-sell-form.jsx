@@ -33,6 +33,7 @@ const BuySellForm = props => {
         rate,
         rate_type,
     } = buy_sell_store?.advert || {};
+    const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
     const should_disable_field =
         !buy_sell_store.is_buy_advert &&
@@ -86,6 +87,11 @@ const BuySellForm = props => {
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );
+
+    React.useEffect(() => {
+        const receive_amount = getRoundedNumber(input_amount, buy_sell_store.account_currency) * calculated_rate;
+        buy_sell_store.setReceiveAmount(receive_amount);
+    }, [input_amount, effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
@@ -362,20 +368,9 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     onChange={event => {
-                                                        if (event.target.value === '') {
-                                                            setFieldValue('amount', '');
-                                                            buy_sell_store.setReceiveAmount(0);
-                                                        } else {
-                                                            const input_amount = getRoundedNumber(
-                                                                event.target.value,
-                                                                buy_sell_store.account_currency
-                                                            );
-                                                            setFieldValue('amount', input_amount);
-
-                                                            buy_sell_store.setReceiveAmount(
-                                                                input_amount * calculated_rate
-                                                            );
-                                                        }
+                                                        const amount = event.target.value;
+                                                        setFieldValue('amount', amount);
+                                                        setInputAmount(amount);
                                                     }}
                                                     required
                                                     value={values.amount}

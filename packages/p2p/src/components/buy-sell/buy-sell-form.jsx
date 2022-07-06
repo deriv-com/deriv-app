@@ -89,7 +89,7 @@ const BuySellForm = props => {
     );
 
     React.useEffect(() => {
-        const receive_amount = getRoundedNumber(input_amount, buy_sell_store.account_currency) * calculated_rate;
+        const receive_amount = input_amount * calculated_rate;
         buy_sell_store.setReceiveAmount(receive_amount);
     }, [input_amount, effective_rate]);
 
@@ -368,9 +368,17 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     onChange={event => {
-                                                        const amount = event.target.value;
-                                                        setFieldValue('amount', amount);
-                                                        setInputAmount(amount);
+                                                        if (event.target.value === '') {
+                                                            setFieldValue('amount', '');
+                                                            setInputAmount(0);
+                                                        } else {
+                                                            const amount = getRoundedNumber(
+                                                                event.target.value,
+                                                                buy_sell_store.account_currency
+                                                            );
+                                                            setFieldValue('amount', amount);
+                                                            setInputAmount(amount);
+                                                        }
                                                     }}
                                                     required
                                                     value={values.amount}

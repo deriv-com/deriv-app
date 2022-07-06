@@ -48,6 +48,15 @@ const BuySell = () => {
             </React.Fragment>
         );
     }
+    
+    // TODO: Refactor this within next release as discussed with design team regarding the tabs
+    // if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
+    //     return (
+    //         <React.Fragment>
+    //             <AdvertiserPage />
+    //         </React.Fragment>
+    //     );
+    // }
 
     return (
         <div className='buy-sell'>

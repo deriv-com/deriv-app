@@ -2,6 +2,7 @@ import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { initMoment } from '@deriv/shared';
 import { isProduction } from '../../../shared/src/utils/config/config';
 import withI18n from '../components';
 
@@ -118,7 +119,7 @@ export const changeLanguage = async (lang, cb) => {
     // TODO: uncomment this when translations are ready
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
-        i18n.changeLanguage(lang, () => {
+        await i18n.changeLanguage(lang, () => {
             localStorage.setItem(LANGUAGE_KEY, lang);
             cb(lang);
         });
@@ -169,5 +170,6 @@ export const useOnLoadTranslation = () => {
         return () => i18n.store.off('added');
     }, []);
 
+    initMoment(i18n.language);
     return [is_loaded, setLoaded];
 };

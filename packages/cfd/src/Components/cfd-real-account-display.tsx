@@ -186,74 +186,43 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const synthetic_account_items =
-        isSyntheticCardVisible('real') &&
-        (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
-            ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.real.synthetic`))
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial@') => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
+            ? (Object.keys(current_list)
+                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((acc, cur) => {
                       acc.push(current_list[cur]);
                       return acc;
-                  }, [] as DetailsOfEachMT5Loginid[])
-                  .map((acc, index) => {
-                      return (
-                          <CFDAccountCard
-                              key={index}
-                              has_cfd_account={has_cfd_account}
-                              has_cfd_account_error={has_cfd_account_error}
-                              title={localize('Synthetic')}
-                              is_hovered={index === active_hover}
-                              is_disabled={isMT5AccountCardDisabled('synthetic')}
-                              type={{
-                                  category: 'real',
-                                  type: 'synthetic',
-                                  platform,
-                              }}
-                              is_logged_in={is_logged_in}
-                              should_show_trade_servers={should_show_trade_servers}
-                              existing_data={acc}
-                              commission_message={localize('No commission')}
-                              onSelectAccount={() => onSelectRealAccount('synthetic')}
-                              onPasswordManager={openPasswordManager}
-                              onClickFund={onClickFundReal}
-                              platform={platform}
-                              descriptor={localize(
-                                  'Trade CFDs on our synthetic indices that simulate real-world market movement.'
-                              )}
-                              specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
-                              onHover={handleHoverCard}
-                          />
-                      );
-                  })
-            : [
-                  <CFDAccountCard
-                      key='real.synthetic'
-                      has_cfd_account={has_cfd_account}
-                      title={localize('Synthetic')}
-                      is_disabled={isMT5AccountCardDisabled('synthetic')}
-                      type={{
-                          category: 'real',
-                          type: 'synthetic',
-                          platform,
-                      }}
-                      is_logged_in={is_logged_in}
-                      should_show_trade_servers={should_show_trade_servers}
-                      existing_data={undefined}
-                      commission_message={localize('No commission')}
-                      onSelectAccount={() => onSelectRealAccount('synthetic')}
-                      onPasswordManager={openPasswordManager}
-                      onClickFund={onClickFundReal}
-                      platform={platform}
-                      descriptor={localize(
-                          'Trade CFDs on our synthetic indices that simulate real-world market movement.'
-                      )}
-                      specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
-                      onHover={handleHoverCard}
-                      is_virtual={is_virtual}
-                      toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                      toggleAccountsDialog={toggleAccountsDialog}
-                  />,
-              ]);
+                  }, [] as DetailsOfEachMT5Loginid[]) as TExistingData)
+            : undefined;
+
+        return acc;
+    };
+
+    const synthetic_account_items = isSyntheticCardVisible('real') && (
+        <CFDAccountCard
+            has_cfd_account={has_cfd_account}
+            has_cfd_account_error={has_cfd_account_error}
+            title={localize('Synthetic')}
+            is_disabled={isMT5AccountCardDisabled('synthetic')}
+            type={{
+                category: 'real',
+                type: 'synthetic',
+                platform,
+            }}
+            is_logged_in={is_logged_in}
+            should_show_trade_servers={should_show_trade_servers}
+            existing_accounts_data={existing_accounts_data('synthetic')}
+            commission_message={localize('No commission')}
+            onSelectAccount={() => onSelectRealAccount('synthetic')}
+            onPasswordManager={openPasswordManager}
+            onClickFund={onClickFundReal}
+            platform={platform}
+            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movement.')}
+            specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
+            onHover={handleHoverCard}
+        />
+    );
 
     const financial_account = isFinancialCardVisible() && (
         <CFDAccountCard
@@ -266,11 +235,7 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_data={
-                current_list[
-                    Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)) || ''
-                ]
-            }
+            existing_accounts_data={existing_accounts_data('financial@')}
             commission_message={localize('No commission')}
             onSelectAccount={() => onSelectRealAccount('financial')}
             onPasswordManager={openPasswordManager}
@@ -286,7 +251,7 @@ const CFDRealAccountDisplay = ({
         />
     );
 
-    const items = [...(synthetic_account_items || []), financial_account].filter(Boolean);
+    const items = [synthetic_account_items, financial_account].filter(Boolean);
 
     return (
         <div
@@ -301,15 +266,11 @@ const CFDRealAccountDisplay = ({
                     width={328}
                     nav_position='middle'
                     show_bullet={false}
-                    item_per_window={3}
+                    item_per_window={2}
                     is_mt5={true}
                 />
             </DesktopWrapper>
-            <MobileWrapper>
-                {items.map(item => {
-                    return item;
-                })}
-            </MobileWrapper>
+            <MobileWrapper>{items}</MobileWrapper>
         </div>
     );
 };

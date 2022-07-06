@@ -109,7 +109,7 @@ const CFDDemoAccountDisplay = ({
                     }}
                     is_disabled={has_cfd_account_error || standpoint.malta}
                     is_logged_in={is_logged_in}
-                    existing_data={
+                    existing_accounts_data={
                         current_list[
                             Object.keys(current_list).find((key: string) =>
                                 key.startsWith(`${platform}.demo.synthetic`)
@@ -159,7 +159,7 @@ const CFDDemoAccountDisplay = ({
                         type: 'financial',
                         platform,
                     }}
-                    existing_data={
+                    existing_accounts_data={
                         current_list[
                             Object.keys(current_list).find((key: string) =>
                                 key.startsWith(`${platform}.demo.financial@`)

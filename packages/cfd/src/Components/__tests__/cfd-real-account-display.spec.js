@@ -2,6 +2,19 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
 import { CFDRealAccountDisplay } from '../cfd-real-account-display';
 
+const mock_connect_props = {
+    dxtrade_tokens: {
+        demo: '',
+        real: '',
+    },
+};
+
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
+}));
+
 describe('<CFDRealAccountDisplay />', () => {
     const TESTED_CASES = {
         EU: 'eu',
@@ -366,7 +379,7 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render 1 open account with an enabled "Top up" ("Fund transfer" in Deriv X) & "Trade" buttons', () => {
+    it('should render 1 open account with an enabled "Top up" ("Fund transfer" in Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
         props.current_list['mt5.real.financial@p01_ts01'] = mt5_real_financial_account;
         const { rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
 
@@ -396,8 +409,8 @@ describe('<CFDRealAccountDisplay />', () => {
         );
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         const dxtrade_fund_transfer_button = screen.getByRole('button', { name: /fund transfer/i });
-        const dxtrade_trade_button = screen.getByRole('link', { name: /trade/i });
-        expect(dxtrade_trade_button).toHaveAttribute('href', 'https://dx.deriv.com');
+        const dxtrade_trade_on_web_terminal_button = screen.getByRole('link', { name: /trade on web terminal/i });
+        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx.deriv.com');
 
         fireEvent.click(dxtrade_fund_transfer_button);
         expect(props.openAccountTransfer).toHaveBeenCalledTimes(2);

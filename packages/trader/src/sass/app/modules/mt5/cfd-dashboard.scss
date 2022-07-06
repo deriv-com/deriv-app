@@ -942,7 +942,8 @@
     }
 }
 
-.cfd-financial-stp-modal {
+.cfd-financial-stp-modal,
+.cfd-personal-details-modal {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
@@ -1042,6 +1043,29 @@
             &-icon {
                 margin-right: 1.2rem;
             }
+        }
+    }
+}
+
+.cfd-personal-details-modal {
+    grid-template-rows: 8rem minmax(10rem, 1fr);
+
+    &__heading-container {
+        padding-top: 2.4rem;
+    }
+
+    &__form {
+        .dc-modal-footer {
+            width: 100%;
+            padding: 1.6rem 2.4rem;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .dc-autocomplete {
+            margin-bottom: 3.6rem;
         }
     }
 }

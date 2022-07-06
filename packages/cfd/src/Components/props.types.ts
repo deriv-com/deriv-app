@@ -51,8 +51,12 @@ export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
     is_hovered?: boolean;
-    existing_data?: TExistingData;
+    existing_accounts_data?: Array<TExistingData> | TExistingData;
     has_banner?: boolean;
     has_cfd_account: boolean;
     has_cfd_account_error?: boolean;

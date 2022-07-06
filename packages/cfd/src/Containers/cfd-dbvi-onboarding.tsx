@@ -30,7 +30,6 @@ const CFDDbViOnBoarding = ({
             if (get_account_status?.authentication) {
                 const identity_status = get_account_status?.authentication?.identity?.status;
                 const document_status = get_account_status?.authentication?.document?.status;
-                console.log(identity_status, document_status);
 
                 if ((identity_status === 'pending' || identity_status === 'verified') &&
                     (document_status === 'pending' || document_status === 'verified')) {
@@ -56,17 +55,11 @@ const CFDDbViOnBoarding = ({
                 toggleModal={toggleCFDVerificationModal}
                 height='700px'
                 width='996px'
-                onMount={() => {
-                    console.log('mount');
-
-                    return getAccountStausFromAPI()
-                }
-                }
+                onMount={() => getAccountStausFromAPI()}
             >
                 {showSubmittedModal ?
                     (<PoiPoaSubmitted onClickOK={toggleCFDVerificationModal} />) :
                     (<CFDFinancialStpRealAccountSignup
-                        toggleModal={toggleCFDVerificationModal}
                         onFinish={() => { setShowSubmittedModal(true) }}>
                     </CFDFinancialStpRealAccountSignup>)
                 }

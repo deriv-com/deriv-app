@@ -77,18 +77,15 @@ type TStoreProofOfAddress = (file_uploader_ref: React.RefObject<(HTMLElement | n
 
 type TCFDPOAProps = {
     onSave: (index: number, values: TFormValues) => void;
-    onCancel: () => void;
     index: number;
     onSubmit: (index: number, value: TFormValues, setSubmitting?: boolean | ((isSubmitting: boolean) => void)) => void;
     refreshNotifications: () => void;
     form_error: string;
     get_settings: GetSettings;
     height: string;
-    is_loading: boolean;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
-    toggleModal: () => void;
 
 };
 type TUpload = {
@@ -97,7 +94,7 @@ type TUpload = {
 
 let file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>;
 
-const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
+const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -254,8 +251,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
                 const { get_account_status } = response;
-                console.log('here');
-
                 const { document, identity } = get_account_status?.authentication!;
                 const __has_poi = !!(identity && identity.status === 'none');
                 const poi_status = (identity && identity.status)
@@ -278,7 +273,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     const {
         states_list,
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
-        toggleModal,
     } = props;
     const { form_error, poa_status, resubmit_poa } = form_state;
 

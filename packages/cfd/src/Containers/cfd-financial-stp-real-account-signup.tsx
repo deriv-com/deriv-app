@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, WS } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa';
@@ -21,10 +21,6 @@ type TRemoveNotificationMessage = {
     should_show_again: boolean;
 };
 
-type TIndexLookupObject = {
-    CFDPOI: number;
-    CFDPOA: number;
-};
 
 type TGetSettings = GetSettings & {
     upload_file?: string;
@@ -33,7 +29,7 @@ type TGetSettings = GetSettings & {
 
 type TCFDFinancialStpRealAccountSignupProps = {
     addNotificationByKey: (key: string) => void;
-    authentication_status: () => TAuthenticationStatus;
+    authentication_status: TAuthenticationStatus;
     get_settings: TGetSettings;
     client_email: string;
     is_fully_authenticated: boolean;
@@ -45,7 +41,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     residence_list: ResidenceList;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddressArgs;
-    toggleModal: () => void;
     fetchStatesList: () => void
     account_status: GetAccountStatus
     onFinish: () => void
@@ -74,20 +69,15 @@ type TItemsProps =
     | 'states_list'
     | 'get_settings'
     | 'storeProofOfAddress'
-    | 'toggleModal'
 
 
 type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
-const index_lookup: TIndexLookupObject = {
-    CFDPOI: 1,
-    CFDPOA: 2,
-};
+
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    const { refreshNotifications, authentication_status } = props;
+    const { refreshNotifications, authentication_status, fetchStatesList } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
-    const [is_loading, setIsLoading] = React.useState<boolean>(false);
 
     const poi_config = {
         header: {
@@ -121,13 +111,11 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             address_postcode: props.get_settings.address_postcode,
             upload_file: '',
         },
-        props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications', 'toggleModal'],
+        props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
     }
 
     const shouldshowPOI = !(authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified')
     const shouldshowPOA = !(authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified')
-    console.log('shouldshowPOI:', shouldshowPOI, 'shouldshowPOA:', shouldshowPOA);
-
     const verification_configs = [
         ...(shouldshowPOI ? [poi_config] : []),
         ...(shouldshowPOA ? [poa_config] : [])
@@ -159,7 +147,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         setSubmitting: TSetSubmiting,
     ) => {
         saveFormData(index, value);
-        console.log('update value', index, value);
         nextStep(setSubmitting);
     };
 
@@ -168,8 +155,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     }, [items, refreshNotifications]);
 
     React.useEffect(() => {
-        props.fetchStatesList();
-    }, []);
+        fetchStatesList();
+    }, [fetchStatesList]);
 
 
     const getCurrent = (key?: TgetCurrentProps) => {
@@ -177,12 +164,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
-        console.log(index, value);
-
         const cloned_items: Array<TItemsState> = Object.assign([], items);
         cloned_items[index].form_value = value;
         setItems(cloned_items);
-        console.log(items);
 
     };
     const BodyComponent = getCurrent('body') as TItemsState['body'];
@@ -207,7 +191,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                     index={state_index}
                     onSubmit={updateValue}
                     height={height}
-                    is_loading={is_loading}
                     onCancel={prevStep}
                     onSave={saveFormData}
                     form_error={form_error}

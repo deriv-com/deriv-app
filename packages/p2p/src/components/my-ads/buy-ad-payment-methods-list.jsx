@@ -33,7 +33,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                     text: my_profile_store.getPaymentMethodDisplayName(value),
                 },
             ]);
-            touched(true);
+            touched?.(true);
         }
     };
 
@@ -47,7 +47,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                 ...payment_methods_list.filter(payment_method => payment_method.value !== value),
                 selected_edit_method,
             ]);
-            touched(true);
+            touched?.(true);
         }
     };
 
@@ -58,7 +58,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                 setSelectedMethods([...selected_methods, value]);
                 setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
             }
-            touched(true);
+            touched?.(true);
         }
     };
 

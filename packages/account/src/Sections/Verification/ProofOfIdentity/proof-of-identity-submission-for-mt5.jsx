@@ -28,7 +28,7 @@ const POISubmissionForMT5 = ({
             const is_idv_supported = citizen_data.identity.services.idv.is_country_supported;
             const is_onfido_supported = citizen_data.identity.services.onfido.is_country_supported;
 
-            if (is_idv_supported && Number(idv_submissions_left) > 0) {  //&& !is_idv_disallowed
+            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
@@ -43,7 +43,6 @@ const POISubmissionForMT5 = ({
     const handlePOIComplete = () => {
         if (onStateChange && typeof onStateChange === 'function') {
             onStateChange(identity_status_codes.pending);
-            console.log('pending');
         }
         setSubmissionStatus(submission_status_code.complete);
 

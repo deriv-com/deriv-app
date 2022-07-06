@@ -23,8 +23,9 @@ const CFDDbViOnBoarding = ({
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
 
-    const get_account_status = () => {
+    const getAccountStausFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
+
             const { get_account_status } = response;
             if (get_account_status?.authentication) {
                 const identity_status = get_account_status?.authentication?.identity?.status;
@@ -41,7 +42,9 @@ const CFDDbViOnBoarding = ({
             }
         })
     }
-
+    React.useEffect(() => {
+        getAccountStausFromAPI()
+    }, [])
     return (
         <React.Suspense fallback={<UILoader />}>
             <Modal
@@ -53,11 +56,19 @@ const CFDDbViOnBoarding = ({
                 toggleModal={toggleCFDVerificationModal}
                 height='700px'
                 width='996px'
-                onMount={() => get_account_status()}
+                onMount={() => {
+                    console.log('mount');
+
+                    return getAccountStausFromAPI()
+                }
+                }
             >
                 {showSubmittedModal ?
-                    <PoiPoaSubmitted onClickOK={toggleCFDVerificationModal} /> :
-                    <CFDFinancialStpRealAccountSignup toggleModal={toggleCFDVerificationModal} onFinish={() => { setShowSubmittedModal(true) }}></CFDFinancialStpRealAccountSignup>
+                    (<PoiPoaSubmitted onClickOK={toggleCFDVerificationModal} />) :
+                    (<CFDFinancialStpRealAccountSignup
+                        toggleModal={toggleCFDVerificationModal}
+                        onFinish={() => { setShowSubmittedModal(true) }}>
+                    </CFDFinancialStpRealAccountSignup>)
                 }
             </Modal>
         </React.Suspense>

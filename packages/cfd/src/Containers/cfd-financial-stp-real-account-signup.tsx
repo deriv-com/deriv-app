@@ -126,14 +126,13 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const shouldshowPOI = !(authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified')
     const shouldshowPOA = !(authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified')
-    console.log(authentication_status);
+    console.log('shouldshowPOI:', shouldshowPOI, 'shouldshowPOA:', shouldshowPOA);
 
     const verification_configs = [
         ...(shouldshowPOI ? [poi_config] : []),
         ...(shouldshowPOA ? [poa_config] : [])
     ]
     const [items, setItems] = React.useState(verification_configs)
-    console.log(items);
 
     const state_index = step;
 

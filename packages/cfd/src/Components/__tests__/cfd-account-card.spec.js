@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
 
 const mock_connect_props = {
@@ -25,10 +25,10 @@ jest.mock('@deriv/components', () => {
 
 const mt5_real_synthetic_account = {
     account_type: 'real',
-    balance: 0,
+    balance: 10.0,
     country: 'id',
     currency: 'USD',
-    display_balance: '0.00',
+    display_balance: '10.00',
     display_login: '41165492',
     email: 'name@domain.com',
     group: 'real\\p01_ts03\\synthetic\\svg_std_usd\\03',
@@ -54,6 +54,7 @@ const mt5_real_synthetic_account = {
 const mt5_demo_financial_account = {
     account_type: 'demo',
     balance: 10000,
+    platform: 'mt5',
     country: 'id',
     currency: 'USD',
     display_balance: '10000.00',
@@ -110,7 +111,7 @@ const dxtrade_real_synthetic_account = {
 describe('CFDAccountCard', () => {
     const props = {
         button_label: 'Fund top up',
-        commission_message: '',
+        commission_message: 'TESTASDASD',
         descriptor: '',
         dxtrade_tokens: {
             demo: '',
@@ -130,10 +131,9 @@ describe('CFDAccountCard', () => {
         is_logged_in: true,
         is_virtual: true,
         onHover: jest.fn(),
-        platform: 'mt5',
         specs: [],
+        type: {},
         title: 'Synthetic',
-        type: 'demo',
         platform: 'mt5',
         onSelectAccount: jest.fn(),
         onClickFund: jest.fn(),
@@ -144,7 +144,14 @@ describe('CFDAccountCard', () => {
     };
 
     it('should render the component for Demo MT5 Synthetic account ', () => {
-        render(<CFDAccountCard {...props} existing_data={mt5_demo_financial_account} />);
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} type={type} existing_data={mt5_demo_financial_account} />);
+        expect(screen.getAllByText(/DEMO/i)[0]).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
         expect(screen.getByText(/Synthetic/i)).toBeInTheDocument();
         expect(screen.getByText(/10,000.00 USD/i)).toBeInTheDocument();
         expect(screen.getAllByText(/20103240/i)[0]).toBeInTheDocument();
@@ -157,11 +164,19 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/Password/i)).toBeInTheDocument();
         expect(screen.getByText(/•••••••••••••••/i)).toBeInTheDocument();
         expect(screen.getByText(/IcEdit/i)).toBeInTheDocument();
+        expect(screen.getByText(/Fund top up/i)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /Trade on web terminal/i })).toBeInTheDocument();
     });
 
     it('should render the component for Real MT5 Synthetic account ', () => {
-        render(<CFDAccountCard {...props} existing_data={mt5_real_synthetic_account} />);
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} type={type} existing_data={mt5_real_synthetic_account} />);
+        expect(screen.getByText(/Asia/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
         expect(screen.getByText(/Synthetic/i)).toBeInTheDocument();
         expect(screen.getByText(/0.00 USD/i)).toBeInTheDocument();
         expect(screen.getAllByText(/41165492/i)[0]).toBeInTheDocument();
@@ -174,24 +189,43 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/Password/i)).toBeInTheDocument();
         expect(screen.getByText(/•••••••••••••••/i)).toBeInTheDocument();
         expect(screen.getByText(/IcEdit/i)).toBeInTheDocument();
+        expect(screen.getByText(/Fund transfer/i)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /Trade on web terminal/i })).toBeInTheDocument();
     });
 
     it('should render the component for Demo Deriv X Synthetic ', () => {
-        render(<CFDAccountCard {...props} existing_data={dxtrade_demo_synthetic_account} platform='dxtrade' />);
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'dxtrade',
+        };
+        render(
+            <CFDAccountCard {...props} existing_data={dxtrade_demo_synthetic_account} platform='dxtrade' type={type} />
+        );
+        expect(screen.getByText(/DEMO/i)).toBeInTheDocument();
         expect(screen.getByText(/Synthetic/i)).toBeInTheDocument();
         expect(screen.getByText(/10,000.00 USD/i)).toBeInTheDocument();
         expect(screen.getByText(/DXD1096/i)).toBeInTheDocument();
         expect(screen.getByText(/Username/i)).toBeInTheDocument();
         expect(screen.getByText(/374/i)).toBeInTheDocument();
+        expect(screen.getByText(/Fund top up/i)).toBeInTheDocument();
     });
 
     it('should render the component for Real Deriv X Synthetic ', () => {
-        render(<CFDAccountCard {...props} existing_data={dxtrade_real_synthetic_account} platform='dxtrade' />);
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'dxtrade',
+        };
+        render(
+            <CFDAccountCard {...props} existing_data={dxtrade_real_synthetic_account} platform='dxtrade' type={type} />
+        );
+        expect(screen.getByText(/Most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/Synthetic/i)).toBeInTheDocument();
         expect(screen.getByText(/0.00 USD/i)).toBeInTheDocument();
         expect(screen.getByText(/DXR1095/i)).toBeInTheDocument();
         expect(screen.getByText(/Username/i)).toBeInTheDocument();
         expect(screen.getByText(/374/i)).toBeInTheDocument();
+        expect(screen.getByText(/Fund transfer/i)).toBeInTheDocument();
     });
 });

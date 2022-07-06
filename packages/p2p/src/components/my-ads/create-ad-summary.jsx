@@ -7,7 +7,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
+import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value.js';
 
 const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
     const { floating_rate_store, general_store } = useStores();
@@ -19,9 +19,7 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
     let display_total = '';
 
     if (price_rate) {
-        display_price_rate = market_feed
-            ? roundOffDecimal(parseFloat(market_feed * (1 + price_rate / 100)), 6)
-            : price_rate;
+        display_price_rate = market_feed ? roundOffDecimal(percentOf(market_feed, price_rate), 6) : price_rate;
     }
 
     if (offer_amount && price_rate) {

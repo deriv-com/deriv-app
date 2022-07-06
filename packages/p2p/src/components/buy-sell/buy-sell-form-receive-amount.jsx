@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { getFormattedText } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { roundOffDecimal } from 'Utils/format-value.js';
 import { useStores } from 'Stores';
@@ -18,12 +18,10 @@ const BuySellFormReceiveAmount = () => {
                 )}
             </Text>
             <Text as='p' color='general' line_height='m' size='xs' weight='bold'>
-                {formatMoney(
-                    buy_sell_store?.advert?.local_currency,
+                {getFormattedText(
                     roundOffDecimal(buy_sell_store?.receive_amount),
-                    true
-                )}{' '}
-                {buy_sell_store?.advert?.local_currency}
+                    buy_sell_store?.advert?.local_currency
+                )}
             </Text>
         </React.Fragment>
     );

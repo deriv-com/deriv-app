@@ -25,7 +25,6 @@ import { connect } from 'Stores/connect';
 
 const InputSize = ({
     onChangeInputValue,
-    onChangeInputValueName,
     handleChange,
     active_index,
     getSizeDesc,
@@ -36,13 +35,18 @@ const InputSize = ({
     touched,
     is_mobile,
 }) => {
-    const ZIndexObject = Object.freeze({
+    const field_name = Object.freeze({
         0: 'quick-strategy__size',
         1: 'alembert-unit',
         2: 'oscar-unit',
     });
+    const input_name = Object.freeze({
+        0: 'input_size',
+        1: 'input_alembert_unit',
+        2: 'input_oscar_unit',
+    });
     return (
-        <Field name={ZIndexObject[active_index]}>
+        <Field name={field_name[active_index]}>
             {({ field }) => (
                 <Input
                     {...field}
@@ -54,7 +58,7 @@ const InputSize = ({
                     label={getSizeText(active_index)}
                     onChange={e => {
                         handleChange(e);
-                        onChangeInputValue(onChangeInputValueName, e);
+                        onChangeInputValue(input_name[active_index], e);
                     }}
                     onFocus={e => setCurrentFocus(e.currentTarget.name)}
                     onBlur={() => setCurrentFocus(null)}
@@ -373,53 +377,18 @@ const QuickStrategyForm = ({
                                     'quick-strategy__form-row--multiple': !is_mobile,
                                 })}
                             >
-                                {active_index === 0 && (
-                                    <InputSize
-                                        onChangeInputValue={onChangeInputValue}
-                                        onChangeInputValueName='input_size'
-                                        handleChange={handleChange}
-                                        active_index={active_index}
-                                        getSizeDesc={getSizeDesc}
-                                        getSizeText={getSizeText}
-                                        initial_errors={initial_errors}
-                                        errors={errors}
-                                        setCurrentFocus={setCurrentFocus}
-                                        touched={touched}
-                                        is_mobile={is_mobile}
-                                    />
-                                )}
-
-                                {active_index === 1 && (
-                                    <InputSize
-                                        onChangeInputValue={onChangeInputValue}
-                                        onChangeInputValueName='input_alembert_unit'
-                                        handleChange={handleChange}
-                                        active_index={active_index}
-                                        getSizeDesc={getSizeDesc}
-                                        getSizeText={getSizeText}
-                                        initial_errors={initial_errors}
-                                        errors={errors}
-                                        setCurrentFocus={setCurrentFocus}
-                                        touched={touched}
-                                        is_mobile={is_mobile}
-                                    />
-                                )}
-
-                                {active_index === 2 && (
-                                    <InputSize
-                                        onChangeInputValue={onChangeInputValue}
-                                        onChangeInputValueName='input_oscar_unit'
-                                        handleChange={handleChange}
-                                        active_index={active_index}
-                                        getSizeDesc={getSizeDesc}
-                                        getSizeText={getSizeText}
-                                        initial_errors={initial_errors}
-                                        errors={errors}
-                                        setCurrentFocus={setCurrentFocus}
-                                        touched={touched}
-                                        is_mobile={is_mobile}
-                                    />
-                                )}
+                                <InputSize
+                                    onChangeInputValue={onChangeInputValue}
+                                    handleChange={handleChange}
+                                    active_index={active_index}
+                                    getSizeDesc={getSizeDesc}
+                                    getSizeText={getSizeText}
+                                    initial_errors={initial_errors}
+                                    errors={errors}
+                                    setCurrentFocus={setCurrentFocus}
+                                    touched={touched}
+                                    is_mobile={is_mobile}
+                                />
 
                                 <Field name='quick-strategy__profit'>
                                     {({ field }) => (

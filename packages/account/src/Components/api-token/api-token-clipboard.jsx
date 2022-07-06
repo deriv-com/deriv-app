@@ -102,7 +102,7 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
                     <Button
                         className='dc-dialog__button'
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('OK')}
                         onClick={onClick}
                         primary
                         large

@@ -173,7 +173,7 @@ const JurisdictionModal = ({
                                     disabled={
                                         (poi_poa_verified && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card === 'bvi' && is_pending_authentication)
+                                        (jurisdiction_selected_card !== 'svg' && is_pending_authentication)
                                     }
                                     primary
                                     onClick={() => {
@@ -196,7 +196,8 @@ const JurisdictionModal = ({
                                     style={{ width: '100%' }}
                                     disabled={
                                         jurisdiction_selected_card === undefined ||
-                                        (is_eu && is_fully_authenticated && !checked)
+                                        (is_eu && is_fully_authenticated && !checked) ||
+                                        (jurisdiction_selected_card !== 'svg' && is_pending_authentication)
                                     }
                                     primary
                                     onClick={() => {

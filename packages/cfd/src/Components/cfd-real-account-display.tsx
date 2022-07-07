@@ -189,6 +189,7 @@ const CFDRealAccountDisplay = ({
 
     const synthetic_account_items = isSyntheticCardVisible('real') && (
         <CFDAccountCard
+            key='real.synthetic'
             has_cfd_account={has_cfd_account}
             has_cfd_account_error={has_cfd_account_error}
             title={localize('Synthetic')}
@@ -209,6 +210,9 @@ const CFDRealAccountDisplay = ({
             descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movement.')}
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             onHover={handleHoverCard}
+            is_virtual={is_virtual}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            toggleAccountsDialog={toggleAccountsDialog}
         />
     );
 

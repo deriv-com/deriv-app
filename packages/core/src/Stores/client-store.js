@@ -1692,6 +1692,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         this.mt5_login_list = [];
+        this.dxtrade_accounts_list = [];
         this.landing_companies = {};
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));

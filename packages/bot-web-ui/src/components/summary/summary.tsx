@@ -1,11 +1,16 @@
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import SummaryCard from './summary-card.jsx';
+import SummaryCard from './summary-card';
+import RootStore from 'Stores/index';
 
-const Summary = ({ is_mobile, is_drawer_open }) => (
+interface TSummaryProps {
+    is_mobile: boolean;
+    is_drawer_open: boolean;
+}
+
+const Summary = ({ is_mobile, is_drawer_open }: TSummaryProps) => (
     <div
         className={classnames({
             'run-panel-tab__content': !is_mobile,
@@ -18,11 +23,6 @@ const Summary = ({ is_mobile, is_drawer_open }) => (
     </div>
 );
 
-Summary.propTypes = {
-    is_mobile: PropTypes.bool,
-    is_drawer_open: PropTypes.bool,
-};
-
-export default connect(({ ui }) => ({
+export default connect(({ ui }: RootStore) => ({
     is_mobile: ui.is_mobile,
 }))(Summary);

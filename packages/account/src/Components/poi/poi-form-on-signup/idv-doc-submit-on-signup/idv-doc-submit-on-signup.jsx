@@ -56,14 +56,15 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     }, [country_code, document_data]);
 
     const initial_form_values = {
-        document_type: value ? value.document_type :
-            {
-                id: '',
-                text: '',
-                value: '',
-                example_format: '',
-                sample_image: '',
-            },
+        document_type: value
+            ? value.document_type
+            : {
+                  id: '',
+                  text: '',
+                  value: '',
+                  example_format: '',
+                  sample_image: '',
+              },
 
         document_number: value ? value.document_number : '',
     };
@@ -140,17 +141,30 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                             <Text className='proof-of-identity__text btm-spacer' size='xs'>
                                                 {localize('Please select the document type and enter the ID number.')}
                                             </Text>
-                                            {(has_idv_error && !is_doc_selected) &&
+                                            {has_idv_error && !is_doc_selected && (
                                                 <>
-                                                    <Text className='proof-of-identity btm-spacer' size='xs' align='center' color='loss-danger'>
-                                                        {localize('We were unable to verify your ID with the details you provided.')}
+                                                    <Text
+                                                        className='proof-of-identity btm-spacer'
+                                                        size='xs'
+                                                        align='center'
+                                                        color='loss-danger'
+                                                    >
+                                                        {localize(
+                                                            'We were unable to verify your ID with the details you provided.'
+                                                        )}
                                                     </Text>
-                                                    <Text className='proof-of-identity btm-spacer' size='xs' align='center' color='loss-danger'>
-                                                        {localize('Please check and resubmit or choose a different document type.')}
+                                                    <Text
+                                                        className='proof-of-identity btm-spacer'
+                                                        size='xs'
+                                                        align='center'
+                                                        color='loss-danger'
+                                                    >
+                                                        {localize(
+                                                            'Please check and resubmit or choose a different document type.'
+                                                        )}
                                                     </Text>
                                                 </>
-
-                                            }
+                                            )}
                                             <div className='proof-of-identity__inner-container btm-spacer'>
                                                 <div className='proof-of-identity__fieldset-container'>
                                                     <fieldset className='proof-of-identity__fieldset'>
@@ -186,7 +200,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                 onItemSelection={item => {
                                                                                     if (
                                                                                         item.text ===
-                                                                                        'No results found' ||
+                                                                                            'No results found' ||
                                                                                         !item.text
                                                                                     ) {
                                                                                         setDocSelected(false);
@@ -278,10 +292,10 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                             '-'
                                                                         )
                                                                             ? formatInput(
-                                                                                example_format,
-                                                                                current_input || e.target.value,
-                                                                                '-'
-                                                                            )
+                                                                                  example_format,
+                                                                                  current_input || e.target.value,
+                                                                                  '-'
+                                                                              )
                                                                             : e.target.value;
                                                                         setFieldValue(
                                                                             'document_number',

@@ -112,35 +112,27 @@ const JurisdictionModal = ({
         };
         toggleJurisdictionModal();
 
-        switch (jurisdiction_selected_card) {
-            case 'svg':
+        if (is_eu) {
+            if (poi_poa_verified) {
                 openPasswordModal(type_of_account);
-                break;
-            case 'labuan':
-                if (poi_poa_verified) {
-                    if (!has_real_mt5_login && !is_eu) {
-                        toggleCFDPersonalDetailsModal();
-                    }
-                }
-                break;
-            case 'bvi':
+            } else {
                 toggleCFDVerificationModal();
-                break;
-            case 'mf':
-                if (poi_poa_verified) {
-                    if (!has_real_mt5_login && !is_eu) {
-                        toggleCFDPersonalDetailsModal();
-                    }
-                }
-                break;
-            case 'vanuatu':
-                if (poi_poa_verified) {
-                    if (!has_real_mt5_login && !is_eu) {
-                        toggleCFDPersonalDetailsModal();
-                    }
-                }
-                break;
-            default:
+            }
+        } else if (jurisdiction_selected_card === 'svg') {
+            if (account_type.type === 'financial' && poi_poa_verified && !has_real_mt5_login) {
+                toggleCFDPersonalDetailsModal();
+            } else {
+                openPasswordModal(type_of_account);
+            }
+        } else if (poi_poa_verified) {
+            // for bvi, labuan & vanuatu:
+            if (!has_real_mt5_login) {
+                toggleCFDPersonalDetailsModal();
+            } else {
+                openPasswordModal(type_of_account);
+            }
+        } else {
+            toggleCFDVerificationModal();
         }
     };
 

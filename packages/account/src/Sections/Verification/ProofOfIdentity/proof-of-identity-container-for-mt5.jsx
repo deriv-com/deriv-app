@@ -19,12 +19,11 @@ const ProofOfIdentityContainerforMt5 = ({
     onStateChange,
     refreshNotifications,
     should_allow_authentication,
-    citizen_data
+    citizen_data,
 }) => {
     const [api_error, setAPIError] = React.useState();
     const [residence_list, setResidenceList] = React.useState();
     const [is_status_loading, setStatusLoading] = React.useState(true);
-
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -73,8 +72,9 @@ const ProofOfIdentityContainerforMt5 = ({
         return <NotRequired />;
     }
 
-    const idv_resubmission_cases = ['rejected', 'suspected', 'expired']
-    const has_idv_error = (identity_last_attempt?.service && service_code.idv && idv_resubmission_cases.includes(idv.status))
+    const idv_resubmission_cases = ['rejected', 'suspected', 'expired'];
+    const has_idv_error =
+        identity_last_attempt?.service && service_code.idv && idv_resubmission_cases.includes(idv.status);
 
     if (identity_status === identity_status_codes.none || allow_poi_resubmission || has_idv_error) {
         return (
@@ -96,10 +96,7 @@ const ProofOfIdentityContainerforMt5 = ({
             />
         );
     }
-    else {
-        return null
-    }
-
+    return null;
 };
 
 export default ProofOfIdentityContainerforMt5;

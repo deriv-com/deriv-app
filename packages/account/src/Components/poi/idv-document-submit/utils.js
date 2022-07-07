@@ -128,4 +128,11 @@ const idv_document_data = {
             sample_image: '',
         },
     },
+    ug: {
+        national_id: {
+            new_display_name: 'National IDs',
+            example_format: 'CM37173109PE1D',
+            sample_image: getImageLocation('ug_national_identity_card.png'),
+        },
+    },
 };

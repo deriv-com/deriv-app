@@ -4,12 +4,15 @@ import React from 'react';
 import test_data from './test-data';
 
 describe('Card.jsx', () => {
-    let card;
+    let card, values;
     beforeAll(() => {
         card = test_data.requests[0];
+        values = { data: [{ files: [], files_required: 1 }] };
     });
     it('Should render a card', () => {
-        render(<Card card={card} index={0} handleBlur={jest.fn()} values={{}} setFieldValue={jest.fn()} error={{}} />);
+        render(
+            <Card card={card} index={0} handleBlur={jest.fn()} values={values} setFieldValue={jest.fn()} error={{}} />
+        );
         expect(screen.getByTestId(card.id, { exact: true })).toBeInTheDocument();
     });
     it('Should render an expanded card on button click', () => {
@@ -19,7 +22,7 @@ describe('Card.jsx', () => {
                 handleChange={jest.fn()}
                 handleBlur={jest.fn()}
                 identifier={card.payment_method_identifier}
-                values={{}}
+                values={values}
                 setFieldValue={jest.fn()}
                 index={0}
                 error={{ files: [{ file: null }] }}

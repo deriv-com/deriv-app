@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -291,10 +290,6 @@ const AdvertiserPageStats = () => {
             </Table>
         </React.Fragment>
     );
-};
-
-AdvertiserPageStats.propTypes = {
-    is_visible: PropTypes.bool,
 };
 
 export default observer(AdvertiserPageStats);

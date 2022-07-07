@@ -10,26 +10,19 @@ const AdvertiserPageDropdownMenu = () => {
 
     const { is_blocked } = advertiser_page_store.advertiser_info;
 
-    const showBlockUserModal = () => {
-        if (!is_blocked) {
-            general_store.setIsBlockUserModalOpen(true);
+    const showDropdown = () => {
+        if (!advertiser_page_store.is_counterparty_advertiser_blocked) {
+            advertiser_page_store.setIsDropdownMenuVisible(!advertiser_page_store.is_dropdown_menu_visible);
         }
     };
 
     return (
         <div className='advertiser-page__menu-dots-toggle'>
-            <Icon
-                className='advertiser-page__menu-dots-icon'
-                icon='IcMenuDots'
-                onClick={() =>
-                    advertiser_page_store.setIsDropdownMenuVisible(!advertiser_page_store.is_dropdown_menu_visible)
-                }
-                size={16}
-            />
+            <Icon className='advertiser-page__menu-dots-icon' icon='IcMenuDots' onClick={showDropdown} size={16} />
             {advertiser_page_store.is_dropdown_menu_visible && (
                 <div
                     className={`advertiser-page__dropdown${is_blocked ? '--disabled' : ''}`}
-                    onClick={showBlockUserModal}
+                    onClick={() => general_store.setIsBlockUserModalOpen(true)}
                 >
                     <Dropdown
                         className='advertiser-page__dropdown-container'

@@ -50,6 +50,10 @@
         position: relative;
     }
 
+    &--no-scroll {
+        overflow: hidden;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;

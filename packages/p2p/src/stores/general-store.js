@@ -78,7 +78,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    blockUnblockUser(should_block, advertiser_id) {
+    blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
+        const { advertiser_page_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -87,6 +88,12 @@ export default class GeneralStore extends BaseStore {
             if (response) {
                 if (!response.error) {
                     this.setIsBlockUserModalOpen(false);
+                    if (should_set_is_counterparty_blocked) {
+                        const { p2p_advertiser_relations } = response;
+                        advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
+                            p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
+                        );
+                    }
                 } else {
                     this.setBlockUnblockUserError(response.error);
                 }

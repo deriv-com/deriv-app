@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import './side-note.scss';
 
-const SideNoteTitle = ({ side_notes_length, children_length, title }) => {
+const SideNoteTitle = ({ children_length, side_notes_length, title }) => {
     const length_of_notes = children_length || side_notes_length;
 
     return (
@@ -24,7 +24,7 @@ const SideNoteBullet = ({ children }) => (
     </div>
 );
 
-const SideNote = ({ children, side_notes, title, has_title = true, has_bullets = true, is_mobile, className }) => {
+const SideNote = ({ children, className, has_bullets = true, has_title = true, is_mobile, side_notes, title }) => {
     const Wrapper = is_mobile ? MobileWrapper : DesktopWrapper;
 
     return (
@@ -61,12 +61,12 @@ const SideNote = ({ children, side_notes, title, has_title = true, has_bullets =
 
 SideNote.propTypes = {
     children: PropTypes.any,
+    className: PropTypes.string,
+    has_bullets: PropTypes.bool,
+    has_title: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     side_notes: PropTypes.array,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    has_bullets: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    has_title: PropTypes.bool,
-    className: PropTypes.string,
 };
 
 export default SideNote;

@@ -46,7 +46,7 @@ const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup,
                     />
                 )}
             </Text>
-            <Text className='cashier-onboarding-side-note__text' size='xxs' as='p' data-testid='side-note-text'>
+            <Text className='cashier-onboarding-side-note__text' size='xxs' as='p' data-testid='dt_side_note_text'>
                 {getSideNoteDescription()}
             </Text>
             {is_crypto && (

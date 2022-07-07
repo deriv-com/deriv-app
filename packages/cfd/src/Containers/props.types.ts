@@ -39,8 +39,8 @@ export type TCFDDashboardContainer = {
 export type TMT5AccountOpeningRealFinancialStpModal = {
     enableApp: () => void;
     disableApp: () => void;
-    disableMt5FinancialStpModal: () => void;
-    is_mt5_financial_stp_modal_open: boolean;
+    toggleCFDVerificationModal: () => void;
+    is_cfd_verification_modal_visible: boolean;
 };
 
 export type TMissingRealAccount = {

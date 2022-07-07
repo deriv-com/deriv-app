@@ -59,6 +59,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     is_fully_authenticated: boolean;
     is_pending_authentication: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    toggleCFDVerificationModal: () => void;
 };
 
 const JurisdictionModal = ({
@@ -76,6 +77,7 @@ const JurisdictionModal = ({
     is_fully_authenticated,
     is_pending_authentication,
     openPasswordModal,
+    toggleCFDVerificationModal
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState<boolean>(false);
 
@@ -90,8 +92,8 @@ const JurisdictionModal = ({
     const modal_title = is_eu
         ? localize('Jurisdiction for your DMT5 CFDs account')
         : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
-              account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
-          });
+            account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
+        });
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
@@ -116,11 +118,7 @@ const JurisdictionModal = ({
                 }
                 break;
             case 'bvi':
-                if (poi_poa_verified) {
-                    if (!has_real_mt5_login && !is_eu) {
-                        toggleCFDPersonalDetailsModal();
-                    }
-                }
+                toggleCFDVerificationModal();
                 break;
             case 'mf':
                 if (poi_poa_verified) {
@@ -248,4 +246,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
     residence: client.residence,
+    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal
 }))(JurisdictionModal);

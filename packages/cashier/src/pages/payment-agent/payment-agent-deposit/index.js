@@ -1,3 +1,3 @@
-import PaymentAgentDeposit from './payment-agent-deposit';
+import PaymentAgentDeposit from './payment-agent-deposit.jsx';
 
 export default PaymentAgentDeposit;

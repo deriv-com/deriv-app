@@ -10,8 +10,7 @@ type TCFDValue = {
 
 type TFormValues = {
     poi_state?: string;
-}
-
+};
 
 type TCFDNotificationByKey = {
     key: string;
@@ -21,7 +20,7 @@ type TCFDNotificationMessage = {
     should_show_again: string;
 };
 
-type TCFDPOIProps = {
+export type TCFDPOIProps = {
     index: number;
     onSubmit: (index: number, value: TCFDValue, setSubmitting: boolean | ((isSubmitting: boolean) => void)) => void;
     value: TCFDValue;
@@ -40,7 +39,7 @@ type TCFDPOIProps = {
     residence_list: ResidenceList;
 };
 
-const CFDPOI = ({ index, onSave, onSubmit, value, height, ...props }: TCFDPOIProps) => {
+const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
     const [poi_state, setPOIState] = React.useState<string>('none');
     const citizen = props.account_settings.citizen || props.account_settings.country_code;
     const citizen_data = props.residence_list.find(item => item.value === citizen);
@@ -48,8 +47,8 @@ const CFDPOI = ({ index, onSave, onSubmit, value, height, ...props }: TCFDPOIPro
     const onStateChange = (status: string) => {
         setPOIState(status);
         onSave(index, { poi_state: status });
-        onSubmit(index, { poi_state }, false)
-    }
+        onSubmit(index, { poi_state }, false);
+    };
     return (
         <ProofOfIdentityContainerforMt5
             {...props}
@@ -58,9 +57,8 @@ const CFDPOI = ({ index, onSave, onSubmit, value, height, ...props }: TCFDPOIPro
             onStateChange={(status: string) => onStateChange(status)}
             citizen_data={citizen_data}
         />
-    )
-}
-
+    );
+};
 
 export default connect(({ client, common, notifications }: RootStore) => ({
     account_status: client.account_status,

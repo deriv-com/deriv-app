@@ -7,7 +7,6 @@ import { identity_status_codes, submission_status_code, service_code } from './p
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup.jsx';
 import { AutoHeightWrapper } from '@deriv/components';
 
-
 const POISubmissionForMT5 = ({
     idv,
     is_from_external,
@@ -16,7 +15,7 @@ const POISubmissionForMT5 = ({
     onStateChange,
     refreshNotifications,
     citizen_data,
-    has_idv_error
+    has_idv_error,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
@@ -37,8 +36,7 @@ const POISubmissionForMT5 = ({
             }
             setSubmissionStatus(submission_status_code.submitting);
         }
-    }, [citizen_data])
-
+    }, [citizen_data]);
 
     const handlePOIComplete = () => {
         if (onStateChange && typeof onStateChange === 'function') {
@@ -48,7 +46,7 @@ const POISubmissionForMT5 = ({
             refreshNotifications();
         });
     };
-    const handleIdvSubmit = (values) => {
+    const handleIdvSubmit = values => {
         const { document_number, document_type } = values;
         const submit_data = {
             identity_verification_document_add: 1,
@@ -59,8 +57,8 @@ const POISubmissionForMT5 = ({
 
         WS.send(submit_data).then(() => {
             handlePOIComplete();
-        })
-    }
+        });
+    };
 
     if (submission_status === submission_status_code.submitting) {
         switch (submission_service) {
@@ -89,7 +87,8 @@ const POISubmissionForMT5 = ({
                                     is_from_external={is_from_external}
                                     refreshNotifications={refreshNotifications}
                                 />
-                            </div>)}
+                            </div>
+                        )}
                     </AutoHeightWrapper>
                 );
             }
@@ -98,11 +97,9 @@ const POISubmissionForMT5 = ({
             default:
                 return null;
         }
+    } else {
+        return null;
     }
-    else {
-        return null
-    }
-
 };
 
 export default POISubmissionForMT5;

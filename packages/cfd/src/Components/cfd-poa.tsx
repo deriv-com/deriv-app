@@ -13,11 +13,7 @@ import {
     MobileWrapper,
     useStateCallback,
 } from '@deriv/components';
-import {
-    FileUploaderContainer,
-    FormSubHeader,
-    PoaStatusCodes,
-} from '@deriv/account';
+import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
@@ -39,9 +35,10 @@ type TFile = {
 };
 
 type TObjDocumentFile = {
-    errors: Array<TErrors>;
+    errors: TErrors[];
     file: TFile;
 };
+
 type TFormValuesInputs = {
     address_city?: string;
     address_line_1?: string;
@@ -75,7 +72,7 @@ type TApiResponse = {
 
 type TStoreProofOfAddress = (file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>) => void;
 
-type TCFDPOAProps = {
+export type TCFDPOAProps = {
     onSave: (index: number, values: TFormValues) => void;
     index: number;
     onSubmit: (index: number, value: TFormValues, setSubmitting?: boolean | ((isSubmitting: boolean) => void)) => void;
@@ -86,13 +83,12 @@ type TCFDPOAProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
-
 };
 type TUpload = {
     upload: () => void;
 };
 
-let file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>;
+let file_uploader_ref: React.RefObject<HTMLElement & TUpload>;
 
 const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
@@ -171,7 +167,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         files: TObjDocumentFile,
         error_message: string,
         setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void,
-        setFieldValue: (field: string, files: TObjDocumentFile) => void,
+        setFieldValue: (field: string, files_array: TObjDocumentFile) => void,
         values: TFormValues
     ) => {
         setFieldTouched('document_file', true);
@@ -195,7 +191,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     };
 
     const onSubmitValues = async (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
-        const { document_file, ...uploadables } = values;
+        const { ...uploadables } = values;
 
         actions.setSubmitting(true);
         const data = await WS.setSettings(uploadables);
@@ -231,7 +227,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
                 actions.setSubmitting(false);
                 return;
             }
-            const { error: e, get_account_status } = await WS.authorized.storage.getAccountStatus();
+            const { error: e } = await WS.authorized.storage.getAccountStatus();
             if (e) {
                 setFormState({ ...form_state, ...{ form_error: error.message } });
                 actions.setSubmitting(false);
@@ -247,17 +243,18 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
 
     // didMount hook
     React.useEffect(() => {
-
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
-                const { get_account_status } = response;
-                const { document, identity } = get_account_status?.authentication!;
-                const __has_poi = !!(identity && identity.status === 'none');
-                const poi_status = (identity && identity.status)
-                setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi, poi_status } }, () => {
-                    setIsLoading(false);
-                    refreshNotifications();
-                });
+                const poa_status = response.get_account_status?.authentication?.document?.status;
+                const poi_status = response.get_account_status?.authentication?.identity?.status;
+
+                if (poa_status && poi_status) {
+                    const needs_poi = poi_status === 'none';
+                    setFormState({ ...form_state, ...{ poa_status, needs_poi, identity_status: poi_status } }, () => {
+                        setIsLoading(false);
+                        refreshNotifications();
+                    });
+                }
             });
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -275,7 +272,6 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
     } = props;
     const { form_error, poa_status, resubmit_poa } = form_state;
-
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
 
@@ -371,10 +367,10 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
                                                                                 list={states_list}
                                                                                 error={
                                                                                     touched[
-                                                                                    field.name as keyof TFormValues
+                                                                                        field.name as keyof TFormValues
                                                                                     ] &&
                                                                                     errors[
-                                                                                    field.name as keyof TFormValues
+                                                                                        field.name as keyof TFormValues
                                                                                     ]
                                                                                 }
                                                                                 name='address_state'

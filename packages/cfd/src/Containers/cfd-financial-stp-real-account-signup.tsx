@@ -3,11 +3,10 @@ import { Div100vhContainer } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CFDPOA from '../Components/cfd-poa';
+import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
 import RootStore from 'Stores/index';
-
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -20,7 +19,6 @@ type TRemoveNotificationMessage = {
     key: string;
     should_show_again: boolean;
 };
-
 
 type TGetSettings = GetSettings & {
     upload_file?: string;
@@ -41,9 +39,9 @@ type TCFDFinancialStpRealAccountSignupProps = {
     residence_list: ResidenceList;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddressArgs;
-    fetchStatesList: () => void
-    account_status: GetAccountStatus
-    onFinish: () => void
+    fetchStatesList: () => void;
+    account_status: GetAccountStatus;
+    onFinish: () => void;
 };
 
 type TSetSubmiting = (isSubmitting: boolean) => void;
@@ -52,34 +50,17 @@ type TNextStep = (submitting: TSetSubmiting) => void;
 
 type TItemsState = {
     header: { [key: string]: string };
-    body: typeof CFDPOI | typeof CFDPOA;
+    body: ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => JSX.Element;
     form_value: { [key: string]: string | undefined };
-    props: Array<TItemsProps>;
+    forwarded_props: Array<Partial<keyof TCFDFinancialStpRealAccountSignupProps>>;
 };
-
-type TItemsProps =
-    | 'residence_list'
-    | 'is_fully_authenticated'
-    | 'landing_company'
-    | 'addNotificationByKey'
-    | 'authentication_status'
-    | 'refreshNotifications'
-    | 'removeNotificationMessage'
-    | 'removeNotificationByKey'
-    | 'states_list'
-    | 'get_settings'
-    | 'storeProofOfAddress'
-
-
-type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
-
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
     const { refreshNotifications, authentication_status, fetchStatesList } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
 
-    const poi_config = {
+    const poi_config: TItemsState = {
         header: {
             active_title: localize('Complete your proof of identity'),
             title: localize('Proof of identity'),
@@ -88,16 +69,16 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         form_value: {
             poi_state: 'unknown',
         },
-        props: [
+        forwarded_props: [
             'addNotificationByKey',
             'authentication_status',
             'refreshNotifications',
             'removeNotificationMessage',
             'removeNotificationByKey',
         ],
-    }
+    };
 
-    const poa_config = {
+    const poa_config: TItemsState = {
         header: {
             active_title: localize('Complete your proof of address'),
             title: localize('Proof of address'),
@@ -111,28 +92,30 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             address_postcode: props.get_settings.address_postcode,
             upload_file: '',
         },
-        props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
-    }
+        forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+    };
 
-    const shouldshowPOI = !(authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified')
-    const shouldshowPOA = !(authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified')
-    const verification_configs = [
-        ...(shouldshowPOI ? [poi_config] : []),
-        ...(shouldshowPOA ? [poa_config] : [])
-    ]
-    const [items, setItems] = React.useState(verification_configs)
+    const should_show_poi = !(
+        authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified'
+    );
+    const should_show_poa = !(
+        authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
+    );
+    const verification_configs = [...(should_show_poi ? [poi_config] : []), ...(should_show_poa ? [poa_config] : [])];
+
+    const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
 
     const state_index = step;
 
     const clearError = () => {
         setFormError('');
     };
+
     const nextStep: TNextStep = async () => {
         clearError();
         if (step + 1 < items.length) {
             setStep(step + 1);
-        }
-        else {
+        } else {
             props.onFinish();
         }
     };
@@ -144,7 +127,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const updateValue = async (
         index: number,
         value: { [key: string]: string | undefined },
-        setSubmitting: TSetSubmiting,
+        setSubmitting: TSetSubmiting
     ) => {
         saveFormData(index, value);
         nextStep(setSubmitting);
@@ -158,25 +141,27 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         fetchStatesList();
     }, [fetchStatesList]);
 
-
-    const getCurrent = (key?: TgetCurrentProps) => {
+    const getCurrent = (key?: keyof TItemsState) => {
         return key ? items[state_index][key] : items[state_index];
     };
 
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
-        const cloned_items: Array<TItemsState> = Object.assign([], items);
+        const cloned_items: TItemsState[] = [...items];
         cloned_items[index].form_value = value;
         setItems(cloned_items);
-
     };
-    const BodyComponent = getCurrent('body') as TItemsState['body'];
+    const BodyComponent = getCurrent('body') as React.FunctionComponent<any>;
     const form_value = getCurrent('form_value');
 
-    const passthrough = ((getCurrent('props') || []) as TItemsState['props']).reduce((arr, item) => {
-        return Object.assign(arr, { [item]: props[item as keyof TCFDFinancialStpRealAccountSignupProps] });
-    }, {});
+    const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
+        (forwarded_prop, item) => {
+            return Object.assign(forwarded_prop, {
+                [item]: props[item],
+            });
+        },
+        {}
+    );
     const height = 'auto';
-
 
     return (
         <Div100vhContainer

@@ -174,7 +174,12 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' && is_pending_authentication)
+                                        (jurisdiction_selected_card !== 'svg' &&
+                                            is_pending_authentication &&
+                                            ((poi_status === 'pending' && poa_status !== 'pending') ||
+                                                poa_status !== 'verified')) ||
+                                        (poa_status === 'pending' && poi_status !== 'pending') ||
+                                        poi_status !== 'verified'
                                     }
                                     primary
                                     onClick={() => {
@@ -196,8 +201,9 @@ const JurisdictionModal = ({
                                 <Button
                                     style={{ width: '100%' }}
                                     disabled={
-                                        jurisdiction_selected_card === undefined ||
-                                        (is_eu && is_fully_authenticated && !checked) ||
+                                        (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
+                                        (jurisdiction_selected_card === 'labuan' && !checked) ||
+                                        !jurisdiction_selected_card ||
                                         (jurisdiction_selected_card !== 'svg' && is_pending_authentication)
                                     }
                                     primary

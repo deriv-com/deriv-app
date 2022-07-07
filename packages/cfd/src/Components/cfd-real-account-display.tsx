@@ -26,19 +26,14 @@ type TOpenAccountTransferMeta = {
 
 type TCFDRealAccountDisplayProps = {
     has_real_account: boolean;
-    is_accounts_switcher_on: boolean;
     is_eu: boolean;
     is_eu_country: boolean;
-    has_malta_account: boolean;
-    has_maltainvest_account: boolean;
     has_cfd_account_error: boolean;
-    is_fully_authenticated: boolean;
     account_settings: GetSettings;
     standpoint: TStandPoint;
     is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
-    is_pending_authentication: boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
     landing_companies: LandingCompany;
@@ -47,7 +42,6 @@ type TCFDRealAccountDisplayProps = {
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
         account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
@@ -69,21 +63,15 @@ type TCFDRealAccountDisplayProps = {
 
 const CFDRealAccountDisplay = ({
     has_real_account,
-    is_accounts_switcher_on,
     is_eu,
     is_eu_country,
-    has_malta_account,
-    has_maltainvest_account,
     has_cfd_account_error,
-    is_fully_authenticated,
-    is_pending_authentication,
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
     landing_companies,
     onSelectAccount,
     openAccountTransfer,
-    openPasswordModal,
     isAccountOfTypeDisabled,
     current_list,
     has_cfd_account,
@@ -254,12 +242,7 @@ const CFDRealAccountDisplay = ({
     const items = [synthetic_account_items, financial_account].filter(Boolean);
 
     return (
-        <div
-            data-testid='dt_cfd_real_accounts_display'
-            className={classNames('cfd-real-accounts-display', {
-                'cfd-real-accounts-display--has-trade-servers': should_show_trade_servers,
-            })}
-        >
+        <div data-testid='dt_cfd_real_accounts_display' className={classNames('cfd-real-accounts-display')}>
             <DesktopWrapper>
                 <Carousel
                     list={items}

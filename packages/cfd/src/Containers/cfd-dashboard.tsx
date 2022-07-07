@@ -489,18 +489,15 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 />
                                             )}
                                             <CFDRealAccountDisplay
-                                                is_accounts_switcher_on={is_accounts_switcher_on}
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
-                                                has_maltainvest_account={has_maltainvest_account}
-                                                has_malta_account={has_malta_account}
                                                 has_cfd_account_error={
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
                                                         : is_suspended_mt5_real_server ||
-                                                        dxtrade_disabled_signup_types.real ||
-                                                        !!dxtrade_accounts_list_error
+                                                          dxtrade_disabled_signup_types.real ||
+                                                          !!dxtrade_accounts_list_error
                                                 }
                                                 current_list={current_list}
                                                 account_status={account_status}
@@ -508,14 +505,11 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 onSelectAccount={createCFDAccount}
                                                 account_settings={account_settings}
                                                 landing_companies={landing_companies}
-                                                is_pending_authentication={is_pending_authentication}
-                                                is_fully_authenticated={is_fully_authenticated}
                                                 is_virtual={is_virtual}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
                                                 openAccountTransfer={openAccountTransfer}
                                                 openPasswordManager={togglePasswordManagerModal}
-                                                openPasswordModal={openRealPasswordModal}
                                                 platform={platform}
                                                 isAccountOfTypeDisabled={isAccountOfTypeDisabled}
                                                 has_real_account={has_real_account}
@@ -542,8 +536,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 platform === CFD_PLATFORMS.MT5
                                                     ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
                                                     : is_suspended_mt5_demo_server ||
-                                                    dxtrade_disabled_signup_types.demo ||
-                                                    !!dxtrade_accounts_list_error
+                                                      dxtrade_disabled_signup_types.demo ||
+                                                      !!dxtrade_accounts_list_error
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}

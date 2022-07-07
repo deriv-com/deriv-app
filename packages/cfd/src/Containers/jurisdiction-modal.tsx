@@ -203,7 +203,7 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' && is_pending_authentication)
+                                        (jurisdiction_selected_card !== 'svg' && bvi_checks)
                                     }
                                     primary
                                     onClick={() => {

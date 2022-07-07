@@ -92,6 +92,10 @@
         flex-direction: row;
         padding-bottom: 0.7rem;
 
+        @include mobile {
+            flex-flow: row wrap;
+        }
+
         &--row {
             align-items: center;
             border-right: 1px solid var(--general-section-1);
@@ -111,6 +115,12 @@
             > svg {
                 margin-right: 0.1rem;
             }
+        }
+
+        &--text {
+            display: flex;
+            gap: 0.8rem;
+            margin-left: 0.4rem;
         }
     }
 

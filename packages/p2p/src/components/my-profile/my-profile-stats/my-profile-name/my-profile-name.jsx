@@ -54,26 +54,26 @@ const MyProfileName = () => {
                                             is_readonly
                                             number_of_stars={5}
                                             should_allow_hover_effect={false}
-                                            star_size={20}
+                                            star_size={isMobile() ? 17 : 20}
                                         />
-                                        &nbsp;
-                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_average_decimal}
-                                        </Text>
-                                        &nbsp;
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_count === 1 ? (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} rating)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} ratings)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            )}
-                                        </Text>
+                                        <div className='my-profile-name--rating__text'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_count === 1 ? (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} rating)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} ratings)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                )}
+                                            </Text>
+                                        </div>
                                     </div>
                                     <div className='my-profile-name--rating__row'>
                                         <RecommendedBy

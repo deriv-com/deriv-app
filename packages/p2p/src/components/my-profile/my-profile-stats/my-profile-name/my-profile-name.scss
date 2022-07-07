@@ -31,8 +31,12 @@
 
     &--rating {
         display: flex;
+        flex-direction: row;
         padding: 0.8rem 0;
-        flex-flow: row wrap;
+
+        @include mobile {
+            flex-flow: row wrap;
+        }
 
         &__row {
             align-items: center;
@@ -47,6 +51,12 @@
             &:last-child {
                 border-right: unset;
             }
+        }
+
+        &__text {
+            display: flex;
+            gap: 0.8rem;
+            margin-left: 0.4rem;
         }
     }
 

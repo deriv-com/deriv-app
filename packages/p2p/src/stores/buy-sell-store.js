@@ -552,7 +552,6 @@ export default class BuySellStore extends BaseStore {
                 currency: this.account_currency,
                 value: display_max_amount,
             }),
-
             localize('Maximum is {{value}} {{currency}}', {
                 currency: this.account_currency,
                 value: formatMoney(this.account_currency, this.root_store.general_store.balance, true),

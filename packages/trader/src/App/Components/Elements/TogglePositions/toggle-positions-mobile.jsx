@@ -3,8 +3,8 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Icon, Div100vhContainer, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { BinaryLink } from 'App/Components/Routes';
-import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
+import { NavLink } from 'react-router-dom';
+import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect } from 'Stores/connect';
@@ -111,13 +111,13 @@ const TogglePositionsMobile = ({
                         {is_empty || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                     </div>
                     <div className='positions-modal__footer'>
-                        <BinaryLink
+                        <NavLink
                             onClick={closeModal}
                             className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                             to={routes.positions}
                         >
                             <span className='dc-btn__text'>{localize('Go to Reports')}</span>
-                        </BinaryLink>
+                        </NavLink>
                     </div>
                 </Div100vhContainer>
             </Modal>
@@ -126,10 +126,10 @@ const TogglePositionsMobile = ({
 };
 // TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
 // Fixes issue with positions not updated in positions modal
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, portfolio }) => ({
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
-    onClickRemove: modules.portfolio.removePositionById,
+    onClickRemove: portfolio.removePositionById,
     togglePositionsDrawer: ui.togglePositionsDrawer,
     is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(TogglePositionsMobile);

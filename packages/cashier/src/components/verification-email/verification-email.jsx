@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import ResendEmailButtonWrapper from 'Components/resend-email-button-wrapper';
 import './verification-email.scss';
 
-const VerificationEmail = ({ is_resend_clicked, resend_timeout, resendVerificationEmail, setIsResendClicked }) => (
+const VerificationEmail = ({ is_resend_clicked, is_withdrawal, resendVerificationEmail, setIsResendClicked }) => (
     <div className='verification-email'>
         <Icon icon='IcEmailSent' className='verification-email__icon' size={128} />
         <Text as='p' weight='bold' align='center' className='verification-email__title'>
@@ -26,21 +27,9 @@ const VerificationEmail = ({ is_resend_clicked, resend_timeout, resendVerificati
                             }
                         />
                     </Text>
-                    <Button
-                        className='verification-email__resend-button'
-                        classNameSpan='verification-email__resend-button-text'
-                        is_disabled={resend_timeout < 60}
-                        has_effect
-                        text={
-                            resend_timeout < 60
-                                ? localize('Resend email in {{seconds}}s', {
-                                      seconds: resend_timeout,
-                                  })
-                                : localize('Resend email')
-                        }
-                        onClick={resendVerificationEmail}
-                        primary
-                        large
+                    <ResendEmailButtonWrapper
+                        resendVerificationEmail={resendVerificationEmail}
+                        is_withdrawal={is_withdrawal}
                     />
                 </React.Fragment>
             ) : (
@@ -56,7 +45,7 @@ const VerificationEmail = ({ is_resend_clicked, resend_timeout, resendVerificati
 
 VerificationEmail.propTypes = {
     is_resend_clicked: PropTypes.bool,
-    resend_timeout: PropTypes.number,
+    is_withdrawal: PropTypes.bool,
     resendVerificationEmail: PropTypes.func,
     setIsResendClicked: PropTypes.func,
 };

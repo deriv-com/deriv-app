@@ -85,22 +85,6 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    blockUser(advertiser_id) {
-        requestWS({
-            p2p_advertiser_relations: 1,
-            add_blocked: [advertiser_id],
-        }).then(response => {
-            if (!response.error) {
-                this.setIsBlockUserModalOpen(false);
-                this.setIsDropdownMenuVisible(false);
-                this.getAdvertiserInfo();
-            } else {
-                this.setErrorMessage(response.error);
-            }
-        });
-    }
-
-    @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
 
@@ -206,11 +190,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
         this.has_more_adverts_to_load = has_more_adverts_to_load;
-    }
-
-    @action.bound
-    setIsBlockUserModalOpen(is_block_user_modal_open) {
-        this.is_block_user_modal_open = is_block_user_modal_open;
     }
 
     @action.bound

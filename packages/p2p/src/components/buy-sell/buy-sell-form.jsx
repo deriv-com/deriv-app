@@ -129,7 +129,7 @@ const BuySellForm = props => {
                 validate={buy_sell_store.validatePopup}
                 validateOnMount={!should_disable_field}
                 initialValues={{
-                    amount: min_order_amount_limit,
+                    amount: input_amount,
                     contact_info: buy_sell_store.contact_info,
                     payment_info: buy_sell_store.payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,

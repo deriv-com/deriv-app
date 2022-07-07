@@ -1,3 +1,3 @@
-import OnRampProviderPopup from './on-ramp-provider-popup';
+import OnRampProviderPopup from './on-ramp-provider-popup.jsx';
 
 export default OnRampProviderPopup;

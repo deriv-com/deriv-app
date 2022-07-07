@@ -14,8 +14,9 @@ import {
     initFormErrorMessages,
     mobileOSDetect,
     setSharedCFDText,
+    useOnLoadTranslation,
 } from '@deriv/shared';
-import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
+import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';

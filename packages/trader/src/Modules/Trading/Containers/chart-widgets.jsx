@@ -7,12 +7,12 @@ import ControlWidgets from '../../SmartChart/Components/control-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 import { symbolChange } from '../../SmartChart/Helpers/symbol';
 
-export const DigitsWidget = connect(({ modules }) => ({
-    contract_info: modules.contract_trade.last_contract.contract_info || {},
-    digits_info: modules.contract_trade.last_contract.digits_info || {},
-    display_status: modules.contract_trade.last_contract.display_status,
-    is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
-    is_ended: modules.contract_trade.last_contract.is_ended,
+export const DigitsWidget = connect(({ modules, contract_trade }) => ({
+    contract_info: contract_trade.last_contract.contract_info || {},
+    digits_info: contract_trade.last_contract.digits_info || {},
+    display_status: contract_trade.last_contract.display_status,
+    is_digit_contract: contract_trade.last_contract.is_digit_contract,
+    is_ended: contract_trade.last_contract.is_ended,
     selected_digit: modules.trade.last_digit,
     onDigitChange: modules.trade.onChange,
     underlying: modules.trade.symbol,
@@ -74,9 +74,9 @@ export const ChartBottomWidgets = ({ digits, tick }) => (
     <BottomWidgets Digits={<DigitsWidget digits={digits} tick={tick} />} />
 );
 
-export const ChartControlWidgets = connect(({ modules }) => ({
-    updateChartType: modules.contract_trade.updateChartType,
-    updateGranularity: modules.contract_trade.updateGranularity,
+export const ChartControlWidgets = connect(({ contract_trade }) => ({
+    updateChartType: contract_trade.updateChartType,
+    updateGranularity: contract_trade.updateGranularity,
 }))(({ updateChartType, updateGranularity }) => (
     <ControlWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
 ));

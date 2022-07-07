@@ -131,20 +131,42 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_partial_shade = ({ ctx, color, start, top, bottom, is_between_shade, is_bottom_shade }) => {
-    // 16% opacity test
-    const color_with_opacity = `${color}29`;
+const draw_partial_shade = ({ ctx, is_dark_theme, start, top, bottom, is_between_shade, is_bottom_shade }) => {
     const gradient = ctx.createLinearGradient(start.left, top, start.left, bottom);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = is_dark_theme ? '#6E6E6E' : '#999999';
 
-    if (is_between_shade) {
-        gradient.addColorStop(0, color_with_opacity);
-        gradient.addColorStop(1, color_with_opacity);
-    } else {
-        gradient.addColorStop(0, is_bottom_shade ? color_with_opacity : 'rgba(255,255,255,0)');
-        gradient.addColorStop(1, is_bottom_shade ? 'rgba(255,255,255,0)' : color_with_opacity);
+    if (is_between_shade || is_bottom_shade) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.arc(start.left + 1.5, top, 1.5, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.setLineDash([3, 3]);
+        ctx.moveTo(start.left + 4.5, top);
+        ctx.lineTo(ctx.canvas.width - 88, top);
+        ctx.stroke();
+    }
+    if (is_between_shade || !is_bottom_shade) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.arc(start.left + 1.5, bottom, 1.5, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.setLineDash([3, 3]);
+        ctx.moveTo(start.left + 4.5, bottom);
+        ctx.lineTo(ctx.canvas.width - 88, bottom);
+        ctx.stroke();
     }
 
-    ctx.fillStyle = gradient;
+    if (!is_between_shade) {
+        gradient.addColorStop(0.01, is_bottom_shade ? 'rgba(236, 63, 63, 0.16)' : 'rgba(236, 63, 63, 0)');
+        gradient.addColorStop(0.98, is_bottom_shade ? 'rgba(236, 63, 63, 0)' : 'rgba(236, 63, 63, 0.16)');
+    }
+
+    ctx.fillStyle = is_between_shade ? 'rgba(0, 167, 158, 0.08)' : gradient;
     ctx.fillRect(start.left, top, ctx.canvas.width - start.left - 88, Math.abs(bottom - top));
 };
 
@@ -238,24 +260,27 @@ const TickContract = RawMarkerMaker(
         const entry = ticks[0];
         const previous_tick = ticks[ticks.findIndex(t => t.epoch === current_spot_time.epoch) - 1 || 0];
         const exit = ticks[ticks.length - 1];
-
-        // barrier line
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
-        if (start.visible || entry.visible || exit.visible) {
-            ctx.strokeStyle = color + opacity;
-            ctx.beginPath();
-            ctx.setLineDash([1, 1]);
-            ctx.moveTo(start.left, barrier);
-            ctx.lineTo(entry.left, barrier);
-            ctx.stroke();
 
-            ctx.beginPath();
-            ctx.setLineDash([]);
-            ctx.moveTo(entry.left, barrier);
-            ctx.lineTo(exit.left, barrier);
-            ctx.stroke();
-            ctx.strokeStyle = color;
+        if (!contract_type === 'ACC' || is_sold) {
+            // barrier line
+            if (start.visible || entry.visible || exit.visible) {
+                ctx.strokeStyle = color + opacity;
+                ctx.beginPath();
+                ctx.setLineDash([1, 1]);
+                ctx.moveTo(start.left, barrier);
+                ctx.lineTo(entry.left, barrier);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.setLineDash([]);
+                ctx.moveTo(entry.left, barrier);
+                ctx.lineTo(exit.left, barrier);
+                ctx.stroke();
+                ctx.strokeStyle = color;
+            }
         }
+
         // ticks for last contract
         if (is_last_contract && granularity === 0 && !is_sold) {
             ticks
@@ -277,7 +302,9 @@ const TickContract = RawMarkerMaker(
                     ctx.setLineDash([2, 2]);
                     ctx.beginPath();
                     ctx.moveTo(tick.left - 1 * scale, tick.top);
-                    ctx.lineTo(tick.left - 1 * scale, barrier);
+                    if (tick === entry && contract_type === 'ACC') {
+                        ctx.lineTo(start.left - 1 * scale, entry.top);
+                    } else ctx.lineTo(tick.left - 1 * scale, barrier);
                     ctx.stroke();
 
                     ctx.fillStyle = color + opacity;
@@ -307,10 +334,11 @@ const TickContract = RawMarkerMaker(
                 top: barrier - 27 * scale,
             });
         }
+
         // start-time marker
         if (start.visible) {
             draw_path(ctx, {
-                top: barrier - 9 * scale,
+                top: contract_type === 'ACC' ? entry.top : barrier - 9 * scale,
                 left: start.left - 1 * scale,
                 zoom: start.zoom,
                 icon: ICONS.START.with_color(
@@ -331,12 +359,11 @@ const TickContract = RawMarkerMaker(
         ctx.restore();
 
         if (contract_type === 'ACC' && !is_sold) {
-            const status_color = get_color({ status, is_dark_theme, profit });
             if (profit > 0) {
                 draw_partial_shade({
                     ctx,
                     start: previous_tick,
-                    color: status_color,
+                    is_dark_theme,
                     top: barrier,
                     bottom: barrier_2,
                     is_between_shade: true,
@@ -345,14 +372,14 @@ const TickContract = RawMarkerMaker(
                 draw_partial_shade({
                     ctx,
                     start: previous_tick,
-                    color: status_color,
+                    is_dark_theme,
                     top: barrier - 165 * scale,
                     bottom: barrier,
                 });
                 draw_partial_shade({
                     ctx,
                     start: previous_tick,
-                    color: status_color,
+                    is_dark_theme,
                     top: barrier_2,
                     bottom: barrier_2 + 165 * scale,
                     is_bottom_shade: true,

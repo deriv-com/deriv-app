@@ -33,7 +33,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getBarrierPipSize } from './Helpers/barrier';
 import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import { BARRIER_COLORS, CONTRACT_SHADES } from '../SmartChart/Constants/barriers';
+import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 import { getDummyProposalResponseForACC } from '../Contract/Helpers/dummy_accumulators_data';
@@ -593,37 +593,6 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    setAccumulatorsBarriers = ({ is_over }) => {
-        const acc_barriers_key = 'acc_barriers';
-        const is_loss = true;
-        if (!is_over) {
-            const acc_barriers = this.barriers?.find(b => b.key === acc_barriers_key);
-
-            if (acc_barriers && is_loss) {
-                acc_barriers.shade = 'OUTSIDE';
-                acc_barriers.shadeColor = BARRIER_COLORS.RED;
-            } else {
-                const obj_barrier = {
-                    key: acc_barriers_key,
-                    title: acc_barriers_key,
-                    shade: CONTRACT_SHADES.ACC,
-                    shadeColor: BARRIER_COLORS.ACC_GREEN,
-                    squareShade: true,
-                    hidePriceLines: true,
-                    draggable: false,
-                    isSingleBarrier: false,
-                };
-                this.barriers.push({
-                    ...new ChartBarrierStore(this.barrier_1, this.barrier_2, null),
-                    ...obj_barrier,
-                });
-            }
-        } else {
-            removeBarrier(this.barriers, acc_barriers_key);
-        }
-    };
-
-    @action.bound
     onPurchase = debounce(this.processPurchase, 300);
 
     @action.bound
@@ -643,16 +612,6 @@ export default class TradeStore extends BaseStore {
 
                     const last_digit = +this.last_digit;
                     if (response.error) {
-                        if (this.is_accumulator) {
-                            this.setAccumulatorsBarriers({
-                                is_over: false,
-                            });
-                            // setTimeout(() => {
-                            //     this.setAccumulatorsBarriers({
-                            //         is_over: true,
-                            //     });
-                            // }, 10000);
-                        }
                         // using javascript to disable purchase-buttons manually to compensate for mobx lag
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js

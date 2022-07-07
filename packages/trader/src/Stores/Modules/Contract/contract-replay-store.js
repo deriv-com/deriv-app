@@ -95,9 +95,9 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     populateConfig(response) {
-        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        if (!this.switch_account_listener) return;
 
-        if (!this.switch_account_listener && !this.root_store.modules.trade.is_accumulator) return;
+        const dummy_response = getDummyPOCResponseForACC(Date.now());
 
         if (this.root_store.modules.trade.is_accumulator) {
             if ('error' in dummy_response) {

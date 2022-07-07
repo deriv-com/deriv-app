@@ -154,27 +154,27 @@ export default class ContractTradeStore extends BaseStore {
 
     // Called from portfolio
     @action.bound
-    updateProposal(response) {
+    updateProposal(_response) {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
-        let contract_response;
+        let response;
         if (this.root_store.modules.trade.is_accumulator) {
-            contract_response = dummy_response;
+            response = dummy_response;
         } else {
-            contract_response = response;
+            response = _response;
         }
-        if ('error' in contract_response) {
+        if ('error' in response) {
             this.has_error = true;
-            this.error_message = contract_response.error.message;
+            this.error_message = response.error.message;
             return;
         }
         // Update the contract-store corresponding to this POC
-        if (contract_response.proposal_open_contract) {
-            const contract_id = +contract_response.proposal_open_contract.contract_id;
+        if (response.proposal_open_contract) {
+            const contract_id = +response.proposal_open_contract.contract_id;
             const contract = this.contracts_map[contract_id];
-            contract.populateConfig(contract_response.proposal_open_contract);
-            if (contract_response.proposal_open_contract.is_sold) {
+            contract.populateConfig(response.proposal_open_contract);
+            if (response.proposal_open_contract.is_sold) {
                 this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
-                contract.cacheProposalOpenContractResponse(contract_response);
+                contract.cacheProposalOpenContractResponse(response);
             }
         }
     }

@@ -139,35 +139,35 @@ export default class PortfolioStore extends BaseStore {
     }
 
     deepClone = obj => JSON.parse(JSON.stringify(obj));
-    updateContractTradeStore(response) {
+    updateContractTradeStore(_response) {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
-        let contract_response;
+        let response;
         if (this.root_store.modules.trade.is_accumulator) {
-            contract_response = dummy_response;
+            response = dummy_response;
         } else {
-            contract_response = response;
+            response = _response;
         }
         const contract_trade = this.root_store.modules.contract_trade;
-        const has_poc = !isEmptyObject(contract_response.proposal_open_contract);
-        const has_error = !!contract_response.error;
+        const has_poc = !isEmptyObject(response.proposal_open_contract);
+        const has_error = !!response.error;
         if (!has_poc && !has_error) return;
         if (has_poc) {
-            contract_trade.addContract(this.deepClone(contract_response.proposal_open_contract));
-            contract_trade.updateProposal(this.deepClone(contract_response));
+            contract_trade.addContract(this.deepClone(response.proposal_open_contract));
+            contract_trade.updateProposal(this.deepClone(response));
         }
     }
 
-    updateContractReplayStore(response) {
+    updateContractReplayStore(_response) {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
-        let contract_response;
+        let response;
         if (this.root_store.modules.trade.is_accumulator) {
-            contract_response = dummy_response;
+            response = dummy_response;
         } else {
-            contract_response = response;
+            response = _response;
         }
         const contract_replay = this.root_store.modules.contract_replay;
-        if (contract_replay.contract_id === contract_response.proposal_open_contract?.contract_id) {
-            contract_replay.populateConfig(contract_response);
+        if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
+            contract_replay.populateConfig(response);
         }
     }
 

@@ -296,7 +296,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 className='p2p-my-ads__table-popovers__deactivate'
                                 message={localize('Edit')}
                             >
-                                <Icon icon='IcEdit' />
+                                <Icon icon='IcEdit' color={general_store.is_barred && 'disabled'} />
                             </Popover>
                         </div>
                         <div onClick={onClickDelete}>

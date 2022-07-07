@@ -5,7 +5,6 @@ This repository contains the static HTML, Javascript, CSS, and images content of
 **In this documents**
 
 -   [Other documents](#other-documents)
--   [Use a custom domain](#use-a-custom-domain)
 -   [How to work with this project](#how-to-work-with-this-project)
     -   [Deploy to your gh-pages for the first time](#deploy-to-your-gh-pages-for-the-first-time)
     -   [Deploy to root of gh-pages](#deploy-to-root-of-gh-pages)
@@ -17,10 +16,6 @@ This repository contains the static HTML, Javascript, CSS, and images content of
 ## Other documents
 
 -   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding help, etc.)
-
-## Use a custom domain
-
-To use your custom domain, please put it in a file named `CNAME` inside the `scripts` folder of your local clone of deriv-app.
 
 ## How to work with this project
 

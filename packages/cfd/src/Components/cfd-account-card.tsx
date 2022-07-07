@@ -161,7 +161,6 @@ const CFDAccountCardComponent = ({
     commission_message,
     descriptor,
     dxtrade_tokens,
-    is_hovered,
     existing_accounts_data,
     has_banner,
     has_cfd_account,
@@ -173,7 +172,6 @@ const CFDAccountCardComponent = ({
     is_logged_in,
     is_virtual,
     is_eu,
-    onHover,
     platform,
     title,
     type,
@@ -184,14 +182,7 @@ const CFDAccountCardComponent = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
-    const existing_data =
-        type.category === 'real'
-            ? //@ts-ignore
-              existing_accounts_data?.length
-                ? //@ts-ignore
-                  existing_accounts_data[0]
-                : undefined
-            : existing_accounts_data;
+    const existing_data = type.category === 'real' ? existing_accounts_data?.[0] : existing_accounts_data;
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
     const has_popular_banner: boolean =
@@ -209,27 +200,6 @@ const CFDAccountCardComponent = ({
     const ref = React.useRef<HTMLDivElement | null>(null);
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
     const button_ref = React.useRef<HTMLDivElement | null>(null);
-
-    React.useEffect(() => {
-        const ref_current = ref?.current;
-        const button_ref_current = button_ref?.current;
-        if (existing_data) {
-            const show = () => {
-                onHover?.((existing_data as DetailsOfEachMT5Loginid).group);
-            };
-
-            ref_current?.addEventListener('mouseenter', show);
-            button_ref_current?.addEventListener('mouseenter', show);
-
-            return () => {
-                ref_current?.removeEventListener('mouseenter', show);
-                button_ref_current?.removeEventListener('mouseenter', () => show);
-            };
-        }
-        return () => {
-            // Curly brackets could not be empty due to the sonarcloud code smells
-        };
-    }, [onHover, existing_data]);
 
     const handleClickSwitchAccount: () => void = () => {
         toggleShouldShowRealAccountsList?.(true);
@@ -351,7 +321,10 @@ const CFDAccountCardComponent = ({
                                                 type='button'
                                                 href={
                                                     platform === CFD_PLATFORMS.DXTRADE
-                                                        ? getDXTradeWebTerminalLink(type.category)
+                                                        ? getDXTradeWebTerminalLink(
+                                                              type.category,
+                                                              dxtrade_tokens[type.category as 'demo' | 'real']
+                                                          )
                                                         : getMT5WebTerminalLink({
                                                               category: type.category,
                                                               loginid: (existing_data as TTradingPlatformAccounts)
@@ -373,7 +346,6 @@ const CFDAccountCardComponent = ({
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'real' &&
-                            //@ts-ignore
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {existing_data?.display_balance && is_logged_in && (
@@ -403,7 +375,10 @@ const CFDAccountCardComponent = ({
                                                 type='button'
                                                 href={
                                                     platform === CFD_PLATFORMS.DXTRADE
-                                                        ? getDXTradeWebTerminalLink(type.category)
+                                                        ? getDXTradeWebTerminalLink(
+                                                              type.category,
+                                                              dxtrade_tokens[type.category as 'demo' | 'real']
+                                                          )
                                                         : getMT5WebTerminalLink({
                                                               category: type.category,
                                                               loginid: (existing_data as TTradingPlatformAccounts)
@@ -488,16 +463,10 @@ const CFDAccountCardComponent = ({
                                 <a
                                     className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                     type='button'
-                                    href={
-                                        platform === CFD_PLATFORMS.DXTRADE
-                                            ? getDXTradeWebTerminalLink(type.category)
-                                            : getMT5WebTerminalLink({
-                                                  category: type.category,
-                                                  loginid: (existing_data as TTradingPlatformAccounts).display_login,
-                                                  server_name: (existing_data as DetailsOfEachMT5Loginid)?.server_info
-                                                      ?.environment,
-                                              })
-                                    }
+                                    href={getDXTradeWebTerminalLink(
+                                        type.category,
+                                        dxtrade_tokens[type.category as 'demo' | 'real']
+                                    )}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
@@ -546,7 +515,7 @@ const CFDAccountCardComponent = ({
             </div>
             <DesktopWrapper>
                 <CSSTransition
-                    in={is_hovered && should_show_trade_servers}
+                    in={should_show_trade_servers}
                     timeout={0}
                     classNames='cfd-account-card__add-server'
                     unmountOnExit

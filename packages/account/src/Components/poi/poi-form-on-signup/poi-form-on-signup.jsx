@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IdvDocSubmitOnSignup from './idv-doc-submit-on-signup';
+
 export const ProofOfIdentityFormOnSignup = ({
     getCurrentStep,
     goToPreviousStep,

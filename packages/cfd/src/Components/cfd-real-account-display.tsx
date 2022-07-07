@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
@@ -94,8 +94,6 @@ const CFDRealAccountDisplay = ({
         has_real_account &&
         can_have_more_real_synthetic_mt5 &&
         platform === CFD_PLATFORMS.MT5;
-    const [active_hover, setActiveHover] = React.useState(0);
-
     const has_required_credentials = React.useMemo(() => {
         const { citizen, tax_identification_number, tax_residence } = account_settings;
 
@@ -144,17 +142,6 @@ const CFDRealAccountDisplay = ({
             }),
         });
 
-    const handleHoverCard = (name: string | undefined) => {
-        const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
-            key.startsWith(`${platform}.real.synthetic`)
-        );
-        setActiveHover(
-            (real_synthetic_accounts_list as Array<string>).findIndex(
-                t => (current_list[t] as DetailsOfEachMT5Loginid).group === name
-            )
-        );
-    };
-
     const isMT5AccountCardDisabled = (sub_account_type: string) => {
         if (has_cfd_account_error) return true;
 
@@ -176,12 +163,12 @@ const CFDRealAccountDisplay = ({
 
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial@') => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
-            ? (Object.keys(current_list)
+            ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
-                  .reduce((acc, cur) => {
-                      acc.push(current_list[cur]);
-                      return acc;
-                  }, [] as DetailsOfEachMT5Loginid[]) as TExistingData)
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
+                  }, [] as DetailsOfEachMT5Loginid[])
             : undefined;
 
         return acc;
@@ -209,7 +196,6 @@ const CFDRealAccountDisplay = ({
             platform={platform}
             descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movement.')}
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
-            onHover={handleHoverCard}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}

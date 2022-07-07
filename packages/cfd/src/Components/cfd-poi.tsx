@@ -41,8 +41,8 @@ export type TCFDPOIProps = {
 
 const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
     const [poi_state, setPOIState] = React.useState<string>('none');
-    const citizen = props.account_settings.citizen || props.account_settings.country_code;
-    const citizen_data = props.residence_list.find(item => item.value === citizen);
+    const citizen = props.account_settings?.citizen || props.account_settings?.country_code;
+    const citizen_data = props.residence_list?.find(item => item.value === citizen);
 
     const onStateChange = (status: string) => {
         setPOIState(status);

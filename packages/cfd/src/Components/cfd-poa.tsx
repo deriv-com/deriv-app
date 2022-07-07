@@ -13,16 +13,7 @@ import {
     MobileWrapper,
     useStateCallback,
 } from '@deriv/components';
-import {
-    FileUploaderContainer,
-    FormSubHeader,
-    PoaExpired,
-    PoaNeedsReview,
-    PoaVerified,
-    PoaUnverified,
-    PoaSubmitted,
-    PoaStatusCodes,
-} from '@deriv/account';
+import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
@@ -44,9 +35,10 @@ type TFile = {
 };
 
 type TObjDocumentFile = {
-    errors: Array<TErrors>;
+    errors: TErrors[];
     file: TFile;
 };
+
 type TFormValuesInputs = {
     address_city?: string;
     address_line_1?: string;
@@ -80,16 +72,14 @@ type TApiResponse = {
 
 type TStoreProofOfAddress = (file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>) => void;
 
-type TCFDPOAProps = {
+export type TCFDPOAProps = {
     onSave: (index: number, values: TFormValues) => void;
-    onCancel: () => void;
     index: number;
     onSubmit: (index: number, value: TFormValues, setSubmitting?: boolean | ((isSubmitting: boolean) => void)) => void;
     refreshNotifications: () => void;
     form_error: string;
     get_settings: GetSettings;
     height: string;
-    is_loading: boolean;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
@@ -98,9 +88,9 @@ type TUpload = {
     upload: () => void;
 };
 
-let file_uploader_ref: React.RefObject<(HTMLElement | null) & TUpload>;
+let file_uploader_ref: React.RefObject<HTMLElement & TUpload>;
 
-const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
+const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -173,16 +163,11 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         return errors;
     };
 
-    const handleCancel = (values: TFormValues) => {
-        onSave(index, values);
-        onCancel();
-    };
-
     const onFileDrop = (
         files: TObjDocumentFile,
         error_message: string,
         setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void,
-        setFieldValue: (field: string, files: TObjDocumentFile) => void,
+        setFieldValue: (field: string, files_array: TObjDocumentFile) => void,
         values: TFormValues
     ) => {
         setFieldTouched('document_file', true);
@@ -206,7 +191,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     };
 
     const onSubmitValues = async (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
-        const { document_file, ...uploadables } = values;
+        const { ...uploadables } = values;
 
         actions.setSubmitting(true);
         const data = await WS.setSettings(uploadables);
@@ -242,48 +227,34 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 actions.setSubmitting(false);
                 return;
             }
-            const { error: e, get_account_status } = await WS.authorized.storage.getAccountStatus();
+            const { error: e } = await WS.authorized.storage.getAccountStatus();
             if (e) {
                 setFormState({ ...form_state, ...{ form_error: error.message } });
                 actions.setSubmitting(false);
                 return;
             }
-            const { identity } = get_account_status.authentication;
-            const _has_poi = !(identity && identity.status === 'none');
-            if (_has_poi) {
-                onProceed();
-            } else {
-                setFormState({
-                    ...form_state,
-                    ...{
-                        form_error: localize(
-                            'Identity confirmation failed. You will be redirected to the previous step.'
-                        ),
-                    },
-                });
-                setTimeout(() => {
-                    handleCancel(get_settings);
-                }, 3000);
-            }
+            onProceed();
         } catch (e: unknown) {
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
-        actions.setSubmitting(false);
         onSave(index, values);
-        onSubmit(index, values, actions.setSubmitting);
+        onSubmit(index, values, false);
     };
 
     // didMount hook
     React.useEffect(() => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
-                const { get_account_status } = response;
-                const { document, identity } = get_account_status?.authentication!;
-                const __has_poi = !!(identity && identity.status === 'none');
-                setFormState({ ...form_state, ...{ poa_status: document?.status, __has_poi } }, () => {
-                    setIsLoading(false);
-                    refreshNotifications();
-                });
+                const poa_status = response.get_account_status?.authentication?.document?.status;
+                const poi_status = response.get_account_status?.authentication?.identity?.status;
+
+                if (poa_status && poi_status) {
+                    const needs_poi = poi_status === 'none';
+                    setFormState({ ...form_state, ...{ poa_status, needs_poi, identity_status: poi_status } }, () => {
+                        setIsLoading(false);
+                        refreshNotifications();
+                    });
+                }
             });
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -296,16 +267,11 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
         return Object.keys(errors).length !== 0;
     };
 
-    const handleResubmit = () => {
-        setFormState({ ...form_state, ...{ resubmit_poa: true } });
-    };
-
     const {
         states_list,
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
     } = props;
-
-    const { form_error, has_poi, poa_status, resubmit_poa, submitted_poa } = form_state;
+    const { form_error, poa_status, resubmit_poa } = form_state;
 
     const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
 
@@ -481,29 +447,10 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                             </div>
                                         </ThemedScrollbars>
                                     )}
-                                    {poa_status !== PoaStatusCodes.none && !resubmit_poa && (
-                                        <ThemedScrollbars height={height} is_bypassed={isMobile()}>
-                                            {submitted_poa && (
-                                                <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.pending && (
-                                                <PoaNeedsReview is_description_enabled={false} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.verified && (
-                                                <PoaVerified is_description_enabled={false} has_poi={has_poi} />
-                                            )}
-                                            {poa_status === PoaStatusCodes.expired && (
-                                                <PoaExpired onClick={handleResubmit} />
-                                            )}
-                                            {(poa_status === PoaStatusCodes.rejected ||
-                                                poa_status === PoaStatusCodes.suspected) && <PoaUnverified />}
-                                        </ThemedScrollbars>
-                                    )}
+
                                     <Modal.Footer is_bypassed={isMobile()}>
-                                        {(poa_status === PoaStatusCodes.verified || is_form_visible) && (
+                                        {(poa_status === PoaStatusCodes.none || is_form_visible) && (
                                             <FormSubmitButton
-                                                has_cancel
-                                                cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     isFormDisabled(dirty, errors) ||
                                                     (poa_status !== PoaStatusCodes.verified &&
@@ -519,7 +466,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}
                                                 form_error={form_error}
-                                                onCancel={() => handleCancel(values as TFormValues)}
                                             />
                                         )}
                                     </Modal.Footer>

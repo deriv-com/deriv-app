@@ -1130,19 +1130,20 @@
     }
 }
 
-.cfd-financial-stp-modal,
-.cfd-personal-details-modal {
-    display: grid;
-    grid-template-rows: 13rem minmax(10rem, 1fr);
+.cfd-financial-stp-modal {
+    display: flex;
     height: 100%;
     position: relative;
     width: 100%;
-
+    padding: 3rem;
     .dc-modal-footer {
         position: fixed;
         padding: unset;
         bottom: 1.6rem;
         right: 1.6rem;
+    }
+    &__body {
+        width: 100%;
     }
 
     &__form {

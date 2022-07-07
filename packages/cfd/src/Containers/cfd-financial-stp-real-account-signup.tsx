@@ -1,12 +1,11 @@
 import React from 'react';
-import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CFDPOA from '../Components/cfd-poa';
-import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
+import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
-import { LandingCompany, ResidenceList, GetSettings, StatesList } from '@deriv/api-types';
+import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
 import RootStore from 'Stores/index';
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -21,12 +20,6 @@ type TRemoveNotificationMessage = {
     should_show_again: boolean;
 };
 
-type TIndexLookupObject = {
-    CFDPersonalDetailsForm: number;
-    CFDPOI: number;
-    CFDPOA: number;
-};
-
 type TGetSettings = GetSettings & {
     upload_file?: string;
     poi_state?: string;
@@ -34,7 +27,7 @@ type TGetSettings = GetSettings & {
 
 type TCFDFinancialStpRealAccountSignupProps = {
     addNotificationByKey: (key: string) => void;
-    authentication_status: () => TAuthenticationStatus;
+    authentication_status: TAuthenticationStatus;
     get_settings: TGetSettings;
     client_email: string;
     is_fully_authenticated: boolean;
@@ -46,7 +39,9 @@ type TCFDFinancialStpRealAccountSignupProps = {
     residence_list: ResidenceList;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddressArgs;
-    toggleModal: () => void;
+    fetchStatesList: () => void;
+    account_status: GetAccountStatus;
+    onFinish: () => void;
 };
 
 type TSetSubmiting = (isSubmitting: boolean) => void;
@@ -55,85 +50,60 @@ type TNextStep = (submitting: TSetSubmiting) => void;
 
 type TItemsState = {
     header: { [key: string]: string };
-    body: typeof CFDPersonalDetailsForm | typeof CFDPOI | typeof CFDPOA;
+    body: ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => JSX.Element;
     form_value: { [key: string]: string | undefined };
-    props: Array<TItemsProps>;
-};
-
-type TItemsProps =
-    | 'residence_list'
-    | 'is_fully_authenticated'
-    | 'landing_company'
-    | 'addNotificationByKey'
-    | 'authentication_status'
-    | 'refreshNotifications'
-    | 'removeNotificationMessage'
-    | 'removeNotificationByKey'
-    | 'states_list'
-    | 'get_settings'
-    | 'storeProofOfAddress';
-
-type TgetCurrentProps = 'header' | 'body' | 'props' | 'form_value';
-const index_lookup: TIndexLookupObject = {
-    CFDPersonalDetailsForm: 0,
-    CFDPOI: 1,
-    CFDPOA: 2,
+    forwarded_props: Array<Partial<keyof TCFDFinancialStpRealAccountSignupProps>>;
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    const { refreshNotifications } = props;
+    const { refreshNotifications, authentication_status, fetchStatesList } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
-    const [is_loading, setIsLoading] = React.useState<boolean>(false);
-    const [items, setItems] = React.useState<TItemsState[]>([
-        {
-            header: {
-                active_title: localize('Complete your personal details'),
-                title: localize('Personal details'),
-            },
-            body: CFDPersonalDetailsForm,
-            form_value: {
-                citizen: '',
-                tax_residence: '',
-                tax_identification_number: '',
-                account_opening_reason: '',
-            },
-            props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
+
+    const poi_config: TItemsState = {
+        header: {
+            active_title: localize('Complete your proof of identity'),
+            title: localize('Proof of identity'),
         },
-        {
-            header: {
-                active_title: localize('Complete your proof of identity'),
-                title: localize('Proof of identity'),
-            },
-            body: CFDPOI,
-            form_value: {
-                poi_state: 'unknown',
-            },
-            props: [
-                'addNotificationByKey',
-                'authentication_status',
-                'refreshNotifications',
-                'removeNotificationMessage',
-                'removeNotificationByKey',
-            ],
+        body: CFDPOI,
+        form_value: {
+            poi_state: 'unknown',
         },
-        {
-            header: {
-                active_title: localize('Complete your proof of address'),
-                title: localize('Proof of address'),
-            },
-            body: CFDPOA,
-            form_value: {
-                address_line_1: props.get_settings.address_line_1,
-                address_line_2: props.get_settings.address_line_2,
-                address_city: props.get_settings.address_city,
-                address_state: props.get_settings.address_state,
-                address_postcode: props.get_settings.address_postcode,
-                upload_file: '',
-            },
-            props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+        forwarded_props: [
+            'addNotificationByKey',
+            'authentication_status',
+            'refreshNotifications',
+            'removeNotificationMessage',
+            'removeNotificationByKey',
+        ],
+    };
+
+    const poa_config: TItemsState = {
+        header: {
+            active_title: localize('Complete your proof of address'),
+            title: localize('Proof of address'),
         },
-    ]);
+        body: CFDPOA,
+        form_value: {
+            address_line_1: props.get_settings.address_line_1,
+            address_line_2: props.get_settings.address_line_2,
+            address_city: props.get_settings.address_city,
+            address_state: props.get_settings.address_state,
+            address_postcode: props.get_settings.address_postcode,
+            upload_file: '',
+        },
+        forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+    };
+
+    const should_show_poi = !(
+        authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified'
+    );
+    const should_show_poa = !(
+        authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
+    );
+    const verification_configs = [...(should_show_poi ? [poi_config] : []), ...(should_show_poa ? [poa_config] : [])];
+
+    const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
 
     const state_index = step;
 
@@ -141,13 +111,12 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         setFormError('');
     };
 
-    const nextStep: TNextStep = () => {
+    const nextStep: TNextStep = async () => {
         clearError();
         if (step + 1 < items.length) {
             setStep(step + 1);
         } else {
-            props.openPendingDialog();
-            props.toggleModal();
+            props.onFinish();
         }
     };
 
@@ -158,95 +127,40 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const updateValue = async (
         index: number,
         value: { [key: string]: string | undefined },
-        setSubmitting: TSetSubmiting,
-        is_dirty = true
+        setSubmitting: TSetSubmiting
     ) => {
-        if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
-            // Set account settings
-            const data = await WS.setSettings(value);
-            if (data.error) {
-                setFormError(data.error.message);
-                setSubmitting(false);
-                return;
-            }
-            initiatePersonalDetails(setSubmitting);
-        }
-        if (index === 0) await WS.triggerMt5DryRun({ email: props.client_email });
         saveFormData(index, value);
         nextStep(setSubmitting);
-    };
-
-    const initiatePersonalDetails = async (setSubmitting?: TSetSubmiting) => {
-        // force request to update settings cache since settings have been updated
-        const response = await WS.authorized.storage.getSettings();
-
-        if (response.error) {
-            setFormError(response.error.message);
-            if (typeof setSubmitting === 'function') {
-                setSubmitting(false);
-            }
-            return;
-        }
-
-        const cloned: Array<TItemsState> = Object.assign([], items);
-        if (response.get_settings.citizen) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(response.get_settings.citizen);
-        }
-        if (response.get_settings.tax_residence) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(
-                response.get_settings.tax_residence
-            );
-        }
-        if (response.get_settings.tax_identification_number) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
-                response.get_settings.tax_identification_number;
-        }
-        if (response.get_settings.account_opening_reason) {
-            cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
-                response.get_settings.account_opening_reason;
-        }
-        setItems(cloned);
     };
 
     React.useEffect(() => {
         refreshNotifications();
     }, [items, refreshNotifications]);
 
-    const transform = (value: string | undefined) => {
-        const [result] = props.residence_list.filter(item => item.value === value);
-        return getPropertyValue(result, ['text']) || value;
-    };
-
     React.useEffect(() => {
-        if (state_index === index_lookup.CFDPersonalDetailsForm) {
-            setIsLoading(true);
-            initiatePersonalDetails().then(() => {
-                setIsLoading(false);
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        fetchStatesList();
+    }, [fetchStatesList]);
 
-    const getCurrent = (key?: TgetCurrentProps) => {
+    const getCurrent = (key?: keyof TItemsState) => {
         return key ? items[state_index][key] : items[state_index];
     };
 
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
-        const cloned_items: Array<TItemsState> = Object.assign([], items);
+        const cloned_items: TItemsState[] = [...items];
         cloned_items[index].form_value = value;
-        if (state_index === index_lookup.CFDPersonalDetailsForm) {
-            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.citizen = transform(value.citizen);
-
-            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = transform(value.tax_residence);
-        }
         setItems(cloned_items);
     };
-    const BodyComponent = getCurrent('body') as TItemsState['body'];
+    const BodyComponent = getCurrent('body') as React.FunctionComponent<any>;
     const form_value = getCurrent('form_value');
 
-    const passthrough = ((getCurrent('props') || []) as TItemsState['props']).reduce((arr, item) => {
-        return Object.assign(arr, { [item]: props[item as keyof TCFDFinancialStpRealAccountSignupProps] });
-    }, {});
+    const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
+        (forwarded_prop, item) => {
+            return Object.assign(forwarded_prop, {
+                [item]: props[item],
+            });
+        },
+        {}
+    );
     const height = 'auto';
 
     return (
@@ -256,41 +170,12 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             is_disabled={isDesktop()}
             height_offset='40px'
         >
-            <div className='cfd-financial-stp-modal__heading'>
-                {getCurrent() && (
-                    <>
-                        <DesktopWrapper>
-                            <FormProgress steps={items} current_step={step} />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <div className='cfd-financial-stp-modal__header-steps'>
-                                <h4 className='cfd-financial-stp-modal__header-steps-title'>
-                                    <Localize
-                                        i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
-                                        values={{
-                                            step: step + 1,
-                                            steps: items.length,
-                                            step_title: items[step].header.title,
-                                        }}
-                                    />
-                                </h4>
-                                {items[step].header.active_title && (
-                                    <h4 className='cfd-financial-stp-modal__header-steps-subtitle'>
-                                        {items[step].header.active_title}
-                                    </h4>
-                                )}
-                            </div>
-                        </MobileWrapper>
-                    </>
-                )}
-            </div>
             <div className='cfd-financial-stp-modal__body'>
                 <BodyComponent
                     value={form_value}
                     index={state_index}
                     onSubmit={updateValue}
                     height={height}
-                    is_loading={is_loading}
                     onCancel={prevStep}
                     onSave={saveFormData}
                     form_error={form_error}
@@ -314,5 +199,7 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     removeNotificationByKey: notifications.removeNotificationByKey,
     residence_list: client.residence_list,
     states_list: client.states_list,
+    fetchStatesList: client.fetchStatesList,
     storeProofOfAddress: cfd.storeProofOfAddress,
+    account_status: client.account_status,
 }))(CFDFinancialStpRealAccountSignup);

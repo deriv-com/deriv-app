@@ -17,9 +17,9 @@ const shouldShowFinancialDetails = ({ real_account_signup_target }) => real_acco
 const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
     real_account_signup_target !== 'samoa';
 
-const shouldShowIdentityInformation = ({ account_settings, residence_list }) => {
-    const citizen = { account_settings };
-    const country = residence_list.find(residence => residence.value === account_settings.citizen);
+const shouldShowIdentityInformation = ({ account_settings, residence, residence_list }) => {
+    const citizen = account_settings.citizen || residence;
+    const country = residence_list.find(item => item.value === citizen);
     return citizen && country?.identity?.services?.idv?.is_country_supported;
 };
 

@@ -392,3 +392,21 @@
         margin-top: 4rem;
     }
 }
+
+.dc-modal__container_cfd-financial-stp-modal {
+    .dc-modal-header {
+        border-bottom: 1px solid var(--general-section-1);
+    }
+}
+.poi-poa-submitted__message-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+    padding: 10rem 3rem 7rem;
+    line-height: 5rem;
+    .dc-btn {
+        margin-top: 2rem;
+    }
+}

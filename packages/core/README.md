@@ -21,15 +21,11 @@ This repository contains the static HTML, Javascript, CSS, and images content of
 
 ### Deploy to your gh-pages for the first time
 
-1.  Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your Github pages after login. Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL. If you're using a custom domain, replace the Github URLs above with your domain and remove the `deriv-app` base path.
+1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your Github pages after login. Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL. If you're using a custom domain, replace the Github URLs above with your domain and remove the `deriv-app` base path.
 
-2.  In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
+2. Set `NODE_ENV` to `development` with `export NODE_ENV=development`
 
-    -   **NOTE:** To avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`
-
-3.  Set `NODE_ENV` to `development` with `export NODE_ENV=development`
-
-4.  Run `npm run deploy:clean`
+3. Run `npm run deploy:clean`
 
 ### Deploy to the root of gh-pages
 

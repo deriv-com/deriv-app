@@ -11,7 +11,6 @@ const FileUploader = ({
     name,
     error,
     validateField,
-    disableSubmitButton,
     index,
     sub_index,
     updateErrors,
@@ -42,7 +41,6 @@ const FileUploader = ({
         handleFile(name, '');
         updateErrors(index, sub_index);
         validateField('files');
-        disableSubmitButton();
     };
     return (
         <div className={`file-uploader ${class_name}`}>

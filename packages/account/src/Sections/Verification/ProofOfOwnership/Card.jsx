@@ -5,18 +5,9 @@ import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
 
-const Card = ({
-    card,
-    handleChange,
-    handleBlur,
-    values,
-    setFieldValue,
-    index,
-    error,
-    validateField,
-    disableSubmitButton,
-    updateErrors,
-}) => {
+const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error, validateField, updateErrors }) => {
+    const card_details = paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other;
+    values.data[index].files_required = card_details.documents_required;
     const onClickHandler = e => {
         e.preventDefault();
         setIsOpen(!is_open);
@@ -40,12 +31,7 @@ const Card = ({
             role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
-                <Icon
-                    icon={paymentMethodConfig[card.payment_method]?.icon || paymentMethodConfig.other.icon}
-                    className='proof-of-ownership__card-item-logo'
-                    width={64}
-                    height={58}
-                />
+                <Icon icon={card_details?.icon} className='proof-of-ownership__card-item-logo' width={64} height={58} />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
                     {card?.payment_method || 'Payment method'}
                 </Text>
@@ -60,7 +46,7 @@ const Card = ({
             </div>
             {is_open && (
                 <ExpandedCard
-                    card_details={paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other}
+                    card_details={card_details}
                     identifier={card.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
@@ -69,7 +55,6 @@ const Card = ({
                     index={index}
                     error={error}
                     validateField={validateField}
-                    disableSubmitButton={disableSubmitButton}
                     updateErrors={updateErrors}
                 />
             )}
@@ -86,7 +71,6 @@ Card.propTypes = {
     index: PropTypes.number,
     error: PropTypes.object,
     validateField: PropTypes.func,
-    disableSubmitButton: PropTypes.func,
     updateErrors: PropTypes.func,
 };
 

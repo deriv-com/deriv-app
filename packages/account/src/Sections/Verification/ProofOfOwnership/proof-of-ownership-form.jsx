@@ -21,7 +21,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
     const initial_values = {};
     const [is_disabled, setIsDisabled] = React.useState(true);
     initial_values.data = cards?.map(item => {
-        return { id: item.id, files: [], identifier: item.payment_method_identifier };
+        return { id: item.id, files: [], identifier: item.payment_method_identifier, files_required: 1 };
     });
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
     const form_ref = useRef();
@@ -58,7 +58,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                     };
                 }
             });
-            if (is_file_uploaded === true) {
+            if (is_file_uploaded && element.files_required === element.files.length) {
                 checked_indices.push(index);
             }
         });
@@ -69,9 +69,6 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
         }
         setIsDisabled(!is_file_uploaded || errors?.data?.length > 0);
         return errors;
-    };
-    const disableSubmitButton = () => {
-        setIsDisabled(true);
     };
     const updateErrors = (index, sub_index) => {
         const errors = {};
@@ -84,6 +81,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
             }
         }
         setDocumentUploadErrors(errors?.data);
+        setIsDisabled(true);
     };
     const handleSubmit = async () => {
         try {
@@ -134,6 +132,9 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                                 };
                                 setDocumentUploadErrors(form_ref.current.errors.data);
                                 form_ref.current.validateForm();
+                            } else {
+                                // eslint-disable-next-line no-console
+                                console.warn(response);
                             }
                         }
                         setFormState({ ...form_state, ...{ is_btn_loading: false } });
@@ -180,7 +181,6 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                                                 card={card}
                                                 setFieldValue={setFieldValue}
                                                 validateField={validateField}
-                                                disableSubmitButton={disableSubmitButton}
                                                 updateErrors={updateErrors}
                                             />
                                         </div>

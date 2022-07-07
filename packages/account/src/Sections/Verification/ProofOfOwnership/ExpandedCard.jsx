@@ -16,7 +16,6 @@ const ExpandedCard = ({
     index,
     error,
     validateField,
-    disableSubmitButton,
     updateErrors,
 }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
@@ -108,7 +107,6 @@ const ExpandedCard = ({
                                         name={`data[${index}].files[${i}].file`}
                                         error={error?.files[i]?.file}
                                         validateField={validateField}
-                                        disableSubmitButton={disableSubmitButton}
                                         index={index}
                                         sub_index={i}
                                         updateErrors={updateErrors}
@@ -139,7 +137,6 @@ ExpandedCard.propTypes = {
     index: PropTypes.number,
     error: PropTypes.object,
     validateField: PropTypes.func,
-    disableSubmitButton: PropTypes.func,
     updateErrors: PropTypes.func,
 };
 

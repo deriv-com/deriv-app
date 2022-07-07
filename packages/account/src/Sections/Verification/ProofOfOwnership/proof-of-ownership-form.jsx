@@ -119,18 +119,18 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                         if (response.warning) {
                             if (response.warning.trim() === 'DuplicateUpload') {
                                 form_ref.current.errors.data = document_upload_errors;
-                                if (typeof form_ref.current.errors.data[index] !== 'object') {
-                                    form_ref.current.errors.data[index] = {};
+                                const { data: form_errors } = form_ref?.current?.errors;
+                                if (typeof form_errors[index] !== 'object') {
+                                    form_errors[index] = {};
                                 }
-                                form_ref.current.errors.data[index].files = Array.isArray(
-                                    form_ref.current.errors.data[index].files
-                                )
-                                    ? form_ref.current.errors.data[index].files
+                                form_errors[index].files = Array.isArray(form_errors[index].files)
+                                    ? form_errors[index].files
                                     : [];
-                                form_ref.current.errors.data[index].files[sub_index] = {
+                                form_errors[index].files[sub_index] = {
                                     file: localize(response.message),
                                 };
-                                setDocumentUploadErrors(form_ref.current.errors.data);
+                                setDocumentUploadErrors(form_errors);
+                                form_ref.current.setErrors(form_errors);
                                 form_ref.current.validateForm();
                             } else {
                                 // eslint-disable-next-line no-console

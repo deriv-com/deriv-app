@@ -22,19 +22,6 @@
                 margin-top: 7.2rem;
             }
         }
-        &-hide-tabs {
-            & .dc-tabs__list {
-                display: none;
-            }
-
-            & .dc-tabs__content {
-                margin-top: 0;
-            }
-
-            & .dc-tabs__list--header--tabs--desktop {
-                display: none;
-            }
-        }
         .verification-email__icon {
             margin-top: 2.8rem;
         }

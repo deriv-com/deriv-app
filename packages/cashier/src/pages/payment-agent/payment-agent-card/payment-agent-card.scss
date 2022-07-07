@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     padding: 1.6rem;
-    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
-    border-radius: 0.8rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 16px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
     margin-bottom: 1.6rem;
     & .dc-expansion-panel__header-container {
         align-items: flex-start;
@@ -11,7 +11,7 @@
     & .dc-expansion-panel__header-chevron-icon {
         flex-basis: 5%;
     }
-    &__dark-mode {
+    &--dark {
         background-color: var(--general-section-1);
     }
     &__description-container {

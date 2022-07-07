@@ -14,7 +14,7 @@ const PaymentAgentCard = ({ is_dark_mode_on, payment_agent }) => {
     return (
         <div
             className={classNames('payment-agent-card', {
-                'payment-agent-card__dark-mode': is_dark_mode_on,
+                'payment-agent-card--dark': is_dark_mode_on,
             })}
         >
             <ExpansionPanel message={message} />

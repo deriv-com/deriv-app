@@ -52,8 +52,8 @@ TradeFooterExtensions.propTypes = {
     togglePositionsDrawer: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
-    active_positions_count: modules.portfolio.active_positions_count,
+export default connect(({ client, ui, portfolio }) => ({
+    active_positions_count: portfolio.active_positions_count,
     is_logged_in: client.is_logged_in,
     is_positions_drawer_on: ui.is_positions_drawer_on,
     populateFooterExtensions: ui.populateFooterExtensions,

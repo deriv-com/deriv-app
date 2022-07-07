@@ -109,6 +109,7 @@ DepositLocked.propTypes = {
     is_trading_experience_incomplete: PropTypes.bool,
     is_financial_account: PropTypes.bool,
     onMount: PropTypes.func,
+    standpoint: PropTypes.object,
 };
 
 export default connect(({ client, modules }) => ({

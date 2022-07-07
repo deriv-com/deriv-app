@@ -12,29 +12,30 @@ import {
     isMobile,
     showDigitalOptionsUnavailableError,
     WS,
-} from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import ServerTime from '_common/base/server_time';
-import { processPurchase } from './Actions/purchase';
-import * as Symbol from './Actions/symbol';
-import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
     findFirstOpenMarket,
     showMxMltUnavailableError,
-} from './Helpers/active-symbols';
-import ContractType from './Helpers/contract-type';
-import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
+    convertDurationLimit,
+    resetEndTimeOnVolatilityIndices,
+    getBarrierPipSize,
+    isBarrierSupported,
+    removeBarrier,
+} from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+import ServerTime from '_common/base/server_time';
+import { processPurchase } from './Actions/purchase';
+import * as Symbol from './Actions/symbol';
+
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { getBarrierPipSize } from './Helpers/barrier';
-import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
+import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
-import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 
 const store_name = 'trade_store';
@@ -217,6 +218,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => [this.contract_type],
             () => {
+                this.root_store.portfolio.setContractType(this.contract_type);
                 if (this.contract_type === 'multiplier') {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());
@@ -260,7 +262,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clearContracts = () => {
-        this.root_store.modules.contract_trade.contracts = [];
+        this.root_store.contract_trade.contracts = [];
     };
 
     @action.bound
@@ -268,6 +270,7 @@ export default class TradeStore extends BaseStore {
         this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
         const r = await WS.storage.contractsFor(this.symbol);
@@ -371,6 +374,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         this.root_store.common.setSelectedContractType(this.contract_type);
+        this.root_store.portfolio.setContractType(this.contract_type);
     }
 
     @action.bound
@@ -637,7 +641,7 @@ export default class TradeStore extends BaseStore {
                             const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category.toUpperCase());
                             const contract_type = category.toUpperCase();
-                            this.root_store.modules.contract_trade.addContract({
+                            this.root_store.contract_trade.addContract({
                                 contract_id,
                                 start_time,
                                 longcode,
@@ -646,7 +650,7 @@ export default class TradeStore extends BaseStore {
                                 contract_type,
                                 is_tick_contract,
                             });
-                            this.root_store.modules.portfolio.onBuyResponse({
+                            this.root_store.portfolio.onBuyResponse({
                                 contract_id,
                                 longcode,
                                 contract_type,
@@ -864,8 +868,8 @@ export default class TradeStore extends BaseStore {
                 chart: {
                     toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
                     chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
-                    chart_type: this.root_store.modules.contract_trade.chart_type,
-                    granularity: this.root_store.modules.contract_trade.granularity,
+                    chart_type: this.root_store.contract_trade.chart_type,
+                    granularity: this.root_store.contract_trade.granularity,
                 },
             },
         };
@@ -1168,7 +1172,7 @@ export default class TradeStore extends BaseStore {
         this.disposeThemeChange();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
-        this.root_store.modules.contract_trade.onUnmount();
+        this.root_store.contract_trade.onUnmount();
         this.refresh();
         this.resetErrorServices();
         if (this.root_store.notifications.is_notifications_visible) {

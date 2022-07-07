@@ -161,7 +161,7 @@ const JurisdictionCard = ({
                 className={classNames('cfd-jurisdiction-card', {
                     'cfd-jurisdiction-card--selected': jurisdiction_selected_card === type_of_card,
                 })}
-                onClick={() => cardSelection(`${type_of_card}`)}
+                onClick={disabled ? () => undefined : () => cardSelection(`${type_of_card}`)}
                 style={OneOrTwoCards ? { width: '32em' } : { width: '27.6em' }}
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (

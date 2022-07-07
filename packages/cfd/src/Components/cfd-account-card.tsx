@@ -533,30 +533,30 @@ const CFDAccountCardComponent = ({
                     </div>
                 </div>
                 <React.Fragment>
-                    {should_show_trade_servers && (
-                        <MobileWrapper>
-                            <AddTradeServerButton
-                                ref={button_ref}
-                                onSelectAccount={onSelectAccount}
-                                is_disabled={has_cfd_account_error}
-                            />
-                        </MobileWrapper>
-                    )}
+                    {/* {should_show_trade_servers && ( */}
+                    <MobileWrapper>
+                        <AddTradeServerButton
+                            ref={button_ref}
+                            onSelectAccount={onSelectAccount}
+                            is_disabled={has_cfd_account_error}
+                        />
+                    </MobileWrapper>
+                    {/* )} */}
                 </React.Fragment>
             </div>
             <DesktopWrapper>
-                <CSSTransition
+                {/* <CSSTransition
                     in={is_hovered && should_show_trade_servers}
                     timeout={0}
                     classNames='cfd-account-card__add-server'
                     unmountOnExit
-                >
-                    <AddTradeServerButton
-                        ref={button_ref}
-                        onSelectAccount={onSelectAccount}
-                        is_disabled={has_cfd_account_error}
-                    />
-                </CSSTransition>
+                > */}
+                <AddTradeServerButton
+                    ref={button_ref}
+                    onSelectAccount={onSelectAccount}
+                    is_disabled={has_cfd_account_error}
+                />
+                {/* </CSSTransition> */}
             </DesktopWrapper>
         </div>
     );

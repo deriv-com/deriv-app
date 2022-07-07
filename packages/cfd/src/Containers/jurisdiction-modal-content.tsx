@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import { TExistingData } from 'Components/props.types';
 
 type TAvailableAccountAPI = [
     {
@@ -33,6 +34,8 @@ type TJurisdictionModalContent = {
     is_pending_authentication: boolean;
     checked: boolean;
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+    real_synthetic_accounts_existing_data: TExistingData;
+    real_financial_accounts_existing_data: TExistingData;
 };
 
 type TJurisdictionCard = {
@@ -46,6 +49,7 @@ type TJurisdictionCard = {
     is_pending_authentication: boolean;
     selectTypeOfCard: (card_type: string | undefined) => string | undefined;
     type_of_card: string;
+    disabled: boolean;
 };
 
 const JurisdictionCard = ({
@@ -59,6 +63,7 @@ const JurisdictionCard = ({
     is_pending_authentication,
     selectTypeOfCard,
     type_of_card,
+    disabled,
 }: TJurisdictionCard) => {
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
@@ -68,8 +73,6 @@ const JurisdictionCard = ({
             ? number_of_synthetic_accounts_to_be_shown
             : number_of_financial_accounts_to_be_shown
     );
-
-    const [disabled] = React.useState(false);
 
     const poa_verified = poa_status === PoaStatusCodes.verified;
     const poa_none = poa_status === PoaStatusCodes.none;
@@ -223,6 +226,8 @@ const JurisdictionModalContent = ({
     is_pending_authentication,
     checked,
     setChecked,
+    real_synthetic_accounts_existing_data,
+    real_financial_accounts_existing_data,
 }: TJurisdictionModalContent) => {
     const poa_none = poa_status === PoaStatusCodes.none;
     const poi_none = poi_status === PoaStatusCodes.none;
@@ -232,6 +237,14 @@ const JurisdictionModalContent = ({
             account_type === 'synthetic'
                 ? synthetic_available_accounts.some(account => account.shortcode === type_of_card)
                 : financial_available_accounts.some(account => account.shortcode === type_of_card);
+        return is_available;
+    };
+
+    const disableCard = (type_of_card: string) => {
+        const is_available =
+            account_type === 'synthetic'
+                ? real_synthetic_accounts_existing_data.some(account => account.landing_company_short === type_of_card)
+                : real_financial_accounts_existing_data.some(account => account.landing_company_short === type_of_card);
         return is_available;
     };
 
@@ -321,6 +334,7 @@ const JurisdictionModalContent = ({
                         poa_status={poa_status}
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
+                        disabled={disableCard('bvi')}
                     />
                 )}
 
@@ -336,6 +350,7 @@ const JurisdictionModalContent = ({
                         poa_status={poa_status}
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
+                        disabled={disableCard('mf')}
                     />
                 )}
 
@@ -351,6 +366,7 @@ const JurisdictionModalContent = ({
                         poa_status={poa_status}
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
+                        disabled={disableCard('vanuatu')}
                     />
                 )}
                 {cardsToBeShown('labuan') && (
@@ -365,6 +381,7 @@ const JurisdictionModalContent = ({
                         poa_status={poa_status}
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
+                        disabled={disableCard('labuan')}
                     />
                 )}
 
@@ -380,6 +397,7 @@ const JurisdictionModalContent = ({
                         poa_status={poa_status}
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
+                        disabled={disableCard('svg')}
                     />
                 )}
             </div>
@@ -402,4 +420,6 @@ export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
     selectTypeOfCard: cfd.selectTypeOfCard,
     jurisdiction_selected_card: cfd.jurisdiction_selected_card,
+    real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
+    real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
 }))(JurisdictionModalContent);

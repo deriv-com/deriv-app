@@ -38,6 +38,8 @@ type TCFDRealAccountDisplayProps = {
     isFinancialCardVisible: () => boolean;
     landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
+    realSyntheticAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
+    realFinancialAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
@@ -71,6 +73,8 @@ const CFDRealAccountDisplay = ({
     isFinancialCardVisible,
     landing_companies,
     onSelectAccount,
+    realSyntheticAccountsExistingData,
+    realFinancialAccountsExistingData,
     openAccountTransfer,
     isAccountOfTypeDisabled,
     current_list,
@@ -170,9 +174,11 @@ const CFDRealAccountDisplay = ({
                       return _acc;
                   }, [] as DetailsOfEachMT5Loginid[])
             : undefined;
-
         return acc;
     };
+
+    realSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
+    realFinancialAccountsExistingData(existing_accounts_data('financial@'));
 
     const synthetic_account_items = isSyntheticCardVisible('real') && (
         <CFDAccountCard

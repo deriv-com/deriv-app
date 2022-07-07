@@ -14,6 +14,8 @@ export default class CFDStore extends BaseStore {
     };
 
     @observable new_account_response = {};
+    @observable real_synthetic_accounts_existing_data = [];
+    @observable real_financial_accounts_existing_data = [];
     @observable map_type = {};
     @observable has_cfd_error = false;
     @observable error_message = '';
@@ -422,6 +424,16 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    getRealSyntheticAccountsExistingData(real_synthetic_accounts_existing_data) {
+        this.real_synthetic_accounts_existing_data = real_synthetic_accounts_existing_data;
+    }
+
+    @action.bound
+    getRealFinancialAccountsExistingData(real_financial_accounts_existing_data) {
+        this.real_financial_accounts_existing_data = real_financial_accounts_existing_data;
     }
 
     @action.bound

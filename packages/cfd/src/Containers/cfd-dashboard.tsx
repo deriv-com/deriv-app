@@ -165,6 +165,12 @@ type TCFDDashboardProps = {
     setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     mt5_status_server: TMt5StatusServer;
+    getRealSyntheticAccountsExistingData: (
+        getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
+    ) => void;
+    getRealFinancialAccountsExistingData: (
+        getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
+    ) => void;
     openDerivRealAccountNeededModal: () => void;
 };
 
@@ -389,6 +395,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         mt5_verification_code,
         dxtrade_verification_code,
         mt5_status_server,
+        getRealSyntheticAccountsExistingData,
+        getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
     } = props;
 
@@ -503,6 +511,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 account_status={account_status}
                                                 has_cfd_account={has_cfd_account}
                                                 onSelectAccount={createCFDAccount}
+                                                realSyntheticAccountsExistingData={getRealSyntheticAccountsExistingData}
+                                                realFinancialAccountsExistingData={getRealFinancialAccountsExistingData}
                                                 account_settings={account_settings}
                                                 landing_companies={landing_companies}
                                                 is_virtual={is_virtual}
@@ -726,6 +736,8 @@ export default withRouter(
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
         toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
+        getRealSyntheticAccountsExistingData: modules.cfd.getRealSyntheticAccountsExistingData,
+        getRealFinancialAccountsExistingData: modules.cfd.getRealFinancialAccountsExistingData,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
         residence_list: client.residence_list,

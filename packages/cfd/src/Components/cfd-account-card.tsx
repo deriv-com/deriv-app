@@ -32,22 +32,28 @@ const account_icons: { [key: string]: TAccountIconValues } = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled?: boolean }>(
-    ({ onSelectAccount, is_disabled }, ref) => {
-        return (
-            <div
-                onClick={is_disabled ? () => undefined : onSelectAccount}
-                className={classNames('cfd-account-card__add-server', {
-                    'cfd-account-card__add-server--disabled': is_disabled,
-                })}
-                ref={ref}
-            >
-                <span className='cfd-account-card__add-server--icon'>+</span>
-                <Localize i18n_default_text='Add account' />
-            </div>
-        );
-    }
-);
+const AddTradeServerButton = React.forwardRef<
+    HTMLDivElement,
+    { onSelectAccount: () => void; is_disabled?: boolean; type: string }
+>(({ onSelectAccount, is_disabled, type }, ref) => {
+    return (
+        <div
+            onClick={is_disabled ? () => undefined : onSelectAccount}
+            className={classNames('cfd-account-card__add-server', {
+                'cfd-account-card__add-server--disabled': is_disabled,
+            })}
+            ref={ref}
+        >
+            <span className='cfd-account-card__add-server--icon'>+</span>
+            <Localize
+                i18n_default_text='Add {{type}} account'
+                values={{
+                    type,
+                }}
+            />
+        </div>
+    );
+});
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
@@ -502,30 +508,32 @@ const CFDAccountCardComponent = ({
                     </div>
                 </div>
                 <React.Fragment>
-                    {should_show_trade_servers && (
-                        <MobileWrapper>
-                            <AddTradeServerButton
-                                ref={button_ref}
-                                onSelectAccount={onSelectAccount}
-                                is_disabled={has_cfd_account_error}
-                            />
-                        </MobileWrapper>
-                    )}
+                    {/* {should_show_trade_servers && ( */}
+                    <MobileWrapper>
+                        <AddTradeServerButton
+                            ref={button_ref}
+                            onSelectAccount={onSelectAccount}
+                            is_disabled={has_cfd_account_error}
+                            type={type.type}
+                        />
+                    </MobileWrapper>
+                    {/* )} */}
                 </React.Fragment>
             </div>
             <DesktopWrapper>
-                <CSSTransition
+                {/* <CSSTransition
                     in={should_show_trade_servers}
                     timeout={0}
                     classNames='cfd-account-card__add-server'
                     unmountOnExit
-                >
-                    <AddTradeServerButton
-                        ref={button_ref}
-                        onSelectAccount={onSelectAccount}
-                        is_disabled={has_cfd_account_error}
-                    />
-                </CSSTransition>
+                > */}
+                <AddTradeServerButton
+                    ref={button_ref}
+                    onSelectAccount={onSelectAccount}
+                    is_disabled={has_cfd_account_error}
+                    type={type.type}
+                />
+                {/* </CSSTransition> */}
             </DesktopWrapper>
         </div>
     );

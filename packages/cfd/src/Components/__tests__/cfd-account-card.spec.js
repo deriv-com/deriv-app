@@ -1,6 +1,7 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
+import { localize } from '@deriv/translations';
 
 const mock_connect_props = {
     dxtrade_tokens: {
@@ -108,10 +109,23 @@ const dxtrade_real_synthetic_account = {
     platform: 'dxtrade',
 };
 
+const synthetic_descriptor = 'Trade CFDs on our synthetic indices that simulate real-world market movement.';
+const financial_descriptor =
+    'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.';
+const financial_stp_descriptor =
+    'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).';
+
+const real_synthetic_specs = {
+    leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:1000') },
+    'margin-call': { key: () => localize('Margin call'), value: () => localize('100%') },
+    'stop-out-level': { key: () => localize('Stop out level'), value: () => localize('50%') },
+    'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('20+') },
+};
+
 describe('CFDAccountCard', () => {
     const props = {
         button_label: 'Fund top up',
-        commission_message: 'TESTASDASD',
+        commission_message: 'No commission',
         descriptor: '',
         dxtrade_tokens: {
             demo: '',
@@ -131,14 +145,14 @@ describe('CFDAccountCard', () => {
         is_logged_in: true,
         is_virtual: true,
         onHover: jest.fn(),
-        specs: [],
+        specs: '',
         type: {},
         title: 'Synthetic',
         platform: 'mt5',
         onSelectAccount: jest.fn(),
         onClickFund: jest.fn(),
         onPasswordManager: jest.fn(),
-        should_show_trade_servers: false,
+        should_show_trade_servers: true,
         toggleAccountsDialog: jest.fn(),
         toggleShouldShowRealAccountsList: jest.fn(),
     };
@@ -227,5 +241,116 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/Username/i)).toBeInTheDocument();
         expect(screen.getByText(/374/i)).toBeInTheDocument();
         expect(screen.getByText(/Fund transfer/i)).toBeInTheDocument();
+    });
+
+    it('should not show account details if not logged in, just the platform details ', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} is_logged_in={false} descriptor={synthetic_descriptor} type={type} />);
+        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/Synthetic/i)[0]).toBeInTheDocument();
+        expect(
+            screen.getByText(/Trade CFDs on our synthetic indices that simulate real-world market movement./i)
+        ).toBeInTheDocument();
+        expect(screen.getByText(/No commission/i)).toBeInTheDocument();
+    });
+
+    it('should not show account details if not logged in, just the platform details ', () => {
+        const type = {
+            type: 'financial',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                title='Financial'
+                is_logged_in={false}
+                descriptor={financial_descriptor}
+                type={type}
+            />
+        );
+        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/Financial/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /Trade major \(standard & micro-lots\) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage./i
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByText(/No commission/i)).toBeInTheDocument();
+    });
+
+    it('should not show account details if not logged in, just the platform details ', () => {
+        const type = {
+            type: 'financial_stp',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                title='Financial STP'
+                is_logged_in={false}
+                descriptor={financial_stp_descriptor}
+                type={type}
+            />
+        );
+        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/Financial STP/i)[0]).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /Trade popular currency pairs and cryptocurrencies with straight-through processing order \(STP\)./i
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByText(/No commission/i)).toBeInTheDocument();
+    });
+
+    it('should show server banner', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} existing_data={mt5_real_synthetic_account} type={type} />);
+        expect(screen.getByText(/Asia/i)).toBeInTheDocument();
+    });
+
+    it('should show onClickfund should be called if fund top up is clicked for mt5 real account', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} type={type} existing_data={mt5_real_synthetic_account} />);
+        const fund_transfer_btn = screen.getByText(/Fund transfer/i);
+        fireEvent.click(fund_transfer_btn);
+        expect(props.onClickFund).toHaveBeenCalled();
+    });
+
+    it('should show onclickfund should be called if fund top up is clicked for mt5 demo account', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} type={type} existing_data={mt5_demo_financial_account} />);
+        const fund_top_up_btn = screen.getByText(/Fund top up/i);
+        fireEvent.click(fund_top_up_btn);
+        expect(props.onClickFund).toHaveBeenCalled();
+    });
+
+    it('should open Password Box if change password icon is clicked', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} type={type} existing_data={mt5_real_synthetic_account} />);
+        const change_password_btn = screen.getByText(/IcEdit/i);
+        fireEvent.click(change_password_btn);
+        expect(props.onPasswordManager).toHaveBeenCalled();
     });
 });

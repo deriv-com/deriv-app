@@ -77,7 +77,7 @@ const JurisdictionModal = ({
     is_fully_authenticated,
     is_pending_authentication,
     openPasswordModal,
-    toggleCFDVerificationModal
+    toggleCFDVerificationModal,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState<boolean>(false);
 
@@ -92,12 +92,18 @@ const JurisdictionModal = ({
     const modal_title = is_eu
         ? localize('Jurisdiction for your DMT5 CFDs account')
         : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
-            account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
-        });
+              account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
+          });
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
+
+    const bvi_checks =
+        (poi_status === 'pending' && poa_status !== 'pending') ||
+        (poi_status === 'pending' && poa_status !== 'verified') ||
+        (poa_status === 'pending' && poi_status !== 'pending') ||
+        (poa_status === 'pending' && poi_status !== 'verified');
 
     const onSelectRealAccount = () => {
         const type_of_account = {
@@ -172,12 +178,7 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' &&
-                                            is_pending_authentication &&
-                                            ((poi_status === 'pending' && poa_status !== 'pending') ||
-                                                poa_status !== 'verified')) ||
-                                        (poa_status === 'pending' && poi_status !== 'pending') ||
-                                        poi_status !== 'verified'
+                                        (jurisdiction_selected_card !== 'svg' && bvi_checks)
                                     }
                                     primary
                                     onClick={() => {
@@ -252,5 +253,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     jurisdiction_selected_card: modules.cfd.jurisdiction_selected_card,
     residence: client.residence,
-    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal
+    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
 }))(JurisdictionModal);

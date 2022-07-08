@@ -358,16 +358,13 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         is_dark_mode_on,
         is_eu,
         is_eu_country,
-        is_fully_authenticated,
         is_loading,
         is_logged_in,
         is_logging_in,
         is_mt5_allowed,
         is_dxtrade_allowed,
-        is_pending_authentication,
         is_virtual,
         landing_companies,
-        has_malta_account,
         has_maltainvest_account,
         has_cfd_account,
         has_mt5_real_account_error,
@@ -382,11 +379,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         openAccountNeededModal,
         toggleCFDPersonalDetailsModal,
         residence,
-        residence_list,
         standpoint,
         toggleAccountsDialog,
         toggleShouldShowRealAccountsList,
-        can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies,
         is_reset_trading_password_modal_visible,
         toggleResetTradingPasswordModal,
@@ -497,6 +492,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 />
                                             )}
                                             <CFDRealAccountDisplay
+                                                is_accounts_switcher_on={is_accounts_switcher_on}
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
@@ -513,8 +509,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 onSelectAccount={createCFDAccount}
                                                 realSyntheticAccountsExistingData={getRealSyntheticAccountsExistingData}
                                                 realFinancialAccountsExistingData={getRealFinancialAccountsExistingData}
-                                                account_settings={account_settings}
-                                                landing_companies={landing_companies}
                                                 is_virtual={is_virtual}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
@@ -526,9 +520,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                                                can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                                 residence={residence}
-                                                residence_list={residence_list}
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                                 should_enable_add_button={should_enable_add_button}
                                             />
@@ -725,12 +717,10 @@ export default withRouter(
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,
         has_maltainvest_account: client.has_maltainvest_account,
-        has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,
         account_settings: client.account_settings,
         disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
-        is_pending_authentication: client.is_pending_authentication,
         is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
         is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
@@ -740,7 +730,6 @@ export default withRouter(
         getRealFinancialAccountsExistingData: modules.cfd.getRealFinancialAccountsExistingData,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        residence_list: client.residence_list,
         has_cfd_account: modules.cfd.has_cfd_account,
         has_mt5_real_account_error: client.has_account_error_in_mt5_real_list,
         has_mt5_demo_account_error: client.has_account_error_in_mt5_demo_list,
@@ -760,7 +749,6 @@ export default withRouter(
         onUnmount: modules.cfd.onUnmount,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
-        can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         is_dark_mode_on: ui.is_dark_mode_on,
         disableApp: ui.disableApp,

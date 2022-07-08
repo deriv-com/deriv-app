@@ -32,28 +32,22 @@ const account_icons: { [key: string]: TAccountIconValues } = {
     },
 };
 
-const AddAccountButton = React.forwardRef<
-    HTMLDivElement,
-    { onSelectAccount: () => void; is_disabled?: boolean; type: string }
->(({ onSelectAccount, is_disabled, type }, ref) => {
-    return (
-        <div
-            onClick={is_disabled ? () => undefined : onSelectAccount}
-            className={classNames('cfd-account-card__add-server', {
-                'cfd-account-card__add-server--disabled': is_disabled,
-            })}
-            ref={ref}
-        >
-            <span className='cfd-account-card__add-server--icon'>+</span>
-            <Localize
-                i18n_default_text='Add {{type}} account'
-                values={{
-                    type,
-                }}
-            />
-        </div>
-    );
-});
+const AddAccountButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () => void; is_disabled?: boolean }>(
+    ({ onSelectAccount, is_disabled }, ref) => {
+        return (
+            <div
+                onClick={is_disabled ? () => undefined : onSelectAccount}
+                className={classNames('cfd-account-card__add-server', {
+                    'cfd-account-card__add-server--disabled': is_disabled,
+                })}
+                ref={ref}
+            >
+                <span className='cfd-account-card__add-server--icon'>+</span>
+                <Localize i18n_default_text='Add account' />
+            </div>
+        );
+    }
+);
 
 AddAccountButton.displayName = 'AddAccountButton';
 
@@ -184,13 +178,22 @@ const CFDAccountCardComponent = ({
     onSelectAccount,
     onClickFund,
     onPasswordManager,
-    should_show_trade_servers,
+    can_have_more_real_synthetic_mt5,
+    can_have_more_real_financial_mt5,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
+    const should_show_extra_add_account_button =
+        is_logged_in &&
+        !is_eu &&
+        has_real_account &&
+        platform === CFD_PLATFORMS.MT5 &&
+        !!(type.type === 'synthetic' ? can_have_more_real_synthetic_mt5 : can_have_more_real_financial_mt5);
     const existing_data = type.category === 'real' ? existing_accounts_data?.[0] : existing_accounts_data;
     const platform_icon = is_eu ? 'cfd' : type.type;
-    const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
+    const icon: React.ReactNode | null = type.type ? (
+        <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
+    ) : null;
     const has_popular_banner: boolean =
         type.type === 'synthetic' &&
         type.category === 'real' &&
@@ -508,34 +511,39 @@ const CFDAccountCardComponent = ({
                     </div>
                 </div>
                 <React.Fragment>
-                    {is_logged_in && existing_data && (
+                    {should_show_extra_add_account_button && (
                         <MobileWrapper>
                             <AddAccountButton
                                 ref={button_ref}
                                 onSelectAccount={onSelectAccount}
                                 is_disabled={has_cfd_account_error}
-                                type={type.type}
                             />
                         </MobileWrapper>
                     )}
                 </React.Fragment>
             </div>
-            {is_logged_in && existing_data && (
-                <DesktopWrapper>
+            <DesktopWrapper>
+                <CSSTransition
+                    in={should_show_extra_add_account_button}
+                    timeout={0}
+                    classNames='cfd-account-card__add-server'
+                    unmountOnExit
+                >
                     <AddAccountButton
                         ref={button_ref}
                         onSelectAccount={onSelectAccount}
                         is_disabled={has_cfd_account_error}
-                        type={type.type}
                     />
-                </DesktopWrapper>
-            )}
+                </CSSTransition>
+            </DesktopWrapper>
         </div>
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd } }: RootStore) => ({
+const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
+    can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
+    can_have_more_real_financial_mt5: client.can_have_more_real_financial_mt5,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

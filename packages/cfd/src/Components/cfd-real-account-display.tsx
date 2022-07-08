@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deriv/shared';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TExistingData, TTradingPlatformAccounts } from './props.types.js';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
@@ -26,17 +26,16 @@ type TOpenAccountTransferMeta = {
 
 type TCFDRealAccountDisplayProps = {
     has_real_account: boolean;
+    is_accounts_switcher_on: boolean;
     is_eu: boolean;
     is_eu_country: boolean;
     has_cfd_account_error: boolean;
-    account_settings: GetSettings;
     standpoint: TStandPoint;
     is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
-    landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     realSyntheticAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
     realFinancialAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
@@ -55,9 +54,7 @@ type TCFDRealAccountDisplayProps = {
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
     toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
-    can_have_more_real_synthetic_mt5: boolean;
     residence: string;
-    residence_list: ResidenceList;
     account_status?: object;
     openDerivRealAccountNeededModal: () => void;
     should_enable_add_button?: boolean;
@@ -65,13 +62,13 @@ type TCFDRealAccountDisplayProps = {
 
 const CFDRealAccountDisplay = ({
     has_real_account,
+    is_accounts_switcher_on,
     is_eu,
     is_eu_country,
     has_cfd_account_error,
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    landing_companies,
     onSelectAccount,
     realSyntheticAccountsExistingData,
     realFinancialAccountsExistingData,
@@ -80,40 +77,15 @@ const CFDRealAccountDisplay = ({
     current_list,
     has_cfd_account,
     openPasswordManager,
-    account_settings,
     platform,
     standpoint,
     is_logged_in,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    can_have_more_real_synthetic_mt5,
     residence,
-    residence_list,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
 }: TCFDRealAccountDisplayProps) => {
-    const should_show_trade_servers =
-        is_logged_in &&
-        !is_eu &&
-        has_real_account &&
-        can_have_more_real_synthetic_mt5 &&
-        platform === CFD_PLATFORMS.MT5;
-    const has_required_credentials = React.useMemo(() => {
-        const { citizen, tax_identification_number, tax_residence } = account_settings;
-
-        if (citizen && tax_identification_number && tax_residence) return true;
-
-        if (citizen && tax_residence) {
-            const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
-            return (
-                !is_tin_required ||
-                !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length
-            );
-        }
-
-        return false;
-    }, [account_settings, residence_list, landing_companies]) as boolean;
-
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const financial_specs = React.useMemo(() => {
@@ -186,14 +158,15 @@ const CFDRealAccountDisplay = ({
             has_cfd_account={has_cfd_account}
             has_cfd_account_error={has_cfd_account_error}
             title={localize('Synthetic')}
+            has_real_account={has_real_account}
+            is_accounts_switcher_on={is_accounts_switcher_on}
             is_disabled={isMT5AccountCardDisabled('synthetic')}
+            is_logged_in={is_logged_in}
             type={{
                 category: 'real',
                 type: 'synthetic',
                 platform,
             }}
-            is_logged_in={is_logged_in}
-            should_show_trade_servers={should_show_trade_servers}
             existing_accounts_data={existing_accounts_data('synthetic')}
             commission_message={localize('No commission')}
             onSelectAccount={() => onSelectRealAccount('synthetic')}
@@ -212,6 +185,7 @@ const CFDRealAccountDisplay = ({
         <CFDAccountCard
             key='real.financial'
             has_cfd_account={has_cfd_account}
+            has_real_account={has_real_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
             title={is_eu_user ? localize('CFDs') : localize('Financial')}
             type={{
@@ -227,6 +201,7 @@ const CFDRealAccountDisplay = ({
             platform={platform}
             descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
             specs={financial_specs}
+            is_accounts_switcher_on={is_accounts_switcher_on}
             is_eu={is_eu_user}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}

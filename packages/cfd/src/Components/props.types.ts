@@ -81,7 +81,8 @@ export type TCFDAccountCard = {
         arg4: string,
         arg5: string | undefined
     ) => void;
-    should_show_trade_servers?: boolean;
+    can_have_more_real_synthetic_mt5?: boolean;
+    can_have_more_real_financial_mt5?: boolean;
     toggleAccountsDialog?: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
 };

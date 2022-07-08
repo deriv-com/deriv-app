@@ -65,8 +65,8 @@ const JurisdictionCard = ({
     type_of_card,
     disabled,
 }: TJurisdictionCard) => {
-    const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts.length;
-    const number_of_financial_accounts_to_be_shown = financial_available_accounts.length;
+    const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
+    const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
 
     const [number_of_cards] = React.useState(
         account_type === 'synthetic'

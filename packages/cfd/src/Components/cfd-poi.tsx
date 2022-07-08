@@ -1,4 +1,6 @@
+/* eslint react/prop-types: 0 */
 import { ProofOfIdentityContainerforMt5 } from '@deriv/account';
+import { AutoHeightWrapper } from '@deriv/components';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import React from 'react';
 import RootStore from 'Stores/index';
@@ -27,7 +29,6 @@ export type TCFDPOIProps = {
     account_status?: GetAccountStatus;
     addNotificationByKey: (key: string) => void;
     fetchResidenceList?: () => void;
-    height: string;
     is_switching: boolean;
     is_virtual: boolean;
     onSave: (index: number, values: TFormValues) => void;
@@ -39,7 +40,7 @@ export type TCFDPOIProps = {
     residence_list: ResidenceList;
 };
 
-const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
+const CFDPOI = ({ index, onSave, onSubmit, ...props }: TCFDPOIProps) => {
     const [poi_state, setPOIState] = React.useState<string>('none');
     const citizen = props.account_settings?.citizen || props.account_settings?.country_code;
     const citizen_data = props.residence_list?.find(item => item.value === citizen);
@@ -50,13 +51,19 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
         onSubmit(index, { poi_state }, false);
     };
     return (
-        <ProofOfIdentityContainerforMt5
-            {...props}
-            height={height}
-            is_from_external={true}
-            onStateChange={(status: string) => onStateChange(status)}
-            citizen_data={citizen_data}
-        />
+        <AutoHeightWrapper default_height={620}>
+            {({ setRef, height }: { setRef: React.MutableRefObject<HTMLDivElement>; height: number }) => (
+                <div ref={setRef} className=''>
+                    <ProofOfIdentityContainerforMt5
+                        height={height}
+                        is_from_external={true}
+                        onStateChange={(status: string) => onStateChange(status)}
+                        citizen_data={citizen_data}
+                        {...props}
+                    />
+                </div>
+            )}
+        </AutoHeightWrapper>
     );
 };
 

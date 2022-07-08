@@ -213,6 +213,20 @@ const JurisdictionCard = ({
     );
 };
 
+type ModalCheckboxProps = {
+    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+    checked: boolean;
+};
+
+const ModalCheckbox = ({ setChecked, checked }: ModalCheckboxProps) => (
+    <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
+        <Checkbox onChange={() => setChecked(!checked)} value={checked} />
+        <Text as='p' align='center' size='xs' line_height='xs'>
+            {`I confirm and accept Deriv (V) Ltd 's Terms and Conditions`}
+        </Text>
+    </div>
+);
+
 const JurisdictionModalContent = ({
     jurisdiction_selected_card,
     account_type,
@@ -235,16 +249,18 @@ const JurisdictionModalContent = ({
     const cardsToBeShown = (type_of_card: string) => {
         const is_available =
             account_type === 'synthetic'
-                ? synthetic_available_accounts.some(account => account.shortcode === type_of_card)
-                : financial_available_accounts.some(account => account.shortcode === type_of_card);
+                ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
+                : financial_available_accounts?.some(account => account.shortcode === type_of_card);
         return is_available;
     };
 
     const disableCard = (type_of_card: string) => {
         const is_available =
             account_type === 'synthetic'
-                ? real_synthetic_accounts_existing_data.some(account => account.landing_company_short === type_of_card)
-                : real_financial_accounts_existing_data.some(account => account.landing_company_short === type_of_card);
+                ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
+                : real_financial_accounts_existing_data?.some(
+                      account => account.landing_company_short === type_of_card
+                  );
         return is_available;
     };
 
@@ -303,21 +319,6 @@ const JurisdictionModalContent = ({
             </>
         );
     };
-
-    const ModalCheckbox = ({
-        setChecked,
-        checked,
-    }: {
-        setChecked: React.Dispatch<React.SetStateAction<boolean>>;
-        checked: boolean;
-    }) => (
-        <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
-            <Checkbox onChange={() => setChecked(!checked)} value={checked} />
-            <Text as='p' align='center' size='xs' line_height='xs'>
-                I confirm and accept Deriv (V) Ltd 's Terms and Conditions
-            </Text>
-        </div>
-    );
 
     return (
         <>

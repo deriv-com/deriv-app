@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "module": "es2022", // Specify module code generation
-        "experimentalDecorators": true,
         "target": "es5", // Specify ECMAScript target version
         "jsx": "react", // Support JSX in .tsx files
         "lib": ["dom", "dom.iterable", "esnext"], // List of library files to be included in the compilation

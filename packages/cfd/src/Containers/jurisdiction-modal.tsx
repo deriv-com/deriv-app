@@ -99,7 +99,7 @@ const JurisdictionModal = ({
     const poi_status = authentication_status?.identity_status;
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
 
-    const disable_bvi_next =
+    const bvi_checks =
         (poi_status === 'pending' && poa_status !== 'pending') ||
         (poi_status === 'pending' && poa_status !== 'verified') ||
         (poa_status === 'pending' && poi_status !== 'pending') ||
@@ -170,7 +170,7 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' && disable_bvi_next)
+                                        (jurisdiction_selected_card !== 'svg' && bvi_checks)
                                     }
                                     primary
                                     onClick={() => {
@@ -195,7 +195,7 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' && disable_bvi_next)
+                                        (jurisdiction_selected_card !== 'svg' && bvi_checks)
                                     }
                                     primary
                                     onClick={() => {

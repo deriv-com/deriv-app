@@ -1,17 +1,11 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
+
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import Verified from 'Components/poi/status/verified';
-import Limited from 'Components/poi/status/limited';
-import Expired from 'Components/poi/status/expired';
-import UploadComplete from 'Components/poi/status/upload-complete';
 import NotRequired from 'Components/poi/status/not-required';
-import Onfido from './onfido.jsx';
-import IdvContainer from './idv.jsx';
-import Unsupported from 'Components/poi/status/unsupported';
-import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
+import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
@@ -28,11 +22,8 @@ const ProofOfIdentityContainerforMt5 = ({
     citizen_data,
 }) => {
     const [api_error, setAPIError] = React.useState();
-    const [has_require_submission, setHasRequireSubmission] = React.useState(false);
     const [residence_list, setResidenceList] = React.useState();
     const [is_status_loading, setStatusLoading] = React.useState(true);
-
-    const handleRequireSubmission = () => setHasRequireSubmission(true);
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -81,7 +72,11 @@ const ProofOfIdentityContainerforMt5 = ({
         return <NotRequired />;
     }
 
-    if (identity_status === identity_status_codes.none || allow_poi_resubmission || has_require_submission) {
+    const idv_resubmission_cases = ['rejected', 'suspected', 'expired'];
+    const has_idv_error =
+        identity_last_attempt?.service && service_code.idv && idv_resubmission_cases.includes(idv.status);
+
+    if (identity_status === identity_status_codes.none || allow_poi_resubmission || has_idv_error) {
         return (
             <POISubmissionForMT5
                 has_attempted_idv={has_attempted_idv}
@@ -97,54 +92,11 @@ const ProofOfIdentityContainerforMt5 = ({
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
                 citizen_data={citizen_data}
+                has_idv_error={has_idv_error}
             />
         );
-    } else if (
-        !identity_last_attempt ||
-        // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
-        (identity_status === 'verified' && identity_status !== identity_last_attempt.status)
-    ) {
-        switch (identity_status) {
-            case identity_status_codes.pending:
-                return <UploadComplete is_from_external={is_from_external} needs_poa={needs_poa} />;
-            case identity_status_codes.verified:
-                return <Verified is_from_external={is_from_external} needs_poa={needs_poa} />;
-            case identity_status_codes.expired:
-                return (
-                    <Expired is_from_external={is_from_external} handleRequireSubmission={handleRequireSubmission} />
-                );
-            case identity_status_codes.rejected:
-            case identity_status_codes.suspected:
-                return <Limited handleRequireSubmission={handleRequireSubmission} />;
-            default:
-                break;
-        }
     }
-
-    switch (identity_last_attempt.service) {
-        case service_code.idv:
-            return (
-                <IdvContainer
-                    handleRequireSubmission={handleRequireSubmission}
-                    idv={idv}
-                    is_from_external={!!is_from_external}
-                    needs_poa={needs_poa}
-                />
-            );
-        case service_code.onfido:
-            return (
-                <Onfido
-                    handleRequireSubmission={handleRequireSubmission}
-                    is_from_external={!!is_from_external}
-                    needs_poa={needs_poa}
-                    onfido={onfido}
-                />
-            );
-        case service_code.manual:
-            return <Unsupported manual={manual} />;
-        default:
-            return null;
-    }
+    return null;
 };
 
 export default ProofOfIdentityContainerforMt5;

@@ -5,18 +5,19 @@ import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup.jsx';
+import { AutoHeightWrapper } from '@deriv/components';
 
 const POISubmissionForMT5 = ({
-    citizen_data,
-    has_idv_error,
     idv,
     is_from_external,
     is_idv_disallowed,
     onfido,
     onStateChange,
     refreshNotifications,
+    citizen_data,
+    has_idv_error,
 }) => {
-    const [submission_status, setSubmissionStatus] = React.useState();
+    const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
 
     React.useEffect(() => {
@@ -75,13 +76,20 @@ const POISubmissionForMT5 = ({
                 const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
 
                 return (
-                    <OnfidoUpload
-                        country_code={country_code}
-                        documents_supported={documents_supported}
-                        handleViewComplete={handlePOIComplete}
-                        is_from_external={is_from_external}
-                        refreshNotifications={refreshNotifications}
-                    />
+                    <AutoHeightWrapper default_height={620} height_offset={50}>
+                        {({ setRef, height }) => (
+                            <div ref={setRef} style={{ height }}>
+                                <OnfidoUpload
+                                    country_code={country_code}
+                                    documents_supported={documents_supported}
+                                    handleViewComplete={handlePOIComplete}
+                                    height={height}
+                                    is_from_external={is_from_external}
+                                    refreshNotifications={refreshNotifications}
+                                />
+                            </div>
+                        )}
+                    </AutoHeightWrapper>
                 );
             }
             case service_code.manual:

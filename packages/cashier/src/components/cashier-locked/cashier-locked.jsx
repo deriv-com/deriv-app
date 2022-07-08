@@ -1,9 +1,35 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { formatDate } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import {
+    EmptyStateWithdrawalLockedAskAuthenticate,
+    EmptyStateWithdrawalLockedAskFixDetails,
+    EmptyStateWithdrawalLockedFinancialAssessmentRequired,
+    EmptyStateNoWithdrawalOrTradingStatus,
+    EmptyStateOnlyPAWithdrawalsAllowedStatus,
+    EmptyStateSelfExclusion,
+    EmptyStateUnwelcomeStatus,
+    EmptyStateWithdrawalLockedStatus,
+    EmptyStateWithdrawServiceUnavailableForPA,
+    EmptyStateDepositLockedAskFixDetails,
+    EmptyStateCashierLockedAskFixDetails,
+    EmptyStateAskSelfExclusionMaxTurnoverSet,
+    EmptyStateAskUKFundsProtection,
+    EmptyStateAskTINInformation,
+    EmptyStateCashierLockedFinancialAssessmentRequired,
+    EmptyStateAskFinancialRiskApproval,
+    EmptyStateCashierLockedStatus,
+    EmptyStateNoResidence,
+    EmptyStateDocumentsExpired,
+    EmptyStateDisabledStatus,
+    EmptyStateAskCurrency,
+    EmptyStateCashierLockedAskAuthenticate,
+    EmptyStateIdentityVerificationNeeded,
+    EmptyStateCashierLockedSystemMaintenance,
+    EmptyStateDepositLockedSystemMaintenance,
+    EmptyStateWithdrawalLockedSystemMaintenance,
+    EmptyStateCryptoLockedSystemMaintenance,
+} from '../empty-states';
 
 const CashierLocked = ({
     account_status,
@@ -35,219 +61,48 @@ const CashierLocked = ({
     const ask_self_exclusion_max_turnover_set = cashier_validation?.includes('ASK_SELF_EXCLUSION_MAX_TURNOVER_SET');
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
-    let icon = 'IcCashierLocked';
-    let title = localize('Cashier is locked');
-    let message = localize(
-        'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
-    );
+    const is_crypto = current_currency_type === 'crypto';
 
     if (is_system_maintenance) {
-        if (current_currency_type === 'crypto') {
-            if (is_withdrawal_locked) {
-                title = localize('Withdrawals are locked');
-                message = localize(
-                    'Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.'
-                );
-            } else if (is_deposit_locked) {
-                title = 'Deposits are locked';
-                message = localize(
-                    'Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'
-                );
-            } else {
-                message = localize(
-                    'Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-                );
-            }
-        } else {
-            message = localize(
-                'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-            );
-        }
-    } else if (is_cashier_locked) {
-        if (no_residence) {
-            message = localize(
-                'You’ve not set your country of residence. To access Cashier, please update your country of residence in the Personal details section in your account settings.'
-            );
-        } else if (documents_expired) {
-            message = localize(
-                'The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier. '
-            );
-        } else if (cashier_locked_status) {
-            message = localize(
-                'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
-            );
-        } else if (disabled_status) {
-            message = localize(
-                'Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'
-            );
-        } else if (ask_currency) {
-            message = localize('Please set your account currency to enable deposits and withdrawals.');
-        } else if (ask_authenticate) {
-            if (is_identity_verification_needed) {
-                message = (
-                    <Localize
-                        i18n_default_text='Please submit your <0>proof of identity</0> to authenticate your account and access your Cashier.'
-                        components={[<a key={0} className='link' href={'/account/proof-of-identity'} />]}
-                    />
-                );
-            } else {
-                message = (
-                    <Localize
-                        i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and access your cashier.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/proof-of-identity'}
-                            />,
-                            <a key={1} className='link' rel='noopener noreferrer' href={'/account/proof-of-address'} />,
-                        ]}
-                    />
-                );
-            }
-        } else if (ask_financial_risk_approval) {
-            message = (
-                <Localize
-                    i18n_default_text='Please complete the <0>Appropriateness Test</0> to access your cashier.'
-                    components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
-                    ]}
-                />
-            );
-        } else if (financial_assessment_required) {
-            message = (
-                <Localize
-                    i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
-                    components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
-                    ]}
-                />
-            );
-        } else if (ask_tin_information) {
-            message = (
-                <Localize
-                    i18n_default_text='You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to <0>Personal details</0> in your account settings, and fill in your latest tax identification number.'
-                    components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/personal-details'} />,
-                    ]}
-                />
-            );
-        } else if (ask_uk_funds_protection) {
-            message = (
-                <Localize
-                    i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
-                    components={[<a key={0} className='link' rel='noopener noreferrer' href={'/cashier/deposit'} />]}
-                />
-            );
-        } else if (ask_self_exclusion_max_turnover_set) {
-            message = (
-                <Localize
-                    i18n_default_text='Your access to Cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to <0>Self-exclusion</0> and set your 30-day turnover limit.'
-                    components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/self-exclusion'} />,
-                    ]}
-                />
-            );
-        } else if (ask_fix_details) {
-            message = (
-                <Localize
-                    i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.'
-                    components={[
-                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/personal-details'} />,
-                    ]}
-                />
-            );
-        }
-    } else if (is_deposit_locked && ask_fix_details) {
-        icon = 'IcCashierDepositLock';
-        title = localize('Deposits are locked');
-        message = (
-            <Localize
-                i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits.'
-                components={[
-                    <a key={0} className='link' rel='noopener noreferrer' href={'/account/personal-details'} />,
-                ]}
-            />
-        );
-    } else if (is_deposit_locked && self_exclusion) {
-        icon = 'IcCashierDepositLock';
-        title = localize('Deposits are locked');
-        message = localize(
-            'You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.',
-            {
-                exclude_until: formatDate(accounts[loginid].excluded_until, 'DD MMM, YYYY'),
-            }
-        );
-    } else if (is_deposit_locked && unwelcome_status) {
-        icon = 'IcCashierDepositLock';
-        title = localize('Deposits are locked');
-        message = localize('Please contact us via live chat.');
-    } else if (is_withdrawal_locked && financial_assessment_required) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = (
-            <Localize
-                i18n_default_text='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
-                components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
-            />
-        );
-    } else if (is_withdrawal_locked && ask_authenticate) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = (
-            <Localize
-                i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and request for withdrawals.'
-                components={[
-                    <a key={0} className='link' rel='noopener noreferrer' href={'/account/proof-of-identity'} />,
-                    <a key={1} className='link' rel='noopener noreferrer' href={'/account/proof-of-address'} />,
-                ]}
-            />
-        );
-    } else if (is_withdrawal_locked && ask_fix_details) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = (
-            <Localize
-                i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.'
-                components={[
-                    <a key={0} className='link' rel='noopener noreferrer' href={'/account/personal-details'} />,
-                ]}
-            />
-        );
-    } else if (is_withdrawal_locked && withdraw_service_unavailable_for_pa) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize('This feature is not available for payment agents.');
-    } else if (is_withdrawal_locked && no_withdrawal_or_trading_status) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize(
-            'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
-        );
-    } else if (is_withdrawal_locked && withdrawal_locked_status) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize(
-            'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
-        );
-    } else if (is_withdrawal_locked && only_pa_withdrawals_allowed_status) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize('You can only make deposits. Please contact us via live chat for more information.');
+        if (is_crypto && is_withdrawal_locked) return <EmptyStateWithdrawalLockedSystemMaintenance />;
+        if (is_crypto && is_deposit_locked) return <EmptyStateDepositLockedSystemMaintenance />;
+        if (is_crypto) return <EmptyStateCryptoLockedSystemMaintenance />;
+        return <EmptyStateCashierLockedSystemMaintenance />;
     }
 
-    return (
-        <div className='cashier-locked'>
-            <Icon icon={icon} className='cashier-locked__icon' />
-            <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
-                {title}
-            </Text>
-            <Text as='p' size='xs' align='center' className='cashier-locked__desc'>
-                {message}
-            </Text>
-        </div>
-    );
+    if (is_cashier_locked) {
+        if (no_residence) return <EmptyStateNoResidence />;
+        if (documents_expired) return <EmptyStateDocumentsExpired />;
+        if (cashier_locked_status) return <EmptyStateCashierLockedStatus />;
+        if (disabled_status) return <EmptyStateDisabledStatus />;
+        if (ask_currency) return <EmptyStateAskCurrency />;
+        if (ask_authenticate && is_identity_verification_needed) return <EmptyStateIdentityVerificationNeeded />;
+        if (ask_authenticate) return <EmptyStateCashierLockedAskAuthenticate />;
+        if (ask_financial_risk_approval) return <EmptyStateAskFinancialRiskApproval />;
+        if (financial_assessment_required) return <EmptyStateCashierLockedFinancialAssessmentRequired />;
+        if (ask_tin_information) return <EmptyStateAskTINInformation />;
+        if (ask_uk_funds_protection) return <EmptyStateAskUKFundsProtection />;
+        if (ask_self_exclusion_max_turnover_set) return <EmptyStateAskSelfExclusionMaxTurnoverSet />;
+        if (ask_fix_details) return <EmptyStateCashierLockedAskFixDetails />;
+    }
+
+    if (is_deposit_locked) {
+        if (ask_fix_details) return <EmptyStateDepositLockedAskFixDetails />;
+        if (self_exclusion) return <EmptyStateSelfExclusion excluded_until={accounts[loginid].excluded_until} />;
+        if (unwelcome_status) return <EmptyStateUnwelcomeStatus />;
+    }
+
+    if (is_withdrawal_locked) {
+        if (financial_assessment_required) return <EmptyStateWithdrawalLockedFinancialAssessmentRequired />;
+        if (ask_authenticate) return <EmptyStateWithdrawalLockedAskAuthenticate />;
+        if (ask_fix_details) return <EmptyStateWithdrawalLockedAskFixDetails />;
+        if (withdraw_service_unavailable_for_pa) return <EmptyStateWithdrawServiceUnavailableForPA />;
+        if (no_withdrawal_or_trading_status) return <EmptyStateNoWithdrawalOrTradingStatus />;
+        if (withdrawal_locked_status) return <EmptyStateWithdrawalLockedStatus />;
+        if (only_pa_withdrawals_allowed_status) return <EmptyStateOnlyPAWithdrawalsAllowedStatus />;
+    }
+
+    return <EmptyStateCashierLockedStatus />;
 };
 
 CashierLocked.propTypes = {

@@ -2,19 +2,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import './detail.scss';
+import './payment-agent-detail.scss';
 
-const Detail = ({ action, children, className, has_red_color, icon, is_link, title }) => {
+const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, is_link, title }) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
         <div
-            className={classNames('detail', {
+            className={classNames('payment-agent-detail', {
                 [className]: !!className,
             })}
         >
             {icon && (
-                <div className='detail__icon-wrapper'>
-                    <Icon icon={`IcCashier${icon}`} />
+                <div className='payment-agent-detail__icon-wrapper'>
+                    <Icon icon={`IcCashier${icon}`} data_testid='dt_payment-agent-detail-icon' />
                 </div>
             )}
             <div>
@@ -29,17 +29,24 @@ const Detail = ({ action, children, className, has_red_color, icon, is_link, tit
                             <Text
                                 as='a'
                                 color={has_red_color ? 'red' : 'prominent'}
+                                data-testid='dt_payment_agent_detail_link'
                                 href={`${action ? `${action}:` : ''}${child}`}
                                 line_height='s'
                                 size={!title ? 'xxs' : 'xs'}
                                 weight='bold'
-                                className='detail__link'
+                                className='payment-agent-detail__link'
                             >
                                 {child}
                                 {id === detail.length - 1 ? '' : ', '}
                             </Text>
                         ) : (
-                            <Text as='p' line_height='s' size='xs' weight='bold'>
+                            <Text
+                                as='p'
+                                data-testid='dt_payment_agent_detail_paragraph'
+                                line_height='s'
+                                size='xs'
+                                weight='bold'
+                            >
                                 {child}
                             </Text>
                         )}
@@ -50,7 +57,7 @@ const Detail = ({ action, children, className, has_red_color, icon, is_link, tit
     );
 };
 
-Detail.propTypes = {
+PaymentAgentDetail.propTypes = {
     action: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.element, PropTypes.string]),
     className: PropTypes.string,
@@ -60,4 +67,4 @@ Detail.propTypes = {
     title: PropTypes.string,
 };
 
-export default Detail;
+export default PaymentAgentDetail;

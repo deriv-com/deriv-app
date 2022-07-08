@@ -58,7 +58,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                     };
                 }
             });
-            if (is_file_uploaded && element.files_required === element.files.length) {
+            if (is_file_uploaded && element.files_required === element.files.filter(Boolean).length) {
                 checked_indices.push(index);
             }
         });
@@ -132,13 +132,15 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                                 setDocumentUploadErrors(form_errors);
                                 form_ref.current.setErrors(form_errors);
                                 form_ref.current.validateForm();
+                                setFormState({ ...form_state, ...{ is_btn_loading: false } });
                             } else {
+                                setFormState({ ...form_state, ...{ is_btn_loading: false } });
                                 // eslint-disable-next-line no-console
                                 console.warn(response);
                             }
+                        } else {
+                            updateAccountStatus();
                         }
-                        setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                        updateAccountStatus();
                     });
                 }
             });

@@ -14,11 +14,11 @@ const FileUploader = ({
     index,
     sub_index,
     updateErrors,
+    show_button,
+    updateShowButton,
 }) => {
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
-    const [show_button, setShowButton] = React.useState(true);
-
     const handleClick = e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
@@ -30,12 +30,12 @@ const FileUploader = ({
         event.nativeEvent.stopImmediatePropagation();
         const fileUploaded = event.target.files[0];
         handleFile(name, fileUploaded);
-        setShowButton(!show_button);
+        updateShowButton(sub_index, !show_button);
     };
     const handleIconClick = e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        setShowButton(!show_button);
+        updateShowButton(sub_index, !show_button);
         e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
         e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
         handleFile(name, '');
@@ -69,7 +69,6 @@ const FileUploader = ({
                     <Icon
                         onClick={handleIconClick}
                         icon='IcCross'
-                        color='black'
                         height='100%'
                         className={classNames('stack-top ', {
                             'remove-element': show_button,

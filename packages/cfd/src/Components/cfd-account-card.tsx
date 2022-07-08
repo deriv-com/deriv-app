@@ -32,7 +32,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
     },
 };
 
-const AddTradeServerButton = React.forwardRef<
+const AddAccountButton = React.forwardRef<
     HTMLDivElement,
     { onSelectAccount: () => void; is_disabled?: boolean; type: string }
 >(({ onSelectAccount, is_disabled, type }, ref) => {
@@ -55,7 +55,7 @@ const AddTradeServerButton = React.forwardRef<
     );
 });
 
-AddTradeServerButton.displayName = 'AddTradeServerButton';
+AddAccountButton.displayName = 'AddAccountButton';
 
 const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
     <div className='cfd-account-card__spec-box'>
@@ -510,7 +510,7 @@ const CFDAccountCardComponent = ({
                 <React.Fragment>
                     {is_logged_in && existing_data && (
                         <MobileWrapper>
-                            <AddTradeServerButton
+                            <AddAccountButton
                                 ref={button_ref}
                                 onSelectAccount={onSelectAccount}
                                 is_disabled={has_cfd_account_error}
@@ -522,7 +522,7 @@ const CFDAccountCardComponent = ({
             </div>
             {is_logged_in && existing_data && (
                 <DesktopWrapper>
-                    <AddTradeServerButton
+                    <AddAccountButton
                         ref={button_ref}
                         onSelectAccount={onSelectAccount}
                         is_disabled={has_cfd_account_error}

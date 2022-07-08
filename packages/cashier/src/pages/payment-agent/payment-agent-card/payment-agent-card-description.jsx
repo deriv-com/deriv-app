@@ -26,7 +26,7 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
                 </Text>
             )}
             {payment_agent_urls && (
-                <Detail target='_blank' rel='noopener noreferrer' has_red_color>
+                <Detail has_red_color is_link rel='noopener noreferrer' target='_blank'>
                     {payment_agent_urls.map(url => url.url)}
                 </Detail>
             )}

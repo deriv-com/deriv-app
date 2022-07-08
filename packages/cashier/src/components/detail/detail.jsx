@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import './detail.scss';
 
-const Detail = ({ action, children, className, has_red_color, icon, title }) => {
+const Detail = ({ action, children, className, has_red_color, icon, is_link, title }) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
         <div
@@ -25,7 +25,7 @@ const Detail = ({ action, children, className, has_red_color, icon, title }) => 
                 )}
                 {detail.map((child, id) => (
                     <React.Fragment key={id}>
-                        {action || !title ? (
+                        {action || is_link ? (
                             <Text
                                 as='a'
                                 color={has_red_color ? 'red' : 'prominent'}
@@ -56,6 +56,7 @@ Detail.propTypes = {
     className: PropTypes.string,
     has_red_color: PropTypes.bool,
     icon: PropTypes.string,
+    is_link: PropTypes.bool,
     title: PropTypes.string,
 };
 

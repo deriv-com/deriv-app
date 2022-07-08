@@ -256,6 +256,7 @@ CashierLocked.propTypes = {
     current_currency_type: PropTypes.string,
     is_cashier_locked: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
+    is_identity_verification_needed: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_withdrawal_locked: PropTypes.bool,
     loginid: PropTypes.string,

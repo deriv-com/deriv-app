@@ -21,6 +21,7 @@ const PaymentAgentDepositWithdrawContainer = ({
     selected_bank,
     supported_banks,
     verification_code,
+    app_contents_scroll_ref,
 }) => {
     React.useEffect(() => {
         return () => {
@@ -35,6 +36,10 @@ const PaymentAgentDepositWithdrawContainer = ({
             onChangePaymentMethod({ target: { value: '0' } });
         };
     }, []);
+
+    React.useEffect(() => {
+        if (app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
+    }, [is_try_withdraw_successful, is_withdraw_successful]);
 
     const [is_unlisted_withdraw, setIsUnlistedWithdraw] = React.useState(false);
 
@@ -134,6 +139,7 @@ const PaymentAgentDepositWithdrawContainer = ({
 };
 
 PaymentAgentDepositWithdrawContainer.propTypes = {
+    app_contents_scroll_ref: PropTypes.object,
     is_deposit: PropTypes.bool,
     is_try_withdraw_successful: PropTypes.bool,
     is_withdraw_successful: PropTypes.bool,
@@ -145,7 +151,7 @@ PaymentAgentDepositWithdrawContainer.propTypes = {
     verification_code: PropTypes.string,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
     is_withdraw_successful: modules.cashier.payment_agent.is_withdraw_successful,
     onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
@@ -153,4 +159,5 @@ export default connect(({ modules }) => ({
     resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
     selected_bank: modules.cashier.payment_agent.selected_bank,
     supported_banks: modules.cashier.payment_agent.supported_banks,
+    app_contents_scroll_ref: ui.app_contents_scroll_ref,
 }))(PaymentAgentDepositWithdrawContainer);

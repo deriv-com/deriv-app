@@ -16,7 +16,7 @@ import {
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { Observer, observer } from 'mobx-react-lite';
 import FloatingRate from 'Components/floating-rate';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
@@ -27,6 +27,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
+import PageReturn from 'Components/page-return/page-return.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -94,6 +95,37 @@ const CreateAdForm = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [my_ads_store.is_ad_created_modal_visible]);
+
+    // const CreateAdFormButtons = (isSubmitting, isValid) => {
+    //     console.log(isSubmitting.isSubmitting);
+    //     return (
+    //         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
+    //             <Observer>
+    //                 {() => (
+    //                     <Button.Group>
+    //                         <Button
+    //                             secondary
+    //                             large
+    //                             onClick={() => my_ads_store.setShowAdForm(false)}
+    //                             type='button'
+    //                         >
+    //                             <Localize i18n_default_text='Cancel' />
+    //                         </Button>
+    //                         <Button
+    //                             primary
+    //                             large
+    //                             is_disabled={
+    //                                 isSubmitting.isSubmitting || !isSubmitting.isValid || !selected_methods.length
+    //                             }
+    //                         >
+    //                             <Localize i18n_default_text='Post ad' />
+    //                         </Button>
+    //                     </Button.Group>
+    //                 )}
+    //             </Observer>
+    //         </div>
+    //     )
+    // }
 
     const content = (
         <Formik
@@ -379,25 +411,33 @@ const CreateAdForm = () => {
                                         onSelectPaymentMethods={handleSelectPaymentMethods}
                                         is_sell_advert={is_sell_advert}
                                     />
-                                    <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                        <Button.Group>
-                                            <Button
-                                                secondary
-                                                large
-                                                onClick={() => my_ads_store.setShowAdForm(false)}
-                                                type='button'
-                                            >
-                                                <Localize i18n_default_text='Cancel' />
-                                            </Button>
-                                            <Button
-                                                primary
-                                                large
-                                                is_disabled={isSubmitting || !isValid || !selected_methods.length}
-                                            >
-                                                <Localize i18n_default_text='Post ad' />
-                                            </Button>
-                                        </Button.Group>
-                                    </div>
+                                    <DesktopWrapper>
+                                        <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
+                                            <Observer>
+                                                {() => (
+                                                    <Button.Group>
+                                                        <Button
+                                                            secondary
+                                                            large
+                                                            onClick={() => my_ads_store.setShowAdForm(false)}
+                                                            type='button'
+                                                        >
+                                                            <Localize i18n_default_text='Cancel' />
+                                                        </Button>
+                                                        <Button
+                                                            primary
+                                                            large
+                                                            is_disabled={
+                                                                isSubmitting || !isValid || !selected_methods.length
+                                                            }
+                                                        >
+                                                            <Localize i18n_default_text='Post ad' />
+                                                        </Button>
+                                                    </Button.Group>
+                                                )}
+                                            </Observer>
+                                        </div>{' '}
+                                    </DesktopWrapper>
                                 </CreateAdFormWrapper>
                             </ThemedScrollbars>
                         </Form>
@@ -409,7 +449,10 @@ const CreateAdForm = () => {
 
     return (
         <React.Fragment>
-            <DesktopWrapper>{content}</DesktopWrapper>
+            <DesktopWrapper>
+                <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />
+                {content}
+            </DesktopWrapper>
             <MobileWrapper>
                 <MobileFullPageModal
                     body_className='buy-sell__modal-body'
@@ -420,6 +463,7 @@ const CreateAdForm = () => {
                     page_header_className='buy-sell__modal-header'
                     pageHeaderReturnFn={() => my_ads_store.setShowAdForm(false)}
                     page_header_text={'Create new ad'}
+                    // renderPageFooterChildren={() => <CreateAdFormButtons isSubmitting={false} isValid={true} />}
                 >
                     {content}
                 </MobileFullPageModal>

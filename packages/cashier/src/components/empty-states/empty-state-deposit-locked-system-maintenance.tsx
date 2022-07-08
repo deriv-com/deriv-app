@@ -7,7 +7,7 @@ const EmptyStateDepositLockedSystemMaintenance: React.FC = () => (
         icon={'IcCashierLocked'}
         title={localize('Cashier is locked')}
         description={localize(
-            'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
+            'Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'
         )}
     />
 );

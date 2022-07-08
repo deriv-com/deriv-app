@@ -99,11 +99,14 @@ const JurisdictionModal = ({
     const poi_status = authentication_status?.identity_status;
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
 
-    const bvi_checks =
+    const pending_conditions =
         (poi_status === 'pending' && poa_status !== 'pending') ||
         (poi_status === 'pending' && poa_status !== 'verified') ||
         (poa_status === 'pending' && poi_status !== 'pending') ||
         (poa_status === 'pending' && poi_status !== 'verified');
+
+    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
+    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
 
     const onSelectRealAccount = () => {
         const type_of_account = {
@@ -170,7 +173,9 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' && bvi_checks)
+                                        (jurisdiction_selected_card !== 'svg' && (!poa_failed || !poi_failed)) ||
+                                        (jurisdiction_selected_card !== 'svg' && (poa_failed || !poi_failed)) ||
+                                        (jurisdiction_selected_card !== 'svg' && (!poa_failed || poi_failed))
                                     }
                                     primary
                                     onClick={() => {
@@ -195,7 +200,9 @@ const JurisdictionModal = ({
                                         (poi_poa_verified && !checked && jurisdiction_selected_card !== 'svg') ||
                                         (jurisdiction_selected_card === 'labuan' && !checked) ||
                                         !jurisdiction_selected_card ||
-                                        (jurisdiction_selected_card !== 'svg' && bvi_checks)
+                                        (jurisdiction_selected_card !== 'svg' && (!poa_failed || !poi_failed)) ||
+                                        (jurisdiction_selected_card !== 'svg' && (poa_failed || !poi_failed)) ||
+                                        (jurisdiction_selected_card !== 'svg' && (!poa_failed || poi_failed))
                                     }
                                     primary
                                     onClick={() => {

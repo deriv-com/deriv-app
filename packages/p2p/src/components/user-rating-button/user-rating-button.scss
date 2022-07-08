@@ -1,0 +1,13 @@
+.user-rating-button {
+    margin-left: auto;
+
+    > span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &-icon {
+        margin-right: 0.5rem;
+    }
+}

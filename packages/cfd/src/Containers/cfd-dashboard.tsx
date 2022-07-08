@@ -103,16 +103,13 @@ type TCFDDashboardProps = {
     is_dark_mode_on: boolean;
     is_eu: boolean;
     is_eu_country: boolean;
-    is_fully_authenticated: boolean;
     is_loading: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_mt5_allowed: boolean;
     is_dxtrade_allowed: boolean;
-    is_pending_authentication: boolean;
     is_virtual: boolean;
     landing_companies: LandingCompany;
-    has_malta_account: boolean;
     has_maltainvest_account: boolean;
     has_cfd_account: boolean;
     has_mt5_real_account_error: boolean;
@@ -141,7 +138,6 @@ type TCFDDashboardProps = {
     toggleAccountsDialog: () => void;
     toggleShouldShowRealAccountsList: () => void;
     toggleCFDPersonalDetailsModal: () => void;
-    can_have_more_real_synthetic_mt5: boolean;
     upgradeable_landing_companies: unknown[];
     is_reset_trading_password_modal_visible: boolean;
     toggleResetTradingPasswordModal: () => void;
@@ -722,7 +718,6 @@ export default withRouter(
         disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
-        is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
         toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,

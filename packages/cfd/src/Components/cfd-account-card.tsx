@@ -188,7 +188,7 @@ const CFDAccountCardComponent = ({
         !is_eu &&
         has_real_account &&
         platform === CFD_PLATFORMS.MT5 &&
-        !!(type.type === 'synthetic' ? can_have_more_real_synthetic_mt5 : can_have_more_real_financial_mt5);
+        (type.type === 'synthetic' ? can_have_more_real_synthetic_mt5 : can_have_more_real_financial_mt5);
     const existing_data = type.category === 'real' ? existing_accounts_data?.[0] : existing_accounts_data;
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (

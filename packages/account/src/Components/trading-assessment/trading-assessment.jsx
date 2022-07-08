@@ -6,7 +6,6 @@ import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 import { trading_assessment } from './trading-assessment-config';
 import FormBodySection from '../form-body-section/form-body-section';
 import './trading-assessment.scss';
-import { Formik } from 'formik';
 
 const RiskToleranceWarningModal = ({ toggleModal }) => {
     <Modal small is_vertical_centered toggleModal={() => toggleModal(false)} title={localize('Risk Tolerane Warning')}>
@@ -30,6 +29,8 @@ const TradingAssessment = () => {
     const [current_question, setCurrentQuestion] = React.useState(0);
     const [is_next_button_disabled, setIsNextButtonDisabled] = React.useState(false);
     const [is_prev_button_disabled, setIsPrevButtonDisabled] = React.useState(false);
+    const [is_selected, setIsSelected] = React.useState(false);
+    const [select_answer, setSelectAnswer] = React.useState();
 
     const question_text = trading_assessment[current_question].question_text;
     const answers_list = trading_assessment[current_question].answer_options;
@@ -37,23 +38,48 @@ const TradingAssessment = () => {
 
     // header pagination buttons
     React.useEffect(() => {
-        if (current_question === end_question_index) {
+        if (current_question === 0) {
+            setIsPrevButtonDisabled(true);
+            setIsNextButtonDisabled(true);
+            if (!!is_selected) {
+                setIsNextButtonDisabled(false);
+            }
+        } else if (!!is_selected && current_question < end_question_index) {
+            setIsNextButtonDisabled(false);
+            setIsPrevButtonDisabled(false);
+        } else if (current_question === end_question_index) {
             setIsNextButtonDisabled(true);
             setIsPrevButtonDisabled(false);
-        } else if (current_question === 0) {
-            setIsPrevButtonDisabled(true);
-            setIsNextButtonDisabled(false);
         } else {
             setIsPrevButtonDisabled(false);
-            setIsNextButtonDisabled(false);
+            setIsNextButtonDisabled(true);
         }
-    }, [current_question, is_next_button_disabled, is_prev_button_disabled]);
+    }, [current_question, is_next_button_disabled, is_prev_button_disabled, is_selected]);
+
+    const onOptionsClicked = () => {
+        setIsSelected(true);
+    };
+
+    const handleSelectAnswers = props => {
+        setSelectAnswer(props.value);
+    };
+
+    const checkForAnswer = () => {
+        let correct_answer = trading_assessment[current_question].answer;
+        let result = answers_list.filter(answer => correct_answer === answer);
+        if (select_answer === result) {
+            console.log('you got it right');
+        } else {
+            console.log('too bad you got it wrong!');
+        }
+    };
 
     const handleNextButton = e => {
         const next_question = current_question + 1;
-        if (next_question < trading_assessment.length) {
+        if (!!is_selected && next_question < trading_assessment.length) {
             setCurrentQuestion(next_question);
         }
+        setIsSelected(false);
         e.preventDefault();
     };
     const handlePrevButton = e => {
@@ -65,66 +91,47 @@ const TradingAssessment = () => {
     };
 
     return (
-        <Formik
-            initialValues={{}}
-            onSubmit={values => {
-                console.log(values);
-            }}
-        >
-            {({ values, setFieldValue, handleChange, handleBlur }) => (
-                <Div100vhContainer className='trading-assessment__form'>
-                    <form>
-                        <FormBodySection
-                            has_side_note
-                            side_note={localize(
-                                'In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.'
-                            )}
+        <Div100vhContainer className='trading-assessment__form'>
+            <form>
+                <FormBodySection
+                    has_side_note
+                    side_note={localize(
+                        'In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.'
+                    )}
+                >
+                    <div className='trading-assessment__header'>
+                        <Button onClick={handlePrevButton} transparent is_disabled={is_prev_button_disabled}>
+                            <Icon icon='IcChevronLeft' color={is_prev_button_disabled ? 'secondary' : 'black'} />
+                        </Button>
+                        <Text as='h1' color='prominent' weight='bold' size='xs'>
+                            {current_question + 1} of {trading_assessment.length}
+                        </Text>
+                        <Button
+                            onClick={handleNextButton}
+                            transparent
+                            is_disabled={is_next_button_disabled}
+                            type='submit'
                         >
-                            <div className='trading-assessment__header'>
-                                <Button onClick={handlePrevButton} transparent is_disabled={is_prev_button_disabled}>
-                                    <Icon
-                                        icon='IcChevronLeft'
-                                        color={is_prev_button_disabled ? 'secondary' : 'black'}
-                                    />
-                                </Button>
-                                <Text as='h1' color='prominent' weight='bold' size='xs'>
-                                    {current_question + 1} of {trading_assessment.length}
-                                </Text>
-                                <Button
-                                    onClick={handleNextButton}
-                                    transparent
-                                    is_disabled={is_next_button_disabled}
-                                    type='submit'
-                                >
-                                    <Icon
-                                        icon='IcChevronRight'
-                                        color={is_next_button_disabled ? 'secondary' : 'black'}
-                                    />
-                                </Button>
-                            </div>
-                            <div className='trading-assessment__wrapper'>
-                                {trading_assessment[current_question].type === 'dropdown' ? (
-                                    <TradingAssessmentDropdownOption
-                                        item={trading_assessment[current_question]}
-                                        setFieldValue={setFieldValue}
-                                        values={values}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                    />
-                                ) : (
-                                    <TradingAssessmentRadioOption
-                                        text={question_text}
-                                        list={answers_list}
-                                        setFieldValue={setFieldValue}
-                                        values={values}
-                                    />
-                                )}
-                            </div>
-                        </FormBodySection>
-                    </form>
-                </Div100vhContainer>
-            )}
-        </Formik>
+                            <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
+                        </Button>
+                    </div>
+                    <div className='trading-assessment__wrapper'>
+                        {trading_assessment[current_question].type === 'dropdown' ? (
+                            <TradingAssessmentDropdownOption
+                                item={trading_assessment[current_question]}
+                                onClick={onOptionsClicked}
+                            />
+                        ) : (
+                            <TradingAssessmentRadioOption
+                                text={question_text}
+                                list={answers_list}
+                                onClick={onOptionsClicked}
+                            />
+                        )}
+                    </div>
+                </FormBodySection>
+            </form>
+        </Div100vhContainer>
     );
 };
 

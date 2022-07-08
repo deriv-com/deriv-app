@@ -1,7 +1,6 @@
 import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
-import { localize } from '@deriv/translations';
 
 const mock_connect_props = {
     dxtrade_tokens: {
@@ -115,13 +114,6 @@ const financial_descriptor =
 const financial_stp_descriptor =
     'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).';
 
-const real_synthetic_specs = {
-    leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:1000') },
-    'margin-call': { key: () => localize('Margin call'), value: () => localize('100%') },
-    'stop-out-level': { key: () => localize('Stop out level'), value: () => localize('50%') },
-    'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('20+') },
-};
-
 describe('CFDAccountCard', () => {
     const props = {
         button_label: 'Fund top up',
@@ -134,7 +126,7 @@ describe('CFDAccountCard', () => {
         is_hovered: false,
         existing_data: {},
         has_banner: true,
-        has_cfd_account: true,
+        has_cfd_account: false,
         has_cfd_account_error: false,
         is_eu: true,
         has_real_account: false,
@@ -241,6 +233,15 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/Username/i)).toBeInTheDocument();
         expect(screen.getByText(/374/i)).toBeInTheDocument();
         expect(screen.getByText(/Fund transfer/i)).toBeInTheDocument();
+    });
+
+    it('should render the component for Real Deriv X Synthetic ', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(<CFDAccountCard {...props} existing_data={mt5_real_synthetic_account} platform='mt5' type={type} />);
     });
 
     it('should not show account details if not logged in, just the platform details ', () => {
@@ -352,5 +353,10 @@ describe('CFDAccountCard', () => {
         const change_password_btn = screen.getByText(/IcEdit/i);
         fireEvent.click(change_password_btn);
         expect(props.onPasswordManager).toHaveBeenCalled();
+    });
+
+    it('should render the commission message', () => {
+        render(<CFDAccountCard {...props} existing_data={false} />);
+        expect(screen.getByText(/No commission/i)).toBeInTheDocument();
     });
 });

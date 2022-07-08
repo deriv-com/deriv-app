@@ -20,17 +20,35 @@ describe('ExpandedCard.jsx', () => {
         };
     });
     it('should display correct identifier', () => {
-        render(<ExpandedCard card_details={card_details} identifier={card_details.payment_method_identifier} />);
+        render(
+            <ExpandedCard
+                card_details={card_details}
+                identifier={card_details.payment_method_identifier}
+                show_button={[]}
+            />
+        );
         const element = screen.getByText('Card Number', { exact: true });
         expect(element).toBeInTheDocument();
     });
     it('should show example link for credit/debit card', () => {
-        render(<ExpandedCard card_details={card_details} identifier={card_details.payment_method_identifier} />);
+        render(
+            <ExpandedCard
+                card_details={card_details}
+                identifier={card_details.payment_method_identifier}
+                show_button={[]}
+            />
+        );
         const exampelLink = screen.getByText('See example');
         expect(exampelLink).toBeInTheDocument();
     });
     it('should format identifier', () => {
-        render(<ExpandedCard card_details={card_details} identifier={card_details.payment_method_identifier} />);
+        render(
+            <ExpandedCard
+                card_details={card_details}
+                identifier={card_details.payment_method_identifier}
+                show_button={[]}
+            />
+        );
         const element = screen.getByDisplayValue('1234 56XX XXXX 1121 3', {
             exact: true,
         });

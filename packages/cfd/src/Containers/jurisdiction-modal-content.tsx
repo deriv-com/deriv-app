@@ -235,16 +235,18 @@ const JurisdictionModalContent = ({
     const cardsToBeShown = (type_of_card: string) => {
         const is_available =
             account_type === 'synthetic'
-                ? synthetic_available_accounts.some(account => account.shortcode === type_of_card)
-                : financial_available_accounts.some(account => account.shortcode === type_of_card);
+                ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
+                : financial_available_accounts?.some(account => account.shortcode === type_of_card);
         return is_available;
     };
 
     const disableCard = (type_of_card: string) => {
         const is_available =
             account_type === 'synthetic'
-                ? real_synthetic_accounts_existing_data.some(account => account.landing_company_short === type_of_card)
-                : real_financial_accounts_existing_data.some(account => account.landing_company_short === type_of_card);
+                ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
+                : real_financial_accounts_existing_data?.some(
+                      account => account.landing_company_short === type_of_card
+                  );
         return is_available;
     };
 

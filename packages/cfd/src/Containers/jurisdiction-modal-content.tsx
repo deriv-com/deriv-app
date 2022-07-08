@@ -314,16 +314,16 @@ const JurisdictionModalContent = ({
     };
 
     const ModalCheckbox = ({
-        setChecked,
-        checked,
+        onCheck,
+        is_checked,
     }: {
-        setChecked: React.Dispatch<React.SetStateAction<boolean>>;
-        checked: boolean;
+        onCheck: React.Dispatch<React.SetStateAction<boolean>>;
+        is_checked: boolean;
     }) => (
         <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
-            <Checkbox onChange={() => setChecked(!checked)} value={checked} />
+            <Checkbox onChange={() => onCheck(!checked)} value={is_checked} />
             <Text as='p' align='center' size='xs' line_height='xs'>
-                I confirm and accept Deriv (V) Ltd 's Terms and Conditions
+                I confirm and accept Deriv (V) Ltd &#39;s Terms and Conditions
             </Text>
         </div>
     );
@@ -421,16 +421,10 @@ const JurisdictionModalContent = ({
                 )}
             </div>
             <ModalFootNote />
-            {is_eu && is_fully_authenticated && jurisdiction_selected_card === 'malta' && (
-                <ModalCheckbox checked={checked} setChecked={setChecked} />
-            )}
-            {is_fully_authenticated && jurisdiction_selected_card === 'bvi' && (
-                <ModalCheckbox checked={checked} setChecked={setChecked} />
-            )}
-            {is_fully_authenticated && jurisdiction_selected_card === 'vanuatu' && (
-                <ModalCheckbox checked={checked} setChecked={setChecked} />
-            )}
-            {jurisdiction_selected_card === 'labuan' && <ModalCheckbox checked={checked} setChecked={setChecked} />}
+            {((is_eu && is_fully_authenticated && jurisdiction_selected_card === 'malta') ||
+                (is_fully_authenticated && jurisdiction_selected_card === 'bvi') ||
+                (is_fully_authenticated && jurisdiction_selected_card === 'vanuatu') ||
+                jurisdiction_selected_card === 'labuan') && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
         </>
     );
 };

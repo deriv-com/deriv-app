@@ -12,6 +12,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
     useStateCallback,
+    Text,
 } from '@deriv/components';
 import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { localize } from '@deriv/translations';
@@ -102,6 +103,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     });
     const [document_upload, setDocumentUpload] = useStateCallback({ files: [], error_message: null });
     const [form_values, setFormValues] = React.useState({});
+    const [hasPOAFailed, sethasPOAfailed] = React.useState(false);
 
     const validateForm = (values: TFormValuesInputs) => {
         // No need to validate if we are waiting for confirmation.
@@ -247,13 +249,17 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
             WS.wait('states_list').then(() => {
                 const poa_status = response.get_account_status?.authentication?.document?.status;
                 const poi_status = response.get_account_status?.authentication?.identity?.status;
-
+                const poa_failed_status = ['rejected', 'expired', 'suspected'];
                 if (poa_status && poi_status) {
                     const needs_poi = poi_status === 'none';
                     setFormState({ ...form_state, ...{ poa_status, needs_poi, identity_status: poi_status } }, () => {
                         setIsLoading(false);
                         refreshNotifications();
                     });
+                }
+
+                if (poa_status && poa_failed_status.includes(poa_status)) {
+                    sethasPOAfailed(true);
                 }
             });
         });
@@ -326,6 +332,13 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
                                             is_bypassed={isMobile()}
                                         >
                                             <div className='cfd-proof-of-address__field-area'>
+                                                {hasPOAFailed && (
+                                                    <Text size='xs' align='center' color='loss-danger'>
+                                                        {localize(
+                                                            'We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.'
+                                                        )}
+                                                    </Text>
+                                                )}
                                                 <FormSubHeader title={localize('Address information')} />
                                                 <InputField
                                                     name='address_line_1'

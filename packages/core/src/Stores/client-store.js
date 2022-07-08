@@ -408,6 +408,20 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get can_have_more_real_financial_mt5() {
+        const number_of_current_added_financial = this.mt5_login_list.reduce((acc, cur) => {
+            const is_included = cur.account_type === 'real' && cur.market_type === 'financial';
+            return is_included ? acc + 1 : acc;
+        }, 0);
+        const number_of_available_financial = this.trading_platform_available_accounts.filter(
+            p => p.market_type === 'financial'
+        ).length;
+        return (
+            number_of_current_added_financial > 0 && number_of_available_financial > number_of_current_added_financial
+        );
+    }
+
+    @computed
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)

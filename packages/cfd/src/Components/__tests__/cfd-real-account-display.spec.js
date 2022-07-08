@@ -26,124 +26,27 @@ describe('<CFDRealAccountDisplay />', () => {
 
     beforeEach(() => {
         props = {
-            account_settings: {
-                account_opening_reason: 'Income Earning',
-                address_city: 'Jakarta',
-                address_line_1: 'test',
-                address_line_2: 'test',
-                address_postcode: '11111',
-                address_state: 'BA',
-                allow_copiers: 0,
-                citizen: 'id',
-                client_tnc_status: 'Version 4.2.0 2020-08-07',
-                country: 'Indonesia',
-                country_code: 'id',
-                date_of_birth: -178416000,
-                email: 'name@domain.com',
-                email_consent: 1,
-                feature_flag: {
-                    wallet: 0,
-                },
-                first_name: 'Name',
-                has_secret_answer: 1,
-                immutable_fields: ['residence'],
-                is_authenticated_payment_agent: 0,
-                last_name: 'LastName',
-                non_pep_declaration: 1,
-                phone: '04546575786',
-                place_of_birth: null,
-                preferred_language: 'EN',
-                request_professional_status: 0,
-                residence: 'Indonesia',
-                salutation: '',
-                tax_identification_number: '121241413236757',
-                tax_residence: 'id',
-                user_hash: '4f284ce90658a122e8d1cdafaf34564a7c4510f3fd73486029671fa62c46ccb6',
-            },
-            can_have_more_real_synthetic_mt5: false,
             current_list: {},
             has_cfd_account: false,
             has_cfd_account_error: false,
-            has_malta_account: false,
-            has_maltainvest_account: false,
             has_real_account: true,
             is_accounts_switcher_on: false,
             is_eu: false,
             is_eu_country: false, // depends on client IP address
-            is_fully_authenticated: false,
             is_logged_in: true,
-            is_pending_authentication: false,
             is_virtual: false,
             isAccountOfTypeDisabled: jest.fn(() => false),
             isSyntheticCardVisible: jest.fn(() => true),
             isFinancialCardVisible: jest.fn(() => true),
-            landing_companies: {
-                config: {
-                    tax_details_required: 1,
-                    tin_format: ['^\\d{15}$'],
-                    tin_format_description: '999999999999999',
-                },
-                dxtrade_financial_company: {
-                    standard: standard_company,
-                },
-                dxtrade_gaming_company: {
-                    standard: standard_company,
-                },
-                financial_company: standard_company,
-                gaming_company: standard_company,
-                id: 'id',
-                minimum_age: 18,
-                mt_financial_company: {
-                    financial: standard_company,
-                    financial_stp: {
-                        address: [
-                            'Labuan Times Square',
-                            'Jalan Merdeka',
-                            '87000 Federal Territory of Labuan',
-                            'Malaysia',
-                        ],
-                        changeable_fields: {},
-                        country: 'Malaysia',
-                        currency_config: {},
-                        has_reality_check: 0,
-                        legal_allowed_contract_categories: {},
-                        legal_allowed_currencies: {},
-                        legal_allowed_markets: {},
-                        legal_default_currency: 'USD',
-                        name: 'Deriv (FX) Ltd',
-                        requirements: {},
-                        shortcode: 'labuan',
-                        support_professional_client: 0,
-                    },
-                },
-                mt_gaming_company: {
-                    financial: standard_company,
-                },
-                name: 'Indonesia',
-                virtual_company: 'virtual',
-            },
             onSelectAccount: jest.fn(),
             openDerivRealAccountNeededModal: jest.fn(),
             openAccountTransfer: jest.fn(),
             openPasswordManager: jest.fn(),
             openPasswordModal: jest.fn(),
             platform: 'mt5',
+            realSyntheticAccountsExistingData: jest.fn(),
+            realFinancialAccountsExistingData: jest.fn(),
             residence: 'id',
-            residence_list: [
-                {
-                    identity: {},
-                    phone_idd: '62',
-                    text: 'Indonesia',
-                    tin_format: ['^\\d{15}$'],
-                    value: 'id',
-                },
-                {
-                    identity: {},
-                    phone_idd: '35818',
-                    text: 'Aland Islands',
-                    value: 'ax',
-                },
-            ],
             should_enable_add_button: false,
             standpoint: {
                 financial_company: 'svg',
@@ -436,20 +339,6 @@ describe('<CFDRealAccountDisplay />', () => {
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
         expect(add_real_account_buttons[0]).toBeDisabled();
         expect(add_real_account_buttons[1]).toBeDisabled();
-    });
-
-    it('should show "+ Add account" under Synthetic card with an open real account when can_have_more_real_synthetic_mt5=true', () => {
-        props.current_list['mt5.real.synthetic@p01_ts03'] = mt5_real_synthetic_account;
-        render(<CFDRealAccountDisplay {...props} can_have_more_real_synthetic_mt5 />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
-        expect(add_real_account_buttons.length).toBe(1);
-        expect(screen.getByText('+')).toBeInTheDocument();
-        const add_region_button = screen.getByText(/add account/i);
-
-        fireEvent.click(add_region_button);
-        expect(props.onSelectAccount).toHaveBeenCalledTimes(1);
     });
 
     it('should render enabled "Select" buttons instead of "Add real account" buttons when has_cfd_account=true', () => {

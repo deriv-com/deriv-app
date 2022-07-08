@@ -32,6 +32,10 @@
         }
     }
 
+    &__ad-created {
+        z-index: 7;
+    }
+
     &__header {
         display: flex;
         align-items: center;

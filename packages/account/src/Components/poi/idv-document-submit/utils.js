@@ -135,7 +135,7 @@ const idv_document_data = {
             sample_image: getImageLocation('ug_national_identity_card.png'),
         },
         national_id_no_photo: {
-            new_display_name: 'National ID Card',
+            new_display_name: 'National ID Card(No Photo)',
             example_format: 'CM12345678PE1D',
             sample_image: '',
         },

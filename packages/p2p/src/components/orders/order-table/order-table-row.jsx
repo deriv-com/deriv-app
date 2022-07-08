@@ -9,7 +9,7 @@ import { useStores } from 'Stores';
 import { Table, Text, Icon } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import OrdersUserRatingButton from '../orders-user-rating-button';
+import UserRatingButton from 'Components/user-rating-button';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -142,10 +142,7 @@ const OrderRow = ({ style, row: order }) => {
                             </div>
                         ) : (
                             <div className='orders__mobile-chat'>
-                                <OrdersUserRatingButton
-                                    has_full_text={false}
-                                    is_disabled={rating_button_expiry_time > 24}
-                                />
+                                <UserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
                             </div>
                         )}
                     </Table.Cell>
@@ -190,7 +187,7 @@ const OrderRow = ({ style, row: order }) => {
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
                     ) : (
-                        <OrdersUserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
+                        <UserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
                     )}
                 </Table.Cell>
             </Table.Row>

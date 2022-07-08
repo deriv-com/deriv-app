@@ -33,6 +33,7 @@ const BuySellForm = props => {
         rate,
         rate_type,
     } = buy_sell_store?.advert || {};
+    const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
     const should_disable_field =
         !buy_sell_store.is_buy_advert &&
@@ -87,6 +88,11 @@ const BuySellForm = props => {
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
+    React.useEffect(() => {
+        const receive_amount = input_amount * calculated_rate;
+        buy_sell_store.setReceiveAmount(receive_amount);
+    }, [input_amount, effective_rate]);
+
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
             if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
@@ -123,7 +129,7 @@ const BuySellForm = props => {
                 validate={buy_sell_store.validatePopup}
                 validateOnMount={!should_disable_field}
                 initialValues={{
-                    amount: min_order_amount_limit,
+                    amount: input_amount,
                     contact_info: buy_sell_store.contact_info,
                     payment_info: buy_sell_store.payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,
@@ -364,17 +370,14 @@ const BuySellForm = props => {
                                                     onChange={event => {
                                                         if (event.target.value === '') {
                                                             setFieldValue('amount', '');
-                                                            buy_sell_store.setReceiveAmount(0);
+                                                            setInputAmount(0);
                                                         } else {
-                                                            const input_amount = getRoundedNumber(
+                                                            const amount = getRoundedNumber(
                                                                 event.target.value,
                                                                 buy_sell_store.account_currency
                                                             );
-                                                            setFieldValue('amount', input_amount);
-
-                                                            buy_sell_store.setReceiveAmount(
-                                                                input_amount * calculated_rate
-                                                            );
+                                                            setFieldValue('amount', amount);
+                                                            setInputAmount(amount);
                                                         }
                                                     }}
                                                     required

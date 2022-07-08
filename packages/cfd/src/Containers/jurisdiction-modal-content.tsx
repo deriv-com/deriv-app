@@ -36,6 +36,8 @@ type TJurisdictionModalContent = {
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    poa_failed: boolean;
+    poi_failed: boolean;
 };
 
 type TJurisdictionCard = {
@@ -50,6 +52,8 @@ type TJurisdictionCard = {
     selectTypeOfCard: (card_type: string | undefined) => string | undefined;
     type_of_card: string;
     disabled: boolean;
+    poa_failed: boolean;
+    poi_failed: boolean;
 };
 
 const JurisdictionCard = ({
@@ -64,6 +68,8 @@ const JurisdictionCard = ({
     selectTypeOfCard,
     type_of_card,
     disabled,
+    poa_failed,
+    poi_failed,
 }: TJurisdictionCard) => {
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
@@ -107,7 +113,7 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
             )}
-            {is_pending_authentication && type_of_card !== 'svg' && (
+            {!poa_failed && !poi_failed && is_pending_authentication && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
                     <div className='cfd-jurisdiction-card__verification-status--pending'>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
@@ -123,7 +129,7 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
             )}
-            {is_fully_authenticated && (
+            {/* {is_fully_authenticated && (
                 <div className='cfd-jurisdiction-card__verification-status'>
                     <Text
                         size='xxxs'
@@ -133,26 +139,23 @@ const JurisdictionCard = ({
                         <Localize i18n_default_text='Verified' />
                     </Text>
                 </div>
-            )}
-            {poi_none && poa_verified && (
+            )} */}
+            {poi_failed && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <Text
-                        size='xxxs'
-                        color={disabled ? 'less-prominent' : 'prominent'}
-                        className='cfd-jurisdiction-card__verification-status--POA_POI'
-                    >
-                        <Localize i18n_default_text='Check your proof of identity' />
-                    </Text>
+                    <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                            <Localize i18n_default_text='Check your proof of identity' />
+                        </Text>
+                    </div>
                 </div>
             )}
-            {poa_none && poi_verified && (
+            {poa_failed && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
-                    <Text
-                        color={disabled ? 'less-prominent' : 'prominent'}
-                        className='cfd-jurisdiction-card__verification-status--POA_POI'
-                    >
-                        <Localize i18n_default_text='Check your proof of address' />
-                    </Text>
+                    <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                            <Localize i18n_default_text='Check your proof of address' />
+                        </Text>
+                    </div>
                 </div>
             )}
         </>
@@ -228,6 +231,8 @@ const JurisdictionModalContent = ({
     setChecked,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
+    poa_failed,
+    poi_failed,
 }: TJurisdictionModalContent) => {
     const poa_none = poa_status === PoaStatusCodes.none;
     const poi_none = poi_status === PoaStatusCodes.none;
@@ -295,13 +300,15 @@ const JurisdictionModalContent = ({
                         </Text>
                     </div>
                 )}
-                {is_pending_authentication && (
-                    <div className='cfd-jurisdiction-card__footnote--pending'>
-                        <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
-                        </Text>
-                    </div>
-                )}
+                {is_pending_authentication &&
+                    jurisdiction_selected_card !== 'svg' &&
+                    jurisdiction_selected_card !== undefined && (
+                        <div className='cfd-jurisdiction-card__footnote--pending'>
+                            <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
+                                <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
+                            </Text>
+                        </div>
+                    )}
             </>
         );
     };
@@ -337,6 +344,8 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
                         disabled={disableCard('bvi')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
                     />
                 )}
 
@@ -353,6 +362,8 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
                         disabled={disableCard('mf')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
                     />
                 )}
 
@@ -369,6 +380,8 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
                         disabled={disableCard('vanuatu')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
                     />
                 )}
                 {cardsToBeShown('labuan') && (
@@ -384,6 +397,8 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
                         disabled={disableCard('labuan')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
                     />
                 )}
 
@@ -400,6 +415,8 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         selectTypeOfCard={selectTypeOfCard}
                         disabled={disableCard('svg')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
                     />
                 )}
             </div>

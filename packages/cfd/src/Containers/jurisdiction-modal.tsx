@@ -166,6 +166,8 @@ const JurisdictionModal = ({
                                 is_pending_authentication={is_pending_authentication}
                                 checked={checked}
                                 setChecked={setChecked}
+                                poi_failed={poi_failed}
+                                poa_failed={poa_failed}
                             />
                             <Modal.Footer>
                                 <Button
@@ -225,6 +227,8 @@ const JurisdictionModal = ({
                                 is_pending_authentication={is_pending_authentication}
                                 checked={checked}
                                 setChecked={setChecked}
+                                poi_failed={poi_failed}
+                                poa_failed={poa_failed}
                             />
                         </MobileDialog>
                     </MobileWrapper>

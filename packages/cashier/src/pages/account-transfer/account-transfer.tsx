@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { RootStore, TAccountsList, TSideNotesProps } from 'Types';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
 import { Virtual } from 'Components/cashier-container';
@@ -12,10 +12,9 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
-import { TAccountOption } from './types';
 
 type TAccountTransfer = {
-    accounts_list: Array<TAccountOption>;
+    accounts_list: Array<TAccountsList>;
     container: string;
     error: {
         is_show_full_page: boolean;
@@ -35,7 +34,7 @@ type TAccountTransfer = {
     setAccountTransferAmount: (amount: number | string) => void;
     setActiveTab: (container: string) => void;
     setIsTransferConfirm: (status: boolean) => void;
-    setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
+    setSideNotes: (notes: TSideNotesProps) => void;
 };
 
 const AccountTransfer = ({
@@ -123,8 +122,6 @@ const AccountTransfer = ({
 };
 
 export default connect(({ client, modules }: RootStore) => ({
-    is_virtual: client.is_virtual,
-    is_switching: client.is_switching,
     accounts_list: modules.cashier.account_transfer.accounts_list,
     container: modules.cashier.account_transfer.container,
     error: modules.cashier.account_transfer.error,
@@ -133,11 +130,13 @@ export default connect(({ client, modules }: RootStore) => ({
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,
+    is_switching: client.is_switching,
     is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
     is_transfer_locked: modules.cashier.general_store.is_transfer_locked,
+    is_virtual: client.is_virtual,
     onMount: modules.cashier.account_transfer.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setActiveTab: modules.cashier.general_store.setActiveTab,
     setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
+    setActiveTab: modules.cashier.general_store.setActiveTab,
     setIsTransferConfirm: modules.cashier.account_transfer.setIsTransferConfirm,
 }))(AccountTransfer);

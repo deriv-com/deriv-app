@@ -7,11 +7,11 @@ import { RootStore } from 'Types';
 import './account-transfer-no-account.scss';
 
 type TAccountTransferNoAccount = {
-    toggleAccountsDialog: () => void;
     is_dxtrade_allowed: boolean;
+    toggleAccountsDialog: () => void;
 };
 
-const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }: TAccountTransferNoAccount) => (
+const AccountTransferNoAccount = ({ is_dxtrade_allowed, toggleAccountsDialog }: TAccountTransferNoAccount) => (
     <div className='cashier__wrapper cashier__no-balance'>
         <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
         <Text as='h2' weight='bold' align='center'>
@@ -40,6 +40,6 @@ const AccountTransferNoAccount = ({ toggleAccountsDialog, is_dxtrade_allowed }: 
 );
 
 export default connect(({ ui, client }: RootStore) => ({
-    toggleAccountsDialog: ui.toggleAccountsDialog,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(AccountTransferNoAccount);

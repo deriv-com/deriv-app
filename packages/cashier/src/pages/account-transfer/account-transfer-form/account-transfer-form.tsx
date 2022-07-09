@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, MobileWrapper, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -11,52 +11,21 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore, TReactChangeEvent, TReactChildren } from 'Types';
+import { RootStore, TReactChangeEvent, TAccount, TAccountsList, TMt5LoginList } from 'Types';
+import { GetLimits } from '@deriv/api-types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
-import { TAccountOption } from '../types';
+import AccountTransferNote from './account-transfer-form-side-note';
 import './account-transfer-form.scss';
-
-type TAccountTransferBullet = {
-    children: TReactChildren;
-};
-
-type TAccountTransferNote = {
-    allowed_transfers_count: {
-        internal: number | undefined;
-        mt5: number | undefined;
-        dxtrade: number | undefined;
-    };
-    currency: string;
-    is_crypto_to_crypto_transfer: boolean;
-    is_dxtrade_allowed: boolean;
-    is_dxtrade_transfer: boolean;
-    is_mt_transfer: boolean;
-    minimum_fee: string | number;
-    transfer_fee: string | number;
-};
 
 type TAccountTransferForm = {
     account_limits: {
-        daily_transfers?: {
-            mt5?: {
-                allowed?: number;
-                available?: number;
-            };
-            dxtrade?: {
-                allowed?: number;
-                available?: number;
-            };
-            internal?: {
-                allowed?: number;
-                available?: number;
-            };
-        };
+        daily_transfers?: GetLimits['daily_transfers'];
     };
     account_transfer_amount: string;
-    accounts_list: Array<TAccountOption['account']>;
+    accounts_list: Array<TAccount>;
     converter_from_amount: string;
     converter_from_error: string;
     converter_to_amount: string;
@@ -68,7 +37,7 @@ type TAccountTransferForm = {
     is_dark_mode_on: boolean;
     is_dxtrade_allowed: boolean;
     minimum_fee: string;
-    mt5_login_list: TAccountOption['mt5_login_list'];
+    mt5_login_list: TMt5LoginList;
     onChangeConverterFromAmount: () => void;
     onChangeConverterToAmount: () => void;
     onChangeTransferFrom: (event: TReactChangeEvent) => void;
@@ -110,7 +79,7 @@ type TAccountTransferForm = {
     validateTransferToAmount: () => void;
 };
 
-const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccountOption) => {
+const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccountsList) => {
     let server;
 
     if (account.is_mt) {
@@ -139,8 +108,8 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
 
             {(server?.market_type === 'gaming' || server?.market_type === 'synthetic') && (
                 <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.server_info.geolocation.region}&nbsp;
-                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
+                    {server.server_info?.geolocation?.region}&nbsp;
+                    {server.server_info?.geolocation?.sequence !== 1 ? server.server_info?.geolocation?.sequence : ''}
                 </Text>
             )}
 
@@ -156,163 +125,13 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
     );
 };
 
-const AccountTransferBullet = ({ children }: TAccountTransferBullet) => (
-    <div className='account-transfer-form__bullet-wrapper'>
-        <div className='account-transfer-form__bullet' />
-        <Text size='xxs'>{children}</Text>
-    </div>
-);
-
-const AccountTransferNote = ({
-    allowed_transfers_count,
-    currency,
-    is_crypto_to_crypto_transfer,
-    is_dxtrade_allowed,
-    is_dxtrade_transfer,
-    is_mt_transfer,
-    transfer_fee,
-    minimum_fee,
-}: TAccountTransferNote) => {
-    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
-    const platform_name_mt5 = getPlatformSettings('mt5').name;
-
-    const getTransferFeeNote = () => {
-        if (transfer_fee === 0) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
-                    values={{ platform_name_dxtrade, platform_name_mt5 }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.'
-                    values={{ platform_name_mt5 }}
-                />
-            );
-        } else if (transfer_fee === 1) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
-                    values={{ platform_name_dxtrade, platform_name_mt5 }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts.'
-                    values={{ platform_name_mt5 }}
-                />
-            );
-        } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
-            return (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
-            );
-        } else if (transfer_fee === 2 && (is_mt_transfer || is_dxtrade_transfer)) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and {{platform_name_dxtrade}} accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                        platform_name_dxtrade,
-                    }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
-            );
-        } else if (transfer_fee === 2 && !is_mt_transfer && !is_dxtrade_transfer) {
-            return (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
-            );
-        }
-        return null;
-    };
-
-    return (
-        <div className='account-transfer-form__notes'>
-            <DesktopWrapper>
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    className='cashier__header account-transfer-form__notes-header'
-                >
-                    <Localize i18n_default_text='Notes' />
-                </Text>
-            </DesktopWrapper>
-            <AccountTransferBullet>
-                {is_dxtrade_allowed ? (
-                    <Localize
-                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.'
-                        values={{ platform_name_dxtrade, platform_name_mt5 }}
-                    />
-                ) : (
-                    <Localize
-                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and {{platform_name_mt5}} accounts.'
-                        values={{ platform_name_mt5 }}
-                    />
-                )}
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                {is_dxtrade_allowed ? (
-                    <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
-                        values={{
-                            allowed_internal: allowed_transfers_count.internal,
-                            allowed_mt5: allowed_transfers_count.mt5,
-                            allowed_dxtrade: allowed_transfers_count.dxtrade,
-                            platform_name_dxtrade,
-                            platform_name_mt5,
-                        }}
-                    />
-                ) : (
-                    <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts.'
-                        values={{
-                            allowed_internal: allowed_transfers_count.internal,
-                            allowed_mt5: allowed_transfers_count.mt5,
-                            platform_name_mt5,
-                        }}
-                    />
-                )}
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                {getTransferFeeNote()}{' '}
-                <Localize i18n_default_text='Please bear in mind that some transfers may not be possible.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
-            </AccountTransferBullet>
-        </div>
-    );
-};
-
 let remaining_transfers: number | undefined;
-let accounts_from: Array<TAccountOption['account']> = [];
-let mt_accounts_from: Array<TAccountOption['account']> = [];
-let dxtrade_accounts_from: Array<TAccountOption['account']> = [];
-let accounts_to: Array<TAccountOption['account']> = [];
-let mt_accounts_to: Array<TAccountOption['account']> = [];
-let dxtrade_accounts_to: Array<TAccountOption['account']> = [];
+let accounts_from: Array<TAccount> = [];
+let mt_accounts_from: Array<TAccount> = [];
+let dxtrade_accounts_from: Array<TAccount> = [];
+let accounts_to: Array<TAccount> = [];
+let mt_accounts_to: Array<TAccount> = [];
+let dxtrade_accounts_to: Array<TAccount> = [];
 
 const AccountTransferForm = ({
     account_limits,
@@ -384,7 +203,7 @@ const AccountTransferForm = ({
         return undefined;
     };
 
-    const getAccounts = (type: string, { is_mt, is_dxtrade }: TAccountOption['account']) => {
+    const getAccounts = (type: string, { is_mt, is_dxtrade }: TAccount) => {
         if (type === 'from') {
             if (is_mt) return mt_accounts_from;
             if (is_dxtrade) return dxtrade_accounts_from;
@@ -424,9 +243,9 @@ const AccountTransferForm = ({
             const is_cfd_account = account.is_mt || account.is_dxtrade;
             let server_region = '';
             if (account_server?.market_type === 'gaming' || account_server?.market_type === 'synthetic') {
-                server_region = `[${account_server.server_info.geolocation.region}${
-                    account_server.server_info.geolocation.sequence !== 1
-                        ? account_server.server_info.geolocation.sequence
+                server_region = `[${account_server.server_info?.geolocation?.region}${
+                    account_server.server_info?.geolocation?.sequence !== 1
+                        ? account_server.server_info?.geolocation?.sequence
                         : ''
                 }]`;
             }
@@ -771,8 +590,8 @@ const AccountTransferForm = ({
 
 export default connect(({ client, modules, ui }: RootStore) => ({
     account_limits: client.account_limits,
-    accounts_list: modules.cashier.account_transfer.accounts_list,
     account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
+    accounts_list: modules.cashier.account_transfer.accounts_list,
     converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
     converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
     converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
@@ -789,13 +608,13 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     onChangeTransferTo: modules.cashier.account_transfer.onChangeTransferTo,
     onMount: client.getLimits,
     percentage: modules.cashier.general_store.percentage,
-    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     requestTransferBetweenAccounts: modules.cashier.account_transfer.requestTransferBetweenAccounts,
-    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
-    setErrorMessage: modules.cashier.account_transfer.error.setErrorMessage,
+    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
     selected_from: modules.cashier.account_transfer.selected_from,
     selected_to: modules.cashier.account_transfer.selected_to,
+    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
+    setErrorMessage: modules.cashier.account_transfer.error.setErrorMessage,
     setTransferPercentageSelectorResult: modules.cashier.account_transfer.setTransferPercentageSelectorResult,
     should_percentage_reset: modules.cashier.general_store.should_percentage_reset,
     transfer_fee: modules.cashier.account_transfer.transfer_fee,

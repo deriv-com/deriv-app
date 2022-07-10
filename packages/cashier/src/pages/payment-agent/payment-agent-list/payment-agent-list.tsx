@@ -27,9 +27,7 @@ type TPaymentAgentListProps = {
     is_resend_clicked?: boolean;
     onMount?: () => void;
     payment_agent_active_tab_index?: number;
-    resend_timeout?: number;
     resendVerificationEmail?: () => void;
-    sendVerificationEmail?: () => void;
     setActiveTabIndex?: (index: number) => void;
     setIsResendClicked?: (status: boolean) => void;
     verification_code?: string;
@@ -43,9 +41,7 @@ const PaymentAgentList = ({
     is_payment_agent_withdraw,
     onMount,
     payment_agent_active_tab_index,
-    resend_timeout,
     resendVerificationEmail,
-    sendVerificationEmail,
     setActiveTabIndex,
     setIsResendClicked,
     verification_code,

@@ -52,14 +52,14 @@ const PaymentAgentDetails = ({
     // TODO: Once telephone, url removed from paymentagent_list.list we can remove isArray conditions and only use the array
     return (
         <div className={classNames('payment-agent-details__accordion-content', className)}>
-            {payment_agent_phones && (
+            {payment_agent_phones?.length && (
                 <Detail action='tel' icon='Phone'>
                     {Array.isArray(payment_agent_phones)
                         ? payment_agent_phones.map(phone => phone.phone_number)
                         : payment_agent_phones}
                 </Detail>
             )}
-            {payment_agent_urls && (
+            {payment_agent_urls?.length && (
                 <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
                     {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
                 </Detail>

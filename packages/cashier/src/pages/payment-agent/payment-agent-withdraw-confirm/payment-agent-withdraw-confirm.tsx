@@ -5,6 +5,7 @@ import { connect } from 'Stores/connect';
 import TransferConfirm from 'Components/transfer-confirm';
 import { RootStore } from 'Types';
 
+// TODO: Use PaymentAgentWithdrawRequest from @deriv/api-types if loginid changed to paymentagent_loginid
 type TRequestPaymentAgentWithdraw = {
     loginid: string;
     currency: string;

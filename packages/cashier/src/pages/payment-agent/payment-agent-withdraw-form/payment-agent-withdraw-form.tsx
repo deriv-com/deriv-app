@@ -97,6 +97,7 @@ type TPaymentAgentWithdrawFormProps = {
     payment_agent_id: string;
     payment_agent_list: Array<TValidateWithdrawalProps['payment_agent']>;
     payment_agent_name: string;
+    // TODO: Use PaymentAgentWithdrawRequest from @deriv/api-types if loginid changed to paymentagent_loginid
     requestTryPaymentAgentWithdraw: (arg: {
         loginid: string | number | undefined;
         currency: string;

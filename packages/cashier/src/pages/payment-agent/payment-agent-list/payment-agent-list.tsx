@@ -1,6 +1,6 @@
 import React from 'react';
-import { Loading, Tabs, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { Loading, Tabs, Text } from '@deriv/components';
 import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { RootStore } from 'Types';

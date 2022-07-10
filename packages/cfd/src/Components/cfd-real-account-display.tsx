@@ -44,17 +44,14 @@ type TCFDRealAccountDisplayProps = {
     isFinancialStpCardVisible: () => boolean;
     landing_companies: LandingCompany;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
-    openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
-        meta: TOpenAccountTransferMeta
-    ) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
     current_list: Array<DetailsOfEachMT5Loginid> & {
-        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
+        [key: string]: DetailsOfEachMT5Loginid;
     };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
@@ -183,7 +180,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) =>
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) =>
         openAccountTransfer(current_list[getAccountListKey(account, platform)], {
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({

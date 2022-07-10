@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Money, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import { PaymentAgentTransferRequest } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
 import { RootStore } from 'Types';
 import TransferConfirm from 'Components/transfer-confirm';
@@ -13,12 +14,7 @@ type TPaymentAgentTransferConfirm = {
     description: string;
     error: object;
     loginid: string;
-    requestPaymentAgentTransfer: (arg: {
-        amount: number;
-        currency: string;
-        description: string;
-        transfer_to: string;
-    }) => void;
+    requestPaymentAgentTransfer: (arg: PaymentAgentTransferRequest) => void;
     setIsTryTransferSuccessful: (status: boolean) => void;
     transfer_to: string;
     transfer_to_name: string;
@@ -85,7 +81,13 @@ const PaymentAgentTransferConfirm = ({
                     setIsTryTransferSuccessful(false);
                 }}
                 onClickConfirm={() => {
-                    requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
+                    requestPaymentAgentTransfer({
+                        paymentagent_transfer: 1,
+                        amount,
+                        currency,
+                        description,
+                        transfer_to,
+                    });
                 }}
                 warning_messages={payment_agent_transfer_warning_messages}
             />

@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
+import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
+import { PaymentAgentTransferRequest } from '@deriv/api-types';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { RootStore } from 'Types';
@@ -10,10 +11,9 @@ import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-transfer-form.scss';
 
 type TValidateTransferValueProps = {
-    amount: string;
+    amount: number;
     loginid: string;
     description: string;
-    [key: string]: string;
 };
 
 type TValidateTransferProps = {
@@ -26,17 +26,12 @@ type TValidateTransferProps = {
 };
 
 type TPaymentAgentTransferForm = {
-    amount: string;
+    amount: number;
     balance: string;
     currency: string;
     description: string;
     error: object;
-    requestTryPaymentAgentTransfer: (arg: {
-        amount: string;
-        currency: string;
-        description: string;
-        transfer_to: string;
-    }) => {
+    requestTryPaymentAgentTransfer: (arg: PaymentAgentTransferRequest) => {
         error?: string;
     };
     setErrorMessage: (error: string) => void;
@@ -108,6 +103,7 @@ const PaymentAgentTransferForm = ({
             amount: values.amount,
             currency,
             description: values.description.replace(/\n/g, ' '),
+            paymentagent_transfer: 1,
             transfer_to: values.loginid,
         });
         if (payment_agent_transfer.error) {
@@ -135,7 +131,7 @@ const PaymentAgentTransferForm = ({
                 initialValues={{
                     // in case coming back from confirmation screen, populate the recent data to be edited
                     loginid: transfer_to || '',
-                    amount: amount || '',
+                    amount: amount || 0,
                     description: description || '',
                 }}
                 validate={validateTransferPassthrough}
@@ -144,9 +140,9 @@ const PaymentAgentTransferForm = ({
                 {({ errors, isSubmitting, isValid, touched, handleChange }) => (
                     <Form noValidate>
                         <Field name='loginid'>
-                            {({ field }: { [k: string]: string | object }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
-                                    {...(field as object)}
+                                    {...field}
                                     onChange={(e: object) => {
                                         setErrorMessage('');
                                         handleChange(e);
@@ -163,9 +159,9 @@ const PaymentAgentTransferForm = ({
                             )}
                         </Field>
                         <Field name='amount'>
-                            {({ field }: { [k: string]: string | object }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
-                                    {...(field as object)}
+                                    {...field}
                                     onChange={(e: object) => {
                                         setErrorMessage('');
                                         handleChange(e);
@@ -192,9 +188,9 @@ const PaymentAgentTransferForm = ({
                             )}
                         </Field>
                         <Field name='description'>
-                            {({ field }: { [k: string]: string | object }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
-                                    {...(field as object)}
+                                    {...field}
                                     onChange={(e: object) => {
                                         setErrorMessage('');
                                         handleChange(e);

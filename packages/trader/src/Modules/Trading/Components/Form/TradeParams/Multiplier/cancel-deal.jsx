@@ -4,7 +4,7 @@ import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/comp
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 
 const CancelDeal = ({
     cancellation_range_list,

@@ -2,6 +2,19 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
 import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
 
+const mock_connect_props = {
+    dxtrade_tokens: {
+        demo: '',
+        real: '',
+    },
+};
+
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
+}));
+
 describe('<CFDDemoAccountDisplay />', () => {
     const TESTED_CASES = {
         EU: 'eu',
@@ -268,7 +281,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         const dxtrade_trade_on_web_terminal_button = within_dxtrade_synthetic.getByRole('link', {
             name: /trade on web terminal/i,
         });
-        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx-demo.deriv.com/');
+        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx-demo.deriv.com');
 
         fireEvent.click(dxtrade_change_password_button);
         expect(props.openPasswordManager).toHaveBeenCalledTimes(2);

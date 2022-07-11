@@ -191,7 +191,7 @@ OrderRow.propTypes = {
     order: PropTypes.object,
     style: PropTypes.object,
     row: PropTypes.object,
-    server_time: PropTypes.number,
+    server_time: PropTypes.object,
 };
 
 export default observer(OrderRow);

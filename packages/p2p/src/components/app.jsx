@@ -80,7 +80,7 @@ App.propTypes = {
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
-    server_time: PropTypes.number,
+    server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
     setOnRemount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,

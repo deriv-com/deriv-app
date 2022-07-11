@@ -1,0 +1,124 @@
+$header-height: 3.6em;
+
+// Trade page animation performance fix #perfmatters
+.trade-container + .positions-drawer {
+    transition: opacity 0.4s ease;
+}
+
+.positions-drawer {
+    $MARGIN_TOP: #{$POSITIONS_DRAWER_MARGIN * 2};
+    $MARGIN_BOTTOM: #{$POSITIONS_DRAWER_MARGIN * 2};
+
+    width: $POSITIONS_DRAWER_WIDTH;
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$MARGIN_TOP} - #{$MARGIN_BOTTOM});
+    margin-top: #{$MARGIN_TOP};
+    position: fixed;
+    z-index: 2;
+    top: #{$HEADER_HEIGHT};
+    left: 4px;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateX(-100%);
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: $BORDER_RADIUS;
+    border: 1px solid var(--general-section-1);
+    background-color: var(--general-section-1);
+    color: var(--text-prominent);
+
+    &__bg {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100%;
+        background: var(--general-main-1);
+        // box-shadow: 10px 0 5px -2px var(--general-main-1);
+        transition: opacity 0.25s linear;
+        opacity: 0;
+        pointer-events: none;
+
+        &--open {
+            opacity: 1;
+        }
+    }
+    &--open {
+        transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
+        opacity: 1;
+    }
+    &__header {
+        height: $header-height;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 1em;
+
+        &:after {
+            content: '';
+            position: absolute;
+            height: 8px;
+            width: calc(100% - 18px);
+            left: 9px;
+            top: 39px;
+            z-index: 1;
+            box-shadow: 0 8px 2px -2px var(--general-section-1) inset;
+        }
+    }
+    &__body {
+        height: calc(100% - #{$header-height * 2.7});
+        padding: 0.8em 0 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        align-self: center;
+        color: var(--text-general);
+
+        & .dc-themed-scrollbars {
+            height: 100%;
+        }
+        & .dc-contract-card {
+            &__stop-loss {
+                & .dc-contract-card-item {
+                    &__header {
+                        padding-top: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
+    &__footer {
+        position: relative;
+        height: 6em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:before {
+            content: '';
+            position: absolute;
+            height: 8px;
+            width: calc(100% - 18px);
+            left: 9px;
+            top: -6px;
+            box-shadow: 0 8px 2px -2px var(--general-section-1) inset;
+        }
+        .dc-btn {
+            width: 100%;
+            margin: 8px;
+            height: 40px;
+        }
+    }
+    &__icon-main {
+        margin-right: 0.8em;
+    }
+    &__icon-close {
+        display: inline-block;
+        margin-left: auto;
+        cursor: pointer;
+        svg {
+            @extend %inline-icon;
+            height: 1.6em;
+            width: 1.6em;
+        }
+    }
+}

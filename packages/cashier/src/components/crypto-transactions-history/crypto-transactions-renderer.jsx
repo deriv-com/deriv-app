@@ -291,6 +291,7 @@ CryptoTransactionsRenderer.propTypes = {
     crypto: PropTypes.object,
     currency: PropTypes.string,
     cancelCryptoTransaction: PropTypes.func,
+    row: PropTypes.object,
     showCryptoTransactionsCancelModal: PropTypes.func,
     showCryptoTransactionsStatusModal: PropTypes.func,
 };

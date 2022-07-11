@@ -64,6 +64,7 @@ const WithdrawalVerificationEmail = ({
 
 WithdrawalVerificationEmail.propTypes = {
     crypto_transactions: PropTypes.array,
+    currency: PropTypes.string,
     is_email_sent: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
     recentTransactionOnMount: PropTypes.func,

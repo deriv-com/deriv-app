@@ -1,7 +1,7 @@
 const glob = require('glob');
 
 const getRegexPattern = () => /(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs;
-
+//test
 const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
     const messages = [];
 

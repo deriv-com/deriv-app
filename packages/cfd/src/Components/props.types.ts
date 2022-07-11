@@ -45,7 +45,7 @@ export type TCFDAccountCardActionProps = {
     title: string;
 };
 
-export type TExistingData = DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
+export type TExistingData = DetailsOfEachMT5Loginid;
 
 export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
@@ -73,7 +73,7 @@ export type TCFDAccountCard = {
     title: string;
     type: TType;
     onSelectAccount: () => void;
-    onClickFund: (arg: TExistingData) => void;
+    onClickFund: (arg: DetailsOfEachMT5Loginid) => void;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,

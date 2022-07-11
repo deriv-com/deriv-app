@@ -5,7 +5,6 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { CFDAccountCard } from './cfd-account-card';
-import { TTradingPlatformAccounts } from './props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -34,13 +33,10 @@ type TCFDDemoAccountDisplayProps = {
     isFinancialCardVisible: () => boolean;
     isFinancialStpCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
-    openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
-        meta: TOpenAccountTransferMeta
-    ) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     platform: string;
     current_list: Array<DetailsOfEachMT5Loginid> & {
-        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
+        [key: string]: DetailsOfEachMT5Loginid;
     };
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;

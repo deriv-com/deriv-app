@@ -49,6 +49,8 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     afterAll(() => {
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
         document.body.removeChild(modal_root_el);
     });
 

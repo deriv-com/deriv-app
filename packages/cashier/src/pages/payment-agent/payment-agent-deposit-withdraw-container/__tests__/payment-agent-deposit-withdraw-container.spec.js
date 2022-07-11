@@ -21,6 +21,9 @@ jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>Payme
 
 describe('<PaymentAgentDepositWithdrawContainer />', () => {
     const props = {
+        app_contents_scroll_ref: {
+            current: null,
+        },
         is_deposit: true,
         is_try_withdraw_successful: false,
         is_withdraw_successful: false,

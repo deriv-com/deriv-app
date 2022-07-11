@@ -97,20 +97,6 @@ describe('<PaymentAgentCardWithdrawalDetails />', () => {
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
-    it('should show Field is required for amount field, if there is no data and the field was touched', async () => {
-        render(<PaymentAgentCardWithdrawalDetails {...props} />);
-
-        const el_input_amount = screen.getByLabelText('Enter amount');
-        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
-        fireEvent.change(el_input_amount, { target: { value: '100' } });
-        fireEvent.change(el_input_amount, { target: { value: '' } });
-        fireEvent.click(el_continue_btn);
-
-        await waitFor(() => {
-            expect(screen.getByText('This field is required.')).toBeInTheDocument();
-        });
-    });
-
     it('should show error message, if amount is not valid', async () => {
         validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
         render(<PaymentAgentCardWithdrawalDetails {...props} />);

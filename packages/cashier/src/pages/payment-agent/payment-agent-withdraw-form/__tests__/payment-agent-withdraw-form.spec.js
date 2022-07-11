@@ -61,74 +61,33 @@ describe('<PaymentAgentWithdrawForm />', () => {
         expect(props.setIsUnlistedWithdraw).toHaveBeenCalledWith(false);
     });
 
-    it('should show Field is required for amount field, if there is no data and the field was touched', async () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
-
-        const el_input_amount = screen.getByLabelText('Enter amount');
-        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
-        fireEvent.change(el_input_amount, { target: { value: '100' } });
-        fireEvent.change(el_input_amount, { target: { value: '' } });
-        fireEvent.click(el_continue_btn);
-
-        await waitFor(() => {
-            expect(screen.getByText('This field is required.')).toBeInTheDocument();
-        });
-    });
-
-    it('should show error message, if amount is not valid', async () => {
+    it('should show different error messages', async () => {
         validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
-        render(<PaymentAgentWithdrawForm {...props} />);
-
-        const el_input_amount = screen.getByLabelText('Enter amount');
-        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
-        fireEvent.change(el_input_amount, { target: { value: '100.99999' } });
-        fireEvent.click(el_continue_btn);
-
-        await waitFor(() => {
-            expect(screen.getByText('error_message')).toBeInTheDocument();
-        });
-        validNumber.mockReturnValue({ is_ok: true, message: '' });
-    });
-
-    it('should show Insufficient balance error', async () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
-
-        const el_input_amount = screen.getByLabelText('Enter amount');
-        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
-        fireEvent.change(el_input_amount, { target: { value: '2000' } });
-        fireEvent.click(el_continue_btn);
-
-        await waitFor(() => {
-            expect(screen.getByText('Insufficient balance.')).toBeInTheDocument();
-        });
-    });
-
-    it('should show Field is required for account_number field, if there is no data and the field was touched', async () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
+        const { rerender } = render(<PaymentAgentWithdrawForm {...props} />);
 
         const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
         fireEvent.change(el_input_account_number, { target: { value: 'CR56656565' } });
-        fireEvent.change(el_input_amount, { target: { value: '100' } });
-        fireEvent.change(el_input_account_number, { target: { value: '' } });
+        fireEvent.change(el_input_amount, { target: { value: '100.99999' } });
         fireEvent.click(el_continue_btn);
-
         await waitFor(() => {
-            expect(screen.getByText('This field is required.')).toBeInTheDocument();
+            expect(screen.getByText('error_message')).toBeInTheDocument();
         });
-    });
+        validNumber.mockReturnValue({ is_ok: true, message: '' });
 
-    it('should show an error message when account number is not valid', async () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
+        rerender(<PaymentAgentWithdrawForm {...props} />);
+        fireEvent.change(el_input_account_number, { target: { value: 'CR56656565' } });
+        fireEvent.change(el_input_amount, { target: { value: '2000' } });
+        fireEvent.click(el_continue_btn);
+        await waitFor(() => {
+            expect(screen.getByText('Insufficient balance.')).toBeInTheDocument();
+        });
 
-        const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
-        const el_input_amount = screen.getByLabelText('Enter amount');
-        const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
+        rerender(<PaymentAgentWithdrawForm {...props} />);
         fireEvent.change(el_input_account_number, { target: { value: '667766767' } });
         fireEvent.change(el_input_amount, { target: { value: '100' } });
         fireEvent.click(el_continue_btn);
-
         await waitFor(() => {
             expect(screen.getByText('Please enter a valid account number. Example: CR123456789')).toBeInTheDocument();
         });

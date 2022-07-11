@@ -12,6 +12,7 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 
 const PaymentAgentDepositWithdrawContainer = ({
+    app_contents_scroll_ref,
     is_deposit,
     is_try_withdraw_successful,
     is_withdraw_successful,
@@ -21,7 +22,6 @@ const PaymentAgentDepositWithdrawContainer = ({
     selected_bank,
     supported_banks,
     verification_code,
-    app_contents_scroll_ref,
 }) => {
     React.useEffect(() => {
         return () => {

@@ -14,7 +14,7 @@
         },
         "outDir": "./dist",
         "rootDir": "./src",
-        "baseUrl": "src"
+        "baseUrl": "src",
     },
     "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
 }

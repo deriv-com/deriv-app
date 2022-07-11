@@ -181,7 +181,9 @@ const CFDAccountCardComponent = ({
     can_have_more_real_synthetic_mt5,
     can_have_more_real_financial_mt5,
     toggleAccountsDialog,
+    toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
+    setMT5TradeAccount,
 }: TCFDAccountCard) => {
     const should_show_extra_add_account_button =
         is_logged_in &&
@@ -325,28 +327,29 @@ const CFDAccountCardComponent = ({
                                             </Button>
                                         )}
                                         {existing_data && is_logged_in && !is_web_terminal_unsupported && (
-                                            <a
+                                            <Button
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
-                                                href={
-                                                    platform === CFD_PLATFORMS.DXTRADE
-                                                        ? getDXTradeWebTerminalLink(
-                                                              type.category,
-                                                              dxtrade_tokens[type.category as 'demo' | 'real']
-                                                          )
-                                                        : getMT5WebTerminalLink({
-                                                              category: type.category,
-                                                              loginid: (existing_data as TTradingPlatformAccounts)
-                                                                  .display_login,
-                                                              server_name: (existing_data as DetailsOfEachMT5Loginid)
-                                                                  ?.server_info?.environment,
-                                                          })
-                                                }
-                                                target='_blank'
-                                                rel='noopener noreferrer'
+                                                onClick={() => {
+                                                    toggleMT5TradeModal();
+                                                    setMT5TradeAccount(existing_data);
+                                                }}
+                                                // href={
+                                                //     platform === CFD_PLATFORMS.DXTRADE
+                                                //         ? getDXTradeWebTerminalLink(type.category)
+                                                //         : getMT5WebTerminalLink({
+                                                //               category: type.category,
+                                                //               loginid: (existing_data as TTradingPlatformAccounts)
+                                                //                   .display_login,
+                                                //               server_name: (existing_data as DetailsOfEachMT5Loginid)
+                                                //                   ?.server_info?.environment,
+                                                //           })
+                                                // }
+                                                primary
+                                                large
                                             >
                                                 <Localize i18n_default_text='Trade' />
-                                            </a>
+                                            </Button>
                                         )}
                                     </div>
                                 </div>
@@ -379,28 +382,29 @@ const CFDAccountCardComponent = ({
                                             </Button>
                                         )}
                                         {existing_data && is_logged_in && !is_web_terminal_unsupported && (
-                                            <a
+                                            <Button
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
-                                                href={
-                                                    platform === CFD_PLATFORMS.DXTRADE
-                                                        ? getDXTradeWebTerminalLink(
-                                                              type.category,
-                                                              dxtrade_tokens[type.category as 'demo' | 'real']
-                                                          )
-                                                        : getMT5WebTerminalLink({
-                                                              category: type.category,
-                                                              loginid: (existing_data as TTradingPlatformAccounts)
-                                                                  .display_login,
-                                                              server_name: (existing_data as DetailsOfEachMT5Loginid)
-                                                                  ?.server_info?.environment,
-                                                          })
-                                                }
-                                                target='_blank'
-                                                rel='noopener noreferrer'
+                                                onClick={() => {
+                                                    toggleMT5TradeModal();
+                                                    setMT5TradeAccount(existing_data);
+                                                }}
+                                                // href={
+                                                //     platform === CFD_PLATFORMS.DXTRADE
+                                                //         ? getDXTradeWebTerminalLink(type.category)
+                                                //         : getMT5WebTerminalLink({
+                                                //               category: type.category,
+                                                //               loginid: (existing_data as TTradingPlatformAccounts)
+                                                //                   .display_login,
+                                                //               server_name: (existing_data as DetailsOfEachMT5Loginid)
+                                                //                   ?.server_info?.environment,
+                                                //           })
+                                                // }
+                                                primary
+                                                large
                                             >
                                                 <Localize i18n_default_text='Trade' />
-                                            </a>
+                                            </Button>
                                         )}
                                     </div>
                                 </div>
@@ -544,6 +548,7 @@ const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
     can_have_more_real_financial_mt5: client.can_have_more_real_financial_mt5,
+    setMT5TradeAccount: cfd.setMT5TradeAccount,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

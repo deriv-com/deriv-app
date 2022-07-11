@@ -19,6 +19,7 @@ import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import CFDPersonalDetailsModal from './cfd-personal-details-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal';
+import MT5TradeModal from './mt5-trade-modal';
 import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
 import CFDDashboardContainer from './cfd-dashboard-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
@@ -107,6 +108,7 @@ type TCFDDashboardProps = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_mt5_allowed: boolean;
+    is_mt5_trade_modal_visible: boolean;
     is_dxtrade_allowed: boolean;
     is_virtual: boolean;
     landing_companies: LandingCompany;
@@ -136,6 +138,7 @@ type TCFDDashboardProps = {
     residence_list: ResidenceList;
     standpoint: TStandPoint;
     toggleAccountsDialog: () => void;
+    toggleMT5TradeModal: () => void;
     toggleShouldShowRealAccountsList: () => void;
     toggleCFDPersonalDetailsModal: () => void;
     upgradeable_landing_companies: unknown[];
@@ -358,6 +361,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         is_logged_in,
         is_logging_in,
         is_mt5_allowed,
+        is_mt5_trade_modal_visible,
         is_dxtrade_allowed,
         is_virtual,
         landing_companies,
@@ -377,6 +381,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         residence,
         standpoint,
         toggleAccountsDialog,
+        toggleMT5TradeModal,
         toggleShouldShowRealAccountsList,
         upgradeable_landing_companies,
         is_reset_trading_password_modal_visible,
@@ -515,6 +520,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 has_real_account={has_real_account}
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
+                                                toggleMT5TradeModal={toggleMT5TradeModal}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 residence={residence}
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
@@ -548,6 +554,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             landing_companies={landing_companies}
                                             openAccountTransfer={openAccountTransfer}
                                             openPasswordManager={togglePasswordManagerModal}
+                                            toggleMT5TradeModal={toggleMT5TradeModal}
                                             platform={platform}
                                             residence={residence}
                                         />
@@ -564,7 +571,13 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 openPasswordModal={openRealPasswordModal}
                                 toggleCFDPersonalDetailsModal={toggleCFDPersonalDetailsModal}
                             />
-
+                            <MT5TradeModal
+                                current_list={current_list}
+                                is_open={is_mt5_trade_modal_visible}
+                                onPasswordManager={togglePasswordManagerModal}
+                                toggleModal={toggleMT5TradeModal}
+                                is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
+                            />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon
                                     icon='IcAlertWarning'
@@ -722,6 +735,8 @@ export default withRouter(
         disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
+        is_mt5_trade_modal_visible: modules.cfd.is_mt5_trade_modal_visible,
+        is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
         toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
@@ -741,6 +756,7 @@ export default withRouter(
         standpoint: client.standpoint,
         toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
         toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
+        toggleMT5TradeModal: modules.cfd.toggleMT5TradeModal,
         is_accounts_switcher_on: ui.is_accounts_switcher_on,
         openTopUpModal: ui.openTopUpModal,
         NotificationMessages: ui.notification_messages_ui,

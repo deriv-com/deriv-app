@@ -7,12 +7,14 @@ export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
     @observable is_cfd_personal_details_modal_visible = false;
     @observable is_jurisdiction_modal_visible = false;
+    @observable is_mt5_trade_modal_visible = false;
 
     @observable account_type = {
         category: undefined,
         type: undefined,
     };
 
+    @observable mt5_trade_account = {};
     @observable new_account_response = {};
     @observable real_synthetic_accounts_existing_data = [];
     @observable real_financial_accounts_existing_data = [];
@@ -24,8 +26,6 @@ export default class CFDStore extends BaseStore {
     @observable is_mt5_financial_stp_modal_open = false;
     @observable is_cfd_password_modal_enabled = false;
     @observable is_cfd_reset_password_modal_enabled = false;
-
-    @observable jurisdiction_selected_card = undefined;
 
     @observable is_cfd_pending_dialog_open = false;
 
@@ -180,12 +180,6 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    selectTypeOfCard(card_type) {
-        this.jurisdiction_selected_card = undefined;
-        this.jurisdiction_selected_card = card_type;
-    }
-
-    @action.bound
     getName() {
         const { first_name } = this.root_store.client.account_settings && this.root_store.client.account_settings;
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
@@ -262,6 +256,11 @@ export default class CFDStore extends BaseStore {
             ...meta,
             ...data,
         };
+    }
+
+    @action.bound
+    setMT5TradeAccount(mt5_trade_account) {
+        this.mt5_trade_account = mt5_trade_account;
     }
 
     @action.bound
@@ -439,6 +438,11 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleJurisdictionModal() {
         this.is_jurisdiction_modal_visible = !this.is_jurisdiction_modal_visible;
+    }
+
+    @action.bound
+    toggleMT5TradeModal() {
+        this.is_mt5_trade_modal_visible = !this.is_mt5_trade_modal_visible;
     }
 
     @action.bound

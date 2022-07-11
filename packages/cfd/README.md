@@ -46,7 +46,7 @@ We have a separate folder for each component.
 
 **Modules:** This folder contains the 404 page component.
 
-**Stores:** We use Mobx as state management tool in Cashier, and this is the place for putting the relevant store files. Also, for each store file we have a test file in **tests** folder.
+**Stores:** We use Mobx as state management tool in cfd, and this is the place for putting the relevant store files. Also, for each store file we have a test file in **tests** folder.
 
 **templates:** includes two different styles of loading component which are used in the whole workspace
 

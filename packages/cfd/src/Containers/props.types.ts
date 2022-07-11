@@ -5,8 +5,8 @@ import { TCFDPasswordFormValues } from './cfd-password-modal';
 
 export type TCFDPersonalDetailsModalProps = {
     enableApp: () => void;
-    client_email: string;
     disableApp: () => void;
+    getChangeableFields: () => string[];
     is_open: boolean;
     openPasswordModal: () => void;
     toggleCFDPersonalDetailsModal: () => void;

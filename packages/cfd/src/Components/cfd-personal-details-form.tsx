@@ -326,7 +326,10 @@ const CFDPersonalDetailsForm = ({
                                             }
                                         />
                                     </Text>
-                                    <ThemedScrollbars height={height} is_bypassed={isMobile()}>
+                                    <ThemedScrollbars
+                                        height={is_in_personal_details_modal ? '512px' : height}
+                                        is_bypassed={isMobile()}
+                                    >
                                         <div className='details-form__elements'>
                                             {!is_in_personal_details_modal && (
                                                 <FormSubHeader title={localize('Details')} />

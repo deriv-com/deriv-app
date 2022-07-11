@@ -362,6 +362,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_real_mt5_non_svg_login() {
+        return this.mt5_login_list.some(
+            account => account.account_type === 'real' && account.shortcode && account.shortcode !== 'svg'
+        );
+    }
+
+    @computed
     get has_real_dxtrade_login() {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }

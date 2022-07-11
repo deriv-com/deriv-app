@@ -461,6 +461,10 @@
     width: 27.6em;
     position: relative;
 
+    &:hover {
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
+    }
+
     &--disabled {
         border: solid 1px var(--border-disabled);
     }

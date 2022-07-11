@@ -266,6 +266,7 @@ const JurisdictionModalContent = ({
                             as='p'
                             align='center'
                             size='xs'
+                            weight='bold'
                             line_height='xs'
                             className='cfd-jurisdiction-card__footnote'
                         >

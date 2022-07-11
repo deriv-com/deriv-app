@@ -91,17 +91,17 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
                 });
             }
         },
-        [history]
+        [dismissError, history]
     );
 
     const setErrorVisibility = is_error_visible => {
         setIsVisible(is_error_visible);
     };
 
-    const dismissError = () => {
+    const dismissError = React.useCallback(() => {
         error.setErrorMessage('');
         setErrorVisibility(false);
-    };
+    }, [error]);
 
     return (
         <Dialog

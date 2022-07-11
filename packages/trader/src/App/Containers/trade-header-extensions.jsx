@@ -118,17 +118,17 @@ TradeHeaderExtensions.propTypes = {
     populateHeaderExtensions: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules, ui, portfolio }) => ({
     positions_currency: client.currency,
     is_logged_in: client.is_logged_in,
-    positions: modules.portfolio.all_positions,
-    onPositionsSell: modules.portfolio.onClickSell,
-    positions_error: modules.portfolio.error,
-    onPositionsRemove: modules.portfolio.removePositionById,
-    onPositionsCancel: modules.portfolio.onClickCancel,
+    positions: portfolio.all_positions,
+    onPositionsSell: portfolio.onClickSell,
+    positions_error: portfolio.error,
+    onPositionsRemove: portfolio.removePositionById,
+    onPositionsCancel: portfolio.onClickCancel,
     onMountCashier: modules.cashier.general_store.onMountCommon,
-    onMountPositions: modules.portfolio.onMount,
-    active_positions_count: modules.portfolio.active_positions_count,
+    onMountPositions: portfolio.onMount,
+    active_positions_count: portfolio.active_positions_count,
     trade_contract_type: modules.trade.contract_type,
     symbol: modules.trade.symbol,
     disableApp: ui.disableApp,

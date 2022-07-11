@@ -275,8 +275,7 @@ const getCancelButtonLabel = ({
 
 const handlePasswordInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    // eslint-disable-next-line no-shadow
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleChange: (el: React.ChangeEvent<HTMLInputElement>) => void,
     validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
     setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
 ) => {

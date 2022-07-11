@@ -2,10 +2,11 @@ import React from 'react';
 import {
     Button,
     Icon,
-    Modal,
     DesktopWrapper,
-    Money,
+    Div100vhContainer,
+    Modal,
     MobileWrapper,
+    Money,
     PageOverlay,
     Popover,
     Text,
@@ -262,7 +263,6 @@ const MT5TradeModal = ({
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal
-                    className='cfd-trade__modal'
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_open}
@@ -283,7 +283,9 @@ const MT5TradeModal = ({
                     header='Trade'
                     onClickClose={toggleModal}
                 >
-                    {getPageContent()}
+                    <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
+                        {getPageContent()}
+                    </Div100vhContainer>
                 </PageOverlay>
             </MobileWrapper>
         </React.Suspense>

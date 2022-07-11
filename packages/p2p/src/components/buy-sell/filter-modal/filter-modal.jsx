@@ -135,7 +135,6 @@ const FilterModal = () => {
                             </div>
                             <ToggleSwitch
                                 id='toggle-filter-modal'
-                                className='filter-modal__toggle'
                                 classNameButton='filter-modal__toggle-button'
                                 classNameLabel='filter-modal__toggle-label'
                                 handleToggle={() =>

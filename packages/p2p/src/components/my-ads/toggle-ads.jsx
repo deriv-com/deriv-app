@@ -47,8 +47,6 @@ const ToggleAds = observer(() => {
 
             <ToggleSwitch
                 id='toggle-my-ads'
-                className='toggle-ads__switch'
-                classNameLabel='toggle-ads__switch'
                 is_enabled={general_store.is_listed && !general_store.is_barred}
                 handleToggle={handleToggle}
             />

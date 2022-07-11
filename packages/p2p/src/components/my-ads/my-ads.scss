@@ -641,15 +641,11 @@
     }
 
     .toggle-ads {
-        align-items: center;
         display: flex;
+        align-items: center;
         font-size: var(--text-size-s);
         justify-items: flex-start;
-        margin-right: -50px; // Minus half of &__switch width
 
-        &__switch {
-            transform: scale(0.5) translateX(-50%);
-        }
         &__message {
             margin-right: 1.6rem;
         }
@@ -658,10 +654,6 @@
         }
         &--off {
             color: var(--text-less-prominent);
-        }
-
-        @include mobile {
-            padding-right: 1.6rem;
         }
     }
 }

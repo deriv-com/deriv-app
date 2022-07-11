@@ -62,24 +62,6 @@
             margin-right: auto;
             margin-left: auto;
         }
-        &-toggler {
-            &-label {
-                width: 48px;
-                height: 25.6px;
-                margin-left: auto;
-                margin-right: 1.6rem;
-            }
-            &-button {
-                width: 19.2px;
-                height: 19.2px;
-                top: 3px;
-                left: 4px;
-
-                &--active {
-                    left: calc(100% - 4px) !important;
-                }
-            }
-        }
     }
     &__menu-items {
         display: flex;

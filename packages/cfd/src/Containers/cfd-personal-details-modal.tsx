@@ -11,9 +11,9 @@ type TFormValues = { [key: string]: string };
 type TSetSubmiting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsModal = ({
-    client_email,
     disableApp,
     enableApp,
+    getChangeableFields,
     is_fully_authenticated,
     is_open,
     landing_company,
@@ -24,7 +24,6 @@ const CFDPersonalDetailsModal = ({
 }: TCFDPersonalDetailsModalProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
-    const [changeable_fields, setChangeableFields] = React.useState<string[]>([]);
     const [form_values, setFormValues] = React.useState<TFormValues>({
         citizen: '',
         place_of_birth: '',
@@ -44,16 +43,8 @@ const CFDPersonalDetailsModal = ({
             }
             return;
         }
-        const {
-            citizen,
-            place_of_birth,
-            tax_residence,
-            tax_identification_number,
-            account_opening_reason,
-            changeable_fields: changeable_fields_array,
-        } = response.get_settings;
-
-        if (changeable_fields_array) setChangeableFields(changeable_fields_array);
+        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+            response.get_settings;
 
         setFormValues({
             ...form_values,
@@ -104,7 +95,6 @@ const CFDPersonalDetailsModal = ({
             }
             initiatePersonalDetails(setSubmitting);
         }
-        if (index === 0) await WS.triggerMt5DryRun({ email: client_email });
         saveFormData(index, value);
         toggleCFDPersonalDetailsModal();
         openPasswordModal();
@@ -124,7 +114,7 @@ const CFDPersonalDetailsModal = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    changeable_fields={changeable_fields}
+                    changeable_fields={getChangeableFields()}
                     form_error={form_error}
                     has_previous_button
                     index={0}
@@ -176,9 +166,9 @@ const CFDPersonalDetailsModal = ({
 };
 
 export default connect(({ client, modules, ui }: RootStore) => ({
-    client_email: client.email,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
+    getChangeableFields: client.getChangeableFields,
     is_fully_authenticated: client.is_fully_authenticated,
     is_open: modules.cfd.is_cfd_personal_details_modal_visible,
     landing_company: client.landing_company,

@@ -46,7 +46,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     };
     disableApp: () => void;
     enableApp: () => void;
-    has_real_mt5_login: boolean;
+    has_real_mt5_non_svg_login: boolean;
     is_authentication_needed: boolean;
     is_jurisdiction_modal_visible: boolean;
     is_loading: boolean;
@@ -67,7 +67,7 @@ const JurisdictionModal = ({
     authentication_status,
     disableApp,
     enableApp,
-    has_real_mt5_login,
+    has_real_mt5_non_svg_login,
     is_authentication_needed,
     is_jurisdiction_modal_visible,
     is_eu,
@@ -129,14 +129,14 @@ const JurisdictionModal = ({
                 toggleCFDVerificationModal();
             }
         } else if (jurisdiction_selected_card === 'svg') {
-            if (account_type.type === 'financial' && poi_poa_verified && !has_real_mt5_login) {
+            if (account_type.type === 'financial' && poi_poa_verified && !has_real_mt5_non_svg_login) {
                 toggleCFDPersonalDetailsModal();
             } else {
                 openPasswordModal(type_of_account);
             }
         } else if (poi_poa_verified) {
             // for bvi, labuan & vanuatu:
-            if (!has_real_mt5_login) {
+            if (!has_real_mt5_non_svg_login) {
                 toggleCFDPersonalDetailsModal();
             } else {
                 openPasswordModal(type_of_account);
@@ -150,7 +150,7 @@ const JurisdictionModal = ({
     };
 
     const buttonText = () => {
-        const selected_card = jurisdiction_selected_card !== 'svg' && jurisdiction_selected_card !== undefined;
+        const selected_card = jurisdiction_selected_card !== 'svg' && jurisdiction_selected_card;
         if (poa_failed && selected_card) {
             return <Localize i18n_default_text='Resubmit proof of address' />;
         } else if (poi_failed && selected_card) {
@@ -258,7 +258,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     authentication_status: client.authentication_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    has_real_mt5_login: client.has_real_mt5_login,
+    has_real_mt5_non_svg_login: client.has_real_mt5_non_svg_login,
     is_authentication_needed: client.is_authentication_needed,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
     trading_platform_available_accounts: client.trading_platform_available_accounts,

@@ -1,1 +1,3 @@
-export default from './positions-drawer.jsx';
+import PositionsDrawer from './positions-drawer.jsx';
+
+export default PositionsDrawer;

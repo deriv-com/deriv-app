@@ -1,1 +1,3 @@
-export default from './info-box.jsx';
+import InfoBox from './info-box.jsx';
+
+export default InfoBox;

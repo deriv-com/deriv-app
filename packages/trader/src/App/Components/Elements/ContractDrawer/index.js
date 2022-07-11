@@ -1,1 +1,3 @@
-export default from './contract-drawer.jsx';
+import ContractDrawer from './contract-drawer.jsx';
+
+export default ContractDrawer;

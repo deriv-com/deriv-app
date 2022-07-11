@@ -84,7 +84,9 @@ export type TCFDAccountCard = {
     can_have_more_real_synthetic_mt5?: boolean;
     can_have_more_real_financial_mt5?: boolean;
     toggleAccountsDialog?: (arg?: boolean) => void;
+    toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
+    setMT5TradeAccount: (arg: any) => void;
 };
 
 export type TTradingPlatformAccounts = {

@@ -53,6 +53,7 @@ type TCFDRealAccountDisplayProps = {
     has_cfd_account: boolean;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
+    toggleMT5TradeModal: (is_accounts_switcher_on?: boolean) => void;
     toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
     residence: string;
     account_status?: object;
@@ -81,6 +82,7 @@ const CFDRealAccountDisplay = ({
     standpoint,
     is_logged_in,
     toggleAccountsDialog,
+    toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     residence,
     openDerivRealAccountNeededModal,
@@ -178,6 +180,7 @@ const CFDRealAccountDisplay = ({
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
+            toggleMT5TradeModal={toggleMT5TradeModal}
         />
     );
 
@@ -207,6 +210,7 @@ const CFDRealAccountDisplay = ({
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
+            toggleMT5TradeModal={toggleMT5TradeModal}
         />
     );
 

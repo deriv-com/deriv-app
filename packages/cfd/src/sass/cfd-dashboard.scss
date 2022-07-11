@@ -1025,6 +1025,238 @@
     }
 }
 
+.cfd-trade-modal-container {
+    width: inherit;
+}
+
+.cfd-trade-modal {
+    display: flex;
+    margin: 2.4rem;
+    align-items: center;
+    gap: 0.8rem;
+    &--paragraph {
+        @include typeface(--paragraph-left-normal-black, none);
+        color: var(--text-less-prominent);
+        line-height: 1.45;
+    }
+    &__desc {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    &__password {
+        &-box {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        &-text {
+            overflow: hidden;
+        }
+        &-action {
+            padding: 0;
+            height: 1.5rem;
+            .dc-btn__icon {
+                padding-right: 0;
+            }
+        }
+    }
+    &__specs {
+        padding: 1.6rem;
+        width: 100%;
+
+        &-table {
+            width: 100%;
+
+            &-attribute .cfd-trade-modal--paragraph {
+                color: var(--text-general);
+                margin-right: 2.4rem;
+            }
+            &-data {
+                .cfd-trade-modal--paragraph {
+                    @include typeface(--paragraph-left-bold-black, none);
+                    line-height: 1.45;
+                }
+            }
+        }
+    }
+    &__login-specs {
+        margin: 0 2.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+        :first-child {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        :last-child {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        &-item {
+            display: flex;
+            padding: 0.5rem 0.8rem;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--general-section-1);
+        }
+    }
+    &__spec-box {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    &__spec-text {
+        font-family: Courier, monospace;
+        overflow: hidden;
+    }
+    &__download-center {
+        border-top: 2px solid var(--general-section-1);
+        padding-top: 2rem;
+        padding-bottom: 5.8rem;
+
+        &-app {
+            display: flex;
+            flex-direction: column;
+            margin-top: 1.6rem;
+            &--option {
+                display: flex;
+                gap: 1.6rem;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                border-top: 1px solid var(--border-disabled);
+                &:last-child {
+                    border-bottom: 1px solid var(--border-disabled);
+                }
+                &-item {
+                    flex-grow: 1;
+                }
+                &-link {
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                    text-decoration: none;
+                    @include typeface(--paragraph-center-bold-black, none);
+                    background-color: transparent;
+                    border: 1px solid var(--border-disabled);
+                    color: var(--text-less-prominent);
+
+                    &:hover {
+                        background-color: var(--button-secondary-hover);
+                    }
+                }
+            }
+        }
+
+        &-options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.6rem;
+            &--desktop {
+                display: block;
+                align-items: baseline;
+                flex-flow: column nowrap;
+
+                &-links {
+                    display: flex;
+                    flex-direction: column;
+                }
+                &-row {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: center;
+                    margin-bottom: 3.1rem;
+
+                    > svg:first-child {
+                        margin-bottom: 0.4rem;
+                        margin-right: 0.8rem;
+                    }
+                    a > svg {
+                        margin-top: 0.8rem;
+                        margin-right: 0.8rem;
+                    }
+                }
+                &-download {
+                    display: grid;
+                    grid-auto-flow: column;
+                    grid-gap: 0.8rem;
+                    justify-content: center;
+
+                    a {
+                        margin-top: 0.4rem;
+                    }
+                }
+            }
+            &--mobile {
+                align-items: center;
+                display: flex;
+                flex-flow: column nowrap;
+                margin-left: 4.7rem;
+
+                &-devices {
+                    margin-bottom: 1.6em;
+                    svg:first-child {
+                        margin-right: 0.8em;
+                    }
+                }
+                &-link:not(:first-child) {
+                    margin-left: 1.6rem;
+                }
+                &-links {
+                    display: flex;
+                    @include mobile {
+                        flex-direction: column;
+                    }
+                }
+                @include mobile {
+                    margin-left: unset;
+                    margin-right: unset;
+                }
+            }
+            &--qrcode {
+                display: flex;
+                flex-direction: column;
+                padding: 0.8rem;
+                margin: 0 0.8rem;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid var(--border-disabled);
+                border-radius: 5px;
+                max-width: 14rem;
+                @include mobile {
+                    margin-left: 1.6rem;
+                }
+            }
+            @include mobile {
+                align-items: flex-start;
+            }
+        }
+        &--heading {
+            @include typeface(--title-center-bold-black, none);
+            color: var(--text-general);
+            line-height: 1.5;
+            margin-left: 2.1rem;
+            margin-bottom: 4.2rem;
+            @include desktop {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+        &--hint {
+            margin-top: 1.6rem;
+        }
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
+    }
+    &__mobile-view {
+        .dc-page-overlay__content {
+            flex-direction: column;
+        }
+    }
+}
+
 .cfd-password-manager {
     margin: 5.6rem auto 3.2rem;
     width: 100%;

@@ -7,12 +7,14 @@ export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
     @observable is_cfd_personal_details_modal_visible = false;
     @observable is_jurisdiction_modal_visible = false;
+    @observable is_mt5_trade_modal_visible = false;
 
     @observable account_type = {
         category: undefined,
         type: undefined,
     };
 
+    @observable mt5_trade_account = {};
     @observable new_account_response = {};
     @observable real_synthetic_accounts_existing_data = [];
     @observable real_financial_accounts_existing_data = [];
@@ -265,6 +267,11 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
+    setMT5TradeAccount(mt5_trade_account) {
+        this.mt5_trade_account = mt5_trade_account;
+    }
+
+    @action.bound
     setError(state, obj) {
         this.has_cfd_error = state;
         this.error_message = obj ? obj.message : '';
@@ -439,6 +446,11 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleJurisdictionModal() {
         this.is_jurisdiction_modal_visible = !this.is_jurisdiction_modal_visible;
+    }
+
+    @action.bound
+    toggleMT5TradeModal() {
+        this.is_mt5_trade_modal_visible = !this.is_mt5_trade_modal_visible;
     }
 
     @action.bound

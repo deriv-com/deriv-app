@@ -172,7 +172,7 @@ const JurisdictionCard = ({
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
                     <div className={classNames('cfd-jurisdiction-card__over-header')}>
-                        <Text as='p' color={disabled ? 'less-prominent' : 'blue'}>
+                        <Text as='p' color={disabled ? 'less-prominent' : 'blue'} line_height='l' weight='bold'>
                             <Localize
                                 i18n_default_text={
                                     jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents]
@@ -187,7 +187,6 @@ const JurisdictionCard = ({
                     color={disabled ? 'less-prominent' : 'prominent'}
                     weight='bold'
                     size='m'
-                    line-height='m'
                     className='cfd-jurisdiction-card__h2-header'
                 >
                     <Localize

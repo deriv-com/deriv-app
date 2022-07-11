@@ -65,6 +65,7 @@ const App = props => {
 };
 
 App.propTypes = {
+    className: PropTypes.string,
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,
         is_virtual: PropTypes.bool.isRequired,
@@ -75,10 +76,13 @@ App.propTypes = {
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
+    history: PropTypes.object,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
+    server_time: PropTypes.number,
     setNotificationCount: PropTypes.func,
+    setOnRemount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };
 

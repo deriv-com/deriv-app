@@ -49,23 +49,6 @@ const FilterModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const result = () => {
-        if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
-            return my_profile_store.search_results?.map((payment_method, key) => {
-                return (
-                    <Checkbox
-                        key={key}
-                        label={payment_method.text}
-                        onChange={() => onChange(payment_method)}
-                        value={selected_methods.includes(payment_method.value)}
-                    />
-                );
-            });
-        } 
-            return <FilterModalNoResults text={my_profile_store.search_term} />;
-        
-    };
-
     return (
         <Modal
             className={'payment-methods'}
@@ -85,7 +68,20 @@ const FilterModal = () => {
                                 {buy_sell_store.is_filter_modal_loading ? (
                                     <Loading is_fullscreen={false} />
                                 ) : my_profile_store.search_term ? (
-                                    result()
+                                    !my_profile_store.search_results || my_profile_store.search_results.length > 0 ? (
+                                        my_profile_store.search_results?.map((payment_method, key) => {
+                                            return (
+                                                <Checkbox
+                                                    key={key}
+                                                    label={payment_method.text}
+                                                    onChange={() => onChange(payment_method)}
+                                                    value={selected_methods.includes(payment_method.value)}
+                                                />
+                                            );
+                                        })
+                                    ) : (
+                                        <FilterModalNoResults text={my_profile_store.search_term} />
+                                    )
                                 ) : (
                                     my_profile_store.payment_methods_list_items.map((payment_method, key) => {
                                         return (

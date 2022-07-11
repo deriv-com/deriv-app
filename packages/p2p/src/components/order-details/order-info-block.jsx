@@ -13,6 +13,7 @@ const OrderInfoBlock = ({ className, label, value }) => (
 );
 
 OrderInfoBlock.propTypes = {
+    className: PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.any,
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import { api_error_codes } from 'Constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { useStores } from 'Stores';
 
 const CreateAdErrorModal = () => {

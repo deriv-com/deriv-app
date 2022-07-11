@@ -5,7 +5,7 @@ import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/comp
 import { Localize, localize } from 'Components/i18next';
 import { usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
-import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal';
+import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';

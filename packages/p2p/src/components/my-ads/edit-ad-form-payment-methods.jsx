@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list';
-import SellAdPaymentMethodsList from './sell-ad-payment-methods-list';
+import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();

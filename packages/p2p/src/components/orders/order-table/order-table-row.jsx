@@ -189,6 +189,9 @@ const OrderRow = ({ style, row: order }) => {
 
 OrderRow.propTypes = {
     order: PropTypes.object,
+    style: PropTypes.object,
+    row: PropTypes.object,
+    server_time: PropTypes.number,
 };
 
 export default observer(OrderRow);

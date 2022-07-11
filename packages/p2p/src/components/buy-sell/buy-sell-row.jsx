@@ -224,6 +224,7 @@ const BuySellRow = ({ row: advert }) => {
 BuySellRow.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
+    row: PropTypes.object,
     setSelectedAdvert: PropTypes.func,
     style: PropTypes.object,
 };

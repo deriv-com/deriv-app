@@ -18,6 +18,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
         setPaymentMethodsList(
             my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_methods]);
 
     const onClickDeletePaymentMethodItem = value => {

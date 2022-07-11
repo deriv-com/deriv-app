@@ -124,6 +124,7 @@ AdvertiserPageRow.displayName = 'AdvertiserPageRow';
 
 AdvertiserPageRow.propTypes = {
     advert: PropTypes.object,
+    row: PropTypes.object,
     showAdPopup: PropTypes.func,
 };
 

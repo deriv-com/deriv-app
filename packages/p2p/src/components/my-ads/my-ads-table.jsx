@@ -8,7 +8,7 @@ import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
-import { generateErrorDialogTitle } from 'Utils/adverts.js';
+import { generateErrorDialogTitle } from 'Utils/adverts';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
@@ -33,9 +33,9 @@ const MyAdsTable = () => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
 
         return () => my_ads_store.setApiErrorCode(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (my_ads_store.is_table_loading) {

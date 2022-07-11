@@ -273,6 +273,42 @@ const JurisdictionModalContent = ({
                             <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
                         </Text>
                     )}
+                {poi_failed && jurisdiction_selected_card !== 'svg' && (
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__footnote'
+                    >
+                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
+                    </Text>
+                )}
+                {poa_failed && jurisdiction_selected_card !== 'svg' && (
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__footnote'
+                    >
+                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
+                    </Text>
+                )}
+                {poa_failed && poi_failed && jurisdiction_selected_card !== 'svg' && (
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__footnote'
+                    >
+                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity and address.' />
+                    </Text>
+                )}
                 {jurisdiction_selected_card === 'svg' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>

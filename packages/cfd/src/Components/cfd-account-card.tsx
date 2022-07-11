@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
-import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
+import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
     TAccountIconValues,
     TSpecBoxProps,
@@ -334,17 +334,6 @@ const CFDAccountCardComponent = ({
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(existing_data);
                                                 }}
-                                                // href={
-                                                //     platform === CFD_PLATFORMS.DXTRADE
-                                                //         ? getDXTradeWebTerminalLink(type.category)
-                                                //         : getMT5WebTerminalLink({
-                                                //               category: type.category,
-                                                //               loginid: (existing_data as TTradingPlatformAccounts)
-                                                //                   .display_login,
-                                                //               server_name: (existing_data as DetailsOfEachMT5Loginid)
-                                                //                   ?.server_info?.environment,
-                                                //           })
-                                                // }
                                                 primary
                                                 large
                                             >
@@ -389,17 +378,6 @@ const CFDAccountCardComponent = ({
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(existing_data);
                                                 }}
-                                                // href={
-                                                //     platform === CFD_PLATFORMS.DXTRADE
-                                                //         ? getDXTradeWebTerminalLink(type.category)
-                                                //         : getMT5WebTerminalLink({
-                                                //               category: type.category,
-                                                //               loginid: (existing_data as TTradingPlatformAccounts)
-                                                //                   .display_login,
-                                                //               server_name: (existing_data as DetailsOfEachMT5Loginid)
-                                                //                   ?.server_info?.environment,
-                                                //           })
-                                                // }
                                                 primary
                                                 large
                                             >

@@ -5,7 +5,7 @@ import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative, Text } from 
 import { localize } from '@deriv/translations';
 
 const SetCitizenshipForm = ({
-    class_prefix = 'set-residence',
+    class_prefix,
     children,
     errors,
     touched,
@@ -14,7 +14,7 @@ const SetCitizenshipForm = ({
     citizenship_list,
 }) => (
     <div className={`${class_prefix}__residence-selection`}>
-        <Text as='p' align='center' weight='bold' className={`${class_prefix}__heading`}>
+        <Text as='p' align='center' weight='bold' className={`${class_prefix}__heading-citizen`}>
             {localize('Choose your citizenship')}
         </Text>
         <Field name='citizenship'>

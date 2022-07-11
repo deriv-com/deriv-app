@@ -105,6 +105,9 @@
     }
     &__heading {
         margin-bottom: 0.8rem;
+        &-citizen {
+            margin-bottom: 1.6rem;
+        }
         @include mobile {
             margin-top: -7rem;
         }

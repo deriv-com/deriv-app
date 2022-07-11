@@ -3,14 +3,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Loading } from '@deriv/components';
-import {
-    validPassword,
-    getLocation,
-    validLength,
-    website_name,
-    getErrorMessages,
-    PlatformContext,
-} from '@deriv/shared';
+import { getLocation, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -19,58 +12,10 @@ import PasswordSelectionModal from '../PasswordSelectionModal/password-selection
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
-
-const signupInitialValues = { citizenship: '', password: '', residence: '' };
-
-const validateSignup = (values, residence_list) => {
-    const errors = {};
-
-    if (
-        !validLength(values.password, {
-            min: 8,
-            max: 25,
-        })
-    ) {
-        errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
-            min_number: 8,
-            max_number: 25,
-        });
-    } else if (!validPassword(values.password)) {
-        errors.password = getErrorMessages().password();
-    }
-
-    if (!values.residence) {
-        errors.residence = true;
-    } else {
-        const index_of_selection = residence_list.findIndex(
-            item => item.text.toLowerCase() === values.residence.toLowerCase()
-        );
-
-        if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
-            errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', {
-                website_name,
-            });
-        }
-    }
-
-    if (!values.citizenship) {
-        errors.citizenship = true;
-    } else {
-        const index_of_selection = residence_list.findIndex(
-            item => item.text.toLowerCase() === values.citizenship.toLowerCase()
-        );
-
-        if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
-            errors.citizenship = localize('Unfortunately, {{website_name}} is not available in your country.', {
-                website_name,
-            });
-        }
-    }
-
-    return errors;
-};
+import validateSignupFields from './validate-signup-fields.jsx';
 
 const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+    const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -106,16 +51,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const onSignupComplete = error => {
-        if (error) {
-            setApiError(error);
-        } else {
-            isModalVisible(false);
-            enableApp();
-        }
-    };
-
-    const validateSignupPassthrough = values => validateSignup(values, residence_list);
+    const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 
     const indexOfSelection = selected_country =>
         residence_list.findIndex(item => item.text.toLowerCase() === selected_country.toLowerCase());
@@ -131,6 +67,15 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         };
 
         onSignup(modded_values, onSignupComplete);
+    };
+
+    const onSignupComplete = error => {
+        if (error) {
+            setApiError(error);
+        } else {
+            isModalVisible(false);
+            enableApp();
+        }
     };
 
     return (

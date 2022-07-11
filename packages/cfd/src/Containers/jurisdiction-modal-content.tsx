@@ -23,8 +23,8 @@ type TAvailableAccountAPI = [
 
 type TJurisdictionModalContent = {
     account_type: string;
-    jurisdiction_selected_card: string | undefined;
-    selectTypeOfCard: (card_type: string | undefined) => string | undefined;
+    jurisdiction_selected_card: string;
+    setJurisdictionSelectedCard: (card_type: string) => void;
     synthetic_available_accounts: TAvailableAccountAPI;
     financial_available_accounts: TAvailableAccountAPI;
     poa_status: string;
@@ -41,7 +41,7 @@ type TJurisdictionModalContent = {
 };
 
 type TJurisdictionCard = {
-    jurisdiction_selected_card: string | undefined;
+    jurisdiction_selected_card: string;
     synthetic_available_accounts: TAvailableAccountAPI;
     financial_available_accounts: TAvailableAccountAPI;
     account_type: string;
@@ -49,7 +49,7 @@ type TJurisdictionCard = {
     poi_status: string;
     is_fully_authenticated: boolean;
     is_pending_authentication: boolean;
-    selectTypeOfCard: (card_type: string | undefined) => string | undefined;
+    setJurisdictionSelectedCard: (card_type: string) => void;
     type_of_card: string;
     disabled: boolean;
     poa_failed: boolean;
@@ -65,7 +65,7 @@ const JurisdictionCard = ({
     poi_status,
     is_fully_authenticated,
     is_pending_authentication,
-    selectTypeOfCard,
+    setJurisdictionSelectedCard,
     type_of_card,
     disabled,
     poa_failed,
@@ -87,9 +87,9 @@ const JurisdictionCard = ({
 
     const cardSelection = (cardType: string) => {
         if (jurisdiction_selected_card === cardType) {
-            selectTypeOfCard(undefined);
+            setJurisdictionSelectedCard('');
         } else {
-            selectTypeOfCard(cardType);
+            setJurisdictionSelectedCard(cardType);
         }
     };
 
@@ -218,7 +218,7 @@ const JurisdictionCard = ({
 const JurisdictionModalContent = ({
     jurisdiction_selected_card,
     account_type,
-    selectTypeOfCard,
+    setJurisdictionSelectedCard,
     synthetic_available_accounts,
     financial_available_accounts,
     poa_status,
@@ -235,6 +235,7 @@ const JurisdictionModalContent = ({
 }: TJurisdictionModalContent) => {
     const poa_none = poa_status === PoaStatusCodes.none;
     const poi_none = poi_status === PoaStatusCodes.none;
+    const poi_poa_verified = poi_status === PoaStatusCodes.verified && poa_status === PoaStatusCodes.verified;
 
     const cardsToBeShown = (type_of_card: string) => {
         const is_available =
@@ -341,7 +342,7 @@ const JurisdictionModalContent = ({
                         is_pending_authentication={is_pending_authentication}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        selectTypeOfCard={selectTypeOfCard}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('bvi')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -359,7 +360,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        selectTypeOfCard={selectTypeOfCard}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('mf')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -377,7 +378,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        selectTypeOfCard={selectTypeOfCard}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('vanuatu')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -394,7 +395,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        selectTypeOfCard={selectTypeOfCard}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('labuan')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -412,7 +413,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        selectTypeOfCard={selectTypeOfCard}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('svg')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -420,18 +421,16 @@ const JurisdictionModalContent = ({
                 )}
             </div>
             <ModalFootNote />
-            {((is_eu && is_fully_authenticated && jurisdiction_selected_card === 'malta') ||
-                (is_fully_authenticated && jurisdiction_selected_card === 'bvi') ||
-                (is_fully_authenticated && jurisdiction_selected_card === 'vanuatu') ||
-                jurisdiction_selected_card === 'labuan') && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
+            {is_fully_authenticated &&
+                poi_poa_verified &&
+                jurisdiction_selected_card &&
+                jurisdiction_selected_card !== 'svg' && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
         </>
     );
 };
 
 export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
-    selectTypeOfCard: cfd.selectTypeOfCard,
-    jurisdiction_selected_card: cfd.jurisdiction_selected_card,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
 }))(JurisdictionModalContent);

@@ -27,8 +27,6 @@ export default class CFDStore extends BaseStore {
     @observable is_cfd_password_modal_enabled = false;
     @observable is_cfd_reset_password_modal_enabled = false;
 
-    @observable jurisdiction_selected_card = undefined;
-
     @observable is_cfd_pending_dialog_open = false;
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
@@ -179,12 +177,6 @@ export default class CFDStore extends BaseStore {
     @action.bound
     enableCFDPasswordModal() {
         this.is_cfd_password_modal_enabled = true;
-    }
-
-    @action.bound
-    selectTypeOfCard(card_type) {
-        this.jurisdiction_selected_card = undefined;
-        this.jurisdiction_selected_card = card_type;
     }
 
     @action.bound

@@ -7,6 +7,7 @@ const mock_connect_props = {
         demo: '',
         real: '',
     },
+    setMT5TradeAccount: jest.fn(),
 };
 
 jest.mock('Stores/connect.js', () => ({
@@ -51,6 +52,7 @@ describe('<CFDDemoAccountDisplay />', () => {
                 maltainvest: false,
                 svg: true,
             },
+            toggleMT5TradeModal: jest.fn(),
         };
     });
 
@@ -201,17 +203,15 @@ describe('<CFDDemoAccountDisplay />', () => {
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.getAllByRole('button', { name: /add demo account/i }).length).toBe(1);
         const dmt5_top_up_button = screen.getByRole('button', { name: /top up/i });
-        const dmt5_trade_button = screen.getByRole('link', { name: /trade/i });
-        expect(dmt5_trade_button).toHaveAttribute(
-            'href',
-            'https://trade.mql5.com/trade?servers=Deriv-Demo&trade_server=Deriv-Demo&login=20103240'
-        );
+        const dmt5_trade_button = screen.getByRole('button', { name: /trade/i });
 
         fireEvent.click(dmt5_top_up_button);
         expect(props.openAccountTransfer).toHaveBeenCalledWith(props.current_list['mt5.demo.financial@p01_ts02'], {
             category: 'demo',
             type: 'financial',
         });
+        fireEvent.click(dmt5_trade_button);
+        expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
 
         rerender(
             <CFDDemoAccountDisplay

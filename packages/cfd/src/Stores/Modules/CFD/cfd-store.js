@@ -8,7 +8,6 @@ export default class CFDStore extends BaseStore {
     @observable is_cfd_personal_details_modal_visible = false;
     @observable is_jurisdiction_modal_visible = false;
     @observable is_mt5_trade_modal_visible = false;
-    @observable jurisdiction_selected_shortcode = '';
 
     @observable account_type = {
         category: undefined,
@@ -201,7 +200,6 @@ export default class CFDStore extends BaseStore {
             leverage,
             name,
             ...(values.server ? { server: values.server } : {}),
-            ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
             ...type_request,
         });
     }
@@ -592,11 +590,6 @@ export default class CFDStore extends BaseStore {
         }
 
         return response?.error?.message;
-    }
-
-    @action.bound
-    setJurisdictionSelectedShortcode(shortcode) {
-        this.jurisdiction_selected_shortcode = shortcode;
     }
 
     @action.bound

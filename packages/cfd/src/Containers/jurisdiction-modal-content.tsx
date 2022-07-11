@@ -23,8 +23,8 @@ type TAvailableAccountAPI = [
 
 type TJurisdictionModalContent = {
     account_type: string;
-    jurisdiction_selected_shortcode: string;
-    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    jurisdiction_selected_card: string;
+    setJurisdictionSelectedCard: (card_type: string) => void;
     synthetic_available_accounts: TAvailableAccountAPI;
     financial_available_accounts: TAvailableAccountAPI;
     poa_status: string;
@@ -41,7 +41,7 @@ type TJurisdictionModalContent = {
 };
 
 type TJurisdictionCard = {
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_card: string;
     synthetic_available_accounts: TAvailableAccountAPI;
     financial_available_accounts: TAvailableAccountAPI;
     account_type: string;
@@ -49,7 +49,7 @@ type TJurisdictionCard = {
     poi_status: string;
     is_fully_authenticated: boolean;
     is_pending_authentication: boolean;
-    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    setJurisdictionSelectedCard: (card_type: string) => void;
     type_of_card: string;
     disabled: boolean;
     poa_failed: boolean;
@@ -57,7 +57,7 @@ type TJurisdictionCard = {
 };
 
 const JurisdictionCard = ({
-    jurisdiction_selected_shortcode,
+    jurisdiction_selected_card,
     synthetic_available_accounts,
     financial_available_accounts,
     account_type,
@@ -65,7 +65,7 @@ const JurisdictionCard = ({
     poi_status,
     is_fully_authenticated,
     is_pending_authentication,
-    setJurisdictionSelectedShortcode,
+    setJurisdictionSelectedCard,
     type_of_card,
     disabled,
     poa_failed,
@@ -86,10 +86,10 @@ const JurisdictionCard = ({
     const poi_none = poi_status === PoaStatusCodes.none;
 
     const cardSelection = (cardType: string) => {
-        if (jurisdiction_selected_shortcode === cardType) {
-            setJurisdictionSelectedShortcode('');
+        if (jurisdiction_selected_card === cardType) {
+            setJurisdictionSelectedCard('');
         } else {
-            setJurisdictionSelectedShortcode(cardType);
+            setJurisdictionSelectedCard(cardType);
         }
     };
 
@@ -174,7 +174,7 @@ const JurisdictionCard = ({
         <>
             <div
                 className={classNames('cfd-jurisdiction-card', {
-                    'cfd-jurisdiction-card--selected': jurisdiction_selected_shortcode === type_of_card,
+                    'cfd-jurisdiction-card--selected': jurisdiction_selected_card === type_of_card,
                 })}
                 onClick={disabled ? () => undefined : () => cardSelection(`${type_of_card}`)}
                 style={OneOrTwoCards ? { width: '32em' } : { width: '27.6em' }}
@@ -225,9 +225,9 @@ const JurisdictionCard = ({
 };
 
 const JurisdictionModalContent = ({
-    jurisdiction_selected_shortcode,
+    jurisdiction_selected_card,
     account_type,
-    setJurisdictionSelectedShortcode,
+    setJurisdictionSelectedCard,
     synthetic_available_accounts,
     financial_available_accounts,
     poa_status,
@@ -267,7 +267,7 @@ const JurisdictionModalContent = ({
     const ModalFootNote = () => {
         return (
             <>
-                {poa_none && poi_none && jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode && (
+                {poa_none && poi_none && jurisdiction_selected_card !== 'svg' && jurisdiction_selected_card && (
                     <Text
                         as='p'
                         align='center'
@@ -279,88 +279,77 @@ const JurisdictionModalContent = ({
                         <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
                     </Text>
                 )}
-                {poi_failed &&
-                    !poa_failed &&
-                    jurisdiction_selected_shortcode &&
-                    jurisdiction_selected_shortcode !== 'svg' && (
-                        <Text
-                            as='p'
-                            align='center'
-                            size='xs'
-                            weight='bold'
-                            line_height='xs'
-                            className='cfd-jurisdiction-card__footnote'
-                        >
-                            <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
-                        </Text>
-                    )}
-                {poa_failed &&
-                    !poi_failed &&
-                    jurisdiction_selected_shortcode &&
-                    jurisdiction_selected_shortcode !== 'svg' && (
-                        <Text
-                            as='p'
-                            align='center'
-                            size='xs'
-                            weight='bold'
-                            line_height='xs'
-                            className='cfd-jurisdiction-card__footnote'
-                        >
-                            <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
-                        </Text>
-                    )}
-                {poa_failed &&
-                    poi_failed &&
-                    jurisdiction_selected_shortcode &&
-                    jurisdiction_selected_shortcode !== 'svg' && (
-                        <Text
-                            as='p'
-                            align='center'
-                            size='xs'
-                            weight='bold'
-                            line_height='xs'
-                            className='cfd-jurisdiction-card__footnote'
-                        >
-                            <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity and address.' />
-                        </Text>
-                    )}
-                {jurisdiction_selected_shortcode === 'svg' && (
+                {poi_failed && !poa_failed && jurisdiction_selected_card && jurisdiction_selected_card !== 'svg' && (
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__footnote'
+                    >
+                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
+                    </Text>
+                )}
+                {poa_failed && !poi_failed && jurisdiction_selected_card && jurisdiction_selected_card !== 'svg' && (
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__footnote'
+                    >
+                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
+                    </Text>
+                )}
+                {poa_failed && poi_failed && jurisdiction_selected_card && jurisdiction_selected_card !== 'svg' && (
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                        line_height='xs'
+                        className='cfd-jurisdiction-card__footnote'
+                    >
+                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity and address.' />
+                    </Text>
+                )}
+                {jurisdiction_selected_card === 'svg' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
                         </Text>
                     </div>
                 )}
-                {is_fully_authenticated && jurisdiction_selected_shortcode === 'bvi' && (
+                {is_fully_authenticated && jurisdiction_selected_card === 'bvi' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize i18n_default_text='Add your DMT5 Financial account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).' />
                         </Text>
                     </div>
                 )}
-                {is_fully_authenticated && jurisdiction_selected_shortcode === 'vanuatu' && (
+                {is_fully_authenticated && jurisdiction_selected_card === 'vanuatu' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize i18n_default_text='Add Your DMT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.' />
                         </Text>
                     </div>
                 )}
-                {is_fully_authenticated && jurisdiction_selected_shortcode === 'labuan' && (
+                {is_fully_authenticated && jurisdiction_selected_card === 'labuan' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize i18n_default_text='Add your DMT5 Financial STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).' />
                         </Text>
                     </div>
                 )}
-                {is_pending_authentication &&
-                    jurisdiction_selected_shortcode !== 'svg' &&
-                    jurisdiction_selected_shortcode && (
-                        <div className='cfd-jurisdiction-card__footnote--pending'>
-                            <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
-                                <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
-                            </Text>
-                        </div>
-                    )}
+                {is_pending_authentication && jurisdiction_selected_card !== 'svg' && jurisdiction_selected_card && (
+                    <div className='cfd-jurisdiction-card__footnote--pending'>
+                        <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
+                            <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
+                        </Text>
+                    </div>
+                )}
             </>
         );
     };
@@ -386,7 +375,7 @@ const JurisdictionModalContent = ({
                 {cardsToBeShown('bvi') && (
                     <JurisdictionCard
                         type_of_card='bvi'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        jurisdiction_selected_card={jurisdiction_selected_card}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
                         account_type={account_type}
@@ -394,7 +383,7 @@ const JurisdictionModalContent = ({
                         is_pending_authentication={is_pending_authentication}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('bvi')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -403,8 +392,8 @@ const JurisdictionModalContent = ({
 
                 {cardsToBeShown('maltainvest') && is_eu && (
                     <JurisdictionCard
-                        type_of_card='maltainvest'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        type_of_card='mf'
+                        jurisdiction_selected_card={jurisdiction_selected_card}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
                         is_fully_authenticated={is_fully_authenticated}
@@ -412,8 +401,8 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('maltainvest')}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
+                        disabled={disableCard('mf')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
                     />
@@ -422,7 +411,7 @@ const JurisdictionModalContent = ({
                 {cardsToBeShown('vanuatu') && (
                     <JurisdictionCard
                         type_of_card='vanuatu'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        jurisdiction_selected_card={jurisdiction_selected_card}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
                         is_fully_authenticated={is_fully_authenticated}
@@ -430,7 +419,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('vanuatu')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -439,7 +428,7 @@ const JurisdictionModalContent = ({
                 {cardsToBeShown('labuan') && (
                     <JurisdictionCard
                         type_of_card='labuan'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        jurisdiction_selected_card={jurisdiction_selected_card}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
                         is_fully_authenticated={is_fully_authenticated}
@@ -447,7 +436,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('labuan')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -457,7 +446,7 @@ const JurisdictionModalContent = ({
                 {cardsToBeShown('svg') && (
                     <JurisdictionCard
                         type_of_card='svg'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        jurisdiction_selected_card={jurisdiction_selected_card}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
                         is_fully_authenticated={is_fully_authenticated}
@@ -465,7 +454,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                        setJurisdictionSelectedCard={setJurisdictionSelectedCard}
                         disabled={disableCard('svg')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
@@ -475,10 +464,8 @@ const JurisdictionModalContent = ({
             <ModalFootNote />
             {is_fully_authenticated &&
                 poi_poa_verified &&
-                jurisdiction_selected_shortcode &&
-                jurisdiction_selected_shortcode !== 'svg' && (
-                    <ModalCheckbox is_checked={checked} onCheck={setChecked} />
-                )}
+                jurisdiction_selected_card &&
+                jurisdiction_selected_card !== 'svg' && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
         </>
     );
 };

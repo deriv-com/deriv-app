@@ -755,6 +755,7 @@ export default withRouter(
         setCurrentAccount: modules.cfd.setCurrentAccount,
         standpoint: client.standpoint,
         toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
+        toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
         toggleMT5TradeModal: modules.cfd.toggleMT5TradeModal,
         is_accounts_switcher_on: ui.is_accounts_switcher_on,
         openTopUpModal: ui.openTopUpModal,

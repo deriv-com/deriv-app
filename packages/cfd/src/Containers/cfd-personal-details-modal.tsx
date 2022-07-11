@@ -11,23 +11,26 @@ type TFormValues = { [key: string]: string };
 type TSetSubmiting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsModal = ({
-    account_type,
     disableApp,
     enableApp,
     getChangeableFields,
     is_fully_authenticated,
     is_open,
-    jurisdiction_selected_shortcode,
     landing_company,
     openPasswordModal,
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
-    trading_platform_available_accounts,
     residence_list,
 }: TCFDPersonalDetailsModalProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
-    const [form_values, setFormValues] = React.useState<TFormValues>({});
+    const [form_values, setFormValues] = React.useState<TFormValues>({
+        citizen: '',
+        place_of_birth: '',
+        tax_residence: '',
+        tax_identification_number: '',
+        account_opening_reason: '',
+    });
 
     const initiatePersonalDetails = async (setSubmitting?: TSetSubmiting) => {
         // force request to update settings cache since settings have been updated
@@ -40,29 +43,26 @@ const CFDPersonalDetailsModal = ({
             }
             return;
         }
-        const mt5_signup_requirements_list =
-            trading_platform_available_accounts?.find(
-                _acc =>
-                    ((_acc.market_type === 'gaming' && account_type === 'synthetic') ||
-                        _acc.market_type === account_type) &&
-                    _acc.shortcode === jurisdiction_selected_shortcode
-            )?.requirements.signup || [];
+        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+            response.get_settings;
 
-        const initial_form_values = mt5_signup_requirements_list.reduce((acc, el) => {
-            return { ...acc, [el]: transform(response.get_settings[el]) || '' };
-        }, {});
-        setFormValues({ ...form_values, ...initial_form_values });
+        setFormValues({
+            ...form_values,
+            citizen: transform(citizen) || '',
+            place_of_birth: transform(place_of_birth) || '',
+            tax_residence: transform(tax_residence) || '',
+            tax_identification_number: tax_identification_number || '',
+            account_opening_reason: account_opening_reason || '',
+        });
     };
 
     React.useEffect(() => {
-        if (is_open) {
-            setIsLoading(true);
-            initiatePersonalDetails().then(() => {
-                setIsLoading(false);
-            });
-        }
+        setIsLoading(true);
+        initiatePersonalDetails().then(() => {
+            setIsLoading(false);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_open]);
+    }, []);
 
     const transform = (value: string | undefined) => {
         const [result] = residence_list.filter(item => item.value === value);
@@ -70,11 +70,12 @@ const CFDPersonalDetailsModal = ({
     };
 
     const saveFormData = (_index: number, value: TFormValues) => {
-        const new_form_values: TFormValues = {};
-        Object.entries(value).forEach(([key, _value]) => {
-            new_form_values[key] = transform(_value);
+        setFormValues({
+            ...value,
+            citizen: transform(value.citizen),
+            place_of_birth: transform(value.place_of_birth),
+            tax_residence: transform(value.tax_residence),
         });
-        setFormValues(new_form_values);
     };
 
     const prevStep = () => {
@@ -165,17 +166,14 @@ const CFDPersonalDetailsModal = ({
 };
 
 export default connect(({ client, modules, ui }: RootStore) => ({
-    account_type: modules.cfd.account_type.type,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
     is_fully_authenticated: client.is_fully_authenticated,
     is_open: modules.cfd.is_cfd_personal_details_modal_visible,
-    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     landing_company: client.landing_company,
     openPasswordModal: modules.cfd.enableCFDPasswordModal,
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
-    trading_platform_available_accounts: client.trading_platform_available_accounts,
     residence_list: client.residence_list,
 }))(CFDPersonalDetailsModal);

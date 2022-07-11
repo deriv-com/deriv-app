@@ -554,7 +554,11 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                             </LoadTab>
-                            <CompareAccountsModal platform={platform} is_demo_tab={is_demo_tab} />
+                            <CompareAccountsModal
+                                platform={platform}
+                                is_demo_tab={is_demo_tab}
+                                openPasswordModal={openRealPasswordModal}
+                            />
                             <JurisdictionModal
                                 platform={platform}
                                 openPasswordModal={openRealPasswordModal}

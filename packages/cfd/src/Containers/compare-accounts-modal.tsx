@@ -15,6 +15,11 @@ type TCompareAccountsReusedProps = {
     is_uk: boolean;
 };
 
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
 type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     disableApp: () => void;
     enableApp: () => void;
@@ -25,6 +30,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     residence: string;
     is_demo_tab: boolean;
     toggleCompareAccounts: () => void;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
 };
 
 const CompareAccountsModal = ({
@@ -41,6 +47,7 @@ const CompareAccountsModal = ({
     residence,
     is_demo_tab,
     toggleCompareAccounts,
+    openPasswordModal,
 }: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
@@ -99,7 +106,7 @@ const CompareAccountsModal = ({
                                     is_uk={is_uk}
                                 />
                             ) : (
-                                <DMT5CompareModalContent />
+                                <DMT5CompareModalContent openPasswordModal={openPasswordModal} />
                             )}
                         </Modal>
                     </DesktopWrapper>
@@ -123,7 +130,7 @@ const CompareAccountsModal = ({
                                     is_uk={is_uk}
                                 />
                             ) : (
-                                <DMT5CompareModalContent />
+                                <DMT5CompareModalContent openPasswordModal={openPasswordModal} />
                             )}
                         </MobileDialog>
                     </MobileWrapper>

@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TRowItem = {
     text: string | Array<string>;
@@ -18,6 +20,27 @@ type TModalContentProps = {
     id: string;
     attribute: string;
     values: Record<string, TRowItem>;
+};
+
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
+type TDMT5CompareModalContentProps = {
+    account_type: {
+        type: string;
+        category: string;
+    };
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    toggleCompareAccounts: () => void;
+    toggleCFDVerificationModal: () => void;
+    authentication_status: {
+        document_status: string;
+        identity_status: string;
+    };
+    has_real_mt5_login: boolean;
+    toggleCFDPersonalDetailsModal: () => void;
 };
 
 const content: TModalContentProps[] = [
@@ -106,13 +129,13 @@ const content: TModalContentProps[] = [
     },
 ];
 
-const footer_buttons = [
-    { label: localize('Add'), action: '' },
-    { label: localize('Add'), action: '' },
-    { label: localize('Add'), action: '' },
-    { label: localize('Add'), action: '' },
-    { label: localize('Add'), action: '' },
-    { label: localize('Add'), action: '' },
+const footer_buttons: { label: string; action: string }[] = [
+    { label: localize('Add'), action: 'synthetic-svg' },
+    { label: localize('Add'), action: 'synthetic-bvi' },
+    { label: localize('Add'), action: 'financial-svg' },
+    { label: localize('Add'), action: 'financial-bvi' },
+    { label: localize('Add'), action: 'financial-vanuatu' },
+    { label: localize('Add'), action: 'financial-labuan' },
 ];
 
 const getContentSize = (id: string) => {
@@ -198,49 +221,125 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
     );
 };
 
-const DMT5CompareModalContent = () => (
-    <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
-        <div className='cfd-real-compare-accounts'>
-            <div className='cfd-real-compare-accounts__table-wrapper'>
-                <Table className='cfd-real-compare-accounts__table'>
-                    <Table.Header>
-                        <Table.Row className='cfd-real-compare-accounts__table-header'>
-                            <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                            <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                {localize('Synthetic')}
-                            </Table.Head>
-                            <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                {localize('Financial')}
-                            </Table.Head>
+const DMT5CompareModalContent = ({
+    account_type,
+    openPasswordModal,
+    has_real_mt5_login,
+    authentication_status,
+    toggleCompareAccounts,
+    toggleCFDVerificationModal,
+    toggleCFDPersonalDetailsModal,
+}: TDMT5CompareModalContentProps) => {
+    const onSelectRealAccount = (item: { label: string; action: string }) => {
+        const poa_status = authentication_status?.document_status;
+        const poi_status = authentication_status?.identity_status;
+
+        const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
+
+        const type_of_account = {
+            category: account_type.category,
+            type: account_type.type,
+        };
+        switch (item.action) {
+            case 'synthetic-svg':
+                toggleCompareAccounts();
+                openPasswordModal(type_of_account);
+                break;
+            case 'synthetic-bvi':
+                toggleCompareAccounts();
+                if (poi_poa_verified) {
+                    openPasswordModal(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
+                break;
+            case 'financial-svg':
+                toggleCompareAccounts();
+                openPasswordModal(type_of_account);
+                break;
+            case 'financial-bvi':
+                toggleCompareAccounts();
+                if (poi_poa_verified) {
+                    openPasswordModal(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
+                break;
+            case 'financial-vanuatu':
+                if (poi_poa_verified) {
+                    // for bvi, labuan & vanuatu:
+                    if (!has_real_mt5_login) {
+                        toggleCFDPersonalDetailsModal();
+                    } else {
+                        openPasswordModal(type_of_account);
+                    }
+                }
+                break;
+            case 'financial-labuan':
+                if (poi_poa_verified) {
+                    // for bvi, labuan & vanuatu:
+                    if (!has_real_mt5_login) {
+                        toggleCFDPersonalDetailsModal();
+                    } else {
+                        openPasswordModal(type_of_account);
+                    }
+                }
+                break;
+            default:
+        }
+    };
+    return (
+        <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
+            <div className='cfd-real-compare-accounts'>
+                <div className='cfd-real-compare-accounts__table-wrapper'>
+                    <Table className='cfd-real-compare-accounts__table'>
+                        <Table.Header>
+                            <Table.Row className='cfd-real-compare-accounts__table-header'>
+                                <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
+                                <Table.Head className='cfd-real-compare-accounts__table-header-item'>
+                                    {localize('Synthetic')}
+                                </Table.Head>
+                                <Table.Head className='cfd-real-compare-accounts__table-header-item'>
+                                    {localize('Financial')}
+                                </Table.Head>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            {content.map(row => (
+                                <Row key={row.id} {...row} />
+                            ))}
+                        </Table.Body>
+
+                        <Table.Row className='cfd-real-compare-accounts__table-footer'>
+                            <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
+                            {footer_buttons.map((item, index) => (
+                                <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
+                                    <Button
+                                        className='cfd-real-compare-accounts__table-footer__button'
+                                        type='button'
+                                        primary_light
+                                        onClick={() => {
+                                            onSelectRealAccount(item);
+                                        }}
+                                    >
+                                        {item.label}
+                                    </Button>
+                                </Table.Cell>
+                            ))}
                         </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                        {content.map(row => (
-                            <Row key={row.id} {...row} />
-                        ))}
-                    </Table.Body>
-
-                    <Table.Row className='cfd-real-compare-accounts__table-footer'>
-                        <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                        {footer_buttons.map((item, index) => (
-                            <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
-                                <Button
-                                    className='cfd-real-compare-accounts__table-footer__button'
-                                    type='button'
-                                    primary_light
-                                    // onClick={() => {
-                                    // }}
-                                >
-                                    {item.label}
-                                </Button>
-                            </Table.Cell>
-                        ))}
-                    </Table.Row>
-                </Table>
+                    </Table>
+                </div>
             </div>
-        </div>
-    </Div100vhContainer>
-);
+        </Div100vhContainer>
+    );
+};
 
-export default DMT5CompareModalContent;
+export default connect(({ modules, client }: RootStore) => ({
+    account_type: modules.cfd.account_type,
+    has_real_mt5_login: client.has_real_mt5_login,
+    authentication_status: client.authentication_status,
+    toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
+    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
+    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
+}))(DMT5CompareModalContent);

@@ -117,8 +117,8 @@ Routes.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
-        onUnmountPortfolio: modules.portfolio.onUnmount,
+    connect(({ client, common, modules, ui, portfolio }) => ({
+        onUnmountPortfolio: portfolio.onUnmount,
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,

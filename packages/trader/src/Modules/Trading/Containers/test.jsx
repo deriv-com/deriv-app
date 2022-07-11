@@ -82,9 +82,9 @@ Test.propTypes = {
     entries: PropTypes.array,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client, ui, portfolio }) => ({
     trade: Object.entries(modules.trade),
     client: Object.entries(client),
     ui: Object.entries(ui),
-    portfolio: Object.entries(modules.portfolio),
+    portfolio: Object.entries(portfolio),
 }))(Test);

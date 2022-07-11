@@ -40,7 +40,7 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
             >
                 {({ dirty, handleChange, isSubmitting, errors }) => {
                     return (
-                        <Form className='add-payment-method-form__form'>
+                        <Form className='add-payment-method-form__form' noValidate>
                             <div className='add-payment-method-form__form-wrapper'>
                                 <Field name='choose_payment_method'>
                                     {({ field }) => (

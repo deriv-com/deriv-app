@@ -552,7 +552,6 @@
 
         & > p {
             font-size: 16px;
-            line-height: 24px;
             text-align: center;
         }
     }
@@ -611,6 +610,7 @@
         background-color: var(--general-section-1);
         border-radius: 8px;
         margin-bottom: 1.6rem;
+        margin-top: 1.6rem;
 
         &--banner {
             position: relative;
@@ -738,7 +738,7 @@
     &--balance {
         @include typeface(--title-left-bold-black);
         color: var(--text-profit-success);
-        padding: 1rem;
+        padding: 0.8rem;
     }
     &__banner {
         position: absolute;
@@ -985,7 +985,7 @@
         display: flex;
         width: 100%;
         margin-left: 0.4rem;
-        padding-top: 1.8rem;
+        padding-top: 0.2rem;
 
         .dc-btn {
             min-width: 12rem;

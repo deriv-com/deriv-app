@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
-import { localize } from '@deriv/translations';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -18,19 +17,55 @@ jest.mock('../../Components/cfd-personal-details-form', () => jest.fn(() => <div
 jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div>CFDPOA</div>));
 jest.mock('../../Components/cfd-poi', () => jest.fn(() => <div>CFDPOI</div>));
 
+const getByTextFn = (text, should_be) => {
+    if (should_be) {
+        expect(screen.getByText(text)).toBeInTheDocument();
+    } else {
+        expect(screen.queryByText(text)).not.toBeInTheDocument();
+    }
+};
+
+const toHavaClassFn = (item, class_name, should_have) => {
+    if (should_have) {
+        expect(item).toHaveClass(class_name);
+    } else {
+        expect(item).not.toHaveClass(class_name);
+    }
+};
+
+const testAllStepsFn = (screen, steps, step_no) => {
+    steps.map((step, index) => {
+        const item = screen.getByText(step.header);
+        const item_parent = item.parentElement.firstChild;
+        if (index === step_no) {
+            getByTextFn(step.body, true);
+        } else {
+            getByTextFn(step.body, false);
+        }
+        if (index <= step_no) {
+            toHavaClassFn(item_parent, 'identifier--active', true);
+        } else {
+            toHavaClassFn(item_parent, 'identifier--active', false);
+        }
+    });
+};
+
+const steps = [
+    {
+        header: 'Personal details',
+        body: 'CFDPersoinalDetails',
+    },
+    {
+        header: 'Proof of identity',
+        body: 'CFDPOI',
+    },
+    {
+        header: 'Proof of address',
+        body: 'CFDPOA',
+    },
+];
+
 describe('<CFDFinancialStpRealAccountSignup />', () => {
-    const getSteps = screen => {
-        const personal_details = screen.getByText('Personal details');
-        const proof_of_identity = screen.getByText('Proof of identity');
-        const proof_of_address = screen.getByText('Proof of address');
-
-        return {
-            step1: personal_details.parentElement.firstChild,
-            step2: proof_of_identity.parentElement.firstChild,
-            step3: proof_of_address.parentElement.firstChild,
-        };
-    };
-
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -150,42 +185,30 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     it('should show headers properly', () => {
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        expect(screen.getByText('Complete your personal details')).toBeInTheDocument();
-        expect(screen.getByText('1')).toBeInTheDocument();
-        expect(screen.getByText('Personal details')).toBeInTheDocument();
-        expect(screen.getByText('Proof of identity')).toBeInTheDocument();
-        expect(screen.getByText('2')).toBeInTheDocument();
-        expect(screen.getByText('Proof of address')).toBeInTheDocument();
-        expect(screen.getByText('3')).toBeInTheDocument();
+        getByTextFn('Complete your personal details', true);
+        steps.map((step, index) => {
+            getByTextFn(step.header, true);
+            getByTextFn(index + 1, true);
+        });
     });
 
     it('should render properly for the first step content', () => {
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
-        const { step1, step2, step3 } = getSteps(screen);
 
-        expect(step1).toHaveClass('identifier--active');
-        expect(step2).not.toHaveClass('identifier--active');
-        expect(step3).not.toHaveClass('identifier--active');
+        testAllStepsFn(screen, steps, 0);
     });
 
     it('should render properly for the second step content', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([1, () => {}]);
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        const { step1, step2, step3 } = getSteps(screen);
-
-        expect(step1).toHaveClass('identifier--active');
-        expect(step2).toHaveClass('identifier--active');
-        expect(step3).not.toHaveClass('identifier--active');
+        testAllStepsFn(screen, steps, 1);
     });
 
     it('should render properly for the third step content', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([2, () => {}]);
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        const { step1, step2, step3 } = getSteps(screen);
-        expect(step1).toHaveClass('identifier--active');
-        expect(step2).toHaveClass('identifier--active');
-        expect(step3).toHaveClass('identifier--active');
+        testAllStepsFn(screen, steps, 2);
     });
 });

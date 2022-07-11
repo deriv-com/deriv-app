@@ -4,12 +4,17 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { isUserSold, isMobile } from '@deriv/shared';
+import {
+    isUserSold,
+    isMobile,
+    getDurationPeriod,
+    getDurationTime,
+    getDurationUnitText,
+    getEndTime,
+} from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { connect } from 'Stores/connect';
-import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 

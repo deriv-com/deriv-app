@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getCurrencyDisplayCode } from '@deriv/shared';
-import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
+import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (

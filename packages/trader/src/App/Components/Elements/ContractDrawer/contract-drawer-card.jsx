@@ -2,15 +2,18 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
-import { isCryptoContract, isDesktop } from '@deriv/shared';
+import {
+    isCryptoContract,
+    isDesktop,
+    getEndTime,
+    getSymbolDisplayName,
+} from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
-import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
-import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
+import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
+import { connectWithContractUpdate } from 'Stores/Modules/Trading/Helpers/multiplier';
 
 const ContractDrawerCard = ({
     active_symbols,
@@ -180,11 +183,11 @@ ContractDrawerCard.propTypes = {
     toggleContractAuditDrawer: PropTypes.func,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, contract_trade }) => ({
     active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
-    getContractById: modules.contract_trade.getContractById,
+    getContractById: contract_trade.getContractById,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     setCurrentFocus: ui.setCurrentFocus,

@@ -93,6 +93,7 @@ CryptoTransactionsHistory.propTypes = {
     currency: PropTypes.string,
     is_loading: PropTypes.bool,
     setIsCryptoTransactionsVisible: PropTypes.func,
+    setIsDeposit: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({

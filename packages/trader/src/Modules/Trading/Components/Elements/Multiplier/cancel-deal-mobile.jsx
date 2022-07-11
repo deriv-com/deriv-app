@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, RadioGroup, Dialog, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 
 const DealCancellationWarning = ({

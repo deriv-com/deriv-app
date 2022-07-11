@@ -41,6 +41,8 @@ Div100vhContainer.propTypes = {
     is_bypassed: PropTypes.bool,
     is_disabled: PropTypes.bool,
     max_height_offset: PropTypes.string,
+    className: PropTypes.string,
+    max_autoheight_offset: PropTypes.string,
 };
 
 export default Div100vhContainer;

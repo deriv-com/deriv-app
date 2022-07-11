@@ -93,7 +93,7 @@ TableRow.propTypes = {
     to: PropTypes.string,
     content_loader: PropTypes.elementType,
     measure: PropTypes.func,
-    getActionColumns: PropTypes,
+    getActionColumns: PropTypes.func,
     show_preloader: PropTypes.bool,
     is_dynamic_height: PropTypes.bool,
 };

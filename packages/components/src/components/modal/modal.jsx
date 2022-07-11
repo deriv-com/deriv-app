@@ -309,6 +309,7 @@ Modal.propTypes = {
     toggleModal: PropTypes.func,
     width: PropTypes.string,
     elements_to_ignore: PropTypes.array,
+    is_risk_warning_visible: PropTypes.bool,
 };
 
 export default Modal;

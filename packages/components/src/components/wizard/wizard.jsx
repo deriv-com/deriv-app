@@ -93,7 +93,7 @@ Wizard.propTypes = {
     initial_step: PropTypes.number,
     onStepChange: PropTypes.func,
     nav: PropTypes.node,
-    selected_step_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
+    selected_step_ref: PropTypes.shape({ current: PropTypes.any }),
 };
 
 export default Wizard;

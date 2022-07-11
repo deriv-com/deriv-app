@@ -208,7 +208,7 @@ Calendar.propTypes = {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     disable_days: PropTypes.arrayOf(PropTypes.number),
     calendar_view: PropTypes.string,
-    calendar_el_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
+    calendar_el_ref: PropTypes.shape({ current: PropTypes.any }),
     disabled_days: PropTypes.array,
     events: PropTypes.array,
     has_range_selection: PropTypes.bool,

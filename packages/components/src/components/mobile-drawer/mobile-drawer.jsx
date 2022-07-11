@@ -93,6 +93,7 @@ MobileDrawer.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggle: PropTypes.func,
     width: PropTypes.string,
+    livechat: PropTypes.object,
 };
 
 export default MobileDrawer;

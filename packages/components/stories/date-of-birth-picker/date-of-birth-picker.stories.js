@@ -17,7 +17,10 @@ storiesOf('DateOfBirthPicker', module)
                     <DateOfBirthPicker
                         name='date_of_birth'
                         label={'Date of birth*'}
-                        // onChange={({ target }) => console.log(toMoment(target.value).format('YYYY-MM-DD'))}
+                        onChange={() => {
+                            // target was a destructured parameter here
+                            // console.log(toMoment(target.value).format('YYYY-MM-DD'));
+                        }}
                     />
                 </Wrapper>
             );

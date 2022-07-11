@@ -50,7 +50,7 @@ export const Verified = ({ needs_poi, is_description_enabled = true }) => {
 
 Verified.propTypes = {
     needs_poi: PropTypes.bool,
-    is_description_disabled: PropTypes.bool,
+    is_description_enabled: PropTypes.bool,
 };
 
 export default Verified;

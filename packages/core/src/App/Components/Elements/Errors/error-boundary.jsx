@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component {
 
 ErrorBoundary.propTypes = {
     root_store: PropTypes.object,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array(PropTypes.node), PropTypes.object]),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 };
 
 export default connect(store => ({

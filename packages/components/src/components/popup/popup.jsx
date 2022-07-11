@@ -132,7 +132,7 @@ Popup.propTypes = {
     ),
     title: PropTypes.string,
     togglePopupModal: PropTypes.func,
-    Component: PropTypes.node,
+    Component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     currency: PropTypes.string,
 };
 

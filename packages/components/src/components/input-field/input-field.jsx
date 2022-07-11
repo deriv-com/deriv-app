@@ -351,6 +351,13 @@ InputField.propTypes = {
     type: PropTypes.string,
     unit: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    data_tip: PropTypes.string,
+    data_value: PropTypes.string,
+    is_error_tooltip_hidden: PropTypes.string,
+    inputmode: PropTypes.string,
+    max_value: PropTypes.number,
+    min_value: PropTypes.number,
+    format: PropTypes.func,
 };
 
 export default InputField;

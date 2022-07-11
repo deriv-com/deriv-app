@@ -17,6 +17,6 @@ const Wrapper = ({ children, is_dark }) => (
 
 Wrapper.propTypes = {
     is_dark: PropTypes.bool,
-    children: PropTypes.object,
+    children: PropTypes.oneOf([PropTypes.node, PropTypes.array]),
 };
 export default Wrapper;

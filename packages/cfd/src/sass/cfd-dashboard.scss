@@ -620,7 +620,12 @@
             border-right: 1.8rem solid transparent;
             height: 0;
             width: 7rem;
-            left: 21.8rem;
+            @include desktop {
+                left: 21.8rem;
+            }
+            @include mobile {
+                margin-left: 2.3rem;
+            }
             top: 1rem;
             color: #fff;
             font-weight: bold;

@@ -108,6 +108,7 @@ describe('Integration checks', () => {
                     result = invalid_usage_regexp.exec(file);
                 }
             } catch (e) {
+                /* eslint-disable no-console */
                 console.log(e);
             }
         }

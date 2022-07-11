@@ -6,7 +6,7 @@ import RootStore from 'Stores/index';
 import { LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 
-type TTradingPlatformAvailableAccount = {
+export type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming';
     name: string;
     requirements: {
@@ -47,11 +47,11 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     disableApp: () => void;
     enableApp: () => void;
     has_real_mt5_non_svg_login: boolean;
-    is_authentication_needed: boolean;
     is_jurisdiction_modal_visible: boolean;
     is_loading: boolean;
     is_eu: boolean;
     is_eu_country: boolean;
+    jurisdiction_selected_shortcode: string;
     residence: string;
     toggleCFDPersonalDetailsModal: () => void;
     toggleJurisdictionModal: () => void;
@@ -59,6 +59,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     is_fully_authenticated: boolean;
     is_pending_authentication: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
     toggleCFDVerificationModal: () => void;
 };
 
@@ -68,18 +69,18 @@ const JurisdictionModal = ({
     disableApp,
     enableApp,
     has_real_mt5_non_svg_login,
-    is_authentication_needed,
     is_jurisdiction_modal_visible,
     is_eu,
+    jurisdiction_selected_shortcode,
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     trading_platform_available_accounts,
     is_fully_authenticated,
     is_pending_authentication,
     openPasswordModal,
+    setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
 }: TJurisdictionModalProps) => {
-    const [jurisdiction_selected_card, setJurisdictionSelectedCard] = React.useState('');
     const [checked, setChecked] = React.useState(false);
 
     const financial_available_accounts = trading_platform_available_accounts.filter(
@@ -105,9 +106,9 @@ const JurisdictionModal = ({
     const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
 
     const is_next_button_enabled =
-        jurisdiction_selected_card === 'svg' ||
-        (jurisdiction_selected_card &&
-            jurisdiction_selected_card !== 'svg' &&
+        jurisdiction_selected_shortcode === 'svg' ||
+        (jurisdiction_selected_shortcode &&
+            jurisdiction_selected_shortcode !== 'svg' &&
             (poi_poa_not_submitted || poi_poa_failed || (poi_poa_verified && checked)) &&
             !is_pending_authentication);
 
@@ -121,10 +122,10 @@ const JurisdictionModal = ({
         if (is_eu) {
             if (poi_poa_verified) {
                 openPasswordModal(type_of_account);
-            } else if (is_authentication_needed) {
+            } else {
                 toggleCFDVerificationModal();
             }
-        } else if (jurisdiction_selected_card === 'svg') {
+        } else if (jurisdiction_selected_shortcode === 'svg') {
             if (account_type.type === 'financial' && poi_poa_verified && !has_real_mt5_non_svg_login) {
                 toggleCFDPersonalDetailsModal();
             } else {
@@ -137,16 +138,13 @@ const JurisdictionModal = ({
             } else {
                 openPasswordModal(type_of_account);
             }
-        } else if (is_authentication_needed) {
-            toggleCFDVerificationModal();
         } else {
-            openPasswordModal(type_of_account);
+            toggleCFDVerificationModal();
         }
-        setJurisdictionSelectedCard('');
     };
 
     const buttonText = () => {
-        const selected_card = jurisdiction_selected_card !== 'svg' && jurisdiction_selected_card;
+        const selected_card = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
         if (poa_failed && selected_card) {
             return <Localize i18n_default_text='Resubmit proof of address' />;
         } else if (poi_failed && selected_card) {
@@ -174,8 +172,8 @@ const JurisdictionModal = ({
                         >
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}
-                                jurisdiction_selected_card={jurisdiction_selected_card}
-                                setJurisdictionSelectedCard={setJurisdictionSelectedCard}
+                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                                 synthetic_available_accounts={synthetic_available_accounts}
                                 account_type={account_type.type}
                                 authentication_status={authentication_status}
@@ -209,7 +207,7 @@ const JurisdictionModal = ({
                             visible={is_jurisdiction_modal_visible}
                             onClose={() => {
                                 toggleJurisdictionModal();
-                                setJurisdictionSelectedCard('');
+                                setJurisdictionSelectedShortcode('');
                             }}
                             footer={
                                 <Button
@@ -226,8 +224,8 @@ const JurisdictionModal = ({
                         >
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}
-                                jurisdiction_selected_card={jurisdiction_selected_card}
-                                setJurisdictionSelectedCard={setJurisdictionSelectedCard}
+                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                                 synthetic_available_accounts={synthetic_available_accounts}
                                 account_type={account_type.type}
                                 authentication_status={authentication_status}
@@ -255,8 +253,8 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     has_real_mt5_non_svg_login: client.has_real_mt5_non_svg_login,
-    is_authentication_needed: client.is_authentication_needed,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
+    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,
@@ -268,4 +266,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence: client.residence,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
+    setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
 }))(JurisdictionModal);

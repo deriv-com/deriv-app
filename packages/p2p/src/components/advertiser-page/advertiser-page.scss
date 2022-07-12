@@ -9,24 +9,14 @@
         cursor: pointer;
         position: absolute;
         right: 0;
+        z-index: 2;
 
-        span {
-            color: var(--text-prominent) !important;
+        .dc-dropdown__display-placeholder {
+            top: auto;
         }
 
         &-container {
             margin-top: 0;
-        }
-
-        &--disabled {
-            box-shadow: 0 1rem 2rem var(--shadow-menu);
-            border-radius: $BORDER_RADIUS;
-            position: absolute;
-            right: 0;
-
-            span {
-                color: var(--text-disabled) !important;
-            }
         }
     }
 

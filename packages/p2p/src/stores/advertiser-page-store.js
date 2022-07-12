@@ -117,6 +117,12 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    onCancel() {
+        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        this.setIsDropdownMenuVisible(false);
+    }
+
+    @action.bound
     onCancelClick() {
         this.setShowAdPopup(false);
     }
@@ -130,6 +136,15 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     onMount() {
         this.getAdvertiserInfo();
+    }
+
+    @action.bound
+    onSubmit() {
+        this.root_store.general_store.blockUnblockUser(
+            !this.is_counterparty_advertiser_blocked,
+            this.advertiser_details_id
+        );
+        this.setIsDropdownMenuVisible(false);
     }
 
     onTabChange() {

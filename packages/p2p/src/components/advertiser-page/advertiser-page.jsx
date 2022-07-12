@@ -34,19 +34,6 @@ const AdvertiserPage = () => {
     } = advertiser_page_store.advertiser_info;
     const joined_since = daysSince(created_time);
 
-    const onCancel = () => {
-        general_store.setIsBlockUserModalOpen(false);
-        advertiser_page_store.setIsDropdownMenuVisible(false);
-    };
-
-    const onSubmit = () => {
-        general_store.blockUnblockUser(
-            !advertiser_page_store.is_counterparty_advertiser_blocked,
-            advertiser_page_store.advertiser_details_id
-        );
-        advertiser_page_store.setIsDropdownMenuVisible(false);
-    };
-
     React.useEffect(() => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
@@ -78,8 +65,8 @@ const AdvertiserPage = () => {
                 advertiser_name={name}
                 is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked}
                 is_block_user_modal_open={general_store.is_block_user_modal_open}
-                onCancel={onCancel}
-                onSubmit={onSubmit}
+                onCancel={advertiser_page_store.onCancel}
+                onSubmit={advertiser_page_store.onSubmit}
             />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}

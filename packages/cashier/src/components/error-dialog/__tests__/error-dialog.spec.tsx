@@ -12,8 +12,9 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('<ErrorDialog />', () => {
+    let modal_root_el;
     beforeAll(() => {
-        const modal_root_el = document.createElement('div');
+        modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });

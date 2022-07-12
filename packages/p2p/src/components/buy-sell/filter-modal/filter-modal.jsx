@@ -94,7 +94,7 @@ const FilterModal = () => {
                     <React.Fragment>
                         <FilterModalSearch />
                         <div className='filter-modal__checkbox-container'>
-                            <ThemedScrollbars is_scrollbar_hidden>{getPaymentMethods()}</ThemedScrollbars>
+                            <ThemedScrollbars is_scrollbar_hidden><getPaymentMethods /></ThemedScrollbars>
                         </div>
                     </React.Fragment>
                 ) : (

@@ -52,17 +52,8 @@
         }
     }
 
-    &__toggle {
-        &-button {
-            margin-top: -1px;
-        }
-
-        &-label {
-            margin: 0 auto;
-            @media (max-width: 375px) {
-                margin: 0;
-            }
-        }
+    &__toggle-label {
+        margin: 0;
     }
 
     &__checkbox-container {

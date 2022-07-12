@@ -112,7 +112,7 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_s
             />
             <MultipliersInfo
                 className='trade-params__multiplier-trade-info'
-                should_show_tooltip
+                is_should_show_tooltip
                 commission={commission}
                 stop_out={stop_out}
                 amount={stake_value}

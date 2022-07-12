@@ -34,7 +34,7 @@ const ContractInfo = ({
     has_increased,
     is_loading,
     is_multiplier,
-    should_fade,
+    is_should_fade,
     proposal_info,
     type,
 }) => {
@@ -65,8 +65,8 @@ const ContractInfo = ({
                 id={`dt_purchase_${type.toLowerCase()}_price`}
                 className={classNames('trade-container__price-info', {
                     'trade-container__price-info--disabled': has_error_or_not_loaded,
-                    'trade-container__price-info--slide': is_loading && !should_fade,
-                    'trade-container__price-info--fade': is_loading && should_fade,
+                    'trade-container__price-info--slide': is_loading && !is_should_fade,
+                    'trade-container__price-info--fade': is_loading && is_should_fade,
                 })}
             >
                 {is_multiplier ? (
@@ -135,7 +135,7 @@ ContractInfo.propTypes = {
     is_multiplier: PropTypes.bool,
     is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,
-    should_fade: PropTypes.bool,
+    is_should_fade: PropTypes.bool,
     type: PropTypes.string,
 };
 

@@ -62,8 +62,7 @@ ContractTypeDialog.propTypes = {
     onCategoryClick: PropTypes.func,
     onChangeInput: PropTypes.func,
     onClose: PropTypes.func,
-    open: PropTypes.bool,
-    selected: PropTypes.bool,
+    selected: PropTypes.string,
     show_loading: PropTypes.bool,
 };
 

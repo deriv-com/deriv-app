@@ -106,7 +106,7 @@ const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange
             </RadioGroup>
             <MultipliersInfo
                 className='trade-params__multiplier-trade-info'
-                should_show_tooltip
+                is_should_show_tooltip
                 commission={commission}
                 stop_out={stop_out}
                 amount={amount}

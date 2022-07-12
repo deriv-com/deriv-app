@@ -1,4 +1,3 @@
-import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -56,7 +55,7 @@ const isLanguageAvailable = lang => {
 
 export const getAllLanguages = () => ALL_LANGUAGES;
 
-const getInitialLanguage = () => {
+export const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
@@ -118,7 +117,7 @@ export const changeLanguage = async (lang, cb) => {
     // TODO: uncomment this when translations are ready
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
-        i18n.changeLanguage(lang, () => {
+        await i18n.changeLanguage(lang, () => {
             localStorage.setItem(LANGUAGE_KEY, lang);
             cb(lang);
         });
@@ -147,27 +146,4 @@ const loadIncontextTranslation = () => {
         `;
         document.head.appendChild(jipt);
     }
-};
-
-export const useOnLoadTranslation = () => {
-    const [is_loaded, setLoaded] = React.useState(false);
-
-    React.useEffect(() => {
-        if (!i18n.language) {
-            i18n.language = getInitialLanguage();
-        }
-        const is_english = i18n.language === 'EN';
-
-        if (is_english) {
-            setLoaded(true);
-        } else {
-            i18n.store.on('added', () => {
-                setLoaded(true);
-            });
-        }
-
-        return () => i18n.store.off('added');
-    }, []);
-
-    return [is_loaded, setLoaded];
 };

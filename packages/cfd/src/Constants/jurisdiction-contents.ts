@@ -88,6 +88,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
             `${localize('Registered with the Financial Commission')}`,
             `${localize('80+ assets: forex and cryptocurrencies')}`,
             `${localize('Leverage up to 1:100')}`,
+            `${localize('Straight through processing')}`,
         ],
     },
     maltainvest: {

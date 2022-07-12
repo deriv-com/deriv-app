@@ -105,9 +105,9 @@ const JurisdictionCard = ({
 
     const VerificationStatuses = () => (
         <>
-            {!disabled && poa_none && poi_none && (
-                <div className='cfd-jurisdiction-card__footer'>
-                    <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
+            {!disabled && poa_none && poi_none && type_of_card !== 'svg' && (
+                <div className='cfd-jurisdiction-card__footer--none'>
+                    <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={disabled ? 'less-prominent' : 'prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address' />
                     </Text>
                 </div>
@@ -121,9 +121,9 @@ const JurisdictionCard = ({
                     </div>
                 </div>
             )}
-            {!disabled && poi_poa_pending && type_of_card === 'svg' && (
+            {!disabled && type_of_card === 'svg' && (
                 <div className='cfd-jurisdiction-card__footer'>
-                    <Text size='xxxs' color={'less-prominent'}>
+                    <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                     </Text>
                 </div>

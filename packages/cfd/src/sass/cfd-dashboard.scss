@@ -521,7 +521,7 @@
         font-size: 10px;
         line-height: 14px;
         color: #333333;
-        margin: 0 0.8rem 0.8rem 0.8rem;
+        padding: 5px 8px;
         margin-top: auto;
         text-align: center;
         &--none {
@@ -533,11 +533,13 @@
         font-weight: 400;
         font-size: 10px;
         line-height: 14px;
-        background-color: #f2f3f4;
+        background-color: var(--general-section-1);
         color: #333333;
         margin: 0 0.8rem 0.8rem 0.8rem;
         margin-top: auto;
+        padding: 4px 8px;
         text-align: center;
+        width: 90%;
     }
 
     &__footnote {

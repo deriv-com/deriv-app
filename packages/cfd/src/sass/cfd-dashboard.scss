@@ -530,16 +530,10 @@
     }
 
     &__footer--none {
-        font-weight: 400;
-        font-size: 10px;
-        line-height: 14px;
         background-color: var(--general-section-1);
         color: #333333;
-        margin: 0 0.8rem 0.8rem 0.8rem;
         margin-top: auto;
-        padding: 4px 8px;
-        text-align: center;
-        width: 90%;
+        padding: 0.3rem;
     }
 
     &__footnote {

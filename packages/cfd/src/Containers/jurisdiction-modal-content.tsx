@@ -107,7 +107,7 @@ const JurisdictionCard = ({
         <>
             {!disabled && poa_none && poi_none && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__footer--none'>
-                    <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={disabled ? 'less-prominent' : 'prominent'}>
+                    <Text as='p' size={'xxxs'} align='center' color={disabled ? 'less-prominent' : 'prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address' />
                     </Text>
                 </div>

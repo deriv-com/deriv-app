@@ -54,7 +54,7 @@ We have a separate folder for each component.
 
 ## Troubleshooting
 
--   **Icon missing:** If the icons are missing, you only need to build this project. You can do this by running the build command:
+-   **Icon missing:** If the icons are missing, you only need to build this project. You can do this by running the build command from the root directory (`/deriv-app`):
 
 ```console
 npm run build

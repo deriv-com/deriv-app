@@ -140,7 +140,7 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
             )} */}
-            {poi_failed && type_of_card !== 'svg' && (
+            {poi_failed && !poa_failed && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
                     <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
@@ -149,11 +149,20 @@ const JurisdictionCard = ({
                     </div>
                 </div>
             )}
-            {poa_failed && type_of_card !== 'svg' && (
+            {poa_failed && !poi_failed && type_of_card !== 'svg' && (
                 <div className='cfd-jurisdiction-card__verification-status'>
                     <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
                             <Localize i18n_default_text='Check your proof of address' />
+                        </Text>
+                    </div>
+                </div>
+            )}
+            {poa_failed && poi_failed && type_of_card !== 'svg' && (
+                <div className='cfd-jurisdiction-card__verification-status'>
+                    <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                            <Localize i18n_default_text='Check your proof of identity and address' />
                         </Text>
                     </div>
                 </div>
@@ -273,7 +282,7 @@ const JurisdictionModalContent = ({
                             <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
                         </Text>
                     )}
-                {poi_failed && jurisdiction_selected_card !== 'svg' && (
+                {poi_failed && !poa_failed && jurisdiction_selected_card !== 'svg' && (
                     <Text
                         as='p'
                         align='center'
@@ -285,7 +294,7 @@ const JurisdictionModalContent = ({
                         <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
                     </Text>
                 )}
-                {poa_failed && jurisdiction_selected_card !== 'svg' && (
+                {poa_failed && !poi_failed && jurisdiction_selected_card !== 'svg' && (
                     <Text
                         as='p'
                         align='center'

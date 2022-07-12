@@ -69,6 +69,7 @@ commands:
             - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
+            - "packages/reports/node_modules"
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
@@ -157,6 +158,27 @@ commands:
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
             ./release.sh << parameters.k8s_service >> ${TAG}
+
+  publish_to_pages_staging:
+    description: "Publish to cloudflare pages"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (staging)"
+          command: |
+            cd packages/core 
+            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
+            echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
+
+  publish_to_pages_production:
+    description: "Publish to cloudflare pages"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (production)"
+          command: | 
+            cd packages/core 
+            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
+            echo "New website - http://cf-pages-deriv-app.deriv.com"
+
 jobs:
   build:
     docker:
@@ -195,6 +217,10 @@ jobs:
       - build
       - versioning:
           version_name: staging
+      - persist_to_workspace:
+          root: packages
+          paths:
+            - core
       - docker_build_push
       - k8s_deploy
       - notify_slack
@@ -210,11 +236,35 @@ jobs:
       - build
       - versioning:
           version_name: production
+      - persist_to_workspace:
+          root: packages
+          paths:
+            - core
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
           k8s_namespace: "deriv-app-production"
       - notify_slack
+    environment:
+      NODE_ENV: staging
+
+  publish_cloudflare_staging:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: packages
+      - publish_to_pages_staging
+    environment:
+      NODE_ENV: staging
+
+  publish_cloudflare_production:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: packages
+      - publish_to_pages_production
     environment:
       NODE_ENV: staging
 
@@ -248,11 +298,25 @@ workflows:
           filters:
             branches:
               only: /^master$/
+      - publish_cloudflare_staging:
+          requires:
+            - release_staging
+          filters:
+            branches:
+              only: /^master$/
 
   release_production:
     jobs:
       - release_production:
           context: binary-frontend-artifact-upload
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^production.*/
+      - publish_cloudflare_production:
+          requires:
+            - release_production
           filters:
             branches:
               ignore: /.*/

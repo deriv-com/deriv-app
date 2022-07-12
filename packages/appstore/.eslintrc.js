@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack.config.js');
+const webpackConfig = require('./webpack.config');
 
 module.exports = {
     extends: [
@@ -8,6 +8,9 @@ module.exports = {
     ],
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
+    rules: {
+        '@typescript-eslint/no-var-requires': 0,
+    },
     settings: {
         'import/resolver': {
             webpack: { config: webpackConfig({}) },

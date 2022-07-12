@@ -99,6 +99,7 @@ const JurisdictionModal = ({
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
+    const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
     const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
@@ -110,7 +111,7 @@ const JurisdictionModal = ({
         (jurisdiction_selected_shortcode &&
             jurisdiction_selected_shortcode !== 'svg' &&
             (poi_poa_not_submitted || poi_poa_failed || (poi_poa_verified && checked)) &&
-            !is_pending_authentication);
+            !poi_poa_pending);
 
     const onSelectRealAccount = () => {
         const type_of_account = {

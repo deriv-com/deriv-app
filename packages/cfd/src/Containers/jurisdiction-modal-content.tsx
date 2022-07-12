@@ -181,7 +181,7 @@ const JurisdictionCard = ({
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
                     <div className={classNames('cfd-jurisdiction-card__over-header')}>
-                        <Text as='p' color={disabled ? 'less-prominent' : 'blue'} line_height='l' weight='bold'>
+                        <Text as='p' color={disabled ? 'less-prominent' : 'blue'} line_height='xxl' weight='bold'>
                             <Localize
                                 i18n_default_text={
                                     jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents]
@@ -211,7 +211,7 @@ const JurisdictionCard = ({
                             <div>
                                 <Checkmark />
                             </div>
-                            <Text as='p' size='xs' line_height='xs' color={disabled ? 'less-prominent' : 'prominent'}>
+                            <Text as='p' size='xs' color={disabled ? 'less-prominent' : 'prominent'}>
                                 <Localize i18n_default_text={item} />
                             </Text>
                         </div>

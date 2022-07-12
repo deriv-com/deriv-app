@@ -6,13 +6,7 @@ import { observer } from 'mobx-react-lite';
 import './advertiser-page.scss';
 
 const AdvertiserPageDropdownMenu = () => {
-    const { advertiser_page_store, general_store } = useStores();
-
-    const showBlockUserModal = () => {
-        if (!advertiser_page_store.is_counterparty_advertiser_blocked) {
-            general_store.setIsBlockUserModalOpen(true);
-        }
-    };
+    const { advertiser_page_store } = useStores();
 
     return (
         <div className='advertiser-page__menu-dots-toggle'>
@@ -25,7 +19,7 @@ const AdvertiserPageDropdownMenu = () => {
                 size={16}
             />
             {advertiser_page_store.is_dropdown_menu_visible && (
-                <div className='advertiser-page__dropdown' onClick={showBlockUserModal}>
+                <div className='advertiser-page__dropdown' onClick={advertiser_page_store.showBlockUserModal}>
                     <Dropdown
                         className='advertiser-page__dropdown-container'
                         is_align_text_right

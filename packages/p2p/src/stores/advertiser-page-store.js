@@ -245,4 +245,11 @@ export default class AdvertiserPageStore extends BaseStore {
             this.setShowAdPopup(true);
         }
     }
+
+    @action.bound
+    showBlockUserModal() {
+        if (!this.is_counterparty_advertiser_blocked) {
+            this.root_store.general_store.setIsBlockUserModalOpen(true);
+        }
+    }
 }

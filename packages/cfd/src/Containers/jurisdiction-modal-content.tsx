@@ -205,18 +205,31 @@ const JurisdictionCard = ({
                     />
                 </Text>
 
-                {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].contents.map(
-                    (item, index) => (
-                        <div className='cfd-jurisdiction-card__bullet-wrapper' key={index}>
-                            <div>
-                                <Checkmark />
-                            </div>
-                            <Text as='p' size='xs' color={disabled ? 'less-prominent' : 'prominent'}>
-                                <Localize i18n_default_text={item} />
-                            </Text>
-                        </div>
-                    )
-                )}
+                {account_type === 'synthetic'
+                    ? jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].synthetic_contents.map(
+                          (item, index) => (
+                              <div className='cfd-jurisdiction-card__bullet-wrapper' key={index}>
+                                  <div>
+                                      <Checkmark />
+                                  </div>
+                                  <Text as='p' size='xs' color={disabled ? 'less-prominent' : 'prominent'}>
+                                      <Localize i18n_default_text={item} />
+                                  </Text>
+                              </div>
+                          )
+                      )
+                    : jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].financial_contents.map(
+                          (item, index) => (
+                              <div className='cfd-jurisdiction-card__bullet-wrapper' key={index}>
+                                  <div>
+                                      <Checkmark />
+                                  </div>
+                                  <Text as='p' size='xs' color={disabled ? 'less-prominent' : 'prominent'}>
+                                      <Localize i18n_default_text={item} />
+                                  </Text>
+                              </div>
+                          )
+                      )}
 
                 <VerificationStatuses />
             </div>

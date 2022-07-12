@@ -295,7 +295,7 @@ const CFDAccountCardComponent = ({
                 </div>
                 {existing_data && <div className='cfd-account-card__divider' />}
 
-                <div className='cfd-account-card__cta' style={is_logged_in ? { marginTop: 'auto' } : {}}>
+                <div className='cfd-account-card__cta'>
                     <div className='cfd-account-card__cta-wrapper'>
                         {existing_data?.login &&
                             is_logged_in &&

@@ -89,12 +89,12 @@ const P2PCashier = ({
             poi_url={routes.proof_of_identity}
             server_time={server_time}
             setNotificationCount={setNotificationCount}
+            setOnRemount={setOnRemount}
             setOrderId={setQueryOrder}
             should_show_verification={/verification/.test(location.hash)}
             websocket_api={WS}
             current_focus={current_focus}
             setCurrentFocus={setCurrentFocus}
-            setOnRemount={setOnRemount}
         />
     );
 };
@@ -129,6 +129,7 @@ export default withRouter(
         platform: common.platform,
         residence: client.residence,
         setNotificationCount: modules.cashier.general_store.setNotificationCount,
+        setOnRemount: modules.cashier.general_store.setOnRemount,
         is_mobile: ui.is_mobile,
         setCurrentFocus: ui.setCurrentFocus,
         current_focus: ui.current_focus,

@@ -403,6 +403,10 @@
             padding: 1.6rem;
             grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
 
+            .dc-table__cell:last-child {
+                word-break: unset;
+            }
+
             @include mobile {
                 grid-template-columns: unset;
                 padding: 1.6rem;

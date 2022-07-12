@@ -352,7 +352,9 @@ const JurisdictionModalContent = ({
                         </Text>
                     </div>
                 )}
-                {is_pending_authentication &&
+                {!poa_failed &&
+                    !poi_failed &&
+                    is_pending_authentication &&
                     jurisdiction_selected_shortcode !== 'svg' &&
                     jurisdiction_selected_shortcode && (
                         <div className='cfd-jurisdiction-card__footnote--pending'>

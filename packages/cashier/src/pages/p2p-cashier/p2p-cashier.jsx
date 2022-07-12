@@ -133,6 +133,5 @@ export default withRouter(
         is_mobile: ui.is_mobile,
         setCurrentFocus: ui.setCurrentFocus,
         current_focus: ui.current_focus,
-        setOnRemount: modules.cashier.general_store.setOnRemount,
     }))(P2PCashier)
 );

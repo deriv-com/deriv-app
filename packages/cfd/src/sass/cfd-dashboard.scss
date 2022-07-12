@@ -1378,15 +1378,13 @@
     height: 100%;
     position: relative;
     width: 100%;
-    padding: 3rem;
-    .dc-modal-footer {
-        position: fixed;
-        padding: unset;
-        bottom: 1.6rem;
-        right: 1.6rem;
-    }
+
     &__body {
         width: 100%;
+        .poi-form-on-signup {
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr);
+        }
     }
 
     &__form {
@@ -1411,26 +1409,7 @@
         &__heading {
             padding: unset;
         }
-        &__header {
-            &-steps {
-                padding-bottom: 0.8rem;
-                width: 100%;
-                &-title {
-                    color: var(--brand-red-coral);
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    line-height: 20px;
-                    padding: 1.6rem 2.4rem 0.8rem;
-                }
-                &-subtitle {
-                    color: var(--text-prominent);
-                    line-height: 18px;
-                    font-size: 1.2rem;
-                    font-weight: bold;
-                    padding: 0 2.4rem;
-                }
-            }
-        }
+
         .dc-form-submit-button {
             background-color: var(--color-white);
         }
@@ -1566,6 +1545,9 @@
         display: grid;
         grid-template-rows: minmax(10rem, 1fr) 7.2rem;
         height: 100%;
+        .dc-modal-footer {
+            border-top: 1px solid var(--general-active);
+        }
     }
     &__file-upload {
         padding-top: 0.8rem;
@@ -1632,6 +1614,7 @@
     &__field-area {
         max-width: 556px;
         margin: 0 auto;
+        padding: 3rem 0;
 
         & .dc-dropdown__display-placeholder-text,
         & .dc-input__label,

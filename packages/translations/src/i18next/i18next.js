@@ -1,8 +1,6 @@
-import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { initMoment } from '@deriv/shared';
 import { isProduction } from '../../../shared/src/utils/config/config';
 import withI18n from '../components';
 
@@ -57,7 +55,7 @@ const isLanguageAvailable = lang => {
 
 export const getAllLanguages = () => ALL_LANGUAGES;
 
-const getInitialLanguage = () => {
+export const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
@@ -148,28 +146,4 @@ const loadIncontextTranslation = () => {
         `;
         document.head.appendChild(jipt);
     }
-};
-
-export const useOnLoadTranslation = () => {
-    const [is_loaded, setLoaded] = React.useState(false);
-
-    React.useEffect(() => {
-        if (!i18n.language) {
-            i18n.language = getInitialLanguage();
-        }
-        const is_english = i18n.language === 'EN';
-
-        if (is_english) {
-            setLoaded(true);
-        } else {
-            i18n.store.on('added', () => {
-                setLoaded(true);
-            });
-        }
-
-        return () => i18n.store.off('added');
-    }, []);
-
-    initMoment(i18n.language);
-    return [is_loaded, setLoaded];
 };

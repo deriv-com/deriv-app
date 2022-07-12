@@ -1,0 +1,19 @@
+/** @define allow-equals */
+.allow-equals {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 0.6em;
+
+    &__label {
+        @include typeface(--paragraph-left-normal-black, none);
+        @include toEm(padding, 0 8px, 1.2em);
+        color: var(--text-general);
+        cursor: pointer;
+    }
+    @include mobile {
+        &__subtitle {
+            color: var(--text-less-prominent);
+        }
+    }
+}

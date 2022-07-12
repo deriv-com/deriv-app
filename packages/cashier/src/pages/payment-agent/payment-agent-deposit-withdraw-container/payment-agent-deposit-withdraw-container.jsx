@@ -24,7 +24,7 @@ const PaymentAgentDepositWithdrawContainer = ({
         return () => {
             onChangePaymentMethod({ target: { value: '0' } });
         };
-    }, []);
+    }, [onChangePaymentMethod]);
 
     return (
         <React.Fragment>

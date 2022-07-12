@@ -65,7 +65,7 @@ The features developed in this folder also have been exported through the webpac
 
 ## Troubleshooting
 
--   **Icon missing:** If the icons are missing, you only need to build this workspace. You can do this by running the build command:
+-   **Icon missing:** If the icons are missing, you only need to build this workspace. You can do this by running the build command from the root directory (`/deriv-app`):
 
 ```
 npm run build

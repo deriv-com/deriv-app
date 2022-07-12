@@ -496,9 +496,11 @@
 
         &--verified {
             background-color: #4bb4b3;
-            color: #fff;
             padding: 0.8rem;
             border-radius: 0.5rem;
+            &-text {
+                color: #fff;
+            }
         }
 
         &--POA_POI {

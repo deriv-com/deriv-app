@@ -20,7 +20,7 @@ This repository contains the static HTML, Javascript, CSS, and images content of
 
 ## Manual deployment using custom domain (CNAME)
 
-For manual deployment, it's necessary to use the file named `CNAME`, please put a custom domain to this file. It's only for the gh-pages branch of your local clone of deriv-app.
+For manual deployment, it's necessary to use the file named `CNAME`, please create `scripts/CNAME.txt` and put a custom domain to this file. It's only for the deployment on GitHub Pages for your forked repo of deriv-app.
 
 ## How to work with this project
 

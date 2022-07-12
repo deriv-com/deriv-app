@@ -175,6 +175,7 @@ const CFDAccountCardComponent = ({
     platform,
     title,
     type,
+    specs,
     onSelectAccount,
     onClickFund,
     onPasswordManager,
@@ -297,6 +298,29 @@ const CFDAccountCardComponent = ({
 
                 <div className='cfd-account-card__cta'>
                     <div className='cfd-account-card__cta-wrapper'>
+                        {platform === CFD_PLATFORMS.DXTRADE && (!existing_data?.login || !is_logged_in) && (
+                            <div className='cfd-account-card__specs'>
+                                <table className='cfd-account-card__specs-table'>
+                                    <tbody>
+                                        {typeof specs !== 'undefined' &&
+                                            Object.keys(specs).map((spec_attribute, idx) => (
+                                                <tr key={idx} className='cfd-account-card__specs-table-row'>
+                                                    <td className='cfd-account-card__specs-table-attribute'>
+                                                        <p className='cfd-account-card--paragraph'>
+                                                            {specs[spec_attribute].key()}
+                                                        </p>
+                                                    </td>
+                                                    <td className='cfd-account-card__specs-table-data'>
+                                                        <p className='cfd-account-card--paragraph'>
+                                                            {specs[spec_attribute].value()}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                         {existing_data?.login &&
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&

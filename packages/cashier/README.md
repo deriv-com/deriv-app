@@ -41,7 +41,7 @@ src
     ├── public
     ├── stores
     ├── utils
-    │   ├── Validator
+    │   ├── validator
     |   |   ├──...
     |   |   ├── validator.js
 

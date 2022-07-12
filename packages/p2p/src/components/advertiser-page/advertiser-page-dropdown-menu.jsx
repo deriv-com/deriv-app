@@ -24,7 +24,7 @@ const AdvertiserPageDropdownMenu = () => {
                         className='advertiser-page__dropdown-container'
                         is_align_text_right
                         list={['Block']}
-                        name={'block_user_dropdown'}
+                        name='block_user_dropdown'
                         placeholder={
                             <Text
                                 color={

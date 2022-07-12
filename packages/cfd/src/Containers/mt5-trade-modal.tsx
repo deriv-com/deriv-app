@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { TAccountIconValues, TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
-import { getCFDPlatformLabel, getUrlBase } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase } from '@deriv/shared';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 
 type TMT5TradeModalProps = {
@@ -106,13 +106,21 @@ const MT5TradeModal = ({
     onPasswordManager,
     toggleModal,
 }: TMT5TradeModalProps) => {
+    const getHeadingTitle = () =>
+        getCFDAccountDisplay({
+            market_type: mt5_trade_account.market_type,
+            sub_account_type: mt5_trade_account.sub_account_type,
+            platform: CFD_PLATFORMS.MT5,
+            is_eu: is_eu_user,
+            shortcode: mt5_trade_account.landing_company_short,
+        });
     const getPageContent = () => (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
                 <Icon icon={account_icons.mt5[mt5_trade_account.market_type]} size={24} />
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                        {mt5_trade_account.market_type}
+                        {getHeadingTitle()}
                     </Text>
                     {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
                         <Text color='less-prominent' size='xxxs' line_height='xxxs'>
@@ -292,7 +300,7 @@ const MT5TradeModal = ({
     );
 };
 
-export default connect(({ ui, modules }: RootStore) => ({
+export default connect(({ modules, ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     mt5_trade_account: modules.cfd.mt5_trade_account,

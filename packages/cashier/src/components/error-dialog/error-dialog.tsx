@@ -100,7 +100,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
                 });
             }
         },
-        [history]
+        [dismissError, history]
     );
 
     React.useEffect(() => {
@@ -118,12 +118,12 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
         setIsVisible(is_error_visible);
     };
 
-    const dismissError = () => {
+    const dismissError = React.useCallback(() => {
         if (error.setErrorMessage) {
             error.setErrorMessage('');
         }
         setErrorVisibility(false);
-    };
+    }, [error]);
 
     return (
         <Dialog

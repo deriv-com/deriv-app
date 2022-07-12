@@ -1,0 +1,17 @@
+// Layout
+@import 'app/_common/layout/trader-layouts';
+
+// Drawers
+@import 'app/_common/drawer/positions-drawer';
+
+// Components
+@import 'app/_common/components/amount';
+@import 'app/_common/components/allow-equals';
+//@import 'app/_common/components/calendar'; // TODO: [move-to-components] Calendar component should be moved
+@import 'app/_common/components/card-list';
+//@import 'app/_common/components/date-picker'; // TODO: [move-to-components] Datepicker component should be moved
+@import 'app/_common/components/market-symbol-icon';
+
+// Modules
+@import 'app/modules/portfolio';
+@import 'app/modules/smart-chart';

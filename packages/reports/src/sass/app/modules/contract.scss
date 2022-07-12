@@ -1,0 +1,165 @@
+$CONTRACT_INFO_BOX_PADDING: 1.6em;
+
+.info-box-container {
+    position: absolute;
+    z-index: 3;
+    top: 1em;
+    right: 1em;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &-button:hover {
+        cursor: pointer;
+    }
+    &-icon {
+        width: 32px;
+        height: 32px;
+    }
+    .info-box {
+        position: relative;
+        border-radius: $BORDER_RADIUS;
+        padding: $CONTRACT_INFO_BOX_PADDING;
+        background: var(--general-section-1);
+        font-weight: 300;
+
+        &-longcode {
+            display: flex;
+
+            &-icon {
+                @extend %inline-icon;
+                margin-right: 1.6rem;
+                padding: 0.4rem;
+
+                @include mobile {
+                    margin-right: 0.8rem;
+                }
+            }
+            &-text {
+                max-width: 360px;
+
+                @include mobile {
+                    max-width: 175px;
+                    line-height: 1.4;
+                    letter-spacing: normal;
+                    font-size: 1rem;
+                    /* iPhone SE screen height fixes due to UI space restrictions */
+                    @media only screen and (max-height: 480px) {
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+        }
+        .expired {
+            display: flex;
+            align-items: center;
+
+            svg {
+                width: 2.4em;
+                height: 2.4em;
+                margin-right: 1em;
+
+                .color1-fill {
+                    fill: var(--status-success);
+                }
+            }
+            .pl-value {
+                color: var(--text-profit-success);
+                font-weight: bold;
+                font-size: 1.6em;
+                line-height: 1.5em;
+
+                .percentage {
+                    display: inline-block;
+                    margin-left: 0.7em;
+                }
+            }
+            &.lost {
+                .pl-value {
+                    color: var(--text-loss-danger);
+                }
+                svg .color1-fill {
+                    fill: var(--status-danger);
+                }
+            }
+            .sell-info {
+                margin-right: 2em;
+                text-align: center;
+                line-height: 1.2em;
+            }
+        }
+        .general {
+            display: flex;
+            align-items: center;
+            line-height: 1.4em;
+
+            .values {
+                margin-left: 1em;
+                margin-right: 2em;
+                text-align: right;
+                font-weight: bold;
+
+                .profit {
+                    color: var(--text-profit-success);
+                }
+                .loss {
+                    color: var(--text-loss-danger);
+                }
+            }
+            .sell {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin: -$CONTRACT_INFO_BOX_PADDING;
+                margin-left: $CONTRACT_INFO_BOX_PADDING;
+                padding: $CONTRACT_INFO_BOX_PADDING;
+
+                .dc-tooltip {
+                    position: absolute;
+                    bottom: 0.5em;
+                    right: 0.5em;
+                    line-height: 0;
+
+                    &:before {
+                        width: 350px;
+                        white-space: normal;
+                    }
+                }
+            }
+        }
+        @include mobile {
+            padding: 0.8rem;
+            margin-left: 0.8rem;
+        }
+    }
+    .message {
+        margin-top: 0.5em;
+        border: 1px solid var(--brand-red-coral);
+        border-radius: $BORDER_RADIUS;
+        padding: 1em;
+        background-color: transparentize($color-black, 0.84);
+        display: flex;
+        align-items: center;
+
+        .message-icon {
+            margin-right: 1em;
+        }
+        .message-text {
+            flex-grow: 1;
+        }
+        .message-close {
+            cursor: pointer;
+        }
+    }
+    .chart-close-btn {
+        position: absolute;
+        cursor: pointer;
+        z-index: 11;
+        right: 0;
+        top: 0;
+    }
+    @include mobile {
+        left: 0;
+    }
+}

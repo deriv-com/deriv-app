@@ -5,6 +5,7 @@ This repository contains the static HTML, Javascript, CSS, and images content of
 **In this documents**
 
 -   [Other documents](#other-documents)
+-   [Manual deployment using custom domain (CNAME)](#manual-deployment-using-custom-domain-cname)
 -   [How to work with this project](#how-to-work-with-this-project)
     -   [Deploy to your gh-pages for the first time](#deploy-to-your-gh-pages-for-the-first-time)
     -   [Deploy to root of gh-pages](#deploy-to-root-of-gh-pages)
@@ -17,15 +18,23 @@ This repository contains the static HTML, Javascript, CSS, and images content of
 
 -   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding help, etc.)
 
+## Manual deployment using custom domain (CNAME)
+
+For manual deployment, it's necessary to use the file named `CNAME`, please put a custom domain to this file. It's only for the gh-pages branch of your local clone of deriv-app.
+
 ## How to work with this project
 
 ### Deploy to your gh-pages for the first time
 
-1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your Github pages after login. Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL. If you're using a custom domain, replace the Github URLs above with your domain and remove the `deriv-app` base path.
+1.  Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your Github pages after login. Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL. If you're using a custom domain, replace the Github URLs above with your domain and remove the `deriv-app` base path.
 
-2. Set `NODE_ENV` to `development` with `export NODE_ENV=development`
+2.  In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
 
-3. Run `npm run deploy:clean`
+    -   **NOTE:** To avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`
+
+3.  Set `NODE_ENV` to `development` with `export NODE_ENV=development`
+
+4.  Run `npm run deploy:clean`
 
 ### Deploy to the root of gh-pages
 

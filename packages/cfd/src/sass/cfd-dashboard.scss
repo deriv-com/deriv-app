@@ -460,6 +460,7 @@
     min-height: 38rem;
     width: 27.6em;
     position: relative;
+    padding: 1.6rem;
 
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
@@ -471,7 +472,7 @@
 
     @include desktop {
         height: 100%;
-        margin: 0 1.6rem;
+        margin: 0 0.8rem;
     }
 
     &--selected {
@@ -509,8 +510,7 @@
     }
 
     &__h2-header {
-        margin-top: 2.4rem;
-        margin-left: 1.6rem;
+        margin: 1.4rem 0 2.4rem;
     }
 
     &__footer {
@@ -545,7 +545,7 @@
         left: 1.4rem;
         z-index: 10;
         width: 90%;
-        height: 3rem;
+        height: 4rem;
         position: absolute;
         border-radius: 4px;
         margin-bottom: 1rem;
@@ -558,10 +558,7 @@
 
     &__bullet-wrapper {
         display: flex;
-        margin: 1.9rem 2.4rem 0.8rem 2.6rem;
-        line-height: 1.5;
-        font-size: 14px;
-        line-height: 20px;
+        margin-bottom: 1rem;
 
         &--checkmark {
             margin-right: 1rem;

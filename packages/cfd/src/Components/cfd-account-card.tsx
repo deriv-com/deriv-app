@@ -196,11 +196,8 @@ const CFDAccountCardComponent = ({
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
-    const has_popular_banner: boolean =
-        type.type === 'synthetic' &&
-        type.category === 'real' &&
-        (platform === CFD_PLATFORMS.MT5 ? !existing_data : true);
-    const has_demo_banner: boolean = type.category === 'demo';
+    const has_popular_banner: boolean = type.type === 'synthetic';
+    const has_demo_banner: boolean = type.category === 'demo' && platform !== CFD_PLATFORMS.MT5;
     const has_server_banner =
         is_logged_in &&
         existing_data &&

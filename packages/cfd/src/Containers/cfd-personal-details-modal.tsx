@@ -57,12 +57,13 @@ const CFDPersonalDetailsModal = ({
     };
 
     React.useEffect(() => {
-        setIsLoading(true);
-        initiatePersonalDetails().then(() => {
-            setIsLoading(false);
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (is_open) {
+            setIsLoading(true);
+            initiatePersonalDetails().then(() => {
+                setIsLoading(false);
+            });
+        }
+    }, [is_open]);
 
     const transform = (value: string | undefined) => {
         const [result] = residence_list.filter(item => item.value === value);

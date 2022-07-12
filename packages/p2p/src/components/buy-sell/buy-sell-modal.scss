@@ -4,9 +4,7 @@
     &-body {
         position: relative;
         display: block;
-        @include desktop {
-            padding: 1.6rem;
-        }
+        padding-top: 2.4rem;
     }
 
     &-danger {
@@ -46,7 +44,7 @@
 
             @include mobile {
                 flex-direction: column;
-                padding: 1rem 2.4rem 0;
+
                 .dc-input__wrapper {
                     margin-top: 2.5rem;
                     width: 90vw;
@@ -79,14 +77,6 @@
     &-hintbox {
         margin: -0.5rem 0 2.4rem;
         padding: 0 2.4rem;
-
-        @include mobile {
-            padding-top: 1.4rem;
-        }
-
-        @include mobile {
-            margin: 0 0 2.4rem;
-        }
 
         .dc-hint-box {
             &__icon {
@@ -175,12 +165,6 @@
 
     &--error-message {
         padding: 0 2.4rem;
-
-        @include mobile {
-            &:first-child {
-                margin-top: 1.4rem;
-            }
-        }
     }
 }
 

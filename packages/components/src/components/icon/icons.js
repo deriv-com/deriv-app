@@ -144,8 +144,6 @@ import './cashier/ic-cashier-paypal-dark.svg';
 import './cashier/ic-cashier-paypal-light.svg';
 import './cashier/ic-cashier-perfect-money-dark.svg';
 import './cashier/ic-cashier-perfect-money-light.svg';
-import './cashier/ic-cashier-perfectmoney-dark.svg';
-import './cashier/ic-cashier-perfectmoney-light.svg';
 import './cashier/ic-cashier-permatabank-dark.svg';
 import './cashier/ic-cashier-permatabank-light.svg';
 import './cashier/ic-cashier-phone.svg';

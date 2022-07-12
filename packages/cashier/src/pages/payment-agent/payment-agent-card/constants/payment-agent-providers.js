@@ -33,7 +33,7 @@ const normalized_payment_methods = {
     Mandirisyariah: ['mandirisyariah'],
     Moneygram: ['moneygram'],
     Paypal: ['paypal'],
-    Perfectmoney: ['perfectmoney'],
+    PerfectMoney: ['perfectmoney'],
     Permatabank: ['permatabank'],
     Tether: ['tether'],
     Verve: ['verve'],

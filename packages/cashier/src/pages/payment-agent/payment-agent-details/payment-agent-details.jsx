@@ -30,6 +30,7 @@ const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
 
 Detail.propTypes = {
     action: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     icon: PropTypes.string,
     is_last_child: PropTypes.bool,
     rel: PropTypes.string,
@@ -65,8 +66,8 @@ const PaymentAgentDetails = ({ className, payment_agent_phones, payment_agent_ur
 PaymentAgentDetails.propTypes = {
     className: PropTypes.string,
     payment_agent_email: PropTypes.string,
-    payment_agent_phones: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    payment_agent_urls: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    payment_agent_phones: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+    payment_agent_urls: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 };
 
 export default PaymentAgentDetails;

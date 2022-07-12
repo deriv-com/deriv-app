@@ -1,23 +1,14 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Formik, Field } from 'formik';
-import {
-    Autocomplete,
-    Button,
-    Icon,
-    Input,
-    MobileFullPageModal,
-    Modal,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Autocomplete, Button, Icon, Input, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import SellAdPaymentMethodsList from './sell-ad-payment-methods-list';
 import './quick-add-modal.scss';
 
 const QuickAddModal = ({ advert }) => {
@@ -30,11 +21,6 @@ const QuickAddModal = ({ advert }) => {
     const is_buy_advert = type === buy_sell.BUY;
 
     const formik_ref = React.useRef();
-
-    const style = {
-        borderColor: 'var(--brand-secondary)',
-        borderWidth: '2px',
-    };
 
     const onClickDeletePaymentMethodItem = value => {
         if (value) {
@@ -309,22 +295,9 @@ const QuickAddModal = ({ advert }) => {
                         <Text color='prominent' size='xxs'>
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
-                        {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
-                            <div key={key}>
-                                <PaymentMethodCard
-                                    is_vertical_ellipsis_visible={false}
-                                    key={key}
-                                    small
-                                    onClick={() => onClickPaymentMethodCard(payment_method)}
-                                    payment_method={payment_method}
-                                    style={selected_methods.includes(payment_method.ID) ? style : {}}
-                                />
-                            </div>
-                        ))}
-                        <PaymentMethodCard
-                            is_add={true}
-                            label={localize('Payment method')}
-                            small
+                        <SellAdPaymentMethodsList
+                            onClickPaymentMethodCard={onClickPaymentMethodCard}
+                            selected_methods={selected_methods}
                             onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                         />
                     </>
@@ -494,9 +467,10 @@ const QuickAddModal = ({ advert }) => {
         <Modal
             className='p2p-my-ads__modal-error'
             has_close_icon
-            height='660px'
+            height={my_ads_store.should_show_add_payment_method ? '660px' : 'auto'}
             is_open={my_ads_store.is_quick_add_modal_open}
             title={localize('Add payment method')}
+            width='440px'
             toggleModal={e => {
                 if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
             }}
@@ -510,29 +484,18 @@ const QuickAddModal = ({ advert }) => {
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 </Modal.Body>
             ) : (
-                <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
-                    <Modal.Body>
-                        <Text color='prominent' size='xxs'>
-                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
-                        </Text>
-                        {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
-                            <PaymentMethodCard
-                                is_vertical_ellipsis_visible={false}
-                                key={key}
-                                medium
-                                onClick={() => onClickPaymentMethodCard(payment_method)}
-                                payment_method={payment_method}
-                                style={selected_methods.includes(payment_method.ID) ? style : {}}
-                            />
-                        ))}
-                        <PaymentMethodCard
-                            is_add={true}
-                            label={localize('Payment method')}
-                            medium
-                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
-                        />
-                    </Modal.Body>
-                </ThemedScrollbars>
+                <Modal.Body className='p2p-my-ads__modal-body--horizontal'>
+                    <Text color='prominent' size='xs'>
+                        <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                    </Text>
+                    <SellAdPaymentMethodsList
+                        is_only_horizontal
+                        is_scrollable
+                        onClickPaymentMethodCard={onClickPaymentMethodCard}
+                        selected_methods={selected_methods}
+                        onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
+                    />
+                </Modal.Body>
             )}
             {!my_ads_store.should_show_add_payment_method && (
                 <Modal.Footer has_separator>

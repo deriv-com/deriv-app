@@ -22,7 +22,7 @@ type TJurisdictionContent = {
         financial_contents: Array<string>;
         is_over_header_available: boolean;
     };
-    mf: {
+    maltainvest: {
         header: string;
         over_header: string;
         synthetic_contents: Array<string>;
@@ -90,7 +90,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
             `${localize('Leverage up to 1:100')}`,
         ],
     },
-    mf: {
+    maltainvest: {
         over_header: localize('Better leverage & spreads'),
         is_over_header_available: true,
         header: localize('Malta Financial'),

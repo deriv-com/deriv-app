@@ -152,9 +152,6 @@
         &-status {
             width: auto;
             padding: 0.2rem 1.6rem;
-            font-weight: bold;
-            text-align: center;
-            font-size: var(--text-size-xxs);
             border-radius: 1.6rem;
         }
     }
@@ -204,11 +201,9 @@
             }
         }
         &-status {
-            font-weight: bold;
             border-radius: 16px;
             padding: 0.2rem 1.6rem;
             white-space: nowrap;
-            font-size: var(--text-size-xxs);
 
             &--danger {
                 color: var(--brand-red-coral);

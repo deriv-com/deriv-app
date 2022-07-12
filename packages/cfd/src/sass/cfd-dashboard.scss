@@ -481,7 +481,7 @@
     }
 
     &__verification-status {
-        width: 80%;
+        width: 100%;
         text-align: center;
         min-height: 2.4rem;
         margin: 0 auto 0.8rem auto;
@@ -490,14 +490,14 @@
         &--pending {
             background-color: #ffad3a;
             color: #333333;
-            padding: 0.8rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 0.5rem;
         }
 
         &--verified {
             background-color: #4bb4b3;
             opacity: 0.4;
-            padding: 0.8rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 0.5rem;
             &-text {
                 color: #fff;
@@ -507,7 +507,7 @@
         &--POA_POI {
             background-color: #ec3f3f;
             color: #fff;
-            padding: 0.8rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 0.5rem;
         }
     }
@@ -521,7 +521,7 @@
         font-size: 10px;
         line-height: 14px;
         color: #333333;
-        padding: 5px 8px;
+        padding: 0.5rem 0.8rem;
         margin-top: auto;
         text-align: center;
         &--none {

@@ -110,7 +110,6 @@ const ChangeAccountCurrency = ({
 ChangeAccountCurrency.propTypes = {
     legal_allowed_currencies: PropTypes.array,
     onSubmit: PropTypes.func,
-    closeModal: PropTypes.func,
     value: PropTypes.shape({
         crypto: PropTypes.string,
         fiat: PropTypes.string,

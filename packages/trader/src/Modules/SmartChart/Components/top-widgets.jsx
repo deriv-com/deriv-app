@@ -23,9 +23,9 @@ const TradeInfo = ({ markers_array, granularity }) => {
     );
 };
 
-const RecentTradeInfo = connect(({ modules }) => ({
-    granularity: modules.contract_trade.granularity,
-    markers_array: modules.contract_trade.markers_array,
+const RecentTradeInfo = connect(({ contract_trade }) => ({
+    granularity: contract_trade.granularity,
+    markers_array: contract_trade.markers_array,
 }))(TradeInfo);
 
 const TopWidgets = ({

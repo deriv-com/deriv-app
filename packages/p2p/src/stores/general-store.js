@@ -24,7 +24,6 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -32,6 +31,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
+    @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -354,6 +354,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsModalOpen(is_modal_open) {
+        this.is_modal_open = is_modal_open;
+    }
+
+    @action.bound
     setNickname(nickname) {
         this.nickname = nickname;
     }
@@ -374,21 +379,6 @@ export default class GeneralStore extends BaseStore {
 
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
-    }
-
-    @action.bound
-    setOrderTimeOut(time) {
-        this.order_timeout = time;
-    }
-
-    @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { order_payment_period } = response.website_status?.p2p_config;
-                this.setOrderTimeOut(order_payment_period);
-            }
-        });
     }
 
     @action.bound
@@ -449,8 +439,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setWebsocketInit = (websocket, local_currency_decimal_places) => {
-        WebsocketInit(websocket, local_currency_decimal_places);
+    setWebsocketInit = websocket => {
+        WebsocketInit(websocket);
     };
 
     @action.bound

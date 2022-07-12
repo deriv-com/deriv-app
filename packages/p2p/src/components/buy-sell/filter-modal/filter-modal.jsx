@@ -49,11 +49,8 @@ const FilterModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const paymentMethods = () => {
-
-        if (buy_sell_store.is_filter_modal_loading)
-            return (<Loading is_fullscreen={false} />)
-
+    const getPaymentMethods = () => {
+        if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
         else if (my_profile_store.search_term) {
             if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
                 return my_profile_store.search_results?.map((payment_method, key) => {
@@ -79,8 +76,8 @@ const FilterModal = () => {
                     value={selected_methods.includes(payment_method.value)}
                 />
             );
-        })
-    }
+        });
+    };
 
     return (
         <Modal
@@ -97,9 +94,7 @@ const FilterModal = () => {
                     <React.Fragment>
                         <FilterModalSearch />
                         <div className='filter-modal__checkbox-container'>
-                            <ThemedScrollbars is_scrollbar_hidden>
-                                {paymentMethods()}
-                            </ThemedScrollbars>
+                            <ThemedScrollbars is_scrollbar_hidden>{getPaymentMethods()}</ThemedScrollbars>
                         </div>
                     </React.Fragment>
                 ) : (

@@ -36,13 +36,13 @@
 # ================================================
 
 #  akmal-binary
+#  ali-hosseini-fs
 #  bahar-fs
 #  balakrishna-binary
 #  carol-binary
 #  matin-binary
-#  mehrzad-fs
 #  nijil-binary
-#  njazuli-deriv
+#  sara-fs
 #  yashim-deriv
 
 ######################################################################################################
@@ -63,7 +63,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @matin-binary @nijil-binary @mehrzad-fs @balakrishna-binary 
+*                                                               @matin-binary @nijil-binary @balakrishna-binary @ali-hosseini-fs
 
 
 
@@ -79,9 +79,9 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @mehrzad-fs
-/packages/bot-web-ui/**/*                                       @mehrzad-fs
-/packages/indicators/**/*                                       @mehrzad-fs
+/packages/bot-skeleton/**/*                                     @sara-fs
+/packages/bot-web-ui/**/*                                       @sara-fs
+/packages/indicators/**/*                                       @sara-fs
 
 
 # ==============================================================
@@ -98,7 +98,7 @@
 #  deriv-app/p2p
 # ==============================================================
 
-/packages/p2p/**/*                                              @carol-binary @nijil-binary
+/packages/p2p/**/*                                              @carol-binary @nijil-binary @farrah-deriv
 
 
 # ==============================================================
@@ -111,7 +111,7 @@
 #  deriv-app/cfd
 # ==============================================================
 
-/packages/cfd/**/*                                             @balakrishna-binary @matin-binary @yashim-deriv 
+/packages/cfd/**/*                                              @balakrishna-binary @matin-binary @yashim-deriv 
 
 # ==============================================================
 #  deriv-app/trader
@@ -123,7 +123,7 @@
 #  deriv-app/reports
 # ==============================================================
 
-/packages/reports/**/*                                           @matin-binary @balakrishna-binary
+/packages/reports/**/*                                          @matin-binary @balakrishna-binary
 
 # ==============================================================
 #  deriv-app/publisher
@@ -135,4 +135,4 @@
 #  deriv-app/appstore
 # ==============================================================
 
-/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs
+/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @bahar-fs

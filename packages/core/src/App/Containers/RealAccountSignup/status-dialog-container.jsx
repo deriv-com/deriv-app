@@ -111,7 +111,7 @@ StatusDialogContainer.defaultProps = {
 
 StatusDialogContainer.propTypes = {
     closeModal: PropTypes.func,
-    country_standpoint: PropTypes.string,
+    country_standpoint: PropTypes.object,
     currency: PropTypes.string,
     history: PropTypes.object,
     icon: PropTypes.object,

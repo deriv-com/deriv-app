@@ -87,7 +87,7 @@ const ErrorComponent = ({
 
 ErrorComponent.propTypes = {
     can_have_mlt_account: PropTypes.bool,
-    country_standpoint: PropTypes.string,
+    country_standpoint: PropTypes.object,
     has_malta_account: PropTypes.bool,
     header: PropTypes.string,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),

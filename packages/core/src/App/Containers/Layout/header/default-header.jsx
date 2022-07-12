@@ -232,7 +232,7 @@ DefaultHeader.propTypes = {
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
-    country_standpoint: PropTypes.string,
+    country_standpoint: PropTypes.object,
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,

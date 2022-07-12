@@ -118,7 +118,7 @@ const RealityCheckModal = ({
 };
 
 RealityCheckModal.propTypes = {
-    country_standpoint: PropTypes.string,
+    country_standpoint: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     history: PropTypes.object,

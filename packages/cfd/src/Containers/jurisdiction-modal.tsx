@@ -182,8 +182,8 @@ const JurisdictionModal = ({
                             title={modal_title}
                             toggleModal={toggleJurisdictionModal}
                             type='button'
-                            height='696px'
-                            width='1200px'
+                            height='664px'
+                            width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
                         >
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}

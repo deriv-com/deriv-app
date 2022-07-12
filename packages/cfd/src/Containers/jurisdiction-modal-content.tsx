@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text, Checkbox } from '@deriv/components';
+import { Icon, Text, Checkbox, StaticUrl } from '@deriv/components';
 import { PoaStatusCodes } from '@deriv/account';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -71,6 +71,7 @@ const JurisdictionCard = ({
     poa_failed,
     poi_failed,
 }: TJurisdictionCard) => {
+    const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
 
@@ -95,7 +96,7 @@ const JurisdictionCard = ({
     const Checkmark = () => (
         <Icon
             icon='IcCheckmark'
-            className='cfd-jurisdiction-card__bullet-wrapper--checkmark'
+            className={`${card_classname}__bullet-wrapper--checkmark`}
             color={disabled ? 'disabled' : 'green'}
             size={18}
         />
@@ -106,15 +107,15 @@ const JurisdictionCard = ({
     const VerificationStatuses = () => (
         <>
             {!disabled && poa_none && poi_none && type_of_card !== 'svg' && (
-                <div className='cfd-jurisdiction-card__footer--none'>
-                    <Text as='p' size={'xxxs'} align='center' color={disabled ? 'less-prominent' : 'prominent'}>
+                <div className={`${card_classname}__footer--none`}>
+                    <Text as='p' size='xxxs' align='center' color={disabled ? 'less-prominent' : 'prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address' />
                     </Text>
                 </div>
             )}
             {!disabled && poi_poa_pending && type_of_card && type_of_card !== 'svg' && (
-                <div className='cfd-jurisdiction-card__verification-status'>
-                    <div className='cfd-jurisdiction-card__verification-status--pending'>
+                <div className={`${card_classname}__verification-status`}>
+                    <div className={`${card_classname}__verification-status--pending`}>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
                             <Localize i18n_default_text='Pending verification' />
                         </Text>
@@ -122,24 +123,28 @@ const JurisdictionCard = ({
                 </div>
             )}
             {!disabled && type_of_card === 'svg' && (
-                <div className='cfd-jurisdiction-card__footer'>
+                <div className={`${card_classname}__footer`}>
                     <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                     </Text>
                 </div>
             )}
             {disabled && (
-                <div className='cfd-jurisdiction-card__verification-status'>
-                    <div className='cfd-jurisdiction-card__verification-status--verified'>
-                        <Text size='xxxs' className='cfd-jurisdiction-card__verification-status--verified-text'>
+                <div className={`${card_classname}__verification-status`}>
+                    <div className={`${card_classname}__verification-status--verified`}>
+                        <Text
+                            size='xxxs'
+                            className={`${card_classname}__verification-status--verified-text`}
+                            weight='bold'
+                        >
                             <Localize i18n_default_text='Account added' />
                         </Text>
                     </div>
                 </div>
             )}
             {!disabled && poi_failed && !poa_failed && !poi_poa_none && type_of_card && type_of_card !== 'svg' && (
-                <div className='cfd-jurisdiction-card__verification-status'>
-                    <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                <div className={`${card_classname}__verification-status`}>
+                    <div className={`${card_classname}__verification-status--POA_POI`}>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
                             <Localize i18n_default_text='Check your proof of identity' />
                         </Text>
@@ -147,8 +152,8 @@ const JurisdictionCard = ({
                 </div>
             )}
             {!disabled && poa_failed && !poi_failed && !poi_poa_none && type_of_card && type_of_card !== 'svg' && (
-                <div className='cfd-jurisdiction-card__verification-status'>
-                    <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                <div className={`${card_classname}__verification-status`}>
+                    <div className={`${card_classname}__verification-status--POA_POI`}>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
                             <Localize i18n_default_text='Check your proof of address' />
                         </Text>
@@ -156,8 +161,8 @@ const JurisdictionCard = ({
                 </div>
             )}
             {!disabled && poa_failed && poi_failed && type_of_card && type_of_card !== 'svg' && (
-                <div className='cfd-jurisdiction-card__verification-status'>
-                    <div className='cfd-jurisdiction-card__verification-status--POA_POI'>
+                <div className={`${card_classname}__verification-status`}>
+                    <div className={`${card_classname}__verification-status--POA_POI`}>
                         <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
                             <Localize i18n_default_text='Check your proof of identity and address' />
                         </Text>
@@ -170,14 +175,14 @@ const JurisdictionCard = ({
     return (
         <>
             <div
-                className={classNames('cfd-jurisdiction-card', {
-                    'cfd-jurisdiction-card--selected': jurisdiction_selected_shortcode === type_of_card,
+                className={classNames(card_classname, {
+                    [`${card_classname}--selected`]: jurisdiction_selected_shortcode === type_of_card,
                 })}
                 onClick={disabled ? () => undefined : () => cardSelection(`${type_of_card}`)}
                 style={OneOrTwoCards ? { width: '32em' } : { width: '27.6em' }}
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
-                    <div className={classNames('cfd-jurisdiction-card__over-header')}>
+                    <div className={classNames(`${card_classname}__over-header`)}>
                         <Text as='p' color={disabled ? 'less-prominent' : 'blue'} line_height='xxl' weight='bold'>
                             <Localize
                                 i18n_default_text={
@@ -188,24 +193,25 @@ const JurisdictionCard = ({
                         </Text>
                     </div>
                 )}
-                <Text
-                    as='h2'
-                    color={disabled ? 'less-prominent' : 'prominent'}
-                    weight='bold'
-                    size='m'
-                    className='cfd-jurisdiction-card__h2-header'
-                >
-                    <Localize
-                        i18n_default_text={
-                            jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].header
-                        }
-                    />
-                </Text>
-
-                {account_type === 'synthetic'
-                    ? jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].synthetic_contents.map(
-                          (item, index) => (
-                              <div className='cfd-jurisdiction-card__bullet-wrapper' key={index}>
+                <div className={`${card_classname}__info-container`}>
+                    <Text
+                        as='p'
+                        color={disabled ? 'less-prominent' : 'prominent'}
+                        weight='bold'
+                        size='sm'
+                        className={`${card_classname}__h2-header`}
+                    >
+                        <Localize
+                            i18n_default_text={
+                                jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].header
+                            }
+                        />
+                    </Text>
+                    {account_type === 'synthetic'
+                        ? jurisdiction_contents[
+                              type_of_card as keyof typeof jurisdiction_contents
+                          ].synthetic_contents.map((item, index) => (
+                              <div className={`${card_classname}__bullet-wrapper`} key={index}>
                                   <div>
                                       <Checkmark />
                                   </div>
@@ -213,11 +219,11 @@ const JurisdictionCard = ({
                                       <Localize i18n_default_text={item} />
                                   </Text>
                               </div>
-                          )
-                      )
-                    : jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].financial_contents.map(
-                          (item, index) => (
-                              <div className='cfd-jurisdiction-card__bullet-wrapper' key={index}>
+                          ))
+                        : jurisdiction_contents[
+                              type_of_card as keyof typeof jurisdiction_contents
+                          ].financial_contents.map((item, index) => (
+                              <div className={`${card_classname}__bullet-wrapper`} key={index}>
                                   <div>
                                       <Checkmark />
                                   </div>
@@ -225,9 +231,8 @@ const JurisdictionCard = ({
                                       <Localize i18n_default_text={item} />
                                   </Text>
                               </div>
-                          )
-                      )}
-
+                          ))}
+                </div>
                 <VerificationStatuses />
             </div>
         </>
@@ -252,6 +257,7 @@ const JurisdictionModalContent = ({
     poa_failed,
     poi_failed,
 }: TJurisdictionModalContent) => {
+    const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const poa_none = poa_status === PoaStatusCodes.none;
     const poi_none = poi_status === PoaStatusCodes.none;
     const poi_poa_none = poi_none || poa_none;
@@ -278,6 +284,8 @@ const JurisdictionModalContent = ({
     };
 
     const ModalFootNote = () => {
+        const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
+
         return (
             <>
                 {poi_poa_none && jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode && (
@@ -287,7 +295,7 @@ const JurisdictionModalContent = ({
                         size='xs'
                         weight='bold'
                         line_height='xs'
-                        className='cfd-jurisdiction-card__footnote'
+                        className={`${card_classname}__footnote`}
                     >
                         <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
                     </Text>
@@ -303,7 +311,7 @@ const JurisdictionModalContent = ({
                             size='xs'
                             weight='bold'
                             line_height='xs'
-                            className='cfd-jurisdiction-card__footnote'
+                            className={`${card_classname}__footnote`}
                         >
                             <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
                         </Text>
@@ -319,7 +327,7 @@ const JurisdictionModalContent = ({
                             size='xs'
                             weight='bold'
                             line_height='xs'
-                            className='cfd-jurisdiction-card__footnote'
+                            className={`${card_classname}__footnote`}
                         >
                             <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
                         </Text>
@@ -334,53 +342,53 @@ const JurisdictionModalContent = ({
                             size='xs'
                             weight='bold'
                             line_height='xs'
-                            className='cfd-jurisdiction-card__footnote'
+                            className={`${card_classname}__footnote`}
                         >
                             <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity and address.' />
                         </Text>
                     )}
                 {jurisdiction_selected_shortcode === 'svg' && (
-                    <div className='cfd-jurisdiction-card__footnote'>
+                    <div className={`${card_classname}__footnote`}>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
-                                values={{ account_type }}
+                                values={{ account_type: account_type_name }}
                             />
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'bvi' && (
-                    <div className='cfd-jurisdiction-card__footnote'>
+                    <div className={`${card_classname}__footnote`}>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
-                                values={{ account_type }}
+                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
+                                values={{ account_type: account_type_name, line_break: '\n' }}
                             />
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'vanuatu' && (
-                    <div className='cfd-jurisdiction-card__footnote'>
+                    <div className={`${card_classname}__footnote`}>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add Your DMT5 {{account_type}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
-                                values={{ account_type }}
+                                values={{ account_type: account_type_name }}
                             />
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'labuan' && (
-                    <div className='cfd-jurisdiction-card__footnote'>
+                    <div className={`${card_classname}__footnote`}>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).'
-                                values={{ account_type }}
+                                values={{ account_type: account_type_name }}
                             />
                         </Text>
                     </div>
                 )}
                 {poi_poa_pending && jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode && (
-                    <div className='cfd-jurisdiction-card__footnote--pending'>
+                    <div className={`${card_classname}__footnote--pending`}>
                         <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
                             <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
                         </Text>
@@ -390,6 +398,13 @@ const JurisdictionModalContent = ({
         );
     };
 
+    const dbvi_company_names: { [key: string]: string } = {
+        bvi: 'Deriv (BVI) Ltd',
+        labuan: 'Deriv (FX) Ltd',
+        maltainvest: 'Deriv Investments (Europe) Limited',
+        vanuatu: 'Deriv (V) Ltd',
+    };
+
     const ModalCheckbox = ({
         onCheck,
         is_checked,
@@ -397,17 +412,21 @@ const JurisdictionModalContent = ({
         onCheck: React.Dispatch<React.SetStateAction<boolean>>;
         is_checked: boolean;
     }) => (
-        <div className='cfd-jurisdiction-card__jurisdiction-checkbox'>
+        <div className={`${card_classname}__jurisdiction-checkbox`}>
             <Checkbox onChange={() => onCheck(!checked)} value={is_checked} />
             <Text as='p' align='center' size='xs' line_height='xs'>
-                I confirm and accept Deriv (V) Ltd &#39;s Terms and Conditions
+                <Localize
+                    i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
+                    values={{ company: dbvi_company_names[jurisdiction_selected_shortcode] }}
+                    components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
+                />
             </Text>
         </div>
     );
 
     return (
         <>
-            <div className='cfd-jurisdiction-card__wrapper'>
+            <div className={`${card_classname}__wrapper`}>
                 {cardsToBeShown('bvi') && (
                     <JurisdictionCard
                         type_of_card='bvi'

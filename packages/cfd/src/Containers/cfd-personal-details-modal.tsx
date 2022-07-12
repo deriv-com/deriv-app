@@ -23,6 +23,7 @@ const CFDPersonalDetailsModal = ({
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     residence_list,
+    setAccountSettings,
 }: TCFDPersonalDetailsModalProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -108,6 +109,7 @@ const CFDPersonalDetailsModal = ({
         }
         saveFormData(index, value);
         toggleCFDPersonalDetailsModal();
+        setAccountSettings({ ...account_settings, ...value });
         openPasswordModal();
     };
 
@@ -188,4 +190,5 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence_list: client.residence_list,
+    setAccountSettings: client.setAccountSettings,
 }))(CFDPersonalDetailsModal);

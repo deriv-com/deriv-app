@@ -21,6 +21,7 @@ export type TCFDPersonalDetailsModalProps = {
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
+    setAccountSettings: (account_settings: GetSettings) => void;
 };
 
 type CFD_Platform = 'dxtrade' | 'mt5';

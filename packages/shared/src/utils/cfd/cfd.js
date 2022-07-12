@@ -72,10 +72,6 @@ export const getAccountTypeFields = ({ category, type }) => {
                 account_type: 'financial',
                 mt5_account_type: 'financial',
             },
-            financial_stp: {
-                account_type: 'financial',
-                mt5_account_type: 'financial_stp',
-            },
         },
         demo: {
             synthetic: {
@@ -84,10 +80,6 @@ export const getAccountTypeFields = ({ category, type }) => {
             financial: {
                 account_type: 'demo',
                 mt5_account_type: 'financial',
-            },
-            financial_stp: {
-                account_type: 'demo',
-                mt5_account_type: 'financial_stp',
             },
         },
     };

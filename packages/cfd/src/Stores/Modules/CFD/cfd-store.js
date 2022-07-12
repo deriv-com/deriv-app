@@ -194,12 +194,20 @@ export default class CFDStore extends BaseStore {
         const name = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
         const type_request = getAccountTypeFields(this.account_type);
+        const { address_line_1, address_line_2, address_postcode, address_city, address_state, country_code, phone } =
+            this.root_store.client.account_settings;
 
         return WS.mt5NewAccount({
             mainPassword: values.password,
             email: this.root_store.client.email_address,
             leverage,
             name,
+            address: address_line_1 || address_line_2,
+            city: address_city,
+            country: country_code,
+            phone,
+            state: address_state,
+            zipCode: address_postcode,
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
             ...type_request,

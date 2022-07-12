@@ -439,23 +439,13 @@
     }
 }
 
-.cfd-jurisdiction-card__wrapper {
-    padding: 0;
-    margin-top: 2.4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    @include mobile {
-        flex-direction: column;
-    }
-}
-
-.cfd-jurisdiction-card {
+.cfd-jurisdiction-card,
+.cfd-jurisdiction-card--synthetic,
+.cfd-jurisdiction-card--financial {
     border: solid 1px var(--border-normal);
     border-radius: 0.8rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     flex-direction: column;
     min-height: 38rem;
     width: 27.6em;
@@ -475,29 +465,43 @@
         margin: 0 0.8rem;
     }
 
+    &__wrapper {
+        padding: 0;
+        margin-top: 2.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
     &--selected {
         border: solid 1px #377cfc;
         border-radius: 4px;
     }
 
-    &__verification-status {
+    &__verification-status,
+    &__verification-status--pending,
+    &__verification-status--POA_POI,
+    &__verification-status--verified {
         width: 100%;
-        text-align: center;
         min-height: 2.4rem;
-        margin: 0 auto 0.8rem auto;
-        margin-top: auto;
+        display: flex;
+
+        * {
+            margin: auto;
+        }
 
         &--pending {
             background-color: #ffad3a;
             color: #333333;
-            padding: 0.5rem 0.8rem;
             border-radius: 0.5rem;
         }
 
         &--verified {
             background-color: #4bb4b3;
             opacity: 0.4;
-            padding: 0.5rem 0.8rem;
             border-radius: 0.5rem;
             &-text {
                 color: #fff;
@@ -507,7 +511,6 @@
         &--POA_POI {
             background-color: #ec3f3f;
             color: #fff;
-            padding: 0.5rem 0.8rem;
             border-radius: 0.5rem;
         }
     }
@@ -537,8 +540,12 @@
     }
 
     &__footnote {
-        margin-top: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 2.4rem auto 0;
         color: #333333;
+        width: 99.2rem;
 
         &--pending {
             color: #ffad3a;
@@ -577,12 +584,10 @@
             margin-right: 1rem;
         }
     }
+}
 
-    &__footnote {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+.cfd-jurisdiction-card--synthetic {
+    padding: 2.4rem;
 }
 
 .cfd-real-accounts-display {

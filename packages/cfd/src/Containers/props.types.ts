@@ -1,9 +1,16 @@
 import { History } from 'history';
-import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList, VerifyEmailResponse } from '@deriv/api-types';
+import {
+    DetailsOfEachMT5Loginid,
+    GetSettings,
+    LandingCompany,
+    ResidenceList,
+    VerifyEmailResponse,
+} from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 
 export type TCFDPersonalDetailsModalProps = {
+    account_settings: GetSettings;
     enableApp: () => void;
     disableApp: () => void;
     getChangeableFields: () => string[];

@@ -6,11 +6,13 @@ import RootStore from 'Stores/index';
 import { TCFDPersonalDetailsModalProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
+import { GetSettings } from '@deriv/api-types';
 
 type TFormValues = { [key: string]: string };
 type TSetSubmiting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsModal = ({
+    account_settings,
     disableApp,
     enableApp,
     getChangeableFields,
@@ -34,17 +36,24 @@ const CFDPersonalDetailsModal = ({
 
     const initiatePersonalDetails = async (setSubmitting?: TSetSubmiting) => {
         // force request to update settings cache since settings have been updated
-        const response = await WS.authorized.storage.getSettings();
+        let get_settings_response: GetSettings;
+        if (!account_settings) {
+            const response = await WS.authorized.storage.getSettings();
 
-        if (response.error) {
-            setFormError(response.error.message);
-            if (typeof setSubmitting === 'function') {
-                setSubmitting(false);
+            if (response.error) {
+                setFormError(response.error.message);
+                if (typeof setSubmitting === 'function') {
+                    setSubmitting(false);
+                }
+                return;
             }
-            return;
+            get_settings_response = response.get_settings;
+        } else {
+            get_settings_response = account_settings;
         }
+
         const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-            response.get_settings;
+            get_settings_response;
 
         setFormValues({
             ...form_values,
@@ -63,9 +72,10 @@ const CFDPersonalDetailsModal = ({
                 setIsLoading(false);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
 
-    const transform = (value: string | undefined) => {
+    const transform = (value: unknown) => {
         const [result] = residence_list.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
@@ -167,6 +177,7 @@ const CFDPersonalDetailsModal = ({
 };
 
 export default connect(({ client, modules, ui }: RootStore) => ({
+    account_settings: client.account_settings,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,

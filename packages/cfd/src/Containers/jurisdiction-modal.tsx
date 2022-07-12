@@ -3,8 +3,9 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { LandingCompany } from '@deriv/api-types';
+import { GetAccountSettingsResponse, GetSettings, LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
+import { WS } from '@deriv/shared';
 
 export type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming';
@@ -46,7 +47,6 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     };
     disableApp: () => void;
     enableApp: () => void;
-    has_real_mt5_non_svg_login: boolean;
     is_jurisdiction_modal_visible: boolean;
     is_loading: boolean;
     is_eu: boolean;
@@ -57,8 +57,8 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     toggleJurisdictionModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     is_fully_authenticated: boolean;
-    is_pending_authentication: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     toggleCFDVerificationModal: () => void;
 };
@@ -68,7 +68,6 @@ const JurisdictionModal = ({
     authentication_status,
     disableApp,
     enableApp,
-    has_real_mt5_non_svg_login,
     is_jurisdiction_modal_visible,
     is_eu,
     jurisdiction_selected_shortcode,
@@ -76,12 +75,27 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     trading_platform_available_accounts,
     is_fully_authenticated,
-    is_pending_authentication,
     openPasswordModal,
+    setAccountSettings,
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
+    const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
+
+    React.useEffect(() => {
+        if (is_jurisdiction_modal_visible && !has_submitted_personal_details) {
+            WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
+                const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+                    response.get_settings as GetSettings;
+                if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
+                    setHasSubmittedPersonalDetails(true);
+                    setAccountSettings(response.get_settings as GetSettings);
+                }
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_jurisdiction_modal_visible]);
 
     const financial_available_accounts = trading_platform_available_accounts.filter(
         available_account => available_account.market_type === 'financial'
@@ -127,14 +141,14 @@ const JurisdictionModal = ({
                 toggleCFDVerificationModal();
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
-            if (account_type.type === 'financial' && poi_poa_verified && !has_real_mt5_non_svg_login) {
+            if (account_type.type === 'financial' && poi_poa_verified && !has_submitted_personal_details) {
                 toggleCFDPersonalDetailsModal();
             } else {
                 openPasswordModal(type_of_account);
             }
         } else if (poi_poa_verified) {
             // for bvi, labuan & vanuatu:
-            if (!has_real_mt5_non_svg_login) {
+            if (!has_submitted_personal_details) {
                 toggleCFDPersonalDetailsModal();
             } else {
                 openPasswordModal(type_of_account);
@@ -182,7 +196,7 @@ const JurisdictionModal = ({
                                 poi_status={poi_status}
                                 is_eu={is_eu}
                                 is_fully_authenticated={is_fully_authenticated}
-                                is_pending_authentication={is_pending_authentication}
+                                poi_poa_pending={poi_poa_pending}
                                 checked={checked}
                                 setChecked={setChecked}
                                 poi_failed={poi_failed}
@@ -234,7 +248,7 @@ const JurisdictionModal = ({
                                 poi_status={poi_status}
                                 is_eu={is_eu}
                                 is_fully_authenticated={is_fully_authenticated}
-                                is_pending_authentication={is_pending_authentication}
+                                poi_poa_pending={poi_poa_pending}
                                 checked={checked}
                                 setChecked={setChecked}
                                 poi_failed={poi_failed}
@@ -253,7 +267,6 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     authentication_status: client.authentication_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    has_real_mt5_non_svg_login: client.has_real_mt5_non_svg_login,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
@@ -263,7 +276,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     is_eu_country: client.is_eu_country,
     landing_companies: client.landing_companies,
     is_fully_authenticated: client.is_fully_authenticated,
-    is_pending_authentication: client.is_pending_authentication,
+    setAccountSettings: client.setAccountSettings,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence: client.residence,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,

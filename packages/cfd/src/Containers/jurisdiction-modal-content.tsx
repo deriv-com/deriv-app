@@ -105,8 +105,8 @@ const JurisdictionCard = ({
     const VerificationStatuses = () => (
         <>
             {!disabled && poa_none && poi_none && (
-                <div className='cfd-jurisdiction-card__footer'>
-                    <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
+                <div className='cfd-jurisdiction-card__footer--none'>
+                    <Text size='xxxs' line_height='m' color={disabled ? 'less-prominent' : 'prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address' />
                     </Text>
                 </div>
@@ -127,7 +127,7 @@ const JurisdictionCard = ({
                 )}
             {!disabled && is_pending_authentication && type_of_card === 'svg' && (
                 <div className='cfd-jurisdiction-card__footer'>
-                    <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
+                    <Text size='xxxs' color={'less-prominent'}>
                         <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                     </Text>
                 </div>
@@ -342,28 +342,40 @@ const JurisdictionModalContent = ({
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='Add your DMT5 Synthetics account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
+                            <Localize
+                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
+                                values={{ account_type }}
+                            />
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'bvi' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='Add your DMT5 Financial account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).' />
+                            <Localize
+                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
+                                values={{ account_type }}
+                            />
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'vanuatu' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='Add Your DMT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.' />
+                            <Localize
+                                i18n_default_text='Add Your DMT5 {{account_type}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
+                                values={{ account_type }}
+                            />
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'labuan' && (
                     <div className='cfd-jurisdiction-card__footnote'>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='Add your DMT5 Financial STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).' />
+                            <Localize
+                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).'
+                                values={{ account_type }}
+                            />
                         </Text>
                     </div>
                 )}

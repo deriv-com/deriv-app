@@ -296,7 +296,7 @@ const CFDAccountCardComponent = ({
                 </div>
                 {existing_data && <div className='cfd-account-card__divider' />}
 
-                <div className='cfd-account-card__cta'>
+                <div className='cfd-account-card__cta' style={!existing_data?.login ? { marginTop: 'auto' } : {}}>
                     <div className='cfd-account-card__cta-wrapper'>
                         {platform === CFD_PLATFORMS.DXTRADE && (!existing_data?.login || !is_logged_in) && (
                             <div className='cfd-account-card__specs'>

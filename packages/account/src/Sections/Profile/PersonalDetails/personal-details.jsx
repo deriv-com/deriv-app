@@ -168,7 +168,7 @@ export const PersonalDetailsForm = ({
         return () => {
             clearTimeout(timeout_id);
         };
-    }, [start_on_submit_timeout]);
+    }, [start_on_submit_timeout.is_timeout_started]);
 
     const makeSettingsRequest = settings => {
         if (is_virtual) return { email_consent: +settings.email_consent };

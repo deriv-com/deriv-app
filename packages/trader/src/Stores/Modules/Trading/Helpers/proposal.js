@@ -1,5 +1,4 @@
-import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
-import { getDummyProposalInfoForACC } from '../../Contract/Helpers/dummy_accumulators_data';
+import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment, getDummyProposalInfoForACC } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 

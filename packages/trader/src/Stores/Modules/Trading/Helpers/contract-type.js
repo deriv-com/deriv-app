@@ -1,28 +1,27 @@
 import {
+    WS,
     getPropertyValue,
     cloneObject,
     isTimeValid,
     minDate,
     toMoment,
     shouldShowCancellation,
-    WS,
-} from '@deriv/shared';
-import ServerTime from '_common/base/server_time';
-import { localize } from '@deriv/translations';
-
-import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
-import { buildBarriersConfig } from './barrier';
-import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
-import { buildForwardStartingConfig, isSessionAvailable } from './start-date';
-import {
+    getUnitMap,
+    buildBarriersConfig,
+    buildDurationConfig,
+    hasIntradayDurationUnit,
+    buildForwardStartingConfig,
     unsupported_contract_types_list,
     getContractCategoriesConfig,
     getContractTypesConfig,
     getLocalizedBasis,
-} from '../Constants/contract';
-import { dummy_accumulator_in_contracts_for_available } from '../../Contract/Helpers/dummy_accumulators_data';
+    dummy_accumulator_in_contracts_for_available,
+} from '@deriv/shared';
+import ServerTime from '_common/base/server_time';
+import { localize } from '@deriv/translations';
+import { isSessionAvailable } from './start-date';
 
-const ContractType = (() => {
+export const ContractType = (() => {
     let available_contract_types = {};
     let available_categories = {};
     let contract_types;
@@ -619,5 +618,3 @@ const ContractType = (() => {
         }),
     };
 })();
-
-export default ContractType;

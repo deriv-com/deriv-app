@@ -3,13 +3,11 @@ import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
-import specifications from '../Constants/cfd-specifications';
+import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
-import { TSpecifications } from '../Constants/cfd-specifications';
-import { TExistingData } from './props.types.js';
-import { TTradingPlatformAccounts } from './props.types';
+import { TExistingData, TTradingPlatformAccounts } from './props.types.js';
 
 type TStandPoint = {
     financial_company: string;
@@ -131,7 +129,7 @@ const CFDRealAccountDisplay = ({
         if (citizen && tax_residence) {
             const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
             return (
-                is_tin_required ||
+                !is_tin_required ||
                 !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length
             );
         }
@@ -162,9 +160,7 @@ const CFDRealAccountDisplay = ({
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealSynthetic = () => {
-        if (is_eu && standpoint.malta && !has_malta_account) {
-            openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
-        } else {
+        if (!is_eu || !standpoint.malta || has_malta_account) {
             onSelectAccount({ type: 'synthetic', category: 'real' });
         }
     };
@@ -371,6 +367,7 @@ const CFDRealAccountDisplay = ({
 
     return (
         <div
+            data-testid='dt_cfd_real_accounts_display'
             className={classNames('cfd-real-accounts-display', {
                 'cfd-real-accounts-display--has-trade-servers': should_show_trade_servers,
             })}

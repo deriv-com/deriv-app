@@ -38,10 +38,3 @@ export const secondsToTimer = distance => {
 
     return `${toDoubleDigits(hours)}:${toDoubleDigits(minutes)}:${toDoubleDigits(seconds)}`;
 };
-
-export const minutesToHours = time_in_minutes => {
-    // Convert the time in minutes to hours
-    const hours = Math.floor(time_in_minutes / 60);
-    const minutes = time_in_minutes % 60;
-    return { hours, minutes };
-};

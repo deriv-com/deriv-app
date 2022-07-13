@@ -56,7 +56,14 @@ const ErrorComponent = ({
 };
 
 ErrorComponent.propTypes = {
+    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
+    redirect_label: PropTypes.string,
+    redirect_to: PropTypes.string,
+    redirectOnClick: PropTypes.func,
+    setError: PropTypes.func,
+    should_clear_error_on_click: PropTypes.bool,
+    should_show_refresh: PropTypes.bool,
     type: PropTypes.string,
 };
 

@@ -24,6 +24,7 @@ const POISubmission = ({
     redirect_button,
     refreshNotifications,
     residence_list,
+    setIsCfdPoiCompleted,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -152,7 +153,12 @@ const POISubmission = ({
                     );
                 }
                 case service_code.manual:
-                    return <Unsupported country_code={selected_country.value} />;
+                    return (
+                        <Unsupported
+                            country_code={selected_country.value}
+                            setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                        />
+                    );
                 default:
                     return null;
             }

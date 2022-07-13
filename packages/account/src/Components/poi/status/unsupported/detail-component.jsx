@@ -27,6 +27,7 @@ const DetailComponent = ({
     height,
     handleComplete,
     is_onfido_supported,
+    setIsCfdPoiCompleted,
     ...props
 }) => {
     const [status, setStatus] = React.useState();
@@ -87,7 +88,7 @@ const DetailComponent = ({
         case STATUS.IS_UPLOADING:
             return <Loading is_fullscreen={false} is_slow_loading status={[localize('Uploading documents')]} />;
         case STATUS.IS_COMPLETED:
-            return <UploadComplete />;
+            return <UploadComplete is_from_external={true} needs_poa={false} />;
         case STATUS.IS_FAILED:
             return <PoiUnsupportedFailed error={response_error} />;
         default:
@@ -117,7 +118,12 @@ const DetailComponent = ({
                             />
                         </React.Fragment>
                     ) : (
-                        <CardDetails data={document.details} onComplete={onComplete} goToCards={onClickBack} />
+                        <CardDetails
+                            data={document.details}
+                            onComplete={onComplete}
+                            goToCards={onClickBack}
+                            setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                        />
                     )}
                 </React.Fragment>
             );

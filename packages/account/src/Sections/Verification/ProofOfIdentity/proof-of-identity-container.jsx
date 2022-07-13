@@ -29,6 +29,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
+    setIsCfdPoiCompleted,
 }) => {
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
@@ -114,6 +115,7 @@ const ProofOfIdentityContainer = ({
                 redirect_button={redirect_button}
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
+                setIsCfdPoiCompleted={setIsCfdPoiCompleted}
             />
         );
     } else if (
@@ -125,7 +127,7 @@ const ProofOfIdentityContainer = ({
             case identity_status_codes.pending:
                 return (
                     <UploadComplete
-                        is_from_external={is_from_external}
+                        is_from_external={!!is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
                     />
@@ -133,7 +135,7 @@ const ProofOfIdentityContainer = ({
             case identity_status_codes.verified:
                 return (
                     <Verified
-                        is_from_external={is_from_external}
+                        is_from_external={!!is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
                     />
@@ -141,7 +143,7 @@ const ProofOfIdentityContainer = ({
             case identity_status_codes.expired:
                 return (
                     <Expired
-                        is_from_external={is_from_external}
+                        is_from_external={!!is_from_external}
                         redirect_button={redirect_button}
                         handleRequireSubmission={handleRequireSubmission}
                     />
@@ -176,7 +178,7 @@ const ProofOfIdentityContainer = ({
                 />
             );
         case service_code.manual:
-            return <Unsupported manual={manual} />;
+            return <Unsupported manual={manual} setIsCfdPoiCompleted={setIsCfdPoiCompleted} />;
         default:
             return null;
     }

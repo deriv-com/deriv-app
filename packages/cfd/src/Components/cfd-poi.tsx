@@ -49,9 +49,11 @@ type TCFDPOIProps = {
     app_routing_history: Array<TCFDAppRoutingHistory>;
     fetchResidenceList?: () => void;
     height: string;
+    is_cfd_poi_completed: boolean;
     is_loading: boolean;
     is_switching: boolean;
     is_virtual: boolean;
+    setIsCfdPoiCompleted: (status: boolean) => void;
     onSave: (index: number, values: TFormValues) => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (key: TCFDNotificationByKey) => void;
@@ -60,9 +62,22 @@ type TCFDPOIProps = {
     should_allow_authentication: boolean;
 };
 
-const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }: TCFDPOIProps) => {
+const CFDPOI = ({
+    authentication_status,
+    form_error,
+    index,
+    is_cfd_poi_completed,
+    setIsCfdPoiCompleted,
+    onCancel,
+    onSubmit,
+    value,
+    ...props
+}: TCFDPOIProps) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState<string>('none');
+    const [is_next_btn_disabled, setIsNextBtnDisabled] = React.useState(
+        !(['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status))
+    );
     const validateForm = React.useCallback(() => {
         const errors = {};
         if (!['pending'].includes(poi_state) || !['pending', 'verified'].includes(identity_status)) {
@@ -71,9 +86,11 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
         return errors;
     }, [poi_state, identity_status]);
 
-    const is_next_btn_disabled = !(
-        ['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
-    );
+    React.useEffect(() => {
+        if (is_cfd_poi_completed) {
+            setIsNextBtnDisabled(false);
+        }
+    }, [is_cfd_poi_completed]);
 
     return (
         <Formik
@@ -106,6 +123,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         height={height}
                                         is_from_external={true}
                                         onStateChange={(status: string) => setPOIState(status)}
+                                        setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>
@@ -137,9 +155,11 @@ export default connect(({ client, common, notifications }: RootStore) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
+    is_cfd_poi_completed: client.is_cfd_poi_completed,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
+    setIsCfdPoiCompleted: client.setIsCfdPoiCompleted,
     should_allow_authentication: client.should_allow_authentication,
 }))(CFDPOI);

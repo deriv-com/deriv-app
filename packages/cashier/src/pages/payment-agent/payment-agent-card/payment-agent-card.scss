@@ -34,59 +34,6 @@
             word-break: keep-all;
         }
     }
-    &__deposit-details-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 1rem;
-        row-gap: 0.8rem;
-        margin-top: 3.2rem;
-        & > .payment-agent-detail:nth-child(-n + 2) {
-            margin-bottom: 2.4rem;
-            @include mobile {
-                margin-bottom: 0;
-            }
-        }
-        @include mobile {
-            grid-template-columns: 1fr;
-            margin-top: 2.4rem;
-        }
-    }
-    &__witdrawal-details {
-        padding: 0 1.6rem;
-        margin-top: 3.2rem;
-        @include mobile {
-            padding: 0;
-        }
-        &-header {
-            margin-bottom: 1.6rem;
-        }
-        &__form {
-            display: flex;
-            @include mobile {
-                flex-direction: column;
-            }
-            .dc-input {
-                border-right: none;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
-                margin-bottom: 1.8rem;
-                @include mobile {
-                    border: 1px solid var(--border-normal);
-                    border-top-right-radius: 0.4rem;
-                    border-bottom-right-radius: 0.4rem;
-                }
-            }
-            .dc-btn {
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-                @include mobile {
-                    margin-top: 1.2rem;
-                    border-top-left-radius: 0.4rem;
-                    border-bottom-left-radius: 0.4rem;
-                }
-            }
-        }
-    }
     &__detail {
         display: flex;
         @include mobile {

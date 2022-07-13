@@ -396,11 +396,14 @@ const JurisdictionModalContent = ({
         );
     };
 
-    const dbvi_company_names: { [key: string]: string } = {
-        bvi: 'Deriv (BVI) Ltd',
-        labuan: 'Deriv (FX) Ltd',
-        maltainvest: 'Deriv Investments (Europe) Limited',
-        vanuatu: 'Deriv (V) Ltd',
+    const dbvi_company_names: { [key: string]: { [key: string]: string } } = {
+        bvi: { name: 'Deriv (BVI) Ltd', tnc_url: 'tnc/deriv-(bvi)-ltd.pdf' },
+        labuan: { name: 'Deriv (FX) Ltd', tnc_url: 'tnc/deriv-(fx)-ltd.pdf' },
+        maltainvest: {
+            name: 'Deriv Investments (Europe) Limited',
+            tnc_url: 'tnc/deriv-investments-(europe)-limited.pdf',
+        },
+        vanuatu: { name: 'Deriv (V) Ltd', tnc_url: 'tnc/general-terms.pdf' },
     };
 
     const ModalCheckbox = ({
@@ -415,8 +418,14 @@ const JurisdictionModalContent = ({
             <Text as='p' align='center' size='xs' line_height='xs'>
                 <Localize
                     i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
-                    values={{ company: dbvi_company_names[jurisdiction_selected_shortcode] }}
-                    components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
+                    values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}
+                    components={[
+                        <StaticUrl
+                            key={0}
+                            className='link'
+                            href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
+                        />,
+                    ]}
                 />
             </Text>
         </div>

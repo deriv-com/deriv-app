@@ -37,6 +37,7 @@ type TOpenAccountTransferMeta = {
 };
 
 type TJurisdictionModalProps = TCompareAccountsReusedProps & {
+    account_settings: GetSettings;
     account_type: {
         type: string;
         category: string;
@@ -64,6 +65,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
 };
 
 const JurisdictionModal = ({
+    account_settings,
     account_type,
     authentication_status,
     disableApp,
@@ -84,15 +86,24 @@ const JurisdictionModal = ({
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     React.useEffect(() => {
-        if (is_jurisdiction_modal_visible && !has_submitted_personal_details) {
-            WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
+        if (is_jurisdiction_modal_visible) {
+            setJurisdictionSelectedShortcode('');
+            if (!has_submitted_personal_details) {
+                let get_settings_response: GetSettings = {};
+                if (!account_settings) {
+                    WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
+                        get_settings_response = response.get_settings as GetSettings;
+                        setAccountSettings(response.get_settings as GetSettings);
+                    });
+                } else {
+                    get_settings_response = account_settings;
+                }
                 const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-                    response.get_settings as GetSettings;
+                    get_settings_response as GetSettings;
                 if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
                     setHasSubmittedPersonalDetails(true);
-                    setAccountSettings(response.get_settings as GetSettings);
                 }
-            });
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_jurisdiction_modal_visible]);
@@ -220,10 +231,7 @@ const JurisdictionModal = ({
                             portal_element_id='deriv_app'
                             title={modal_title}
                             visible={is_jurisdiction_modal_visible}
-                            onClose={() => {
-                                toggleJurisdictionModal();
-                                setJurisdictionSelectedShortcode('');
-                            }}
+                            onClose={toggleJurisdictionModal}
                             footer={
                                 <Button
                                     style={{ width: '100%' }}
@@ -263,6 +271,7 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
+    account_settings: client.account_settings,
     account_type: modules.cfd.account_type,
     authentication_status: client.authentication_status,
     disableApp: ui.disableApp,

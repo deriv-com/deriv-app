@@ -1,8 +1,8 @@
 import { localize } from '@deriv/translations';
-import { isSessionAvailable } from 'Stores/Modules/Trading/Helpers/start-date';
 import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '@deriv/shared';
+import { isSessionAvailable } from '../Helpers/start-date';
 
-const getValidationRules = () => ({
+export const getValidationRules = () => ({
     amount: {
         rules: [
             ['req', { message: localize('Amount is a required field.') }],
@@ -181,5 +181,3 @@ export const getMultiplierValidationRules = () => ({
         ],
     },
 });
-
-export default getValidationRules;

@@ -1,4 +1,4 @@
-import { History } from 'history';
+import { RouteComponentProps } from 'react-router';
 import { DetailsOfEachMT5Loginid, VerifyEmailResponse } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
@@ -58,7 +58,7 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = {
+export type TCFDResetPasswordModal = RouteComponentProps & {
     current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     is_cfd_reset_password_modal_enabled: boolean;
@@ -66,7 +66,6 @@ export type TCFDResetPasswordModal = {
     is_logged_in: boolean;
     platform: CFD_Platform;
     setCFDPasswordResetModal: (value: boolean) => void;
-    history: History;
 };
 
 export type TCFDPasswordSuccessMessage = {

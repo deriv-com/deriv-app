@@ -14,7 +14,7 @@ describe('<PaymentAgentDetail />', () => {
     it('should show proper icon, title and description', () => {
         render(<PaymentAgentDetail {...props} />);
 
-        expect(screen.getByTestId('dt_payment-agent-detail-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_payment_agent_detail_icon')).toBeInTheDocument();
         expect(screen.getByText('Phone')).toBeInTheDocument();
         expect(screen.getByText('+12345678')).toBeInTheDocument();
     });

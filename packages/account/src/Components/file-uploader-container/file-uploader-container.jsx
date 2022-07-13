@@ -62,7 +62,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
         );
     }
     return (
-        <div className='account-poa__upload-section'>
+        <div className='account-poa__upload-section' data-testid='dt_file_uploader_container'>
             {is_description_enabled && (
                 <ul className='account-poa__upload-list'>
                     <li className='account-poa__upload-box'>

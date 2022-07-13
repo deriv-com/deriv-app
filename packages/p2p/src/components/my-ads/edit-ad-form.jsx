@@ -6,9 +6,11 @@ import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared'
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import { api_error_codes } from 'Constants/api-error-codes.js';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts.js';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
@@ -58,6 +60,10 @@ const EditAdForm = () => {
               selected_methods.length === Object.keys(payment_method_details).length
           );
 
+    const is_api_error = [api_error_codes.ADVERT_SAME_LIMITS, api_error_codes.DUPLICATE_ADVERT].includes(
+        my_ads_store.error_code
+    );
+
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
@@ -65,11 +71,13 @@ const EditAdForm = () => {
         my_ads_store.setEditAdFormError('');
 
         if (payment_method_names && !payment_method_details) {
+            const selected_payment_method_values = [];
             payment_method_names?.forEach(pm => {
                 my_profile_store.getPaymentMethodValue(pm);
-                selected_methods.push(my_profile_store.payment_method_value);
+                selected_payment_method_values.push(my_profile_store.payment_method_value);
                 my_ads_store.payment_method_names.push(my_profile_store.payment_method_value);
             });
+            setSelectedMethods(selected_payment_method_values);
         }
         if (payment_method_details) {
             Object.entries(payment_method_details)?.map(pm => {
@@ -77,6 +85,7 @@ const EditAdForm = () => {
                 my_ads_store.payment_method_ids.push(pm[0]);
             });
         }
+        return () => my_ads_store.setApiErrorCode(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -338,17 +347,17 @@ const EditAdForm = () => {
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}
-                title={localize('Something’s not right')}
+                title={generateErrorDialogTitle(my_ads_store.error_code)}
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>
-                        {my_ads_store.edit_ad_form_error}
+                        {generateErrorDialogBody(my_ads_store.error_code, my_ads_store.edit_ad_form_error)}
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('{{text}}', { text: is_api_error ? 'Update ad' : 'Ok' })}
                         onClick={() => my_ads_store.setIsEditAdErrorModalVisible(false)}
                         primary
                         large

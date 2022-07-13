@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { ExpansionPanel } from '@deriv/components';
 import PaymentAgentCardDescription from './payment-agent-card-description.jsx';
-import PaymentAgentCardDepositDetails from './paymen-agent-card-deposit-details.jsx';
+import PaymentAgentDepositDetails from '../payment-agent-deposit-details';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import './payment-agent-card.scss';
 
@@ -11,7 +11,7 @@ const PaymentAgentCard = ({ is_dark_mode_on, is_deposit, payment_agent }) => {
     const message = {
         header: <PaymentAgentCardDescription is_dark_mode_on payment_agent={payment_agent} />,
         content: is_deposit ? (
-            <PaymentAgentCardDepositDetails payment_agent={payment_agent} />
+            <PaymentAgentDepositDetails payment_agent={payment_agent} />
         ) : (
             <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
         ),

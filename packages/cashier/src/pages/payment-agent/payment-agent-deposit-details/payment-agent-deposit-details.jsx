@@ -4,8 +4,9 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
+import './payment-agent-deposit-details.scss';
 
-const PaymentAgentCardDetails = ({ payment_agent }) => {
+const PaymentAgentDepositDetails = ({ payment_agent }) => {
     const payment_agent_phones = toJS(payment_agent.phones);
 
     const PaymentAgentPhonesDetails = () => {
@@ -72,7 +73,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     };
 
     return (
-        <div className='payment-agent-card__deposit-details-container'>
+        <div className='payment-agent-deposit-details'>
             {payment_agent_phones && <PaymentAgentPhonesDetails />}
             {payment_agent.email && <PaymentAgentEmailDetails />}
             {payment_agent.min_withdrawal && <PaymentAgentMinimumWithdrawalDetails />}
@@ -83,8 +84,8 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     );
 };
 
-PaymentAgentCardDetails.propTypes = {
+PaymentAgentDepositDetails.propTypes = {
     payment_agent: PropTypes.object,
 };
 
-export default PaymentAgentCardDetails;
+export default PaymentAgentDepositDetails;

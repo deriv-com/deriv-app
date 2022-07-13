@@ -213,24 +213,16 @@ const DMT5CompareModalContent = ({
             category: is_demo_tab ? 'demo' : 'real',
             type: account_type,
         };
+
         switch (item.action) {
             case 'synthetic-svg':
-                toggleCompareAccounts();
-                openPasswordModal(type_of_account);
-                break;
-            case 'synthetic-bvi':
-                toggleCompareAccounts();
-                if (poi_poa_verified) {
-                    openPasswordModal(type_of_account);
-                } else {
-                    toggleCFDVerificationModal();
-                }
-                break;
             case 'financial-svg':
                 toggleCompareAccounts();
                 openPasswordModal(type_of_account);
                 break;
+            case 'synthetic-bvi':
             case 'financial-bvi':
+            case 'financial-maltainvest':
                 toggleCompareAccounts();
                 if (poi_poa_verified) {
                     openPasswordModal(type_of_account);
@@ -238,17 +230,8 @@ const DMT5CompareModalContent = ({
                     toggleCFDVerificationModal();
                 }
                 break;
+
             case 'financial-vanuatu':
-                if (poi_poa_verified) {
-                    // for bvi, labuan & vanuatu:
-                    toggleCompareAccounts();
-                    if (!has_real_mt5_login) {
-                        toggleCFDPersonalDetailsModal();
-                    } else {
-                        openPasswordModal(type_of_account);
-                    }
-                }
-                break;
             case 'financial-labuan':
                 if (poi_poa_verified) {
                     // for bvi, labuan & vanuatu:
@@ -260,16 +243,6 @@ const DMT5CompareModalContent = ({
                     }
                 }
                 break;
-
-            case 'maltainvest': {
-                toggleCompareAccounts();
-                if (poi_poa_verified) {
-                    openPasswordModal(type_of_account);
-                } else {
-                    toggleCFDVerificationModal();
-                }
-                break;
-            }
             default:
         }
     };

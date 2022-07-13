@@ -1,11 +1,9 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
-
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import NotRequired from 'Components/poi/status/not-required';
-import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5';
+import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
@@ -18,7 +16,6 @@ const ProofOfIdentityContainerforMt5 = ({
     is_virtual,
     onStateChange,
     refreshNotifications,
-    should_allow_authentication,
     citizen_data,
 }) => {
     const [api_error, setAPIError] = React.useState();
@@ -61,16 +58,11 @@ const ProofOfIdentityContainerforMt5 = ({
         has_attempted_idv,
         identity_last_attempt,
         identity_status,
-        is_age_verified,
         is_idv_disallowed,
         manual,
         needs_poa,
         onfido,
     } = verification_status;
-
-    if (!should_allow_authentication && !is_age_verified) {
-        return <NotRequired />;
-    }
 
     const idv_resubmission_cases = ['rejected', 'suspected', 'expired'];
     const has_idv_error =

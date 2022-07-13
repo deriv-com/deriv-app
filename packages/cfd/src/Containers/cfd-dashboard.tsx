@@ -661,7 +661,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             <React.Fragment>
                                 <CFDDbViOnBoarding />
                                 <CFDFinancialStpPendingDialog />
-                                <CFDPersonalDetailsModal />
+                                {is_logged_in && <CFDPersonalDetailsModal />}
                             </React.Fragment>
                         )}
                         <CFDResetPasswordModal platform={platform} />

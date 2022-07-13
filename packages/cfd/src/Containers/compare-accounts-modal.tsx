@@ -109,6 +109,7 @@ const CompareAccountsModal = ({
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
                                     openPasswordModal={openPasswordModal}
+                                    is_demo_tab={is_demo_tab}
                                 />
                             )}
                         </Modal>
@@ -136,6 +137,7 @@ const CompareAccountsModal = ({
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
                                     openPasswordModal={openPasswordModal}
+                                    is_demo_tab={is_demo_tab}
                                 />
                             )}
                         </MobileDialog>

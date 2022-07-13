@@ -33,6 +33,7 @@ type TDMT5CompareModalContentProps = {
         category: string;
     };
     is_logged_in: boolean;
+    is_demo_tab: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
@@ -223,10 +224,10 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
 };
 
 const DMT5CompareModalContent = ({
-    account_type,
     authentication_status,
     has_real_mt5_login,
     is_logged_in,
+    is_demo_tab,
     openPasswordModal,
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
@@ -237,10 +238,11 @@ const DMT5CompareModalContent = ({
         const poi_status = authentication_status?.identity_status;
 
         const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
+        const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
 
         const type_of_account = {
-            category: account_type.category,
-            type: account_type.type,
+            category: is_demo_tab ? 'demo' : 'real',
+            type: account_type,
         };
         switch (item.action) {
             case 'synthetic-svg':
@@ -270,6 +272,7 @@ const DMT5CompareModalContent = ({
             case 'financial-vanuatu':
                 if (poi_poa_verified) {
                     // for bvi, labuan & vanuatu:
+                    toggleCompareAccounts();
                     if (!has_real_mt5_login) {
                         toggleCFDPersonalDetailsModal();
                     } else {
@@ -280,6 +283,7 @@ const DMT5CompareModalContent = ({
             case 'financial-labuan':
                 if (poi_poa_verified) {
                     // for bvi, labuan & vanuatu:
+                    toggleCompareAccounts();
                     if (!has_real_mt5_login) {
                         toggleCFDPersonalDetailsModal();
                     } else {

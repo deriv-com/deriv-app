@@ -227,13 +227,16 @@
             margin-bottom: 1.6rem;
         }
     }
+    &__download-center--mt5 {
+        border-top: unset;
+        padding-top: unset;
+    }
     &__maintenance {
         @include typeface(--small-center-normal-black, none);
         display: flex;
         justify-content: center;
         align-items: center;
         margin: 2.4rem auto;
-        max-width: 75rem;
 
         &-icon {
             margin-right: 0.8rem;

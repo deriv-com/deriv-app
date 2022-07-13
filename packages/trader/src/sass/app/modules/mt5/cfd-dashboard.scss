@@ -140,8 +140,6 @@
         }
     }
     &__download-center {
-        border-top: 2px solid var(--general-section-1);
-        padding-top: 2rem;
         padding-bottom: 5.8rem;
 
         &-options {
@@ -221,6 +219,10 @@
         @include mobile {
             margin-bottom: 1.6rem;
         }
+    }
+    &__download-center--mt5 {
+        border-top: unset;
+        padding-top: unset;
     }
     &__maintenance {
         @include typeface(--small-center-normal-black, none);

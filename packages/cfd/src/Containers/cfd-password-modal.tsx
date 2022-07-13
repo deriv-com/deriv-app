@@ -43,7 +43,6 @@ type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers
 
 type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
-    account_title: string;
     is_password_reset_error: boolean;
     platform: string;
     has_mt5_account?: boolean;
@@ -107,15 +106,12 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     form_error?: string;
     getAccountStatus: (platform: string) => void;
     is_eu: boolean;
-    is_eu_country: boolean;
     is_fully_authenticated: boolean;
-    is_logged_in: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
     platform: string;
     has_cfd_error: boolean;
-    has_suspended_account: boolean;
     landing_companies: LandingCompany;
     mt5_login_list: TExtendedDetailsOfEachMT5Loginid[];
     cfd_new_account: Mt5NewAccount;
@@ -130,7 +126,6 @@ type TCFDPasswordModalProps = RouteComponentProps & {
 
 const PasswordModalHeader = ({
     should_set_trading_password,
-    account_title,
     is_password_reset_error,
     platform,
 }: TPasswordModalHeaderProps) => {
@@ -551,15 +546,12 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_eu,
-    is_eu_country,
     is_fully_authenticated,
-    is_logged_in,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,
     platform,
     has_cfd_error,
-    has_suspended_account,
     landing_companies,
     mt5_login_list,
     cfd_new_account,
@@ -677,7 +669,6 @@ const CFDPasswordModal = ({
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
-    const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
 
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
@@ -735,7 +726,6 @@ const CFDPasswordModal = ({
             renderTitle={() => (
                 <PasswordModalHeader
                     should_set_trading_password={should_set_trading_password}
-                    account_title={account_title}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
                 />
@@ -759,7 +749,6 @@ const CFDPasswordModal = ({
         >
             <PasswordModalHeader
                 should_set_trading_password={should_set_trading_password}
-                account_title={account_title}
                 has_mt5_account={has_mt5_account}
                 is_password_reset_error={is_password_reset}
                 platform={platform}

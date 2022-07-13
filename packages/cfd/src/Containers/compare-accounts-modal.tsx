@@ -64,11 +64,30 @@ const CompareAccountsModal = ({
         if (!is_dxtrade) {
             return isMobile()
                 ? localize('Choose a jurisdiction for your account')
-                : localize('Choose a jurisdiction for your {{type}} DMT5 account', {
+                : localize('Choose a jurisdiction for your {{type}} {{platform}} account', {
                       type: is_demo_tab ? 'demo' : 'real',
+                      platform: show_eu_related ? 'CFD' : 'DMT5',
                   });
         }
         return cfd_account_button_label;
+    };
+
+    const getModalStyle = () => {
+        if (is_dxtrade) {
+            return {
+                height: '696px',
+                width: '903px',
+            };
+        } else if (show_eu_related) {
+            return {
+                height: '506px',
+                width: '300px',
+            };
+        }
+        return {
+            height: '506px',
+            width: '996px',
+        };
     };
 
     return (
@@ -92,8 +111,8 @@ const CompareAccountsModal = ({
                             title={getCFDModalTitle()}
                             toggleModal={toggleCompareAccounts}
                             type='button'
-                            height={is_dxtrade ? '696px' : '506px'}
-                            width={is_dxtrade ? '903px' : '996px'}
+                            height={getModalStyle().height}
+                            width={getModalStyle().width}
                         >
                             {is_dxtrade ? (
                                 <ModalContent
@@ -109,6 +128,8 @@ const CompareAccountsModal = ({
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
                                     openPasswordModal={openPasswordModal}
+                                    is_demo_tab={is_demo_tab}
+                                    show_eu_related={show_eu_related}
                                 />
                             )}
                         </Modal>
@@ -136,6 +157,8 @@ const CompareAccountsModal = ({
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
                                     openPasswordModal={openPasswordModal}
+                                    is_demo_tab={is_demo_tab}
+                                    show_eu_related={show_eu_related}
                                 />
                             )}
                         </MobileDialog>

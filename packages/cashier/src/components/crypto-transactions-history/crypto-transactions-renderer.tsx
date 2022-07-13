@@ -1,11 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { getStatus } from 'Constants/transaction-status';
+import { connect } from 'Stores/connect';
+import { RootStore, TCryptoTransactionDetails } from 'Types';
+
+type TCryptoTransactionsRendererProps = {
+    row: TCryptoTransactionDetails;
+    cancelCryptoTransaction: (id: string) => void;
+    currency: string;
+    showCryptoTransactionsCancelModal: (id: string) => void;
+    showCryptoTransactionsStatusModal: (description: string, name: string) => void;
+};
 
 const CryptoTransactionsRenderer = ({
     row: crypto,
@@ -13,7 +21,7 @@ const CryptoTransactionsRenderer = ({
     currency,
     showCryptoTransactionsCancelModal,
     showCryptoTransactionsStatusModal,
-}) => {
+}: TCryptoTransactionsRendererProps) => {
     const {
         address_hash,
         address_url,
@@ -68,7 +76,11 @@ const CryptoTransactionsRenderer = ({
                         <Text as='p' size='xs' weight='bold' className='crypto-transactions-history__table-type'>
                             <Localize i18n_default_text={transaction_type} />
                         </Text>
-                        <div className='crypto-transactions-history__table-status' onClick={onClickStatus}>
+                        <div
+                            className='crypto-transactions-history__table-status'
+                            onClick={onClickStatus}
+                            data-testid='dt_table_status'
+                        >
                             <div
                                 className={classNames(
                                     'crypto-transactions-history__table-status-code',
@@ -150,7 +162,12 @@ const CryptoTransactionsRenderer = ({
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-action'>
                         {is_valid_to_cancel === 1 && (
-                            <Button onClick={onClickCancelTransaction} small secondary>
+                            <Button
+                                onClick={onClickCancelTransaction}
+                                small
+                                secondary
+                                data-testid='dt_cancel_transaction'
+                            >
                                 <Text as='p' size='xxxs' weight='bolder'>
                                     <Localize i18n_default_text='Cancel transaction' />
                                 </Text>
@@ -270,7 +287,7 @@ const CryptoTransactionsRenderer = ({
                 ) : (
                     <Table.Cell className='crypto-transactions-history__table-action'>
                         {is_valid_to_cancel === 1 && (
-                            <div onClick={onClickCancel}>
+                            <div onClick={onClickCancel} data-testid='dt_crypto_transactions_history_table_button'>
                                 <Popover
                                     alignment='left'
                                     className='crypto-transactions-history__table-popover'
@@ -287,16 +304,7 @@ const CryptoTransactionsRenderer = ({
     );
 };
 
-CryptoTransactionsRenderer.propTypes = {
-    crypto: PropTypes.object,
-    currency: PropTypes.string,
-    cancelCryptoTransaction: PropTypes.func,
-    row: PropTypes.object,
-    showCryptoTransactionsCancelModal: PropTypes.func,
-    showCryptoTransactionsStatusModal: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     currency: client.currency,
     cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
     showCryptoTransactionsCancelModal: modules.cashier.transaction_history.showCryptoTransactionsCancelModal,

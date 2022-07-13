@@ -25,7 +25,7 @@ describe('<CryptoTransactionsHistory />', () => {
 
     it('should trigger onClick callback when the back arrow is clicked', () => {
         const setIsCryptoTransactionsVisible = jest.fn();
-        const { container } = render(
+        render(
             <CryptoTransactionsHistory
                 crypto_transactions={[]}
                 currency={'BTC'}
@@ -33,7 +33,7 @@ describe('<CryptoTransactionsHistory />', () => {
             />
         );
 
-        const back_arrow = container.querySelector('.crypto-transactions-history__back');
+        const back_arrow = screen.getByTestId('dt_crypto_transactions_history_back');
         fireEvent.click(back_arrow);
 
         expect(setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(1);
@@ -56,7 +56,7 @@ describe('<CryptoTransactionsHistory />', () => {
                 transaction_type: 'withdrawal',
             },
         ];
-        const { container } = render(
+        render(
             <CryptoTransactionsHistory
                 crypto_transactions={crypto_transactions}
                 currency={'BTC'}
@@ -65,8 +65,8 @@ describe('<CryptoTransactionsHistory />', () => {
             />
         );
 
-        const loader = container.querySelector('.initial-loader');
-        expect(loader).not.toBeNull();
+        const loader = screen.getByTestId('dt_initial_loader');
+        expect(loader).toBeInTheDocument();
     });
 
     it('should show table headers: "Transaction", "Amount", "Address", "Transaction hash", "Time", "Status", "Action"', () => {

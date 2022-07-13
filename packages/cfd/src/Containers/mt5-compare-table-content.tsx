@@ -233,16 +233,19 @@ const DMT5CompareModalContent = ({
 
             case 'financial-vanuatu':
             case 'financial-labuan':
+                toggleCompareAccounts();
                 if (poi_poa_verified) {
                     // for bvi, labuan & vanuatu:
-                    toggleCompareAccounts();
                     if (!has_real_mt5_login) {
                         toggleCFDPersonalDetailsModal();
                     } else {
                         openPasswordModal(type_of_account);
                     }
+                } else {
+                    toggleCFDVerificationModal();
                 }
                 break;
+
             default:
         }
     };

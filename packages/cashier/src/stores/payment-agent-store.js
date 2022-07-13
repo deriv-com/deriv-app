@@ -104,6 +104,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     async setPaymentAgentList(pa_list) {
+        const { setLoading } = this.root_store.modules.cashier.general_store;
         const payment_agent_list = pa_list || (await this.getPaymentAgentList());
         this.clearList();
         this.clearSuppertedBanks();
@@ -129,6 +130,7 @@ export default class PaymentAgentStore {
             });
             shuffleArray(this.list);
         } catch (e) {
+            setLoading(false);
             // eslint-disable-next-line no-console
             console.error(e);
         }

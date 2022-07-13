@@ -5,7 +5,7 @@ import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
 import { connect } from 'Stores/connect';
-import { Detail } from './paymen-agent-card-deposit-details';
+import PaymentAgentDetail from '../payment-agent-detail';
 
 const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
     const payment_agent_urls = toJS(payment_agent.urls);
@@ -26,9 +26,9 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
                 </Text>
             )}
             {payment_agent_urls && (
-                <Detail target='_blank' rel='noopener noreferrer' has_red_color>
-                    {Array.isArray(payment_agent_urls) ? payment_agent_urls.map(url => url.url) : payment_agent_urls}
-                </Detail>
+                <PaymentAgentDetail has_red_color is_link rel='noopener noreferrer' target='_blank'>
+                    {payment_agent_urls.map(url => url.url)}
+                </PaymentAgentDetail>
             )}
             {hasNormalizedPaymentMethods(payment_agent.supported_banks) && (
                 <div className='payment-agent-card__description-container-icons-container'>

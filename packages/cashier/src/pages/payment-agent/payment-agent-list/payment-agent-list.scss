@@ -15,7 +15,7 @@
                     width: 100%;
                     left: 0;
                     z-index: 1000;
-                    padding: 1.6rem 3.5rem;
+                    padding: 1.6rem 5rem;
                 }
             }
             .dc-tabs__content {
@@ -33,6 +33,7 @@
 
             & .dc-tabs__list--header--tabs--desktop {
                 display: none;
+                padding: 1.6rem 5rem;
             }
         }
         .verification-email__icon {
@@ -51,13 +52,17 @@
             margin-bottom: 2.4rem;
             display: flex;
             justify-content: space-between;
-            .cashier {
-                &__paragraph {
-                    margin-right: 0.8rem;
+            & .dc-dropdown {
+                &__container {
+                    width: 18rem;
                 }
-            }
-            .dc-dropdown__display-text {
-                color: var(--text-less-prominent);
+                &__display {
+                    justify-content: flex-start;
+                    &-text {
+                        padding-left: 0.8rem;
+                        padding-right: 3.2rem;
+                    }
+                }
             }
         }
         @include mobile {
@@ -66,26 +71,34 @@
                 z-index: 1;
             }
             &-selector {
-                margin-bottom: 1.8rem;
-
+                margin-bottom: 1.6rem;
                 /* postcss-bem-linter: ignore */
-                & .dc-input {
-                    width: 18rem;
-                    margin-left: auto;
-                }
-                /* postcss-bem-linter: ignore */
-                & .dc-select-native__placeholder {
-                    background-color: var(--general-main-1);
+                & .dc-select-native {
+                    &__arrow {
+                        top: unset;
+                        --fill-color1: var(--text-general);
+                    }
+                    &__placeholder {
+                        padding: 0 0.8rem;
+                        background-color: var(--general-main-1);
+                        color: var(--text-general);
+                        top: unset;
+                        left: unset;
+                    }
+                    &__display {
+                        height: 3.2rem;
+                        &-text {
+                            line-height: 3.2rem;
+                        }
+                    }
+                    &__picker {
+                        height: 3.2rem;
+                    }
+                    &__wrapper {
+                        height: 3.2rem;
+                    }
                 }
             }
-        }
-    }
-    &__filter {
-        min-width: 22.8rem;
-        margin-top: 0;
-        &-display {
-            min-height: 3.2rem;
-            min-width: 22.8rem;
         }
     }
     &__error-dialog {

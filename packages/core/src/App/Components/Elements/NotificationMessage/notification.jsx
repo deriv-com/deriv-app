@@ -166,7 +166,7 @@ Notification.propTypes = {
         img_alt: PropTypes.string,
         img_src: PropTypes.string,
         is_auto_close: PropTypes.bool,
-        // key: PropTypes.string,
+        key: PropTypes.string,
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         message_popup: PropTypes.string,
         primary_btn: PropTypes.object,

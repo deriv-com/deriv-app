@@ -1,11 +1,13 @@
-import * as React from 'react';
-import { Clipboard, Text } from '@deriv/components';
+import React from 'react';
+import { Text } from '@deriv/components';
 import { isMobile, formatDate } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
+import ApiTokenDeleteButton from './api-token-delete-button.jsx';
 import ApiTokenTableBodyRow from './api-token-table-row.jsx';
 import ApiTokenTableRowHeader from './api-token-table-row-header.jsx';
-import ApiTokenDeleteButtons from './api-token-delete-buttons.jsx';
+import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell.jsx';
+import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell.jsx';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext(ApiTokenContext);
@@ -19,17 +21,15 @@ const ApiTokenTable = () => {
 
     const getScopeValue = token => {
         const titled_scopes = token.scopes.map(scope => formatTokenScopes(scope));
-        const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {
             display_name: token.display_name,
-            scopes: mapped_scopes,
+            scopes: titled_scopes,
             last_used: date_format,
             token: token.token,
         };
     };
-
     if (isMobile()) {
         return api_tokens.map(token_data => {
             const token = getScopeValue(token_data);
@@ -57,16 +57,7 @@ const ApiTokenTable = () => {
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                 <Localize i18n_default_text='Token' />
                             </Text>
-                            <div className='da-api-token__clipboard-wrapper'>
-                                <Text size='xs' color='general' line_height='m'>
-                                    {token.token}
-                                </Text>
-                                <Clipboard
-                                    className='da-api-token__clipboard'
-                                    popover_props={{ relative_render: false, zIndex: 9999 }}
-                                    text_copy={token.token}
-                                />
-                            </div>
+                            <ApiTokenTableRowTokenCell token={token.token} scopes={token.scopes} />
                         </div>
                         <div>
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
@@ -80,14 +71,12 @@ const ApiTokenTable = () => {
                     <div className='da-api-token__scope-item'>
                         <div>
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
-                                <Localize i18n_default_text='Scope' />
+                                <Localize i18n_default_text='Scopes' />
                             </Text>
-                            <Text as='p' size='s' color='general' line_height='m'>
-                                {token.scopes}
-                            </Text>
+                            <ApiTokenTableRowScopesCell scopes={token.scopes} />
                         </div>
                         <div>
-                            <ApiTokenDeleteButtons token={token} />
+                            <ApiTokenDeleteButton token={token} />
                         </div>
                     </div>
                 </div>
@@ -103,7 +92,7 @@ const ApiTokenTable = () => {
                     <ApiTokenTableRowHeader text={localize('Token')} />
                     <ApiTokenTableRowHeader text={localize('Scopes')} />
                     <ApiTokenTableRowHeader text={localize('Last used')} />
-                    <ApiTokenTableRowHeader text={localize('Action')} />
+                    <th />
                 </tr>
             </thead>
             <tbody>

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import './payment-agent-detail.scss';
 
-const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, is_link, title }) => {
+const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, is_link, title, ...rest }) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
         <div
@@ -35,6 +35,7 @@ const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, 
                                 size={!title ? 'xxs' : 'xs'}
                                 weight='bold'
                                 className='payment-agent-detail__link'
+                                {...rest}
                             >
                                 {child}
                                 {id === detail.length - 1 ? '' : ', '}

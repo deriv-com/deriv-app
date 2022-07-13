@@ -165,7 +165,7 @@ const Amount = ({
                     <Multiplier />
                     <MultipliersInfo
                         className='trade-container__multipliers-trade-info'
-                        is_should_show_tooltip
+                        should_show_tooltip
                         is_tooltip_relative
                     />
                 </React.Fragment>

@@ -40,7 +40,7 @@ const Contract = ({
                 name='contract_type'
                 onChange={onChange}
                 value={contract_type}
-                is_language_Changed={prev_lang && prev_lang !== current_language}
+                languageChanged={prev_lang && prev_lang !== current_language}
             />
         </React.Fragment>
     );

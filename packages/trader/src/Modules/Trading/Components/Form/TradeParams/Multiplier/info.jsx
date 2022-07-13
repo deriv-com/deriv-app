@@ -18,7 +18,7 @@ const MultipliersInfo = ({
     multiplier = 0,
     has_stop_loss,
     is_tooltip_relative,
-    is_should_show_tooltip,
+    should_show_tooltip,
     stop_out = 0,
 }) => {
     const commission_text = (
@@ -77,7 +77,7 @@ const MultipliersInfo = ({
     );
 
     const getInfo = ({ text, message, margin }) => {
-        return is_should_show_tooltip ? (
+        return should_show_tooltip ? (
             <Popover
                 message={message}
                 {...(is_tooltip_relative
@@ -121,7 +121,7 @@ MultipliersInfo.propTypes = {
     has_stop_loss: PropTypes.bool,
     is_tooltip_relative: PropTypes.bool,
     multiplier: PropTypes.number,
-    is_should_show_tooltip: PropTypes.bool,
+    should_show_tooltip: PropTypes.bool,
     stop_out: PropTypes.number,
     stop_out_text_size: PropTypes.string,
 };

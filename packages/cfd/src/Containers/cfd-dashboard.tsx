@@ -650,6 +650,15 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                         >
                                             <Icon icon='IcInstallationApple' width={135} height={40} />
                                         </a>
+                                        {platform === CFD_PLATFORMS.MT5 && (
+                                            <a
+                                                href={getPlatformMt5DownloadLink('huawei')}
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                            >
+                                                <Icon icon='IcInstallationHuawei' width={135} height={40} />
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </div>

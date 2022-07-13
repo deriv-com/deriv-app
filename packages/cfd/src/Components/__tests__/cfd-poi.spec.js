@@ -130,30 +130,6 @@ describe('<CFDPOI />', () => {
         expect(props.onCancel).toHaveBeenCalledTimes(1);
     });
 
-    it('should enable Next button when identity_status is pending or verified, and disable otherwise', () => {
-        props.authentication_status.identity_status = 'pending';
-        const { rerender } = render(<CFDPOI {...props} />);
-
-        const next_button = screen.getByRole('button', { name: /next/i });
-        expect(next_button).toBeEnabled();
-
-        fireEvent.click(next_button);
-        expect(props.onSubmit).toHaveBeenCalledTimes(1);
-
-        props.authentication_status.identity_status = 'verified';
-        rerender(<CFDPOI {...props} />);
-
-        expect(next_button).toBeEnabled();
-
-        fireEvent.click(next_button);
-        expect(props.onSubmit).toHaveBeenCalledTimes(2);
-
-        props.authentication_status.identity_status = '';
-        rerender(<CFDPOI {...props} />);
-
-        expect(next_button).toBeDisabled();
-    });
-
     it('should enable Next button when poi_state has changed to pending as a result of POI submission', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce(['pending', () => {}]);
         render(<CFDPOI {...props} />);

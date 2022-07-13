@@ -30,6 +30,13 @@ const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();
 let chart;
 
+const addEvent = (id, fn, event = "click", options = false) => {
+  const dom = document.getElementById(id);
+  if (dom) {
+    dom.addEventListener(event, fn, options);
+  }
+};
+
 const checkForRequiredBlocks = () => {
   const displayError = errorMessage => {
     const error = new Error(errorMessage);
@@ -69,7 +76,7 @@ const checkForRequiredBlocks = () => {
 
 export function applyToolboxPermissions() {
   const fn = getTokenList().length ? "show" : "hide";
-  $("#runButton, #showSummary, #logButton")
+  $("#runButton")
     [fn]()
     .prevAll(".toolbox-separator:first")
     [fn]();
@@ -228,18 +235,12 @@ const addBindings = blockly => {
   };
 
   const showSummary = () => {
-    $("#summaryPanel")
-      .dialog("option", "minWidth", 770)
-      .dialog("open");
-    addExportButtonToPanel("summaryPanel");
+    $("#summaryPanel").dialog("option", "minWidth", 770).dialog("open");
   };
-
-  $("#logButton").click(() => {
+  addEvent("showSummary",showSummary);
+  addEvent("logButton", () => {
     $("#logPanel").dialog("open");
-    addExportButtonToPanel("logPanel");
   });
-
-  $("#showSummary").click(showSummary);
 
   globalObserver.register("ui.logout", () => {
     saveBeforeUnload();

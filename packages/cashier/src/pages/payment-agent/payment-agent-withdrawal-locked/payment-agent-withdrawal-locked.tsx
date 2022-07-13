@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { RouteComponentProps } from 'react-router';
 import { Button, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
@@ -7,7 +7,23 @@ import { withRouter } from 'react-router-dom';
 import Error from 'Components/error';
 import './payment-agent-withdrawal-locked.scss';
 
-const PaymentAgentWithdrawalLockedItem = ({ item }) => {
+type TPaymentAgentWithdrawalLockedItemProps = {
+    item: {
+        btn_confirm_text?: string;
+        content?: JSX.Element | string;
+        onConfirm?: () => number;
+        title?: string | undefined;
+    };
+};
+
+export type TPaymentAgentWithdrawalLockedProps = RouteComponentProps & {
+    error?: {
+        code: number | string;
+        onClickButton?: () => void;
+    };
+};
+
+const PaymentAgentWithdrawalLockedItem = ({ item }: TPaymentAgentWithdrawalLockedItemProps) => {
     return (
         <div className='cashier__wrapper--align-center payment-agent-withdrawal-locked'>
             {item.title && (
@@ -31,9 +47,9 @@ const PaymentAgentWithdrawalLockedItem = ({ item }) => {
     );
 };
 
-const PaymentAgentWithdrawalLocked = ({ error, history }) => {
+const PaymentAgentWithdrawalLocked = ({ error, history }: TPaymentAgentWithdrawalLockedProps) => {
     const items = [
-        ...(error.code === 'PaymentAgentWithdrawSameMethod'
+        ...(error?.code === 'PaymentAgentWithdrawSameMethod'
             ? [
                   {
                       btn_confirm_text: localize('OK'),
@@ -44,7 +60,7 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
                   },
               ]
             : []),
-        ...(error.code === 'PaymentAgentUseOtherMethod'
+        ...(error?.code === 'PaymentAgentUseOtherMethod'
             ? [
                   {
                       btn_confirm_text: localize('OK'),
@@ -61,7 +77,7 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
             : []),
     ];
 
-    if (error.onClickButton || error.code === 'PaymentAgentJustification') {
+    if (error?.onClickButton || error?.code === 'PaymentAgentJustification') {
         return <Error error={error} />;
     }
 
@@ -72,15 +88,6 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
             })}
         </React.Fragment>
     );
-};
-
-PaymentAgentWithdrawalLocked.propTypes = {
-    error: PropTypes.object,
-    history: PropTypes.object,
-};
-
-PaymentAgentWithdrawalLockedItem.propTypes = {
-    item: PropTypes.object,
 };
 
 export default withRouter(PaymentAgentWithdrawalLocked);

@@ -10,6 +10,14 @@
             margin-bottom: 0;
         }
     }
+    .payment-agent-detail {
+        &__icon-wrapper {
+            width: 3.2rem;
+            height: 3.2rem;
+            background: var(--icon-grey-background);
+            border-radius: $BORDER_RADIUS * 2;
+        }
+    }
     @include mobile {
         grid-template-columns: 1fr;
         margin-top: 2.4rem;

@@ -49,12 +49,15 @@
             }
         }
         &-selector {
-            margin-bottom: 2.4rem;
+            margin-bottom: 1.6rem;
             display: flex;
             justify-content: space-between;
             & .dc-dropdown {
                 &__container {
                     width: 18rem;
+                }
+                &-container {
+                    margin-top: 0;
                 }
                 &__display {
                     justify-content: flex-start;

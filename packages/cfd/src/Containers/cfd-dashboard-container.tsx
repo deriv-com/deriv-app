@@ -143,6 +143,16 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on, dxtrad
                     >
                         <Icon icon='IcInstallationApple' width={120} height={40} />
                     </a>
+                    {platform === CFD_PLATFORMS.MT5 && (
+                        <a
+                            className='cfd-dashboard__download-center-options--mobile-link'
+                            href={getPlatformMt5DownloadLink('huawei')}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <Icon icon='IcInstallationHuawei' width={120} height={40} />
+                        </a>
+                    )}
                 </div>
             </div>
         </div>

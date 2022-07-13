@@ -197,7 +197,7 @@
                     }
                 }
                 &-link:not(:first-child) {
-                    margin-left: 1.6rem;
+                    margin-left: 0.8rem;
                 }
                 @include mobile {
                     margin-left: unset;
@@ -680,7 +680,7 @@
     }
 
     &__logged-out {
-        min-height: 29rem;
+        min-height: 12rem;
     }
 
     &__add-server {

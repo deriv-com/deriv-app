@@ -202,7 +202,7 @@ const JurisdictionModal = ({
                                 poi_failed={poi_failed}
                                 poa_failed={poa_failed}
                             />
-                            <Modal.Footer>
+                            <Modal.Footer has_separator>
                                 <Button
                                     disabled={!is_next_button_enabled}
                                     primary

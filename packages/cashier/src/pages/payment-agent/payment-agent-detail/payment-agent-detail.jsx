@@ -14,7 +14,7 @@ const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, 
         >
             {icon && (
                 <div className='payment-agent-detail__icon-wrapper'>
-                    <Icon icon={`IcCashier${icon}`} data_testid='dt_payment-agent-detail-icon' />
+                    <Icon icon={`IcCashier${icon}`} data_testid='dt_payment_agent_detail_icon' />
                 </div>
             )}
             <div>

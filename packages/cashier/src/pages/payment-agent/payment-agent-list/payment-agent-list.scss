@@ -63,6 +63,9 @@
                         padding-right: 3.2rem;
                     }
                 }
+                &__select-arrow {
+                    right: 10px;
+                }
             }
         }
         @include mobile {

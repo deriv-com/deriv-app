@@ -114,7 +114,7 @@ export default class ContractReplayStore extends BaseStore {
 
         const dummy_response = getDummyPOCResponseForACC(Date.now());
 
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.root_store.portfolio.is_accumulator) {
             if ('error' in dummy_response) {
                 const { code, message } = dummy_response.error;
                 this.has_error = true;
@@ -196,7 +196,7 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        if (this.contract_info.is_sold && this.root_store.modules.trade.is_accumulator) {
+        if (this.contract_info.is_sold && this.root_store.portfolio.is_accumulator) {
             this.contract_store.cacheProposalOpenContractResponse(dummy_response);
         } else if (this.contract_info.is_sold) {
             this.contract_store.cacheProposalOpenContractResponse(response);

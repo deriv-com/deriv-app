@@ -164,7 +164,7 @@ export default class ContractTradeStore extends BaseStore {
     updateProposal(_response) {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let response;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.root_store.portfolio.is_accumulator) {
             response = dummy_response;
         } else {
             response = _response;

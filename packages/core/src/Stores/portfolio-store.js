@@ -90,7 +90,7 @@ export default class PortfolioStore extends BaseStore {
         const dummy_contracts = getDummyPortfolioContractsForACC(Date.now());
 
         let contracts;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             contracts = dummy_contracts;
         } else contracts = response.portfolio.contracts;
         if (contracts) {
@@ -159,7 +159,7 @@ export default class PortfolioStore extends BaseStore {
     updateContractTradeStore(_response) {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let response;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             response = dummy_response;
         } else {
             response = _response;
@@ -177,7 +177,7 @@ export default class PortfolioStore extends BaseStore {
     updateContractReplayStore(_response) {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let response;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             response = dummy_response;
         } else {
             response = _response;
@@ -207,7 +207,7 @@ export default class PortfolioStore extends BaseStore {
         const dummy_response = getDummyPOCResponseForACC(now);
 
         let proposal, portfolio_position;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             if ('error' in dummy_response) {
                 this.updateContractTradeStore(dummy_response);
                 this.updateContractReplayStore(dummy_response);
@@ -283,7 +283,7 @@ export default class PortfolioStore extends BaseStore {
             }
         }
 
-        if (portfolio_position.contract_info.is_sold === 1 && !this.root_store.modules.trade.is_accumulator) {
+        if (portfolio_position.contract_info.is_sold === 1 && !this.is_accumulator) {
             this.populateResultDetails(response);
         } else if (portfolio_position.contract_info.is_sold === 1) this.populateResultDetails(dummy_response);
     }
@@ -376,7 +376,7 @@ export default class PortfolioStore extends BaseStore {
     populateResultDetails = response => {
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let contract_response;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             contract_response = dummy_response.proposal_open_contract;
         } else {
             contract_response = response.proposal_open_contract;
@@ -536,7 +536,7 @@ export default class PortfolioStore extends BaseStore {
     setActivePositions() {
         const dummy_contracts = getDummyAllPositionsForACC(Date.now());
 
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             this.active_positions = dummy_contracts;
             this.all_positions = [...dummy_contracts];
         } else {
@@ -619,6 +619,11 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     setContractType(contract_type) {
         this.contract_type = contract_type;
+    }
+
+    @computed
+    get is_accumulator() {
+        return this.contract_type === 'accumulator';
     }
 
     @computed

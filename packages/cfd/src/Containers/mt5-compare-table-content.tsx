@@ -42,8 +42,56 @@ type TDMT5CompareModalContentProps = {
     };
     has_real_mt5_login: boolean;
     toggleCFDPersonalDetailsModal: () => void;
+    show_eu_related: boolean;
 };
 
+const eucontent: TModalContentProps[] = [
+    {
+        id: 'jurisdiction',
+        attribute: localize('Jurisdiction'),
+        values: {
+            synthetic_svg: { text: localize('Malta Financial Services Authority') },
+        },
+    },
+    {
+        id: 'counterparty',
+        attribute: localize('Counterparty company'),
+        values: {
+            synthetic_svg: { text: localize('Deriv Investments (Europe) Limited') },
+        },
+    },
+    {
+        id: 'regulator',
+        attribute: localize('Regulator'),
+        values: {
+            synthetic_svg: { text: localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)') },
+        },
+    },
+
+    {
+        id: 'leverage',
+        attribute: localize('Maximum leverage'),
+        values: {
+            synthetic_svg: { text: localize('Up to 1:30') },
+        },
+    },
+
+    {
+        id: 'instruments',
+        attribute: localize('Trading instruments'),
+        values: {
+            synthetic_svg: {
+                text: [
+                    localize('Forex'),
+                    localize('Stocks'),
+                    localize('Stock indices'),
+                    localize('Synthetic indices'),
+                    localize('Cryptocurrencies'),
+                ],
+            },
+        },
+    },
+];
 const content: TModalContentProps[] = [
     {
         id: 'jurisdiction',
@@ -138,89 +186,7 @@ const footer_buttons: { label: string; action: string }[] = [
     { label: localize('Add'), action: 'financial-vanuatu' },
     { label: localize('Add'), action: 'financial-labuan' },
 ];
-
-const getContentSize = (id: string) => {
-    if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
-    return isDesktop() ? 'xxxs' : 'xxxxs';
-};
-const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
-    <Table.Row className='cfd-real-compare-accounts__table-row--instruments'>
-        <Table.Cell fixed>
-            <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
-                {attr}
-            </Text>
-        </Table.Cell>
-
-        {Object.keys(val).map(rowKey => (
-            <Table.Cell key={rowKey} className='cfd-real-compare-accounts__table-row-item'>
-                {Array.isArray(val[rowKey].text) ? (
-                    (val[rowKey].text as []).map((item, index) => (
-                        <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
-                            {item}
-                        </Text>
-                    ))
-                ) : (
-                    <Text as='p' weight='normal' align='center' color='prominent' size='xxxs'>
-                        {val[rowKey].text}
-                    </Text>
-                )}
-            </Table.Cell>
-        ))}
-    </Table.Row>
-);
-
-const Row = ({ id, attribute, values }: TModalContentProps) => {
-    const is_leverage = id === 'leverage';
-    if (id === 'instruments') {
-        return <InstrumentsRow attr={attribute} val={values} />;
-    }
-    return (
-        <Table.Row
-            className={classNames('cfd-real-compare-accounts__table-row', {
-                'cfd-real-compare-accounts__table-row--leverage': is_leverage,
-            })}
-        >
-            <Table.Cell fixed>
-                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
-                    {attribute}
-                </Text>
-            </Table.Cell>
-
-            {Object.keys(values).map(item => (
-                <Table.Cell
-                    key={item}
-                    className={classNames('cfd-real-compare-accounts__table-row-item', {
-                        'cfd-real-compare-accounts__table-row-item--tooltip': values[item].tooltip_msg,
-                    })}
-                >
-                    <>
-                        <Text
-                            as='p'
-                            weight={id === 'jurisdiction' ? 'bold' : 'normal'}
-                            align='center'
-                            color='prominent'
-                            size={getContentSize(id)}
-                        >
-                            {values[item].text}
-                        </Text>
-                        {values[item].tooltip_msg && (
-                            <Popover
-                                alignment='left'
-                                className='cfd-compare-accounts-tooltip'
-                                classNameBubble='cfd-compare-accounts-tooltip--msg'
-                                icon='info'
-                                disable_message_icon
-                                is_bubble_hover_enabled
-                                message={values[item].tooltip_msg}
-                                zIndex={9999}
-                            />
-                        )}
-                    </>
-                </Table.Cell>
-            ))}
-        </Table.Row>
-    );
-};
+const eu_footer_button: { label: string; action: string }[] = [{ label: localize('Add'), action: 'maltainvest' }];
 
 const DMT5CompareModalContent = ({
     account_type,
@@ -231,13 +197,13 @@ const DMT5CompareModalContent = ({
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
     toggleCompareAccounts,
+    show_eu_related,
 }: TDMT5CompareModalContentProps) => {
     const onSelectRealAccount = (item: { label: string; action: string }) => {
         const poa_status = authentication_status?.document_status;
         const poi_status = authentication_status?.identity_status;
 
         const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
-
         const type_of_account = {
             category: account_type.category,
             type: account_type.type,
@@ -287,35 +253,155 @@ const DMT5CompareModalContent = ({
                     }
                 }
                 break;
+
+            case 'maltainvest': {
+                toggleCompareAccounts();
+                if (poi_poa_verified) {
+                    openPasswordModal(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
+                break;
+            }
             default:
         }
     };
+
+    const modal_content = show_eu_related ? eucontent : content;
+    const modal_footer = show_eu_related ? eu_footer_button : footer_buttons;
+    const getContentSize = (id: string) => {
+        if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
+        return isDesktop() ? 'xxxs' : 'xxxxs';
+    };
+    const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
+        <Table.Row
+            className={
+                show_eu_related
+                    ? 'cfd-real-compare-accounts-row-eu'
+                    : 'cfd-real-compare-accounts__table-row--instruments'
+            }
+        >
+            <Table.Cell fixed>
+                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
+                    {attr}
+                </Text>
+            </Table.Cell>
+
+            {Object.keys(val).map(rowKey => (
+                <Table.Cell key={rowKey} className='cfd-real-compare-accounts__table-row-item'>
+                    {Array.isArray(val[rowKey].text) ? (
+                        (val[rowKey].text as []).map((item, index) => (
+                            <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
+                                {item}
+                            </Text>
+                        ))
+                    ) : (
+                        <Text as='p' weight='normal' align='center' color='prominent' size='xxxs'>
+                            {val[rowKey].text}
+                        </Text>
+                    )}
+                </Table.Cell>
+            ))}
+        </Table.Row>
+    );
+
+    const Row = ({ id, attribute, values }: TModalContentProps) => {
+        const is_leverage = id === 'leverage';
+        if (id === 'instruments') {
+            return <InstrumentsRow attr={attribute} val={values} />;
+        }
+        return (
+            <Table.Row
+                className={
+                    show_eu_related
+                        ? 'cfd-real-compare-accounts-row-eu'
+                        : classNames('cfd-real-compare-accounts__table-row', {
+                              'cfd-real-compare-accounts__table-row--leverage': is_leverage,
+                          })
+                }
+            >
+                <Table.Cell fixed>
+                    <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
+                        {attribute}
+                    </Text>
+                </Table.Cell>
+
+                {Object.keys(values).map(item => (
+                    <Table.Cell
+                        key={item}
+                        className={classNames('cfd-real-compare-accounts__table-row-item', {
+                            'cfd-real-compare-accounts__table-row-item--tooltip': values[item].tooltip_msg,
+                        })}
+                    >
+                        <>
+                            <Text
+                                as='p'
+                                weight={id === 'jurisdiction' ? 'bold' : 'normal'}
+                                align='center'
+                                color='prominent'
+                                size={getContentSize(id)}
+                            >
+                                {values[item].text}
+                            </Text>
+                            {values[item].tooltip_msg && (
+                                <Popover
+                                    alignment='left'
+                                    className='cfd-compare-accounts-tooltip'
+                                    classNameBubble='cfd-compare-accounts-tooltip--msg'
+                                    icon='info'
+                                    disable_message_icon
+                                    is_bubble_hover_enabled
+                                    message={values[item].tooltip_msg}
+                                    zIndex={9999}
+                                />
+                            )}
+                        </>
+                    </Table.Cell>
+                ))}
+            </Table.Row>
+        );
+    };
+
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
             <div className='cfd-real-compare-accounts'>
                 <div className='cfd-real-compare-accounts__table-wrapper'>
                     <Table className='cfd-real-compare-accounts__table'>
                         <Table.Header>
-                            <Table.Row className='cfd-real-compare-accounts__table-header'>
+                            <Table.Row
+                                className={
+                                    show_eu_related
+                                        ? 'cfd-real-compare-accounts-row-eu'
+                                        : 'cfd-real-compare-accounts__table-header'
+                                }
+                            >
                                 <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
+                                {!show_eu_related && (
+                                    <Table.Head className='cfd-real-compare-accounts__table-header-item'>
+                                        {localize('Synthetic')}
+                                    </Table.Head>
+                                )}
                                 <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                    {localize('Synthetic')}
-                                </Table.Head>
-                                <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                    {localize('Financial')}
+                                    {show_eu_related ? localize('CFDs') : localize('Financial')}
                                 </Table.Head>
                             </Table.Row>
                         </Table.Header>
 
                         <Table.Body>
-                            {content.map(row => (
+                            {modal_content.map(row => (
                                 <Row key={row.id} {...row} />
                             ))}
                         </Table.Body>
                         {is_logged_in && (
-                            <Table.Row className='cfd-real-compare-accounts__table-footer'>
+                            <Table.Row
+                                className={
+                                    show_eu_related
+                                        ? 'cfd-real-compare-accounts-row-eu'
+                                        : 'cfd-real-compare-accounts__table-footer'
+                                }
+                            >
                                 <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                {footer_buttons.map((item, index) => (
+                                {modal_footer.map((item, index) => (
                                     <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
                                         <Button
                                             className='cfd-real-compare-accounts__table-footer__button'

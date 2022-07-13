@@ -2001,7 +2001,9 @@
     background: inherit;
     height: 100%;
     position: relative;
-
+    &-row-eu {
+        grid-template-columns: 1fr 1fr;
+    }
     &__table-header {
         grid-template-columns: 0.9fr 1.39fr 2.7fr;
     }

@@ -8,7 +8,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
-import './payment-agent-withdraw-form.scss';
+import './payment-agent-unlisted-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency }) => {
     const errors = {};
@@ -33,7 +33,7 @@ const validateWithdrawal = (values, { balance, currency }) => {
     return errors;
 };
 
-const PaymentAgentWithdrawForm = ({
+const PaymentAgentUnlistedWithdrawForm = ({
     balance,
     currency,
     error,
@@ -160,7 +160,7 @@ const PaymentAgentWithdrawForm = ({
     );
 };
 
-PaymentAgentWithdrawForm.propTypes = {
+PaymentAgentUnlistedWithdrawForm.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     error: PropTypes.object,
@@ -177,4 +177,4 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
     requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
     verification_code: client.verification_code.payment_agent_withdraw,
-}))(PaymentAgentWithdrawForm);
+}))(PaymentAgentUnlistedWithdrawForm);

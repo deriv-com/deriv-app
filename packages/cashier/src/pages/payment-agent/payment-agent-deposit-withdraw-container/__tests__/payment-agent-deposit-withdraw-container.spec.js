@@ -14,7 +14,9 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => () => <div>PaymentAgentWithdrawForm</div>);
+jest.mock('Pages/payment-agent/payment-agent-unlisted-withdraw-form', () => () => (
+    <div>PaymentAgentUnlistedWithdrawForm</div>
+));
 jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () => () => <div>PaymentAgentWithdrawConfirm</div>);
 jest.mock('Pages/payment-agent/payment-agent-receipt', () => () => <div>PaymentAgentReceipt</div>);
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
@@ -94,13 +96,13 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
         expect(screen.getByText('search for them using their account number')).toBeInTheDocument();
     });
 
-    it('should show PaymentAgentWithdrawForm when the user clicks on "search for them using their account number" link', () => {
+    it('should show PaymentAgentUnlistedWithdrawForm when the user clicks on "search for them using their account number" link', () => {
         render(<PaymentAgentDepositWithdrawContainer {...props} is_deposit={false} />);
 
         const el_withdrawal_link = screen.getByTestId('dt_withdrawal_link');
         fireEvent.click(el_withdrawal_link);
 
-        expect(screen.getByText('PaymentAgentWithdrawForm')).toBeInTheDocument();
+        expect(screen.getByText('PaymentAgentUnlistedWithdrawForm')).toBeInTheDocument();
     });
 
     it('should show PaymentAgentWithdrawConfirm component when is_try_withdraw_successful is equal to true', () => {

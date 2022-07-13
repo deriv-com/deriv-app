@@ -7,6 +7,7 @@ import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/sh
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ErrorDialog from 'Components/error-dialog';
+import './payment-agent-listed-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
     const errors = {};
@@ -31,7 +32,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
     return errors;
 };
 
-const PaymentAgentCardWithdrawalDetails = ({
+const PaymentAgentListedWithdrawForm = ({
     balance,
     currency,
     error,
@@ -70,14 +71,8 @@ const PaymentAgentCardWithdrawalDetails = ({
     }
 
     return (
-        <div className='payment-agent-card__witdrawal-details'>
-            <Text
-                as='p'
-                className='payment-agent-card__witdrawal-details-header'
-                line_height='s'
-                size='xs'
-                weight='bold'
-            >
+        <div className='payment-agent-listed-withdraw-form'>
+            <Text as='p' className='payment-agent-listed-withdraw-form__header' line_height='s' size='xs' weight='bold'>
                 <Localize i18n_default_text='Withdrawal amount' />
             </Text>
             <Formik
@@ -120,7 +115,7 @@ const PaymentAgentCardWithdrawalDetails = ({
                         );
                     };
                     return (
-                        <Form className='payment-agent-card__witdrawal-details__form'>
+                        <Form className='payment-agent-listed-withdraw-form__form'>
                             <Field name='amount'>
                                 {({ field }) => (
                                     <Input
@@ -160,7 +155,7 @@ const PaymentAgentCardWithdrawalDetails = ({
     );
 };
 
-PaymentAgentCardWithdrawalDetails.propTypes = {
+PaymentAgentListedWithdrawForm.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     error: PropTypes.object,
@@ -181,4 +176,4 @@ export default connect(({ client, modules }) => ({
     payment_agent_list: modules.cashier.payment_agent.agents,
     requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
     verification_code: client.verification_code.payment_agent_withdraw,
-}))(PaymentAgentCardWithdrawalDetails);
+}))(PaymentAgentListedWithdrawForm);

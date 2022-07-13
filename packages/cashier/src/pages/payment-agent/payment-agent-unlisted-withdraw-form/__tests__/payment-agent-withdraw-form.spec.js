@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
+import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import { isMobile, validNumber } from '@deriv/shared';
 
 jest.mock('Stores/connect', () => ({
@@ -18,7 +18,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
 
-describe('<PaymentAgentWithdrawForm />', () => {
+describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
@@ -40,7 +40,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
     };
 
     it('should render the component', () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
 
         expect(screen.getByTestId('dt-back-arrow-icon')).toBeInTheDocument();
         expect(screen.getByText('Back to list')).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
     });
 
     it('should trigger onclick callback when arrow back button was clicked', () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
 
         const el_back_arrow_icon = screen.getByTestId('dt-back-arrow-icon');
         fireEvent.click(el_back_arrow_icon);
@@ -63,7 +63,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
 
     it('should show different error messages', async () => {
         validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
-        const { rerender } = render(<PaymentAgentWithdrawForm {...props} />);
+        const { rerender } = render(<PaymentAgentUnlistedWithdrawForm {...props} />);
 
         const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
         const el_input_amount = screen.getByLabelText('Enter amount');
@@ -76,7 +76,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
         });
         validNumber.mockReturnValue({ is_ok: true, message: '' });
 
-        rerender(<PaymentAgentWithdrawForm {...props} />);
+        rerender(<PaymentAgentUnlistedWithdrawForm {...props} />);
         fireEvent.change(el_input_account_number, { target: { value: 'CR56656565' } });
         fireEvent.change(el_input_amount, { target: { value: '2000' } });
         fireEvent.click(el_continue_btn);
@@ -84,7 +84,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
             expect(screen.getByText('Insufficient balance.')).toBeInTheDocument();
         });
 
-        rerender(<PaymentAgentWithdrawForm {...props} />);
+        rerender(<PaymentAgentUnlistedWithdrawForm {...props} />);
         fireEvent.change(el_input_account_number, { target: { value: '667766767' } });
         fireEvent.change(el_input_amount, { target: { value: '100' } });
         fireEvent.click(el_continue_btn);
@@ -94,7 +94,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
     });
 
     it('should trigger requestTryPaymentAgentWithdraw, when all data are valid', async () => {
-        render(<PaymentAgentWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
 
         const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
         const el_input_amount = screen.getByLabelText('Enter amount');
@@ -115,7 +115,7 @@ describe('<PaymentAgentWithdrawForm />', () => {
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(<PaymentAgentWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });

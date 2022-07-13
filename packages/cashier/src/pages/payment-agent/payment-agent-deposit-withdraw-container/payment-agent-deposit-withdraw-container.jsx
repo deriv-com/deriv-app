@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentCard from '../payment-agent-card';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
+import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 
@@ -58,7 +58,7 @@ const PaymentAgentDepositWithdrawContainer = ({
 
     if (is_unlisted_withdraw) {
         return (
-            <PaymentAgentWithdrawForm
+            <PaymentAgentUnlistedWithdrawForm
                 verification_code={verification_code}
                 setIsUnlistedWithdraw={setIsUnlistedWithdraw}
             />

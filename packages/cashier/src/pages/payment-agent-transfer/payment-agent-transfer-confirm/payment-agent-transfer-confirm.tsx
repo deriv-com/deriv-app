@@ -1,11 +1,24 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import { PaymentAgentTransferRequest } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
+import { RootStore } from 'Types';
 import TransferConfirm from 'Components/transfer-confirm';
 import './payment-agent-transfer-confirm.scss';
+
+type TPaymentAgentTransferConfirm = {
+    amount: number;
+    currency: string;
+    description: string;
+    error: object;
+    loginid: string;
+    requestPaymentAgentTransfer: (arg: PaymentAgentTransferRequest) => void;
+    setIsTryTransferSuccessful: (status: boolean) => void;
+    transfer_to: string;
+    transfer_to_name: string;
+};
 
 const PaymentAgentTransferConfirm = ({
     amount,
@@ -17,7 +30,7 @@ const PaymentAgentTransferConfirm = ({
     setIsTryTransferSuccessful,
     transfer_to,
     transfer_to_name,
-}) => {
+}: TPaymentAgentTransferConfirm) => {
     const payment_agent_transfer_warning_messages = [
         <Localize
             i18n_default_text='<0>Remember</0>, it’s solely your responsibility to ensure the transfer is made to the correct account.'
@@ -35,7 +48,7 @@ const PaymentAgentTransferConfirm = ({
             <Icon
                 icon='IcCashierRedWarning'
                 className='payment-agent-transfer-confirm__warning-icon'
-                data_testid='dti_red_warning_icon'
+                data_testid='dt_red_warning_icon'
             />
             <Text
                 as='h2'
@@ -68,7 +81,13 @@ const PaymentAgentTransferConfirm = ({
                     setIsTryTransferSuccessful(false);
                 }}
                 onClickConfirm={() => {
-                    requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
+                    requestPaymentAgentTransfer({
+                        paymentagent_transfer: 1,
+                        amount,
+                        currency,
+                        description,
+                        transfer_to,
+                    });
                 }}
                 warning_messages={payment_agent_transfer_warning_messages}
             />
@@ -76,19 +95,7 @@ const PaymentAgentTransferConfirm = ({
     );
 };
 
-PaymentAgentTransferConfirm.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    description: PropTypes.string,
-    error: PropTypes.object,
-    loginid: PropTypes.string,
-    requestPaymentAgentTransfer: PropTypes.func,
-    setIsTryTransferSuccessful: PropTypes.func,
-    transfer_to: PropTypes.string,
-    transfer_to_name: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: RootStore) => ({
     currency: client.currency,
     loginid: client.loginid,
     amount: modules.cashier.payment_agent_transfer.confirm.amount,

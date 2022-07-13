@@ -1,6 +1,6 @@
 import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm.jsx';
+import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -31,7 +31,7 @@ describe('<PaymentAgentTransferConfirm />', () => {
     it('should show proper icon and message', () => {
         render(<PaymentAgentTransferConfirm transfer_to={transfer_to} error={error} />);
 
-        expect(screen.getByTestId('dti_red_warning_icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
         expect(screen.getByText('Check Transfer Information')).toBeInTheDocument();
     });
 

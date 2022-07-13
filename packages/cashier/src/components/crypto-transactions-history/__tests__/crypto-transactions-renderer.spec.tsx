@@ -101,7 +101,7 @@ describe('<CryptoTransactionsRenderer />', () => {
             />
         );
 
-        const table_status = screen.getByText('In review');
+        const table_status = screen.getByTestId('dt_table_status');
         fireEvent.click(table_status);
 
         expect(showCryptoTransactionsStatusModal).toHaveBeenCalledTimes(1);
@@ -131,7 +131,7 @@ describe('<CryptoTransactionsRenderer />', () => {
             />
         );
 
-        const cancel_transaction_btn = screen.getByText('Cancel transaction');
+        const cancel_transaction_btn = screen.getByTestId('dt_cancel_transaction');
         fireEvent.click(cancel_transaction_btn);
         expect(showCryptoTransactionsCancelModal).toHaveBeenCalledTimes(1);
     });

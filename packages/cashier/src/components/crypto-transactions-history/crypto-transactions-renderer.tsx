@@ -76,7 +76,11 @@ const CryptoTransactionsRenderer = ({
                         <Text as='p' size='xs' weight='bold' className='crypto-transactions-history__table-type'>
                             <Localize i18n_default_text={transaction_type} />
                         </Text>
-                        <div className='crypto-transactions-history__table-status' onClick={onClickStatus}>
+                        <div
+                            className='crypto-transactions-history__table-status'
+                            onClick={onClickStatus}
+                            data-testid='dt_table_status'
+                        >
                             <div
                                 className={classNames(
                                     'crypto-transactions-history__table-status-code',
@@ -158,7 +162,12 @@ const CryptoTransactionsRenderer = ({
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-action'>
                         {is_valid_to_cancel === 1 && (
-                            <Button onClick={onClickCancelTransaction} small secondary>
+                            <Button
+                                onClick={onClickCancelTransaction}
+                                small
+                                secondary
+                                data-testid='dt_cancel_transaction'
+                            >
                                 <Text as='p' size='xxxs' weight='bolder'>
                                     <Localize i18n_default_text='Cancel transaction' />
                                 </Text>

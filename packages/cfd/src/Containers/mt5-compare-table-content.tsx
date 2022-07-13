@@ -32,6 +32,7 @@ type TDMT5CompareModalContentProps = {
         type: string;
         category: string;
     };
+    is_logged_in: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
@@ -223,12 +224,13 @@ const Row = ({ id, attribute, values }: TModalContentProps) => {
 
 const DMT5CompareModalContent = ({
     account_type,
-    openPasswordModal,
-    has_real_mt5_login,
     authentication_status,
-    toggleCompareAccounts,
+    has_real_mt5_login,
+    is_logged_in,
+    openPasswordModal,
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
+    toggleCompareAccounts,
 }: TDMT5CompareModalContentProps) => {
     const onSelectRealAccount = (item: { label: string; action: string }) => {
         const poa_status = authentication_status?.document_status;
@@ -310,24 +312,25 @@ const DMT5CompareModalContent = ({
                                 <Row key={row.id} {...row} />
                             ))}
                         </Table.Body>
-
-                        <Table.Row className='cfd-real-compare-accounts__table-footer'>
-                            <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                            {footer_buttons.map((item, index) => (
-                                <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
-                                    <Button
-                                        className='cfd-real-compare-accounts__table-footer__button'
-                                        type='button'
-                                        primary_light
-                                        onClick={() => {
-                                            onSelectRealAccount(item);
-                                        }}
-                                    >
-                                        {item.label}
-                                    </Button>
-                                </Table.Cell>
-                            ))}
-                        </Table.Row>
+                        {is_logged_in && (
+                            <Table.Row className='cfd-real-compare-accounts__table-footer'>
+                                <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
+                                {footer_buttons.map((item, index) => (
+                                    <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
+                                        <Button
+                                            className='cfd-real-compare-accounts__table-footer__button'
+                                            type='button'
+                                            primary_light
+                                            onClick={() => {
+                                                onSelectRealAccount(item);
+                                            }}
+                                        >
+                                            {item.label}
+                                        </Button>
+                                    </Table.Cell>
+                                ))}
+                            </Table.Row>
+                        )}
                     </Table>
                 </div>
             </div>

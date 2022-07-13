@@ -106,7 +106,10 @@ const CompareAccountsModal = ({
                                     is_uk={is_uk}
                                 />
                             ) : (
-                                <DMT5CompareModalContent openPasswordModal={openPasswordModal} />
+                                <DMT5CompareModalContent
+                                    is_logged_in={is_logged_in}
+                                    openPasswordModal={openPasswordModal}
+                                />
                             )}
                         </Modal>
                     </DesktopWrapper>

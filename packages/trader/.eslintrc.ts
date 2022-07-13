@@ -1,4 +1,4 @@
-const webpackConfig = require('./build/webpack.config-test');
+const webpackConfig = require('./build/webpack.config-test.js'); /* eslint-disable-line */
 
 module.exports = {
     extends: [

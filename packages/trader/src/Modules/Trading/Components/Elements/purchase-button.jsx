@@ -6,11 +6,11 @@ import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 // TODO [lazy-loading-required] Responsive related components
-const ButtonTextWrapper = ({ is_should_fade, is_loading, type, is_high_low }) => {
+const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     return (
         <div className='btn-purchase__text_wrapper'>
             <Text size='xs' weight='bold' color='colored-background'>
-                {!is_should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
+                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
             </Text>
         </div>
     );
@@ -36,12 +36,12 @@ const PurchaseButton = ({
     is_proposal_empty,
     purchased_states_arr,
     setPurchaseState,
-    is_should_fade,
+    should_fade,
     onClickPurchase,
     type,
 }) => {
     const getIconType = () => {
-        if (!is_should_fade && is_loading) return '';
+        if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
     const { has_increased } = info;
@@ -53,8 +53,8 @@ const PurchaseButton = ({
             id={`dt_purchase_${type.toLowerCase()}_button`}
             className={classNames('btn-purchase', {
                 'btn-purchase--disabled': is_button_disabled || !!buy_info.error,
-                'btn-purchase--animated--slide': is_loading && !is_should_fade,
-                'btn-purchase--animated--fade': is_loading && is_should_fade,
+                'btn-purchase--animated--slide': is_loading && !should_fade,
+                'btn-purchase--animated--fade': is_loading && should_fade,
                 'btn-purchase--swoosh': !!purchased_states_arr[index],
                 'btn-purchase--1': index === 0,
                 'btn-purchase--2': index === 1,
@@ -71,7 +71,7 @@ const PurchaseButton = ({
                     <div className='btn-purchase__type-wrapper'>
                         <IconComponentWrapper type={getIconType()} />
                         <ButtonTextWrapper
-                            is_should_fade={is_should_fade}
+                            should_fade={should_fade}
                             is_loading={is_loading}
                             type={type}
                             is_high_low={is_high_low}
@@ -98,7 +98,7 @@ const PurchaseButton = ({
                 <div className='btn-purchase__top'>
                     <IconComponentWrapper type={getIconType()} />
                     <ButtonTextWrapper
-                        is_should_fade={is_should_fade}
+                        should_fade={should_fade}
                         is_loading={is_loading}
                         type={type}
                         is_high_low={is_high_low}
@@ -111,7 +111,7 @@ const PurchaseButton = ({
                         has_increased={has_increased}
                         is_loading={is_loading}
                         is_multiplier={is_multiplier}
-                        is_should_fade={is_should_fade}
+                        should_fade={should_fade}
                         proposal_info={info}
                         type={type}
                     />
@@ -135,7 +135,7 @@ PurchaseButton.propTypes = {
     is_proposal_empty: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,
-    is_should_fade: PropTypes.bool,
+    should_fade: PropTypes.bool,
     setPurchaseState: PropTypes.func,
     type: PropTypes.string,
 };

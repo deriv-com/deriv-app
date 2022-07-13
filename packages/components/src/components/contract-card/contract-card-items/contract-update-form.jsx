@@ -44,6 +44,11 @@ const ContractUpdateForm = props => {
         validation_errors,
     } = contract;
 
+    const [contract_profit_or_loss, setContractProfitOrLoss] = React.useState({
+        contract_update_take_profit,
+        contract_update_stop_loss,
+    });
+
     const { buy_price, currency, is_valid_to_cancel, is_sold } = contract_info;
     const { stop_loss, take_profit } = getLimitOrderAmount(contract_info.limit_order);
     const { contract_update_stop_loss: stop_loss_error, contract_update_take_profit: take_profit_error } =
@@ -77,7 +82,10 @@ const ContractUpdateForm = props => {
 
     const onChange = e => {
         const { name, value } = e.target;
-
+        setContractProfitOrLoss({
+            ...contract_profit_or_loss,
+            [name]: value,
+        });
         if (typeof contract.onChange === 'function') {
             contract.onChange({
                 name,
@@ -107,7 +115,7 @@ const ContractUpdateForm = props => {
             name='contract_update_take_profit'
             onChange={onChange}
             error_message_alignment={error_message_alignment || 'right'}
-            value={contract_update_take_profit}
+            value={contract_profit_or_loss.contract_update_take_profit}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
         />
@@ -130,7 +138,7 @@ const ContractUpdateForm = props => {
             name='contract_update_stop_loss'
             onChange={onChange}
             error_message_alignment={error_message_alignment || 'right'}
-            value={contract_update_stop_loss}
+            value={contract_profit_or_loss.contract_update_stop_loss}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
         />

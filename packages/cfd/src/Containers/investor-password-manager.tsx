@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik, FieldProps } from 'formik';
 import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
@@ -126,6 +127,16 @@ const InvestorPasswordManager = ({
             </Formik>
         </div>
     );
+};
+
+InvestorPasswordManager.propTypes = {
+    error_message_investor: PropTypes.string,
+    is_submit_success_investor: PropTypes.bool,
+    multi_step_ref: PropTypes.object,
+    onSubmit: PropTypes.func,
+    setPasswordType: PropTypes.func,
+    toggleModal: PropTypes.func,
+    validatePassword: PropTypes.func,
 };
 
 export default InvestorPasswordManager;

@@ -275,8 +275,7 @@ const getCancelButtonLabel = ({
 
 const handlePasswordInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    // eslint-disable-next-line no-shadow
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleChange: (el: React.ChangeEvent<HTMLInputElement>) => void,
     validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
     setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
 ) => {
@@ -631,7 +630,7 @@ const CFDServerForm = ({ ...props }: TCFDServerFormProps) => {
                     },
                 };
             })
-            .sort((a, _b) => (a.recommended ? -1 : 1))
+            .sort(a => (a.recommended ? -1 : 1))
             .sort((a, b) => (a.disabled ? a.disabled : 0) - (b.disabled ? b.disabled : 0));
     }, [props.mt5_trading_servers]);
 

@@ -17,8 +17,6 @@ export default class CFDStore extends BaseStore {
 
     @observable mt5_trade_account = {};
     @observable new_account_response = {};
-    @observable real_synthetic_accounts_existing_data = [];
-    @observable real_financial_accounts_existing_data = [];
     @observable map_type = {};
     @observable has_cfd_error = false;
     @observable error_message = '';
@@ -39,6 +37,9 @@ export default class CFDStore extends BaseStore {
         demo: '',
         real: '',
     };
+
+    real_synthetic_accounts_existing_data = [];
+    real_financial_accounts_existing_data = [];
 
     constructor({ root_store }) {
         super({ root_store });

@@ -29,8 +29,8 @@ describe('<PaymentAgentReceipt />', () => {
             payment_agent_email: 'reshma+cr1@binary.com',
             payment_agent_id: 'CR90000089',
             payment_agent_name: 'Ms QA script reshmacrcdD',
-            payment_agent_phone: '+62417522087',
-            payment_agent_url: 'https://deriv.com/',
+            payment_agent_phone: [{ phone_number: '+62417522087' }],
+            payment_agent_url: [{ url: 'https://deriv.com/' }],
         },
         resetPaymentAgent: jest.fn(),
     };

@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor, act } from '@testing-library/react';
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
+import { localize } from '@deriv/translations';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -28,10 +29,23 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => ({
     getErrorMessages: jest.fn(() => ({
         password_warnings: mock_errors,
+        password: mock_form_error_messages,
+        new_password: mock_form_error_messages,
     })),
+    validLength: jest.fn(() => {
+        validLengthMock;
+    }),
 }));
 
+const mock_form_error_messages = {
+    password: () => localize('Password should have lower and uppercase English letters with numbers.'),
+};
+
+const validLengthMock = (value = '', options) =>
+    (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
+
 const mock_errors = {
+    password: () => localize('Password should have lower and uppercase English letters with numbers.'),
     use_a_few_words: () => localize('Use a few words, avoid common phrases'),
     no_need_for_mixed_chars: () => localize('No need for symbols, digits, or uppercase letters'),
     uncommon_words_are_better: () => localize('Add another word or two. Uncommon words are better.'),
@@ -85,13 +99,15 @@ describe('<CFDPasswordManagerModal />', () => {
         is_visible: true,
         platform: 'mt5',
         selected_login: 'MTD20103241',
-        selected_account: '',
+        selected_account: 'Synthetic',
         toggleModal: jest.fn(),
-        selected_account_type: 'synthetic',
-        selected_account_group: 'real',
+        selected_account_type: 'financial',
+        selected_account_group: 'demo',
         selected_server: 'p01_ts03',
         sendVerifyEmail: jest.fn(),
         password_warnings: mock_errors,
+        password: mock_form_error_messages,
+        selected_step_ref: { current: { isSubmitting: false } },
     };
 
     it('should render the DMT5 password modal', () => {
@@ -242,10 +258,86 @@ describe('<CFDPasswordManagerModal />', () => {
     });
 
     it('should render the investor password modal when the user clicks on investor password tab', async () => {
-        renderwithRouter(<CFDPasswordManagerModal {...mock_props} platform='mt5' />);
+        renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
         expect(screen.getByText(/Investor password/i)).toBeInTheDocument();
         waitFor(() => {
             fireEvent.click(screen.getByText(/Investor password/i));
+        });
+        expect(
+            screen.getByText(
+                /Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions/i
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /If this is the first time you try to create a password, or you have forgotten your password, please reset it/i
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('should change input of current investor password and new investor password and trigger change investor password button', async () => {
+        renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
+        expect(screen.getByText(/Investor password/i)).toBeInTheDocument();
+        fireEvent.click(screen.getByText(/Investor password/i));
+
+        const current_investor_password = screen.getByLabelText(/Current investor password/i);
+        const current_investor_password_text = 'Testing1234';
+        fireEvent.click(screen.getByText(/Current investor password/i));
+        fireEvent.change(current_investor_password, { target: { value: current_investor_password_text } });
+        expect(current_investor_password.value).toBe(current_investor_password_text);
+
+        await waitFor(() => {
+            expect(screen.getByText(/New investor password/i)).toBeInTheDocument();
+        });
+        const new_investor_password = screen.getByLabelText('New investor password');
+        const new_investor_password_text = 'Lkmiuhkouhjk122yio';
+        fireEvent.click(new_investor_password);
+        fireEvent.change(new_investor_password, { target: { value: new_investor_password_text } });
+        await waitFor(() => {
+            expect(new_investor_password.value).toBe(new_investor_password_text);
+        });
+        await waitFor(() => {
+            expect(screen.getByText(/You should enter 8-25 characters/i)).toBeInTheDocument();
+        });
+        fireEvent.click(screen.getByRole('button', { name: /Change investor password/i }));
+    });
+
+    it('should render SentEmailModal if the user clicks create or reset investor password', async () => {
+        renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
+        fireEvent.click(screen.getByText(/Investor password/i));
+        fireEvent.click(screen.getByText(/Create or reset investor password/i));
+        await waitFor(() => {
+            expect(screen.getByText(/We've sent you an email/i)).toBeInTheDocument();
+        });
+        expect(screen.getByText(/IcEmailSent/i)).toBeInTheDocument();
+    });
+
+    it('should go back to the previous investor password modal if the user clicks back in the sentemailmodal', async () => {
+        renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
+        fireEvent.click(screen.getByText(/Investor password/i));
+        fireEvent.click(screen.getByText(/Create or reset investor password/i));
+        await waitFor(() => {
+            expect(screen.getByText(/We've sent you an email/i)).toBeInTheDocument();
+        });
+        expect(screen.getByText(/IcEmailSent/i)).toBeInTheDocument();
+        await waitFor(() => {
+            fireEvent.click(screen.getByText(/Back/i));
+        });
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Use this password to log in to your DMT5 accounts on the desktop, web, and mobile apps/i
+                )
+            ).toBeInTheDocument();
+        });
+    });
+
+    it('should render the correct header title for investor password modal for real account', async () => {
+        renderwithRouter(<CFDPasswordManagerModal {...mock_props} selected_account_group='real' />);
+        expect(screen.getByText(/Investor password/i)).toBeInTheDocument();
+        fireEvent.click(screen.getByText(/Investor password/i));
+        await waitFor(() => {
+            expect(screen.getByText(/Manage DMT5 Real Synthetic account password/i)).toBeInTheDocument();
         });
     });
 });

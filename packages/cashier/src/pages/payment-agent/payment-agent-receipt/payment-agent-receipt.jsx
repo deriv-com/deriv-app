@@ -28,7 +28,7 @@ const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, paymen
                 </PaymentAgentDetail>
             )}
             {payment_agent_urls && (
-                <PaymentAgentDetail icon='IcWebsite' target='_blank' rel='noopener noreferrer'>
+                <PaymentAgentDetail icon='IcWebsite' is_link rel='noopener noreferrer' target='_blank'>
                     {payment_agent_urls.map(url => url.url)}
                 </PaymentAgentDetail>
             )}

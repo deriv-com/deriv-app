@@ -44,6 +44,10 @@
             &__icon-wrapper {
                 margin-right: 0.5rem;
             }
+            &__desc-wrapper {
+                display: flex;
+                flex-direction: column;
+            }
             &__link {
                 word-break: normal;
                 font-weight: normal;

@@ -187,7 +187,9 @@ const footer_buttons: { label: string; action: string }[] = [
     { label: localize('Add'), action: 'financial-vanuatu' },
     { label: localize('Add'), action: 'financial-labuan' },
 ];
-const eu_footer_button: { label: string; action: string }[] = [{ label: localize('Add'), action: 'maltainvest' }];
+const eu_footer_button: { label: string; action: string }[] = [
+    { label: localize('Add'), action: 'financial-maltainvest' },
+];
 
 const DMT5CompareModalContent = ({
     authentication_status,

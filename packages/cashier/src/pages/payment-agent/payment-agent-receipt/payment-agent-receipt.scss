@@ -1,14 +1,4 @@
 .payment-agent-receipt {
-    @include mobile {
-        .payment-agent-receipt {
-            &__transferred-contact {
-                flex-direction: column;
-                align-items: center;
-                row-gap: 0.8rem;
-                margin: 0.8rem;
-            }
-        }
-    }
     & .cashier__form-submit {
         text-align: center;
         justify-content: center;
@@ -40,18 +30,34 @@
     }
     &__transferred-contact {
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
         column-gap: 1.6rem;
-        margin: 0.8rem 0;
-        &-wrapper {
-            margin: 2.4rem 0 3.2rem;
-            @include mobile {
-                margin-bottom: 2.7rem;
+        margin: 0.8rem 0 3.2rem;
+        @include mobile {
+            flex-direction: column;
+            align-items: center;
+            row-gap: 0.8rem;
+        }
+        .payment-agent-detail {
+            align-items: center;
+            &__icon-wrapper {
+                background: none;
+                width: auto;
+                height: auto;
+                margin-right: 0.5rem;
+            }
+            &__link {
+                word-break: normal;
+                font-weight: normal;
+            }
+            &__paragraph {
+                font-weight: normal;
             }
         }
     }
     &__explanation {
-        margin-top: 0.8rem;
+        margin: 0.8rem 0 2.4rem;
         @include mobile {
             width: 32rem;
         }

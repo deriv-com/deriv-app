@@ -14,7 +14,7 @@ const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, 
         >
             {icon && (
                 <div className='payment-agent-detail__icon-wrapper'>
-                    <Icon icon={`IcCashier${icon}`} data_testid='dt_payment_agent_detail_icon' />
+                    <Icon icon={icon} data_testid='dt_payment_agent_detail_icon' />
                 </div>
             )}
             <div>
@@ -42,9 +42,10 @@ const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, 
                         ) : (
                             <Text
                                 as='p'
+                                className='payment-agent-detail__paragraph'
                                 data-testid='dt_payment_agent_detail_paragraph'
                                 line_height='s'
-                                size='xs'
+                                size={!title ? 'xxs' : 'xs'}
                                 weight='bold'
                             >
                                 {child}

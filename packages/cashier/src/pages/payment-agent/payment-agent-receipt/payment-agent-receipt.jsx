@@ -5,13 +5,35 @@ import { Button, Text, MobileWrapper } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details';
+import PaymentAgentDetail from '../payment-agent-detail';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
     history.push(routes.statement);
     resetPaymentAgent();
+};
+
+const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, payment_agent_urls }) => {
+    return (
+        <div className='payment-agent-receipt__transferred-contact'>
+            {payment_agent_phones && (
+                <PaymentAgentDetail action='tel' icon='IcPhone'>
+                    {payment_agent_phones.map(phone => phone.phone_number)}
+                </PaymentAgentDetail>
+            )}
+            {payment_agent_email && (
+                <PaymentAgentDetail action='mailto' icon='IcEmailOutlineNew' rel='noopener noreferrer' target='_blank'>
+                    {payment_agent_email}
+                </PaymentAgentDetail>
+            )}
+            {payment_agent_urls && (
+                <PaymentAgentDetail icon='IcWebsite' target='_blank' rel='noopener noreferrer'>
+                    {payment_agent_urls.map(url => url.url)}
+                </PaymentAgentDetail>
+            )}
+        </div>
+    );
 };
 
 const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, resetPaymentAgent }) => {
@@ -67,7 +89,6 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
                         />
                     </Text>
                     <PaymentAgentDetails
-                        className='payment-agent-receipt__transferred-contact'
                         payment_agent_email={receipt.payment_agent_email}
                         payment_agent_phones={receipt.payment_agent_phone}
                         payment_agent_urls={receipt.payment_agent_url}

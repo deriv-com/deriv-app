@@ -11,7 +11,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }) => {
 
     const PaymentAgentPhonesDetails = () => {
         return (
-            <PaymentAgentDetail action='tel' icon='Phone' title={localize('Phone number')}>
+            <PaymentAgentDetail action='tel' icon='IcPhone' title={localize('Phone number')}>
                 {payment_agent.phones.map(phone => phone.phone_number)}
             </PaymentAgentDetail>
         );
@@ -21,7 +21,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }) => {
         return (
             <PaymentAgentDetail
                 action='mailto'
-                icon='Email'
+                icon='IcEmailOutlineNew'
                 rel='noopener noreferrer'
                 target='_blank'
                 has_red_color
@@ -34,7 +34,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }) => {
 
     const PaymentAgentMinimumWithdrawalDetails = () => {
         return (
-            <PaymentAgentDetail icon='MinimumWithdrawal' title={localize('Minimum withdrawal')}>
+            <PaymentAgentDetail icon='IcCashierMinimumWithdrawal' title={localize('Minimum withdrawal')}>
                 <Money amount={payment_agent.min_withdrawal} currency={payment_agent.currency} show_currency />
             </PaymentAgentDetail>
         );
@@ -42,7 +42,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }) => {
 
     const PaymentAgentMaximumWithdrawalDetails = () => {
         return (
-            <PaymentAgentDetail icon='MaximumWithdrawal' title={localize('Maximum withdrawal')}>
+            <PaymentAgentDetail icon='IcCashierMaximumWithdrawal' title={localize('Maximum withdrawal')}>
                 <Money amount={payment_agent.max_withdrawal} currency={payment_agent.currency} show_currency />
             </PaymentAgentDetail>
         );
@@ -51,7 +51,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }) => {
     const PaymentAgentDepositComissionDetails = () => {
         return (
             <PaymentAgentDetail
-                icon='CommissionDeposit'
+                icon='IcCashierCommissionDeposit'
                 className='deposit-commission'
                 title={localize('Commission on deposits')}
             >
@@ -63,7 +63,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }) => {
     const PaymentAgentWithdrawalComissionDetails = () => {
         return (
             <PaymentAgentDetail
-                icon='CommissionWithdrawal'
+                icon='IcCashierCommissionWithdrawal'
                 className='withdrawal_commission'
                 title={localize('Commission on withdrawal')}
             >

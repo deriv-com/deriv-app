@@ -1,4 +1,4 @@
-import extend from 'extend'; // eslint-disable-line
+import extend from 'extend';
 import { isUserSold, isMultiplierContract, isDigitContract, getEndTime, isMobile } from '@deriv/shared';
 
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';

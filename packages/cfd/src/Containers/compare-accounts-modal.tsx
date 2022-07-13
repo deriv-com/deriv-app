@@ -93,14 +93,16 @@ const CompareAccountsModal = ({
     return (
         <>
             <div className='cfd-compare-accounts-modal__wrapper' style={{ marginTop: is_dxtrade ? '5rem' : '2.4rem' }}>
-                <Button
-                    className='cfd-dashboard__welcome-message--button'
-                    has_effect
-                    text={cfd_account_button_label}
-                    onClick={toggleCompareAccounts}
-                    secondary
-                    disabled={is_loading}
-                />
+                {!(is_demo_tab && platform === 'mt5') && (
+                    <Button
+                        className='cfd-dashboard__welcome-message--button'
+                        has_effect
+                        text={cfd_account_button_label}
+                        onClick={toggleCompareAccounts}
+                        secondary
+                        disabled={is_loading}
+                    />
+                )}
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal

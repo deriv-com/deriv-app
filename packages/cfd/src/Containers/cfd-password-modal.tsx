@@ -630,7 +630,7 @@ const CFDServerForm = ({ ...props }: TCFDServerFormProps) => {
                     },
                 };
             })
-            .sort((a, _b) => (a.recommended ? -1 : 1))
+            .sort(a => (a.recommended ? -1 : 1))
             .sort((a, b) => (a.disabled ? a.disabled : 0) - (b.disabled ? b.disabled : 0));
     }, [props.mt5_trading_servers]);
 

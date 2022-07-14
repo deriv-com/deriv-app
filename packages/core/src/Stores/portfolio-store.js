@@ -37,7 +37,7 @@ export default class PortfolioStore extends BaseStore {
     // barriers
     @observable barriers = [];
     @observable main_barrier = null;
-    @observable contract_type = '';
+    @observable contract_type = 'accumulator'; // maryia: temporary value
 
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
@@ -87,6 +87,7 @@ export default class PortfolioStore extends BaseStore {
         }
         this.error = '';
 
+        // maryia: temporary dummy data for accumulators
         const dummy_contracts = getDummyPortfolioContractsForACC(Date.now());
 
         let contracts;
@@ -157,6 +158,7 @@ export default class PortfolioStore extends BaseStore {
 
     deepClone = obj => JSON.parse(JSON.stringify(obj));
     updateContractTradeStore(_response) {
+        // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let response;
         if (this.is_accumulator) {
@@ -175,6 +177,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     updateContractReplayStore(_response) {
+        // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let response;
         if (this.is_accumulator) {
@@ -203,6 +206,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     proposalOpenContractHandler(response) {
+        // maryia: temporary dummy data for accumulators
         const now = Date.now();
         const dummy_response = getDummyPOCResponseForACC(now);
 
@@ -285,6 +289,7 @@ export default class PortfolioStore extends BaseStore {
 
         if (portfolio_position.contract_info.is_sold === 1 && !this.is_accumulator) {
             this.populateResultDetails(response);
+            // maryia: temporary dummy data for accumulators
         } else if (portfolio_position.contract_info.is_sold === 1) this.populateResultDetails(dummy_response);
     }
 
@@ -374,6 +379,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     populateResultDetails = response => {
+        // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let contract_response;
         if (this.is_accumulator) {
@@ -534,6 +540,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     setActivePositions() {
+        // maryia: temporary dummy data for accumulators
         const dummy_contracts = getDummyAllPositionsForACC(Date.now());
 
         if (this.is_accumulator) {

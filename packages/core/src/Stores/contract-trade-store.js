@@ -162,6 +162,7 @@ export default class ContractTradeStore extends BaseStore {
     // Called from portfolio
     @action.bound
     updateProposal(_response) {
+        // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyPOCResponseForACC(Date.now());
         let response;
         if (this.root_store.portfolio.is_accumulator) {

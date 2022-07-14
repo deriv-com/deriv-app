@@ -926,6 +926,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
+        // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyProposalResponseForACC(Date.now());
         let proposal_response;
         if (this.root_store.modules.trade.is_accumulator) {

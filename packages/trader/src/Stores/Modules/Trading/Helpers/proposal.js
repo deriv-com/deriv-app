@@ -43,7 +43,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const cancellation = proposal.cancellation;
 
     if (store.contract_type === 'accumulator') {
-        // dummy proposal info for accumulators:
+        // maryia: temporary dummy proposal info for accumulators:
         return getDummyProposalInfoForACC(store.growth_rate, Date.now(), response);
     }
     return {

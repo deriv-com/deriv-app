@@ -198,7 +198,7 @@ ContractUpdateForm.propTypes = {
     current_focus: PropTypes.string,
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
-    is_accumulator: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,

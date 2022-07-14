@@ -112,6 +112,7 @@ export default class ContractReplayStore extends BaseStore {
     populateConfig(response) {
         if (!this.switch_account_listener) return;
 
+        // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyPOCResponseForACC(Date.now());
 
         if (this.root_store.portfolio.is_accumulator) {
@@ -197,6 +198,7 @@ export default class ContractReplayStore extends BaseStore {
         }
 
         if (this.contract_info.is_sold && this.root_store.portfolio.is_accumulator) {
+            // maryia: temporary dummy data for accumulators
             this.contract_store.cacheProposalOpenContractResponse(dummy_response);
         } else if (this.contract_info.is_sold) {
             this.contract_store.cacheProposalOpenContractResponse(response);

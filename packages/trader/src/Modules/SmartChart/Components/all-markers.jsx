@@ -131,33 +131,34 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_partial_shade = ({ ctx, is_dark_theme, start, top, bottom, is_between_shade, is_bottom_shade }) => {
+const draw_partial_shade = ({ ctx, start, top, bottom, is_between_shade, is_bottom_shade, color }) => {
+    const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const gradient = ctx.createLinearGradient(start.left, top, start.left, bottom);
     ctx.lineWidth = 1;
-    ctx.strokeStyle = is_dark_theme ? '#6E6E6E' : '#999999';
+    ctx.strokeStyle = color;
 
     if (is_between_shade || is_bottom_shade) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start.left + 1.5, top, 1.5, 0, Math.PI * 2);
+        ctx.arc(start.left, top, 1.5, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.setLineDash([3, 3]);
-        ctx.moveTo(start.left + 4.5, top);
-        ctx.lineTo(ctx.canvas.width - 88, top);
+        ctx.setLineDash([2, 3]);
+        ctx.moveTo(start.left + 1.5, top);
+        ctx.lineTo(end_left, top);
         ctx.stroke();
     }
     if (is_between_shade || !is_bottom_shade) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start.left + 1.5, bottom, 1.5, 0, Math.PI * 2);
+        ctx.arc(start.left, bottom, 1.5, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.setLineDash([3, 3]);
-        ctx.moveTo(start.left + 4.5, bottom);
-        ctx.lineTo(ctx.canvas.width - 88, bottom);
+        ctx.setLineDash([2, 3]);
+        ctx.moveTo(start.left + 1.5, bottom);
+        ctx.lineTo(end_left, bottom);
         ctx.stroke();
     }
 
@@ -167,7 +168,7 @@ const draw_partial_shade = ({ ctx, is_dark_theme, start, top, bottom, is_between
     }
 
     ctx.fillStyle = is_between_shade ? 'rgba(0, 167, 158, 0.08)' : gradient;
-    ctx.fillRect(start.left, top, ctx.canvas.width - start.left - 88, Math.abs(bottom - top));
+    ctx.fillRect(start.left, top, end_left - start.left, Math.abs(bottom - top));
 };
 
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
@@ -240,7 +241,7 @@ const TickContract = RawMarkerMaker(
             render_label({
                 ctx,
                 text: 'Start\nTime',
-                tick: { zom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
+                tick: { zoom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
             });
             ctx.beginPath();
             if (contract_type === 'ACC') {
@@ -260,7 +261,9 @@ const TickContract = RawMarkerMaker(
             return;
         }
         const entry = ticks[0];
-        const previous_tick = ticks[ticks.findIndex(t => t.epoch === current_spot_time.epoch) - 1 || 0];
+        const current_tick_index = ticks.findIndex(t => t.epoch === current_spot_time.epoch);
+        const current_tick = ticks[current_tick_index];
+        const previous_tick = ticks[current_tick_index - 1] || ticks[0];
         const exit = ticks[ticks.length - 1];
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
@@ -312,6 +315,7 @@ const TickContract = RawMarkerMaker(
                     ctx.beginPath();
                     ctx.moveTo(tick.left - 1 * scale, tick.top);
                     if (tick === entry && contract_type === 'ACC') {
+                        // draw line to start marker having the same y-coordinates:
                         ctx.lineTo(start.left - 1 * scale, entry.top);
                     } else ctx.lineTo(tick.left - 1 * scale, barrier);
                     ctx.stroke();
@@ -367,32 +371,44 @@ const TickContract = RawMarkerMaker(
         }
         ctx.restore();
 
-        if (contract_type === 'ACC' && !is_sold) {
-            if (profit > 0) {
-                draw_partial_shade({
-                    ctx,
-                    start: previous_tick,
-                    is_dark_theme,
-                    top: barrier,
-                    bottom: barrier_2,
-                    is_between_shade: true,
-                });
-            } else {
-                draw_partial_shade({
-                    ctx,
-                    start: previous_tick,
-                    is_dark_theme,
-                    top: barrier - 165 * scale,
-                    bottom: barrier,
-                });
-                draw_partial_shade({
-                    ctx,
-                    start: previous_tick,
-                    is_dark_theme,
-                    top: barrier_2,
-                    bottom: barrier_2 + 165 * scale,
-                    is_bottom_shade: true,
-                });
+        if ((start.visible || entry.visible || exit.visible) && contract_type === 'ACC') {
+            const dashed_line_color = is_dark_theme ? '#6E6E6E' : '#999999';
+            if (!is_sold) {
+                if (entry === current_tick && profit > 0) {
+                    // draw vertical dashed line between barriers
+                    ctx.strokeStyle = dashed_line_color;
+                    ctx.setLineDash([3, 1]);
+                    ctx.beginPath();
+                    ctx.moveTo(entry.left, barrier + 1.5);
+                    ctx.lineTo(entry.left, barrier_2 - 1.5);
+                    ctx.stroke();
+                }
+                if (profit > 0) {
+                    draw_partial_shade({
+                        ctx,
+                        start: previous_tick,
+                        color: dashed_line_color,
+                        top: barrier,
+                        bottom: barrier_2,
+                        is_between_shade: true,
+                    });
+                } else {
+                    draw_partial_shade({
+                        ctx,
+                        start: previous_tick,
+                        color: dashed_line_color,
+                        top: barrier - 165 * scale,
+                        bottom: barrier,
+                    });
+                    draw_partial_shade({
+                        ctx,
+                        start: previous_tick,
+                        color: dashed_line_color,
+                        top: barrier_2,
+                        bottom: barrier_2 + 165 * scale,
+                        is_bottom_shade: true,
+                    });
+                }
             }
         }
     }
@@ -465,7 +481,7 @@ const NonTickContract = RawMarkerMaker(
                 ctx,
                 text: 'Start\nTime',
                 tick: {
-                    zom: start.zoom,
+                    zoom: start.zoom,
                     left: start.left - 1 * scale,
                     top: canvas_height - 50,
                 },

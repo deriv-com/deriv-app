@@ -8,7 +8,7 @@
     -   [Adding domain to your machine hosts config](#adding-domain-to-your-machine-hosts-config)
     -   [Run this workspace](#run-this-workspace)
     -   [Deploy to your gh-pages for the first time](#deploy-to-your-gh-pages-for-the-first-time)
-    -   [Deploy to root of gh-pages](#deploy-to-the-root-of-gh-pages)
+    -   [Deploy to the root of gh-pages](#deploy-to-the-root-of-gh-pages)
     -   [Clean root and deploy to it](#clean-root-and-deploy-to-it)
     -   [Deploy to test folder](#deploy-to-test-folder)
 -   [Folder Structure](#folder-structure)

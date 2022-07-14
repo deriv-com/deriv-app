@@ -16,6 +16,7 @@ const StarRating = ({
     is_readonly = false,
     number_of_stars,
     onClick,
+    rating_value,
     rtl = false,
     should_allow_half_icon = true,
     should_allow_hover_effect = true,
@@ -51,6 +52,7 @@ const StarRating = ({
             iconsCount={number_of_stars}
             initialValue={initial_value}
             onClick={onClick}
+            ratingValue={rating_value}
             readonly={is_readonly}
             rtl={rtl}
             size={star_size}

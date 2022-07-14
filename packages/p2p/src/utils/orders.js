@@ -88,6 +88,10 @@ export default class ExtendedOrderDetails {
         return this.is_buyer_confirmed_order || this.is_buyer_cancelled_order;
     }
 
+    get is_buy_order_for_user() {
+        return (this.is_buy_order && !this.is_my_ad) || (this.is_sell_order && this.is_my_ad);
+    }
+
     // This boolean is used to fix a backend feature where they will only
     // expire orders once a minute, as a result FE will incorrectly show
     // orders as active when they're actually expired. This boolean is used

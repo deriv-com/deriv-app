@@ -1,0 +1,22 @@
+.payment-agent-detail {
+    display: flex;
+    @include mobile {
+        &.deposit-commission {
+            order: 5;
+        }
+
+        &.withdrawal_commission {
+            order: 6;
+        }
+    }
+    &__icon-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0.8rem;
+    }
+    &__link {
+        text-decoration: none;
+        word-break: break-word;
+    }
+}

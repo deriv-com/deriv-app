@@ -100,11 +100,9 @@ beforeEach(() => {
 });
 
 describe('GeneralStore', () => {
-    it('should call setHasSetCurrency and attachCashierToMenu methods from "when" reaction if is_logged_in is equal to true', () => {
-        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-        const spyAttachCashierToMenu = jest.spyOn(general_store, 'attachCashierToMenu');
-
-        expect(spyAttachCashierToMenu).toHaveBeenCalledAfter(spySetHasSetCurrency);
+    it('should set has_set_currency equal to true and attach cashier menu with proper data, if "when" reaction was called in constructor', () => {
+        expect(general_store.has_set_currency).toBeTruthy();
+        expect(general_store.root_store.menu.attach).toHaveBeenCalledWith(cashier_menu);
     });
 
     it('should set function on remount', () => {
@@ -114,61 +112,61 @@ describe('GeneralStore', () => {
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {
-        expect(general_store.is_crypto).toBeFalse();
+        expect(general_store.is_crypto).toBeFalsy();
     });
 
     it('should return true if the client currency is equal to BTC when is_crypto property was called', () => {
         general_store.root_store.client.currency = 'BTC';
-        expect(general_store.is_crypto).toBeTrue();
+        expect(general_store.is_crypto).toBeTruthy();
     });
 
     it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-        expect(general_store.is_p2p_enabled).toBeFalse();
+        expect(general_store.is_p2p_enabled).toBeFalsy();
     });
 
     it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
         general_store.setIsP2pVisible(true);
         general_store.root_store.client.is_eu = true;
-        expect(general_store.is_p2p_enabled).toBeFalse();
+        expect(general_store.is_p2p_enabled).toBeFalsy();
     });
 
     it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
         general_store.setIsP2pVisible(true);
-        expect(general_store.is_p2p_enabled).toBeTrue();
+        expect(general_store.is_p2p_enabled).toBeTruthy();
     });
 
     it('should not show p2p in cashier onboarding if p2p_advertiser_error is equal to "RestrictedCountry"', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
         general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
     });
 
     it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
         general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
     });
 
     it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
         general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalse();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
     });
 
     it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has USD account', () => {
         general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeTrue();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
     });
 
     it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has not fiat currency accounts', () => {
         general_store.root_store.client.account_list = [{ title: 'BTC' }];
         general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeTrue();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
     });
 
     it('should call setHasSetCurrency method if has_set_currency is equal to false and attach cashier menu with proper properties', () => {
@@ -217,7 +215,7 @@ describe('GeneralStore', () => {
     it('should set has_set_currency equal to true if the client has real USD account', () => {
         general_store.setHasSetCurrency();
 
-        expect(general_store.has_set_currency).toBeTrue();
+        expect(general_store.has_set_currency).toBeTruthy();
     });
 
     it('should set has_set_currency equal to false if the client has real account with account.title = "Real"', () => {
@@ -225,13 +223,13 @@ describe('GeneralStore', () => {
         general_store.root_store.client.has_active_real_account = true;
         general_store.setHasSetCurrency();
 
-        expect(general_store.has_set_currency).toBeFalse();
+        expect(general_store.has_set_currency).toBeFalsy();
     });
 
     it('should change the value of the variable should_set_currency_modal_title_change equal to true', () => {
         general_store.changeSetCurrencyModalTitle();
 
-        expect(general_store.should_set_currency_modal_title_change).toBeTrue();
+        expect(general_store.should_set_currency_modal_title_change).toBeTruthy();
     });
 
     it('should perform proper cashier onboarding mounting', async () => {
@@ -284,19 +282,19 @@ describe('GeneralStore', () => {
     it('should cahange value of the variable is_deposit', () => {
         general_store.setIsDeposit(true);
 
-        expect(general_store.is_deposit).toBeTrue();
+        expect(general_store.is_deposit).toBeTruthy();
     });
 
     it('should cahange value of the variable should_show_all_available_currencies', () => {
         general_store.setShouldShowAllAvailableCurrencies(true);
 
-        expect(general_store.should_show_all_available_currencies).toBeTrue();
+        expect(general_store.should_show_all_available_currencies).toBeTruthy();
     });
 
     it('should cahange value of the variable is_cashier_onboarding', () => {
         general_store.setIsCashierOnboarding(true);
 
-        expect(general_store.is_cashier_onboarding).toBeTrue();
+        expect(general_store.is_cashier_onboarding).toBeTruthy();
     });
 
     it('should set deposit target', () => {
@@ -312,17 +310,18 @@ describe('GeneralStore', () => {
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith('/cashier/payment-agent');
     });
 
-    it('should perform proper setAccountSwitchListener invocation', () => {
+    it('should trigger proper callbacks when setAccountSwitchListener was called', () => {
         const spyDisposeSwitchAccount = jest.spyOn(general_store, 'disposeSwitchAccount');
         const spyOnSwitchAccount = jest.spyOn(general_store, 'onSwitchAccount');
         general_store.setAccountSwitchListener();
 
         expect(spyDisposeSwitchAccount).toHaveBeenCalledTimes(1);
-        expect(spyOnSwitchAccount).toHaveBeenCalledAfter(spyDisposeSwitchAccount);
+        expect(spyOnSwitchAccount).toHaveBeenCalledTimes(1);
         expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
     });
 
     it('should perform proper init invocation when is_logged_in is equal to true', async () => {
+        const { cashier } = general_store.root_store.modules;
         const spyGetAdvertizerError = jest.spyOn(general_store, 'getAdvertizerError');
         const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
         general_store.root_store.client.is_logged_in = true;
@@ -356,21 +355,21 @@ describe('GeneralStore', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
         general_store.checkP2pStatus();
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should set is_p2p_visible equal to false, if there is a "RestrictedCurrency" p2p advertiser error', () => {
         general_store.setP2pAdvertiserError('RestrictedCurrency');
         general_store.checkP2pStatus();
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should set is_p2p_visible equal to false, if there is a virtual account', () => {
         general_store.root_store.client.is_virtual = true;
         general_store.checkP2pStatus();
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should check is the client a payment agent ? when onMountCommon was called', async () => {
@@ -451,7 +450,7 @@ describe('GeneralStore', () => {
     it('should set p2p visibility equal to true', () => {
         general_store.setIsP2pVisible(true);
 
-        expect(general_store.is_p2p_visible).toBeTrue();
+        expect(general_store.is_p2p_visible).toBeTruthy();
     });
 
     it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
@@ -462,41 +461,41 @@ describe('GeneralStore', () => {
         }));
         general_store.setIsP2pVisible(false);
 
-        expect(general_store.is_p2p_visible).toBeFalse();
+        expect(general_store.is_p2p_visible).toBeFalsy();
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
     it('should return is_cashier_locked equal to false if account_status is undefined', () => {
         general_store.root_store.client.account_status = undefined;
-        expect(general_store.is_cashier_locked).toBeFalse();
+        expect(general_store.is_cashier_locked).toBeFalsy();
     });
 
     it('should return is_cashier_locked equal to false if there is no cashier_locked status', () => {
-        expect(general_store.is_cashier_locked).toBeFalse();
+        expect(general_store.is_cashier_locked).toBeFalsy();
     });
 
     it('should return is_cashier_locked equal to true if there is cashier_locked status', () => {
         general_store.root_store.client.account_status.status.push('cashier_locked');
-        expect(general_store.is_cashier_locked).toBeTrue();
+        expect(general_store.is_cashier_locked).toBeTruthy();
     });
 
     it('should return is_system_maintenance equal to false if account_status is undefined', () => {
         general_store.root_store.client.account_status = undefined;
-        expect(general_store.is_system_maintenance).toBeFalse();
+        expect(general_store.is_system_maintenance).toBeFalsy();
     });
 
     it('should return is_system_maintenance equal to false if there is no system_maintenance status', () => {
-        expect(general_store.is_system_maintenance).toBeFalse();
+        expect(general_store.is_system_maintenance).toBeFalsy();
     });
 
     it('should return is_system_maintenance equal to true if there is system_maintenance status', () => {
         general_store.root_store.client.account_status.cashier_validation.push('system_maintenance');
-        expect(general_store.is_system_maintenance).toBeTrue();
+        expect(general_store.is_system_maintenance).toBeTruthy();
     });
 
     it('should change the value of the variable is_loading', () => {
         general_store.setLoading(true);
-        expect(general_store.is_loading).toBeTrue();
+        expect(general_store.is_loading).toBeTruthy();
     });
 
     it('should set active tab', () => {
@@ -514,7 +513,7 @@ describe('GeneralStore', () => {
         expect(payment_agent.verification.clearVerification).toHaveBeenCalledTimes(1);
         expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
         expect(general_store.payment_agent).toEqual(payment_agent);
-        expect(general_store.is_populating_values).toBeFalse();
+        expect(general_store.is_populating_values).toBeFalsy();
         expect(spyOnRemount).toHaveBeenCalledTimes(1);
     });
 });

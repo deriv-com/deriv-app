@@ -1,3 +1,3 @@
-import PaymentAgentWithdrawalLocked from './payment-agent-withdrawal-locked';
+import PaymentAgentWithdrawalLocked from './payment-agent-withdrawal-locked.jsx';
 
 export default PaymentAgentWithdrawalLocked;

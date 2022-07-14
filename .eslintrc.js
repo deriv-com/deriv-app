@@ -15,6 +15,7 @@ module.exports = {
         dataLayer: true,
         texts_json: false,
     },
+    ignorePatterns: ['**/dist/**/*.js', '**/lib/**/*.js'],
     rules: {
         camelcase: 0,
         // semi                                : ['error', 'always'],
@@ -72,6 +73,7 @@ module.exports = {
                 'newlines-between': 'ignore',
             },
         ],
+        'spaced-comment': 'off',
         'import/prefer-default-export': 0,
         'import/extensions': ['warn', 'never', { jsx: 'always', json: 'always' }],
         'no-sequences': ['warn'],
@@ -86,7 +88,12 @@ module.exports = {
         // 'react/jsx-indent-props'            : ['error', 4],
         // 'react/jsx-max-props-per-line'      : ['error', { when: 'multiline' }],
         // 'react/jsx-tag-spacing'             : ['error', { closingSlash: 'never', beforeSelfClosing: 'always' }],
-        'react/prop-types': 0,
+        'react/prop-types': [
+            1,
+            {
+                skipUndeclared: true,
+            },
+        ],
         'react/self-closing-comp': 'error',
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },

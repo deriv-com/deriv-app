@@ -160,6 +160,7 @@ const AccountTransferReceipt = ({
 AccountTransferReceipt.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    history: PropTypes.object,
     is_from_derivgo: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,

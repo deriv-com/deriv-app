@@ -94,12 +94,12 @@ describe('DepositStore', () => {
     });
 
     it('should return is_deposit_locked equal to true if the client needs authentication', () => {
-        expect(deposit_store.is_deposit_locked).toBeFalse();
+        expect(deposit_store.is_deposit_locked).toBeFalsy();
 
         deposit_store.root_store.client.account_status.status = ['authentication_needed'];
         deposit_store.root_store.client.is_authentication_needed = true;
         deposit_store.root_store.client.is_eu = true;
-        expect(deposit_store.is_deposit_locked).toBeTrue();
+        expect(deposit_store.is_deposit_locked).toBeTruthy();
     });
 
     it('should return is_deposit_locked equal to true if the client needs financial assessment', () => {
@@ -109,28 +109,28 @@ describe('DepositStore', () => {
         ];
         deposit_store.root_store.client.is_financial_account = true;
         deposit_store.root_store.client.is_financial_information_incomplete = true;
-        expect(deposit_store.is_deposit_locked).toBeTrue();
+        expect(deposit_store.is_deposit_locked).toBeTruthy();
 
         deposit_store.root_store.client.is_financial_information_incomplete = false;
         deposit_store.root_store.client.is_trading_experience_incomplete = true;
-        expect(deposit_store.is_deposit_locked).toBeTrue();
+        expect(deposit_store.is_deposit_locked).toBeTruthy();
     });
 
     it('should return is_deposit_locked equal to true if the client needs terms and conditions', () => {
         deposit_store.root_store.client.account_status.status = ['cashier_locked'];
         deposit_store.root_store.client.is_eu = true;
         deposit_store.root_store.client.is_tnc_needed = true;
-        expect(deposit_store.is_deposit_locked).toBeTrue();
+        expect(deposit_store.is_deposit_locked).toBeTruthy();
 
         deposit_store.root_store.client.is_eu = false;
         deposit_store.root_store.client.mt5_login_list = [{ account_type: 'real', sub_account_type: 'financial_stp' }];
-        expect(deposit_store.is_deposit_locked).toBeTrue();
+        expect(deposit_store.is_deposit_locked).toBeTruthy();
     });
 
     it('should return is_deposit_locked equal to true if the client needs financial risk approval', () => {
         deposit_store.root_store.client.account_status.status = ['financial_assessment_not_complete'];
         deposit_store.error.is_ask_financial_risk_approval = true;
-        expect(deposit_store.is_deposit_locked).toBeTrue();
+        expect(deposit_store.is_deposit_locked).toBeTruthy();
     });
 
     it('should submit funds protection', async () => {

@@ -3,7 +3,6 @@ import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
 import { buy_sell } from 'Constants/buy-sell';
@@ -49,14 +48,15 @@ const BuySell = () => {
             </React.Fragment>
         );
     }
-
-    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return (
-            <React.Fragment>
-                <AdvertiserPage />
-            </React.Fragment>
-        );
-    }
+    
+    // TODO: Refactor this within next release as discussed with design team regarding the tabs
+    // if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
+    //     return (
+    //         <React.Fragment>
+    //             <AdvertiserPage />
+    //         </React.Fragment>
+    //     );
+    // }
 
     return (
         <div className='buy-sell'>

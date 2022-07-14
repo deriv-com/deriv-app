@@ -15,6 +15,7 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable api_error_message = '';
     @observable form_error_message = '';
     @observable has_more_adverts_to_load = false;
+    @observable is_counterparty_advertiser_blocked = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
@@ -90,6 +91,7 @@ export default class AdvertiserPageStore extends BaseStore {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
@@ -158,6 +160,11 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setAdverts(adverts) {
         this.adverts = adverts;
+    }
+
+    @action.bound
+    setIsCounterpartyAdvertiserBlocked(is_counterparty_advertiser_blocked) {
+        this.is_counterparty_advertiser_blocked = is_counterparty_advertiser_blocked;
     }
 
     @action.bound

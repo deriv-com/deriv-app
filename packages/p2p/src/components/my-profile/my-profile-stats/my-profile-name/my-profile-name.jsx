@@ -7,6 +7,7 @@ import { daysSince, isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import TradeBadge from '../../../trade-badge';
 import MyProfilePrivacy from '../my-profile-privacy';
+import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
 
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
@@ -30,16 +31,19 @@ const MyProfileName = () => {
                         <Text color='prominent' weight='bold' size='s' line_height='m'>
                             {general_store.nickname}
                         </Text>
-                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                            {joined_since > 0 ? (
-                                <Localize
-                                    i18n_default_text='Joined {{days_since_joined}}d'
-                                    values={{ days_since_joined: joined_since }}
-                                />
-                            ) : (
-                                <Localize i18n_default_text='Joined today' />
-                            )}
-                        </Text>
+                        <div className='my-profile-name--row'>
+                            <BlockUserCount />
+                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                {joined_since > 0 ? (
+                                    <Localize
+                                        i18n_default_text='Joined {{days_since_joined}}d'
+                                        values={{ days_since_joined: joined_since }}
+                                    />
+                                ) : (
+                                    <Localize i18n_default_text='Joined today' />
+                                )}
+                            </Text>
+                        </div>
                         <div className='my-profile-name--row'>
                             <TradeBadge
                                 is_poa_verified={!!full_verification}

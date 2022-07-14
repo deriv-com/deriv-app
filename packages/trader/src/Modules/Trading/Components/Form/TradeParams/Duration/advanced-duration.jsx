@@ -3,10 +3,9 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
-import { toMoment } from '@deriv/shared';
+import { toMoment, hasIntradayDurationUnit } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
-import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
 

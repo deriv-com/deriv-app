@@ -28,7 +28,6 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -79,7 +78,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    blockUnblockUser(should_block, advertiser_id) {
+    blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
+        const { advertiser_page_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -88,6 +88,12 @@ export default class GeneralStore extends BaseStore {
             if (response) {
                 if (!response.error) {
                     this.setIsBlockUserModalOpen(false);
+                    if (should_set_is_counterparty_blocked) {
+                        const { p2p_advertiser_relations } = response;
+                        advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
+                            p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
+                        );
+                    }
                 } else {
                     this.setBlockUnblockUserError(response.error);
                 }
@@ -425,21 +431,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setOrderTimeOut(time) {
-        this.order_timeout = time;
-    }
-
-    @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { order_payment_period } = response.website_status?.p2p_config;
-                this.setOrderTimeOut(order_payment_period);
-            }
-        });
-    }
-
-    @action.bound
     setP2pOrderList(order_response) {
         if (order_response.error) {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
@@ -497,8 +488,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setWebsocketInit = (websocket, local_currency_decimal_places) => {
-        WebsocketInit(websocket, local_currency_decimal_places);
+    setWebsocketInit = websocket => {
+        WebsocketInit(websocket);
     };
 
     @action.bound

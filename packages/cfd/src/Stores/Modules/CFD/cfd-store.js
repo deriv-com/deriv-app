@@ -72,7 +72,7 @@ export default class CFDStore extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp
-            list[getAccountListKey(account, CFD_PLATFORMS.MT5)] = {
+            list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
                 ...account,
             };
         });

@@ -139,7 +139,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const existing_accounts_data = (acc_type: 'synthetic' | 'financial@') => {
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
@@ -152,7 +152,7 @@ const CFDRealAccountDisplay = ({
     };
 
     realSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
-    realFinancialAccountsExistingData(existing_accounts_data('financial@'));
+    realFinancialAccountsExistingData(existing_accounts_data('financial'));
 
     const synthetic_account_items = isSyntheticCardVisible('real') && (
         <CFDAccountCard
@@ -196,7 +196,7 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_accounts_data={existing_accounts_data('financial@')}
+            existing_accounts_data={existing_accounts_data('financial')}
             commission_message={localize('No commission')}
             onSelectAccount={() => onSelectRealAccount('financial')}
             onPasswordManager={openPasswordManager}

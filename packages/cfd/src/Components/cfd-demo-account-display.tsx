@@ -165,7 +165,7 @@ const CFDDemoAccountDisplay = ({
                     existing_accounts_data={
                         current_list[
                             Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.financial@`)
+                                key.startsWith(`${platform}.demo.financial`)
                             ) || ''
                         ]
                     }
@@ -176,7 +176,7 @@ const CFDDemoAccountDisplay = ({
                         openAccountTransfer(
                             current_list[
                                 Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial@`)
+                                    key.startsWith(`${platform}.demo.financial`)
                                 ) || ''
                             ],
                             {

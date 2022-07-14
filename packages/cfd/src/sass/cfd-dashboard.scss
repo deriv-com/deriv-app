@@ -630,8 +630,7 @@
         width: 90%;
         background-color: var(--general-section-1);
         border-radius: 8px;
-        margin-bottom: 1.6rem;
-        margin-top: 1.6rem;
+        margin-bottom: 0.8rem;
 
         &--banner {
             position: relative;
@@ -1042,7 +1041,7 @@
         width: calc(100% - 3.2rem);
         margin-left: 1.6rem;
         border-top: 1px solid var(--general-section-1);
-        margin-top: 1rem;
+        margin: 1rem 0 1.6rem 1.6rem;
     }
     @include mobile {
         width: calc(100vw - 3.2rem);

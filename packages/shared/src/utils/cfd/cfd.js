@@ -121,11 +121,12 @@ export const setSharedCFDText = all_shared_CFD_text => {
     CFD_text_translated = all_shared_CFD_text;
 };
 
-export const getAccountListKey = (account, platform) => {
+export const getAccountListKey = (account, platform, shortcode) => {
     return `${account.platform || platform}.${account.account_type}.${getCFDAccountKey({
         market_type: account.market_type,
         sub_account_type: account.sub_account_type,
         platform,
+        shortcode,
     })}@${platform === CFD_PLATFORMS.DXTRADE ? account.market_type : account.server}`;
 };
 

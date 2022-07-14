@@ -45,10 +45,14 @@ export default class BuySellStore extends BaseStore {
     };
     filter_payment_methods = [];
     payment_method_ids = [];
-    sort_list = [
-        { text: localize('Exchange rate (Default)'), value: 'rate' },
-        { text: localize('Completion rate'), value: 'completion' },
-    ];
+
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate (Default)'), value: 'rate' },
+            { text: localize('Completion rate'), value: 'completion' },
+        ];
+    }
 
     constructor({ root_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -138,6 +142,7 @@ export default class BuySellStore extends BaseStore {
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
             validatePopup: action.bound,
+            sort_list: computed,
         });
     }
 

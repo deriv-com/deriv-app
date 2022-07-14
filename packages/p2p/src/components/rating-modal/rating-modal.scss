@@ -1,0 +1,15 @@
+.rating-modal {
+    &--body {
+        padding: 0.8rem 2.4rem;
+    }
+
+    &--footer {
+        padding: 2.4rem;
+    }
+
+    &--star {
+        > svg {
+            margin-right: 0.9rem;
+        }
+    }
+}

@@ -10,8 +10,8 @@
                     &-to {
                         display: flex;
                         align-items: center;
-                        border: 1px solid var(--general-section-1);
-                        border-radius: 0.8rem;
+                        border: 0.1rem solid var(--general-section-1);
+                        border-radius: $BORDER_RADIUS * 2;
                         padding: 1.6rem;
                     }
                     &-from {

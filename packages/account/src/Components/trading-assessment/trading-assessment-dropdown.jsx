@@ -1,7 +1,7 @@
 import React from 'react';
 import { DesktopWrapper, Dropdown } from '@deriv/components';
 
-const TradingAssessmentDropdownOption = ({ item, onClick }) => {
+const TradingAssessmentDropdownOption = ({ item, onChange }) => {
     return (
         <div className='trading-assessment__wrapper__dropdown'>
             {item.questions.map(question => (
@@ -10,9 +10,10 @@ const TradingAssessmentDropdownOption = ({ item, onClick }) => {
                         <Dropdown
                             classNameDisplay='trading-assessment__wrapper__dropdown--list--display'
                             is_align_text_left
+                            name={question?.question_text}
                             placeholder={question?.question_text}
                             list={question?.answer_options}
-                            onChange={onClick}
+                            onChange={onChange}
                             value={question?.answer_options?.value}
                         />
                     </div>

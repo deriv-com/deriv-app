@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, RadioGroup } from '@deriv/components';
 
-const TradingAssessmentRadioOption = ({ text, list, onClick }) => {
+const TradingAssessmentRadioOption = ({ text, list, onOptionsTouched }) => {
     return (
         <div className='trading-assessment__wrapper__question'>
             <Text as='h1' color='prominent' weight='bold' size='xs'>
@@ -13,7 +13,7 @@ const TradingAssessmentRadioOption = ({ text, list, onClick }) => {
                 is_left
                 should_wrap_items
                 required
-                onToggle={onClick}
+                onToggle={onOptionsTouched}
             >
                 {list.map(answer => (
                     <RadioGroup.Item

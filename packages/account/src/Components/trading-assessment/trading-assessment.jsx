@@ -1,50 +1,42 @@
 import React from 'react';
-import { Div100vhContainer, Text, Icon, Button, Modal } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Div100vhContainer, Text, Icon, Button } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import FormBodySection from '../form-body-section/form-body-section';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 import { trading_assessment } from './trading-assessment-config';
-import FormBodySection from '../form-body-section/form-body-section';
+import RiskToleranceWarningModal from './risk-tolerance-modal';
 import './trading-assessment.scss';
-
-const RiskToleranceWarningModal = ({ toggleModal }) => {
-    <Modal small is_vertical_centered toggleModal={() => toggleModal(false)} title={localize('Risk Tolerane Warning')}>
-        <Modal.Body>
-            <Icon icon='IcRedWarning' size={63} />
-            <Text as='p' size='xs'>
-                <Localize i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money.' />
-            </Text>
-        </Modal.Body>
-        <Modal.Footer>
-            <Text as='p' size='xs'>
-                <Localize i18n_default_text='To continue, kindly note that you would need to wait 24 hours before you can proceed further.' />
-            </Text>
-
-            <Button type='button' large text={localize('OK')} onClick={() => toggleModal(false)} primary />
-        </Modal.Footer>
-    </Modal>;
-};
 
 const TradingAssessment = () => {
     const [current_question, setCurrentQuestion] = React.useState(0);
     const [is_next_button_disabled, setIsNextButtonDisabled] = React.useState(false);
     const [is_prev_button_disabled, setIsPrevButtonDisabled] = React.useState(false);
-    const [is_selected, setIsSelected] = React.useState(false);
-    const [select_answer, setSelectAnswer] = React.useState();
+    const [is_touched, setIsTouched] = React.useState(false);
+    const [show_risk_modal, setShowRiskModal] = React.useState(false);
 
+    // question component
     const question_text = trading_assessment[current_question].question_text;
-    const answers_list = trading_assessment[current_question].answer_options;
     const end_question_index = trading_assessment.length - 1;
+    const answers_list = trading_assessment[current_question].answer_options;
+    const answer_radio = trading_assessment[current_question].answer;
+    const answer_dropdown = trading_assessment[current_question]?.questions;
+
+    // assessment sections
+    const risk_tolerance = trading_assessment[current_question].section === 'risk_tolerance';
+    const source_of_experience = trading_assessment[current_question].section === 'source_of_experience';
+    const trading_experience = trading_assessment[current_question].section === 'trading_experience';
+    const trading_knowledge = trading_assessment[current_question].section === 'trading_knowledge';
 
     // header pagination buttons
     React.useEffect(() => {
         if (current_question === 0) {
             setIsPrevButtonDisabled(true);
             setIsNextButtonDisabled(true);
-            if (!!is_selected) {
+            if (!!is_touched) {
                 setIsNextButtonDisabled(false);
             }
-        } else if (!!is_selected && current_question < end_question_index) {
+        } else if (!!is_touched && current_question < end_question_index) {
             setIsNextButtonDisabled(false);
             setIsPrevButtonDisabled(false);
         } else if (current_question === end_question_index) {
@@ -54,34 +46,51 @@ const TradingAssessment = () => {
             setIsPrevButtonDisabled(false);
             setIsNextButtonDisabled(true);
         }
-    }, [current_question, is_next_button_disabled, is_prev_button_disabled, is_selected]);
+    }, [current_question, is_next_button_disabled, is_prev_button_disabled, is_touched]);
 
-    const onOptionsClicked = () => {
-        setIsSelected(true);
+    const onOptionsTouched = e => {
+        setIsTouched(true);
+        computeAnswer(e.target.value);
     };
 
-    const handleSelectAnswers = props => {
-        setSelectAnswer(props.value);
-    };
+    if (show_risk_modal) {
+        return <RiskToleranceWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />;
+    }
 
-    const checkForAnswer = () => {
-        let correct_answer = trading_assessment[current_question].answer;
-        let result = answers_list.filter(answer => correct_answer === answer);
-        if (select_answer === result) {
-            console.log('you got it right');
+    const computeAnswer = optionSelect => {
+        if (trading_experience) {
+            answer_dropdown.forEach(item => {
+                if (item.answer.includes(optionSelect)) {
+                    console.log('you got it right');
+                } else {
+                    console.log('its wrong');
+                }
+            });
+        } else if (risk_tolerance) {
+            if (answer_radio.includes(optionSelect)) {
+                console.log('you got it right');
+            } else {
+                setShowRiskModal(true);
+                console.log('exit here');
+            }
         } else {
-            console.log('too bad you got it wrong!');
+            if (answer_radio.includes(optionSelect)) {
+                console.log('you got it right');
+            } else {
+                console.log('its wrong');
+            }
         }
     };
 
     const handleNextButton = e => {
         const next_question = current_question + 1;
-        if (!!is_selected && next_question < trading_assessment.length) {
+        if (!!is_touched && next_question < trading_assessment.length) {
             setCurrentQuestion(next_question);
         }
-        setIsSelected(false);
+        setIsTouched(false);
         e.preventDefault();
     };
+
     const handlePrevButton = e => {
         const prev_question = current_question - 1;
         if (prev_question >= 0) {
@@ -116,16 +125,16 @@ const TradingAssessment = () => {
                         </Button>
                     </div>
                     <div className='trading-assessment__wrapper'>
-                        {trading_assessment[current_question].type === 'dropdown' ? (
+                        {trading_experience ? (
                             <TradingAssessmentDropdownOption
                                 item={trading_assessment[current_question]}
-                                onClick={onOptionsClicked}
+                                onChange={onOptionsTouched}
                             />
                         ) : (
                             <TradingAssessmentRadioOption
                                 text={question_text}
                                 list={answers_list}
-                                onClick={onOptionsClicked}
+                                onOptionsTouched={onOptionsTouched}
                             />
                         )}
                     </div>

@@ -68,7 +68,7 @@ const MyProfileContent = () => {
                         is_flex
                         is_modal_open
                         page_header_className='buy-sell__modal-header'
-                        page_header_text={localize('Blocked Advertisers')}
+                        page_header_text={localize('Blocked advertisers')}
                         pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                     >
                         <BlockUserTable />

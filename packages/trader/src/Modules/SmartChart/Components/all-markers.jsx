@@ -243,9 +243,11 @@ const TickContract = RawMarkerMaker(
                 tick: { zom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
             });
             ctx.beginPath();
-            ctx.setLineDash([3, 3]);
+            if (contract_type === 'ACC') {
+                ctx.setLineDash([]);
+            } else ctx.setLineDash([3, 3]);
             ctx.moveTo(start.left - 1 * scale, 0);
-            if (ticks.length && barrier) {
+            if (ticks.length && barrier && contract_type !== 'ACC') {
                 ctx.lineTo(start.left - 1 * scale, barrier - 34 * scale);
                 ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
             }
@@ -262,9 +264,16 @@ const TickContract = RawMarkerMaker(
         const exit = ticks[ticks.length - 1];
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
-        if (!contract_type === 'ACC' || is_sold) {
-            // barrier line
-            if (start.visible || entry.visible || exit.visible) {
+        // barrier line
+        if (start.visible || entry.visible || exit.visible) {
+            if (contract_type === 'ACC' && is_sold) {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.setLineDash([]);
+                ctx.moveTo(start.left, barrier);
+                ctx.lineTo(exit.left, barrier);
+                ctx.stroke();
+            } else if (contract_type !== 'ACC') {
                 ctx.strokeStyle = color + opacity;
                 ctx.beginPath();
                 ctx.setLineDash([1, 1]);
@@ -324,7 +333,7 @@ const TickContract = RawMarkerMaker(
             ctx.fillStyle = color;
         }
         // count down
-        if (start.visible && !is_sold) {
+        if (start.visible && !is_sold && contract_type !== 'ACC') {
             shadowed_text({
                 ctx,
                 scale,

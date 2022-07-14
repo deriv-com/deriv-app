@@ -325,6 +325,27 @@
         }
     }
     &--accumulator {
+        .btn-purchase {
+            &__info {
+                padding-left: 1.6rem;
+
+                &--right {
+                    padding-right: 1.6rem;
+                }
+            }
+            &__effect-detail {
+                width: 11.2rem;
+
+                &--arrow {
+                    width: 3.96rem;
+                    height: 3.96rem;
+                    left: 9.2rem;
+                    top: 8px;
+                    border-top-right-radius: 0.4rem;
+                }
+            }
+        }
+
         @include mobile {
             .btn-purchase {
                 &__bottom,

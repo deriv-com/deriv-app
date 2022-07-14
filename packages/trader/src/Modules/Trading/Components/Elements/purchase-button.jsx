@@ -85,7 +85,7 @@ const PurchaseButton = ({
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier || is_accumulator ? (
-                            <Text size='xs' weight='bold' color='colored-background'>
+                            <Text size={is_accumulator ? 'xxs' : 'xs'} weight='bold' color='colored-background'>
                                 <Money amount={info.stake} currency={currency} show_currency />
                             </Text>
                         ) : (

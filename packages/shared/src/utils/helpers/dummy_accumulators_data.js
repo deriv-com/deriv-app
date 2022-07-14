@@ -1,5 +1,5 @@
-const high_barrier = 92.93;
-const low_barrier = 92.855;
+const high_barrier = 94.09;
+const low_barrier = 94.03;
 const tick_1_price = 92.444;
 const tick_2_price = 92.317;
 const tick_3_price = 92.431;
@@ -8,7 +8,7 @@ const tick_5_price = 92.832;
 const entry_spot = 92.812;
 const tick_8_price = 92.678;
 const previous_tick_price = 92.693;
-const current_spot = 92.823;
+const current_spot = 94.046;
 const take_profit_price = 90.021;
 const contract_status = 'open';
 const position_status = 'loss'; // 'profit' or 'loss'

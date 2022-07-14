@@ -1,24 +1,28 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button, Icon } from '@deriv/components';
-import { Localize } from 'Components/i18next';
 
-const UserRatingButton = ({ has_full_text, is_disabled }) => {
+const UserRatingButton = ({ button_text, is_disabled, large, onClick }) => {
     return (
-        <Button is_disabled={is_disabled} secondary small className='user-rating-button'>
-            <Icon icon='IcFullStar' className='user-rating-button-icon' color={is_disabled && 'disabled'} size={12} />
-            {has_full_text ? (
-                <Localize i18n_default_text='Rate this transaction' />
-            ) : (
-                <Localize i18n_default_text='Rate' />
-            )}
+        <Button
+            className={classNames('user-rating-button', { 'user-rating-button--big': large })}
+            is_disabled={is_disabled}
+            secondary
+            small
+            onClick={is_disabled ? () => {} : onClick}
+        >
+            <Icon icon='IcFullStar' className='user-rating-button--icon' color={is_disabled && 'disabled'} size={12} />
+            {button_text}
         </Button>
     );
 };
 
 UserRatingButton.PropTypes = {
-    has_full_text: PropTypes.bool,
+    button_text: PropTypes.object,
     is_disabled: PropTypes.bool,
+    large: PropTypes.bool,
+    onClick: PropTypes.func,
 };
 
 export default UserRatingButton;

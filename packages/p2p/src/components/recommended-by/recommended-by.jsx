@@ -29,7 +29,12 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
                 message={message}
                 onClick={() => setIsRecommendedModalOpen(true)}
             >
-                <Icon className='recommended-by--icon' icon='IcThumbsUp' size={14} />
+                <Icon
+                    className='recommended-by--icon'
+                    custom_color='var(--status-success)'
+                    icon='IcThumbsUp'
+                    size={14}
+                />
                 <Text color='less-prominent' line_height='s' size={isMobile() ? 'xxxs' : 'xs'}>
                     {`${recommended_average}%`}
                 </Text>

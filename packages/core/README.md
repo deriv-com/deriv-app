@@ -1,8 +1,6 @@
-# Deriv App
+# `@deriv/core`
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://app.deriv.com) website.
-
-**In this documents**
+**In this document**
 
 -   [Other documents](#other-documents)
 -   [Manual deployment using custom domain (CNAME)](#manual-deployment-using-custom-domain-cname)

@@ -144,7 +144,7 @@ const generateSWConfig = is_release => ({
             options: {
                 cacheName: 'assets',
                 expiration: {
-                    maxEntries: 15,
+                    maxAgeSeconds: 60 * 60 * 24,
                 },
             },
         },
@@ -155,25 +155,19 @@ const generateSWConfig = is_release => ({
             handler: 'CacheFirst',
             options: {
                 cacheName: 'core-js-files',
+                expiration: {
+                    maxAgeSeconds: 60 * 60 * 24,
+                },
             },
         },
         {
             urlPattern: /(account|appstore|bot|cashier|cfd|trader)\//,
             handler: 'CacheFirst',
             options: {
-                cacheName: 'packages-js-files',
+                cacheName: 'packages-files',
                 expiration: {
-                    maxEntries: 20,
+                    maxAgeSeconds: 60 * 60 * 24,
                 },
-            },
-        },
-        {
-            urlPattern: ({ url }) => {
-                return url.pathname.match(/(index|404|localstorage-sync)\.html$/);
-            },
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'html-files',
             },
         },
     ],

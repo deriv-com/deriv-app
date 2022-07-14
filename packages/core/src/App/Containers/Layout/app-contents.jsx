@@ -37,8 +37,8 @@ const AppContents = ({
     const scroll_ref = React.useRef(null);
 
     React.useEffect(() => {
-        setAppContentsScrollRef(scroll_ref);
-    }, [scroll_ref]);
+        if (scroll_ref) setAppContentsScrollRef(scroll_ref);
+    }, []);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';

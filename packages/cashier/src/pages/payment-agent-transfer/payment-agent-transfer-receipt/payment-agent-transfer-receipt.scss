@@ -1,5 +1,8 @@
 .payment-agent-transfer-receipt {
     &__wrapper .cashier {
+        &__header {
+            margin-bottom: 5.4rem;
+        }
         &__transferred-details-wrapper {
             & .account-transfer__transfer {
                 &-details {
@@ -77,7 +80,8 @@
 
             & .cashier {
                 &__header {
-                    margin-top: 0.4rem;
+                    margin-top: 3rem;
+                    margin-bottom: 4.8rem;
                 }
                 &__form-submit-button {
                     &:first-child {
@@ -126,14 +130,9 @@
                             & .cashier {
                                 &__header {
                                     padding-top: 1.6rem;
-                                    margin-top: 0;
                                 }
                                 &__transferred-details {
                                     margin-top: 0.8rem;
-                                }
-                                &__transferred-amount {
-                                    margin-bottom: 1.6rem;
-                                    margin-top: 0;
                                 }
                                 &__text--right {
                                     text-align: center;

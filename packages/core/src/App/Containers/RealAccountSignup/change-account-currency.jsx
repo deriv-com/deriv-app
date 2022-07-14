@@ -19,13 +19,26 @@ const ChangeAccountCurrency = ({
     client_currency,
     current_currency_type,
     current_fiat_currency,
+    closeModal,
 }) => {
     const getReorderedCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
 
     const is_fiat = current_currency_type === 'fiat';
     const fiat_message = (
-        <Localize i18n_default_text='Change of currency is not allowed after the first deposit attempt.' />
+        <Localize
+            i18n_default_text='Changing the account currency after the first deposit attempt is not possible through the website. Please contact us via <0>live chat</0> to change your account currency.'
+            components={[
+                <span
+                    key={0}
+                    className='link link--orange'
+                    onClick={() => {
+                        closeModal();
+                        window.LC_API.open_chat_window();
+                    }}
+                />,
+            ]}
+        />
     );
 
     const non_fiat_mesage = (
@@ -110,6 +123,7 @@ const ChangeAccountCurrency = ({
 ChangeAccountCurrency.propTypes = {
     legal_allowed_currencies: PropTypes.array,
     onSubmit: PropTypes.func,
+    closeModal: PropTypes.func,
     value: PropTypes.shape({
         crypto: PropTypes.string,
         fiat: PropTypes.string,

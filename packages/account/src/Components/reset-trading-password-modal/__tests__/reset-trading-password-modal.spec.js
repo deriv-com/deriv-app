@@ -109,11 +109,10 @@ describe('<ResetTradingPasswordModal/>', () => {
             </Router>
         );
         await interactWithPasswordField();
+        const el_ok_button = await screen.findByRole('button', { name: /Ok/i });
+        fireEvent.click(el_ok_button);
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: /Ok/i }));
-            expect(mockFn).toHaveBeenCalled();
-        });
+        expect(mockFn).toHaveBeenCalled();
     });
 
     it('should get the account status on successful submission', async () => {
@@ -137,11 +136,10 @@ describe('<ResetTradingPasswordModal/>', () => {
             </Router>
         );
         await interactWithPasswordField();
+        const el_done_button = await screen.findByRole('button', { name: /Done/i });
+        fireEvent.click(el_done_button);
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: /Done/i }));
-            expect(mockFn).toHaveBeenCalled();
-        });
+        expect(mockFn).toHaveBeenCalled();
     });
 
     it('should display the password in text format when visibility icon clicked', async () => {
@@ -165,10 +163,10 @@ describe('<ResetTradingPasswordModal/>', () => {
             </Router>
         );
         await interactWithPasswordField(false);
-        fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
+        const el_visibility_icon = await screen.findByTestId('dt_password_input__visibility_icon');
+        fireEvent.click(el_visibility_icon);
 
         await waitFor(() => {
-            fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
             expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
         });
     });

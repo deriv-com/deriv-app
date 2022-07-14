@@ -1,0 +1,74 @@
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Field as FormField, Formik, Form } from 'formik';
+import { Icon, Input } from '@deriv/components';
+import './cashier-search-box.scss';
+
+const CashierSearchBox = ({ className, onClear, onSearch, placeholder, setIsSearchLoading }) => {
+    const onSearchClear = setFieldValue => {
+        setFieldValue('search', '');
+        if (typeof onClear === 'function') {
+            onClear();
+        }
+    };
+
+    const onSearchKeyUpDown = (submitForm, search) => {
+        if (!search.trim()) return;
+        setIsSearchLoading(true);
+        clearTimeout(typing_timer);
+        const typing_timer = setTimeout(() => {
+            submitForm();
+        }, 300);
+    };
+
+    const onSearchSubmit = ({ search }) => {
+        if (typeof onSearch === 'function') {
+            onSearch(search);
+        }
+    };
+
+    return (
+        <div className={classNames('cashier-search-box', className)}>
+            <Formik initialValues={{ search: '' }} onSubmit={onSearchSubmit}>
+                {({ submitForm, values: { search }, setFieldValue }) => (
+                    <Form>
+                        <FormField name='search'>
+                            {({ field }) => (
+                                <Input
+                                    {...field}
+                                    type='text'
+                                    name='search'
+                                    placeholder={placeholder}
+                                    onKeyUp={() => onSearchKeyUpDown(submitForm, search)}
+                                    onKeyDown={() => onSearchKeyUpDown(submitForm, search)}
+                                    leading_icon={<Icon icon='IcSearch' data_testid='dt_search_icon' />}
+                                    trailing_icon={
+                                        search && (
+                                            <Icon
+                                                color='general'
+                                                data_testid='dt_close_icon'
+                                                icon='IcCloseCircle'
+                                                onClick={() => onSearchClear(setFieldValue)}
+                                            />
+                                        )
+                                    }
+                                />
+                            )}
+                        </FormField>
+                    </Form>
+                )}
+            </Formik>
+        </div>
+    );
+};
+
+CashierSearchBox.propTypes = {
+    className: PropTypes.string,
+    onClear: PropTypes.func,
+    onSearch: PropTypes.func,
+    placeholder: PropTypes.string,
+    setIsSearchLoading: PropTypes.func,
+};
+
+export default CashierSearchBox;

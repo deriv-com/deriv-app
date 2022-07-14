@@ -156,6 +156,7 @@ import './cashier/ic-cashier-prompt-pay-light.svg';
 import './cashier/ic-cashier-qr-code-dark.svg';
 import './cashier/ic-cashier-qr-code-light.svg';
 import './cashier/ic-cashier-red-warning.svg';
+import './cashier/ic-cashier-search.svg';
 import './cashier/ic-cashier-send-email.svg';
 import './cashier/ic-cashier-sepa-dark.svg';
 import './cashier/ic-cashier-sepa-light.svg';

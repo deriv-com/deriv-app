@@ -32,7 +32,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     client_email: string;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
-    openPendingDialog: () => void;
     refreshNotifications: () => void;
     removeNotificationMessage: () => void;
     removeNotificationByKey: (args: TRemoveNotificationMessage) => void;
@@ -42,6 +41,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     fetchStatesList: () => void;
     account_status: GetAccountStatus;
     onFinish: () => void;
+    jurisdiction_selected_shortcode: string;
 };
 
 type TSetSubmiting = (isSubmitting: boolean) => void;
@@ -75,6 +75,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             'refreshNotifications',
             'removeNotificationMessage',
             'removeNotificationByKey',
+            'jurisdiction_selected_shortcode',
         ],
     };
 
@@ -162,7 +163,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         {}
     );
     const height = 'auto';
-
     return (
         <Div100vhContainer
             className='cfd-financial-stp-modal'
@@ -193,7 +193,6 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     client_email: client.email,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,
-    openPendingDialog: cfd.openPendingDialog,
     refreshNotifications: notifications.refreshNotifications,
     removeNotificationMessage: notifications.removeNotificationMessage,
     removeNotificationByKey: notifications.removeNotificationByKey,
@@ -202,4 +201,5 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     fetchStatesList: client.fetchStatesList,
     storeProofOfAddress: cfd.storeProofOfAddress,
     account_status: client.account_status,
+    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
 }))(CFDFinancialStpRealAccountSignup);

@@ -37,6 +37,7 @@ export type TCFDPOIProps = {
     should_allow_authentication: boolean;
     account_settings: GetSettings;
     residence_list: ResidenceList;
+    jurisdiction_selected_shortcode: string;
 };
 
 const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {

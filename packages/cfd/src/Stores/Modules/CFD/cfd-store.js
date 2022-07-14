@@ -26,8 +26,6 @@ export default class CFDStore extends BaseStore {
     @observable is_cfd_password_modal_enabled = false;
     @observable is_cfd_reset_password_modal_enabled = false;
 
-    @observable is_cfd_pending_dialog_open = false;
-
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
     @observable error_type = undefined;
@@ -526,21 +524,6 @@ export default class CFDStore extends BaseStore {
             console.error(response);
         }
         this.root_store.ui.setTopUpInProgress(false);
-    }
-
-    @action.bound
-    closeCFDPendingDialog() {
-        this.is_cfd_pending_dialog_open = false;
-    }
-
-    @action.bound
-    openPendingDialog() {
-        setTimeout(
-            runInAction(() => {
-                this.is_cfd_pending_dialog_open = true;
-            }),
-            300
-        );
     }
 
     @action.bound

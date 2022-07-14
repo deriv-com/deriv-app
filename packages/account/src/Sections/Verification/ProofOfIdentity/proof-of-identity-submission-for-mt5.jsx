@@ -16,10 +16,10 @@ const POISubmissionForMT5 = ({
     refreshNotifications,
     citizen_data,
     has_idv_error,
+    jurisdiction_selected_shortcode,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
-
     React.useEffect(() => {
         if (citizen_data) {
             const { submissions_left: idv_submissions_left } = idv;
@@ -27,7 +27,12 @@ const POISubmissionForMT5 = ({
             const is_idv_supported = citizen_data.identity.services.idv.is_country_supported;
             const is_onfido_supported = citizen_data.identity.services.onfido.is_country_supported;
 
-            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+            if (
+                is_idv_supported &&
+                Number(idv_submissions_left) > 0 &&
+                !is_idv_disallowed &&
+                jurisdiction_selected_shortcode !== 'vanuatu'
+            ) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);

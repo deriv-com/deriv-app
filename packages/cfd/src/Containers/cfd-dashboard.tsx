@@ -28,7 +28,6 @@ import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
@@ -664,12 +663,11 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
                         <CFDServerErrorDialog />
-                        {platform === CFD_PLATFORMS.MT5 && (
-                            <React.Fragment>
+                        {platform === CFD_PLATFORMS.MT5 && is_logged_in && (
+                            <>
                                 <CFDDbViOnBoarding />
-                                <CFDFinancialStpPendingDialog />
-                                {is_logged_in && <CFDPersonalDetailsModal />}
-                            </React.Fragment>
+                                <CFDPersonalDetailsModal />
+                            </>
                         )}
                         <CFDResetPasswordModal platform={platform} />
                         <ResetTradingPasswordModal

@@ -107,11 +107,11 @@ src
     ├── Stores
     ├── templates
     ├── Utils
-    │   ├── Language
-    │   ├── pwa
-    │   ├── Validator
-    |   |   ├──...
-    |   |   ├── validator.js
+    |   |── Language
+    |   |── pwa
+    |   |── Validator
+    |   |   |──...
+    |   |   |── validator.js
 ```
 
 ## Troubleshooting

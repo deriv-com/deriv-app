@@ -63,8 +63,8 @@ DatePickerCalendar.displayName = 'DatePickerCalendar';
 DatePickerCalendar.propTypes = {
     alignment: PropTypes.string,
     is_datepicker_visible: PropTypes.bool,
-    calendar_el_ref: PropTypes.shape({ current: PropTypes.any }),
-    parent_ref: PropTypes.shape({ current: PropTypes.any }),
+    calendar_el_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
+    parent_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
     portal_id: PropTypes.string,
     style: PropTypes.object,
     placement: PropTypes.string,

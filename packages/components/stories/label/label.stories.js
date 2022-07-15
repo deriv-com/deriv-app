@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import Label from 'Components/label';
 import React from 'react';
 import notes from './README.md';
@@ -29,7 +29,7 @@ storiesOf('Label', module)
                 <Wrapper inner_styles={{}} is_dark={boolean('Dark Theme', false)}>
                     {available_modes.map((mode, index) => {
                         return (
-                            <div className={'container'} key={index}>
+                            <div className={'container'} key={mode}>
                                 <p className={'title'}>{mode}</p>
                                 <Label mode={mode} className={'label'} ley={index} size={'large'}>
                                     <p>This is a sample {mode} label</p>

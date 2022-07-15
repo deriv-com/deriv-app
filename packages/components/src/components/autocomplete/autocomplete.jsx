@@ -334,7 +334,7 @@ Autocomplete.propTypes = {
     dropdown_offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     error: PropTypes.string,
     has_updating_list: PropTypes.bool,
-    input_id: PropTypes.string, // not sure about this
+    input_id: PropTypes.string,
     onScrollStop: PropTypes.func,
     value: PropTypes.string,
     onBlur: PropTypes.func,

@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import InputWithCheckbox from 'Components/input-wth-checkbox';
 import React, { useState } from 'react';
 import notes from './README.md';

@@ -353,7 +353,7 @@ InputField.propTypes = {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     data_tip: PropTypes.string,
     data_value: PropTypes.string,
-    is_error_tooltip_hidden: PropTypes.string,
+    is_error_tooltip_hidden: PropTypes.bool,
     inputmode: PropTypes.string,
     max_value: PropTypes.number,
     min_value: PropTypes.number,

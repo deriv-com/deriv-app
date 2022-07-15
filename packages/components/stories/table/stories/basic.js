@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import Table from 'Components/table';
-import Wrapper from '../../shared/wrapper.jsx';
+import Wrapper from '../../shared/wrapper';
 import sample_data from '../sample-data.json';
 
 const Basic = () => (

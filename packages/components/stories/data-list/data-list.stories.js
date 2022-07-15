@@ -4,7 +4,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import DataList from 'Components/data-list';
 import 'Components/data-list/data-list.scss';
 import notes from './README.md';
-import Theme from '../shared/theme.jsx';
+import Theme from '../shared/theme';
 
 const mock_data = [];
 for (let i = 1; i < 30; i++)
@@ -48,13 +48,15 @@ const rowRenderer = ({ row }) => {
         </>
     );
 };
-const handleRowAction = () => {
-    // console.log(row_obj); row_obj is a parameter
+const handleRowAction = row_obj => {
+    /* eslint-disable no-console */
+    console.log(row_obj);
 };
 
-const handleScroll = () => {
-    // const { scrollTop, scrollHeight, clientHeight } = e.target;
-    // console.log(scrollTop, scrollHeight, clientHeight);
+const handleScroll = e => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    /* eslint-disable no-console */
+    console.log(scrollTop, scrollHeight, clientHeight);
 };
 
 const stories = storiesOf('Data List', module);

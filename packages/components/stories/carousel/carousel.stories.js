@@ -4,7 +4,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import Carousel from 'Components/carousel';
 import Button from 'Components/button';
-import Theme from '../shared/theme.jsx';
+import Theme from '../shared/theme';
 
 const stories = storiesOf('Carousel', module);
 

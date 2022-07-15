@@ -4,7 +4,7 @@ import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import ExpansionPanel from 'Components/expansion-panel';
 import notes from './README.md';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 
 storiesOf('ExpansionPanel', module)
     .addDecorator(withKnobs)

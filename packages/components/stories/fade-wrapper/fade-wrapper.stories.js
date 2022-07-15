@@ -5,7 +5,7 @@ import React from 'react';
 import FadeWrapper from 'Components/fade-wrapper';
 import Button from 'Components/button';
 import notes from './README.md';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import './fade-wrapper.stories.scss';
 
 storiesOf('FadeWrapper', module)

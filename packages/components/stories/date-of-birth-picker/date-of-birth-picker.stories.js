@@ -1,10 +1,11 @@
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import DateOfBirthPicker from 'Components/date-of-birth-picker';
 import React from 'react';
 import notes from './README.md';
+import { toMoment } from '@deriv/shared';
 
 storiesOf('DateOfBirthPicker', module)
     .addDecorator(withKnobs)
@@ -17,9 +18,9 @@ storiesOf('DateOfBirthPicker', module)
                     <DateOfBirthPicker
                         name='date_of_birth'
                         label={'Date of birth*'}
-                        onChange={() => {
-                            // target was a destructured parameter here
-                            // console.log(toMoment(target.value).format('YYYY-MM-DD'));
+                        onChange={({ target }) => {
+                            /* eslint-disable no-console */
+                            console.log(toMoment(target.value).format('YYYY-MM-DD'));
                         }}
                     />
                 </Wrapper>

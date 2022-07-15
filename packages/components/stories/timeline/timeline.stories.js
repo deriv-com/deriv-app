@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import Timeline from 'Components/timeline';
-import Wrapper from '../shared/theme.jsx';
+import Wrapper from '../shared/theme';
 import notes from './README.md';
 
 const stories = storiesOf('Timeline', module);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Theme from '../shared/theme.jsx';
+import Theme from '../shared/theme';
 
 const styles = {
     display: 'flex',

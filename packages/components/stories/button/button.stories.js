@@ -5,7 +5,7 @@ import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Button from 'Components/button';
 import { FlexWrapper } from './shared-style';
-import Theme from '../shared/theme.jsx';
+import Theme from '../shared/theme';
 import notes from './README.md';
 
 const stories = storiesOf('Button', module);

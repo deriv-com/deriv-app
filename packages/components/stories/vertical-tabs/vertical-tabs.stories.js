@@ -2,9 +2,9 @@ import React from 'react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import Icon from 'Components/icon';
-import VerticalTab from '../../src/components/vertical-tab/vertical-tab.jsx';
+import VerticalTab from 'Components/vertical-tab/vertical-tab';
 import 'Components/vertical-tab/vertical-tab.scss';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import notes from './README.md';
 
 const TextComponent = props => (

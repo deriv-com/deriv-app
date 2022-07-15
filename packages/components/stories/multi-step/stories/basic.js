@@ -2,7 +2,7 @@ import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import Button from 'Components/button';
 import MultiStep from 'Components/multi-step';
-import Wrapper from '../../shared/wrapper.jsx';
+import Wrapper from '../../shared/wrapper';
 
 const steps = [{ component: 'Step 1' }, { component: 'Step 2' }, { component: 'Step 3' }];
 

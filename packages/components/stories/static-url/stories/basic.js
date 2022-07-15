@@ -2,7 +2,7 @@ import React from 'react';
 import { PlatformContext } from '@deriv/shared';
 import { boolean } from '@storybook/addon-knobs';
 import StaticUrl from 'Components/static-url';
-import Wrapper from '../../shared/wrapper.jsx';
+import Wrapper from '../../shared/wrapper';
 
 const Provider = ({ children }) => <PlatformContext.Provider>{children}</PlatformContext.Provider>;
 

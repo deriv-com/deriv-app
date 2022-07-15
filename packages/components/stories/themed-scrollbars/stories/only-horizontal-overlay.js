@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import ThemedScrollbars from 'Components/themed-scrollbars';
-import Wrapper from '../../shared/wrapper.jsx';
+import Wrapper from '../../shared/wrapper';
 import text from '../text';
 
 const OnlyHorizontalOverlay = () => (

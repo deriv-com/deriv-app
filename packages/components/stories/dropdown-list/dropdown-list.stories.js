@@ -4,7 +4,7 @@ import { withInfo } from '@storybook/addon-info';
 import React, { useState } from 'react';
 import DropdownList from 'Components/dropdown-list';
 import notes from './README.md';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import './dropdown-list.stories.scss';
 
 storiesOf('DropdownList', module)

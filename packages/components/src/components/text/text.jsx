@@ -34,7 +34,7 @@ Text.propTypes = {
     weight: PropTypes.string,
     as: PropTypes.string,
     className: PropTypes.string,
-    styles: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    styles: PropTypes.object,
 };
 
 export default Text;

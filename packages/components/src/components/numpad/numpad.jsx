@@ -234,7 +234,7 @@ Numpad.propTypes = {
     reset_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     submit_label: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    className: PropTypes.string,
     label: PropTypes.string,
     onValueChange: PropTypes.func,
 };

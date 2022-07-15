@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import MobileFullPageModal from 'Components/mobile-full-page-modal';
 import Button from 'Components/button';
 import React from 'react';

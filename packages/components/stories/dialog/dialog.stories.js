@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import Dialog from 'Components/dialog';
 import Button from 'Components/button';
 import React, { useState } from 'react';

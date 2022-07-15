@@ -2,7 +2,7 @@ import { Formik, Field } from 'formik';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import Autocomplete from 'Components/autocomplete';
 import React from 'react';
 import notes from './README.md';

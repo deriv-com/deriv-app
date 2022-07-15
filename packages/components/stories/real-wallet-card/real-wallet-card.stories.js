@@ -4,7 +4,7 @@ import RealWalletCard from 'Components/real-wallet-card';
 import React from 'react';
 import notes from './README.md';
 import { getWalletLabels } from './wallet-labels';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 
 storiesOf('RealWalletCard', module)
     .addDecorator(withKnobs)
@@ -25,21 +25,23 @@ storiesOf('RealWalletCard', module)
                         is_selected={boolean('is_selected', false)}
                         is_temporarily_unavailable={boolean('is_temporarily_unavailable', false)}
                         onClickDeposit={() => {
-                            // TODO document why this arrow function is empty
+                            /* eslint-disable no-console */
+                            console.log('Deposit clicked!');
                         }}
                         onClickSettings={() => {
-                            // TODO document why this arrow function is empty
-                            // TODO document why this arrow function is empty
+                            /* eslint-disable no-console */
+                            console.log('Settings clicked!');
                         }}
                         onClickTransactions={() => {
-                            // TODO document why this arrow function is empty
-                            // TODO document why this arrow function is empty
+                            /* eslint-disable no-console */
+                            console.log('Transactions clicked!');
                         }}
                         onClickTransfer={() => {
-                            // TODO document why this arrow function is empty
+                            console.log('Transfer clicked!');
                         }}
                         onClickWithdrawal={() => {
-                            // TODO document why this arrow function is empty
+                            /* eslint-disable no-console */
+                            console.log('Withdrawal clicked!');
                         }}
                         wallet_name='Credit/Debit USD Wallet'
                         width='280'

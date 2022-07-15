@@ -1,5 +1,5 @@
 import React from 'react';
-import Wrapper from '../../shared/wrapper.jsx';
+import Wrapper from '../../shared/wrapper';
 import ContractCard from 'Components/contract-card';
 import { getCardLabels, getContractTypeDisplay } from '../statics/contract';
 import sampleData from '../sample-data/sampleData.json';

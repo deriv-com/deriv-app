@@ -3,7 +3,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Switch from 'Components/toggle-switch';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import notes from './README.md';
 
 const stories = storiesOf('Toggle switch', module);

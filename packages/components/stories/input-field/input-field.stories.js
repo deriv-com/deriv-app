@@ -3,7 +3,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import notes from './README.md';
-import Wrapper from '../shared/wrapper.jsx';
+import Wrapper from '../shared/wrapper';
 import InputField from 'Components/input-field';
 
 storiesOf('InputField', module)

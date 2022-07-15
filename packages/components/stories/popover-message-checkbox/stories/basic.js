@@ -2,7 +2,7 @@ import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PopoverMessageCheckbox from 'Components/popover-message-checkbox';
 import Popover from 'Components/popover';
-import Wrapper from '../../shared/wrapper.jsx';
+import Wrapper from '../../shared/wrapper';
 
 const PopoverComponent = ({ message }) => (
     <Popover alignment='right' is_bubble_hover_enabled margin={2} zIndex={2} message={message}>

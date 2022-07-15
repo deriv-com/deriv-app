@@ -1,12 +1,27 @@
 import React from 'react';
-import { Loading } from '@deriv/components';
-import { WS } from '@deriv/shared';
-import DemoMessage from 'Components/demo-message';
+import { Icon, Loading, Text } from '@deriv/components';
+import { WS, isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
+const ShowDemoMessage = () => (
+    <div className='da-icon-with-message'>
+        <Icon icon={'IcPoaLock'} size={128} />
+        <Text
+            className='da-icon-with-message__text'
+            as='p'
+            color='general'
+            size={isMobile ? 'xs' : 's'}
+            line_height='m'
+            weight='bold'
+        >
+            {localize('This feature is not available for demo accounts.')}
+        </Text>
+    </div>
+);
 const ProofOfIdentityContainerforMt5 = ({
     account_status,
     fetchResidenceList,
@@ -47,7 +62,7 @@ const ProofOfIdentityContainerforMt5 = ({
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
-        return <DemoMessage />;
+        return <ShowDemoMessage />;
     } else if (api_error) {
         return <ErrorMessage error_message={api_error?.message || api_error} />;
     }

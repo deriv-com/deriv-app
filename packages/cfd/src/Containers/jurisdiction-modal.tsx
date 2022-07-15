@@ -170,12 +170,12 @@ const JurisdictionModal = ({
     };
 
     const buttonText = () => {
-        const selected_card = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
-        if (poa_failed && selected_card) {
+        const is_non_svg_selected = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
+        if (poa_failed && is_non_svg_selected) {
             return <Localize i18n_default_text='Resubmit proof of address' />;
-        } else if (poi_failed && selected_card) {
+        } else if (poi_failed && is_non_svg_selected) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
-        } else if (poa_failed && poi_failed && selected_card) {
+        } else if (poa_failed && poi_failed && is_non_svg_selected) {
             return <Localize i18n_default_text='Resubmit' />;
         }
         return <Localize i18n_default_text='Next' />;

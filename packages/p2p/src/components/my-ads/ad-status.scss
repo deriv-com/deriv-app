@@ -1,10 +1,14 @@
+@mixin ad-status-base {
+    border-radius: 1.6rem;
+    padding: 0.2rem 1.6rem;
+    text-align: center;
+    width: 8.8rem;
+}
+
 .ad-status {
     &--active {
+        @include ad-status-base;
         background: rgba(75, 180, 179, 0.16);
-        border-radius: 1.6rem;
-        padding: 0.2rem 1.6rem;
-        text-align: center;
-        width: 8.8rem;
 
         @include mobile {
             margin-bottom: 0.8rem;
@@ -13,11 +17,10 @@
     }
 
     &--inactive {
-        border: 1px solid var(--status-danger);
-        border-radius: 0.2rem;
-        padding: 0.1rem 1.2rem;
-        text-align: center;
-        width: 8.8rem;
+        @include ad-status-base;
+        background: rgba(236, 63, 63, 0.16);
+        display: flex;
+        justify-content: center;
 
         @include mobile {
             margin-bottom: 0.8rem;

@@ -88,6 +88,9 @@ npm run deploy:folder "br_my_test_folder"
 build
     ├── ...
     ├── webpack-config-test.js
+docs
+    ├── Modules
+    |   |── README.md
 src
     ├── _common
     ├── App

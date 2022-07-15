@@ -140,7 +140,6 @@ export default class PaymentAgentStore {
 
     @action.bound
     filterPaymentAgentList(bank) {
-        const { common } = this.root_store;
         if (bank) {
             this.filtered_list = [];
             this.list.forEach(payment_agent => {
@@ -156,9 +155,6 @@ export default class PaymentAgentStore {
             });
         } else {
             this.filtered_list = this.list;
-        }
-        if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
-            common.routeTo(routes.cashier_deposit);
         }
     }
 

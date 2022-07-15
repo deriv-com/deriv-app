@@ -1,6 +1,8 @@
 .on-ramp {
     &__page-header {
         margin-bottom: 1.7rem;
+
+        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
         @media (max-width: 926px) {
             margin: 1.7rem;
         }
@@ -32,6 +34,7 @@
             'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
         );
 
+        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
         @media (max-width: 926px) {
             grid-template-areas: (
                 'logo name name name' 'logo description description description'

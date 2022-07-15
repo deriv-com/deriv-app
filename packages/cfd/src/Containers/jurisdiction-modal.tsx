@@ -143,7 +143,6 @@ const JurisdictionModal = ({
             category: account_type.category,
             type: account_type.type,
         };
-        toggleJurisdictionModal();
 
         if (is_eu) {
             if (poi_poa_verified) {
@@ -218,7 +217,10 @@ const JurisdictionModal = ({
                                     disabled={!is_next_button_enabled}
                                     primary
                                     onClick={() => {
-                                        onSelectRealAccount();
+                                        toggleJurisdictionModal();
+                                        setTimeout(() => {
+                                            onSelectRealAccount();
+                                        }, 250);
                                     }}
                                 >
                                     {buttonText()}
@@ -238,7 +240,10 @@ const JurisdictionModal = ({
                                     disabled={!is_next_button_enabled}
                                     primary
                                     onClick={() => {
-                                        onSelectRealAccount();
+                                        toggleJurisdictionModal();
+                                        setTimeout(() => {
+                                            onSelectRealAccount();
+                                        }, 250);
                                     }}
                                 >
                                     {buttonText()}

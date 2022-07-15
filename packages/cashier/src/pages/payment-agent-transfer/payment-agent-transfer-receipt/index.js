@@ -1,3 +1,3 @@
-import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
+import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt.jsx';
 
 export default PaymentAgentTransferReceipt;

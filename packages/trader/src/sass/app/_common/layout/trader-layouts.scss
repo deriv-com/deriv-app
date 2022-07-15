@@ -570,6 +570,28 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                 }
             }
+            .tick-counter {
+                position: absolute;
+                top: 3rem;
+                right: 11.2rem;
+                width: 3.2rem;
+                height: 5rem;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: space-between;
+
+                &__count {
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 3.2rem;
+                    height: 3.2rem;
+                    border: 0.4rem solid var(--border-normal);
+                    border-radius: 50%;
+                }
+            }
         }
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;

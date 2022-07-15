@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isEnded, isDigitContract } from '@deriv/shared';
+import { isEnded, isDigitContract, isAccumulatorContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
 
@@ -15,8 +15,19 @@ const TradeInfo = ({ markers_array, granularity }) => {
     if (is_ended || granularity !== 0) return null;
 
     const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
-    const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
-    return (
+    const is_accumulator = isAccumulatorContract(contract_type);
+    const current_tick =
+        isDigitContract(contract_type) || is_accumulator ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
+    return is_accumulator ? (
+        <div className='tick-counter'>
+            <Text className='tick-counter__name' size='xxxs'>
+                {localize('Tick')}
+            </Text>
+            <Text as='span' weight='bold' className='tick-counter__count' size='xs'>
+                {current_tick}
+            </Text>
+        </div>
+    ) : (
         <Text weight='bold' className='recent-trade-info'>
             {localize('Tick')} {current_tick}/{tick_count}
         </Text>
@@ -38,6 +49,7 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
+    show_accumulator_tick_counter,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
@@ -70,7 +82,10 @@ const TopWidgets = ({
         <React.Fragment>
             {InfoBox}
             <MobileWrapper>{portal}</MobileWrapper>
-            <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
+            <DesktopWrapper>
+                {ChartTitleLocal}
+                {show_accumulator_tick_counter && <RecentTradeInfo />}
+            </DesktopWrapper>
         </React.Fragment>
     );
 };
@@ -80,6 +95,7 @@ TopWidgets.propTypes = {
     is_mobile: PropTypes.bool,
     is_title_enabled: PropTypes.bool,
     onSymbolChange: PropTypes.func,
+    show_accumulator_tick_counter: PropTypes.bool,
 };
 
 export default TopWidgets;

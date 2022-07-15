@@ -23,6 +23,7 @@ import {
     isBarrierSupported,
     removeBarrier,
     getDummyProposalResponseForACC,
+    isAccumulatorContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -844,6 +845,11 @@ export default class TradeStore extends BaseStore {
     @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    @computed
+    get show_accumulator_tick_counter() {
+        return isAccumulatorContract(this.contract_type) && !this.proposal_info.ACC?.is_sold;
     }
 
     @action.bound

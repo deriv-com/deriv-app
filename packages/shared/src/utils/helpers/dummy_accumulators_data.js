@@ -1,5 +1,5 @@
-const high_barrier = 94.09;
-const low_barrier = 94.03;
+const high_barrier = 93.7;
+const low_barrier = 93.3;
 const tick_1_price = 92.444;
 const tick_2_price = 92.317;
 const tick_3_price = 92.431;
@@ -8,11 +8,14 @@ const tick_5_price = 92.832;
 const entry_spot = 92.812;
 const tick_8_price = 92.678;
 const previous_tick_price = 92.693;
-const current_spot = 94.046;
+const current_spot = 93.35;
 const take_profit_price = 90.021;
 const contract_status = 'open';
-const position_status = 'loss'; // 'profit' or 'loss'
-const profit_loss = -0.15;
+const position_status = 'profit'; // 'profit' or 'loss'
+const profit_loss = +0.15;
+const profit_percentage = +1.5;
+const tick_size_barrier = 0.000409;
+const stake = '10.00';
 
 export const getDummyPOCResponseForACC = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
@@ -68,11 +71,12 @@ export const getDummyPOCResponseForACC = time_now => {
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             growth_rate: 0.01,
             profit: profit_loss,
-            profit_percentage: -1.5,
+            profit_percentage,
             purchase_time: dummy_start_time,
             shortcode: 'ACC_FRXAUDJPY_10.00_1656407458_4810060799_0_150.00',
             status: contract_status,
             tick_count: 10,
+            tick_size_barrier,
             tick_stream: [
                 {
                     epoch: dummy_start_time + 1,
@@ -237,11 +241,12 @@ export const getDummyAllPositionsForACC = time_now => {
                 growth_rate: 0.01,
                 payout: 27.45,
                 profit: profit_loss,
-                profit_percentage: -1.5,
+                profit_percentage,
                 purchase_time: dummy_start_time,
                 shortcode: 'ACC_FRXAUDJPY_10.00_1656407458_4810060799_0_150.00',
                 status: contract_status,
                 tick_count: 10,
+                tick_size_barrier,
                 tick_stream: [
                     {
                         epoch: dummy_start_time + 1,
@@ -325,7 +330,7 @@ export const getDummyProposalInfoForACC = (growth_rate, time_now, response) => {
         payout: 27.45,
         profit: `${profit_loss}`,
         returns: '-100.00%',
-        stake: '10.00',
+        stake,
     };
 };
 
@@ -394,7 +399,7 @@ export const getDummyProposalResponseForACC = time_now => {
         },
         msg_type: 'proposal',
         proposal: {
-            tick_size_barrier: 0.000409,
+            tick_size_barrier,
             ticks_count_since_loss_condition: 13,
             max_duration_ticks: 10, // = tick_count in proposal_open_contract
             max_payout: 0,

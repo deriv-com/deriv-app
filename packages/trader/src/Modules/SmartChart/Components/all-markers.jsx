@@ -131,33 +131,33 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_partial_shade = ({ ctx, start, top, bottom, is_between_shade, is_bottom_shade, color }) => {
+const draw_partial_shade = ({ ctx, start_left, top, bottom, is_between_shade, is_bottom_shade, color, scale }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
-    const gradient = ctx.createLinearGradient(start.left, top, start.left, bottom);
+    const gradient = ctx.createLinearGradient(start_left, top, start_left, bottom);
     ctx.lineWidth = 1;
     ctx.strokeStyle = color;
 
     if (is_between_shade || is_bottom_shade) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start.left, top, 1.5, 0, Math.PI * 2);
+        ctx.arc(start_left, top, 1.5, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
-        ctx.moveTo(start.left + 1.5, top);
+        ctx.moveTo(start_left + 1.5 * scale, top);
         ctx.lineTo(end_left, top);
         ctx.stroke();
     }
     if (is_between_shade || !is_bottom_shade) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start.left, bottom, 1.5, 0, Math.PI * 2);
+        ctx.arc(start_left, bottom, 1.5, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
-        ctx.moveTo(start.left + 1.5, bottom);
+        ctx.moveTo(start_left + 1.5 * scale, bottom);
         ctx.lineTo(end_left, bottom);
         ctx.stroke();
     }
@@ -168,7 +168,7 @@ const draw_partial_shade = ({ ctx, start, top, bottom, is_between_shade, is_bott
     }
 
     ctx.fillStyle = is_between_shade ? 'rgba(0, 167, 158, 0.08)' : gradient;
-    ctx.fillRect(start.left, top, end_left - start.left, Math.abs(bottom - top));
+    ctx.fillRect(start_left, top, end_left - start_left, Math.abs(bottom - top));
 };
 
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
@@ -181,10 +181,11 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
-    ctx.textAlign = 'center';
+const shadowed_text = ({ ctx, color, font, is_dark_theme, text, text_align, left, top, scale }) => {
+    ctx.textAlign = text_align || 'center';
     const size = Math.floor(scale * 12);
-    ctx.font = `bold ${size}px BinarySymbols, Roboto`;
+    ctx.font = font || `bold ${size}px BinarySymbols, Roboto`;
+    if (color) ctx.fillStyle = color;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
@@ -207,8 +208,10 @@ const TickContract = RawMarkerMaker(
         contract_info: {
             contract_type,
             // exit_tick_time,
+            currency,
             status,
             profit,
+            profit_percentage,
             is_sold,
             is_expired,
             // tick_stream,
@@ -261,15 +264,13 @@ const TickContract = RawMarkerMaker(
             return;
         }
         const entry = ticks[0];
-        const current_tick_index = ticks.findIndex(t => t.epoch === current_spot_time.epoch);
-        const current_tick = ticks[current_tick_index];
-        const previous_tick = ticks[current_tick_index - 1] || ticks[0];
+        const current_tick = ticks[ticks.findIndex(t => t.epoch === current_spot_time.epoch)];
         const exit = ticks[ticks.length - 1];
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
         // barrier line
         if (start.visible || entry.visible || exit.visible) {
-            if (contract_type === 'ACC' && is_sold) {
+            if (contract_type === 'ACC' && (status === 'lost' || status === 'won')) {
                 ctx.strokeStyle = color;
                 ctx.beginPath();
                 ctx.setLineDash([]);
@@ -373,42 +374,86 @@ const TickContract = RawMarkerMaker(
 
         if ((start.visible || entry.visible || exit.visible) && contract_type === 'ACC') {
             const dashed_line_color = is_dark_theme ? '#6E6E6E' : '#999999';
-            if (!is_sold) {
-                if (entry === current_tick && profit > 0) {
-                    // draw vertical dashed line between barriers
-                    ctx.strokeStyle = dashed_line_color;
-                    ctx.setLineDash([3, 1]);
-                    ctx.beginPath();
-                    ctx.moveTo(entry.left, barrier + 1.5);
-                    ctx.lineTo(entry.left, barrier_2 - 1.5);
-                    ctx.stroke();
-                }
-                if (profit > 0) {
-                    draw_partial_shade({
-                        ctx,
-                        start: previous_tick,
-                        color: dashed_line_color,
-                        top: barrier,
-                        bottom: barrier_2,
-                        is_between_shade: true,
-                    });
-                } else {
-                    draw_partial_shade({
-                        ctx,
-                        start: previous_tick,
-                        color: dashed_line_color,
-                        top: barrier - 165 * scale,
-                        bottom: barrier,
-                    });
-                    draw_partial_shade({
-                        ctx,
-                        start: previous_tick,
-                        color: dashed_line_color,
-                        top: barrier_2,
-                        bottom: barrier_2 + 165 * scale,
-                        is_bottom_shade: true,
-                    });
-                }
+            const profit_text_color = profit > 0 ? '#4BB4B3' : '#EC3F3F';
+            const sign = profit > 0 ? '+' : '-';
+            const profit_text = `${sign}${profit}`;
+            ctx.save();
+            // draw 3 text items with different font size and weight:
+            shadowed_text({
+                ctx,
+                scale,
+                is_dark_theme,
+                text: profit_text,
+                font: `bold 20px IBM Plex Sans`,
+                text_align: 'start',
+                color: profit_text_color,
+                left: current_tick.left + 33 * scale,
+                top: current_tick.top,
+            });
+            const profit_text_width = ctx.measureText(profit_text).width;
+            shadowed_text({
+                ctx,
+                scale,
+                is_dark_theme,
+                text: `${currency}`,
+                font: '10px IBM Plex Sans',
+                text_align: 'start',
+                color: profit_text_color,
+                left: current_tick.left + profit_text_width + 35 * scale,
+                top: current_tick.top + 1.5 * scale,
+            });
+            shadowed_text({
+                ctx,
+                scale,
+                is_dark_theme,
+                text: `${sign}${profit_percentage}%`,
+                font: '12px IBM Plex Sans',
+                text_align: 'start',
+                color: profit_text_color,
+                left: current_tick.left + profit_text_width + 29 * scale,
+                top: current_tick.top + 16 * scale,
+            });
+            ctx.restore();
+            if (entry === current_tick && profit > 0) {
+                // draw vertical dashed line between barriers
+                ctx.strokeStyle = dashed_line_color;
+                ctx.setLineDash([3, 1]);
+                ctx.beginPath();
+                ctx.moveTo(entry.left, barrier + 1.5 * scale);
+                ctx.lineTo(entry.left, barrier_2 - 1.5 * scale);
+                ctx.stroke();
+            }
+            const start_left =
+                start === current_tick || entry === current_tick ? current_tick.left : current_tick.left - 34 * scale;
+            // draw custom barrier shadows with borders:
+            if (profit > 0) {
+                draw_partial_shade({
+                    ctx,
+                    start_left,
+                    color: dashed_line_color,
+                    top: barrier,
+                    bottom: barrier_2,
+                    is_between_shade: true,
+                    scale,
+                });
+            } else {
+                draw_partial_shade({
+                    ctx,
+                    start_left,
+                    color: dashed_line_color,
+                    top: barrier - 165 * scale,
+                    bottom: barrier,
+                    scale,
+                });
+                draw_partial_shade({
+                    ctx,
+                    start_left,
+                    color: dashed_line_color,
+                    top: barrier_2,
+                    bottom: barrier_2 + 165 * scale,
+                    is_bottom_shade: true,
+                    scale,
+                });
             }
         }
     }

@@ -1,16 +1,22 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Accordion, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details';
+import PaymentAgentCard from '../payment-agent-card';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 
-const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, selected_bank, supported_banks }) => {
+const PaymentAgentDepositWithdrawContainer = ({
+    is_dark_mode_on,
+    is_deposit,
+    onChangePaymentMethod,
+    payment_agent_list,
+    selected_bank,
+    supported_banks,
+}) => {
     const list_with_default = [
-        { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
+        { text: <Localize i18n_default_text='All payment methods' />, value: 0 },
         ...supported_banks,
     ];
 
@@ -22,25 +28,26 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
 
     return (
         <React.Fragment>
+            <MobileWrapper>
+                <PaymentAgentDisclaimer />
+            </MobileWrapper>
             <div className='payment-agent-list__list-header'>
-                <Text as='p' size='xs' weight='bold' color='prominent' className='payment-agent-list__list-header-text'>
-                    <Localize i18n_default_text='Payment agents' />
-                </Text>
-                <div className='payment-agent-list__list-header-line' />
+                {is_deposit ? (
+                    <Text as='p' line_height='s' size='xs'>
+                        <Localize i18n_default_text='Contact your preferred payment agent for payment instructions and make your deposit.' />
+                    </Text>
+                ) : (
+                    <Text as='p' line_height='s' size='xs'>
+                        <Localize i18n_default_text='Choose your preferred payment agent and enter your withdrawal amount. If your payment agent is not listed, search for them using their account number.' />
+                    </Text>
+                )}
             </div>
-
             <div className='payment-agent-list__list-selector'>
-                <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s' className='cashier__paragraph'>
-                    <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
-                </Text>
                 {supported_banks.length > 1 && (
-                    <div>
+                    <React.Fragment>
                         <DesktopWrapper>
                             <Dropdown
                                 id='payment_methods'
-                                className='payment-agent-list__drop-down payment-agent-list__filter'
-                                classNameDisplay='cashier__drop-down-display payment-agent-list__filter-display'
-                                classNameDisplaySpan='cashier__drop-down-display-span'
                                 classNameItems='cashier__drop-down-items'
                                 list={list_with_default}
                                 name='payment_methods'
@@ -50,11 +57,11 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                         </DesktopWrapper>
                         <MobileWrapper>
                             <SelectNative
-                                placeholder={localize('All payment agents')}
+                                placeholder={localize('All payment methods')}
                                 name='payment_methods'
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}
-                                label={selected_bank === 0 ? localize('All payment agents') : localize('Type')}
+                                label={selected_bank === 0 ? localize('All payment methods') : localize('Type')}
                                 onChange={e =>
                                     onChangePaymentMethod({
                                         target: {
@@ -66,36 +73,36 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                                 use_text={false}
                             />
                         </MobileWrapper>
-                    </div>
+                    </React.Fragment>
                 )}
             </div>
-            <Accordion
-                className='payment-agent-list__accordion'
-                list={payment_agent_list.map(payment_agent => ({
-                    header: payment_agent.name,
-                    content: (
-                        <PaymentAgentDetails
-                            payment_agent_email={payment_agent.email}
-                            payment_agent_phones={toJS(payment_agent.phones)}
-                            payment_agent_urls={toJS(payment_agent.urls)}
-                        />
-                    ),
-                }))}
-            />
+            {payment_agent_list.map((payment_agent, idx) => {
+                return (
+                    <PaymentAgentCard
+                        key={idx}
+                        is_dark_mode_on={is_dark_mode_on}
+                        is_deposit={is_deposit}
+                        payment_agent={payment_agent}
+                    />
+                );
+            })}
         </React.Fragment>
     );
 };
 
-PaymentAgentDeposit.propTypes = {
+PaymentAgentDepositWithdrawContainer.propTypes = {
+    is_dark_mode_on: PropTypes.bool,
+    is_deposit: PropTypes.bool,
     onChangePaymentMethod: PropTypes.func,
     payment_agent_list: PropTypes.array,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     supported_banks: MobxPropTypes.arrayOrObservableArray,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
+    is_dark_mode_on: ui.is_dark_mode_on,
     onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
     payment_agent_list: modules.cashier.payment_agent.filtered_list,
     selected_bank: modules.cashier.payment_agent.selected_bank,
     supported_banks: modules.cashier.payment_agent.supported_banks,
-}))(PaymentAgentDeposit);
+}))(PaymentAgentDepositWithdrawContainer);

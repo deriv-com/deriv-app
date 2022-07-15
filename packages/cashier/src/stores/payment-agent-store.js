@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { formatMoney, routes } from '@deriv/shared';
+import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -104,6 +104,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     async setPaymentAgentList(pa_list) {
+        const { setLoading } = this.root_store.modules.cashier.general_store;
         const payment_agent_list = pa_list || (await this.getPaymentAgentList());
         this.clearList();
         this.clearSuppertedBanks();
@@ -111,16 +112,25 @@ export default class PaymentAgentStore {
         try {
             payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
                 this.setList({
+                    currency: payment_agent.currencies,
+                    deposit_commission: payment_agent.deposit_commission,
                     email: payment_agent.email,
-                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
+                    further_information: payment_agent.further_information,
+                    max_withdrawal: payment_agent.max_withdrawal,
+                    min_withdrawal: payment_agent.min_withdrawal,
                     name: payment_agent.name,
+                    paymentagent_loginid: payment_agent.paymentagent_loginid,
+                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
                     supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,
+                    withdrawal_commission: payment_agent.withdrawal_commission,
                 });
                 const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
                 supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
+            shuffleArray(this.list);
         } catch (e) {
+            setLoading(false);
             // eslint-disable-next-line no-console
             console.error(e);
         }

@@ -50,7 +50,7 @@ describe('<BinaryLink />', () => {
 
         expect(screen.getByText('Simple test link without Navlink')).toBeInTheDocument();
     });
-    it('should show simple link text', () => {
+    it('should thorw error if the path is not found', () => {
         findRouteByPath.mockReturnValue('');
 
         expect(() =>

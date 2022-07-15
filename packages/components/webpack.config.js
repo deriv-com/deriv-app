@@ -18,6 +18,7 @@ module.exports = function () {
             alias: {
                 Components: path.resolve(__dirname, 'src', 'components'),
             },
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             minimize: true,

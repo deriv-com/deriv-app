@@ -1,11 +1,14 @@
 import React from 'react';
 import { DesktopWrapper, Dropdown } from '@deriv/components';
 
-const TradingAssessmentDropdownOption = ({ item, onChange }) => {
+const TradingAssessmentDropdownOption = ({ item_list, onChange, values, form_control }) => {
+    console.log('Item list: ', item_list);
+    console.log('Values: ', values);
+    console.log('Form control: ', form_control);
     return (
         <div className='trading-assessment__wrapper__dropdown'>
-            {item.questions.map(question => (
-                <DesktopWrapper key={question.question_text}>
+            {item_list.map((question, index) => (
+                <DesktopWrapper key={index}>
                     <div className='trading-assessment__wrapper__dropdown--list'>
                         <Dropdown
                             classNameDisplay='trading-assessment__wrapper__dropdown--list--display'
@@ -14,7 +17,7 @@ const TradingAssessmentDropdownOption = ({ item, onChange }) => {
                             placeholder={question?.question_text}
                             list={question?.answer_options}
                             onChange={onChange}
-                            value={question?.answer_options?.value}
+                            value={values[form_control]}
                         />
                     </div>
                 </DesktopWrapper>

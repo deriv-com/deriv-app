@@ -1,14 +1,14 @@
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import React from 'react';
+import TradingAssessment from 'Components/trading-assessment';
 
 export const trading_assessment_questions = [
     {
         question_text: 'Do you understand that you could potentially lose 100% of the money you use to trade?',
         section: 'risk_tolerance',
         answer_options: [
-            { value: 1, text: localize('Yes') },
-            { value: 0, text: localize('No') },
+            { value: 'Yes', text: localize('Yes') },
+            { value: 'No', text: localize('No') },
         ],
         answer: [1],
         form_control: 'risk_tolerance',
@@ -17,7 +17,7 @@ export const trading_assessment_questions = [
     {
         question_text: 'How much knowledge and experience do you have in relation to online trading?',
         section: 'source_of_experience',
-        form_contol: 'source_of_experience',
+        form_control: 'source_of_experience',
         answer_options: [
             {
                 value: 'option_1',
@@ -240,7 +240,7 @@ export const trading_assessment_questions = [
         answer: ['option_2'],
     },
     {
-        question_text: 'When do you need to pay an initial margin?',
+        question_text: 'When do you be required to pay an initial margin?',
         section: 'trading_knowledge',
         form_control: 'required_initial_margin',
         field_type: 'radio',
@@ -273,19 +273,19 @@ const trading_assessment_form_config = {
     source_of_experience: {
         ...default_form_config,
     },
-    cfd_trading_experience_mf: {
-        ...default_form_config,
-        rules: [['req', localize('Please select your experience in CFD trading')]],
-    },
-    cfd_trading_frequency_mf: {
-        ...default_form_config,
-    },
-    trading_experience_financial_instruments: {
-        ...default_form_config,
-    },
-    trading_frequency_financial_instruments: {
-        ...default_form_config,
-    },
+    // cfd_trading_experience_mf: {
+    //     ...default_form_config,
+    //     rules: [['req', localize('Please select your experience in CFD trading')]],
+    // },
+    // cfd_trading_frequency_mf: {
+    //     ...default_form_config,
+    // },
+    // trading_experience_financial_instruments: {
+    //     ...default_form_config,
+    // },
+    // trading_frequency_financial_instruments: {
+    //     ...default_form_config,
+    // },
     cfd_trading_definition: {
         ...default_form_config,
     },
@@ -301,14 +301,12 @@ const trading_assessment_form_config = {
 };
 
 const tradingAssessmentConfig = ({ real_account_signup_target }) => {
-    console.log('real_account_signup_target: ', real_account_signup_target);
-    console.log('trading_assessment_form_config: ', trading_assessment_form_config);
     return {
         header: {
             active_title: localize('Complete your trading assessment'),
             title: localize('Trading assessment'),
         },
-        body: <div>Trading comp</div>,
+        body: TradingAssessment,
         form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
         props: {
             validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),

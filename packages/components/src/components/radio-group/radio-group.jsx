@@ -22,7 +22,12 @@ const RadioGroup = ({
     should_wrap_items,
     children,
 }) => {
-    const [selected_option, setSelectedOption] = React.useState(selected);
+    console.log('Selected: ', selected);
+    const [selected_option, setSelectedOption] = React.useState(null);
+
+    React.useEffect(() => {
+        setSelectedOption(selected);
+    }, [selected]);
 
     const onChange = event => {
         setSelectedOption(event.target.value);
@@ -40,6 +45,7 @@ const RadioGroup = ({
         },
         className
     );
+    console.log('children: ', children);
     return (
         <div className={classes}>
             {children.map((item, idx) => (

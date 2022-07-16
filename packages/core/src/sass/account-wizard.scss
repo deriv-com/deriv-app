@@ -445,3 +445,51 @@
         line-height: 1.5;
     }
 }
+
+.trading-assessment {
+    padding: 0 7rem;
+    display: flex;
+    flex-direction: column;
+
+    &__side-note {
+        text-align: justify;
+    }
+
+    &__header {
+        margin-top: 2.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--general-active);
+    }
+
+    &__form {
+        margin-top: 3.1rem;
+
+        .dc-themed-scrollbars {
+            width: -webkit-fill-available;
+        }
+
+        .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
+            max-width: unset;
+            padding-bottom: 0.5rem;
+        }
+    }
+
+    &__wrapper__question {
+        .dc-radio-group {
+            gap: 1rem;
+        }
+    }
+
+    &__wrapper__dropdown {
+        gap: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: -webkit-fill-available;
+    }
+
+    .disable-pointer {
+        cursor: not-allowed;
+    }
+}

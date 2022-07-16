@@ -396,8 +396,11 @@ const CFDAccountCardComponent = ({
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
                                                 onClick={() => {
+                                                    const selected_account_data = existing_accounts_data?.find(
+                                                        data => data.landing_company_short === acc.landing_company_short
+                                                    );
                                                     toggleMT5TradeModal();
-                                                    setMT5TradeAccount(existing_data);
+                                                    setMT5TradeAccount(selected_account_data);
                                                 }}
                                                 primary
                                                 large

@@ -387,7 +387,16 @@ const CFDAccountCardComponent = ({
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
                                         {existing_data && is_logged_in && (
-                                            <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
+                                            <Button
+                                                onClick={() => {
+                                                    const selected_account_data = existing_accounts_data?.find(
+                                                        data => data.landing_company_short === acc.landing_company_short
+                                                    );
+                                                    onClickFund(selected_account_data as DetailsOfEachMT5Loginid);
+                                                }}
+                                                type='button'
+                                                secondary
+                                            >
                                                 <Localize i18n_default_text='Top up' />
                                             </Button>
                                         )}

@@ -110,15 +110,26 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) =>
-        openAccountTransfer(current_list[getAccountListKey(account, platform)], {
+    const onClickFundReal = (account: TExistingData) => {
+        if (platform === 'dxtrade') {
+            return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
+                category: account.account_type as keyof TOpenAccountTransferMeta,
+                type: getCFDAccountKey({
+                    market_type: account.market_type,
+                    sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+                    platform,
+                }),
+            });
+        }
+        return openAccountTransfer(account, {
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
                 market_type: account.market_type,
                 sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
-                platform,
+                platform: 'mt5',
             }),
         });
+    };
 
     const isMT5AccountCardDisabled = (sub_account_type: string) => {
         if (has_cfd_account_error) return true;

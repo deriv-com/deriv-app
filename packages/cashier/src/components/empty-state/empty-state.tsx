@@ -9,12 +9,12 @@ type TProps = {
 };
 
 const EmptyState: React.FC<TProps> = ({ icon, title, description }) => (
-    <div className='empty-state'>
-        <Icon icon={icon} className='empty-state__icon' />
-        <Text as='h2' weight='bold' align='center' className='empty-state__title'>
+    <div className='cashier-empty-state'>
+        <Icon icon={icon} className='cashier-empty-state__icon' />
+        <Text as='h2' weight='bold' align='center' className='cashier-empty-state__title'>
             {title}
         </Text>
-        <Text as='p' size='xs' align='center' className='empty-state__desc'>
+        <Text as='p' size='xs' align='center' className='cashier-empty-state__desc'>
             {description}
         </Text>
     </div>

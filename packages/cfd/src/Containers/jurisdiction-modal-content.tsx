@@ -1,6 +1,5 @@
 import React from 'react';
 import { Icon, Text, Checkbox, StaticUrl } from '@deriv/components';
-import { PoaStatusCodes } from '@deriv/account';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
@@ -47,12 +46,23 @@ type TJurisdictionCard = {
     account_type: string;
     poa_status: string;
     poi_status: string;
-    poi_poa_pending: boolean;
+    poi_poa_none: boolean;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: string;
     disabled: boolean;
     poa_failed: boolean;
     poi_failed: boolean;
+    poa_acknowledged: boolean;
+    poi_acknowledged: boolean;
+    is_fully_authenticated: boolean;
+};
+const StatusCodes = {
+    none: 'none',
+    pending: 'pending',
+    rejected: 'rejected',
+    verified: 'verified',
+    expired: 'expired',
+    suspected: 'suspected',
 };
 
 const JurisdictionCard = ({
@@ -62,12 +72,15 @@ const JurisdictionCard = ({
     account_type,
     poa_status,
     poi_status,
-    poi_poa_pending,
+    poi_poa_none,
     setJurisdictionSelectedShortcode,
     type_of_card,
     disabled,
     poa_failed,
     poi_failed,
+    poa_acknowledged,
+    poi_acknowledged,
+    is_fully_authenticated,
 }: TJurisdictionCard) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
@@ -78,10 +91,6 @@ const JurisdictionCard = ({
             ? number_of_synthetic_accounts_to_be_shown
             : number_of_financial_accounts_to_be_shown
     );
-
-    const poa_none = poa_status === PoaStatusCodes.none;
-    const poi_none = poi_status === PoaStatusCodes.none;
-    const poi_poa_none = poi_none || poa_none;
 
     const cardSelection = (cardType: string) => {
         if (jurisdiction_selected_shortcode === cardType) {
@@ -102,73 +111,95 @@ const JurisdictionCard = ({
 
     const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
 
-    const VerificationStatuses = () => (
-        <>
-            {!disabled && poa_none && poi_none && type_of_card !== 'svg' && (
-                <div className={`${card_classname}__footer--none`}>
-                    <Text as='p' size='xxxs' align='center' color={disabled ? 'less-prominent' : 'prominent'}>
-                        <Localize i18n_default_text='You will need to submit proof of identity and address' />
+    const VerificationStatuses = () => {
+        if (!disabled && type_of_card) {
+            // account not added
+            if (type_of_card === 'svg') {
+                if (!is_fully_authenticated)
+                    return (
+                        <div className={`${card_classname}__footer`}>
+                            <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
+                                <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
+                            </Text>
+                        </div>
+                    );
+
+                return null;
+            }
+            if (poi_poa_none) {
+                // if poi or poa is not submitted
+                return (
+                    <div className={`${card_classname}__footer--none`}>
+                        <Text as='p' size='xxxs' align='center' color={disabled ? 'less-prominent' : 'prominent'}>
+                            <Localize i18n_default_text='You will need to submit proof of identity and address' />
+                        </Text>
+                    </div>
+                );
+            } else if (
+                poa_status === StatusCodes.verified &&
+                poi_status === StatusCodes.verified &&
+                is_fully_authenticated
+            ) {
+                //if both verified
+                return null;
+            } else if (!poi_poa_none && poi_failed && poa_acknowledged) {
+                // poi is rejected,suspected, failed-resubmit
+                return (
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--POA_POI`}>
+                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                                <Localize i18n_default_text='Check your proof of identity' />
+                            </Text>
+                        </div>
+                    </div>
+                );
+            } else if (!poi_poa_none && poa_failed && poi_acknowledged) {
+                // poa is rejected,suspected, failed-resubmit
+                return (
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--POA_POI`}>
+                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                                <Localize i18n_default_text='Check your proof of address' />
+                            </Text>
+                        </div>
+                    </div>
+                );
+            } else if (poa_failed && poi_failed && !poi_acknowledged && !poa_acknowledged) {
+                // both failed
+                return (
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--POA_POI`}>
+                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                                <Localize i18n_default_text='Check your proof of identity and address' />
+                            </Text>
+                        </div>
+                    </div>
+                );
+            } else if (poa_acknowledged && poi_acknowledged) {
+                // both are pending or verified
+                return (
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--pending`}>
+                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
+                                <Localize i18n_default_text='Pending verification' />
+                            </Text>
+                        </div>
+                    </div>
+                );
+            }
+            return null;
+        }
+        // account added
+        return (
+            <div className={`${card_classname}__verification-status`}>
+                <div className={`${card_classname}__verification-status--verified`}>
+                    <Text size='xxxs' className={`${card_classname}__verification-status--verified-text`} weight='bold'>
+                        <Localize i18n_default_text='Account added' />
                     </Text>
                 </div>
-            )}
-            {!disabled && poi_poa_pending && type_of_card && type_of_card !== 'svg' && (
-                <div className={`${card_classname}__verification-status`}>
-                    <div className={`${card_classname}__verification-status--pending`}>
-                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
-                            <Localize i18n_default_text='Pending verification' />
-                        </Text>
-                    </div>
-                </div>
-            )}
-            {!disabled && type_of_card === 'svg' && (
-                <div className={`${card_classname}__footer`}>
-                    <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
-                        <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
-                    </Text>
-                </div>
-            )}
-            {disabled && (
-                <div className={`${card_classname}__verification-status`}>
-                    <div className={`${card_classname}__verification-status--verified`}>
-                        <Text
-                            size='xxxs'
-                            className={`${card_classname}__verification-status--verified-text`}
-                            weight='bold'
-                        >
-                            <Localize i18n_default_text='Account added' />
-                        </Text>
-                    </div>
-                </div>
-            )}
-            {!disabled && poi_failed && !poa_failed && !poi_poa_none && type_of_card && type_of_card !== 'svg' && (
-                <div className={`${card_classname}__verification-status`}>
-                    <div className={`${card_classname}__verification-status--POA_POI`}>
-                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
-                            <Localize i18n_default_text='Check your proof of identity' />
-                        </Text>
-                    </div>
-                </div>
-            )}
-            {!disabled && poa_failed && !poi_failed && !poi_poa_none && type_of_card && type_of_card !== 'svg' && (
-                <div className={`${card_classname}__verification-status`}>
-                    <div className={`${card_classname}__verification-status--POA_POI`}>
-                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
-                            <Localize i18n_default_text='Check your proof of address' />
-                        </Text>
-                    </div>
-                </div>
-            )}
-            {!disabled && poa_failed && poi_failed && type_of_card && type_of_card !== 'svg' && (
-                <div className={`${card_classname}__verification-status`}>
-                    <div className={`${card_classname}__verification-status--POA_POI`}>
-                        <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
-                            <Localize i18n_default_text='Check your proof of identity and address' />
-                        </Text>
-                    </div>
-                </div>
-            )}
-        </>
-    );
+            </div>
+        );
+    };
 
     return (
         <>
@@ -247,7 +278,6 @@ const JurisdictionModalContent = ({
     poi_status,
     is_eu,
     is_fully_authenticated,
-    poi_poa_pending,
     checked,
     setChecked,
     real_synthetic_accounts_existing_data,
@@ -256,11 +286,15 @@ const JurisdictionModalContent = ({
     poi_failed,
 }: TJurisdictionModalContent) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
-    const poa_none = poa_status === PoaStatusCodes.none;
-    const poi_none = poi_status === PoaStatusCodes.none;
+
+    const poa_none = poa_status === StatusCodes.none;
+    const poi_none = poi_status === StatusCodes.none;
     const poi_poa_none = poi_none || poa_none;
 
-    const poi_poa_verified = poi_status === PoaStatusCodes.verified && poa_status === PoaStatusCodes.verified;
+    const poa_acknowledged = poa_status === StatusCodes.pending || poa_status === StatusCodes.verified;
+    const poi_acknowledged = poi_status === StatusCodes.pending || poi_status === StatusCodes.verified;
+
+    const poi_poa_verified = poi_status === StatusCodes.verified && poa_status === StatusCodes.verified;
 
     const cardsToBeShown = (type_of_card: string) => {
         const is_available =
@@ -286,7 +320,48 @@ const JurisdictionModalContent = ({
 
         return (
             <>
-                {poi_poa_none && jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode && (
+                {jurisdiction_selected_shortcode === 'svg' && (
+                    <div className={`${card_classname}__footnote`}>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize
+                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
+                                values={{ account_type: account_type_name }}
+                            />
+                        </Text>
+                    </div>
+                )}
+
+                {is_fully_authenticated && jurisdiction_selected_shortcode === 'bvi' && (
+                    <div className={`${card_classname}__footnote`}>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize
+                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
+                                values={{ account_type: account_type_name, line_break: '\n' }}
+                            />
+                        </Text>
+                    </div>
+                )}
+                {is_fully_authenticated && jurisdiction_selected_shortcode === 'vanuatu' && (
+                    <div className={`${card_classname}__footnote`}>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize
+                                i18n_default_text='Add Your DMT5 {{account_type}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
+                                values={{ account_type: account_type_name }}
+                            />
+                        </Text>
+                    </div>
+                )}
+                {is_fully_authenticated && jurisdiction_selected_shortcode === 'labuan' && (
+                    <div className={`${card_classname}__footnote`}>
+                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize
+                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).'
+                                values={{ account_type: account_type_name }}
+                            />
+                        </Text>
+                    </div>
+                )}
+                {poi_poa_none && jurisdiction_selected_shortcode && jurisdiction_selected_shortcode !== 'svg' && (
                     <Text
                         as='p'
                         align='center'
@@ -345,53 +420,17 @@ const JurisdictionModalContent = ({
                             <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity and address.' />
                         </Text>
                     )}
-                {jurisdiction_selected_shortcode === 'svg' && (
-                    <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
-                                values={{ account_type: account_type_name }}
-                            />
-                        </Text>
-                    </div>
-                )}
-                {is_fully_authenticated && jurisdiction_selected_shortcode === 'bvi' && (
-                    <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
-                                values={{ account_type: account_type_name, line_break: '\n' }}
-                            />
-                        </Text>
-                    </div>
-                )}
-                {is_fully_authenticated && jurisdiction_selected_shortcode === 'vanuatu' && (
-                    <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add Your DMT5 {{account_type}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
-                                values={{ account_type: account_type_name }}
-                            />
-                        </Text>
-                    </div>
-                )}
-                {is_fully_authenticated && jurisdiction_selected_shortcode === 'labuan' && (
-                    <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).'
-                                values={{ account_type: account_type_name }}
-                            />
-                        </Text>
-                    </div>
-                )}
-                {poi_poa_pending && jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode && (
-                    <div className={`${card_classname}__footnote--pending`}>
-                        <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
-                        </Text>
-                    </div>
-                )}
+                {poa_acknowledged &&
+                    poi_acknowledged &&
+                    !poi_poa_verified &&
+                    jurisdiction_selected_shortcode &&
+                    jurisdiction_selected_shortcode !== 'svg' && (
+                        <div className={`${card_classname}__footnote--pending`}>
+                            <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
+                                <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
+                            </Text>
+                        </div>
+                    )}
             </>
         );
     };
@@ -441,13 +480,16 @@ const JurisdictionModalContent = ({
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
                         account_type={account_type}
-                        poi_poa_pending={poi_poa_pending}
                         poa_status={poa_status}
                         poi_status={poi_status}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('bvi')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poa_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
                     />
                 )}
 
@@ -457,7 +499,6 @@ const JurisdictionModalContent = ({
                         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
-                        poi_poa_pending={poi_poa_pending}
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
@@ -465,6 +506,10 @@ const JurisdictionModalContent = ({
                         disabled={disableCard('maltainvest')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poa_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
                     />
                 )}
 
@@ -474,7 +519,6 @@ const JurisdictionModalContent = ({
                         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
-                        poi_poa_pending={poi_poa_pending}
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
@@ -482,6 +526,10 @@ const JurisdictionModalContent = ({
                         disabled={disableCard('vanuatu')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poa_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
                     />
                 )}
                 {cardsToBeShown('labuan') && (
@@ -490,7 +538,6 @@ const JurisdictionModalContent = ({
                         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
-                        poi_poa_pending={poi_poa_pending}
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
@@ -498,6 +545,10 @@ const JurisdictionModalContent = ({
                         disabled={disableCard('labuan')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poa_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
                     />
                 )}
 
@@ -507,7 +558,6 @@ const JurisdictionModalContent = ({
                         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                         synthetic_available_accounts={synthetic_available_accounts}
                         financial_available_accounts={financial_available_accounts}
-                        poi_poa_pending={poi_poa_pending}
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
@@ -515,6 +565,10 @@ const JurisdictionModalContent = ({
                         disabled={disableCard('svg')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poa_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
                     />
                 )}
             </div>

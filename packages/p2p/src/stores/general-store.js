@@ -24,7 +24,6 @@ export default class GeneralStore extends BaseStore {
     @observable notification_count = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
-    @observable order_timeout = 0;
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
@@ -383,21 +382,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setOrderTimeOut(time) {
-        this.order_timeout = time;
-    }
-
-    @action.bound
-    setP2PConfig() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { order_payment_period } = response.website_status?.p2p_config;
-                this.setOrderTimeOut(order_payment_period);
-            }
-        });
-    }
-
-    @action.bound
     setP2pOrderList(order_response) {
         if (order_response.error) {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
@@ -455,8 +439,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setWebsocketInit = (websocket, local_currency_decimal_places) => {
-        WebsocketInit(websocket, local_currency_decimal_places);
+    setWebsocketInit = websocket => {
+        WebsocketInit(websocket);
     };
 
     @action.bound

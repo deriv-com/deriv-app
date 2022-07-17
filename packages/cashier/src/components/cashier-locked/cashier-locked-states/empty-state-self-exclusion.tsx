@@ -4,7 +4,7 @@ import React from 'react';
 import EmptyState from '../../empty-state';
 
 type TProps = {
-    excluded_until: number;
+    excluded_until: number | undefined;
 };
 
 const EmptyStateSelfExclusion: React.FC<TProps> = ({ excluded_until }) => (

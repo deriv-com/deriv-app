@@ -7,7 +7,6 @@ import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
-import ReduceOrderTimeBanner from 'Components/my-ads/reduce-order-time-banner.jsx';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();
@@ -28,7 +27,6 @@ const OrderTable = ({ showDetails }) => {
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
     return (
         <React.Fragment>
-            <ReduceOrderTimeBanner />
             <div className='orders-tab'>
                 <div className='orders-tab__header '>
                     <ToggleContainer>

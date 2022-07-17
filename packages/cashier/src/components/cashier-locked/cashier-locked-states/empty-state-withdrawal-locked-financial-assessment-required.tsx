@@ -9,7 +9,14 @@ const EmptyStateWithdrawalLockedFinancialAssessmentRequired: React.FC = () => (
         description={
             <Localize
                 i18n_default_text='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
-                components={[<a key={0} className='link' href={'/account/financial-assessment'} />]}
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        href={'/account/financial-assessment'}
+                        data-testid='dt_financial_assessment_link'
+                    />,
+                ]}
             />
         }
     />

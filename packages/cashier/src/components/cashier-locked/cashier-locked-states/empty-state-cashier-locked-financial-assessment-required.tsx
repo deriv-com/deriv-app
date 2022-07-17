@@ -10,7 +10,13 @@ const EmptyStateCashierLockedFinancialAssessmentRequired: React.FC = () => (
             <Localize
                 i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
                 components={[
-                    <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/account/financial-assessment'}
+                        data-testid='dt_financial_assessment_link'
+                    />,
                 ]}
             />
         }

@@ -1,14 +1,14 @@
 import { localize, Localize } from '@deriv/translations';
 import React from 'react';
-import EmptyState from '../empty-state';
+import EmptyState from '../../empty-state';
 
-const EmptyStateCashierLockedFinancialAssessmentRequired: React.FC = () => (
+const EmptyStateAskFinancialRiskApproval: React.FC = () => (
     <EmptyState
         icon={'IcCashierLocked'}
         title={localize('Cashier is locked')}
         description={
             <Localize
-                i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                i18n_default_text='Please complete the <0>Appropriateness Test</0> to access your cashier.'
                 components={[
                     <a key={0} className='link' rel='noopener noreferrer' href={'/account/financial-assessment'} />,
                 ]}
@@ -17,4 +17,4 @@ const EmptyStateCashierLockedFinancialAssessmentRequired: React.FC = () => (
     />
 );
 
-export default EmptyStateCashierLockedFinancialAssessmentRequired;
+export default EmptyStateAskFinancialRiskApproval;

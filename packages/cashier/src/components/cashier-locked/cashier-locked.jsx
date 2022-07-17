@@ -29,7 +29,7 @@ import {
     EmptyStateDepositLockedSystemMaintenance,
     EmptyStateWithdrawalLockedSystemMaintenance,
     EmptyStateCryptoLockedSystemMaintenance,
-} from '../empty-states';
+} from './cashier-locked-states';
 
 const CashierLocked = ({
     account_status,

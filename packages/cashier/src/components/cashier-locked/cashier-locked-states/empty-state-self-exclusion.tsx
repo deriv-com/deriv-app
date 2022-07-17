@@ -1,7 +1,7 @@
 import { formatDate } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import React from 'react';
-import EmptyState from '../empty-state';
+import EmptyState from '../../empty-state';
 
 type TProps = {
     excluded_until: number;

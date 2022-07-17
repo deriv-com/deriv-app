@@ -1,6 +1,6 @@
 import { localize, Localize } from '@deriv/translations';
 import React from 'react';
-import EmptyState from '../empty-state';
+import EmptyState from '../../empty-state';
 
 const EmptyStateIdentityVerificationNeeded: React.FC = () => (
     <EmptyState

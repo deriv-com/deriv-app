@@ -1,8 +1,8 @@
 import { localize } from '@deriv/translations';
 import React from 'react';
-import EmptyState from '../empty-state';
+import EmptyState from '../../empty-state';
 
-const EmptyStateWithdrawalLockedStatus: React.FC = () => (
+const EmptyStateNoWithdrawalOrTradingStatus: React.FC = () => (
     <EmptyState
         icon={'IcCashierWithdrawalLock'}
         title={localize('Withdrawals are locked')}
@@ -12,4 +12,4 @@ const EmptyStateWithdrawalLockedStatus: React.FC = () => (
     />
 );
 
-export default EmptyStateWithdrawalLockedStatus;
+export default EmptyStateNoWithdrawalOrTradingStatus;

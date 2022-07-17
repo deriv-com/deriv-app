@@ -1,6 +1,16 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Text, Icon, Button } from '@deriv/components';
+import {
+    AutoHeightWrapper,
+    Div100vhContainer,
+    FormSubmitButton,
+    Text,
+    Icon,
+    Button,
+    ThemedScrollbars,
+    Modal,
+} from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import classNames from 'classnames';
@@ -96,8 +106,15 @@ const TradingAssessment = ({
         e.preventDefault();
     };
 
+    const handleCancel = values => {
+        const current_step = getCurrentStep() - 1;
+        onSave(current_step, values);
+        onCancel(current_step, goToPreviousStep);
+    };
+
     const handleRadioSelection = (e, form_control, callBackFn) => {
-        e.persist();
+        console.log('form_control: ', form_control);
+        if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
         // setIsTouched(true);
     };
@@ -110,35 +127,37 @@ const TradingAssessment = ({
     };
 
     return (
-        <div className='trading-assessment'>
-            <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
-                <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.' />
-            </Text>
-            <section className='trading-assessment__header'>
-                <Button
-                    onClick={handlePrevButton}
-                    transparent
-                    // is_disabled={is_prev_button_disabled}
-                    // className={classNames({ 'disable-pointer': is_prev_button_disabled })}
-                    style={hideElement(current_question_index === 0)}
-                >
-                    <Icon icon='IcChevronLeft' color={is_prev_button_disabled ? 'secondary' : 'black'} />
-                </Button>
-                <Text as='h1' color='prominent' weight='bold' size='xs'>
-                    {current_question_index + 1} {localize('of')} {assessment_questions.length}
+        <React.Fragment>
+            <div className='trading-assessment'>
+                <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
+                    <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.' />
                 </Text>
-                <Button
-                    onClick={handleNextButton}
-                    transparent
-                    // is_disabled={is_next_button_disabled}
-                    // className={classNames({ 'disable-pointer': is_prev_button_disabled })}
-                    style={hideElement(current_question_index === end_question_index)}
-                >
-                    <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
-                </Button>
-            </section>
-            <section className='trading-assessment__form'>
-                <FormBody>
+                <section className='trading-assessment__header'>
+                    <div className='trading-assessment__header--background'>
+                        <Button
+                            onClick={handlePrevButton}
+                            transparent
+                            // is_disabled={is_prev_button_disabled}
+                            // className={classNames({ 'disable-pointer': is_prev_button_disabled })}
+                            style={hideElement(current_question_index === 0)}
+                        >
+                            <Icon icon='IcChevronLeft' color={is_prev_button_disabled ? 'secondary' : 'black'} />
+                        </Button>
+                        <Text as='h1' color='prominent' weight='bold' size='xs'>
+                            {current_question_index + 1} {localize('of')} {assessment_questions.length}
+                        </Text>
+                        <Button
+                            onClick={handleNextButton}
+                            transparent
+                            // is_disabled={is_next_button_disabled}
+                            // className={classNames({ 'disable-pointer': is_prev_button_disabled })}
+                            style={hideElement(current_question_index === end_question_index)}
+                        >
+                            <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
+                        </Button>
+                    </div>
+                </section>
+                <section className='trading-assessment__form'>
                     <Formik
                         initialValues={{ ...value }}
                         onSubmit={(values, actions) => {
@@ -148,41 +167,43 @@ const TradingAssessment = ({
                         {({ dirty, errors, isValid, setFieldValue, touched, values }) => {
                             const { question_text, form_control, answer_options, questions } = current_question;
                             console.log(current_question);
-                            console.log('control passed: ', form_control);
                             return (
-                                <Form style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Field name={form_control}>
-                                        {({ field }) => {
-                                            if (questions && questions.length) {
-                                                return (
-                                                    <TradingAssessmentDropdownOption
-                                                        item_list={questions}
-                                                        onChange={e =>
-                                                            handleRadioSelection(e, form_control, setFieldValue)
-                                                        }
-                                                        values={values}
-                                                        form_control={form_control}
-                                                    />
-                                                );
-                                            }
-                                            return (
-                                                <TradingAssessmentRadioOption
-                                                    text={question_text}
-                                                    list={answer_options ?? []}
-                                                    onChange={e => handleRadioSelection(e, form_control, setFieldValue)}
-                                                    values={values}
-                                                    form_control={form_control}
-                                                />
-                                            );
-                                        }}
-                                    </Field>
-                                </Form>
+                                <React.Fragment>
+                                    <Form style={{ display: 'flex', justifyContent: 'center', padding: '0 7rem' }}>
+                                        {questions && questions.length ? (
+                                            <TradingAssessmentDropdownOption
+                                                item_list={questions}
+                                                onChange={handleRadioSelection}
+                                                values={values}
+                                                setFieldValue={setFieldValue}
+                                            />
+                                        ) : (
+                                            <TradingAssessmentRadioOption
+                                                text={question_text}
+                                                list={answer_options ?? []}
+                                                onChange={e => handleRadioSelection(e, form_control, setFieldValue)}
+                                                values={values}
+                                                form_control={form_control}
+                                            />
+                                        )}
+                                    </Form>
+                                    <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                        <FormSubmitButton
+                                            cancel_label={localize('Previous')}
+                                            has_cancel
+                                            // is_disabled={isSubmitDisabled(errors)}
+                                            is_absolute={isMobile()}
+                                            label={localize('Next')}
+                                            onCancel={() => handleCancel(values)}
+                                        />
+                                    </Modal.Footer>
+                                </React.Fragment>
                             );
                         }}
                     </Formik>
-                </FormBody>
-            </section>
-        </div>
+                </section>
+            </div>
+        </React.Fragment>
     );
 };
 

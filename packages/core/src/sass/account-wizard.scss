@@ -447,24 +447,31 @@
 }
 
 .trading-assessment {
-    padding: 0 7rem;
+    // padding: 0 7rem;
     display: flex;
     flex-direction: column;
 
     &__side-note {
         text-align: justify;
+        padding: 0 7rem;
     }
 
     &__header {
         margin-top: 2.4rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: var(--general-active);
+        width: -webkit-fill-available;
+        padding: 0 7rem;
+        &--background {
+            background-color: var(--general-active);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
     }
 
     &__form {
         margin-top: 3.1rem;
+        display: grid;
+        grid-template-rows: 4.8fr 1fr;
 
         .dc-themed-scrollbars {
             width: -webkit-fill-available;

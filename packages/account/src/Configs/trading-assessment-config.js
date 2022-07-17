@@ -273,19 +273,19 @@ const trading_assessment_form_config = {
     source_of_experience: {
         ...default_form_config,
     },
-    // cfd_trading_experience_mf: {
-    //     ...default_form_config,
-    //     rules: [['req', localize('Please select your experience in CFD trading')]],
-    // },
-    // cfd_trading_frequency_mf: {
-    //     ...default_form_config,
-    // },
-    // trading_experience_financial_instruments: {
-    //     ...default_form_config,
-    // },
-    // trading_frequency_financial_instruments: {
-    //     ...default_form_config,
-    // },
+    cfd_trading_experience_mf: {
+        ...default_form_config,
+        rules: [['req', localize('Please select your experience in CFD trading')]],
+    },
+    cfd_trading_frequency_mf: {
+        ...default_form_config,
+    },
+    trading_experience_financial_instruments: {
+        ...default_form_config,
+    },
+    trading_frequency_financial_instruments: {
+        ...default_form_config,
+    },
     cfd_trading_definition: {
         ...default_form_config,
     },

@@ -200,10 +200,9 @@ describe('PaymentAgentStore', () => {
         );
     });
 
-    it('should redirect to deposit if there is no payment agent available when accessing from payment agent page', async () => {
+    it('should return empty filtered list of payment agent if there is no payment agent available when accessing from payment agent page', async () => {
         payment_agent_store.filterPaymentAgentList();
         expect(payment_agent_store.filtered_list).toEqual([]);
-        expect(payment_agent_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
     it('should filter the payment agent list on change of payment method', async () => {

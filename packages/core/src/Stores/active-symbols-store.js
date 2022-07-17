@@ -11,7 +11,7 @@ export default class ActiveSymbolsStore extends BaseStore {
 
         makeObservable(this, {
             active_symbols: observable,
-            setActiveSymbols: action.bound
+            setActiveSymbols: action.bound,
         });
     }
 

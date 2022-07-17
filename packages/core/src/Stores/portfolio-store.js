@@ -43,9 +43,9 @@ export default class PortfolioStore extends BaseStore {
 
     active_positions = [];
 
-    constructor({ root_store }) {
+    constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super({ root_store });
+        super(root_store);
 
         makeObservable(this, {
             positions: observable.shallow,
@@ -84,7 +84,7 @@ export default class PortfolioStore extends BaseStore {
             updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
-            is_multiplier: computed
+            is_multiplier: computed,
         });
 
         this.root_store = root_store;

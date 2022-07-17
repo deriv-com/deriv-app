@@ -1,4 +1,4 @@
-import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
+import { action, intercept, observable, reaction, toJS, when, makeObservable, isObservable } from 'mobx';
 import { isProduction, isEmptyObject } from '@deriv/shared';
 
 import Validator from 'Utils/validator';
@@ -246,10 +246,12 @@ export default class BaseStore {
     addRule(property, rules) {
         this.validation_rules[property] = rules;
 
-        intercept(this, property, change => {
-            this.validateProperty(property, change.newValue);
-            return change;
-        });
+        if (isObservable(this[property])) {
+            intercept(this, property, change => {
+                this.validateProperty(property, change.newValue);
+                return change;
+            });
+        }
     }
 
     /**

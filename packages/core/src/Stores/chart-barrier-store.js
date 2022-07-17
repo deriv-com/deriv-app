@@ -39,7 +39,7 @@ export class ChartBarrierStore {
             onBarrierChange: action.bound,
             updateBarrierColor: action.bound,
             barrier_count: computed,
-            default_shade: computed
+            default_shade: computed,
         });
 
         this.color = color;

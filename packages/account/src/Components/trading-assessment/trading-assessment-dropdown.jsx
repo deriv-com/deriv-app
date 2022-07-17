@@ -1,17 +1,30 @@
 import React from 'react';
 import { Field } from 'formik';
-import { DesktopWrapper, Dropdown } from '@deriv/components';
+import { Dropdown } from '@deriv/components';
 
-const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setFieldValue }) => {
-    console.log('Item list: ', item_list);
-    console.log('Values: ', values);
+const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
+    React.useEffect(() => {
+        checkIfAllFieldsFilled();
+    }, [values]);
+
+    const checkIfAllFieldsFilled = () => {
+        if (
+            values.cfd_trading_experience_mf &&
+            values.cfd_trading_frequency_mf &&
+            values.trading_experience_financial_instruments &&
+            values.trading_frequency_financial_instruments
+        ) {
+            setEnableNextSection(true);
+        } else {
+            setEnableNextSection(false);
+        }
+    };
 
     return (
         <div className='trading-assessment__wrapper__dropdown'>
             {item_list.map((question, index) => (
                 <Field name={question.form_control} key={index}>
-                    {({ field }) => {
-                        console.log('Form contol: ', question.form_control);
+                    {() => {
                         return (
                             <div className='trading-assessment__wrapper__dropdown--list'>
                                 <Dropdown

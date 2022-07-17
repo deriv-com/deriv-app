@@ -460,18 +460,39 @@
         margin-top: 2.4rem;
         width: -webkit-fill-available;
         padding: 0 7rem;
+        position: relative;
         &--background {
             background-color: var(--general-active);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+
+        &--arrow-down {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 16px solid var(--general-active);
+            position: relative;
+            left: 49%;
+        }
     }
 
     &__form {
-        margin-top: 3.1rem;
+        margin-top: 2.2rem;
         display: grid;
-        grid-template-rows: 4.8fr 1fr;
+        grid-template-rows: 4.7fr 1fr;
+
+        &--layout {
+            grid-template-rows: 35rem 1fr !important;
+        }
+
+        &--fields {
+            display: flex;
+            justify-content: center;
+            padding: 0 7rem;
+        }
 
         .dc-themed-scrollbars {
             width: -webkit-fill-available;
@@ -498,5 +519,15 @@
 
     .disable-pointer {
         cursor: not-allowed;
+    }
+}
+
+.dc-modal__container_risk-acceptance {
+    .dc-modal-body {
+        text-align: center;
+    }
+
+    .dc-modal-footer {
+        justify-content: center;
     }
 }

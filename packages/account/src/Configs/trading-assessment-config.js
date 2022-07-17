@@ -263,7 +263,6 @@ export const trading_assessment_questions = [
 const default_form_config = {
     supported_in: ['maltainvest'],
     default_value: '',
-    rules: [['req', localize('Please select one of the options')]],
 };
 
 const trading_assessment_form_config = {
@@ -275,7 +274,6 @@ const trading_assessment_form_config = {
     },
     cfd_trading_experience_mf: {
         ...default_form_config,
-        rules: [['req', localize('Please select your experience in CFD trading')]],
     },
     cfd_trading_frequency_mf: {
         ...default_form_config,

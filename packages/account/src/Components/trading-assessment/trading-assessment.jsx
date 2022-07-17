@@ -12,13 +12,11 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import FormBody from 'Components/form-body';
 import classNames from 'classnames';
+import { connect } from 'Stores/connect';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
-// import { trading_assessment } from './trading-assessment-config';
-// import RiskToleranceWarningModal from './risk-tolerance-modal';
-// import './trading-assessment.scss';
+import RiskToleranceWarningModal from './risk-tolerance-modal';
 
 const TradingAssessment = ({
     assessment_questions,
@@ -29,81 +27,54 @@ const TradingAssessment = ({
     onCancel,
     onSubmit,
     getCurrentStep,
+    selected_step_ref,
     validate,
     value,
     ...props
 }) => {
     const [current_question_index, setCurrentQuestionIndex] = React.useState(0);
-    const [is_next_button_disabled, setIsNextButtonDisabled] = React.useState(true);
-    const [is_prev_button_disabled, setIsPrevButtonDisabled] = React.useState(true);
-    // const [is_touched, setIsTouched] = React.useState(false);
+    const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question, setCurrentQuestion] = React.useState({});
-    // const [show_risk_modal, setShowRiskModal] = React.useState(false);
+    const [show_risk_modal, setShowRiskModal] = React.useState(false);
+    const [form_values, setFormValues] = React.useState({});
 
-    // // question component
-    // const question_text = trading_assessment[current_question].question_text;
     const end_question_index = assessment_questions.length - 1;
-    // const answers_list = trading_assessment[current_question].answer_options;
-    // const answer_radio = trading_assessment[current_question].answer;
-    // const answer_dropdown = trading_assessment[current_question]?.questions;
-
-    // // assessment sections
-    // const risk_tolerance = trading_assessment[current_question].section === 'risk_tolerance';
-    // const source_of_experience = trading_assessment[current_question].section === 'source_of_experience';
-    // const trading_experience = trading_assessment[current_question].section === 'trading_experience';
-    // const trading_knowledge = trading_assessment[current_question].section === 'trading_knowledge';
-
-    // // header pagination buttons
-    // React.useEffect(() => {
-    //     if (current_question_index === 0) {
-    //         setIsPrevButtonDisabled(true);
-    //         setIsNextButtonDisabled(true);
-    //         setCurrentQuestion(assessment_questions[current_question_index]);
-    //         if (is_touched) {
-    //             setIsNextButtonDisabled(false);
-    //         }
-    //     } else if (is_touched && current_question_index < end_question_index) {
-    //         setIsNextButtonDisabled(false);
-    //         setIsPrevButtonDisabled(false);
-    //     } else if (current_question_index === end_question_index) {
-    //         setIsNextButtonDisabled(true);
-    //         setIsPrevButtonDisabled(false);
-    //     } else {
-    //         setIsPrevButtonDisabled(false);
-    //         setIsNextButtonDisabled(true);
-    //     }
-    // }, [current_question_index, is_next_button_disabled, is_prev_button_disabled, is_touched]);
-
-    // const onOptionsTouched = e => {
-    //     setIsTouched(true);
-    //     computeAnswer(e.target.value);
-    // };
-
-    // if (show_risk_modal) {
-    //     return <RiskToleranceWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />;
-    // }
 
     React.useEffect(() => {
         setCurrentQuestion(assessment_questions[current_question_index]);
+        setFormValues({ ...value });
     }, []);
 
-    const handleNextButton = e => {
+    React.useEffect(() => {
+        if (form_values.risk_tolerance === 'No') {
+            setShowRiskModal(true);
+        }
+    }, [form_values]);
+
+    if (show_risk_modal) {
+        return (
+            <RiskToleranceWarningModal
+                show_risk_modal={show_risk_modal}
+                setShowRiskModal={setShowRiskModal}
+                onClick={closeRealAccountSignup}
+            />
+        );
+    }
+
+    const handleNextButton = () => {
         const next_question = current_question_index + 1;
         if (next_question < assessment_questions.length) {
             setCurrentQuestionIndex(next_question);
             setCurrentQuestion(assessment_questions[next_question]);
         }
-        // setIsTouched(false);
-        e.preventDefault();
     };
 
-    const handlePrevButton = e => {
+    const handlePrevButton = () => {
         const prev_question = current_question_index - 1;
         if (prev_question >= 0) {
             setCurrentQuestionIndex(prev_question);
             setCurrentQuestion(assessment_questions[prev_question]);
         }
-        e.preventDefault();
     };
 
     const handleCancel = values => {
@@ -112,11 +83,10 @@ const TradingAssessment = ({
         onCancel(current_step, goToPreviousStep);
     };
 
-    const handleRadioSelection = (e, form_control, callBackFn) => {
-        console.log('form_control: ', form_control);
+    const handleValueSelection = (e, form_control, callBackFn) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
-        // setIsTouched(true);
+        setFormValues(previous_form_value => ({ ...previous_form_value, [form_control]: e.target.value }));
     };
 
     const hideElement = condition => {
@@ -125,6 +95,8 @@ const TradingAssessment = ({
         }
         return {};
     };
+
+    const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
 
     return (
         <React.Fragment>
@@ -137,11 +109,10 @@ const TradingAssessment = ({
                         <Button
                             onClick={handlePrevButton}
                             transparent
-                            // is_disabled={is_prev_button_disabled}
-                            // className={classNames({ 'disable-pointer': is_prev_button_disabled })}
                             style={hideElement(current_question_index === 0)}
+                            type='button'
                         >
-                            <Icon icon='IcChevronLeft' color={is_prev_button_disabled ? 'secondary' : 'black'} />
+                            <Icon icon='IcChevronLeft' color='black' />
                         </Button>
                         <Text as='h1' color='prominent' weight='bold' size='xs'>
                             {current_question_index + 1} {localize('of')} {assessment_questions.length}
@@ -149,55 +120,60 @@ const TradingAssessment = ({
                         <Button
                             onClick={handleNextButton}
                             transparent
-                            // is_disabled={is_next_button_disabled}
-                            // className={classNames({ 'disable-pointer': is_prev_button_disabled })}
+                            is_disabled={!is_next_button_enabled}
+                            className={classNames({ 'disable-pointer': !is_next_button_enabled })}
                             style={hideElement(current_question_index === end_question_index)}
+                            type='button'
                         >
-                            <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
+                            <Icon icon='IcChevronRight' color={is_next_button_enabled ? 'black' : 'secondary'} />
                         </Button>
                     </div>
+                    <div className='trading-assessment__header--arrow-down' />
                 </section>
                 <section className='trading-assessment__form'>
                     <Formik
+                        innerRef={selected_step_ref}
                         initialValues={{ ...value }}
+                        validator={() => ({})}
                         onSubmit={(values, actions) => {
                             onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
                         }}
                     >
-                        {({ dirty, errors, isValid, setFieldValue, touched, values }) => {
+                        {({ setFieldValue, values }) => {
                             const { question_text, form_control, answer_options, questions } = current_question;
-                            console.log(current_question);
                             return (
-                                <React.Fragment>
-                                    <Form style={{ display: 'flex', justifyContent: 'center', padding: '0 7rem' }}>
+                                <Form className='trading-assessment__form--layout'>
+                                    <div className='trading-assessment__form--fields'>
                                         {questions && questions.length ? (
                                             <TradingAssessmentDropdownOption
                                                 item_list={questions}
-                                                onChange={handleRadioSelection}
+                                                onChange={handleValueSelection}
                                                 values={values}
                                                 setFieldValue={setFieldValue}
+                                                setEnableNextSection={setIsNextButtonEnabled}
                                             />
                                         ) : (
                                             <TradingAssessmentRadioOption
                                                 text={question_text}
                                                 list={answer_options ?? []}
-                                                onChange={e => handleRadioSelection(e, form_control, setFieldValue)}
+                                                onChange={e => handleValueSelection(e, form_control, setFieldValue)}
                                                 values={values}
                                                 form_control={form_control}
+                                                setEnableNextSection={setIsNextButtonEnabled}
                                             />
                                         )}
-                                    </Form>
+                                    </div>
                                     <Modal.Footer has_separator is_bypassed={isMobile()}>
                                         <FormSubmitButton
                                             cancel_label={localize('Previous')}
                                             has_cancel
-                                            // is_disabled={isSubmitDisabled(errors)}
+                                            is_disabled={!isAssessmentCompleted(values)}
                                             is_absolute={isMobile()}
                                             label={localize('Next')}
                                             onCancel={() => handleCancel(values)}
                                         />
                                     </Modal.Footer>
-                                </React.Fragment>
+                                </Form>
                             );
                         }}
                     </Formik>

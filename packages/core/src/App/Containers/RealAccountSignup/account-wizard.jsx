@@ -200,12 +200,13 @@ const AccountWizard = props => {
         return props.realAccountSignup(clone);
     };
 
-    const updateValue = (index, value, setSubmitting, goToNextStep) => {
+    const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
+        console.log('Called updateValue');
         saveFormData(index, value);
         clearError();
 
         // Check if account wizard is not finished
-        if (index + 1 >= state_items.length) {
+        if (should_override || index + 1 >= state_items.length) {
             createRealAccount();
         } else {
             goToNextStep();
@@ -239,22 +240,24 @@ const AccountWizard = props => {
         props.setLoading(true);
         submitForm(payload)
             .then(response => {
-                props.setIsRiskWarningVisible(false);
-                if (props.real_account_signup_target === 'maltainvest') {
-                    props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
-                } else if (props.real_account_signup_target === 'samoa') {
-                    props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
-                } else {
-                    props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
-                }
+                console.log('Response: ', response);
+                // props.setIsRiskWarningVisible(false);
+                // if (props.real_account_signup_target === 'maltainvest') {
+                //     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                // } else if (props.real_account_signup_target === 'samoa') {
+                //     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                // } else {
+                //     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                // }
             })
             .catch(error => {
-                if (error.code === 'show risk disclaimer') {
-                    props.setIsRiskWarningVisible(true);
-                    setShouldAcceptFinancialRisk(true);
-                } else {
-                    props.onError(error, state_items);
-                }
+                console.log('Error: ', error);
+                // if (error.code === 'show risk disclaimer') {
+                //     props.setIsRiskWarningVisible(true);
+                //     setShouldAcceptFinancialRisk(true);
+                // } else {
+                //     props.onError(error, state_items);
+                // }
             })
             .finally(() => props.setLoading(false));
     };

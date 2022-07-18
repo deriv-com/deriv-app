@@ -2,7 +2,7 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 
-const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal, onClick }) => (
+const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal }) => (
     <Modal
         small
         is_vertical_centered
@@ -22,7 +22,7 @@ const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal, onClick 
             </Text>
         </Modal.Body>
         <Modal.Footer>
-            <Button type='button' large text={localize('OK')} primary onClick={onClick} />
+            <Button type='button' large text={localize('OK')} primary />
         </Modal.Footer>
     </Modal>
 );

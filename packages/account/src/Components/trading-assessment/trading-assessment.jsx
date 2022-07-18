@@ -1,26 +1,14 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import {
-    AutoHeightWrapper,
-    Div100vhContainer,
-    FormSubmitButton,
-    Text,
-    Icon,
-    Button,
-    ThemedScrollbars,
-    Modal,
-} from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { Formik, Form } from 'formik';
+import { FormSubmitButton, Text, Icon, Button, Modal } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { connect } from 'Stores/connect';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
-import RiskToleranceWarningModal from './risk-tolerance-modal';
 
 const TradingAssessment = ({
     assessment_questions,
-    closeRealAccountSignup,
     goToNextStep,
     goToPreviousStep,
     onSave,
@@ -30,12 +18,10 @@ const TradingAssessment = ({
     selected_step_ref,
     validate,
     value,
-    ...props
 }) => {
     const [current_question_index, setCurrentQuestionIndex] = React.useState(0);
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question, setCurrentQuestion] = React.useState({});
-    const [show_risk_modal, setShowRiskModal] = React.useState(false);
     const [form_values, setFormValues] = React.useState({});
 
     const end_question_index = assessment_questions.length - 1;
@@ -47,19 +33,9 @@ const TradingAssessment = ({
 
     React.useEffect(() => {
         if (form_values.risk_tolerance === 'No') {
-            setShowRiskModal(true);
+            onSubmit(getCurrentStep() - 1, form_values, null, goToNextStep, true);
         }
     }, [form_values]);
-
-    if (show_risk_modal) {
-        return (
-            <RiskToleranceWarningModal
-                show_risk_modal={show_risk_modal}
-                setShowRiskModal={setShowRiskModal}
-                onClick={closeRealAccountSignup}
-            />
-        );
-    }
 
     const handleNextButton = () => {
         const next_question = current_question_index + 1;

@@ -7,6 +7,18 @@ import { isEnded, isDigitContract, isAccumulatorContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
 
+const TickCounter = React.memo(({ current_tick }) => (
+    <div className='tick-counter'>
+        <Text className='tick-counter__name' size='xxxs'>
+            {localize('Tick')}
+        </Text>
+        <Text as='span' weight='bold' className='tick-counter__count' size='xs'>
+            {current_tick}
+        </Text>
+    </div>
+));
+TickCounter.displayName = 'TickCounter';
+
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
     if (!latest_tick_contract || !latest_tick_contract.contract_info.tick_stream) return null;
@@ -19,14 +31,7 @@ const TradeInfo = ({ markers_array, granularity }) => {
     const current_tick =
         isDigitContract(contract_type) || is_accumulator ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
     return is_accumulator ? (
-        <div className='tick-counter'>
-            <Text className='tick-counter__name' size='xxxs'>
-                {localize('Tick')}
-            </Text>
-            <Text as='span' weight='bold' className='tick-counter__count' size='xs'>
-                {current_tick}
-            </Text>
-        </div>
+        <TickCounter current_tick={current_tick} />
     ) : (
         <Text weight='bold' className='recent-trade-info'>
             {localize('Tick')} {current_tick}/{tick_count}

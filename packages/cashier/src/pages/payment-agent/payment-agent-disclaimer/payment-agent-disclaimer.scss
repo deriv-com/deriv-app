@@ -1,4 +1,7 @@
 .payment-agent-disclaimer {
+    &__title {
+        margin-bottom: 0.8rem;
+    }
     @include mobile {
         background-color: var(--general-section-1);
         border-radius: $BORDER_RADIUS * 2;

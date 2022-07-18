@@ -2,12 +2,13 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Icon, Input, MobileWrapper, Text } from '@deriv/components';
+import { Button, Icon, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
+import SideNote from 'Components/side-note';
 import './payment-agent-unlisted-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency }) => {
@@ -72,9 +73,9 @@ const PaymentAgentUnlistedWithdrawForm = ({
                     <Localize i18n_default_text='Back to list' />
                 </Text>
             </div>
-            <MobileWrapper>
+            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
                 <PaymentAgentDisclaimer />
-            </MobileWrapper>
+            </SideNote>
             <Formik
                 initialValues={{
                     account_number: '',

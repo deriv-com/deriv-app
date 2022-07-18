@@ -9,6 +9,7 @@ import VerificationEmail from 'Components/verification-email';
 import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import SideNote from 'Components/side-note';
 import './payment-agent-list.scss';
 
 const PaymentAgentList = ({
@@ -33,7 +34,15 @@ const PaymentAgentList = ({
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function' && !is_loading) {
-            setSideNotes(!is_try_withdraw_successful ? [<PaymentAgentDisclaimer key={0} />] : []);
+            setSideNotes(
+                !is_try_withdraw_successful
+                    ? [
+                          <SideNote has_title={false} key={0}>
+                              <PaymentAgentDisclaimer />
+                          </SideNote>,
+                      ]
+                    : []
+            );
         }
     }, [is_loading, is_try_withdraw_successful]);
 

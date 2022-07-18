@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Text, MobileWrapper } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetail from '../payment-agent-detail';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import SideNote from 'Components/side-note';
 import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
@@ -43,9 +44,9 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
-            <MobileWrapper>
+            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
                 <PaymentAgentDisclaimer />
-            </MobileWrapper>
+            </SideNote>
             <Text
                 as='h1'
                 align='center'

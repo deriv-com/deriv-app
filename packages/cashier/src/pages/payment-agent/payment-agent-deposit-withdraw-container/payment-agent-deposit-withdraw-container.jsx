@@ -9,6 +9,7 @@ import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import SideNote from 'Components/side-note';
 
 const PaymentAgentDepositWithdrawContainer = ({
     app_contents_scroll_ref,
@@ -67,9 +68,9 @@ const PaymentAgentDepositWithdrawContainer = ({
 
     return (
         <React.Fragment>
-            <MobileWrapper>
+            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
                 <PaymentAgentDisclaimer />
-            </MobileWrapper>
+            </SideNote>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>

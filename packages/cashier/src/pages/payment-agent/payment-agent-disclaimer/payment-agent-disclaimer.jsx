@@ -7,7 +7,7 @@ import './payment-agent-disclaimer.scss';
 const PaymentAgentDisclaimer = () => {
     return (
         <div className='payment-agent-disclaimer'>
-            <Text as='p' size='xxs' lh='m' weight='bold'>
+            <Text as='p' className='payment-agent-disclaimer__title' size='xxs' lh='m' weight='bold'>
                 <Localize i18n_default_text='DISCLAIMER' />
             </Text>
             <Text as='p' size='xxxs' lh='s'>

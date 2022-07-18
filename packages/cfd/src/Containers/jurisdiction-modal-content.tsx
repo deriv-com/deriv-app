@@ -37,6 +37,7 @@ type TJurisdictionModalContent = {
     real_financial_accounts_existing_data: TExistingData;
     poa_failed: boolean;
     poi_failed: boolean;
+    is_virtual: boolean;
 };
 
 type TJurisdictionCard = {
@@ -55,6 +56,7 @@ type TJurisdictionCard = {
     poa_acknowledged: boolean;
     poi_acknowledged: boolean;
     is_fully_authenticated: boolean;
+    is_virtual: boolean;
 };
 const StatusCodes = {
     none: 'none',
@@ -81,6 +83,7 @@ const JurisdictionCard = ({
     poa_acknowledged,
     poi_acknowledged,
     is_fully_authenticated,
+    is_virtual,
 }: TJurisdictionCard) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
@@ -111,7 +114,45 @@ const JurisdictionCard = ({
 
     const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
 
+    const getAccountTitle = () => {
+        switch (account_type) {
+            case 'synthetic':
+                return 'Synthetic';
+            case 'financial':
+                return 'Financial';
+            default:
+                return '';
+        }
+    };
+
+    const getTypeTitle = () => {
+        switch (type_of_card) {
+            case 'bvi':
+                return 'BVI';
+            case 'vanuatu':
+                return 'Vanuatu';
+            case 'labuan':
+                return 'STP';
+            default:
+                return '';
+        }
+    };
     const VerificationStatuses = () => {
+        if (is_virtual && type_of_card !== 'svg') {
+            return (
+                <div className={`${card_classname}__footer--none`}>
+                    <Text as='p' size='xxxs' align='center' color={disabled ? 'less-prominent' : 'prominent'}>
+                        <Localize
+                            i18n_default_text='Switch to your real account to create a DMT5 {{account_title}} {{type_title}} account.'
+                            values={{
+                                account_title: getAccountTitle(),
+                                type_title: getTypeTitle(),
+                            }}
+                        />
+                    </Text>
+                </div>
+            );
+        }
         if (!disabled && type_of_card) {
             // account not added
             if (type_of_card === 'svg') {
@@ -284,6 +325,7 @@ const JurisdictionModalContent = ({
     real_financial_accounts_existing_data,
     poa_failed,
     poi_failed,
+    is_virtual,
 }: TJurisdictionModalContent) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
@@ -305,6 +347,9 @@ const JurisdictionModalContent = ({
     };
 
     const disableCard = (type_of_card: string) => {
+        if (is_virtual && type_of_card !== 'svg') {
+            return true;
+        }
         const is_available =
             account_type === 'synthetic'
                 ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
@@ -490,6 +535,7 @@ const JurisdictionModalContent = ({
                         poa_acknowledged={poa_acknowledged}
                         poi_acknowledged={poa_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
                     />
                 )}
 
@@ -510,6 +556,7 @@ const JurisdictionModalContent = ({
                         poa_acknowledged={poa_acknowledged}
                         poi_acknowledged={poa_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
                     />
                 )}
 
@@ -530,6 +577,7 @@ const JurisdictionModalContent = ({
                         poa_acknowledged={poa_acknowledged}
                         poi_acknowledged={poa_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
                     />
                 )}
                 {cardsToBeShown('labuan') && (
@@ -549,6 +597,7 @@ const JurisdictionModalContent = ({
                         poa_acknowledged={poa_acknowledged}
                         poi_acknowledged={poa_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
                     />
                 )}
 
@@ -569,6 +618,7 @@ const JurisdictionModalContent = ({
                         poa_acknowledged={poa_acknowledged}
                         poi_acknowledged={poa_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
                     />
                 )}
             </div>
@@ -587,4 +637,5 @@ export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
+    is_virtual: client.is_virtual,
 }))(JurisdictionModalContent);

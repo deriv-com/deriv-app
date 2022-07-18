@@ -1,12 +1,10 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import AppStoreAppCard from 'Components/app-card';
 import AppStoreSkeletonCard from 'Components/skeleton-card';
-import AppStoreWalletCard from 'Components/wallet';
 
 type TCardsLinkDetails = {
-    app_card?: Partial<typeof AppStoreAppCard>;
-    wallet_card?: Partial<typeof AppStoreWalletCard>;
+    app_card?: React.ReactNode;
+    wallet_card?: React.ReactNode;
     is_linked: boolean;
 };
 

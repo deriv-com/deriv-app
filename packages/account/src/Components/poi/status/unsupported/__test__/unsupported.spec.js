@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Unsupported from '../unsupported';
+import Unsupported from '../unsupported.jsx';
 
 it('should trigger onClick callback when the client clicks the "LiveChat" link', () => {
     window.LC_API = {

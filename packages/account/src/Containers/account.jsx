@@ -186,6 +186,7 @@ Account.propTypes = {
     location: PropTypes.object,
     logout: PropTypes.func,
     platform: PropTypes.string,
+    routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,

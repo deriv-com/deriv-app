@@ -21,13 +21,8 @@ const PaymentAgentTransferConfirm = ({
             data={[
                 { label: localize('From account number'), value: loginid, key: 'transfer_from' },
                 {
-                    label: localize('To account number'),
-                    value: transfer_to.toUpperCase(),
-                    key: 'transfer_to',
-                },
-                {
-                    label: localize('Account holder name'),
-                    value: transfer_to_name,
+                    label: [localize('To account number'), localize('Account holder name')],
+                    value: [transfer_to.toUpperCase(), transfer_to_name],
                     key: 'transfer_to',
                 },
                 {
@@ -38,6 +33,7 @@ const PaymentAgentTransferConfirm = ({
                 { label: localize('Description'), value: description, key: 'description' },
             ]}
             error={error}
+            is_payment_agent_transfer
             onClickBack={() => {
                 setIsTryTransferSuccessful(false);
             }}

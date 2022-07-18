@@ -143,6 +143,7 @@ export const icons = {
         'IcCashierPayNowLight',
         'IcCashierPayRetailersDark',
         'IcCashierPayRetailersLight',
+        'IcCashierPaymentAgent',
         'IcCashierPaypalDark',
         'IcCashierPaypalLight',
         'IcCashierPerfectMoneyDark',

@@ -9,7 +9,17 @@ import './confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
     <div className='confirm__row'>
-        <Text size='xs'>{label}</Text>
+        {Array.isArray(label) ? (
+            <div>
+                {label.map((label_text, idx) => (
+                    <Text as='div' key={idx} size='xs' align='left'>
+                        {label_text}
+                    </Text>
+                ))}
+            </div>
+        ) : (
+            <Text size='xs'>{label}</Text>
+        )}
         {Array.isArray(value) ? (
             <div>
                 {value.map((v, idx) => (
@@ -120,7 +130,7 @@ const Confirm = ({ data, error, is_payment_agent_withdraw, onClickBack, onClickC
 Confirm.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
-            label: PropTypes.string,
+            label: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
         })
     ),

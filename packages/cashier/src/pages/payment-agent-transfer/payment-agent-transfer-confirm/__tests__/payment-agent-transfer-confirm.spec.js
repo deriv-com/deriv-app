@@ -33,8 +33,8 @@ describe('<PaymentAgentTransferConfirm />', () => {
     it('should show proper icon and message', () => {
         render(<PaymentAgentTransferConfirm {...props} />);
 
-        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
-        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
+        expect(screen.getByTestId('dti_red_warning_icon')).toBeInTheDocument();
+        expect(screen.getByText('Check transfer information')).toBeInTheDocument();
     });
 
     it(`setIsTryTransferSuccessful method should be triggered when click on 'Back' button`, () => {

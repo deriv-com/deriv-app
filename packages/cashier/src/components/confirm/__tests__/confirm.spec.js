@@ -86,8 +86,13 @@ describe('<Confirm />', () => {
         const el_checkbox = screen.getByRole('checkbox');
         const [_, transfer_now_btn] = screen.getAllByRole('button');
         fireEvent.click(el_checkbox);
+    });
+    it('should show checkbox when is_payment_agent_transfer property is equal to true', () => {
+        render(<Confirm {...props} is_payment_agent_transfer />);
 
-        expect(transfer_now_btn).toBeEnabled();
+        expect(
+            screen.getByLabelText('I confirm that I have verified the client’s transfer information.')
+        ).toBeInTheDocument();
     });
 
     it('should trigger onClickConfirm method when the client clicks on Transfer now button', () => {

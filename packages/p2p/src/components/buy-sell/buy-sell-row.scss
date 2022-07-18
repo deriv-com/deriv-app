@@ -93,11 +93,10 @@
         display: flex;
         flex-flow: row wrap;
         white-space: inherit;
-        max-width: 13rem;
-        width: fit-content;
         height: fit-content;
-        max-height: 5rem;
+        max-height: 7rem;
         margin-left: auto;
+        padding: 1rem 1.6rem;
     }
 
     &__rate {

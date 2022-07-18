@@ -159,9 +159,13 @@ const JurisdictionModal = ({
         } else if (poi_poa_verified) {
             // for bvi, labuan & vanuatu:
             if (!has_submitted_personal_details) {
-                toggleCFDPersonalDetailsModal();
+                setTimeout(() => {
+                    toggleCFDPersonalDetailsModal();
+                }, 260);
             } else {
-                openPasswordModal(type_of_account);
+                setTimeout(() => {
+                    openPasswordModal(type_of_account);
+                }, 260);
             }
         } else {
             toggleCFDVerificationModal();

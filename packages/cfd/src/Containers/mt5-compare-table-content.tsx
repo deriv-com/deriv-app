@@ -243,12 +243,18 @@ const DMT5CompareModalContent = ({
                     if (poi_poa_verified) {
                         // for bvi, labuan & vanuatu:
                         if (!has_real_mt5_login) {
-                            toggleCFDPersonalDetailsModal();
+                            setTimeout(() => {
+                                toggleCFDPersonalDetailsModal();
+                            }, 260);
                         } else {
-                            openPasswordModal(type_of_account);
+                            setTimeout(() => {
+                                openPasswordModal(type_of_account);
+                            }, 260);
                         }
                     } else {
-                        toggleCFDVerificationModal();
+                        setTimeout(() => {
+                            toggleCFDVerificationModal();
+                        }, 260);
                     }
                 }, 260);
                 break;

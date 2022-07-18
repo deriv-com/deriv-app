@@ -220,7 +220,7 @@ const JurisdictionModal = ({
                                         toggleJurisdictionModal();
                                         setTimeout(() => {
                                             onSelectRealAccount();
-                                        }, 250);
+                                        }, 260);
                                     }}
                                 >
                                     {buttonText()}
@@ -243,7 +243,7 @@ const JurisdictionModal = ({
                                         toggleJurisdictionModal();
                                         setTimeout(() => {
                                             onSelectRealAccount();
-                                        }, 250);
+                                        }, 260);
                                     }}
                                 >
                                     {buttonText()}

@@ -281,6 +281,27 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.onfido_failed);
                     }
                 }
+
+                if (needs_verification.includes('identity') && identity.status === 'rejected') {
+                    if (
+                        identity?.services.onfido.last_rejected &&
+                        poi_name_mismatch &&
+                        !personal_details_locked &&
+                        onfido_submissions_left > 0
+                    ) {
+                        this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
+                    } else if (onfido_submissions_left === 0 || (!personal_details_locked && poi_name_mismatch)) {
+                        this.addNotificationMessage(this.client_notifications.onfido_failed);
+                    } else if (identity?.services.idv.submissions_left || identity?.services.onfido.submissions_left) {
+                        this.addNotificationMessage(this.client_notifications.poi_verification_failed);
+                    }
+                }
+                if (needs_verification.includes('document') && document.status === 'rejected') {
+                    this.addNotificationMessage(this.client_notifications.poa_verification_failed);
+                }
+                if (!needs_verification.length && document.status === 'verified' && identity.status === 'verified') {
+                    this.addNotificationMessage(this.client_notifications.poa_poi_verified);
+                }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(

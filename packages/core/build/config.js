@@ -136,7 +136,7 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [/^(?!css).*/],
+    exclude: [/\**/],
     runtimeCaching: [
         {
             urlPattern: /public\/(images|sprites)\/(?!.*favicons).*$/,
@@ -155,6 +155,18 @@ const generateSWConfig = is_release => ({
             handler: 'CacheFirst',
             options: {
                 cacheName: 'core-js-files',
+                expiration: {
+                    maxAgeSeconds: 60 * 60 * 24,
+                },
+            },
+        },
+        {
+            urlPattern: ({ url }) => {
+                return url.pathname.match(/^\/css\//);
+            },
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'core-css-files',
                 expiration: {
                     maxAgeSeconds: 60 * 60 * 24,
                 },

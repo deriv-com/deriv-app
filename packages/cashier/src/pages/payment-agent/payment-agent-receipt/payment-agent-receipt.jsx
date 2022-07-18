@@ -84,7 +84,8 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
                 <div className='payment-agent-receipt__transferred-contact-wrapper'>
                     <Text align='center' as='p' size='xxs' line_height='m' weight='bold'>
                         <Localize
-                            i18n_default_text="{{payment_agent}}'s contact details"
+                            i18n_default_text="<0>{{payment_agent}}</0><1>'s</1> contact details"
+                            components={[<span key={0} />, <span key={1} />]}
                             values={{ payment_agent: receipt.payment_agent_name }}
                             options={{ interpolation: { escapeValue: false } }}
                         />

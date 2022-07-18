@@ -146,15 +146,23 @@ const JurisdictionModal = ({
 
         if (is_eu) {
             if (poi_poa_verified) {
-                openPasswordModal(type_of_account);
+                setTimeout(() => {
+                    openPasswordModal(type_of_account);
+                }, 260);
             } else {
-                toggleCFDVerificationModal();
+                setTimeout(() => {
+                    toggleCFDVerificationModal();
+                }, 260);
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
             if (account_type.type === 'financial' && poi_poa_verified && !has_submitted_personal_details) {
-                toggleCFDPersonalDetailsModal();
+                setTimeout(() => {
+                    toggleCFDPersonalDetailsModal();
+                }, 260);
             } else {
-                openPasswordModal(type_of_account);
+                setTimeout(() => {
+                    openPasswordModal(type_of_account);
+                }, 260);
             }
         } else if (poi_poa_verified) {
             // for bvi, labuan & vanuatu:
@@ -168,7 +176,9 @@ const JurisdictionModal = ({
                 }, 260);
             }
         } else {
-            toggleCFDVerificationModal();
+            setTimeout(() => {
+                toggleCFDVerificationModal();
+            }, 260);
         }
     };
 

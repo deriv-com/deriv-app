@@ -14,8 +14,8 @@ const FileUploader = ({
     index,
     sub_index,
     updateErrors,
-    show_button,
-    updateShowButton,
+    show_browse_button,
+    updateShowBrowseButton,
 }) => {
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
@@ -30,12 +30,12 @@ const FileUploader = ({
         event.nativeEvent.stopImmediatePropagation();
         const fileUploaded = event.target.files[0];
         handleFile(name, fileUploaded);
-        updateShowButton(sub_index, !show_button);
+        updateShowBrowseButton(sub_index, !show_browse_button);
     };
     const handleIconClick = e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        updateShowButton(sub_index, !show_button);
+        updateShowBrowseButton(sub_index, !show_browse_button);
         e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
         e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
         handleFile(name, '');
@@ -71,14 +71,14 @@ const FileUploader = ({
                         icon='IcCross'
                         height='100%'
                         className={classNames('stack-top ', {
-                            'remove-element': show_button,
+                            'remove-element': show_browse_button,
                         })}
                     />
                 }
             />
             <Button
                 className={classNames('proof-of-ownership__card-open-inputs-photo-btn ', {
-                    'remove-element': !show_button,
+                    'remove-element': !show_browse_button,
                 })}
                 text={localize('Browse')}
                 onClick={handleClick}

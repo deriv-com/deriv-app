@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
 
 const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error, validateField, updateErrors }) => {
-    const [show_button, setShowButton] = React.useState([]);
+    const [show_browse_button, setShowBrowseButton] = React.useState([]);
     const card_details = paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other;
     values.data[index].files_required = card_details.documents_required;
-    const updateShowButton = (sub_index, value) => {
-        const show_button_state = [...show_button];
-        show_button_state[sub_index] = value;
-        setShowButton(show_button_state);
+    const updateShowBrowseButton = (sub_index, value) => {
+        const show_browse_button_state = [...show_browse_button];
+        show_browse_button_state[sub_index] = value;
+        setShowBrowseButton(show_browse_button_state);
     };
     const onClickHandler = e => {
         e.preventDefault();
@@ -62,8 +62,8 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
                     error={error}
                     validateField={validateField}
                     updateErrors={updateErrors}
-                    show_button={show_button}
-                    updateShowButton={updateShowButton}
+                    show_browse_button={show_browse_button}
+                    updateShowBrowseButton={updateShowBrowseButton}
                 />
             )}
         </div>

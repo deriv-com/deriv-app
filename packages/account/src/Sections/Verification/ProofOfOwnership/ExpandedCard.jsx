@@ -17,8 +17,8 @@ const ExpandedCard = ({
     error,
     validateField,
     updateErrors,
-    show_button,
-    updateShowButton,
+    show_browse_button,
+    updateShowBrowseButton,
 }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
     const controls_to_show = [...Array(card_details?.documents_required).keys()];
@@ -112,8 +112,10 @@ const ExpandedCard = ({
                                         index={index}
                                         sub_index={i}
                                         updateErrors={updateErrors}
-                                        show_button={typeof show_button[i] === 'boolean' ? show_button[i] : true}
-                                        updateShowButton={updateShowButton}
+                                        show_browse_button={
+                                            typeof show_browse_button[i] === 'boolean' ? show_browse_button[i] : true
+                                        }
+                                        updateShowBrowseButton={updateShowBrowseButton}
                                     />
                                 </div>
                             </React.Fragment>
@@ -142,8 +144,8 @@ ExpandedCard.propTypes = {
     error: PropTypes.object,
     validateField: PropTypes.func,
     updateErrors: PropTypes.func,
-    show_button: PropTypes.array,
-    updateShowButton: PropTypes.func,
+    show_browse_button: PropTypes.array,
+    updateShowBrowseButton: PropTypes.func,
 };
 
 export default ExpandedCard;

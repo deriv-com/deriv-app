@@ -24,7 +24,7 @@ describe('ExpandedCard.jsx', () => {
             <ExpandedCard
                 card_details={card_details}
                 identifier={card_details.payment_method_identifier}
-                show_button={[]}
+                show_browse_button={[]}
             />
         );
         const element = screen.getByText('Card Number', { exact: true });
@@ -35,7 +35,7 @@ describe('ExpandedCard.jsx', () => {
             <ExpandedCard
                 card_details={card_details}
                 identifier={card_details.payment_method_identifier}
-                show_button={[]}
+                show_browse_button={[]}
             />
         );
         const exampelLink = screen.getByText('See example');
@@ -46,7 +46,7 @@ describe('ExpandedCard.jsx', () => {
             <ExpandedCard
                 card_details={card_details}
                 identifier={card_details.payment_method_identifier}
-                show_button={[]}
+                show_browse_button={[]}
             />
         );
         const element = screen.getByDisplayValue('1234 56XX XXXX 1121 3', {

@@ -6,7 +6,7 @@ import {
     WS,
     contractCancelled,
     contractSold,
-    getDummyPOCResponseForACC,
+    getDummyPOCResponseForACCU,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -113,7 +113,7 @@ export default class ContractReplayStore extends BaseStore {
         if (!this.switch_account_listener) return;
 
         // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        const dummy_response = getDummyPOCResponseForACCU(Date.now());
 
         if (this.root_store.portfolio.is_accumulator) {
             if ('error' in dummy_response) {

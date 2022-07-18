@@ -41,12 +41,12 @@ export const ContractType = (() => {
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
-            const dummy_available_contracts_with_acc = [
+            const dummy_available_contracts_with_accu = [
                 ...r.contracts_for.available,
                 dummy_accumulator_in_contracts_for_available,
             ];
 
-            dummy_available_contracts_with_acc.forEach(contract => {
+            dummy_available_contracts_with_accu.forEach(contract => {
                 const type = Object.keys(contract_types).find(
                     key =>
                         contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&

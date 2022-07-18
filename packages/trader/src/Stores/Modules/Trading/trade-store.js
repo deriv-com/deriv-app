@@ -22,7 +22,7 @@ import {
     getBarrierPipSize,
     isBarrierSupported,
     removeBarrier,
-    getDummyProposalResponseForACC,
+    getDummyProposalResponseForACCU,
     isAccumulatorContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -122,7 +122,6 @@ export default class TradeStore extends BaseStore {
     @observable max_payout = 0;
     @observable ticks_count_since_loss_condition = 0;
     @observable tick_size_barrier = 0;
-    @observable acc_barriers = null;
 
     // Multiplier trade params
     @observable multiplier;
@@ -849,7 +848,7 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get show_accumulator_tick_counter() {
-        return isAccumulatorContract(this.contract_type) && !this.proposal_info.ACC?.is_sold;
+        return isAccumulatorContract(this.contract_type) && !this.proposal_info.ACCU?.is_sold;
     }
 
     @action.bound
@@ -933,7 +932,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onProposalResponse(response) {
         // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyProposalResponseForACC(Date.now());
+        const dummy_response = getDummyProposalResponseForACCU(Date.now());
         let proposal_response;
         if (this.root_store.modules.trade.is_accumulator) {
             proposal_response = dummy_response;
@@ -968,9 +967,9 @@ export default class TradeStore extends BaseStore {
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
-        if (this.is_accumulator && this.proposal_info && this.proposal_info.ACC) {
+        if (this.is_accumulator && this.proposal_info && this.proposal_info.ACCU) {
             const { ticks_count_since_loss_condition, tick_size_barrier, max_payout, high_barrier, low_barrier } =
-                this.proposal_info.ACC;
+                this.proposal_info.ACCU;
             this.tick_size_barrier = tick_size_barrier;
             this.ticks_count_since_loss_condition = ticks_count_since_loss_condition;
             this.max_payout = max_payout;

@@ -18,9 +18,9 @@ import {
     getDurationUnitText,
     getEndTime,
     removeBarrier,
-    getDummyAllPositionsForACC,
-    getDummyPOCResponseForACC,
-    getDummyPortfolioContractsForACC,
+    getDummyAllPositionsForACCU,
+    getDummyPOCResponseForACCU,
+    getDummyPortfolioContractsForACCU,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { ChartBarrierStore } from './chart-barrier-store';
@@ -88,7 +88,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
 
         // maryia: temporary dummy data for accumulators
-        const dummy_contracts = getDummyPortfolioContractsForACC(Date.now());
+        const dummy_contracts = getDummyPortfolioContractsForACCU(Date.now());
 
         let contracts;
         if (this.is_accumulator) {
@@ -159,7 +159,7 @@ export default class PortfolioStore extends BaseStore {
     deepClone = obj => JSON.parse(JSON.stringify(obj));
     updateContractTradeStore(_response) {
         // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        const dummy_response = getDummyPOCResponseForACCU(Date.now());
         let response;
         if (this.is_accumulator) {
             response = dummy_response;
@@ -178,7 +178,7 @@ export default class PortfolioStore extends BaseStore {
 
     updateContractReplayStore(_response) {
         // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        const dummy_response = getDummyPOCResponseForACCU(Date.now());
         let response;
         if (this.is_accumulator) {
             response = dummy_response;
@@ -208,7 +208,7 @@ export default class PortfolioStore extends BaseStore {
     proposalOpenContractHandler(response) {
         // maryia: temporary dummy data for accumulators
         const now = Date.now();
-        const dummy_response = getDummyPOCResponseForACC(now);
+        const dummy_response = getDummyPOCResponseForACCU(now);
 
         let proposal, portfolio_position;
         if (this.is_accumulator) {
@@ -218,7 +218,7 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             proposal = dummy_response.proposal_open_contract;
-            portfolio_position = getDummyAllPositionsForACC(now)[0];
+            portfolio_position = getDummyAllPositionsForACCU(now)[0];
 
             this.updateContractTradeStore(dummy_response);
             this.updateContractReplayStore(dummy_response);
@@ -380,7 +380,7 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     populateResultDetails = response => {
         // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACC(Date.now());
+        const dummy_response = getDummyPOCResponseForACCU(Date.now());
         let contract_response;
         if (this.is_accumulator) {
             contract_response = dummy_response.proposal_open_contract;
@@ -541,7 +541,7 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     setActivePositions() {
         // maryia: temporary dummy data for accumulators
-        const dummy_contracts = getDummyAllPositionsForACC(Date.now());
+        const dummy_contracts = getDummyAllPositionsForACCU(Date.now());
 
         if (this.is_accumulator) {
             this.active_positions = dummy_contracts;

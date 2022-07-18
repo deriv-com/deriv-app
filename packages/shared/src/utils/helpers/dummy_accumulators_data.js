@@ -17,7 +17,7 @@ const profit_percentage = +1.5;
 const tick_size_barrier = 0.000409;
 const stake = '10.00';
 
-export const getDummyPOCResponseForACC = time_now => {
+export const getDummyPOCResponseForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
     const dummy_start_time = dummy_current_time - 7;
     const dummy_end_time = dummy_current_time + 6;
@@ -36,7 +36,7 @@ export const getDummyPOCResponseForACC = time_now => {
             bid_price: 9.85,
             buy_price: 10,
             contract_id: 19459,
-            contract_type: 'ACC',
+            contract_type: 'ACCU',
             currency: 'USD',
             current_spot,
             current_spot_display_value: `${current_spot}`,
@@ -73,7 +73,7 @@ export const getDummyPOCResponseForACC = time_now => {
             profit: profit_loss,
             profit_percentage,
             purchase_time: dummy_start_time,
-            shortcode: 'ACC_FRXAUDJPY_10.00_1656407458_4810060799_0_150.00',
+            shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
             status: contract_status,
             tick_count: 10,
             tick_size_barrier,
@@ -111,7 +111,7 @@ export const getDummyPOCResponseForACC = time_now => {
     };
 };
 
-export const getDummyPortfolioContractsForACC = time_now => {
+export const getDummyPortfolioContractsForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digit number
     const dummy_start_time = dummy_current_time - 7;
     const dummy_end_time = dummy_current_time + 6;
@@ -120,21 +120,21 @@ export const getDummyPortfolioContractsForACC = time_now => {
             app_id: 17044,
             buy_price: 10,
             contract_id: 19459,
-            contract_type: 'ACC',
+            contract_type: 'ACCU',
             currency: 'USD',
             date_start: dummy_start_time,
             expiry_time: dummy_end_time,
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             payout: 27.45,
             purchase_time: dummy_start_time,
-            shortcode: 'ACC_FRXAUDJPY_10.00_1656407458_4810060799_0_150.00',
+            shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
             symbol: 'frxAUDJPY',
             transaction_id: 45479,
         },
     ];
 };
 
-export const getDummyAllPositionsForACC = time_now => {
+export const getDummyAllPositionsForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
     const dummy_start_time = dummy_current_time - 7;
     const dummy_end_time = dummy_current_time + 6;
@@ -204,7 +204,7 @@ export const getDummyAllPositionsForACC = time_now => {
                 bid_price: 9.85,
                 buy_price: 10,
                 contract_id: 19459,
-                contract_type: 'ACC',
+                contract_type: 'ACCU',
                 currency: 'USD',
                 current_spot,
                 current_spot_display_value: `${current_spot}`,
@@ -243,7 +243,7 @@ export const getDummyAllPositionsForACC = time_now => {
                 profit: profit_loss,
                 profit_percentage,
                 purchase_time: dummy_start_time,
-                shortcode: 'ACC_FRXAUDJPY_10.00_1656407458_4810060799_0_150.00',
+                shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
                 status: contract_status,
                 tick_count: 10,
                 tick_size_barrier,
@@ -280,7 +280,7 @@ export const getDummyAllPositionsForACC = time_now => {
             payout: 27.45,
             purchase: 10,
             reference: 45479,
-            type: 'ACC',
+            type: 'ACCU',
             is_unsupported: false,
             profit_loss,
             is_valid_to_sell: true,
@@ -297,7 +297,7 @@ export const getDummyAllPositionsForACC = time_now => {
         },
     ];
 };
-export const getDummyProposalInfoForACC = (growth_rate, time_now, response) => {
+export const getDummyProposalInfoForACCU = (growth_rate, time_now, response) => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
     const dummy_start_time = dummy_current_time - 7;
     return {
@@ -340,7 +340,7 @@ export const dummy_accumulator_in_contracts_for_available = {
     contract_category: 'accumulator',
     contract_category_display: 'Accumulate',
     contract_display: 'Accumulators',
-    contract_type: 'ACC',
+    contract_type: 'ACCU',
     exchange_name: 'FOREX',
     expiry_type: 'daily',
     market: 'forex',
@@ -375,7 +375,7 @@ export const dummy_multupliers_proposal = {
     },
 };
 
-export const getDummyProposalResponseForACC = time_now => {
+export const getDummyProposalResponseForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
     const dummy_start_time = dummy_current_time - 7;
     const dummy_end_time = dummy_current_time + 6;
@@ -383,7 +383,7 @@ export const getDummyProposalResponseForACC = time_now => {
         echo_req: {
             amount: 10,
             basis: 'stake',
-            contract_type: 'ACC',
+            contract_type: 'ACCU',
             currency: 'USD',
             duration_unit: 's',
             limit_order: {
@@ -429,7 +429,7 @@ export const getDummyProposalResponseForACC = time_now => {
     };
 };
 
-export const dummy_purchase_response_for_acc = {
+export const dummy_purchase_response_for_accu = {
     buy: {
         balance_after: 10018.99,
         buy_price: 10,
@@ -437,7 +437,7 @@ export const dummy_purchase_response_for_acc = {
         longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
         payout: 0,
         purchase_time: 1656351535,
-        shortcode: 'ACC_FRXAUDJPY_10.00_1656407458_4810060799_0_150.00',
+        shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
         start_time: 1656351535,
         transaction_id: 45479,
     },

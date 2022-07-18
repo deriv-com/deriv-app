@@ -247,11 +247,11 @@ const TickContract = RawMarkerMaker(
                 tick: { zoom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
             });
             ctx.beginPath();
-            if (contract_type === 'ACC') {
+            if (contract_type === 'ACCU') {
                 ctx.setLineDash([]);
             } else ctx.setLineDash([3, 3]);
             ctx.moveTo(start.left - 1 * scale, 0);
-            if (ticks.length && barrier && contract_type !== 'ACC') {
+            if (ticks.length && barrier && contract_type !== 'ACCU') {
                 ctx.lineTo(start.left - 1 * scale, barrier - 34 * scale);
                 ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
             }
@@ -270,14 +270,14 @@ const TickContract = RawMarkerMaker(
 
         // barrier line
         if (start.visible || entry.visible || exit.visible) {
-            if (contract_type === 'ACC' && (status === 'lost' || status === 'won')) {
+            if (contract_type === 'ACCU' && (status === 'lost' || status === 'won')) {
                 ctx.strokeStyle = color;
                 ctx.beginPath();
                 ctx.setLineDash([]);
                 ctx.moveTo(start.left, barrier);
                 ctx.lineTo(exit.left, barrier);
                 ctx.stroke();
-            } else if (contract_type !== 'ACC') {
+            } else if (contract_type !== 'ACCU') {
                 ctx.strokeStyle = color + opacity;
                 ctx.beginPath();
                 ctx.setLineDash([1, 1]);
@@ -315,7 +315,7 @@ const TickContract = RawMarkerMaker(
                     ctx.setLineDash([2, 2]);
                     ctx.beginPath();
                     ctx.moveTo(tick.left - 1 * scale, tick.top);
-                    if (tick === entry && contract_type === 'ACC') {
+                    if (tick === entry && contract_type === 'ACCU') {
                         // draw line to start marker having the same y-coordinates:
                         ctx.lineTo(start.left - 1 * scale, entry.top);
                     } else ctx.lineTo(tick.left - 1 * scale, barrier);
@@ -338,7 +338,7 @@ const TickContract = RawMarkerMaker(
             ctx.fillStyle = color;
         }
         // count down
-        if (start.visible && !is_sold && contract_type !== 'ACC') {
+        if (start.visible && !is_sold && contract_type !== 'ACCU') {
             shadowed_text({
                 ctx,
                 scale,
@@ -352,7 +352,7 @@ const TickContract = RawMarkerMaker(
         // start-time marker
         if (start.visible) {
             draw_path(ctx, {
-                top: contract_type === 'ACC' ? entry.top : barrier - 9 * scale,
+                top: contract_type === 'ACCU' ? entry.top : barrier - 9 * scale,
                 left: start.left - 1 * scale,
                 zoom: start.zoom,
                 icon: ICONS.START.with_color(
@@ -372,7 +372,7 @@ const TickContract = RawMarkerMaker(
         }
         ctx.restore();
 
-        if ((start.visible || entry.visible || exit.visible) && contract_type === 'ACC') {
+        if ((start.visible || entry.visible || exit.visible) && contract_type === 'ACCU') {
             const dashed_line_color = is_dark_theme ? '#6E6E6E' : '#999999';
             const profit_text_color = profit > 0 ? '#4BB4B3' : '#EC3F3F';
             const sign = profit > 0 ? '+' : '-';

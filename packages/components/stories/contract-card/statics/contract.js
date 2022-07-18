@@ -179,7 +179,7 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
-    ACC: {
+    ACCU: {
         name: 'Buy',
         position: 'top',
     },

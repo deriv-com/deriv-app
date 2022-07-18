@@ -107,7 +107,7 @@ export const getContractTypesConfig = symbol => ({
     },
     accumulator: {
         title: localize('Accumulate'),
-        trade_types: ['ACC'],
+        trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'stats_chart_display'],
         barrier_count: 2,
@@ -357,7 +357,7 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
-    ACC: {
+    ACCU: {
         name: <Localize i18n_default_text='Buy' />,
         position: 'top',
     },

@@ -9,7 +9,7 @@ import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
-import { MaxPayoutInfo, MultipliersInfo } from './info.jsx';
+import { MultipliersInfo } from './info.jsx';
 
 const Input = ({
     amount,
@@ -171,7 +171,6 @@ const Amount = ({
                     />
                 </React.Fragment>
             )}
-            {is_accumulator && <MaxPayoutInfo className='trade-container__max-payout-trade-info' />}
         </Fieldset>
     );
 };

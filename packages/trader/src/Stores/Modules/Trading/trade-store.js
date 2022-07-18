@@ -119,7 +119,6 @@ export default class TradeStore extends BaseStore {
     // Accumulator trade params
     @observable accumulator_rates_list = [];
     @observable growth_rate;
-    @observable max_duration_ticks = 0;
     @observable max_payout = 0;
     @observable ticks_count_since_loss_condition = 0;
     @observable tick_size_barrier = 0;
@@ -970,17 +969,10 @@ export default class TradeStore extends BaseStore {
         }
 
         if (this.is_accumulator && this.proposal_info && this.proposal_info.ACC) {
-            const {
-                ticks_count_since_loss_condition,
-                tick_size_barrier,
-                max_duration_ticks,
-                max_payout,
-                high_barrier,
-                low_barrier,
-            } = this.proposal_info.ACC;
+            const { ticks_count_since_loss_condition, tick_size_barrier, max_payout, high_barrier, low_barrier } =
+                this.proposal_info.ACC;
             this.tick_size_barrier = tick_size_barrier;
             this.ticks_count_since_loss_condition = ticks_count_since_loss_condition;
-            this.max_duration_ticks = max_duration_ticks;
             this.max_payout = max_payout;
             this.barrier_1 = high_barrier;
             this.barrier_2 = low_barrier;

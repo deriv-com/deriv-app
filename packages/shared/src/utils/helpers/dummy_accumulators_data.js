@@ -303,7 +303,6 @@ export const getDummyProposalInfoForACC = (growth_rate, time_now, response) => {
     return {
         tick_size_barrier: response.proposal.tick_size_barrier,
         ticks_count_since_loss_condition: response.proposal.ticks_count_since_loss_condition,
-        max_duration_ticks: response.proposal.max_duration_ticks, // = tick_count in proposal_open_contract
         max_payout: response.proposal.max_payout,
         high_barrier: response.proposal.high_barrier,
         low_barrier: response.proposal.low_barrier,
@@ -401,8 +400,7 @@ export const getDummyProposalResponseForACC = time_now => {
         proposal: {
             tick_size_barrier,
             ticks_count_since_loss_condition: 13,
-            max_duration_ticks: 10, // = tick_count in proposal_open_contract
-            max_payout: 0,
+            max_payout: 20000,
             high_barrier,
             low_barrier,
             ask_price: 10,

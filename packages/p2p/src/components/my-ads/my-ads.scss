@@ -181,6 +181,7 @@
             background-color: var(--general-main-1);
             display: flex;
             justify-content: flex-end;
+            width: 67.2rem;
 
             @include mobile {
                 border-top: 2px solid var(--general-section-1);
@@ -190,7 +191,7 @@
                 position: fixed;
                 right: 0;
                 width: 100vw;
-                z-index: 98;
+                z-index: 9999;
             }
         }
     }

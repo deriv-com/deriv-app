@@ -14,7 +14,8 @@
             "Stores": ["src/stores/index"],
             "Types": ["src/types"],
             "Utils": ["src/utils"]
-        }
+        },
+        "experimentalDecorators": true
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/declarations.d.ts"]
 }

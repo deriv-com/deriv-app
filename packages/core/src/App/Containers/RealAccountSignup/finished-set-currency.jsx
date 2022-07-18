@@ -57,6 +57,7 @@ const FinishedSetCurrency = ({
     prev,
     setIsDeposit,
 }) => {
+    // debugger;
     const IconPrevCurrency = () =>
         prev ? <Icon icon={`IcCurrency-${prev.toLowerCase()}`} height={120} width={90} /> : null;
     const IconNextCurrency = () => <Icon icon={`IcCurrency-${current.toLowerCase()}`} height={120} width={90} />;

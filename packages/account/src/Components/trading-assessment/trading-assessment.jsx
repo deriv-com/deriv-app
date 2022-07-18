@@ -6,14 +6,15 @@ import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 import { trading_assessment } from './trading-assessment-config';
 import RiskToleranceWarningModal from './risk-tolerance-modal';
+import CoolDownWarningModal from './cooldown-warning-modal';
+import TestWarningModal from './test-warning-modal';
 import './trading-assessment.scss';
 
-const TradingAssessment = () => {
+const TradingAssessment = props => {
     const [current_question, setCurrentQuestion] = React.useState(0);
     const [is_next_button_disabled, setIsNextButtonDisabled] = React.useState(false);
     const [is_prev_button_disabled, setIsPrevButtonDisabled] = React.useState(false);
     const [is_touched, setIsTouched] = React.useState(false);
-    const [show_risk_modal, setShowRiskModal] = React.useState(false);
 
     // question component
     const question_text = trading_assessment[current_question].question_text;
@@ -53,10 +54,6 @@ const TradingAssessment = () => {
         computeAnswer(e.target.value);
     };
 
-    if (show_risk_modal) {
-        return <RiskToleranceWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />;
-    }
-
     const computeAnswer = optionSelect => {
         if (trading_experience) {
             answer_dropdown.forEach(item => {
@@ -70,7 +67,8 @@ const TradingAssessment = () => {
             if (answer_radio.includes(optionSelect)) {
                 console.log('you got it right');
             } else {
-                setShowRiskModal(true);
+                props.closeRealAccountSignup();
+                props.setShowRiskModal(true)
                 console.log('exit here');
             }
         } else {
@@ -108,6 +106,7 @@ const TradingAssessment = () => {
                         'In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.'
                     )}
                 >
+                    {/* Header */}
                     <div className='trading-assessment__header'>
                         <Button onClick={handlePrevButton} transparent is_disabled={is_prev_button_disabled}>
                             <Icon icon='IcChevronLeft' color={is_prev_button_disabled ? 'secondary' : 'black'} />
@@ -124,6 +123,7 @@ const TradingAssessment = () => {
                             <Icon icon='IcChevronRight' color={is_next_button_disabled ? 'secondary' : 'black'} />
                         </Button>
                     </div>
+                    {/* Question Body */}
                     <div className='trading-assessment__wrapper'>
                         {trading_experience ? (
                             <TradingAssessmentDropdownOption

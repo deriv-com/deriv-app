@@ -39,6 +39,7 @@ const CurrencySelector = ({
     is_eu,
     ...props
 }) => {
+    // debugger;
     const { is_appstore } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
@@ -153,7 +154,7 @@ const CurrencySelector = ({
         //                     data-testid='currency_selector_form'
         //                 >
         <Div100vhContainer>
-            <TradingAssessment />
+            <TradingAssessment {...props} />
         </Div100vhContainer>
         // <Div100vhContainer
         //     className={classNames('currency-selector__container', {

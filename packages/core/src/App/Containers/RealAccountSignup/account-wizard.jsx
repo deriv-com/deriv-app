@@ -50,6 +50,7 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 };
 
 const AccountWizard = props => {
+    // debugger;
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
@@ -236,6 +237,7 @@ const AccountWizard = props => {
     };
 
     const createRealAccount = (payload = undefined) => {
+        // debugger;
         props.setLoading(true);
         submitForm(payload)
             .then(response => {
@@ -289,6 +291,7 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
+                    setShowRiskModal={props.setShowRiskModal}
                 />
             );
         });

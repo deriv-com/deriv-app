@@ -6,6 +6,7 @@
         margin: 0 auto;
         max-width: 72.2rem;
     }
+
     &__header {
         margin-top: 2.4rem;
         display: flex;
@@ -31,6 +32,23 @@
             width: 65.1rem;
             &--list {
                 margin-bottom: 2.4rem;
+            }
+        }
+    }
+}
+
+.dc-modal__container_ {
+    &_risk-tolerance {
+        text-align: center;
+        .risk-tolerance {
+            &__body {
+                &--main-text {
+                    margin: 1.6rem 0;
+                }
+            }
+            &__footer {
+                display: grid;
+                place-content: center;
             }
         }
     }

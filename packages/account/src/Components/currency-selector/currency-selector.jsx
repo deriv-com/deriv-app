@@ -248,16 +248,33 @@ const CurrencySelector = ({
 };
 
 CurrencySelector.propTypes = {
+    accounts: PropTypes.object,
+    available_crypto_currencies: PropTypes.array,
     controls: PropTypes.object,
+    getCurrentStep: PropTypes.func,
+    goToNextStep: PropTypes.func,
+    goToPreviousStep: PropTypes.func,
+    has_cancel: PropTypes.bool,
     has_currency: PropTypes.bool,
+    has_fiat: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    onSubmit: PropTypes.func,
-    value: PropTypes.any,
+    has_wallet_account: PropTypes.bool,
     is_appstore: PropTypes.bool,
-    real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,
-    has_fiat: PropTypes.bool,
+    is_mt5_allowed: PropTypes.bool,
+    legal_allowed_currencies: PropTypes.array,
+    onCancel: PropTypes.func,
+    onSave: PropTypes.func,
+    onSubmit: PropTypes.func,
+    onSubmitEnabledChange: PropTypes.func,
+    real_account_signup: PropTypes.string,
+    real_account_signup_target: PropTypes.string,
+    resetRealAccountSignupParams: PropTypes.func,
+    selected_step_ref: PropTypes.shape({ current: PropTypes.any }),
+    set_currency: PropTypes.bool,
+    validate: PropTypes.func,
+    value: PropTypes.any,
 };
 
 export default CurrencySelector;

@@ -1,7 +1,9 @@
 import { StaticUrl } from '@deriv/components';
 import {
+    daysSince,
     formatDate,
     getPathname,
+    getPlatformSettings,
     getStaticUrl,
     getUrlBase,
     isCryptocurrency,
@@ -34,7 +36,7 @@ export default class NotificationStore extends BaseStore {
     @observable marked_notifications = [];
     @observable push_notifications = [];
     @observable client_notifications = {};
-    @observable should_show_popups = false;
+    @observable should_show_popups = true;
 
     constructor(root_store) {
         super({ root_store });
@@ -52,6 +54,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.modules?.cashier?.general_store?.is_p2p_visible,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
+                root_store.client.has_enabled_two_fa,
             ],
             () => {
                 if (
@@ -170,6 +173,7 @@ export default class NotificationStore extends BaseStore {
         const {
             account_settings,
             account_status,
+            account_open_date,
             accounts,
             has_iom_account,
             has_malta_account,
@@ -183,6 +187,7 @@ export default class NotificationStore extends BaseStore {
             loginid,
             obj_total_balance,
             website_status,
+            has_enabled_two_fa,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -215,8 +220,10 @@ export default class NotificationStore extends BaseStore {
                 withdrawal_locked,
             } = getStatusValidations(status || []);
 
-            if (obj_total_balance.amount_real > 0) {
+            if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
             if (loginid !== LocalStore.get('active_loginid')) return;
@@ -345,11 +352,9 @@ export default class NotificationStore extends BaseStore {
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
-
-                if (is_website_up && !has_trustpilot) {
+                if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
                     this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
-
                 if (is_tnc_needed) {
                     this.addNotificationMessage(this.client_notifications.tnc);
                 }
@@ -368,7 +373,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-        this.setShouldShowPopups(true);
     }
 
     @action.bound
@@ -464,11 +468,12 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     setClientNotifications(client_data = {}) {
-        const { ui, client } = this.root_store;
+        const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
-        const client_name =
-            client.account_status.authentication.identity?.services?.onfido?.reported_properties?.first_name;
+
+        const platform_name_trader = getPlatformSettings('trader').name;
+        const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -584,8 +589,9 @@ export default class NotificationStore extends BaseStore {
                 key: 'deriv_go',
                 message: (
                     <Localize
-                        i18n_default_text='Get a faster mobile trading experience with the <0>Deriv GO</0> app!'
+                        i18n_default_text='Get a faster mobile trading experience with the <0>{{platform_name_go}}</0> app!'
                         components={[<StaticUrl key={0} className='link dark' href='/landing/deriv-go' />]}
+                        values={{ platform_name_go }}
                     />
                 ),
                 cta_btn: {
@@ -651,8 +657,10 @@ export default class NotificationStore extends BaseStore {
                     onClick: () => ui.installWithDeferredPrompt(),
                     text: localize('Install'),
                 },
-                header: localize('Install the DTrader web app'),
-                message: localize('Launch DTrader in seconds the next time you want to trade.'),
+                header: localize('Install the {{platform_name_trader}} web app', { platform_name_trader }),
+                message: localize('Launch {{platform_name_trader}} in seconds the next time you want to trade.', {
+                    platform_name_trader,
+                }),
                 type: 'announce',
                 should_hide_close_btn: false,
             },
@@ -791,9 +799,12 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
                 key: 'poi_name_mismatch',
-                header: localize('What’s your real name, {{client_name}}?', { client_name }),
-                message: localize(
-                    'It appears that the name in your document doesn’t match the name in your Deriv profile. Please update your name in the Personal details page now.'
+                header: localize('Please update your personal info'),
+                message: (
+                    <Localize
+                        i18n_default_text='It seems that your name in the document is not the same as your Deriv profile. Please update your name in the <0>Personal details</0> page to solve this issue.'
+                        components={[<strong key={0} />]}
+                    />
                 ),
                 type: 'warning',
             },
@@ -971,14 +982,17 @@ export default class NotificationStore extends BaseStore {
             },
             withdrawal_locked_review: {
                 key: 'withdrawal_locked_review',
-                header: localize('Your withdrawal is locked'),
-                message: localize(
-                    'Please submit your Proof of Identity again and complete the financial assessment in account setting to unlock it.'
+                header: localize('You are unable to make withdrawals'),
+                message: (
+                    <Localize
+                        i18n_default_text='To enable withdrawals, please submit your <0>Proof of Identity (POI)</0> and <1>Proof of Address (POA)</1> and also complete the <2>financial assessment</2> in your account settings.'
+                        components={[
+                            <a key={0} className='link dark' href={'/account/proof-of-identity'} />,
+                            <a key={1} className='link dark' href={'/account/proof-of-address'} />,
+                            <a key={2} className='link dark' href={'/account/financial-assessment'} />,
+                        ]}
+                    />
                 ),
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to my account settings'),
-                },
                 type: 'warning',
             },
             you_are_offline: {

@@ -9,6 +9,8 @@ import {
     isMobile,
     isMultiplierContract,
     isUserSold,
+    isEndedBeforeCancellationExpired,
+    isUserCancelled,
 } from '@deriv/shared';
 import {
     addCommaToNumber,
@@ -16,12 +18,8 @@ import {
     getBarrierValue,
     isDigitType,
 } from 'App/Components/Elements/PositionsDrawer/helpers';
-import {
-    isCancellationExpired,
-    isEndedBeforeCancellationExpired,
-    isUserCancelled,
-} from 'Stores/Modules/Contract/Helpers/logic';
 import ContractAuditItem from './contract-audit-item.jsx';
+import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
 const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {
     const {
@@ -32,7 +30,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         entry_tick_time,
         exit_tick_time,
         profit,
-        purchase_time,
+        date_start,
         tick_count,
         transaction_ids: { buy, sell } = {},
     } = contract_info;
@@ -106,7 +104,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}
                     label={localize('Start time')}
-                    value={toGMTFormat(epochToMoment(purchase_time)) || ' - '}
+                    value={toGMTFormat(epochToMoment(date_start)) || ' - '}
                 />
                 {!isDigitType(contract_type) && (
                     <ContractAuditItem
@@ -140,8 +138,9 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
 };
 
 ContractDetails.propTypes = {
-    contract_end_time: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    contract_end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     contract_info: PropTypes.object,
+    date_start: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
     exit_spot: PropTypes.string,

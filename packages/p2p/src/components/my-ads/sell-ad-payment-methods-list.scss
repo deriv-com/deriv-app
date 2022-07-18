@@ -1,0 +1,17 @@
+.sell-ad-payment-methods {
+    &__container {
+        display: grid;
+        grid-template-columns: repeat(4, 0.19fr);
+
+        &--horizontal {
+            grid-auto-flow: column;
+            & .payment-method-card {
+                margin: 1rem 1.5rem 1rem auto;
+            }
+
+            & .payment-method-card--add {
+                margin: 1rem 1.5rem 1rem 0;
+            }
+        }
+    }
+}

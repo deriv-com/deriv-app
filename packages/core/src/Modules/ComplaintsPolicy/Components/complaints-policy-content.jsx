@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { getLegalEntityName } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
 
@@ -13,37 +14,62 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
         case 'iom':
             return (
                 <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account registered with Deriv (MX) Ltd, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current <0>licence</0> issued on 31 August 2017) and (2) the Gambling Commission in the UK (<1>licence no. 39172</1>).'
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current <0>licence</0> issued on 31 August 2017) and (2) the Gambling Commission in the UK (<1>licence no. 39172</1>).'
                     components={[<strong key={0} />, <strong key={1} />]}
+                    values={{
+                        legal_entity_name: getLegalEntityName('mx'),
+                    }}
                 />
             );
         case 'maltainvest':
             return localize(
-                'This complaints policy, which may change from time to time, applies to your account registered with Deriv Investments (Europe) Limited.'
+                'This complaints policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}.',
+                {
+                    legal_entity_name: getLegalEntityName('maltainvest'),
+                }
             );
         case 'malta':
             return (
                 <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission (account number 39495).'
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name}}, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission (account number 39495).'
                     components={[<strong key={0} />]}
+                    values={{
+                        legal_entity_name: getLegalEntityName('malta'),
+                    }}
                 />
             );
         default:
             if (has_vanuatu && has_labuan) {
                 return localize(
-                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC, Deriv (FX) Ltd, and Deriv (V) Ltd.'
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}}, {{legal_entity_name_fx}}, and {{legal_entity_name_v}}.',
+                    {
+                        legal_entity_name_svg: getLegalEntityName('svg'),
+                        legal_entity_name_fx: getLegalEntityName('fx'),
+                        legal_entity_name_v: getLegalEntityName('v'),
+                    }
                 );
             } else if (has_vanuatu) {
                 return localize(
-                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (V) Ltd.'
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}} and {{legal_entity_name_v}}.',
+                    {
+                        legal_entity_name_svg: getLegalEntityName('svg'),
+                        legal_entity_name_v: getLegalEntityName('v'),
+                    }
                 );
             } else if (has_labuan) {
                 return localize(
-                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (FX) Ltd.'
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}} and {{legal_entity_name_fx}}.',
+                    {
+                        legal_entity_name_svg: getLegalEntityName('svg'),
+                        legal_entity_name_fx: getLegalEntityName('fx'),
+                    }
                 );
             }
             return localize(
-                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC.'
+                'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}}.',
+                {
+                    legal_entity_name_svg: getLegalEntityName('svg'),
+                }
             );
     }
 };

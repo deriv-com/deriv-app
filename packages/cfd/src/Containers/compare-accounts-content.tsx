@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Text, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled, PlatformContext } from '@deriv/shared';
+import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 
 type TCFDAttributeDescriberProps = {
@@ -592,7 +592,6 @@ const ModalContent = ({
         platform,
         show_eu_related,
         residence,
-        is_uk,
     ]);
 
     const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;
@@ -610,7 +609,7 @@ const ModalContent = ({
                     <Table className='cfd-compare-accounts__table'>
                         <Table.Header>
                             <Table.Row className='cfd-compare-accounts__table-row'>
-                                <Table.Head />
+                                <Table.Head fixed />
                                 {is_logged_in ? (
                                     <React.Fragment>
                                         {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (

@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
-    parser: 'babel-eslint',
-    plugins: ['prettier', 'testing-library'],
+    parser: '@babel/eslint-parser',
+    plugins: ['prettier', 'testing-library', '@typescript-eslint'],
     env: {
         es6: true,
         browser: true,
@@ -15,6 +15,7 @@ module.exports = {
         dataLayer: true,
         texts_json: false,
     },
+    ignorePatterns: ['**/dist/**/*.js', '**/lib/**/*.js'],
     rules: {
         camelcase: 0,
         // semi                                : ['error', 'always'],
@@ -48,10 +49,11 @@ module.exports = {
         'space-infix-ops': 'error',
         // 'space-unary-ops'                   : 'error',
         // 'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
+        'global-require': 'warn',
 
         // import rules
         'import/no-extraneous-dependencies': [
-            'error',
+            'warn',
             {
                 devDependencies: [
                     '**/__tests__/**/*.js',
@@ -59,7 +61,6 @@ module.exports = {
                     '**/*.test.js*',
                     '**/*.spec.js',
                     '**/*.spec.jsx',
-                    '**/*.{test,spec}.{ts,tsx}',
                 ],
             },
         ],
@@ -72,6 +73,7 @@ module.exports = {
                 'newlines-between': 'ignore',
             },
         ],
+        'spaced-comment': 'off',
         'import/prefer-default-export': 0,
         'import/extensions': ['warn', 'never', { jsx: 'always', json: 'always' }],
         'no-sequences': ['warn'],
@@ -86,7 +88,12 @@ module.exports = {
         // 'react/jsx-indent-props'            : ['error', 4],
         // 'react/jsx-max-props-per-line'      : ['error', { when: 'multiline' }],
         // 'react/jsx-tag-spacing'             : ['error', { closingSlash: 'never', beforeSelfClosing: 'always' }],
-        'react/prop-types': 0,
+        'react/prop-types': [
+            1,
+            {
+                skipUndeclared: true,
+            },
+        ],
         'react/self-closing-comp': 'error',
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },
@@ -100,7 +107,21 @@ module.exports = {
         'plugin:jest-dom/recommended',
     ],
     parserOptions: {
-        ecmaVersion: 6,
+        requireConfigFile: false,
+        ecmaVersion: 8,
+        babelOptions: {
+            presets: ['@babel/preset-react', '@babel/preset-typescript'],
+            plugins: [
+                ['@babel/plugin-proposal-decorators', { legacy: true }],
+                ['@babel/plugin-proposal-class-properties', { loose: true }],
+                '@babel/plugin-proposal-export-default-from',
+                '@babel/plugin-proposal-object-rest-spread',
+                '@babel/plugin-proposal-export-namespace-from',
+                '@babel/plugin-syntax-dynamic-import',
+                '@babel/plugin-proposal-optional-chaining',
+                '@babel/plugin-proposal-nullish-coalescing-operator',
+            ],
+        },
         ecmaFeatures: {
             jsx: true,
         },
@@ -109,11 +130,51 @@ module.exports = {
         react: {
             version: '16',
         },
+        'import/resolver': {
+            typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+        },
     },
     overrides: [
         {
             files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
             extends: ['plugin:testing-library/react'],
+        },
+        {
+            files: ['*.{ts,tsx}'],
+            parser: '@typescript-eslint/parser',
+            plugins: ['@typescript-eslint'],
+            extends: [
+                'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+                'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+                'plugin:react/recommended',
+                'plugin:@typescript-eslint/recommended',
+                'plugin:prettier/recommended',
+            ],
+            parserOptions: {
+                ecmaversion: 2018,
+                sourceType: 'module',
+                ecmaFeatures: {
+                    jsx: true,
+                },
+                babelOptions: {
+                    presets: ['@babel/preset-react', '@babel/preset-typescript'],
+                    plugins: [
+                        ['@babel/plugin-proposal-decorators', { legacy: true }],
+                        ['@babel/plugin-proposal-class-properties', { loose: true }],
+                        '@babel/plugin-proposal-export-default-from',
+                        '@babel/plugin-proposal-object-rest-spread',
+                        '@babel/plugin-proposal-export-namespace-from',
+                        '@babel/plugin-syntax-dynamic-import',
+                        '@babel/plugin-proposal-optional-chaining',
+                        '@babel/plugin-proposal-nullish-coalescing-operator',
+                    ],
+                },
+            },
+            settings: {
+                react: {
+                    version: 'detect',
+                },
+            },
         },
     ],
 };

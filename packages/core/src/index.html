@@ -37,6 +37,17 @@
             }
         </style>
         <script type="text/javascript">
+            !(function () {
+                if ('PerformanceLongTaskTiming' in window) {
+                    var g = (window.__tti = { e: [] });
+                    g.o = new PerformanceObserver(function (l) {
+                        g.e = g.e.concat(l.getEntries());
+                    });
+                    g.o.observe({ entryTypes: ['longtask'] });
+                }
+            })();
+        </script>
+        <script type="text/javascript">
             var ui_store = localStorage.getItem('ui_store');
             var l = window.location;
             var is_bot =
@@ -215,11 +226,12 @@
         <meta name="google" content="notranslate" />
         <meta name="referrer" content="origin" />
 
-        <link rel="manifest" href="/manifest.json" />
-
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://browser-update.org" />
+
+        <link rel="alternate" hreflang="en" href="https://app.deriv.com" />
+        <link rel="canonical" href="https://app.deriv.com" />
 
         <title>Deriv App | Deriv</title>
         <meta charset="UTF-8" />

@@ -1,0 +1,38 @@
+.crypto-withdraw-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 4rem;
+
+    &__submit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        margin: 2rem auto 0;
+        @include desktop {
+            min-width: 36rem;
+            width: fit-content;
+        }
+        @include mobile {
+            align-items: flex-end;
+        }
+
+        > * {
+            width: auto;
+        }
+    }
+    &__icon {
+        margin: 2.4rem 0 0.4rem;
+    }
+    &__percentage-selector {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+    }
+}

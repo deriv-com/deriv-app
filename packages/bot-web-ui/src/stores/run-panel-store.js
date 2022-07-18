@@ -499,7 +499,7 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.IS_STOPPING);
         }
 
-        this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
+        this.dbot.interpreter.bot.getInterface().sellAtMarket();
     }
 
     clear = () => {

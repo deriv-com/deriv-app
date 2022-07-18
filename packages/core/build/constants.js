@@ -74,7 +74,7 @@ const rules = (is_test_env = false) => [
         },
     },
     {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use: js_loaders,

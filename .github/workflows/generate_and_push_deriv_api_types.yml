@@ -13,7 +13,7 @@ jobs:
         id: step1
         uses: actions/setup-node@v2
         with:
-          node-version: "12"
+          node-version: "14"
           check-latest: true
           registry-url: "https://registry.npmjs.org"
         env:
@@ -57,8 +57,16 @@ jobs:
 
             echo ::set-output name=should_create_pr::true
           fi
-      - name: Bump version and create PR
+      
+      - name: Checkout repo
         id: step4
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
+
+      - name: Bump version and create PR
+        id: step5
         run: |
           if [ ${{ steps.step3.outputs.should_create_pr }} = true ]
           then
@@ -67,30 +75,24 @@ jobs:
 
             new_version=$(npm show @deriv/api-types version)
 
-            # Make a shallow clone of the project
-            git clone "https://DerivFE:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/binary-com/deriv-app.git" --depth 1
-
             # lerna: To allow us to bootstrap the project.
             # json: To manually edit the target package's package.json
-            npm i -g lerna@latest json@latest
-
-            cd deriv-app
+            npm i -g lerna@latest json@latest npm@8
 
             package_name="@deriv/api-types"
             old_version=$(json -f packages/appstore/package.json -a dependencies."$package_name")
             safe_old_version=$(echo $old_version | sed 's/[^a-zA-Z0-9.]//g')
 
             git checkout -b "$package_name"
+            git reset --hard master
 
             # "Manually" bump the version in package.json to accommodate 
             # Lerna's flexibility (or its lack thereof).
-            json -I -f packages/appstore/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
-            json -I -f packages/trader/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
+            for file in packages/**/package.json; do grep -q $package_name $file && json -I -f $file -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4 || echo not found in $file ; done;
 
             # We have to run "lerna bootstrap --no-ci" to generate a new 
             # package-lock.json ("npm run bootstrap" requires this).
-            lerna bootstrap --no-ci
-            npm run bootstrap
+            npm run bootstrap:dev
 
             # Identify with Git, these values come from the shared Deriv FE account. https://github.com/DerivFE
             git config --global user.name "DerivFE"

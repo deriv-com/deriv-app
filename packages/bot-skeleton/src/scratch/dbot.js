@@ -131,7 +131,8 @@ class DBot {
                 this.interpreter = null;
             }
 
-            this.interpreter = new Interpreter();
+            this.interpreter = Interpreter();
+
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();

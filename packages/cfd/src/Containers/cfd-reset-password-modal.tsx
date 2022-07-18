@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Formik, FormikHelpers } from 'formik';
 import RootStore from 'Stores/index';
 import React from 'react';
@@ -127,7 +128,7 @@ const CFDResetPasswordModal = ({
         };
 
         WS.tradingPlatformInvestorPasswordReset(request).then((response: { error: TError; password_type: string }) => {
-            if (response.error && (response.error.code === 'InvalidToken' || response.error.code === 'BadSession')) {
+            if (response?.error?.code) {
                 renderErrorBox(response.error);
             } else {
                 setState({
@@ -274,6 +275,17 @@ const CFDResetPasswordModal = ({
             )}
         </Modal>
     );
+};
+
+CFDResetPasswordModal.propTypes = {
+    current_list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    email: PropTypes.string,
+    is_cfd_reset_password_modal_enabled: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    platform: PropTypes.string,
+    setCFDPasswordResetModal: PropTypes.func,
+    history: PropTypes.object,
 };
 
 export default React.memo(

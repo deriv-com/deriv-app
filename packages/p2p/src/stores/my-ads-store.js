@@ -42,6 +42,7 @@ export default class MyAdsStore extends BaseStore {
     @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
     @observable update_payment_methods_error_message = '';
+    @observable error_code = '';
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -153,23 +154,25 @@ export default class MyAdsStore extends BaseStore {
         const createAd = () => {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
-                if (response.error) {
-                    this.setCreateAdErrorCode(response.error.code);
-                    this.setApiErrorMessage(response.error.message);
-                    setSubmitting(false);
-                } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
-                    this.setAdvertDetails(response.p2p_advert_create);
-                    setTimeout(() => {
-                        if (!this.is_api_error_modal_visible) {
-                            this.setIsAdCreatedModalVisible(true);
-                        }
-                    }, 200);
-                } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
-                    if (!response.p2p_advert_create.is_visible) {
+                if (response) {
+                    if (response.error) {
+                        this.setApiErrorCode(response.error.code);
+                        this.setApiErrorMessage(response.error.message);
+                        setSubmitting(false);
+                    } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
                         this.setAdvertDetails(response.p2p_advert_create);
-                        this.setIsAdExceedsDailyLimitModalOpen(true);
+                        setTimeout(() => {
+                            if (!this.is_api_error_modal_visible) {
+                                this.setIsAdCreatedModalVisible(true);
+                            }
+                        }, 200);
+                    } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
+                        if (!response.p2p_advert_create.is_visible) {
+                            this.setAdvertDetails(response.p2p_advert_create);
+                            this.setIsAdExceedsDailyLimitModalOpen(true);
+                        }
+                        this.setShowAdForm(false);
                     }
-                    this.setShowAdForm(false);
                 }
             });
         };
@@ -191,10 +194,13 @@ export default class MyAdsStore extends BaseStore {
     onClickActivateDeactivate(id, is_ad_active, setIsAdvertActive) {
         if (!this.root_store.general_store.is_barred) {
             requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
-                if (response.error) {
-                    this.setActivateDeactivateErrorMessage(response.error.message);
-                } else {
-                    setIsAdvertActive(!!response.p2p_advert_update.is_active);
+                if (response) {
+                    if (response.error) {
+                        this.setApiErrorCode(response.error.code);
+                        this.setActivateDeactivateErrorMessage(response.error.message);
+                    } else {
+                        setIsAdvertActive(!!response.p2p_advert_update.is_active);
+                    }
                 }
                 this.setSelectedAdId('');
             });
@@ -271,8 +277,9 @@ export default class MyAdsStore extends BaseStore {
 
         requestWS(update_advert).then(response => {
             // If there's an error, let the user submit the form again.
-            if (response.error) {
+            if (response && response.error) {
                 setSubmitting(false);
+                this.setApiErrorCode(response.error.code);
                 this.setEditAdFormError(response.error.message);
                 this.setIsEditAdErrorModalVisible(true);
             } else {
@@ -401,8 +408,8 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setCreateAdErrorCode(create_ad_error_code) {
-        this.create_ad_error_code = create_ad_error_code;
+    setApiErrorCode(error_code) {
+        this.error_code = error_code;
     }
 
     @action.bound

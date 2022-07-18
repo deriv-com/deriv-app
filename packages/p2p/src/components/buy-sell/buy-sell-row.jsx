@@ -52,7 +52,11 @@ const BuySellRow = ({ row: advert }) => {
             <div className='buy-sell-row'>
                 <div
                     className='buy-sell-row__advertiser'
-                    onClick={() => (general_store.is_barred ? null : buy_sell_store.showAdvertiserPage(advert))}
+                    onClick={() =>
+                        general_store.is_barred || !general_store.is_advertiser
+                            ? undefined
+                            : buy_sell_store.showAdvertiserPage(advert)
+                    }
                 >
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
@@ -139,7 +143,11 @@ const BuySellRow = ({ row: advert }) => {
             <Table.Cell>
                 <div
                     className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
-                    onClick={() => (general_store.is_barred ? undefined : buy_sell_store.showAdvertiserPage(advert))}
+                    onClick={() =>
+                        general_store.is_barred || !general_store.is_advertiser
+                            ? undefined
+                            : buy_sell_store.showAdvertiserPage(advert)
+                    }
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
                     <div className='buy-sell__cell--container'>

@@ -533,7 +533,7 @@ const JurisdictionModalContent = ({
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}
                         poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
                         is_virtual={is_virtual}
                     />
@@ -554,7 +554,7 @@ const JurisdictionModalContent = ({
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}
                         poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
                         is_virtual={is_virtual}
                     />
@@ -575,7 +575,7 @@ const JurisdictionModalContent = ({
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}
                         poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
                         is_virtual={is_virtual}
                     />
@@ -595,7 +595,7 @@ const JurisdictionModalContent = ({
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}
                         poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
                         is_virtual={is_virtual}
                     />
@@ -616,7 +616,7 @@ const JurisdictionModalContent = ({
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}
                         poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
                         is_fully_authenticated={is_fully_authenticated}
                         is_virtual={is_virtual}
                     />

@@ -502,9 +502,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onHoverPurchase(is_over, contract_type) {
-        if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier && !this.is_accumulator) {
+        if (this.is_accumulator) return;
+        if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
-        } else if (!is_over && this.main_barrier && !this.is_multiplier && !this.is_accumulator) {
+        } else if (!is_over && this.main_barrier && !this.is_multiplier) {
             this.main_barrier.updateBarrierShade(false, contract_type);
         }
 

@@ -288,7 +288,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     />
                                     <div className='order-details-card__ratings--row'>
                                         {review_details.recommended === 1 ? (
-                                            <>
+                                            <React.Fragment>
                                                 <Icon
                                                     className='order-details-card__ratings--icon'
                                                     custom_color='var(--status-success)'
@@ -298,9 +298,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                                 <Text color='prominent' size='xxs'>
                                                     <Localize i18n_default_text='Recommended' />
                                                 </Text>
-                                            </>
+                                            </React.Fragment>
                                         ) : (
-                                            <>
+                                            <React.Fragment>
                                                 <Icon
                                                     className='order-details-card__ratings--icon'
                                                     custom_color='var(--status-danger)'
@@ -310,7 +310,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                                 <Text color='prominent' size='xxs'>
                                                     <Localize i18n_default_text='Not Recommended' />
                                                 </Text>
-                                            </>
+                                            </React.Fragment>
                                         )}
                                     </div>
                                 </div>

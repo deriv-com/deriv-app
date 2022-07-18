@@ -61,6 +61,8 @@ RatingModal.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
     is_rating_modal_open: PropTypes.bool,
     onClickDone: PropTypes.func,
+    onClickNotRecommended: PropTypes.func,
+    onClickRecommended: PropTypes.func,
     onClickSkip: PropTypes.func,
     onClickStar: PropTypes.func,
     rating_value: PropTypes.number,

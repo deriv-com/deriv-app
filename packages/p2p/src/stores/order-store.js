@@ -63,10 +63,12 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            if (response.error) {
-                order_details_store.setErrorMessage(response.error.message);
-            } else {
-                this.setOrderRating(id);
+            if (response) {
+                if (response.error) {
+                    order_details_store.setErrorMessage(response.error.message);
+                } else {
+                    this.setOrderRating(id);
+                }
             }
         });
     }
@@ -205,10 +207,12 @@ export default class OrderStore {
             rating,
             ...(this.is_recommended === undefined ? {} : { recommended: this.is_recommended }),
         }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
+            if (response) {
+                if (response.error) {
+                    this.setErrorMessage(response.error.message);
+                }
+                this.setIsRatingModalOpen(false);
             }
-            this.setIsRatingModalOpen(false);
         });
     }
 
@@ -236,6 +240,8 @@ export default class OrderStore {
 
         const order_idx = this.orders.findIndex(order => order.id === p2p_order_info.id);
 
+        // Checking for null since that's the initial value, we don't want to check for !this.order_id
+        // since it can be undefined or any other value that we wouldn't need
         if (this.order_id === null) {
             // When we're looking at a list, it's safe to move orders from Active to Past.
             if (order_idx === -1) {
@@ -261,6 +267,7 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     setForceRerenderOrders(forceRerenderFn) {
         this.forceRerenderFn = forceRerenderFn;
     }

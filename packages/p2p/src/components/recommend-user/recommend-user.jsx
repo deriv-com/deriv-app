@@ -7,7 +7,7 @@ const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRe
     const [is_no_selected, setIsNoSelected] = React.useState(false);
     const [is_yes_selected, setIsYesSelected] = React.useState(false);
 
-    const selectNo = () => {
+    const handleSelectNo = () => {
         if (is_yes_selected) {
             setIsYesSelected(false);
         }
@@ -15,7 +15,7 @@ const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRe
         setIsNoSelected(true);
     };
 
-    const selectYes = () => {
+    const handleSelectYes = () => {
         if (is_no_selected) {
             setIsNoSelected(false);
         }
@@ -33,7 +33,7 @@ const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRe
                 )}
             </Text>
             <div className='recommend-user--row'>
-                <Button className='recommend-user--block' onClick={selectYes} secondary>
+                <Button className='recommend-user--block' onClick={handleSelectYes} secondary>
                     <Icon
                         className='recommend-user--block__icon'
                         color={!is_yes_selected && 'disabled'}
@@ -44,7 +44,7 @@ const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRe
                         <Localize i18n_default_text='Yes' />
                     </Text>
                 </Button>
-                <Button className='recommend-user--block' onClick={selectNo} secondary>
+                <Button className='recommend-user--block' onClick={handleSelectNo} secondary>
                     <Icon
                         className='recommend-user--block__icon'
                         color={!is_no_selected && 'disabled'}
@@ -62,6 +62,8 @@ const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRe
 
 RecommendUser.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
+    onClickNotRecommended: PropTypes.func,
+    onClickRecommended: PropTypes.func,
 };
 
 export default RecommendUser;

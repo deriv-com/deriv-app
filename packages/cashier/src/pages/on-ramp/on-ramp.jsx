@@ -18,7 +18,7 @@ const OnRampSideNote = () => {
         />,
     ];
 
-    return <SideNote notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
+    return <SideNote side_notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
 };
 const OnRampInfo = () => (
     <div className='on-ramp__info'>

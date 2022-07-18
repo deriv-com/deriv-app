@@ -128,6 +128,7 @@ Input.propTypes = {
     setCurrentFocus: PropTypes.func,
     type: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    inputmode: PropTypes.string,
 };
 
 export default Input;

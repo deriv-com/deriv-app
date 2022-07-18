@@ -1,16 +1,17 @@
 import { routes } from '../routes';
+import { getPlatformSettings } from '../brand';
 
 /*
  * These functions exist because we want to refresh the browser page on switch between Bot and the rest of the platforms.
  * */
 
 export const platform_name = Object.freeze({
-    DBot: 'DBot',
-    DTrader: 'DTrader',
-    DXtrade: 'Deriv X',
-    DMT5: 'DMT5',
-    SmartTrader: 'SmartTrader',
-    BinaryBot: 'Binary Bot',
+    DBot: getPlatformSettings('dbot').name,
+    DTrader: getPlatformSettings('trader').name,
+    DXtrade: getPlatformSettings('dxtrade').name,
+    DMT5: getPlatformSettings('mt5').name,
+    SmartTrader: getPlatformSettings('smarttrader').name,
+    BinaryBot: getPlatformSettings('bbot').name,
 });
 
 export const CFD_PLATFORMS = Object.freeze({
@@ -48,34 +49,34 @@ export const getPathname = () => {
 
 export const getPlatformInformation = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) {
-        return { header: platform_name.DBot, icon: 'IcBrandDbot' };
+        return { header: platform_name.DBot, icon: getPlatformSettings('dbot').icon };
     }
 
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) {
-        return { header: platform_name.DMT5, icon: 'IcBrandDmt5' };
+        return { header: platform_name.DMT5, icon: getPlatformSettings('mt5').icon };
     }
 
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) {
-        return { header: platform_name.DXtrade, icon: 'IcBrandDxtrade' };
+        return { header: platform_name.DXtrade, icon: getPlatformSettings('dxtrade').icon };
     }
 
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
-        return { header: platform_name.SmartTrader, icon: 'IcBrandSmarttrader' };
+        return { header: platform_name.SmartTrader, icon: getPlatformSettings('smarttrader').icon };
     }
 
     if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-        return { header: platform_name.BinaryBot, icon: 'IcBrandBinarybot' };
+        return { header: platform_name.BinaryBot, icon: getPlatformSettings('bbot').icon };
     }
-    return { header: platform_name.DTrader, icon: 'IcBrandDtrader' };
+    return { header: platform_name.DTrader, icon: getPlatformSettings('trader').icon };
 };
 
 export const getActivePlatform = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
-    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'Deriv X';
-    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
-    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) return 'Binary Bot';
-    return 'DTrader';
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
+    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
+    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
+    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) return platform_name.BinaryBot;
+    return platform_name.DTrader;
 };
 
 export const getPlatformRedirect = routing_history => {

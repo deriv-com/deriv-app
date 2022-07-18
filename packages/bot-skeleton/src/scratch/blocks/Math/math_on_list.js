@@ -76,14 +76,34 @@ Blockly.JavaScript.math_on_list = block => {
     let code, list;
 
     if (operation === 'SUM') {
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';
-        code = `(${list} || [0]).reduce(function(x, y) { return x + y; })`;
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+                var final_list = [];
+                return recursiveList(myList, final_list).reduce(function(x, y) { 
+                    return x + y; 
+                });
+            }`,
+        ]);
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MIN') {
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+                var final_list = [];
+                return Math.min.apply(null, (recursiveList(myList, final_list) || [0]));
+            }`,
+        ]);
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
-        code = `Math.min.apply(null, (${list} || [0]))`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MAX') {
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+                var final_list = [];
+                return Math.max.apply(null, (recursiveList(myList, final_list) || [0]));
+            }`,
+        ]);
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
-        code = `Math.max.apply(null, (${list} || [0]))`;
+        code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'AVERAGE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
@@ -159,7 +179,8 @@ Blockly.JavaScript.math_on_list = block => {
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MODE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathModes', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
+            `
+            function calculateMathMode(values){
                 var modes = [];
                 var counts = [];
                 var maxCount = 0;
@@ -191,6 +212,11 @@ Blockly.JavaScript.math_on_list = block => {
                 }
 
                 return modes;
+            }
+
+            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+                var final_list = [];
+                return calculateMathMode(recursiveList(list, final_list));
             }`,
         ]);
 
@@ -198,7 +224,8 @@ Blockly.JavaScript.math_on_list = block => {
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'ANTIMODE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathAntiMode', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
+            `
+            function calculateMathAntiMode(values){
                 var antiMode = [];
                 var counts = [];
                 var minCount = 1;
@@ -234,6 +261,11 @@ Blockly.JavaScript.math_on_list = block => {
                 }
 
                 return antiMode;
+            }
+            
+            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+                var final_list = [];
+                return calculateMathAntiMode(recursiveList(list, final_list));
             }`,
         ]);
 
@@ -241,7 +273,8 @@ Blockly.JavaScript.math_on_list = block => {
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'STD_DEV') {
         const functionName = Blockly.JavaScript.provideFunction_('mathStandardDeviation', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(numbers) {
+            `
+            function calculateMathStandardDeviation(numbers){
                 var n = numbers.length;
                 if (!n) {
                     return null;
@@ -257,6 +290,11 @@ Blockly.JavaScript.math_on_list = block => {
                 }
                 variance = variance / n;
                 return Math.sqrt(variance);
+            }
+
+            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+                var final_list = [];
+                return calculateMathStandardDeviation(recursiveList(list, final_list));              
             }`,
         ]);
 
@@ -265,8 +303,10 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'RANDOM') {
         const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
-                var x = Math.floor(Math.random() * list.length);
-                return list[x];
+                var final_list = [];
+                var final_list = recursiveList(list, final_list);
+                var x = Math.floor(Math.random() * final_list.length);
+                return final_list[x];
             }`,
         ]);
 

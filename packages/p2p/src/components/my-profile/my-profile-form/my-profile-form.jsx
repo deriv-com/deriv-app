@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, MobileFullPageModal, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { Button, DesktopWrapper, Input, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer, Observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Localize, localize } from 'Components/i18next';
@@ -88,17 +87,24 @@ const MyProfileForm = () => {
         </Formik>
     );
 
-    return isDesktop() ? (
-        <div className='my-profile-form'>{content}</div>
-    ) : (
-        <MobileFullPageModal
-            className='my-profile-form'
-            is_modal_open={my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE}
-            page_header_text={localize('Ad details')}
-            pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-        >
-            {content}
-        </MobileFullPageModal>
+    if (my_profile_store.is_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
+
+    return (
+        <>
+            <DesktopWrapper className='my-profile-form'>{content}</DesktopWrapper>
+            <MobileWrapper>
+                <MobileFullPageModal
+                    className='my-profile-form'
+                    is_modal_open={my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE}
+                    page_header_text={localize('Ad details')}
+                    pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                >
+                    {content}
+                </MobileFullPageModal>
+            </MobileWrapper>
+        </>
     );
 };
 

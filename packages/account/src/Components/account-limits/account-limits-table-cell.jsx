@@ -13,9 +13,17 @@ const AccountLimitsTableCell = ({ align, children, is_hint, renderExtraInfo }) =
                     'da-account-limits__table-cell--left': align !== 'right',
                     'da-account-limits__table-cell--right': align === 'right',
                 })}
+                data-testid='account_limit_table_cell'
             >
                 {children && (
-                    <Text align={align} as='p' color='prominent' size={text_size} line_height='m'>
+                    <Text
+                        align={align}
+                        as='p'
+                        color='prominent'
+                        size={text_size}
+                        line_height='m'
+                        data-testid='account_limit_table_cell_text'
+                    >
                         {children}
                     </Text>
                 )}

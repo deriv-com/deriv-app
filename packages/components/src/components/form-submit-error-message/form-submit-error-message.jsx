@@ -6,7 +6,7 @@ import Text from '../text';
 
 const FormSubmitErrorMessage = ({ className, message }) => (
     <div className={classNames('dc-form-submit-error-message', className)}>
-        <Icon icon='IcAlertDanger' />
+        <Icon icon='IcAlertDanger' data_testid='form_submit_error' />
         <Text as='p' size='xxs' weight='bold' color='prominent'>
             {message}
         </Text>

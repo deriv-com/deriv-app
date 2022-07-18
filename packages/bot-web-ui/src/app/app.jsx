@@ -12,15 +12,20 @@ import {
     RunPanel,
     RoutePromptDialog,
     Toolbar,
+    NetworkToastPopup,
 } from 'Components';
+import { LocalStore } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import './app.scss';
+import Dashboard from 'Components/dashboard';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
+    const dbot_dashboard_storage = LocalStore.get('show_dbot_dashboard');
+    const show_dashboard = dbot_dashboard_storage !== undefined && dbot_dashboard_storage !== 'false';
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
@@ -39,28 +44,50 @@ const App = ({ passthrough }) => {
         setIsLoading(true);
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
-            onMount();
+            if (!show_dashboard) {
+                onMount();
+            }
         });
         return () => {
-            onUnmount();
+            if (!show_dashboard) {
+                onUnmount();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMount, onUnmount]);
+
+    React.useEffect(() => {
+        const onDisconnectFromNetwork = () => {
+            setIsLoading(false);
+        };
+
+        window.addEventListener('offline', onDisconnectFromNetwork);
+        return () => {
+            window.removeEventListener('offline', onDisconnectFromNetwork);
+        };
+    }, []);
 
     return is_loading ? (
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot'>
-                <BotNotificationMessages />
-                <Toolbar />
-                <MainContent />
-                <RunPanel />
-                <QuickStrategy />
-                <BotFooterExtensions />
-                <Audio />
-                <RoutePromptDialog />
-                <BlocklyLoading />
+                {show_dashboard ? (
+                    <Dashboard />
+                ) : (
+                    <>
+                        <BotNotificationMessages />
+                        <NetworkToastPopup />
+                        <Toolbar />
+                        <MainContent />
+                        <RunPanel />
+                        <QuickStrategy />
+                        <BotFooterExtensions />
+                        <Audio />
+                        <RoutePromptDialog />
+                        <BlocklyLoading />
+                    </>
+                )}
             </div>
         </MobxContentProvider>
     );

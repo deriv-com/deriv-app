@@ -81,15 +81,15 @@ const OrderDetailsFooter = observer(() => {
         return (
             <React.Fragment>
                 <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--left'>
-                        <Button large tertiary onClick={showComplainOrderModal}>
-                            <Localize i18n_default_text='Complain' />
-                        </Button>
-                    </div>
                     <div className='order-details-card__footer--right'>
-                        <Button large primary onClick={showConfirmOrderModal}>
-                            <Localize i18n_default_text="I've received payment" />
-                        </Button>
+                        <Button.Group>
+                            <Button large tertiary onClick={showComplainOrderModal}>
+                                <Localize i18n_default_text='Complain' />
+                            </Button>
+                            <Button large primary onClick={showConfirmOrderModal}>
+                                <Localize i18n_default_text="I've received payment" />
+                            </Button>
+                        </Button.Group>
                     </div>
                 </div>
                 <OrderDetailsComplainModal
@@ -112,7 +112,7 @@ const OrderDetailsFooter = observer(() => {
         return (
             <React.Fragment>
                 <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--left'>
+                    <div className='order-details-card__footer--right'>
                         <Button large tertiary onClick={showComplainOrderModal}>
                             <Localize i18n_default_text='Complain' />
                         </Button>

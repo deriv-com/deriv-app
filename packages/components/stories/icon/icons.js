@@ -153,6 +153,7 @@ export const icons = {
         'IcCashierPromptPayLight',
         'IcCashierQrCodeDark',
         'IcCashierQrCodeLight',
+        'IcCashierRedWarning',
         'IcCashierSendEmail',
         'IcCashierSepaDark',
         'IcCashierSepaLight',
@@ -818,4 +819,4 @@ export const icons = {
         'IcWalletZingpayDark',
         'IcWalletZingpayLight',
     ],
-};
+}

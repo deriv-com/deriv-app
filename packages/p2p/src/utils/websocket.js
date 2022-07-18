@@ -23,11 +23,11 @@ const populateInitialResponses = async () => {
 
 export const requestWS = async request => {
     // Added a check to proceed only if ws is available
-    if (ws === undefined) {
-        return null;
+    if (ws) {
+        await populateInitialResponses();
+        return ws.authorized.send(request);
     }
-    await populateInitialResponses();
-    return ws.send(request);
+    return null;
 };
 
 export const subscribeWS = (request, callbacks) =>

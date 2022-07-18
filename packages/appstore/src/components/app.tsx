@@ -5,11 +5,12 @@ import { setWebsocket } from '@deriv/shared';
 import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
 import './app.scss';
+import { CoreStoreTypes } from 'Stores/root-store';
 
 type TAppProps = {
     passthrough: {
-        root_store: any;
-        WS: any;
+        root_store: CoreStoreTypes;
+        WS: Record<string, any>;
     };
 };
 

@@ -60,8 +60,7 @@ export default class TicksService {
 
         if (!this.active_symbols_promise) {
             this.active_symbols_promise = new Promise(resolve => {
-                this.api.send({ active_symbols: 'brief' }).then(r => {
-                    const { active_symbols } = r;
+                this.getActiveSymbols().then(active_symbols => {
                     this.pipSizes = active_symbols
                         .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
                         .toObject();
@@ -71,6 +70,12 @@ export default class TicksService {
         }
         return this.active_symbols_promise;
     }
+
+    getActiveSymbols = async () => {
+        await this.api.expectResponse('authorize');
+        const active_symbols = await this.api.send({ active_symbols: 'brief' });
+        return active_symbols.active_symbols;
+    };
 
     request(options) {
         const { symbol, granularity } = options;

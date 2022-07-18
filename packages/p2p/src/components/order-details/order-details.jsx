@@ -208,7 +208,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             }
                             value={advert_details.description.trim() || '-'}
                         />
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                        {should_show_order_footer && isDesktop() && (
+                            <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                        )}
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

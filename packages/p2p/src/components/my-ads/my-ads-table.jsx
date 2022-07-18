@@ -8,6 +8,7 @@ import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
+import { generateErrorDialogTitle } from 'Utils/adverts.js';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
@@ -32,8 +33,9 @@ const MyAdsTable = () => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        return () => my_ads_store.setApiErrorCode(null);
     }, []);
 
     if (my_ads_store.is_table_loading) {
@@ -49,17 +51,16 @@ const MyAdsTable = () => {
             <React.Fragment>
                 {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {my_ads_store.has_missing_payment_methods && (
-                    <div className='p2p-my-ads__warning'>
-                        <HintBox
-                            icon='IcAlertWarning'
-                            message={
-                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                    <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
-                                </Text>
-                            }
-                            is_warn
-                        />
-                    </div>
+                    <HintBox
+                        className='p2p-my-ads__warning'
+                        icon='IcAlertWarning'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
+                            </Text>
+                        }
+                        is_warn
+                    />
                 )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
@@ -75,7 +76,6 @@ const MyAdsTable = () => {
                     )}
                     <ToggleAds />
                 </div>
-
                 <Table
                     className={classNames('p2p-my-ads__table', {
                         'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,
@@ -120,7 +120,7 @@ const MyAdsTable = () => {
                     has_close_icon={false}
                     is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
                     small
-                    title={localize('Something’s not right')}
+                    title={generateErrorDialogTitle(my_ads_store.error_code)}
                 >
                     <Modal.Body>
                         <Text as='p' size='xs' color='prominent'>
@@ -142,7 +142,7 @@ const MyAdsTable = () => {
                     has_close_icon={false}
                     is_open={my_ads_store.is_quick_add_error_modal_open}
                     small
-                    title={localize('Something’s not right')}
+                    title={generateErrorDialogTitle(my_ads_store.error_code)}
                 >
                     <Modal.Body>
                         <Text as='p' size='xs' color='prominent'>

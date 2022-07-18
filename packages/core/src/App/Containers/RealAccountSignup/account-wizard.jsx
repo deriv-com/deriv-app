@@ -201,7 +201,7 @@ const AccountWizard = props => {
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
-        console.log('Called updateValue');
+        console.log('Called updateValue: ', value);
         saveFormData(index, value);
         clearError();
 

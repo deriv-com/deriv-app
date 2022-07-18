@@ -22,20 +22,12 @@ const TradingAssessment = ({
     const [current_question_index, setCurrentQuestionIndex] = React.useState(0);
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question, setCurrentQuestion] = React.useState({});
-    const [form_values, setFormValues] = React.useState({});
 
     const end_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
         setCurrentQuestion(assessment_questions[current_question_index]);
-        setFormValues({ ...value });
     }, []);
-
-    React.useEffect(() => {
-        if (form_values.risk_tolerance === 'No') {
-            onSubmit(getCurrentStep() - 1, form_values, null, goToNextStep, true);
-        }
-    }, [form_values]);
 
     const handleNextButton = () => {
         const next_question = current_question_index + 1;
@@ -59,10 +51,13 @@ const TradingAssessment = ({
         onCancel(current_step, goToPreviousStep);
     };
 
-    const handleValueSelection = (e, form_control, callBackFn) => {
+    const handleValueSelection = (e, form_control, callBackFn, values) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
-        setFormValues(previous_form_value => ({ ...previous_form_value, [form_control]: e.target.value }));
+        const latest_value = { ...values, [form_control]: e.target.value };
+        if (latest_value.risk_tolerance === 'No') {
+            onSubmit(getCurrentStep() - 1, latest_value, null, goToNextStep, true);
+        }
     };
 
     const hideElement = condition => {
@@ -110,13 +105,13 @@ const TradingAssessment = ({
                     <Formik
                         innerRef={selected_step_ref}
                         initialValues={{ ...value }}
-                        validator={() => ({})}
                         onSubmit={(values, actions) => {
                             onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
                         }}
                     >
                         {({ setFieldValue, values }) => {
                             const { question_text, form_control, answer_options, questions } = current_question;
+
                             return (
                                 <Form className='trading-assessment__form--layout'>
                                     <div className='trading-assessment__form--fields'>
@@ -132,7 +127,9 @@ const TradingAssessment = ({
                                             <TradingAssessmentRadioOption
                                                 text={question_text}
                                                 list={answer_options ?? []}
-                                                onChange={e => handleValueSelection(e, form_control, setFieldValue)}
+                                                onChange={e =>
+                                                    handleValueSelection(e, form_control, setFieldValue, values)
+                                                }
                                                 values={values}
                                                 form_control={form_control}
                                                 setEnableNextSection={setIsNextButtonEnabled}

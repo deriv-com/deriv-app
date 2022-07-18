@@ -91,9 +91,11 @@ const PercentageSelector = ({
 PercentageSelector.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
+    from_account: PropTypes.string,
     getCalculatedAmount: PropTypes.func,
     percentage: PropTypes.number,
     should_percentage_reset: PropTypes.bool,
+    to_account: PropTypes.string,
 };
 
 export default PercentageSelector;

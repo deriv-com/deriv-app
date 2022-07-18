@@ -6,7 +6,10 @@ export const roundOffDecimal = (number, decimal_place = 2) => {
     if (number === null || number === undefined) {
         return 0;
     }
-    return parseFloat(Math.round(number * Math.pow(10, decimal_place)) / Math.pow(10, decimal_place));
+
+    return parseFloat(number).toFixed(decimal_place);
+    // TODO: Uncomment the below line once BE has resolved the rounding issue
+    // return parseFloat(Math.round(number * Math.pow(10, decimal_place)) / Math.pow(10, decimal_place));
 };
 
 export const setDecimalPlaces = (value, expected_decimal_place) => {
@@ -16,6 +19,13 @@ export const setDecimalPlaces = (value, expected_decimal_place) => {
     }
     const actual_decimal_place = value.toString().split('.')[1]?.length;
     return actual_decimal_place > expected_decimal_place ? expected_decimal_place : actual_decimal_place;
+};
+
+export const percentOf = (number, percent) => {
+    // This method is used for computing the effective percent of a number
+    const parsed_number = parseFloat(number);
+    const parsed_percent = parseFloat(percent);
+    return parsed_number + parsed_number * (parsed_percent / 100);
 };
 
 export const generateEffectiveRate = ({
@@ -31,9 +41,10 @@ export const generateEffectiveRate = ({
         effective_rate = price;
         display_effective_rate = formatMoney(local_currency, effective_rate, true);
     } else {
-        effective_rate = parseFloat(exchange_rate * (1 + rate / 100));
+        effective_rate = percentOf(exchange_rate, rate);
+        const decimal_place = setDecimalPlaces(effective_rate, 6);
         display_effective_rate = removeTrailingZeros(
-            formatMoney(local_currency, effective_rate, true, setDecimalPlaces(effective_rate, 6))
+            formatMoney(local_currency, roundOffDecimal(effective_rate, decimal_place), true, decimal_place)
         );
     }
     return { effective_rate, display_effective_rate };

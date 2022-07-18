@@ -6,7 +6,7 @@ import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { setDecimalPlaces, removeTrailingZeros } from 'Utils/format-value.js';
+import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value.js';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -24,9 +24,8 @@ const FloatingRate = ({
     const os = mobileOSDetect();
     const { name, value, required } = props;
 
-    const market_feed = value
-        ? parseFloat(floating_rate_store.exchange_rate * (1 + value / 100))
-        : floating_rate_store.exchange_rate;
+    const market_feed = value ? percentOf(floating_rate_store.exchange_rate, value) : floating_rate_store.exchange_rate;
+    const decimal_place = setDecimalPlaces(market_feed, 6);
 
     // Input mask for formatting value on blur of floating rate field
     const onBlurHandler = e => {
@@ -121,7 +120,7 @@ const FloatingRate = ({
                 >
                     {localize('Your rate is')} ={' '}
                     {removeTrailingZeros(
-                        formatMoney(local_currency, market_feed, true, setDecimalPlaces(market_feed, 6))
+                        formatMoney(local_currency, roundOffDecimal(market_feed, decimal_place), true, decimal_place)
                     )}{' '}
                     {local_currency}
                 </Text>

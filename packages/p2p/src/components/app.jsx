@@ -16,7 +16,7 @@ const App = props => {
 
     React.useEffect(() => {
         general_store.setAppProps(props);
-        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
+        general_store.setWebsocketInit(websocket_api);
         order_store.setOrderId(order_id);
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
@@ -33,7 +33,6 @@ const App = props => {
                 window.location.reload();
             }
         };
-
         waitWS('authorize').then(() => {
             general_store.onMount();
             setOnRemount(general_store.onMount);
@@ -61,6 +60,10 @@ const App = props => {
     React.useEffect(() => {
         general_store.setAccountBalance(balance);
     }, [balance]);
+
+    React.useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
 
     return (
         <main className={classNames('p2p-cashier', className)}>

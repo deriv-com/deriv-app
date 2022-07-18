@@ -37,7 +37,11 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
         }
     }
     if (market_type === 'financial') {
-        if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
+        if (
+            platform === CFD_PLATFORMS.DXTRADE ||
+            sub_account_type === 'financial' ||
+            sub_account_type === 'financial_stp'
+        ) {
             switch (shortcode) {
                 case 'svg':
                     return 'financial_svg';

@@ -17,6 +17,15 @@
             background: var(--icon-grey-background);
             border-radius: $BORDER_RADIUS * 2;
         }
+        @include mobile {
+            &.deposit-commission {
+                order: 5;
+            }
+
+            &.withdrawal_commission {
+                order: 6;
+            }
+        }
     }
     @include mobile {
         grid-template-columns: 1fr;

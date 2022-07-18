@@ -36,7 +36,7 @@
 
         @include mobile {
             display: grid;
-            grid-template-columns: 3fr 1fr;
+            grid-template-columns: 3fr 1.7fr;
             grid-template-rows: 2fr 1fr;
         }
     }
@@ -90,6 +90,12 @@
 
     &__button {
         align-self: flex-start;
+        margin-left: auto;
+        height: fit-content;
+        min-height: 4rem;
+        width: fit-content;
+        white-space: inherit;
+        padding: 1rem 1.6rem;
     }
 
     &__rate {

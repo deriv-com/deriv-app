@@ -20,14 +20,9 @@ const PaymentAgentWithdrawConfirm = ({
         data={[
             { label: localize('From account number'), value: client_loginid, key: 'transfer_from' },
             {
-                label: localize('To account number'),
-                value: loginid,
+                label: [localize('To account number'), localize('Account holder name')],
+                value: [loginid.toUpperCase(), payment_agent_name.toUpperCase()],
                 key: 'transfer_to',
-            },
-            {
-                label: localize('Account holder name'),
-                value: payment_agent_name.toUpperCase(),
-                key: 'account_holder_name',
             },
             {
                 label: localize('Amount'),

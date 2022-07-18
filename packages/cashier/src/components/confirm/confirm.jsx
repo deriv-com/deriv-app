@@ -10,7 +10,7 @@ import './confirm.scss';
 const Row = ({ item_key, label, value }) => (
     <div className='confirm__row'>
         {Array.isArray(label) ? (
-            <div>
+            <div className='confirm__row-label'>
                 {label.map((label_text, idx) => (
                     <Text as='div' key={idx} size='xs' align='left'>
                         {label_text}
@@ -21,7 +21,7 @@ const Row = ({ item_key, label, value }) => (
             <Text size='xs'>{label}</Text>
         )}
         {Array.isArray(value) ? (
-            <div>
+            <div className='confirm__row-value'>
                 {value.map((v, idx) => (
                     <Text as='div' key={idx} size='xs' weight='bold' align='right'>
                         {v}
@@ -81,7 +81,9 @@ const Confirm = ({ data, error, is_payment_agent_withdraw, onClickBack, onClickC
                 className='confirm__warning-icon__description'
                 size={isMobile() ? 'xs' : 's'}
             >
-                {localize('Funds transfer information')}
+                {is_payment_agent_withdraw
+                    ? localize('Funds transfer information')
+                    : localize('Check transfer information')}
             </Text>
             <div className='confirm__column-wrapper'>
                 <div className='confirm__column'>

@@ -218,32 +218,39 @@ const DMT5CompareModalContent = ({
             case 'synthetic-svg':
             case 'financial-svg':
                 toggleCompareAccounts();
-                openPasswordModal(type_of_account);
+                setTimeout(() => {
+                    openPasswordModal(type_of_account);
+                }, 260);
                 break;
             case 'synthetic-bvi':
             case 'financial-bvi':
             case 'financial-maltainvest':
                 toggleCompareAccounts();
-                if (poi_poa_verified) {
-                    openPasswordModal(type_of_account);
-                } else {
-                    toggleCFDVerificationModal();
-                }
+                setTimeout(() => {
+                    if (poi_poa_verified) {
+                        openPasswordModal(type_of_account);
+                    } else {
+                        toggleCFDVerificationModal();
+                    }
+                }, 260);
+
                 break;
 
             case 'financial-vanuatu':
             case 'financial-labuan':
                 toggleCompareAccounts();
-                if (poi_poa_verified) {
-                    // for bvi, labuan & vanuatu:
-                    if (!has_real_mt5_login) {
-                        toggleCFDPersonalDetailsModal();
+                setTimeout(() => {
+                    if (poi_poa_verified) {
+                        // for bvi, labuan & vanuatu:
+                        if (!has_real_mt5_login) {
+                            toggleCFDPersonalDetailsModal();
+                        } else {
+                            openPasswordModal(type_of_account);
+                        }
                     } else {
-                        openPasswordModal(type_of_account);
+                        toggleCFDVerificationModal();
                     }
-                } else {
-                    toggleCFDVerificationModal();
-                }
+                }, 260);
                 break;
 
             default:

@@ -35,9 +35,10 @@ const FileUploader = ({
     const handleIconClick = e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
+        const parent_element = e.target?.parentElement?.parentElement?.parentElement;
         updateShowBrowseButton(sub_index, !show_browse_button);
-        e.target.parentElement.parentElement.parentElement.querySelector(`input[name="${name}"]`).value = '';
-        e.target.parentElement.parentElement.querySelector(`input[type="text"]`).value = '';
+        parent_element.querySelector(`input[name="${name}"]`).value = '';
+        parent_element.querySelector(`input[type="text"]`).value = '';
         handleFile(name, '');
         updateErrors(index, sub_index);
         validateField('files');

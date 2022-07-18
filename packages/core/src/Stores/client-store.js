@@ -400,11 +400,13 @@ export default class ClientStore extends BaseStore {
                 cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
-        const number_of_available_synthetic = this.mt5_trading_servers.reduce(
-            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
-            0
+        const number_of_available_synthetics = this.trading_platform_available_accounts.filter(
+            p => p.market_type === 'synthetic' || p.market_type === 'gaming'
+        ).length;
+        return (
+            number_of_current_added_synthetics > 0 &&
+            number_of_available_synthetics > number_of_current_added_synthetics
         );
-        return number_of_current_added_synthetics > 0 && number_of_available_synthetic > 0;
     }
 
     @computed

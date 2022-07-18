@@ -36,7 +36,6 @@ describe('<Confirm />', () => {
         const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
 
         expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
-        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
         expect(screen.getByText('label 1')).toBeInTheDocument();
         expect(screen.getByText('value 1')).toBeInTheDocument();
         expect(screen.getByText('label 2')).toBeInTheDocument();

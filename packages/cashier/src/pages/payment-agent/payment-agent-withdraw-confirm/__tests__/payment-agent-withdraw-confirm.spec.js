@@ -37,6 +37,8 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
 
         const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
 
+        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
+        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
         expect(screen.getByText('From account number')).toBeInTheDocument();
         expect(screen.getByText('CR90000100')).toBeInTheDocument();
         expect(screen.getByText('To account number')).toBeInTheDocument();

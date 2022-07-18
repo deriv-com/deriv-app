@@ -33,7 +33,7 @@ describe('<PaymentAgentTransferConfirm />', () => {
     it('should show proper icon and message', () => {
         render(<PaymentAgentTransferConfirm {...props} />);
 
-        expect(screen.getByTestId('dti_red_warning_icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
         expect(screen.getByText('Check transfer information')).toBeInTheDocument();
     });
 

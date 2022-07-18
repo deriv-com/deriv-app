@@ -78,13 +78,16 @@ const ProofOfIdentityContainerforMt5 = ({
         manual,
         needs_poa,
         onfido,
+        needs_poi,
     } = verification_status;
 
-    const idv_resubmission_cases = ['rejected', 'suspected', 'expired'];
-    const has_idv_error =
-        identity_last_attempt?.service && service_code.idv && idv_resubmission_cases.includes(idv.status);
+    const poi_resubmission_cases = ['rejected', 'suspected', 'expired'];
+    const resubmit_poi = poi_resubmission_cases.includes(identity_status) && needs_poi;
 
-    if (identity_status === identity_status_codes.none || allow_poi_resubmission || has_idv_error) {
+    const has_idv_error =
+        identity_last_attempt?.service && service_code.idv && poi_resubmission_cases.includes(idv.status);
+
+    if (identity_status === identity_status_codes.none || allow_poi_resubmission || has_idv_error || resubmit_poi) {
         return (
             <POISubmissionForMT5
                 has_attempted_idv={has_attempted_idv}

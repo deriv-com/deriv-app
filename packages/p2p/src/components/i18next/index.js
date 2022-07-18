@@ -13,7 +13,7 @@ import it from 'Translations/it.json';
 import pl from 'Translations/pl.json';
 import pt from 'Translations/pt.json';
 import ru from 'Translations/ru.json';
-import vi from 'Translations/ru.json';
+import vi from 'Translations/vi.json';
 import zh_cn from 'Translations/zh_cn.json';
 import zh_tw from 'Translations/zh_tw.json';
 

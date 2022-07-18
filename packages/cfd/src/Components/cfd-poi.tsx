@@ -75,9 +75,13 @@ const CFDPOI = ({
 }: TCFDPOIProps) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState<string>('none');
-    const [is_next_btn_disabled, setIsNextBtnDisabled] = React.useState(
-        !(['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status))
+
+    // we need extra variable since the state has issues with updating under some conditions
+    const is_next_btn_disabled = !(
+        ['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
     );
+    const [is_next_btn_disabled_state, setIsNextBtnDisabled] = React.useState(is_next_btn_disabled);
+
     const validateForm = React.useCallback(() => {
         const errors = {};
         if (!['pending'].includes(poi_state) || !['pending', 'verified'].includes(identity_status)) {
@@ -130,13 +134,13 @@ const CFDPOI = ({
                                     <FormSubmitButton
                                         has_cancel
                                         cancel_label={localize('Previous')}
-                                        is_disabled={is_next_btn_disabled}
+                                        is_disabled={is_next_btn_disabled && is_next_btn_disabled_state}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={onCancel}
                                         form_error={form_error}
                                         onClick={() => {
-                                            if (!is_next_btn_disabled) {
+                                            if (!is_next_btn_disabled_state) {
                                                 onSubmit(index, { poi_state }, false);
                                             }
                                         }}

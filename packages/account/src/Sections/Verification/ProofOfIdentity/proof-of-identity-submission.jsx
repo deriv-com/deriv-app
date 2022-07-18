@@ -156,6 +156,7 @@ const POISubmission = ({
                     return (
                         <Unsupported
                             country_code={selected_country.value}
+                            is_from_external={is_from_external}
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         />
                     );

@@ -178,7 +178,13 @@ const ProofOfIdentityContainer = ({
                 />
             );
         case service_code.manual:
-            return <Unsupported manual={manual} setIsCfdPoiCompleted={setIsCfdPoiCompleted} />;
+            return (
+                <Unsupported
+                    manual={manual}
+                    is_from_external={is_from_external}
+                    setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                />
+            );
         default:
             return null;
     }

@@ -27,6 +27,7 @@ const DetailComponent = ({
     height,
     handleComplete,
     is_onfido_supported,
+    is_from_external,
     setIsCfdPoiCompleted,
     ...props
 }) => {
@@ -122,6 +123,7 @@ const DetailComponent = ({
                             data={document.details}
                             onComplete={onComplete}
                             goToCards={onClickBack}
+                            is_from_external={is_from_external}
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         />
                     )}

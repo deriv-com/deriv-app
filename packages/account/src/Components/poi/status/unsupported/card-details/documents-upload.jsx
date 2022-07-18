@@ -38,7 +38,7 @@ const IconsItem = ({ data }) => (
     </div>
 );
 
-const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
+const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, onSubmit }) => {
     const { fields, documents_title, documents } = data;
 
     const fields_title = localize('First, enter your {{label}} and the expiry date.', {
@@ -83,7 +83,7 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
                                             key={item.name}
                                             data={item}
                                             value={values[item.name]}
-                                            is_full={documents.length === 1}
+                                            is_full={documents.length === 1 || is_from_external}
                                         />
                                     ))}
                                 </div>

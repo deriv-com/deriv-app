@@ -104,12 +104,7 @@ const JurisdictionCard = ({
     };
 
     const Checkmark = () => (
-        <Icon
-            icon='IcCheckmark'
-            className={`${card_classname}__bullet-wrapper--checkmark`}
-            color={disabled ? 'disabled' : 'green'}
-            size={18}
-        />
+        <Icon icon='IcCheckmark' className={`${card_classname}__bullet-wrapper--checkmark`} color={'green'} size={18} />
     );
 
     const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
@@ -141,7 +136,7 @@ const JurisdictionCard = ({
         if (is_virtual && type_of_card !== 'svg') {
             return (
                 <div className={`${card_classname}__footer--none`}>
-                    <Text as='p' size='xxxs' align='center' color={disabled ? 'less-prominent' : 'prominent'}>
+                    <Text as='p' size='xxxs' align='center' color={'prominent'}>
                         <Localize
                             i18n_default_text='Switch to your real account to create a DMT5 {{account_title}} {{type_title}} account.'
                             values={{
@@ -171,7 +166,7 @@ const JurisdictionCard = ({
                 // if poi or poa is not submitted
                 return (
                     <div className={`${card_classname}__footer--none`}>
-                        <Text as='p' size='xxxs' align='center' color={disabled ? 'less-prominent' : 'prominent'}>
+                        <Text as='p' size='xxxs' align='center' color={'prominent'}>
                             <Localize i18n_default_text='You will need to submit proof of identity and address' />
                         </Text>
                     </div>
@@ -188,7 +183,7 @@ const JurisdictionCard = ({
                 return (
                     <div className={`${card_classname}__verification-status`}>
                         <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                            <Text size='xxxs' color={'white'}>
                                 <Localize i18n_default_text='Check your proof of identity' />
                             </Text>
                         </div>
@@ -199,7 +194,7 @@ const JurisdictionCard = ({
                 return (
                     <div className={`${card_classname}__verification-status`}>
                         <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                            <Text size='xxxs' color={'white'}>
                                 <Localize i18n_default_text='Check your proof of address' />
                             </Text>
                         </div>
@@ -210,7 +205,7 @@ const JurisdictionCard = ({
                 return (
                     <div className={`${card_classname}__verification-status`}>
                         <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'white'}>
+                            <Text size='xxxs' color={'white'}>
                                 <Localize i18n_default_text='Check your proof of identity and address' />
                             </Text>
                         </div>
@@ -221,7 +216,7 @@ const JurisdictionCard = ({
                 return (
                     <div className={`${card_classname}__verification-status`}>
                         <div className={`${card_classname}__verification-status--pending`}>
-                            <Text size='xxxs' color={disabled ? 'less-prominent' : 'prominent'}>
+                            <Text size='xxxs' color={'prominent'}>
                                 <Localize i18n_default_text='Pending verification' />
                             </Text>
                         </div>
@@ -253,7 +248,7 @@ const JurisdictionCard = ({
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
                     <div className={classNames(`${card_classname}__over-header`)}>
-                        <Text as='p' color={disabled ? 'less-prominent' : 'blue'} line_height='xxl' weight='bold'>
+                        <Text as='p' color={'blue'} line_height='xxl' weight='bold'>
                             <Localize
                                 i18n_default_text={
                                     jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents]
@@ -264,13 +259,7 @@ const JurisdictionCard = ({
                     </div>
                 )}
                 <div className={`${card_classname}__info-container`}>
-                    <Text
-                        as='p'
-                        color={disabled ? 'less-prominent' : 'prominent'}
-                        weight='bold'
-                        size='sm'
-                        className={`${card_classname}__h2-header`}
-                    >
+                    <Text as='p' color={'prominent'} weight='bold' size='sm' className={`${card_classname}__h2-header`}>
                         <Localize
                             i18n_default_text={
                                 jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].header
@@ -285,7 +274,7 @@ const JurisdictionCard = ({
                                   <div>
                                       <Checkmark />
                                   </div>
-                                  <Text as='p' size='xs' color={disabled ? 'less-prominent' : 'prominent'}>
+                                  <Text as='p' size='xs' color={'prominent'}>
                                       <Localize i18n_default_text={item} />
                                   </Text>
                               </div>
@@ -297,7 +286,7 @@ const JurisdictionCard = ({
                                   <div>
                                       <Checkmark />
                                   </div>
-                                  <Text as='p' size='xs' color={disabled ? 'less-prominent' : 'prominent'}>
+                                  <Text as='p' size='xs' color={'prominent'}>
                                       <Localize i18n_default_text={item} />
                                   </Text>
                               </div>

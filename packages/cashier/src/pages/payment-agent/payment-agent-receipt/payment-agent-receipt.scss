@@ -43,6 +43,9 @@
             align-items: center;
             &__icon-wrapper {
                 margin-right: 0.5rem;
+                @include mobile {
+                    margin-right: 0.9rem;
+                }
             }
             &__desc-wrapper {
                 display: flex;

@@ -13,7 +13,7 @@ describe('<CashierOnboardingSideNote />', () => {
         render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
 
         expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
-        expect(screen.getByTestId('side-note-text')).toHaveTextContent(
+        expect(screen.getByTestId('dt_side_note_text')).toHaveTextContent(
             'If you want to change your account currency, please contact us via live chat.'
         );
     });

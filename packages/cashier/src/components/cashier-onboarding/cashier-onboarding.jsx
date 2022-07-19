@@ -3,11 +3,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
+import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
+import SideNote from 'Components/side-note';
 
 const CashierOnboarding = ({
     available_crypto_currencies,
@@ -144,9 +145,9 @@ const CashierOnboarding = ({
     return (
         <div>
             {is_currency_banner_visible && (
-                <MobileWrapper>
+                <SideNote is_mobile has_title={false} className='outside-wrapper'>
                     <CashierOnboardingSideNote is_crypto={is_crypto} />
-                </MobileWrapper>
+                </SideNote>
             )}
             <div className='cashier-onboarding'>
                 <div className='cashier-onboarding-header'>

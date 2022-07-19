@@ -274,12 +274,23 @@ export default class NotificationStore extends BaseStore {
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
-                    if (!personal_details_locked && onfido_submissions_left > 0) {
+                if (needs_verification.includes('identity')) {
+                    if (
+                        poi_name_mismatch &&
+                        identity?.services.onfido.last_rejected &&
+                        !personal_details_locked &&
+                        onfido_submissions_left > 0
+                    ) {
                         this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
-                    } else {
+                    } else if (identity.status === 'rejected' && onfido_submissions_left === 0) {
                         this.addNotificationMessage(this.client_notifications.onfido_failed);
+                    } else if (is_identity_verification_needed) {
+                        this.addNotificationMessage(this.client_notifications.identity);
                     }
+                }
+
+                if (!needs_verification.length && document.status === 'verified' && identity.status === 'verified') {
+                    this.addNotificationMessage(this.client_notifications.poa_poi_verified);
                 }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
@@ -341,10 +352,8 @@ export default class NotificationStore extends BaseStore {
                             this.addNotificationMessage(this.client_notifications.unwelcome);
                         }
                     }
-                    if (is_identity_verification_needed) {
-                        this.addNotificationMessage(this.client_notifications.identity);
-                    }
                 }
+
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
                 if (is_p2p_visible) {
@@ -799,16 +808,6 @@ export default class NotificationStore extends BaseStore {
                 type: 'announce',
                 should_hide_close_btn: false,
             },
-            poa_verification_failed: {
-                action: {
-                    route: routes.proof_of_address,
-                    text: localize('Go to Account settings'),
-                },
-                key: 'poa_verification_failed',
-                header: localize('Proof of address verification failed'),
-                message: localize('Please resubmit your proof of address.'),
-                type: 'danger',
-            },
             poi_name_mismatch: {
                 action: {
                     route: routes.personal_details,
@@ -823,16 +822,6 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
-            },
-            poi_verification_failed: {
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Go to Account settings'),
-                },
-                key: 'poi_verification_failed',
-                header: localize('Proof of identity verification failed'),
-                message: localize('Please resubmit your proof of identity.'),
-                type: 'danger',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;

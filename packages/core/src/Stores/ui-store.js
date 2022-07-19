@@ -142,6 +142,8 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
+    @observable should_show_warning_popup = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -395,6 +397,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     setShouldShowCancel(value) {
         this.should_show_cancel = value;
+    }
+
+    @action.bound
+    setShouldShowWarningPopup(value) {
+        this.should_show_warning_popup = value;
     }
 
     @action.bound

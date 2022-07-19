@@ -722,33 +722,47 @@ const AccountSwitcher = props => {
                                         ))}
                                     </div>
                                 )}
-                                {getRemainingRealMT5().map(account => (
-                                    <div
-                                        key={account.title}
-                                        className={classNames('acc-switcher__new-account', {
-                                            'acc-switcher__new-account--disabled': props.mt5_login_list_error,
-                                        })}
-                                    >
-                                        <Icon icon={`IcMt5-${account.icon}`} size={24} />
-                                        <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
-                                        </Text>
-                                        <Button
-                                            onClick={() => openMt5RealAccount(account.type)}
-                                            className='acc-switcher__new-account-btn'
-                                            secondary
-                                            small
-                                            is_disabled={
-                                                props.mt5_disabled_signup_types.real ||
-                                                isRealMT5AddDisabled(account.type) ||
-                                                (account.type === 'financial_stp' &&
-                                                    (props.is_pending_authentication || !!props.mt5_login_list_error))
-                                            }
-                                        >
-                                            {localize('Add')}
-                                        </Button>
-                                    </div>
-                                ))}
+                                {getRemainingRealMT5().map(account => {
+                                    const should_show_add_account_button =
+                                        account.type === 'synthetic'
+                                            ? props.can_have_more_real_synthetic_mt5
+                                            : props.can_have_more_real_financial_mt5;
+
+                                    return (
+                                        should_show_add_account_button && (
+                                            <div
+                                                key={account.title}
+                                                className={classNames('acc-switcher__new-account', {
+                                                    'acc-switcher__new-account--disabled': props.mt5_login_list_error,
+                                                })}
+                                            >
+                                                <Icon icon={`IcMt5-${account.icon}`} size={24} />
+                                                <Text
+                                                    size='xs'
+                                                    color='general'
+                                                    className='acc-switcher__new-account-text'
+                                                >
+                                                    {account.title}
+                                                </Text>
+                                                <Button
+                                                    onClick={() => openMt5RealAccount(account.type)}
+                                                    className='acc-switcher__new-account-btn'
+                                                    secondary
+                                                    small
+                                                    is_disabled={
+                                                        props.mt5_disabled_signup_types.real ||
+                                                        isRealMT5AddDisabled(account.type) ||
+                                                        (account.type === 'financial_stp' &&
+                                                            (props.is_pending_authentication ||
+                                                                !!props.mt5_login_list_error))
+                                                    }
+                                                >
+                                                    {localize('Add')}
+                                                </Button>
+                                            </div>
+                                        )
+                                    );
+                                })}
                             </React.Fragment>
                         )}
                     </AccountWrapper>
@@ -960,6 +974,8 @@ const account_switcher = withRouter(
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
+        can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
+        can_have_more_real_financial_mt5: client.can_have_more_real_financial_mt5,
         dxtrade_accounts_list: client.dxtrade_accounts_list,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,

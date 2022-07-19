@@ -16,7 +16,6 @@ const TradingAssessmentNewUser = ({
     onSubmit,
     getCurrentStep,
     selected_step_ref,
-    validate,
     value,
 }) => {
     const [current_question_index, setCurrentQuestionIndex] = React.useState(0);

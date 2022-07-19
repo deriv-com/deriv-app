@@ -1,10 +1,10 @@
-import { Modal, Icon, Text, Button } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import React from 'react';
+import { Modal, Text, Icon, Button } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 
-const VerifiedModal = () => {
+const VerifiedAccountModal = () => {
     return (
-        <Modal width='44rem' height='30.4rem' has_close_icon={false}>
+        <Modal width='44rem' height='30.4rem' has_close_icon={false} is_vertical_centered>
             <Modal.Body>
                 <Icon icon='IcCurrency-eur' />
                 <Text as='p' size='xs' align='center'>
@@ -22,4 +22,4 @@ const VerifiedModal = () => {
     );
 };
 
-export default VerifiedModal;
+export default VerifiedAccountModal;

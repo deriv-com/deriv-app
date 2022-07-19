@@ -1,6 +1,6 @@
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import TradingAssessment from 'Components/trading-assessment';
+import TradingAssessmentNewUser from 'Components/trading-assessment/trading-assessment-new-user.jsx';
 
 export const trading_assessment_questions = [
     {
@@ -265,7 +265,7 @@ const default_form_config = {
     default_value: '',
 };
 
-const trading_assessment_form_config = {
+export const trading_assessment_form_config = {
     risk_tolerance: {
         ...default_form_config,
     },
@@ -304,7 +304,7 @@ const tradingAssessmentConfig = ({ real_account_signup_target }) => {
             active_title: localize('Complete your trading assessment'),
             title: localize('Trading assessment'),
         },
-        body: TradingAssessment,
+        body: TradingAssessmentNewUser,
         form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
         props: {
             validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),

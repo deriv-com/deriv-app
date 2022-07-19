@@ -109,8 +109,9 @@ const AppNotificationMessages = ({
                   'close_uk_account',
                   'onfido_failed',
                   'poa_poi_verified',
-                  'poa_verification_failed',
-                  'poi_verification_failed',
+                  'poi_name_mismatch',
+                  'document_needs_action',
+                  'identity',
               ].includes(message.key)
             : true;
         return is_not_marked_notification && is_non_hidden_notification;

@@ -191,9 +191,6 @@ const DefaultHeader = ({
                 show_risk_modal && (
                     <RiskToleranceWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />
                 )
-                // testing modals
-                // <CoolDownWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />
-                // return <TestWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />;
             }
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />

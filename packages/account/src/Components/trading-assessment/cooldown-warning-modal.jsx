@@ -2,7 +2,7 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 
-const CoolDownWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
+const CooldownWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
     return (
         <Modal
             width='44rem'
@@ -10,7 +10,7 @@ const CoolDownWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
             is_vertical_centered
             title={localize('24-hour Cool Down Warning')}
             is_open={show_risk_modal}
-            className='_risk-tolerance'
+            className='risk-tolerance'
         >
             <Modal.Body className='risk-tolerance__body'>
                 <Icon icon='IcRedWarning' size={63} className='risk-tolerance__body--icon' color='red' />

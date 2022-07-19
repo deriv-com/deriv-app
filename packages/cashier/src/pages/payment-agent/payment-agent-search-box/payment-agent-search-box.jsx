@@ -6,7 +6,9 @@ import { localize } from '@deriv/translations';
 import CashierSearchBox from 'Components/cashier-search-box';
 
 const PaymentAgentSearchBox = ({ filterPaymentAgentList, setIsSearchLoading, setSearchTerm }) => {
-    const debouncedFunction = debounce(() => filterPaymentAgentList(), 500);
+    const debouncedFunction = debounce(() => {
+        filterPaymentAgentList();
+    }, 500);
 
     const onClear = () => {
         setSearchTerm('');

@@ -8,24 +8,21 @@ import './cashier-search-box.scss';
 const CashierSearchBox = ({ className, onClear, onSearch, placeholder, setIsSearchLoading }) => {
     const onSearchClear = setFieldValue => {
         setFieldValue('search', '');
-        if (typeof onClear === 'function') {
-            onClear();
-        }
+        onClear();
     };
 
     const onSearchKeyUpDown = (submitForm, search) => {
         if (!search.trim()) return;
+
         setIsSearchLoading(true);
-        clearTimeout(typing_timer);
-        const typing_timer = setTimeout(() => {
+
+        setTimeout(() => {
             submitForm();
         }, 300);
     };
 
     const onSearchSubmit = ({ search }) => {
-        if (typeof onSearch === 'function') {
-            onSearch(search);
-        }
+        onSearch(search);
     };
 
     return (

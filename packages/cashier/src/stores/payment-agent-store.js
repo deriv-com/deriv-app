@@ -158,7 +158,9 @@ export default class PaymentAgentStore {
                               .toLowerCase()
                               .split(',')
                               .indexOf(bank || this.selected_bank)
-                        : supported_banks.map(x => x.payment_method.toLowerCase()).indexOf(bank || this.selected_bank);
+                        : supported_banks
+                              .map(supported_bank => supported_bank.payment_method.toLowerCase())
+                              .indexOf(bank || this.selected_bank);
 
                     if (bank_index !== -1) this.filtered_list.push(payment_agent);
                 }

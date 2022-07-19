@@ -137,7 +137,7 @@ export default Engine =>
       const { proposals } = this.data;
 
       if (proposals.length > 0) {
-        const hasEqualProposals = this.proposalTemplates.every(
+        const hasEqualProposals = this.proposalTemplates?.every(
           template =>
             proposals.findIndex(
               proposal =>

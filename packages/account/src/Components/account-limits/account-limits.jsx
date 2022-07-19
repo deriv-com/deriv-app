@@ -347,6 +347,7 @@ AccountLimits.propTypes = {
     is_switching: PropTypes.bool.isRequired,
     is_virtual: PropTypes.bool.isRequired,
     overlay_ref: PropTypes.shape({ current: PropTypes.any }),
+    setIsOverlayShown: PropTypes.func,
     setIsPopupOverlayShown: PropTypes.func,
     should_bypass_scrollbars: PropTypes.bool,
     should_show_article: PropTypes.bool,

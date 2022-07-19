@@ -12,6 +12,7 @@ const DemoMessage = ({ has_demo_icon, has_button }) => (
 );
 
 DemoMessage.propTypes = {
+    has_button: PropTypes.bool,
     has_demo_icon: PropTypes.bool,
     full_width: PropTypes.bool,
 };

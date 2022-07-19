@@ -15,10 +15,10 @@ jest.mock('@deriv/components', () => {
 });
 
 describe('<UploadComplete />', () => {
-    const message = /Your proof of identity was submitted successfully/i;
-    const text = /We’ll review your document and notify you of its status within 1 to 2 hours./i;
+    const successful_upload_message = /Your proof of identity was submitted successfully/i;
+    const poi_under_review_message = /We’ll review your document and notify you of its status within 1 to 2 hours./i;
     const redirect_button = <Button>Lorem epsom</Button>;
-    const needs_poa_review_message = /Your document is being reviewed, please check back in 1-3 days./i;
+    const poa_under_review_message = /Your document is being reviewed, please check back in 1-3 days./i;
     const needs_poa_extra_submit_message = /You must also submit a proof of address./i;
 
     const RenderWithTrue = component =>
@@ -36,8 +36,8 @@ describe('<UploadComplete />', () => {
     it('should render <UploadComplete /> component and is_appstore is true', () => {
         RenderWithTrue(<UploadComplete />);
 
-        expect(screen.getByText(message)).toBeInTheDocument();
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(successful_upload_message)).toBeInTheDocument();
+        expect(screen.getByText(poi_under_review_message)).toBeInTheDocument();
         expect(screen.getByTestId(/dt_mocked_icon/i)).toBeInTheDocument();
     });
 
@@ -63,7 +63,7 @@ describe('<UploadComplete />', () => {
         RenderWithTrue(<UploadComplete needs_poa redirect_button={redirect_button} />);
 
         expect(screen.getByTestId('poa-button')).toBeInTheDocument();
-        expect(screen.getByText(needs_poa_review_message)).toBeInTheDocument();
+        expect(screen.getByText(poa_under_review_message)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_extra_submit_message)).toBeInTheDocument();
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
@@ -72,7 +72,7 @@ describe('<UploadComplete />', () => {
         RenderWithTrue(<UploadComplete needs_poa is_from_external redirect_button={redirect_button} />);
 
         expect(screen.getByTestId('poa-button')).toBeInTheDocument();
-        expect(screen.getByText(needs_poa_review_message)).toBeInTheDocument();
+        expect(screen.getByText(poa_under_review_message)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_extra_submit_message)).toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });

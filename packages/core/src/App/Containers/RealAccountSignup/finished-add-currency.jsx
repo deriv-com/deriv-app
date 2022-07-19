@@ -14,7 +14,6 @@ const FinishedAddCurrency = ({
     onSubmit,
     setIsDeposit,
 }) => {
-    // debugger;
     const IconNextCurrency = () => <Icon icon={`IcCurrency-${current.toLowerCase()}`} height={120} width={90} />;
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
 

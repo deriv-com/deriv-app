@@ -1,47 +1,55 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import {
-    FormSubmitButton,
+    // FormSubmitButton,
     Text,
-    Icon,
+    // Icon,
     Button,
     Modal,
     DesktopWrapper,
     MobileDialog,
     MobileWrapper,
 } from '@deriv/components';
-import { generateValidationFunction, getDefaultFields, isMobile } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, isMobile } from '@deriv/shared'; // eslint-disable-line no-unused-vars
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { trading_assessment_form_config } from 'Configs/trading-assessment-config';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 
-const TradingAssessmentForm = ({ assessment_questions }) => {
-    const [current_question_index, setCurrentQuestionIndex] = React.useState(0);
-    const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
-    const [current_question, setCurrentQuestion] = React.useState({});
+export const TradingAssessmentForm = ({ assessment_questions }) => {
+    const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false); // eslint-disable-line no-unused-vars
+    const [current_question, setCurrentQuestion] = React.useState({
+        current_question_index: 0,
+        current_question: {},
+    });
 
-    const last_question_index = assessment_questions.length - 1;
+    const last_question_index = assessment_questions.length - 1; // eslint-disable-line no-unused-vars
 
     React.useEffect(() => {
-        setCurrentQuestion(assessment_questions[current_question_index]);
+        setCurrentQuestion(prevState => ({
+            ...prevState,
+            current_question: assessment_questions[prevState.current_question_index],
+        }));
     }, []);
-
+    // eslint-disable-next-line no-unused-vars
     const handleNextButton = () => {
-        const next_question = current_question_index + 1;
+        const next_question = current_question.current_question_index + 1;
         if (next_question < assessment_questions.length) {
-            setCurrentQuestionIndex(next_question);
-            setCurrentQuestion(assessment_questions[next_question]);
+            setCurrentQuestion({
+                current_question_index: next_question,
+                current_question: assessment_questions[next_question],
+            });
         }
     };
 
     const handlePrevButton = () => {
-        const prev_question = current_question_index - 1;
+        const prev_question = current_question.current_question_index - 1;
         if (prev_question >= 0) {
-            setCurrentQuestionIndex(prev_question);
-            setCurrentQuestion(assessment_questions[prev_question]);
+            setCurrentQuestion({
+                current_question_index: prev_question,
+                current_question: assessment_questions[prev_question],
+            });
         }
     };
 
@@ -50,11 +58,12 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
         callBackFn(form_control, e.target.value);
         const latest_value = { ...values, [form_control]: e.target.value };
         if (latest_value.risk_tolerance === 'No') {
+            // TODO implement logic here
         }
     };
 
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
-
+    // eslint-disable-next-line no-unused-vars
     const hideElement = condition => {
         if (condition) {
             return { visibility: 'hidden' };
@@ -70,21 +79,22 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
             <section className='trading-assessment__header'>
                 <div className='trading-assessment__header--background'>
                     <Text as='h1' color='prominent' weight='bold' size='xs'>
-                        {current_question_index + 1} {localize('of')} {assessment_questions.length}
+                        {current_question.current_question_index + 1} {localize('of')} {assessment_questions.length}
                     </Text>
                 </div>
                 <div className='trading-assessment__header--arrow-down' />
             </section>
             <section className='trading-assessment__form'>
                 <Formik
-                    innerRef={selected_step_ref}
-                    initialValues={{ ...value }}
+                    innerRef={selected_step_ref} // eslint-disable-line no-undef
+                    initialValues={{ ...value }} // eslint-disable-line no-undef
                     onSubmit={(values, actions) => {
-                        onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
+                        onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep); // eslint-disable-line no-undef
                     }}
                 >
                     {({ setFieldValue, values }) => {
-                        const { question_text, form_control, answer_options, questions } = current_question;
+                        const { question_text, form_control, answer_options, questions } =
+                            current_question.current_question;
 
                         return (
                             <Form className='trading-assessment__form--layout'>
@@ -141,7 +151,7 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
 };
 
 const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_assessment_incomplete }) => {
-    const form_values = getDefaultFields(real_account_signup_target, trading_assessment_form_config);
+    const form_values = getDefaultFields(real_account_signup_target, trading_assessment_form_config); // eslint-disable-line no-unused-vars
 
     return (
         <React.Fragment>

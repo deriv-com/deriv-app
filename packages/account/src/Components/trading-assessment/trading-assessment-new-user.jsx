@@ -18,29 +18,38 @@ const TradingAssessmentNewUser = ({
     selected_step_ref,
     value,
 }) => {
-    const [current_question_index, setCurrentQuestionIndex] = React.useState(0);
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
-    const [current_question, setCurrentQuestion] = React.useState({});
+    const [current_question, setCurrentQuestion] = React.useState({
+        current_question_index: 0,
+        current_question: {},
+    });
 
-    const end_question_index = assessment_questions.length - 1;
+    const last_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
-        setCurrentQuestion(assessment_questions[current_question_index]);
+        setCurrentQuestion(prevState => ({
+            ...prevState,
+            current_question: assessment_questions[prevState.current_question_index],
+        }));
     }, []);
 
     const handleNextButton = () => {
-        const next_question = current_question_index + 1;
+        const next_question = current_question.current_question_index + 1;
         if (next_question < assessment_questions.length) {
-            setCurrentQuestionIndex(next_question);
-            setCurrentQuestion(assessment_questions[next_question]);
+            setCurrentQuestion({
+                current_question_index: next_question,
+                current_question: assessment_questions[next_question],
+            });
         }
     };
 
     const handlePrevButton = () => {
-        const prev_question = current_question_index - 1;
+        const prev_question = current_question.current_question_index - 1;
         if (prev_question >= 0) {
-            setCurrentQuestionIndex(prev_question);
-            setCurrentQuestion(assessment_questions[prev_question]);
+            setCurrentQuestion({
+                current_question_index: prev_question,
+                current_question: assessment_questions[prev_question],
+            });
         }
     };
 
@@ -78,20 +87,20 @@ const TradingAssessmentNewUser = ({
                     <Button
                         onClick={handlePrevButton}
                         transparent
-                        style={hideElement(current_question_index === 0)}
+                        style={hideElement(current_question.current_question_index === 0)}
                         type='button'
                     >
                         <Icon icon='IcChevronLeft' color='black' />
                     </Button>
                     <Text as='h1' color='prominent' weight='bold' size='xs'>
-                        {current_question_index + 1} {localize('of')} {assessment_questions.length}
+                        {current_question.current_question_index + 1} {localize('of')} {assessment_questions.length}
                     </Text>
                     <Button
                         onClick={handleNextButton}
                         transparent
                         is_disabled={!is_next_button_enabled}
                         className={classNames({ 'disable-pointer': !is_next_button_enabled })}
-                        style={hideElement(current_question_index === end_question_index)}
+                        style={hideElement(current_question.current_question_index === last_question_index)}
                         type='button'
                     >
                         <Icon icon='IcChevronRight' color={is_next_button_enabled ? 'black' : 'secondary'} />
@@ -108,7 +117,8 @@ const TradingAssessmentNewUser = ({
                     }}
                 >
                     {({ setFieldValue, values }) => {
-                        const { question_text, form_control, answer_options, questions } = current_question;
+                        const { question_text, form_control, answer_options, questions } =
+                            current_question.current_question;
 
                         return (
                             <Form className='trading-assessment__form--layout'>

@@ -64,7 +64,7 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
-    setLanguageChanging(is_language_changing) {
+    setIsLanguageChanging(is_language_changing) {
         runInAction(() => {
             this.is_language_changing = is_language_changing;
         });

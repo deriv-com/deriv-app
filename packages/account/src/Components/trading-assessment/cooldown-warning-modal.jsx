@@ -1,6 +1,6 @@
+import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import React from 'react';
 
 const CooldownWarningModal = ({ show_cool_down_modal, setShowCoolDownModal }) => {
     return (
@@ -13,8 +13,8 @@ const CooldownWarningModal = ({ show_cool_down_modal, setShowCoolDownModal }) =>
         >
             <Modal.Body className='risk-tolerance__body'>
                 <Icon icon='IcRedWarning' size={63} className='risk-tolerance__body--icon' color='red' />
-                <Text as='p' size='xs' align='center' className='risk-tolerance__body--main-text'>
-                    <Localize i18n_default_text='You can create your account on 11 June at 2:00 pm.Please click ‘OK’ to continue.' />
+                <Text as='p' size='xs' align='center' className='risk-tolerance__body-text'>
+                    <Localize i18n_default_text='You can create your account on 11 June at 2:00 pm. Please click ‘OK’ to continue.' />
                 </Text>
             </Modal.Body>
             <Modal.Footer className='risk-tolerance__footer'>

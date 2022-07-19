@@ -2,7 +2,6 @@ import {
     currencySelectorConfig,
     personalDetailsConfig,
     addressDetailsConfig,
-    financialDetailsConfig,
     PersonalDetails,
     termsOfUseConfig,
     tradingAssessmentConfig,
@@ -14,7 +13,6 @@ import CurrencySelector from './currency-selector.jsx';
 import AddressDetails from './address-details.jsx';
 
 // const { TradingAssessmentNewUser } = TradingAssessment;
-// const shouldShowFinancialDetails = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
 const shouldShowTradingAssessment = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
 const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
     real_account_signup_target !== 'samoa';
@@ -29,7 +27,6 @@ export const getItems = props => {
             : []),
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
         ...(shouldShowTradingAssessment(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
-        // ...(shouldShowFinancialDetails(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
         termsOfUseConfig(props, TermsOfUse),
     ];
 };

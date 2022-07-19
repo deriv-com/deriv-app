@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Text, Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { getDefaultFields, isMobile } from '@deriv/shared';
@@ -15,22 +14,29 @@ const TradingAssessmentForm = ({ assessment_questions, value, onSubmit }) => {
     const [current_question, setCurrentQuestion] = React.useState({});
 
     React.useEffect(() => {
-        setCurrentQuestion(assessment_questions[current_question_index]);
+        setCurrentQuestion(prevState => ({
+            ...prevState,
+            current_question: assessment_questions[prevState.current_question_index],
+        }));
     }, []);
-
+    // eslint-disable-next-line no-unused-vars
     const handleNextButton = () => {
-        const next_question = current_question_index + 1;
+        const next_question = current_question.current_question_index + 1;
         if (next_question < assessment_questions.length) {
-            setCurrentQuestionIndex(next_question);
-            setCurrentQuestion(assessment_questions[next_question]);
+            setCurrentQuestion({
+                current_question_index: next_question,
+                current_question: assessment_questions[next_question],
+            });
         }
     };
 
     const handlePrevButton = () => {
-        const prev_question = current_question_index - 1;
+        const prev_question = current_question.current_question_index - 1;
         if (prev_question >= 0) {
-            setCurrentQuestionIndex(prev_question);
-            setCurrentQuestion(assessment_questions[prev_question]);
+            setCurrentQuestion({
+                current_question_index: prev_question,
+                current_question: assessment_questions[prev_question],
+            });
         }
     };
 
@@ -52,7 +58,7 @@ const TradingAssessmentForm = ({ assessment_questions, value, onSubmit }) => {
             <section className='trading-assessment__header'>
                 <div className='trading-assessment__header--background'>
                     <Text as='h1' color='prominent' weight='bold' size='xs'>
-                        {current_question_index + 1} {localize('of')} {assessment_questions.length}
+                        {current_question.current_question_index + 1} {localize('of')} {assessment_questions.length}
                     </Text>
                 </div>
                 <div className='trading-assessment__header--arrow-down' />
@@ -60,7 +66,8 @@ const TradingAssessmentForm = ({ assessment_questions, value, onSubmit }) => {
             <section className='trading-assessment__form'>
                 <Formik initialValues={{ ...value }} onSubmit={onSubmit}>
                     {({ setFieldValue, values }) => {
-                        const { question_text, form_control, answer_options, questions } = current_question;
+                        const { question_text, form_control, answer_options, questions } =
+                            current_question.current_question;
 
                         return (
                             <Form className='trading-assessment__form--layout'>

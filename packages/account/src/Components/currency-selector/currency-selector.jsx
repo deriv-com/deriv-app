@@ -38,7 +38,6 @@ const CurrencySelector = ({
     is_eu,
     ...props
 }) => {
-    // debugger;
     const { is_appstore } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');

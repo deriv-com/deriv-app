@@ -50,13 +50,12 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 };
 
 const AccountWizard = props => {
-    // debugger;
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
-    const [should_accept_financial_risk, setShouldAccesptFinancialRisk] = React.useState(false);
+    const [should_accept_financial_risk, setShouldAccesptFinancialRisk] = React.useState(false); // eslint-disable-line no-unused-vars
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -238,12 +237,11 @@ const AccountWizard = props => {
     };
 
     const createRealAccount = (payload = undefined) => {
-        // debugger;
         props.setLoading(true);
         submitForm(payload)
             .then(response => {
                 // TODO: Code for Success response
-                console.log('Response: ', response);
+                console.log('Response: ', response); // eslint-disable-line no-console
                 // props.setIsRiskWarningVisible(false);
                 // if (props.real_account_signup_target === 'maltainvest') {
                 //     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -255,7 +253,8 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 // TODO: Code for Error response
-                console.log('Error: ', error);
+                console.log('Error: ', error); // eslint-disable-line no-console
+
                 // if (error.code === 'show risk disclaimer') {
                 //     props.setIsRiskWarningVisible(true);
                 //     setShouldAcceptFinancialRisk(true);

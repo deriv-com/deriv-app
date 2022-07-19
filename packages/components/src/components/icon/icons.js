@@ -233,6 +233,7 @@ import './common/ic-edit.svg';
 import './common/ic-email-firewall.svg';
 import './common/ic-email-outline.svg';
 import './common/ic-email-sent-dashboard.svg';
+import './common/ic-email-sent-p2p.svg';
 import './common/ic-email-sent.svg';
 import './common/ic-email-spam.svg';
 import './common/ic-email-typo.svg';

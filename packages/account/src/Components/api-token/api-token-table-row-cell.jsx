@@ -21,6 +21,7 @@ ApiTokenTableRowCell.propTypes = {
     children: PropTypes.any.isRequired,
     className: PropTypes.string,
     should_bypass_text: PropTypes.bool,
+    className: PropTypes.string,
 };
 
 export default ApiTokenTableRowCell;

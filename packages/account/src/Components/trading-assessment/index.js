@@ -1,3 +1,4 @@
-import TradingAssessment from './trading-assessment.jsx';
+import TradingAssessmentNewUser from './trading-assessment-new-user.jsx';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 
-export default TradingAssessment;
+export { TradingAssessmentNewUser, TradingAssessmentExistingUser };

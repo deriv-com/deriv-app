@@ -55,6 +55,8 @@ module.exports = function (env) {
             'text-container': 'Components/text-container',
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
+            'trading-assessment-config': 'Configs/trading-assessment-config',
+            'trading-assessment-new-user': 'Components/trading-assessment/trading-assessment-new-user.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

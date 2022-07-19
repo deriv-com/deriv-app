@@ -1,18 +1,22 @@
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-export const trading_assessment = [
+export const trading_assessment_questions = [
     {
         question_text: 'Do you understand that you could potentially lose 100% of the money you use to trade?',
         section: 'risk_tolerance',
         answer_options: [
-            { value: 'option_1', text: localize('Yes') },
-            { value: 'option_2', text: localize('No') },
+            { value: 'Yes', text: localize('Yes') },
+            { value: 'No', text: localize('No') },
         ],
-        answer: ['option_1'],
+        answer: [1],
+        form_control: 'risk_tolerance',
+        field_type: 'radio',
     },
     {
         question_text: 'How much knowledge and experience do you have in relation to online trading?',
         section: 'source_of_experience',
+        form_control: 'source_of_experience',
         answer_options: [
             {
                 value: 'option_1',
@@ -40,14 +44,15 @@ export const trading_assessment = [
             },
         ],
         answer: ['option_1', 'option_2', 'option_3'],
+        field_type: 'radio',
     },
-    // start dropdown
     {
         section: 'trading_experience',
         questions: [
             {
                 question_text: localize('How much experience do you have in CFD trading?'),
-
+                field_type: 'dropdown',
+                form_control: 'cfd_trading_experience_mf',
                 answer_options: [
                     {
                         text: localize('No experience'),
@@ -70,7 +75,8 @@ export const trading_assessment = [
             },
             {
                 question_text: localize('How many CFD trades have you placed in the past 12 months?'),
-
+                field_type: 'dropdown',
+                form_control: 'cfd_trading_frequency_mf',
                 answer_options: [
                     {
                         text: localize('None'),
@@ -97,7 +103,8 @@ export const trading_assessment = [
             },
             {
                 question_text: localize('How much experience do you have with other financial instruments?'),
-
+                field_type: 'dropdown',
+                form_control: 'trading_experience_financial_instruments',
                 answer_options: [
                     {
                         text: localize('No experience'),
@@ -122,7 +129,8 @@ export const trading_assessment = [
                 question_text: localize(
                     'How many trades have you placed with other financial instruments in the past 12 months?'
                 ),
-
+                form_control: 'trading_frequency_financial_instruments',
+                field_type: 'dropdown',
                 answer_options: [
                     {
                         text: localize('None'),
@@ -149,10 +157,11 @@ export const trading_assessment = [
             },
         ],
     },
-    // end
     {
         question_text: 'In your understanding, CFD trading allows you to',
         section: 'trading_knowledge',
+        form_control: 'cfd_trading_definition',
+        field_type: 'radio',
         answer_options: [
             {
                 value: 'option_1',
@@ -178,6 +187,8 @@ export const trading_assessment = [
     {
         question_text: 'How does leverage affect CFD trading?',
         section: 'trading_knowledge',
+        form_control: 'leverage_impact_trading',
+        field_type: 'radio',
         answer_options: [
             {
                 value: 'option_1',
@@ -199,8 +210,10 @@ export const trading_assessment = [
     },
     {
         question_text:
-            'Leverage trading is high-risk, so it’s a good idea to use risk management features such as stop loss. Stop loss allows you to',
+            "Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to",
         section: 'trading_knowledge',
+        form_control: 'leverage_trading_high_risk_stop_loss',
+        field_type: 'radio',
         answer_options: [
             {
                 value: 'option_1',
@@ -226,8 +239,10 @@ export const trading_assessment = [
         answer: ['option_2'],
     },
     {
-        question_text: 'When do you need to pay an initial margin?',
+        question_text: 'When do you be required to pay an initial margin?',
         section: 'trading_knowledge',
+        form_control: 'required_initial_margin',
+        field_type: 'radio',
         answer_options: [
             {
                 value: 'option_1',
@@ -243,3 +258,58 @@ export const trading_assessment = [
         answer: ['option_1'],
     },
 ];
+
+const default_form_config = {
+    supported_in: ['maltainvest'],
+    default_value: '',
+};
+
+export const trading_assessment_form_config = {
+    risk_tolerance: {
+        ...default_form_config,
+    },
+    source_of_experience: {
+        ...default_form_config,
+    },
+    cfd_trading_experience_mf: {
+        ...default_form_config,
+    },
+    cfd_trading_frequency_mf: {
+        ...default_form_config,
+    },
+    trading_experience_financial_instruments: {
+        ...default_form_config,
+    },
+    trading_frequency_financial_instruments: {
+        ...default_form_config,
+    },
+    cfd_trading_definition: {
+        ...default_form_config,
+    },
+    leverage_impact_trading: {
+        ...default_form_config,
+    },
+    leverage_trading_high_risk_stop_loss: {
+        ...default_form_config,
+    },
+    required_initial_margin: {
+        ...default_form_config,
+    },
+};
+
+const tradingAssessmentConfig = ({ real_account_signup_target }, TradingAssessmentNewUser) => {
+    return {
+        header: {
+            active_title: localize('Complete your trading assessment'),
+            title: localize('Trading assessment'),
+        },
+        body: TradingAssessmentNewUser,
+        form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
+        props: {
+            validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
+            assessment_questions: trading_assessment_questions,
+        },
+    };
+};
+
+export default tradingAssessmentConfig;

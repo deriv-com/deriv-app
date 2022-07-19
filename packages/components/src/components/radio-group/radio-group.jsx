@@ -22,7 +22,11 @@ const RadioGroup = ({
     should_wrap_items,
     children,
 }) => {
-    const [selected_option, setSelectedOption] = React.useState(selected);
+    const [selected_option, setSelectedOption] = React.useState(null);
+
+    React.useEffect(() => {
+        setSelectedOption(selected);
+    }, [selected]);
 
     const onChange = event => {
         setSelectedOption(event.target.value);

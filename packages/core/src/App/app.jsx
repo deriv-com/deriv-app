@@ -60,6 +60,17 @@ const AppWithoutTranslation = ({ root_store }) => {
         setSharedCFDText(CFD_TEXT);
         handleResize();
         root_store.common.setPlatform();
+
+        const fetchFinancialScore = async () => {
+            try {
+                const response = await root_store.client.fetchFinancialAssessment();
+                root_store.client.setCFDScore(response.cfd_score);
+            } catch (err) {
+                console.log('Error: ', err);
+            }
+        };
+
+        fetchFinancialScore();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

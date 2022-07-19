@@ -128,6 +128,7 @@ export default class ClientStore extends BaseStore {
 
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
+    @observable cfd_score = 0;
 
     is_mt5_account_list_updated = false;
 
@@ -913,6 +914,12 @@ export default class ClientStore extends BaseStore {
             this.has_cookie_account = false;
         }
     }
+
+    @action.bound
+    setCFDScore(score) {
+        this.cfd_score = score;
+    }
+
     getSelfExclusion() {
         return new Promise(resolve => {
             WS.authorized.storage.getSelfExclusion().then(data => {

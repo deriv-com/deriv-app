@@ -12,11 +12,11 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { className, history, lang, order_id, server_time, websocket_api } = props;
+    const { className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
-        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
+        general_store.setWebsocketInit(websocket_api);
         order_store.setOrderId(order_id);
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
@@ -25,7 +25,6 @@ const App = props => {
             history.push(routes.cashier_p2p);
         }
 
-        setLanguage(lang);
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
@@ -34,15 +33,15 @@ const App = props => {
                 window.location.reload();
             }
         };
-
         waitWS('authorize').then(() => {
             general_store.onMount();
+            setOnRemount(general_store.onMount);
             if (localStorage.getItem('is_verifying_p2p')) {
                 localStorage.removeItem('is_verifying_p2p');
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
-        general_store.setP2PConfig();
+
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -53,6 +52,10 @@ const App = props => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
+
+    React.useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
 
     return (
         <main className={classNames('p2p-cashier', className)}>

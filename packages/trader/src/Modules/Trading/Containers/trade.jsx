@@ -259,10 +259,10 @@ const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }
         );
     });
 
-const ChartMarkers = connect(({ modules, ui, client }) => ({
-    markers_array: modules.contract_trade.markers_array,
-    is_digit_contract: modules.contract_trade.is_digit_contract,
-    granularity: modules.contract_trade.granularity,
+const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
+    markers_array: contract_trade.markers_array,
+    is_digit_contract: contract_trade.is_digit_contract,
+    granularity: contract_trade.granularity,
     is_dark_theme: ui.is_dark_mode_on,
     currency: client.currency,
 }))(Markers);
@@ -427,13 +427,13 @@ Chart.propTypes = {
     wsSubscribe: PropTypes.func,
 };
 
-const ChartTrade = connect(({ modules, ui, common }) => ({
+const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
     is_socket_opened: common.is_socket_opened,
-    granularity: modules.contract_trade.granularity,
-    chart_type: modules.contract_trade.chart_type,
+    granularity: contract_trade.granularity,
+    chart_type: contract_trade.chart_type,
     chartStateChange: modules.trade.chartStateChange,
-    updateChartType: modules.contract_trade.updateChartType,
-    updateGranularity: modules.contract_trade.updateGranularity,
+    updateChartType: contract_trade.updateChartType,
+    updateGranularity: contract_trade.updateGranularity,
     settings: {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,
@@ -443,8 +443,8 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
     last_contract: {
-        is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
-        is_ended: modules.contract_trade.last_contract.is_ended,
+        is_digit_contract: contract_trade.last_contract.is_digit_contract,
+        is_ended: contract_trade.last_contract.is_ended,
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,

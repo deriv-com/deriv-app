@@ -52,6 +52,8 @@ export const Verified = ({ needs_poa, redirect_button, is_from_external }) => {
 Verified.propTypes = {
     has_poa: PropTypes.bool,
     is_description_enabled: PropTypes.bool,
+    is_from_external: PropTypes.bool,
+    needs_poa: PropTypes.bool,
     redirect_button: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 

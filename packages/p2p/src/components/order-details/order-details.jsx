@@ -185,35 +185,38 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             </div>
                         </div>
                         <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        {is_active_order &&
-                            (order_store?.has_order_payment_method_details ? (
-                                <div className='order-details-card--padding'>
-                                    <Text size='xs' weight='bold'>
-                                        {labels.payment_details}
-                                    </Text>
-                                    <Accordion
-                                        className='order-details-card__accordion'
-                                        icon_close='IcChevronRight'
-                                        icon_open='IcChevronDown'
-                                        list={order_store?.order_payment_method_details?.map(payment_method => ({
-                                            header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
-                                            content: <PaymentMethodAccordionContent payment_method={payment_method} />,
-                                        }))}
-                                    />
-                                </div>
-                            ) : (
-                                <OrderInfoBlock
-                                    className='order-details-card--padding'
-                                    label={
+                        {is_active_order && (
+                            <React.Fragment>
+                                {order_store?.has_order_payment_method_details ? (
+                                    <div className='order-details-card--padding'>
                                         <Text size='xs' weight='bold'>
                                             {labels.payment_details}
                                         </Text>
-                                    }
-                                    value={payment_info || '-'}
-                                />
-                            ))}
-                        {is_active_order && (
-                            <React.Fragment>
+                                        <Accordion
+                                            className='order-details-card__accordion'
+                                            icon_close='IcChevronRight'
+                                            icon_open='IcChevronDown'
+                                            list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                                header: (
+                                                    <PaymentMethodAccordionHeader payment_method={payment_method} />
+                                                ),
+                                                content: (
+                                                    <PaymentMethodAccordionContent payment_method={payment_method} />
+                                                ),
+                                            }))}
+                                        />
+                                    </div>
+                                ) : (
+                                    <OrderInfoBlock
+                                        className='order-details-card--padding'
+                                        label={
+                                            <Text size='xs' weight='bold'>
+                                                {labels.payment_details}
+                                            </Text>
+                                        }
+                                        value={payment_info || '-'}
+                                    />
+                                )}
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
@@ -224,10 +227,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     }
                                     value={contact_info || '-'}
                                 />
-                            </React.Fragment>
-                        )}
-                        {is_active_order && (
-                            <React.Fragment>
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'

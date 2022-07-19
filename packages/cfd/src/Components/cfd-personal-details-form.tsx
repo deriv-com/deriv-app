@@ -245,11 +245,9 @@ const CFDPersonalDetailsForm = ({
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
     if (is_loading) return <Loading is_fullscreen={false} />;
-
     return (
         <Formik
             initialValues={{ ...value }}
-            validateOnMount
             validateOnChange
             validateOnBlur
             validate={values =>

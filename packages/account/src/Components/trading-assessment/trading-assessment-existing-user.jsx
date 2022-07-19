@@ -122,8 +122,8 @@ const TradingAssessmentExistingUser = ({
     real_account_signup_target,
     is_trade_assessment_incomplete,
     realAccountSignup,
-    setShouldShowWarningPopup,
-    should_show_warning_popup,
+    setShouldShowRiskToleranceWarningModal,
+    should_show_risk_tolerance_warning_modal,
 }) => {
     const [form_values, setStateItems] = React.useState({});
 
@@ -173,6 +173,6 @@ export default connect(({ client, ui }) => ({
     is_trade_assessment_incomplete: client.is_trading_experience_incomplete,
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
-    should_show_warning_popup: ui.should_show_warning_popup,
-    setShouldShowWarningPopup: ui.setShouldShowWarningPopup,
+    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
 }))(TradingAssessmentExistingUser);

@@ -197,6 +197,7 @@ const AccountWizard = props => {
                 ...payload,
             };
         }
+        props.setRealAccountSignupData(clone);
 
         return props.realAccountSignup(clone);
     };
@@ -261,9 +262,11 @@ const AccountWizard = props => {
                 // } else {
                 //     props.onError(error, state_items);
                 // }
-                if (error.code === 'AppropriatenessTestFailed') {
+                if (error.code === 'AppropriatenessTestFailed' && payload.risk_tolerance === 'No') {
                     props.closeRealAccountSignup();
-                    props.setShouldShowWarningPopup(true);
+                    props.setShouldShowRiskToleranceWarningModal(true);
+                } else {
+                    props.closeRealAccountSignup();
                 }
             })
             .finally(() => props.setLoading(false));
@@ -353,16 +356,17 @@ AccountWizard.propTypes = {
     onLoading: PropTypes.func,
     onFinishSuccess: PropTypes.func,
     onOpenWelcomeModal: PropTypes.func,
-    realAccountSignup: PropTypes.func,
+    // realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
-    setShouldShowWarningPopup: PropTypes.func,
+    setShouldShowRiskToleranceWarningModal: PropTypes.func,
+    setRealAccountSignupData: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
-    realAccountSignup: client.realAccountSignup,
+    // realAccountSignup: client.realAccountSignup,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     is_virtual: client.is_virtual,
     has_real_account: client.has_active_real_account,
@@ -377,5 +381,6 @@ export default connect(({ client, notifications, ui }) => ({
     refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
-    setShouldShowWarningPopup: ui.setShouldShowWarningPopup,
+    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
+    setRealAccountSignupData: ui.setRealAccountSignupData,
 }))(AccountWizard);

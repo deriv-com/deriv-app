@@ -142,7 +142,11 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
-    @observable should_show_warning_popup = false;
+    @observable should_show_risk_tolerance_warning_modal = false;
+    @observable should_show_appropriateness_test_warning_modal = false;
+    @observable should_show_cooldown_warning_modal = false;
+    @observable set_should_show_verified_account = false;
+    @observable real_account_signup_data = {};
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -400,8 +404,28 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowWarningPopup(value) {
-        this.should_show_warning_popup = value;
+    setShouldShowRiskToleranceWarningModal(value) {
+        this.should_show_risk_tolerance_warning_modal = value;
+    }
+
+    @action.bound
+    setShouldShowAppropriatenessTestWarningModal(value) {
+        this.should_show_appropriateness_test_warning_modal = value;
+    }
+
+    @action.bound
+    setShouldShowCooldownWarningModal(value) {
+        this.should_show_cooldown_warning_modal = value;
+    }
+
+    @action.bound
+    setShouldShowVerifiedAccount(value) {
+        this.set_should_show_verified_account = value;
+    }
+
+    @action.bound
+    setRealAccountSignupData(form_data) {
+        this.real_account_signup_data = form_data;
     }
 
     @action.bound

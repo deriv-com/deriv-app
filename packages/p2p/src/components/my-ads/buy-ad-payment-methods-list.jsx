@@ -11,6 +11,7 @@ const BuyAdPaymentMethodsList = ({
     is_alignment_top = false,
     list_portal_id,
     should_show_hint = false,
+    should_clear_payment_method_selections = true,
     selected_methods,
     setSelectedMethods,
 }) => {
@@ -22,10 +23,12 @@ const BuyAdPaymentMethodsList = ({
 
     React.useEffect(() => {
         return () => {
-            my_ads_store.payment_method_ids = [];
-            my_ads_store.payment_method_names = [];
-            setSelectedMethods([]);
-            setPaymentMethodsList([]);
+            if (should_clear_payment_method_selections) {
+                my_ads_store.payment_method_ids = [];
+                my_ads_store.payment_method_names = [];
+                setSelectedMethods([]);
+                setPaymentMethodsList([]);
+            }
         };
     }, []);
 

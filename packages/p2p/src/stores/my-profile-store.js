@@ -341,6 +341,13 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    showCancelAddPaymentMethodModal(hideHandler) {
+        hideHandler();
+        this.setIsrevertCancelAddingPaymentMethod(true);
+        setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), 200);
+    }
+
+    @action.bound
     onClickDelete() {
         requestWS({
             p2p_advertiser_payment_methods: 1,

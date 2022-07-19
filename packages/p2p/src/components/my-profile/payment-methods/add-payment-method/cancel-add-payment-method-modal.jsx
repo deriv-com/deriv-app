@@ -6,8 +6,20 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { reaction } from 'mobx';
 
-const CancelAddPaymentMethodModal = ({ is_floating }) => {
-    const { my_profile_store, my_ads_store } = useStores();
+const CancelAddPaymentMethodModal = ({ is_floating, onCancel, onGoBack }) => {
+    const { my_ads_store, my_profile_store } = useStores();
+
+    const onClickCancel = onCancel || (() => {
+              my_ads_store.hideQuickAddModal();
+              my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+              my_profile_store.hideAddPaymentMethodForm();
+              my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
+              my_ads_store.setShouldShowAddPaymentMethodModal(false);
+          });
+
+    const onClickGoBack = onGoBack || (() => {
+              my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+          });
 
     // TODO: Refactor this code to avoid manual DOM updates
     // mounts the modal in a seperate modal-root container to show/float the modal over another modal if is_floating is true
@@ -56,32 +68,10 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    large
-                    onClick={() => {
-                        // TODO: Refactor this later to accept onCancel props to make this component more reusable for custom routing
-                        if (my_profile_store.selected_payment_method) {
-                            // in quick add modal, if user has already selected a PM for a sell ad, navigate back to list of PM cards instead of closing the quick add modal
-                            my_ads_store.setShouldShowAddPaymentMethod(false);
-                        } else {
-                            my_ads_store.hideQuickAddModal();
-                        }
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                        my_profile_store.hideAddPaymentMethodForm();
-                        my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
-                        my_ads_store.setShouldShowAddPaymentMethodModal(false);
-                    }}
-                    secondary
-                >
+                <Button large onClick={onClickCancel} secondary>
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button
-                    large
-                    onClick={() => {
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                    }}
-                    primary
-                >
+                <Button large onClick={onClickGoBack} primary>
                     <Localize i18n_default_text='Go back' />
                 </Button>
             </Modal.Footer>

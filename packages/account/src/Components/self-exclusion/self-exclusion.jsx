@@ -423,6 +423,7 @@ const SelfExclusion = ({
 SelfExclusion.propTypes = {
     currency: PropTypes.string.isRequired,
     footer_ref: PropTypes.shape({ current: PropTypes.any }),
+    is_appstore: PropTypes.bool,
     is_app_settings: PropTypes.bool,
     is_cr: PropTypes.bool.isRequired,
     is_eu: PropTypes.bool.isRequired,

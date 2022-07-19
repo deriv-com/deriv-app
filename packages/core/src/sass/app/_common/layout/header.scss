@@ -114,6 +114,11 @@
             align-items: center;
             overflow: hidden;
         }
+
+        &-logo {
+            margin: 1.3rem 0 0 1.6rem;
+            padding-right: 1.6rem;
+        }
     }
     &__menu-right {
         justify-content: flex-end;

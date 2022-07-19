@@ -596,6 +596,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_cra() {
+        return this.loginid?.toLowerCase().includes('cra');
+    }
+
+    @computed
     get is_uk() {
         return this.residence === 'gb';
     }

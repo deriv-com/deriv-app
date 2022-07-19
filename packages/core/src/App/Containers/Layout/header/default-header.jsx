@@ -14,6 +14,9 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 
+import DerivLogoDark from 'Assets/SvgComponents/header/deriv-logo-dark.svg';
+import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
+
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
@@ -32,6 +35,7 @@ const DefaultHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_bot_allowed,
+    is_cra,
     is_dark_mode,
     is_dxtrade_allowed,
     is_eu,
@@ -91,6 +95,8 @@ const DefaultHeader = ({
             }
             return true;
         });
+
+    const getDesktopHeaderLogo = () => (!is_dark_mode ? <DerivLogoLight /> : <DerivLogoDark />);
     return (
         <header
             className={classNames('header', {
@@ -101,10 +107,16 @@ const DefaultHeader = ({
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
                     <DesktopWrapper>
-                        <PlatformSwitcher
-                            app_routing_history={app_routing_history}
-                            platform_config={filterPlatformsForClients(platform_config)}
-                        />
+                        {is_cra ? (
+                            <div onClick={() => history.push(routes.reports)}>
+                                <div className='header__menu-left-logo'>{getDesktopHeaderLogo()}</div>
+                            </div>
+                        ) : (
+                            <PlatformSwitcher
+                                app_routing_history={app_routing_history}
+                                platform_config={filterPlatformsForClients(platform_config)}
+                            />
+                        )}
                     </DesktopWrapper>
                     <MobileWrapper>
                         <ToggleMenuDrawer
@@ -253,6 +265,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_bot_allowed: client.is_bot_allowed,
+    is_cra: client.is_cra,
     is_dark_mode: ui.is_dark_mode_on,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,

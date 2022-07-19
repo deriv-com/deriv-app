@@ -243,6 +243,7 @@ CompositeCalendarMobile.propTypes = {
     current_focus: PropTypes.string,
     duration_list: PropTypes.array,
     from: PropTypes.number,
+    input_date_range: PropTypes.object,
     onChange: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     to: PropTypes.number,

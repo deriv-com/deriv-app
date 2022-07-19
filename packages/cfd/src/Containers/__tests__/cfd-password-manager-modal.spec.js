@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor, act } from '@testing-library/react';
+import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
 import { localize } from '@deriv/translations';
@@ -30,12 +30,38 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', 
     getErrorMessages: jest.fn(() => ({
         password_warnings: mock_errors,
         password: mock_form_error_messages,
-        new_password: mock_form_error_messages,
     })),
     validLength: jest.fn(() => {
         validLengthMock;
     }),
 }));
+const validatePassword = () => {
+    const errors = {};
+
+    if (
+        !validLength(values.new_password, {
+            min: 8,
+            max: 25,
+        })
+    ) {
+        errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 25,
+        });
+    } else if (!validPassword(values.new_password)) {
+        errors.new_password = getErrorMessages().password();
+    } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
+        errors.new_password = localize('Your password cannot be the same as your email address.');
+    }
+
+    if (!values.old_password && values.old_password !== undefined) {
+        errors.old_password = localize('This field is required');
+    }
+
+    return errors;
+};
+
+const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 
 const mock_form_error_messages = {
     password: () => localize('Password should have lower and uppercase English letters with numbers.'),
@@ -92,6 +118,8 @@ describe('<CFDPasswordManagerModal />', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    afterEach(cleanup);
+
     const mock_props = {
         enableApp: jest.fn(),
         email: 'test@domain.com',
@@ -108,6 +136,7 @@ describe('<CFDPasswordManagerModal />', () => {
         password_warnings: mock_errors,
         password: mock_form_error_messages,
         selected_step_ref: { current: { isSubmitting: false } },
+        validatePassword: validatePassword,
     };
 
     it('should render the DMT5 password modal', () => {
@@ -280,25 +309,28 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(screen.getByText(/Investor password/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/Investor password/i));
 
-        const current_investor_password = screen.getByLabelText(/Current investor password/i);
-        const current_investor_password_text = 'Testing1234';
-        fireEvent.click(screen.getByText(/Current investor password/i));
-        fireEvent.change(current_investor_password, { target: { value: current_investor_password_text } });
-        expect(current_investor_password.value).toBe(current_investor_password_text);
-
         await waitFor(() => {
             expect(screen.getByText(/New investor password/i)).toBeInTheDocument();
         });
+
+        const current_investor_password = screen.getByLabelText(/Current investor password/i);
+        fireEvent.click(screen.getByText(/Current investor password/i));
+
+        await waitFor(() => {
+            fireEvent.change(current_investor_password, { target: { value: 'Testing1234' } });
+        });
+
         const new_investor_password = screen.getByLabelText('New investor password');
-        const new_investor_password_text = 'Lkmiuhkouhjk122yio';
         fireEvent.click(new_investor_password);
-        fireEvent.change(new_investor_password, { target: { value: new_investor_password_text } });
         await waitFor(() => {
-            expect(new_investor_password.value).toBe(new_investor_password_text);
+            fireEvent.change(new_investor_password, { target: { value: 'abcabcabc' } });
         });
-        await waitFor(() => {
-            expect(screen.getByText(/You should enter 8-25 characters/i)).toBeInTheDocument();
-        });
+        // await waitFor(() => {
+        //     expect(
+        //         screen.getByText(/Repeats like "abcabcabc" are only slightly harder to guess than "abc"/i)
+        //     ).toBeInTheDocument();
+        // });
+
         fireEvent.click(screen.getByRole('button', { name: /Change investor password/i }));
     });
 

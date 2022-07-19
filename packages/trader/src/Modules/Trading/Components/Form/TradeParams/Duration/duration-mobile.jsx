@@ -1,10 +1,9 @@
 import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
-import { isEmptyObject, addComma } from '@deriv/shared';
+import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 import { connect } from 'Stores/connect';
-import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
 const submit_label = localize('OK');
 
@@ -44,6 +43,7 @@ const Ticks = ({
 }) => {
     React.useEffect(() => {
         setDurationError(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
@@ -66,12 +66,11 @@ const Ticks = ({
     };
 
     const onTickChange = tick => setSelectedDuration('t', tick);
-    const should_reset_tick_value = trade_duration_unit === 't' && trade_duration >= min_tick;
     const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
     return (
         <div className='trade-params__duration-tickpicker'>
             <TickPicker
-                default_value={should_reset_tick_value ? trade_duration : tick_duration}
+                default_value={tick_duration}
                 submit_label={submit_label}
                 max_value={max_tick}
                 min_value={min_tick}

@@ -35,12 +35,15 @@ class DBot {
                     if (is_mobile) {
                         workspaceScale = 0.7;
                     } else {
-                        const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                        const scratch_div_width = document.getElementById('scratch_div')?.offsetWidth;
                         const zoom_scale = scratch_div_width / window_width / 1.5;
                         workspaceScale = zoom_scale;
                     }
                 }
                 const el_scratch_div = document.getElementById('scratch_div');
+                if (!el_scratch_div) {
+                    return;
+                }
                 this.workspace = Blockly.inject(el_scratch_div, {
                     grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,
@@ -124,12 +127,12 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-
             if (this.interpreter !== null) {
                 this.interpreter = null;
             }
 
-            this.interpreter = new Interpreter();
+            this.interpreter = Interpreter();
+
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();
@@ -157,6 +160,21 @@ class DBot {
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
             var BinaryBotPrivateHasCalledTradeOptions = false;
+
+           
+            function recursiveList(list, final_list){
+                for(var i=0; i < list.length; i++){
+                    if(typeof(list[i]) === 'object'){
+                        recursiveList(list[i], final_list);
+                    }
+                    if(typeof(list[i]) == 'number'){
+                        final_list.push(list[i]);   
+                                  	
+                    }
+                }
+                return final_list;
+            }
+
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;
@@ -240,11 +258,21 @@ class DBot {
 
         top_blocks.forEach(block => {
             if (!block.isMainBlock() && !block.isIndependentBlock()) {
-                block.setDisabled(true);
+                this.disableBlocksRecursively(block);
             }
         });
 
         return true;
+    }
+
+    /**
+     * Disable blocks and their optional children.
+     */
+    disableBlocksRecursively(block) {
+        block.setDisabled(true);
+        if (block.nextConnection?.targetConnection) {
+            this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+        }
     }
 
     /**
@@ -306,8 +334,7 @@ class DBot {
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-        }
-        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+        } else if (!isAllRequiredBlocksEnabled(this.workspace)) {
             error = new Error(
                 localize(
                     'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
@@ -462,6 +489,25 @@ class DBot {
                 }
             }
         });
+    }
+
+    /**
+     * Checks whether the workspace contains non-silent notification blocks. Returns array of names for audio files to be played.
+     */
+    getStrategySounds() {
+        const all_blocks = this.workspace.getAllBlocks();
+        const notify_blocks = all_blocks.filter(block => block.type === 'notify');
+        const strategy_sounds = [];
+
+        notify_blocks.forEach(block => {
+            const selected_sound = block.inputList[0].fieldRow[3].value_;
+
+            if (selected_sound !== 'silent') {
+                strategy_sounds.push(selected_sound);
+            }
+        });
+
+        return strategy_sounds;
     }
 
     static handleDragOver(event) {

@@ -175,9 +175,9 @@ NotificationsDialog.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ ui, common }) => ({
-    notifications: ui.filtered_notifications,
+export default connect(({ common, notifications }) => ({
+    notifications: notifications.filtered_notifications,
     app_routing_history: common.app_routing_history,
-    removeNotificationByKey: ui.removeNotificationByKey,
-    removeNotificationMessage: ui.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
 }))(NotificationsDialog);

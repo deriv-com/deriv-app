@@ -131,7 +131,7 @@ export default class JournalStore {
     }
 
     welcomeBackUser() {
-        this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text--info');
+        this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text');
     }
 
     registerReactions() {

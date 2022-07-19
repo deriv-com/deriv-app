@@ -9,6 +9,7 @@ const IconClose = ({ className, onClick }) => (
         width='16'
         height='16'
         onClick={onClick}
+        data-testid='icon_close'
     >
         <path
             className='color1-fill'

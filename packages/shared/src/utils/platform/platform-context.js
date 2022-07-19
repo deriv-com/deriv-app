@@ -2,4 +2,4 @@ import React from 'react';
 
 export const PlatformContext = React.createContext({});
 
-PlatformContext.displayName = 'DerivDashboardPlatformContext';
+PlatformContext.displayName = 'DerivAppStorePlatformContext';

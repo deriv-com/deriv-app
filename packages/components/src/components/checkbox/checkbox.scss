@@ -36,4 +36,7 @@
         opacity: 0.5;
         cursor: not-allowed !important;
     }
+    &--grey-disabled {
+        background-color: var(--checkbox-disabled-grey);
+    }
 }

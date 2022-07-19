@@ -11,7 +11,7 @@ jobs:
         steps:
             - name: Capture Vercel preview URL
               id: vercel_preview_url
-              uses: binary-com/vercel-preview-url-action@v0.0.3
+              uses: binary-com/vercel-preview-url-action@v1.0.5
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Generate Deriv App ID for deployment Preview URL

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { InfiniteDataList, Loading, Table, Tabs } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import Empty from 'Components/empty/empty.jsx';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
@@ -45,6 +45,9 @@ const AdvertiserPageAdverts = () => {
                                             {localize('Rate (1 {{currency}})', {
                                                 currency: general_store.client.currency,
                                             })}
+                                        </Table.Head>
+                                        <Table.Head>
+                                            <Localize i18n_default_text='Payment methods' />
                                         </Table.Head>
                                         <Table.Head>{''}</Table.Head>
                                     </Table.Row>

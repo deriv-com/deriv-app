@@ -17,11 +17,11 @@ const ToggleFullScreen = () => {
         fullscreen_map.event.forEach(event => {
             document.addEventListener(event, onFullScreen, false);
         });
-    }, []);
+    }, [fullscreen_map.event, onFullScreen]);
 
-    const onFullScreen = () => {
+    const onFullScreen = React.useCallback(() => {
         setIsFullScreen(fullscreen_map.element.some(el => document[el]));
-    };
+    }, [fullscreen_map.element]);
 
     const toggleFullScreen = e => {
         e.stopPropagation();
@@ -42,7 +42,11 @@ const ToggleFullScreen = () => {
     });
     return (
         <a className={`${full_screen_icon_class} footer__link`} onClick={toggleFullScreen} id='dt_fullscreen_toggle'>
-            <Popover alignment='top' message={is_full_screen ? localize('Exit') : localize('Full screen')}>
+            <Popover
+                alignment='top'
+                message={is_full_screen ? localize('Exit') : localize('Full screen')}
+                zIndex={9999}
+            >
                 {is_full_screen ? (
                     <Icon icon='IcFullScreenRestore' className='footer__icon' />
                 ) : (

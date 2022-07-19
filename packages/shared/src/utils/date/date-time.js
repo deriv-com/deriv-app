@@ -1,10 +1,13 @@
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed
 moment.createFromInputFallback = function (config) {
     config._d = new Date(NaN); // eslint-disable-line no-underscore-dangle
 };
+
+// Localize moment instance with specific object
+export const initMoment = lang => moment.locale(lang);
 
 /**
  * Convert epoch to moment object
@@ -74,6 +77,16 @@ export const formatTime = (epoch, time_format = 'HH:mm:ss [GMT]') => toMoment(ep
 export const daysFromTodayTo = date => {
     const diff = toMoment(date).startOf('day').diff(toMoment().startOf('day'), 'days');
     return !date || diff < 0 ? '' : diff;
+};
+
+/**
+ * return the number of days since the date specified
+ * @param  {String} date   the date to calculate number of days since
+ * @return {Number} an integer of the number of days
+ */
+export const daysSince = date => {
+    const diff = toMoment().startOf('day').diff(toMoment(date).startOf('day'), 'days');
+    return !date ? '' : diff;
 };
 
 /**

@@ -29,7 +29,7 @@ export default class GoogleDriveStore {
                     .init({
                         apiKey: this.api_key,
                         clientId: this.client_id,
-                        scope: 'https://www.googleapis.com/auth/drive',
+                        scope: 'https://www.googleapis.com/auth/drive.file',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(

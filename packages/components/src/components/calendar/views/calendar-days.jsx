@@ -78,7 +78,7 @@ const getDays = ({
 
         const calendar_events = events.filter(event =>
             // filter by date or day of the week
-            event.dates.find(d => d === date || getDaysOfTheWeek(d) === toMoment(date).day())
+            event.dates.find(d => getDaysOfTheWeek(d) === toMoment(date).day())
         );
         const has_events = !!calendar_events.length;
         const is_closes_early = calendar_events.map(event => !!event.descrip.match(/Closes early|Opens late/))[0];
@@ -124,7 +124,10 @@ const getDays = ({
                         classNameTarget='dc-calendar__cell-tooltip'
                         classNameTargetIcon='dc-calendar__cell-tooltip-icon'
                         icon='dot'
+                        is_bubble_hover_enabled
                         message={message}
+                        zIndex={9999}
+                        should_show_cursor
                     />
                 )}
                 {moment_date.date()}

@@ -29,7 +29,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         }
 
         return () => removeListeners();
-    }, [item]);
+    }, [item, nodes, onKeyPressed]);
 
     return (
         <div
@@ -38,6 +38,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
                 { 'dc-list__item--selected': value === item.value },
                 { 'dc-list__item--disabled': item.disabled }
             )}
+            data-testid='dti_list_item'
             name={name}
             value={item.value}
             onClick={item.disabled ? null : handleSelect.bind(null, item)}

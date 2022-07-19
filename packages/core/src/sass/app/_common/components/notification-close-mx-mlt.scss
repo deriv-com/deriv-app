@@ -1,0 +1,36 @@
+.close-mx-mlt.notification-banner {
+    height: 16.8rem;
+    @include mobile {
+        min-height: 14.8rem;
+    }
+    .notification-banner {
+        &__bg {
+            background-color: transparent;
+        }
+        &__btn {
+            position: absolute;
+            bottom: 1rem;
+        }
+        &__btn-wrapper {
+            margin-top: 1.9rem;
+        }
+        &__img {
+            right: 0;
+            height: calc(100% + 10px);
+            width: auto;
+        }
+        &__title {
+            white-space: unset;
+        }
+        &--right {
+            width: calc(100% - 185px);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+        }
+        &--left {
+            width: 65%;
+        }
+    }
+}

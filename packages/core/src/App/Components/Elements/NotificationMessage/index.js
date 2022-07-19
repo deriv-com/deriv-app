@@ -1,2 +1,2 @@
 export default from './notification.jsx';
-export * from './constants.js';
+export * from './constants';

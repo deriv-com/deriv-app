@@ -22,6 +22,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
         }
 
         loadLibrary();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -42,8 +43,10 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
 
     if (is_loading) return <Loading is_fullscreen={false} />;
 
-    const width_scale = has_error && input.length ? 0.25 : 0.25 * (input.length && score < 1 ? 1 : score);
-
+    const width_scale = (() => {
+        if (has_error && input.length) return 0.25;
+        return 0.25 * (input.length && score < 1 ? 1 : score);
+    })();
     return (
         <React.Fragment>
             <div className='dc-password-meter__container'>

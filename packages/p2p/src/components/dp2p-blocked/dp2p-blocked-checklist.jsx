@@ -9,7 +9,7 @@ const Dp2pBlockedChecklist = () => {
     const { general_store } = useStores();
     const { history } = general_store.props;
 
-    if (general_store.is_high_risk_fully_authed_without_fa) {
+    if (general_store.is_high_risk_fully_authed_without_fa && !general_store.is_p2p_blocked_for_pa) {
         const checklist_items = [
             {
                 content: localize('Complete the financial assessment form'),
@@ -17,14 +17,6 @@ const Dp2pBlockedChecklist = () => {
                 onClick: () =>
                     history.push({
                         pathname: routes.financial_assessment,
-                        state: {
-                            custom_button_options: {
-                                button_text: localize('Back to DP2P'),
-                                icon_text: undefined,
-                                route_to_path: routes.cashier_p2p,
-                                is_hard_redirect: true,
-                            },
-                        },
                     }),
             },
         ];

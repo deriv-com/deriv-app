@@ -2,6 +2,7 @@ FROM node:12 AS builder
 WORKDIR /build/
 COPY . .
 RUN npm run bootstrap
+RUN npm run build:travis
 RUN npm run build:storybook
 
 FROM nginx:alpine

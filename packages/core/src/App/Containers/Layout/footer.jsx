@@ -72,7 +72,9 @@ const Footer = ({
                 <GoToDeriv />
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}
-                {!is_virtual && <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />}
+                {is_logged_in && !is_virtual && (
+                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
+                )}
                 <FooterIconSeparator />
                 <HelpCentre />
                 <ToggleSettings

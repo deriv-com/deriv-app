@@ -38,7 +38,7 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
         ));
     }
     return options.map(option => (
-        <option key={option.value} value={use_text ? option.text : option.value}>
+        <option key={option.id || option.value} value={use_text ? option.text : option.value}>
             {option.nativepicker_text || option.text}
         </option>
     ));
@@ -47,19 +47,21 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
 const SelectNative = ({
     className,
     classNameDisplay,
+    classNameHint,
     disabled,
     error,
-    hint,
-    classNameHint,
     hide_selected_value,
+    hint,
     label,
     list_items,
+    onItemSelection,
     placeholder,
+    should_hide_disabled_options,
     should_show_empty_option = true,
     suffix_icon,
     use_text,
     value,
-    should_hide_disabled_options,
+    data_testid,
     ...props
 }) => (
     <div
@@ -78,7 +80,10 @@ const SelectNative = ({
             >
                 <div className='dc-select-native__display'>
                     {list_items && value && (
-                        <div className={classNames('dc-select-native__display-text', classNameDisplay)}>
+                        <div
+                            className={classNames('dc-select-native__display-text', classNameDisplay)}
+                            data-testid='selected_value'
+                        >
                             {!hide_selected_value && (use_text ? value : getDisplayText(list_items, value))}
                         </div>
                     )}
@@ -101,6 +106,7 @@ const SelectNative = ({
                     className='dc-select-native__picker'
                     value={value}
                     disabled={disabled}
+                    data-testid={data_testid}
                     {...props}
                 >
                     {Array.isArray(list_items) ? (
@@ -190,6 +196,7 @@ SelectNative.propTypes = {
     use_text: PropTypes.bool,
     value: PropTypes.string,
     should_hide_disabled_options: PropTypes.bool,
+    data_testid: PropTypes.string,
 };
 
 SelectNative.defaultProps = {

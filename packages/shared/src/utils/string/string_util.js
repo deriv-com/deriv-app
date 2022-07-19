@@ -40,3 +40,18 @@ export const getKebabCase = str => {
         .replace(/[\s]+/g, '-') // replace all spaces and low dash
         .toLowerCase();
 };
+
+// Automatically formats input string with separators based on example format argument.
+export const formatInput = (example_format, input_string, separator) => {
+    const separator_index = example_format.indexOf(separator);
+    const format_count = getCharCount(example_format, separator);
+    const input_count = getCharCount(input_string, separator);
+
+    if (separator_index !== -1 && input_count < format_count && input_string.length - 1 >= separator_index) {
+        return input_string.slice(0, separator_index) + separator + input_string.slice(separator_index);
+    }
+
+    return input_string;
+};
+
+export const getCharCount = (target_string, char) => target_string.match(new RegExp(char, 'g'))?.length || 0;

@@ -8,12 +8,8 @@
 
         @include mobile {
             margin-bottom: 0.8rem;
+            padding: 0.2rem 1rem;
         }
-    }
-
-    &--days_until_archive {
-        display: block;
-        max-width: 80%;
     }
 
     &--inactive {

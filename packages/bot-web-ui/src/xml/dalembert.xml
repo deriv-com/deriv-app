@@ -18,8 +18,8 @@
   <block type="trade_definition" id="S8h29bv2DDtW#WyF}Eva" x="0" y="0">
     <statement name="TRADE_OPTIONS">
       <block type="trade_definition_market" id="CAL$3(*qz%,|%p-@tWu," deletable="false" movable="false">
-        <field name="MARKET_LIST">forex</field>
-        <field name="SUBMARKET_LIST">smart_fx</field>
+        <field name="MARKET_LIST">basket_index</field>
+        <field name="SUBMARKET_LIST">forex_basket</field>
         <field name="SYMBOL_LIST">WLDAUD</field>
         <next>
           <block type="trade_definition_tradetype" id="1JDTS0%^EFc?!72k#Zzm" deletable="false" movable="false">

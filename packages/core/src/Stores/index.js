@@ -5,7 +5,13 @@ import RudderStackStore from './rudderstack-store';
 import PushWooshStore from './pushwoosh-store';
 import ModulesStore from './Modules';
 import MenuStore from './menu-store';
+import NotificationStore from './notification-store';
 import UIStore from './ui-store';
+import ActiveSymbolsStore from './active-symbols-store';
+import PortfolioStore from './portfolio-store';
+import ContractReplayStore from './contract-replay-store';
+import ContractTradeStore from './contract-trade-store';
+import { ChartBarrierStore } from './chart-barrier-store';
 
 export default class RootStore {
     constructor() {
@@ -17,5 +23,11 @@ export default class RootStore {
         this.rudderstack = new RudderStackStore(this);
         this.menu = new MenuStore(this);
         this.pushwoosh = new PushWooshStore(this);
+        this.notifications = new NotificationStore(this);
+        this.active_symbols = new ActiveSymbolsStore(this);
+        this.portfolio = new PortfolioStore(this);
+        this.contract_replay = new ContractReplayStore(this);
+        this.contract_trade = new ContractTradeStore(this);
+        this.chart_barrier_store = new ChartBarrierStore(this);
     }
 }

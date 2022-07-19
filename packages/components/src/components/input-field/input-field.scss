@@ -24,7 +24,8 @@
 }
 
 /** @define dc-input-wrapper */
-.dc-input-wrapper {
+.dc-input-wrapper,
+button.dc-input-wrapper {
     position: relative;
 
     &__input {
@@ -34,7 +35,7 @@
         }
     }
     &__button {
-        position: absolute;
+        position: absolute !important;
         z-index: 1;
         top: 2px;
         height: 28px;

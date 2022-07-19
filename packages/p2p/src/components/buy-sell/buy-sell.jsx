@@ -11,6 +11,7 @@ import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
+import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
@@ -52,11 +53,6 @@ const BuySell = () => {
     if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                <PageReturn
-                    className='buy-sell__advertiser-page-return'
-                    onClick={buy_sell_store.hideAdvertiserPage}
-                    page_title={localize("Advertiser's page")}
-                />
                 <AdvertiserPage />
             </React.Fragment>
         );
@@ -64,6 +60,7 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
+            <FilterModal />
             <BuySellHeader
                 is_visible={is_toggle_visible}
                 table_type={buy_sell_store.table_type}

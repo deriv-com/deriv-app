@@ -4,7 +4,7 @@ export const getFormattedDateString = (date_obj, is_local = false, has_seconds =
     }
 
     const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
-    const [, day, month, year, time] = date_string;
+    const [, month, day, year, time] = date_string;
     const times = time.split(':');
 
     // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
@@ -27,7 +27,7 @@ export const convertToMillis = epoch => {
     return milliseconds;
 };
 
-// add 0 and slice(-2) to get a 0 in front if it's a single digit so we can mantain double digits
+// add 0 and slice(-2) to get a 0 in front if it's a single digit so we can maintain double digits
 // otherwise it will slice off the 0 and still result in double digits
 const toDoubleDigits = number => `0${number}`.slice(-2);
 

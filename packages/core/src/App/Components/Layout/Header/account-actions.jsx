@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import { routes, formatMoney, PlatformContext } from '@deriv/shared';
+import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -10,18 +10,25 @@ import { BinaryLink } from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() =>
-    import(/* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx')
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx'
+        )
+    )
 );
 
 const AccountActions = React.memo(
     ({
         acc_switcher_disabled_message,
+        account_type,
         balance,
         currency,
+        country_standpoint,
         disableApp,
         enableApp,
         is_acc_switcher_on,
         is_acc_switcher_disabled,
+        is_eu,
         is_logged_in,
         is_notifications_visible,
         is_virtual,
@@ -31,7 +38,7 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const { is_dashboard } = React.useContext(PlatformContext);
+        const { is_appstore } = React.useContext(PlatformContext);
 
         if (is_logged_in) {
             return (
@@ -45,14 +52,17 @@ const AccountActions = React.memo(
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
                                 balance={
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
+                                is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
+                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -80,12 +90,15 @@ const AccountActions = React.memo(
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
                                 balance={
                                     typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
+                                is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
+                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -117,7 +130,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' is_dashboard={is_dashboard} />
+                <SignupButton className='acc-info__button' is_appstore={is_appstore} />
             </React.Fragment>
         );
     }
@@ -127,11 +140,13 @@ AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
     acc_switcher_disabled_message: PropTypes.any,
+    account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
+    country_standpoint: PropTypes.object,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

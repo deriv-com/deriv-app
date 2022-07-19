@@ -5,111 +5,106 @@ import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 import TickSteps from './tick-steps.jsx';
 
-class RangeSlider extends React.PureComponent {
-    state = {
-        hover_value: 0,
-    };
+const RangeSlider = ({ className, name, value, min_value, max_value, onChange }) => {
+    const [hover_value, setHoverValue] = React.useState(0);
+    const range_slider_ref = React.useRef();
 
-    handleChange = e => {
-        // e.target.value returns string, we need to convert them to number
-        const value = +e.target.value;
-        if (value !== this.props.value) {
-            this.resetOnHover();
-            this.props.onChange({ target: { name: this.props.name, value } });
+    const handleChange = e => {
+        const target_value = +e.target.value;
+        if (target_value !== value) {
+            resetOnHover();
+            onChange({ target: { name, value: target_value } });
         }
     };
 
-    handleClick = index => {
-        if (index !== this.props.value) {
-            this.resetOnHover();
-            this.props.onChange({ target: { name: this.props.name, value: index } });
+    const handleClick = index => {
+        if (index !== value) {
+            resetOnHover();
+            onChange({ target: { name, value: index } });
         }
     };
 
-    onMouseEnter = index => {
+    const onMouseEnter = index => {
         if (index) {
-            this.setState({ hover_value: index });
-            this.rangeSliderTrack.style.width = this.getRangeSliderTrackWidth(index, true);
+            setHoverValue(index);
+            range_slider_ref.current.style.width = getRangeSliderTrackWidth(index, true);
         }
     };
 
-    onMouseLeave = e => {
+    const onMouseLeave = e => {
         const { offsetX, offsetY } = e.nativeEvent;
         if (offsetY <= -3 || offsetY >= 3 || offsetX < -3 || offsetX > 3) {
-            this.resetOnHover();
+            resetOnHover();
         }
     };
 
-    getRangeSliderTrackWidth = (value, is_hover) => {
-        const width = (value - this.props.min_value) * (10 / (this.props.max_value - this.props.min_value));
+    const getRangeSliderTrackWidth = (slider_value, is_hover) => {
+        const width = (slider_value - min_value) * (10 / (max_value - min_value));
         return `${width * 2 + (is_hover ? 0.8 : 1.4)}em`;
     };
 
-    resetOnHover = () => {
-        if (this.state.hover_value) {
-            this.setState({ hover_value: 0 });
-            this.rangeSliderTrack.style.width = 0;
+    const resetOnHover = () => {
+        if (hover_value) {
+            setHoverValue(0);
+            range_slider_ref.current.style.width = 0;
         }
     };
 
-    render() {
-        const { className, max_value, min_value, name, value } = this.props;
-
-        const display_value = this.state.hover_value || value;
-        const steps = !isNaN(max_value - min_value) ? max_value - min_value : 10;
-        return (
-            <div
-                className={classNames('range-slider', className, {
-                    'range-slider__error': value < min_value || value > max_value,
-                })}
-            >
-                <label className='range-slider__label' htmlFor='range'>
-                    <input
-                        className='input trade-container__input range-slider__track'
-                        id='dt_duration_range_input'
-                        max={max_value}
+    const display_value = hover_value || value;
+    const steps = !isNaN(max_value - min_value) ? max_value - min_value : 10;
+    return (
+        <div
+            className={classNames('range-slider', className, {
+                'range-slider__error': value < min_value || value > max_value,
+            })}
+        >
+            <label className='range-slider__label' htmlFor='range'>
+                <input
+                    className='input trade-container__input range-slider__track'
+                    id='dt_duration_range_input'
+                    max={max_value}
+                    max_value={max_value}
+                    min={min_value}
+                    min_value={min_value}
+                    name={name}
+                    onChange={handleChange}
+                    tabIndex='0'
+                    type='range'
+                    steps={steps}
+                    value={value}
+                    aria-label='range-input'
+                />
+                {/* this element to be placed before <TickSteps /> to prevent overlapping colors */}
+                <span
+                    ref={range_slider_ref}
+                    className='range-slider__line range-slider__line--fill'
+                    onMouseLeave={onMouseLeave}
+                />
+                <div className='range-slider__ticks'>
+                    <TickSteps
+                        hover_value={hover_value}
                         max_value={max_value}
-                        min={min_value}
                         min_value={min_value}
-                        name={name}
-                        onChange={this.handleChange}
-                        tabIndex='0'
-                        type='range'
-                        steps={steps}
+                        onClick={handleClick}
+                        onMouseLeave={onMouseLeave}
+                        onMouseEnter={onMouseEnter}
                         value={value}
                     />
-                    {/* this element to be placed before <TickSteps /> to prevent overlapping colors */}
-                    <span
-                        ref={node => (this.rangeSliderTrack = node)}
-                        className='range-slider__line range-slider__line--fill'
-                        onMouseLeave={this.onMouseLeave}
-                    />
-                    <div className='range-slider__ticks'>
-                        <TickSteps
-                            hover_value={this.state.hover_value}
-                            max_value={max_value}
-                            min_value={min_value}
-                            onClick={this.handleClick}
-                            onMouseLeave={this.onMouseLeave}
-                            onMouseEnter={this.onMouseEnter}
-                            value={value}
-                        />
-                    </div>
-                    {/* Calculate line width based on active value and size of range thumb */}
-                    <div className='range-slider__line' style={{ width: `${this.getRangeSliderTrackWidth(value)}` }} />
-                </label>
-                <div className='range-slider__caption'>
-                    {!!display_value && (
-                        <Text align='center' weight='bold' size='xs' color='prominent' id='dt_range_slider_label'>
-                            {display_value === 1 && localize('{{display_value}} Tick', { display_value })}
-                            {display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
-                        </Text>
-                    )}
                 </div>
+                {/* Calculate line width based on active value and size of range thumb */}
+                <div className='range-slider__line' style={{ width: `${getRangeSliderTrackWidth(value)}` }} />
+            </label>
+            <div className='range-slider__caption'>
+                {!!display_value && (
+                    <Text align='center' weight='bold' size='xs' color='prominent' id='dt_range_slider_label'>
+                        {display_value === 1 && localize('{{display_value}} Tick', { display_value })}
+                        {display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
+                    </Text>
+                )}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 // Keypress events do not trigger on Safari due to the way it handles input type='range' elements, using focus on the input element also doesn't work for Safari.
 
 RangeSlider.propTypes = {

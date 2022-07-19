@@ -24,6 +24,7 @@ const DatePickerInput = ({
     readOnly,
     value,
     required,
+    ...common_props
 }) => {
     const [is_clear_btn_visible, setIsClearBtnVisible] = React.useState(false);
 
@@ -80,6 +81,7 @@ const DatePickerInput = ({
             onMouseLeave={onMouseLeave}
             onBlur={onBlur}
             required={required}
+            {...common_props}
         />
     );
 };

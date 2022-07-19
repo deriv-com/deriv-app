@@ -1,0 +1,42 @@
+.crypto-fiat-converter {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-gap: 0.8rem;
+    align-items: center;
+    @include desktop {
+        max-width: 36rem;
+        margin: 0 auto 2.4rem;
+
+        .dc-input {
+            margin-bottom: unset;
+        }
+    }
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+
+        fieldset {
+            width: 100%;
+        }
+        .dc-input {
+            margin-bottom: 1rem;
+        }
+        .dc-icon {
+            margin: 1.4rem;
+        }
+    }
+    .input-group {
+        display: flex;
+
+        .timer {
+            margin-top: 1rem;
+            margin-left: -4rem;
+        }
+    }
+    &__hint {
+        grid-column: 3;
+        margin-left: 0;
+        color: var(--text-less-prominent);
+        align-self: start;
+    }
+}

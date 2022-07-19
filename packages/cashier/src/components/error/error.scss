@@ -1,0 +1,17 @@
+.error {
+    &__icon {
+        margin-top: 2rem;
+        width: 6.4rem;
+        height: 6.4rem;
+        margin-bottom: 1.6rem;
+    }
+    &__header {
+        margin-bottom: 0.8rem;
+    }
+    &__button {
+        margin: 3.2rem auto 1.6rem;
+        @include mobile {
+            width: calc(100% - 3.2rem);
+        }
+    }
+}

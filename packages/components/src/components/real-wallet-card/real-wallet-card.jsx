@@ -28,7 +28,7 @@ const RealWalletCard = ({
     const height = (width / 5) * 3;
 
     // Get wallet type (first word) before space or forward slash for background and icon
-    const wallet_type = wallet_name.match(/(^[^\/ || ^\s]+)/)[0];
+    const wallet_type = wallet_name.match(/(^[^/ || ^\s]+)/)[0];
 
     const onMouseEnter = () => {
         setShouldShowFooterActions(true);

@@ -33,10 +33,12 @@ const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) =>
 );
 
 const RealityCheckModal = ({
+    country_standpoint,
     disableApp,
     enableApp,
     logoutClient,
     is_visible,
+    is_mx,
     reality_check_dismissed,
     reality_check_duration,
     server_time,
@@ -101,9 +103,11 @@ const RealityCheckModal = ({
 
     return (
         <BriefModal
+            country_standpoint={country_standpoint}
             disableApp={disableApp}
             enableApp={enableApp}
             is_visible={is_visible}
+            is_mx={is_mx}
             openStatement={openStatement}
             validateForm={validateForm}
             onSubmit={onSubmit}
@@ -128,7 +132,9 @@ RealityCheckModal.propTypes = {
 
 export default connect(({ client, common, ui }) => ({
     logoutClient: client.logout,
+    country_standpoint: client.country_standpoint,
     is_visible: client.is_reality_check_visible,
+    is_mx: client.landing_company_shortcode === 'iom',
     reality_check_dismissed: client.reality_check_dismissed,
     reality_check_duration: client.reality_check_duration,
     setRealityCheckDuration: client.setRealityCheckDuration,

@@ -1,1 +1,2 @@
-export * from './position.js';
+export * from './position';
+export * from './seo_optimization';

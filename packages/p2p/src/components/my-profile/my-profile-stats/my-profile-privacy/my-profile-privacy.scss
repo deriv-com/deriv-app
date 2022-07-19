@@ -1,0 +1,41 @@
+.my-profile-privacy {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2.4rem;
+
+    @include mobile {
+        justify-content: space-between;
+        margin: 3.8rem 0 1.4rem;
+    }
+
+    &__toggle {
+        margin-left: 0.8rem;
+        padding-left: 0.3rem;
+
+        &-container {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            margin-top: 1.6rem;
+
+            @include mobile {
+                align-items: unset;
+            }
+        }
+
+        &-button {
+            width: 1.3rem;
+            height: 1.3rem;
+            border-radius: 1.3rem;
+        }
+
+        width: 3.2rem;
+        height: 1.7rem;
+        border-radius: 3.2rem;
+    }
+}
+
+.dc-toggle-switch:checked + .dc-toggle-switch__label .my-profile-privacy__toggle-button {
+    transform: translateX(1.35rem);
+}

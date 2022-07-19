@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
+import { getPlatformSettings } from '@deriv/shared';
 import { Icon, ThemedScrollbars, Input, Text } from '@deriv/components';
-import { help_content_config } from '@deriv/bot-skeleton';
+import { help_content_config } from 'Utils/help-content/help-content.config';
 import { connect } from 'Stores/connect';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents';
@@ -23,7 +24,7 @@ const SearchResult = ({ search_term, total_result }) => (
 );
 
 const FlyoutContent = props => {
-    const flyout_ref = React.createRef();
+    const flyout_ref = React.useRef();
     const {
         flyout_content,
         active_helper,
@@ -66,7 +67,8 @@ const FlyoutContent = props => {
                         </span>
                         <span className='flyout__content-disclaimer-text'>
                             {localize(
-                                'Indicators on the chart tab are for indicative purposes only and may vary slightly from the ones on the DBot workspace.'
+                                'Indicators on the chart tab are for indicative purposes only and may vary slightly from the ones on the {{platform_name_dbot}} workspace.',
+                                { platform_name_dbot: getPlatformSettings('dbot').name }
                             )}
                         </span>
                     </div>

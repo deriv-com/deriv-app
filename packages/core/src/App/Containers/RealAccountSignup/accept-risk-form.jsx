@@ -40,6 +40,7 @@ const AcceptRiskForm = ({ onConfirm, onClose }) => {
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
+                            <input name='accept_risk' value='1' type='hidden' />
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     is_absolute={isMobile()}

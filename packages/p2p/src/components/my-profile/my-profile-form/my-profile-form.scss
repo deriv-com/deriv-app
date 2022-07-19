@@ -15,6 +15,9 @@
         margin-top: 2.5rem;
 
         @include mobile {
+            margin: 0 2vw;
+            width: 96vw;
+
             &:first-child {
                 margin-top: 2.5rem;
             }
@@ -22,7 +25,11 @@
     }
 
     &__form {
-        > :nth-child(3) {
+        @include mobile {
+            width: 96vw;
+        }
+
+        > :nth-child(2) {
             @include mobile {
                 padding-bottom: 7.4rem;
             }
@@ -46,10 +53,14 @@
         }
 
         @include tablet-up {
-            position: fixed;
             bottom: 36px;
-            width: 672px;
             padding: 1.6rem 2.4rem;
+        }
+
+        &-button {
+            @include mobile {
+                width: 93vw;
+            }
         }
     }
 }

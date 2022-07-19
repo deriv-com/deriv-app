@@ -31,7 +31,7 @@ lerna exec --scope @deriv/[Package] -- npm update [package]
 
 For Example if you want update web-push-notifications in core package:
 
-1. `lerna exec --scope @deriv/core -- npm update @deriv/web-push-notifications`
+1. `lerna exec --scope @deriv/core -- npm update web-push-notifications`
 2. upate the `package.json`
 
 ### Remove

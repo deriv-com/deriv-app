@@ -7,9 +7,8 @@ import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionConfirmLimits from './self-exclusion-confirm-limits.jsx';
 
 const SelfExclusionConfirmPage = () => {
-    const { backFromConfirmLimits, currency, currency_display, exclusion_texts, is_eu, state } = React.useContext(
-        SelfExclusionContext
-    );
+    const { backFromConfirmLimits, currency, currency_display, exclusion_texts, is_eu, state } =
+        React.useContext(SelfExclusionContext);
     const { isSubmitting, values } = useFormikContext();
 
     if (state.show_confirm) {

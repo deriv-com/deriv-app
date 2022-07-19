@@ -11,16 +11,16 @@ import {
     isCryptocurrency,
     hasContractEntered,
     isOpen,
+    getSymbolDisplayName,
+    getEndTime,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
-import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
-import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
+import { connectWithContractUpdate } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
-import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
+import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 
 const PositionsModalCard = ({
@@ -39,7 +39,6 @@ const PositionsModalCard = ({
     is_mobile,
     is_sell_requested,
     is_unsupported,
-    onClickRemove,
     onClickSell,
     profit_loss,
     onClickCancel,
@@ -183,10 +182,7 @@ const PositionsModalCard = ({
                 {result || !!contract_info.is_sold ? (
                     <ResultMobile
                         contract_id={id}
-                        is_unsupported={is_unsupported}
                         is_visible={!!contract_info.is_sold}
-                        onClickRemove={onClickRemove}
-                        onClick={() => toggleUnsupportedContractModal(true)}
                         result={result || fallback_result}
                     />
                 ) : (
@@ -328,16 +324,16 @@ PositionsModalCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ common, ui, modules }) => ({
+export default connect(({ common, ui, contract_trade, modules }) => ({
     active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
-    getContractById: modules.contract_trade.getContractById,
+    getContractById: contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     server_time: common.server_time,
     setCurrentFocus: ui.setCurrentFocus,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     toggleCancellationWarning: ui.toggleCancellationWarning,
-    updateLimitOrder: modules.contract_trade.updateLimitOrder,
+    updateLimitOrder: contract_trade.updateLimitOrder,
 }))(PositionsModalCard);

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { DatePicker, Tooltip } from '@deriv/components';
-import { isTimeValid, setTime, toMoment, useIsMounted } from '@deriv/shared';
+import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import ContractType from 'Stores/Modules/Trading/Helpers/contract-type';
-import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
 const TradingDatePicker = ({
     duration: current_duration,
@@ -34,7 +33,7 @@ const TradingDatePicker = ({
 
     React.useEffect(() => {
         onChangeCalendarMonth();
-    }, []);
+    }, [onChangeCalendarMonth]);
 
     React.useEffect(() => {
         if (duration !== current_duration) {
@@ -110,28 +109,31 @@ const TradingDatePicker = ({
         }
     };
 
-    const onChangeCalendarMonth = async (e = toMoment().format('YYYY-MM-DD')) => {
-        const new_market_events = [];
-        let new_disabled_days = [];
+    const onChangeCalendarMonth = React.useCallback(
+        async (e = toMoment().format('YYYY-MM-DD')) => {
+            const new_market_events = [];
+            let new_disabled_days = [];
 
-        const events = await ContractType.getTradingEvents(e, symbol);
-        events.forEach(evt => {
-            const dates = evt.dates.split(', '); // convert dates str into array
-            const idx = dates.indexOf('Fridays');
-            if (idx !== -1) {
-                new_disabled_days = [6, 0]; // Sat, Sun
-            }
-            new_market_events.push({
-                dates,
-                descrip: evt.descrip,
+            const events = await ContractType.getTradingEvents(e, symbol);
+            events.forEach(evt => {
+                const dates = evt.dates.split(', '); // convert dates str into array
+                const idx = dates.indexOf('Fridays');
+                if (idx !== -1) {
+                    new_disabled_days = [6, 0]; // Sat, Sun
+                }
+                new_market_events.push({
+                    dates,
+                    descrip: evt.descrip,
+                });
             });
-        });
 
-        if (isMounted()) {
-            setDisabledDays(new_disabled_days);
-            setMarketEvents(new_market_events);
-        }
-    };
+            if (isMounted()) {
+                setDisabledDays(new_disabled_days);
+                setMarketEvents(new_market_events);
+            }
+        },
+        [isMounted, symbol]
+    );
 
     const has_error = !!validation_errors[name].length;
 

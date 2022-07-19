@@ -33,7 +33,7 @@ const ContentExpander = ({
         if (typeof measure === 'function') {
             measure();
         }
-    }, [is_visible]);
+    }, [is_visible, measure]);
 
     // is_visible value should come from parent bcause the parent keeps track
     // of whether we need to expand or not

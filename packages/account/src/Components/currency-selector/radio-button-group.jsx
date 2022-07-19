@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 
-const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat, item_count, description }) => {
+const RadioButtonGroup = ({
+    label,
+    className,
+    children,
+    is_title_enabled,
+    is_fiat,
+    item_count,
+    description,
+    has_fiat,
+}) => {
     const [is_currency_selected, setIsCurrencySelected] = useState(false);
 
     const onCurrencyClicked = () => {
@@ -17,6 +28,11 @@ const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fia
                 >
                     {label}
                 </h2>
+            )}
+            {is_fiat && has_fiat && (
+                <Text size='xxs' className='currency-selector__subheading'>
+                    {localize('You are limited to one fiat currency only')}
+                </Text>
             )}
             <div
                 className={classNames('currency-list__items', {

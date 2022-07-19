@@ -1,0 +1,43 @@
+{
+    "brand_name" : "Deriv",
+    "domain_name": "Deriv.com",
+    "legal_entities": {
+        "fx": "Deriv (FX) Ltd",
+        "malta": "Deriv (Europe) Limited",
+        "maltainvest": "Deriv Investments (Europe) Limited",
+        "mx": "Deriv (MX) Ltd",
+        "samoa": "Deriv Capital International Ltd",
+        "svg": "Deriv (SVG) LLC",
+        "v": "Deriv (V) Ltd"
+    },
+    "platforms": {
+        "trader": {
+            "name": "DTrader",
+            "icon": "IcBrandDtrader"
+        },
+        "dbot": {
+            "name": "DBot",
+            "icon": "IcBrandDbot"
+        },
+        "mt5": {
+            "name": "DMT5",
+            "icon": "IcBrandDmt5"
+        },
+        "dxtrade": {
+            "name": "Deriv X",
+            "icon": "IcBrandDxtrade"
+        },
+        "smarttrader": {
+            "name": "SmartTrader",
+            "icon": "IcBrandSmarttrader"
+        },
+        "bbot": {
+            "name": "Binary Bot",
+            "icon": "IcBrandBinarybot"
+        },
+        "go": {
+            "name": "Deriv Go"
+        }
+    }
+    
+}

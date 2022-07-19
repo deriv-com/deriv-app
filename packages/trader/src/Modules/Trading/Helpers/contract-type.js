@@ -11,9 +11,9 @@ export const contract_category_icon = {
 };
 
 export const getContractTypeCategoryIcons = () => ({
-    [localize('All')]: 'IcCatAll',
-    [localize('Options')]: 'IcCatOptions',
-    [localize('Multipliers')]: 'IcCatMultiplier',
+    All: 'IcCatAll',
+    Options: 'IcCatOptions',
+    Multipliers: 'IcCatMultiplier',
 });
 
 /**
@@ -27,7 +27,7 @@ export const getContractTypeCategoryIcons = () => ({
  * @param {array}  unsupported_list - list of unsupported contract types
  */
 export const getAvailableContractTypes = (contract_types_list, unsupported_list) => {
-    const list = Object.keys(contract_types_list)
+    return Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key];
             const available_contract_types = contract_types.filter(type =>
@@ -40,6 +40,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
 
             if (available_contract_types.length) {
                 return {
+                    key,
                     label: key,
                     contract_types: available_contract_types,
                     icon: contract_category_icon[key],
@@ -52,8 +53,6 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
             return undefined;
         })
         .filter(Boolean);
-
-    return list;
 };
 
 /**
@@ -62,7 +61,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
  * @param {array}  filtered_items_array - list of filtered contract category names and/or contract types names
  */
 export const getFilteredList = (contract_types_list, filtered_items_array) => {
-    const filtered_list = Object.keys(contract_types_list)
+    return Object.keys(contract_types_list)
         .map(key => {
             const { label, contract_types, icon } = contract_types_list[key];
 
@@ -88,8 +87,6 @@ export const getFilteredList = (contract_types_list, filtered_items_array) => {
             return undefined;
         })
         .filter(Boolean);
-
-    return filtered_list;
 };
 
 const flatten = arr => [].concat(...arr);
@@ -110,6 +107,6 @@ export const getContractsList = list =>
 export const findContractCategory = (list, item) =>
     list.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || {};
 
-export const getContractCategoryLabel = (list, item) => findContractCategory(list, item).label;
+export const getContractCategoryKey = (list, item) => findContractCategory(list, item).key;
 
 export const getContractTypes = (list, item) => findContractCategory(list, item).contract_types;

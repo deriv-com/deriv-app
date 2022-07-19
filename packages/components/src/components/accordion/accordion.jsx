@@ -4,7 +4,7 @@ import React from 'react';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon';
 
-const Accordion = ({ className, list }) => {
+const Accordion = ({ className, icon_close, icon_open, list }) => {
     const [open_idx, setOpenIdx] = React.useState(null);
 
     const prev_list = usePrevious(list);
@@ -34,9 +34,9 @@ const Accordion = ({ className, list }) => {
                         {item.header}
                         <div className='dc-accordion__item-header-icon-wrapper'>
                             {open_idx === idx ? (
-                                <Icon icon='IcMinus' className='dc-accordion__item-header-icon' />
+                                <Icon icon={icon_open || 'IcMinus'} className='dc-accordion__item-header-icon' />
                             ) : (
-                                <Icon icon='IcAdd' className='dc-accordion__item-header-icon' />
+                                <Icon icon={icon_close || 'IcAdd'} className='dc-accordion__item-header-icon' />
                             )}
                         </div>
                     </div>

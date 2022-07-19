@@ -1,0 +1,117 @@
+.close-mx-mlt-account {
+    &--is-fullscreen {
+        max-width: 80vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0 auto;
+        .close-mx-mlt-account__content {
+            max-width: 800px;
+            padding: 2.4rem 0.6rem;
+        }
+
+        @include mobile {
+            max-width: 99vw;
+            max-height: 99%;
+
+            .close-mx-mlt-account__content {
+                padding: 0 0.6rem;
+                overflow-y: scroll;
+                height: calc(100vh - 280px);
+                margin: 2.4rem 0;
+            }
+        }
+    }
+    &-header {
+        width: 100%;
+        height: 214px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #e0f0f0;
+        padding: 0 2rem;
+        border-top-left-radius: 0.8rem;
+        border-top-right-radius: 0.8rem;
+        .dc-icon {
+            width: 96px;
+            height: 96px;
+            margin-bottom: 2.4rem;
+        }
+        &__heading.dc-text {
+            font-size: 2rem;
+        }
+        @include mobile {
+            height: 132px;
+            position: sticky;
+            .dc-icon {
+                width: 64px;
+                height: 64px;
+                margin-bottom: 0;
+                margin-top: 1.6rem;
+            }
+            .dc-text {
+                margin: 1.6rem 0 !important;
+                font-size: 1.4rem;
+            }
+        }
+    }
+    &__content {
+        padding: 1rem 1.5rem;
+        .link {
+            font-weight: unset;
+        }
+    }
+
+    .dc-dialog__wrapper,
+    &__wrapper {
+        z-index: 1001;
+        .dc-dialog__dialog,
+        &__dialog {
+            max-height: unset;
+            max-width: unset;
+            width: 800px;
+            height: 640px;
+            margin-top: 0;
+            padding: 0;
+            .dc-dialog__content {
+                max-width: unset;
+                height: 100%;
+                margin-bottom: 5rem;
+                overflow-y: auto;
+                padding: 0;
+            }
+            .close-mx-mlt-account.dc-dialog__footer {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border-bottom-right-radius: 0.8rem;
+                border-bottom-left-radius: 0.8rem;
+                padding: 1.6rem 2.4rem;
+                background-color: var(--general-main-1);
+                border-top: 2px solid var(--general-section-1);
+                .dc-btn--primary {
+                    margin-left: 0.5rem;
+                }
+            }
+            .dc-text {
+                margin: 0.3rem 0;
+            }
+            @include mobile {
+                position: absolute;
+                border-radius: unset;
+                margin-top: unset;
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
+
+body.theme--dark {
+    .close-mx-mlt-account .close-mx-mlt-account-header h1 {
+        color: var(--general-main-1);
+    }
+}

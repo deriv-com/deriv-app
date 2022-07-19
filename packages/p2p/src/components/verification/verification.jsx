@@ -16,6 +16,7 @@ const VerificationWrapper = ({ should_wrap, children }) => {
                 className={classNames('dp2p-verification__wrapper', {
                     'dp2p-verification__wrapper--mobile': isMobile(),
                 })}
+                data-testid='dp2p-verification_wrapper'
             >
                 {children}
             </div>
@@ -53,7 +54,7 @@ const Verification = ({ should_wrap }) => {
 
     return (
         <VerificationWrapper should_wrap={should_wrap}>
-            <div className='dp2p-verification'>
+            <div className='dp2p-verification' data-testid='dp2p-verification_container'>
                 <Icon icon='IcCashierSendEmail' className='dp2p-verification__icon' size={102} />
                 <div className='dp2p-verification__text'>
                     <div className='dp2p-verification__text-title'>
@@ -61,7 +62,7 @@ const Verification = ({ should_wrap }) => {
                     </div>
                     <div className='dp2p-verification__text-description'>
                         <Text as='p' size='xs' line_height='s' align='center'>
-                            <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
+                            <Localize i18n_default_text='To use Deriv P2P, you need to choose a display name (a nickname) and verify your identity.' />
                         </Text>
                     </div>
                 </div>

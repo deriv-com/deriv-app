@@ -36,4 +36,7 @@
     &--black {
         --fill-color1: #{$color-black-7};
     }
+    &--orange {
+        --fill-color1: var(--status-warning);
+    }
 }

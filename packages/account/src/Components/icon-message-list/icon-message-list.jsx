@@ -30,6 +30,7 @@ const IconMessageList = ({ className, icon, message, message_list, onContinue })
                     className={classNames('account-management__message-content', {
                         [`${className}__message-content`]: className,
                     })}
+                    data-testid='dt_icon_message_list'
                 >
                     {icon && (
                         <div
@@ -63,7 +64,7 @@ const IconMessageList = ({ className, icon, message, message_list, onContinue })
                         <Button
                             type='button'
                             className='account-management__continue'
-                            onClick={() => onContinue(true)}
+                            onClick={onContinue}
                             large
                             text={localize('Upload Document')}
                             primary

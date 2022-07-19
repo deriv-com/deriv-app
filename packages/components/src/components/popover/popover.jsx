@@ -29,6 +29,7 @@ const Popover = ({
     should_disable_pointer_events,
     window_border,
     zIndex,
+    should_show_cursor,
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
@@ -54,7 +55,7 @@ const Popover = ({
     return (
         <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })}>
             {relative_render && (
-                <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
+                <div className='dc-popover__container' style={{ zIndex }}>
                     <div ref={ref} className='dc-popover__container-relative' />
                 </div>
             )}
@@ -70,6 +71,7 @@ const Popover = ({
                     padding={margin + 8}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
+                        'react-tiny-popover-cursor-option': should_show_cursor,
                     })}
                     windowBorderPadding={window_border}
                     {...(relative_render
@@ -128,7 +130,7 @@ const Popover = ({
                                   };
                               },
                           }
-                        : { containerStyle: { zIndex: zIndex || 1 } })}
+                        : { containerStyle: { zIndex } })}
                     content={({ position, targetRect, popoverRect }) => {
                         return (
                             <ArrowContainer
@@ -194,6 +196,7 @@ Popover.defaultProps = {
     margin: 0,
     relative_render: false,
     should_disable_pointer_events: false,
+    zIndex: 1,
 };
 
 Popover.propTypes = {
@@ -218,6 +221,7 @@ Popover.propTypes = {
     onBubbleClose: PropTypes.func,
     zIndex: PropTypes.number,
     should_disable_pointer_events: PropTypes.bool,
+    should_show_cursor: PropTypes.bool,
 };
 
 export default Popover;

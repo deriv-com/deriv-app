@@ -67,13 +67,19 @@
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     }
     &__header {
-        align-self: flex-start;
-        margin-bottom: 2.4rem;
-
         &-wrapper {
             width: 100%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            margin-top: 1.4rem;
+            &--end {
+                justify-content: flex-end;
+            }
+        }
+        &--title {
+            align-self: flex-start;
         }
         &--close {
             cursor: pointer;

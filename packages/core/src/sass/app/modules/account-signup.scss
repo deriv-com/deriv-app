@@ -30,22 +30,6 @@
             margin-left: unset;
         }
     }
-    &__receive-update-checkbox {
-        & .dc-checkbox__box {
-            align-self: flex-start;
-            margin: 0.1rem 0.8rem 0;
-        }
-        & .dc-checkbox__label {
-            font-size: 1.2rem;
-            line-height: 1.5;
-        }
-        @include mobile {
-            margin-bottom: 3rem;
-        }
-    }
-    &__hidden-checkbox {
-        visibility: hidden;
-    }
     &__residence-selection,
     &__password-selection {
         display: flex;

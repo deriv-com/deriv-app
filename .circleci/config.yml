@@ -16,6 +16,7 @@ commands:
           name: "Fetch git tags"
           command: |
             mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
             echo "github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==" >> ~/.ssh/known_hosts
             # Fetch tags if git cache is present
             if [ -e /home/circleci/project/.git ]
@@ -37,7 +38,7 @@ commands:
     steps:
       - run:
           name: "Create cache key"
-          command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
+          command: echo $(find . ./packages/ -maxdepth 2 -name package.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
@@ -59,14 +60,16 @@ commands:
             # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
             - "node_modules"
             - "packages/account/node_modules"
+            - "packages/appstore/node_modules"
             - "packages/bot-skeleton/node_modules"
             - "packages/bot-web-ui/node_modules"
             - "packages/cashier/node_modules"
             - "packages/components/node_modules"
             - "packages/core/node_modules"
-            - "packages/dashboard/node_modules"
+            - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
+            - "packages/reports/node_modules"
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
@@ -79,19 +82,12 @@ commands:
           name: "Build all packages"
           command: npm run build
 
-  build_dashboard:
-    description: "Build dashboard"
-    steps:
-      - run:
-          name: "Build all packages for deriv dashboard"
-          command: npm run build:dashboard
-
   build_storybook:
     description: "Build storybook"
     steps:
       - run:
           name: "Bootstrap for deriv storybook"
-          command: npm run bootstrap
+          command: npm run build:travis
       - run:
           name: "Build all packages for deriv storybook"
           command: npm run build:storybook
@@ -130,8 +126,7 @@ commands:
         type: string
         default: "Dockerfile"
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Building docker image
           command: |
@@ -163,26 +158,41 @@ commands:
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
             ./release.sh << parameters.k8s_service >> ${TAG}
+
+  publish_to_pages_staging:
+    description: "Publish to cloudflare pages"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (staging)"
+          command: |
+            npm i wrangler@2.0.19
+            cd packages/core 
+            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
+            echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
+
+  publish_to_pages_production:
+    description: "Publish to cloudflare pages"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (production)"
+          command: | 
+            npm i wrangler@2.0.19
+            cd packages/core 
+            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
+            echo "New website - http://cf-pages-deriv-app.deriv.com"
+
 jobs:
   build:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
 
-  build_dashboard:
-    docker:
-      - image: circleci/node:12.18.0-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_dashboard
-
   release_storybook:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -202,44 +212,36 @@ jobs:
 
   release_staging:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
       - versioning:
           version_name: staging
+      - persist_to_workspace:
+          root: packages
+          paths:
+            - core
       - docker_build_push
       - k8s_deploy
       - notify_slack
     environment:
       NODE_ENV: staging
 
-  release_staging_dashboard:
-    docker:
-      - image: circleci/node:12.18.0-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_dashboard
-      - versioning:
-          version_name: staging-dashboard
-      - docker_build_push:
-          docker_image_name: deriv-app-dashboard
-          docker_image_latest_tag: latest-staging-dashboard
-      - notify_slack
-    environment:
-      NODE_ENV: staging
-
   release_production:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
       - versioning:
           version_name: production
+      - persist_to_workspace:
+          root: packages
+          paths:
+            - core
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
@@ -248,31 +250,36 @@ jobs:
     environment:
       NODE_ENV: staging
 
-  release_production_dashboard:
+  publish_cloudflare_staging:
     docker:
-      - image: circleci/node:12.18.0-stretch  
+      - image: circleci/node:16.13.1-stretch
     steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_dashboard
-      - versioning:
-          version_name: production-dashboard
-      - docker_build_push:
-          docker_image_name: deriv-app-dashboard
-          docker_image_latest_tag: latest
-      - notify_slack
+      - attach_workspace:
+          at: packages
+      - publish_to_pages_staging
     environment:
       NODE_ENV: staging
-  
+
+  publish_cloudflare_production:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: packages
+      - publish_to_pages_production
+    environment:
+      NODE_ENV: staging
+
   build_and_test:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:14.17.1-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
       - run:
           name: "Run tests"
+          no_output_timeout: 30m
           command: npm test
 
 workflows:
@@ -293,8 +300,9 @@ workflows:
           filters:
             branches:
               only: /^master$/
-      - release_staging_dashboard:
-          context: binary-frontend-artifact-upload
+      - publish_cloudflare_staging:
+          requires:
+            - release_staging
           filters:
             branches:
               only: /^master$/
@@ -308,16 +316,14 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-
-  release_production_dashboard:
-    jobs:
-      - release_production_dashboard:
-          context: binary-frontend-artifact-upload
+      - publish_cloudflare_production:
+          requires:
+            - release_production
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /^dashboard-production.*/
+              only: /^production.*/
 
   test:
     jobs:

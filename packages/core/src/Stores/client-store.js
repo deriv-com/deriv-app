@@ -494,11 +494,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_trade_assessment_incomplete() {
-        return this.account_status?.status?.includes('trade_experience_not_complete');
-    }
-
-    @computed
     get is_deposit_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }

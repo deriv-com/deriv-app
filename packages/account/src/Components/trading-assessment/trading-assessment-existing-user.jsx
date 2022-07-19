@@ -1,29 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
-import {
-    FormSubmitButton,
-    Text,
-    Icon,
-    Button,
-    Modal,
-    DesktopWrapper,
-    MobileDialog,
-    MobileWrapper,
-} from '@deriv/components';
-import { generateValidationFunction, getDefaultFields, isMobile } from '@deriv/shared';
+import { Text, Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { getDefaultFields, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { trading_assessment_form_config } from 'Configs/trading-assessment-config';
+import { trading_assessment_form_config, trading_assessment_questions } from 'Configs/trading-assessment-config';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 
-const TradingAssessmentForm = ({ assessment_questions }) => {
+const TradingAssessmentForm = ({ assessment_questions, value, onSubmit }) => {
     const [current_question_index, setCurrentQuestionIndex] = React.useState(0);
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question, setCurrentQuestion] = React.useState({});
-
-    const end_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
         setCurrentQuestion(assessment_questions[current_question_index]);
@@ -50,18 +39,11 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
         callBackFn(form_control, e.target.value);
         const latest_value = { ...values, [form_control]: e.target.value };
         if (latest_value.risk_tolerance === 'No') {
+            onSubmit(latest_value);
         }
     };
 
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
-
-    const hideElement = condition => {
-        if (condition) {
-            return { visibility: 'hidden' };
-        }
-        return {};
-    };
-
     return (
         <div className='trading-assessment'>
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
@@ -76,13 +58,7 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
                 <div className='trading-assessment__header--arrow-down' />
             </section>
             <section className='trading-assessment__form'>
-                <Formik
-                    innerRef={selected_step_ref}
-                    initialValues={{ ...value }}
-                    onSubmit={(values, actions) => {
-                        onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
-                    }}
-                >
+                <Formik initialValues={{ ...value }} onSubmit={onSubmit}>
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } = current_question;
 
@@ -124,6 +100,8 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
                                         />
                                         <Button
                                             has_effect
+                                            is_disabled={!is_next_button_enabled}
+                                            onClick={!isAssessmentCompleted && handleNextButton}
                                             type={isAssessmentCompleted ? 'submit' : 'button'}
                                             text={localize('Next')}
                                             large
@@ -140,14 +118,39 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
     );
 };
 
-const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_assessment_incomplete }) => {
-    const form_values = getDefaultFields(real_account_signup_target, trading_assessment_form_config);
+const TradingAssessmentExistingUser = ({
+    real_account_signup_target,
+    is_trade_assessment_incomplete,
+    realAccountSignup,
+    setShouldShowWarningPopup,
+    should_show_warning_popup,
+}) => {
+    const [form_values, setStateItems] = React.useState({});
+
+    React.useEffect(() => {
+        const initial_fields = getDefaultFields(real_account_signup_target, trading_assessment_form_config);
+        setStateItems(initial_fields);
+    }, []);
+
+    const handleSubmit = async values => {
+        try {
+            const response = await realAccountSignup(values);
+        } catch (error) {
+            if (error.code === 'AppropriatenessTestFailed') {
+                //pass
+            }
+        }
+    };
 
     return (
         <React.Fragment>
             <DesktopWrapper>
                 <Modal is_open={is_trade_assessment_incomplete} title={localize('Trading Experience Assessment')}>
-                    <div />
+                    <TradingAssessmentForm
+                        assessment_questions={trading_assessment_questions}
+                        value={form_values}
+                        onSubmit={handleSubmit}
+                    />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -155,7 +158,11 @@ const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_as
                     visible={is_trade_assessment_incomplete}
                     title={localize('Trading Experience Assessment')}
                 >
-                    <div />
+                    <TradingAssessmentForm
+                        assessment_questions={trading_assessment_questions}
+                        value={form_values}
+                        onSubmit={handleSubmit}
+                    />
                 </MobileDialog>
             </MobileWrapper>
         </React.Fragment>
@@ -163,6 +170,9 @@ const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_as
 };
 
 export default connect(({ client, ui }) => ({
-    is_trade_assessment_incomplete: client.is_trade_assessment_incomplete,
+    is_trade_assessment_incomplete: client.is_trading_experience_incomplete,
     real_account_signup_target: ui.real_account_signup_target,
+    realAccountSignup: client.realAccountSignup,
+    should_show_warning_popup: ui.should_show_warning_popup,
+    setShouldShowWarningPopup: ui.setShouldShowWarningPopup,
 }))(TradingAssessmentExistingUser);

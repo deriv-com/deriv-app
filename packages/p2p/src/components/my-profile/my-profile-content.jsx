@@ -7,20 +7,12 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
-import BlockUserEmpty from 'Components/block-user/block-user-empty';
+import BlockUserModal from 'Components/block-user/block-user-modal';
+import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
 
 const MyProfileContent = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     const formik_ref = React.useRef();
-
-    const generatePageHeaderText = () => {
-        if (my_profile_store.should_show_add_payment_method_form) {
-            return localize('Add payment method');
-        } else if (my_profile_store.should_show_edit_payment_method_form) {
-            return localize('Edit payment method');
-        }
-        return localize('Payment methods');
-    };
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
@@ -37,7 +29,7 @@ const MyProfileContent = () => {
                         is_modal_open
                         is_flex
                         page_header_className='buy-sell__modal-header'
-                        page_header_text={generatePageHeaderText()}
+                        page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => {
                             if (
                                 (formik_ref.current && formik_ref.current.dirty) ||
@@ -57,8 +49,33 @@ const MyProfileContent = () => {
             </React.Fragment>
         );
     } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
-        // TODO: Add search box and integrate list of blocked users once blocked user list is merged
-        return <BlockUserEmpty />;
+        return (
+            <React.Fragment>
+                <BlockUserModal
+                    advertiser_name={my_profile_store.selected_blocked_user.name}
+                    is_advertiser_blocked
+                    is_block_user_modal_open={general_store.is_block_user_modal_open}
+                    onCancel={() => general_store.setIsBlockUserModalOpen(false)}
+                    onSubmit={my_profile_store.onSubmit}
+                />
+                <DesktopWrapper>
+                    <BlockUserTable />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileFullPageModal
+                        body_className='block-user__modal'
+                        height_offset='80px'
+                        is_flex
+                        is_modal_open
+                        page_header_className='buy-sell__modal-header'
+                        page_header_text={localize('Blocked advertisers')}
+                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                    >
+                        <BlockUserTable />
+                    </MobileFullPageModal>
+                </MobileWrapper>
+            </React.Fragment>
+        );
     }
     return <MyProfileStats />;
 };

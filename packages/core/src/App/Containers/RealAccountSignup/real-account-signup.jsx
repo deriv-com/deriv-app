@@ -103,6 +103,7 @@ const RealAccountSignup = ({
     state_index,
     state_value,
     deposit_real_account_signup_target,
+    setShowRiskModal,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -120,6 +121,7 @@ const RealAccountSignup = ({
                     setLoading={setLoading}
                     onError={showErrorModal}
                     onClose={closeModal}
+                    setShowRiskModal={setShowRiskModal}
                 />
             ),
             title: WizardHeading,

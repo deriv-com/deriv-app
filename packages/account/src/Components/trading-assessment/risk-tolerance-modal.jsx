@@ -4,10 +4,10 @@ import React from 'react';
 
 const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal }) => (
     <Modal
-        small
-        is_vertical_centered
-        is_confirmation_modal
-        title={localize('Risk Tolerane Warning')}
+        width='44rem'
+        height='44rem'
+        has_close_icon={false}
+        title={localize('Risk Tolerance Warning')}
         is_open={show_risk_modal}
         onClose={() => setShowRiskModal(false)}
         className='risk-acceptance'

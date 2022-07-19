@@ -46,7 +46,7 @@ IndicativeCell.propTypes = {
     currency: PropTypes.string,
     status: PropTypes.string,
     is_footer: PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
+    is_sell_requested: PropTypes.func,
     onClickSell: PropTypes.func,
 };
 

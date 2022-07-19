@@ -1,6 +1,5 @@
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import TradingAssessmentNewUser from 'Components/trading-assessment/trading-assessment-new-user.jsx';
 
 export const trading_assessment_questions = [
     {
@@ -298,7 +297,7 @@ export const trading_assessment_form_config = {
     },
 };
 
-const tradingAssessmentConfig = ({ real_account_signup_target }) => {
+const tradingAssessmentConfig = ({ real_account_signup_target }, TradingAssessmentNewUser) => {
     return {
         header: {
             active_title: localize('Complete your trading assessment'),

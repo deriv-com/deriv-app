@@ -6,6 +6,7 @@ import {
     PersonalDetails,
     termsOfUseConfig,
     tradingAssessmentConfig,
+    TradingAssessmentNewUser,
     TermsOfUse,
 } from '@deriv/account';
 import CurrencySelector from './currency-selector.jsx';
@@ -25,8 +26,8 @@ export const getItems = props => {
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
             ? [personalDetailsConfig(props, PersonalDetails)]
             : []),
-        ...(shouldShowTradingAssessment(props) ? [tradingAssessmentConfig(props)] : []),
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
+        ...(shouldShowTradingAssessment(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
         // ...(shouldShowFinancialDetails(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
         termsOfUseConfig(props, TermsOfUse),
     ];

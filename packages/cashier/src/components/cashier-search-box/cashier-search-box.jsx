@@ -15,10 +15,7 @@ const CashierSearchBox = ({ className, onClear, onSearch, placeholder, setIsSear
         if (!search.trim()) return;
 
         setIsSearchLoading(true);
-
-        setTimeout(() => {
-            submitForm();
-        }, 300);
+        submitForm();
     };
 
     const onSearchSubmit = ({ search }) => {

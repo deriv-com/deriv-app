@@ -1,6 +1,6 @@
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -13,6 +13,7 @@ export default class CommonStore extends BaseStore {
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     @observable current_language = currentLanguage;
+    @observable is_language_changing = false;
     @observable allowed_languages = Object.keys(getAllowedLanguages());
     @observable has_error = false;
 
@@ -60,6 +61,13 @@ export default class CommonStore extends BaseStore {
         if (this.current_language !== new_language) {
             this.current_language = new_language;
         }
+    }
+
+    @action.bound
+    setLanguageChanging(is_language_changing) {
+        runInAction(() => {
+            this.is_language_changing = is_language_changing;
+        });
     }
 
     @action.bound

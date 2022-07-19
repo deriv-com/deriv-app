@@ -16,7 +16,7 @@
                     }
                     &-from {
                         flex-direction: row-reverse;
-
+                        gap: 1rem;
                         & > .cashier__transferred-details {
                             text-align: right;
                         }

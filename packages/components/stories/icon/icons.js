@@ -240,6 +240,7 @@ export const icons =
         'IcEmailFirewall',
         'IcEmailOutline',
         'IcEmailSentDashboard',
+        'IcEmailSentP2p',
         'IcEmailSent',
         'IcEmailSpam',
         'IcEmailTypo',

@@ -42,7 +42,7 @@ const PaymentAgentTransferReceipt = ({
                 <span className='account-transfer__transfer-details-to'>
                     <Icon icon='IcCashierPaymentAgent' />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' align='center'>
+                        <Text size='xs' line_height='xs' weight='bold'>
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='less-prominent'>
@@ -57,7 +57,7 @@ const PaymentAgentTransferReceipt = ({
                 <Button
                     className='cashier__form-submit-button'
                     has_effect
-                    text={localize('View in statement')}
+                    text={localize('View transactions')}
                     onClick={() => openStatement(history, resetPaymentAgentTransfer)}
                     secondary
                     large

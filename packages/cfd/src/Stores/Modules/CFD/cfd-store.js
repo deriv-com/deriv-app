@@ -53,11 +53,6 @@ export default class CFDStore extends BaseStore {
     }
 
     @computed
-    get has_cfd_account() {
-        return this.current_list.length > 0;
-    }
-
-    @computed
     get account_title() {
         return this.account_type.category
             ? getMtCompanies(this.root_store.client.is_eu)[this.account_type.category][this.account_type.type].title
@@ -66,7 +61,7 @@ export default class CFDStore extends BaseStore {
 
     @computed
     get current_list() {
-        const list = [];
+        const list = {};
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp

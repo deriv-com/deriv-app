@@ -28,7 +28,6 @@ describe('<CFDRealAccountDisplay />', () => {
     beforeEach(() => {
         props = {
             current_list: {},
-            has_cfd_account: false,
             has_cfd_account_error: false,
             has_real_account: true,
             is_accounts_switcher_on: false,
@@ -339,20 +338,5 @@ describe('<CFDRealAccountDisplay />', () => {
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
         expect(add_real_account_buttons[0]).toBeDisabled();
         expect(add_real_account_buttons[1]).toBeDisabled();
-    });
-
-    it('should render enabled "Select" buttons instead of "Add real account" buttons when has_cfd_account=true', () => {
-        render(<CFDRealAccountDisplay {...props} has_cfd_account />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
-
-        const select_buttons = screen.getAllByText(/select/i);
-
-        fireEvent.click(select_buttons[0]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real', platform: 'mt5' });
-
-        fireEvent.click(select_buttons[1]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real', platform: 'mt5' });
     });
 });

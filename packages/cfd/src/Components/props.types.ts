@@ -50,7 +50,6 @@ export type TCFDAccountCard = {
     is_hovered?: boolean;
     existing_accounts_data?: TExistingData;
     has_banner?: boolean;
-    has_cfd_account: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;
     is_accounts_switcher_on?: boolean;

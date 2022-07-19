@@ -93,11 +93,9 @@ type TCFDDashboardProps = RouteComponentProps & {
     beginRealSignupForMt5: () => void;
     country: string;
     createCFDAccount: (objCFDAccount: TObjectCFDAccount) => void;
-    current_list: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid };
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     dxtrade_accounts_list_error: null;
-    isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
-    ) => boolean;
+    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_accounts_switcher_on: boolean;
     is_dark_mode_on: boolean;
     is_eu: boolean;
@@ -111,7 +109,6 @@ type TCFDDashboardProps = RouteComponentProps & {
     is_virtual: boolean;
     landing_companies: LandingCompany;
     has_maltainvest_account: boolean;
-    has_cfd_account: boolean;
     has_mt5_real_account_error: boolean;
     has_mt5_demo_account_error: boolean;
     has_dxtrade_real_account_error: boolean;
@@ -363,7 +360,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         is_virtual,
         landing_companies,
         has_maltainvest_account,
-        has_cfd_account,
         has_mt5_real_account_error,
         has_mt5_demo_account_error,
         has_dxtrade_real_account_error,
@@ -503,7 +499,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 }
                                                 current_list={current_list}
                                                 account_status={account_status}
-                                                has_cfd_account={has_cfd_account}
                                                 onSelectAccount={createCFDAccount}
                                                 realSyntheticAccountsExistingData={getRealSyntheticAccountsExistingData}
                                                 realFinancialAccountsExistingData={getRealFinancialAccountsExistingData}
@@ -545,7 +540,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             is_loading={is_loading}
                                             isSyntheticCardVisible={isSyntheticCardVisible}
                                             isFinancialCardVisible={isFinancialCardVisible}
-                                            has_cfd_account={has_cfd_account}
                                             current_list={current_list}
                                             onSelectAccount={createCFDAccount}
                                             landing_companies={landing_companies}
@@ -749,7 +743,6 @@ export default withRouter(
         getRealFinancialAccountsExistingData: modules.cfd.getRealFinancialAccountsExistingData,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        has_cfd_account: modules.cfd.has_cfd_account,
         has_mt5_real_account_error: client.has_account_error_in_mt5_real_list,
         has_mt5_demo_account_error: client.has_account_error_in_mt5_demo_list,
         has_dxtrade_real_account_error: client.has_account_error_in_dxtrade_real_list,

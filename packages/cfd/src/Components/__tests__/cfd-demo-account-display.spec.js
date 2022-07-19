@@ -29,7 +29,6 @@ describe('<CFDDemoAccountDisplay />', () => {
     beforeEach(() => {
         props = {
             current_list: {},
-            has_cfd_account: false,
             has_cfd_account_error: false,
             has_maltainvest_account: false,
             is_eu: false,
@@ -245,20 +244,5 @@ describe('<CFDDemoAccountDisplay />', () => {
 
         expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
         checkAccountCardsRendering(TESTED_CASES.LOADING);
-    });
-
-    it('should render enabled "Select" buttons instead of "Add demo account" buttons when has_cfd_account=true', () => {
-        render(<CFDDemoAccountDisplay {...props} has_cfd_account />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
-
-        const select_buttons = screen.getAllByText(/select/i);
-
-        fireEvent.click(select_buttons[0]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'demo', platform: 'mt5' });
-
-        fireEvent.click(select_buttons[1]);
-        expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'demo', platform: 'mt5' });
     });
 });

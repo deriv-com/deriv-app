@@ -242,6 +242,7 @@ const AccountWizard = props => {
         props.setLoading(true);
         submitForm(payload)
             .then(response => {
+                // TODO: Code for Success response
                 console.log('Response: ', response);
                 // props.setIsRiskWarningVisible(false);
                 // if (props.real_account_signup_target === 'maltainvest') {
@@ -253,6 +254,7 @@ const AccountWizard = props => {
                 // }
             })
             .catch(error => {
+                // TODO: Code for Error response
                 console.log('Error: ', error);
                 // if (error.code === 'show risk disclaimer') {
                 //     props.setIsRiskWarningVisible(true);

@@ -401,6 +401,7 @@ const RealAccountSignup = ({
     );
 
     if (should_show_warning_popup) {
+        //TODO: handle other modals
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_warning_popup}

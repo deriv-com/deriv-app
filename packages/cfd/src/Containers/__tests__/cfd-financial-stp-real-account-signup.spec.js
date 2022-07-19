@@ -32,7 +32,7 @@ const toHavaClassFn = (item, class_name, should_have) => {
     }
 };
 
-const testAllStepsFn = (screen, steps, step_no) => {
+const testAllStepsFn = (steps, step_no) => {
     steps.map((step, index) => {
         if (index === step_no) {
             getByTextFn(step.body, true);
@@ -173,13 +173,13 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     it('should render properly for the first step content', () => {
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        testAllStepsFn(screen, steps, 0);
+        testAllStepsFn(steps, 0);
     });
 
     it('should render properly for the second step content', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([1, () => {}]);
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        testAllStepsFn(screen, steps, 1);
+        testAllStepsFn(steps, 1);
     });
 });

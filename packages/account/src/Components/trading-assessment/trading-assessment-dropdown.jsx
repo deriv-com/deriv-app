@@ -8,16 +8,17 @@ const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setField
     }, [values]);
 
     const checkIfAllFieldsFilled = () => {
+        let enable_next_section = false;
+
         if (
             values.cfd_trading_experience_mf &&
             values.cfd_trading_frequency_mf &&
             values.trading_experience_financial_instruments &&
             values.trading_frequency_financial_instruments
         ) {
-            setEnableNextSection(true);
-        } else {
-            setEnableNextSection(false);
+            enable_next_section = true;
         }
+        setEnableNextSection(enable_next_section);
     };
 
     return (

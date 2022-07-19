@@ -23,7 +23,7 @@ const TradingAssessmentForm = ({ assessment_questions }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question, setCurrentQuestion] = React.useState({});
 
-    const end_question_index = assessment_questions.length - 1;
+    const last_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
         setCurrentQuestion(assessment_questions[current_question_index]);

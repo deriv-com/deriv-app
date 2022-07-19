@@ -4,6 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { RiskToleranceWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -103,7 +104,8 @@ const RealAccountSignup = ({
     state_index,
     state_value,
     deposit_real_account_signup_target,
-    setShowRiskModal,
+    should_show_warning_popup,
+    setShouldShowWarningPopup,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -121,7 +123,6 @@ const RealAccountSignup = ({
                     setLoading={setLoading}
                     onError={showErrorModal}
                     onClose={closeModal}
-                    setShowRiskModal={setShowRiskModal}
                 />
             ),
             title: WizardHeading,
@@ -399,6 +400,15 @@ const RealAccountSignup = ({
         getActiveModalIndex()
     );
 
+    if (should_show_warning_popup) {
+        return (
+            <RiskToleranceWarningModal
+                show_risk_modal={should_show_warning_popup}
+                setShowRiskModal={setShouldShowWarningPopup}
+            />
+        );
+    }
+
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -513,4 +523,6 @@ export default connect(({ ui, client, common, modules }) => ({
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
+    should_show_warning_popup: ui.should_show_warning_popup,
+    setShouldShowWarningPopup: ui.setShouldShowWarningPopup,
 }))(withRouter(RealAccountSignup));

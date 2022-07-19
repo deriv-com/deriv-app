@@ -13,7 +13,6 @@ import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
-import RiskToleranceWarningModal from '@deriv/account/src/Components/trading-assessment/risk-tolerance-modal';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -62,7 +61,6 @@ const DefaultHeader = ({
     changeCurrentLanguage,
     is_social_signup,
 }) => {
-    const [show_risk_modal, setShowRiskModal] = React.useState(false);
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -185,16 +183,7 @@ const DefaultHeader = ({
                     </div>
                 </div>
             </div>
-            <RealAccountSignup setShowRiskModal={setShowRiskModal} />
-
-            {
-                show_risk_modal && (
-                    <RiskToleranceWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />
-                )
-                // testing modals
-                // <CoolDownWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />
-                // return <TestWarningModal show_risk_modal={show_risk_modal} setShowRiskModal={setShowRiskModal} />;
-            }
+            <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
             <TempAppSettings />

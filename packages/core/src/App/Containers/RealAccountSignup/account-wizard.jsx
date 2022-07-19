@@ -56,7 +56,7 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
-    const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const [should_accept_financial_risk, setShouldAccesptFinancialRisk] = React.useState(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -260,6 +260,10 @@ const AccountWizard = props => {
                 // } else {
                 //     props.onError(error, state_items);
                 // }
+                if (error.code === 'AppropriatenessTestFailed') {
+                    props.closeRealAccountSignup();
+                    props.setShouldShowWarningPopup(true);
+                }
             })
             .finally(() => props.setLoading(false));
     };
@@ -267,15 +271,27 @@ const AccountWizard = props => {
     const onAcceptRisk = () => {
         createRealAccount({ accept_risk: 1 });
     };
+
     const onDeclineRisk = () => {
         props.onClose();
         props.setIsRiskWarningVisible(false);
     };
 
     if (props.is_loading) return <LoadingModal />;
+
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
+
+    // if (should_display_appropriateness_warning) {
+    //     return (
+    //         <RiskToleranceWarningModal
+    //             show_risk_modal={should_display_appropriateness_warning}
+    //             setShowRiskModal={setShouldDisplayAppropriatenessWarning}
+    //         />
+    //     );
+    // }
+
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
@@ -294,7 +310,6 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
-                    setShowRiskModal={props.setShowRiskModal}
                 />
             );
         });
@@ -340,6 +355,7 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
+    setShouldShowWarningPopup: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({
@@ -360,4 +376,5 @@ export default connect(({ client, notifications, ui }) => ({
     refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
+    setShouldShowWarningPopup: ui.setShouldShowWarningPopup,
 }))(AccountWizard);

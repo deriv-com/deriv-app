@@ -9,7 +9,6 @@ export const trading_assessment_questions = [
             { value: 'Yes', text: localize('Yes') },
             { value: 'No', text: localize('No') },
         ],
-        answer: [1],
         form_control: 'risk_tolerance',
         field_type: 'radio',
     },
@@ -19,31 +18,30 @@ export const trading_assessment_questions = [
         form_control: 'source_of_experience',
         answer_options: [
             {
-                value: 'option_1',
+                value: 'I have an academic degree, professional certification, and/or work experience related to financial services.',
                 text: localize(
                     'I have an academic degree, professional certification, and/or work experience related to financial services.'
                 ),
             },
             {
-                value: 'option_2',
+                value: 'I trade forex CFDs and other complex financial instruments regularly on other platforms.',
                 text: localize(
                     'I trade forex CFDs and other complex financial instruments regularly on other platforms.'
                 ),
             },
             {
-                value: 'option_3',
+                value: 'I have attended seminars, training, and/or workshops related to trading.',
                 text: localize('I have attended seminars, training, and/or workshops related to trading.'),
             },
             {
-                value: 'option_4',
+                value: 'I am interested in trading but have very little experience.',
                 text: localize('I am interested in trading but have very little experience.'),
             },
             {
-                value: 'option_5',
+                value: 'I have no knowledge and experience in trading at all.',
                 text: localize('I have no knowledge and experience in trading at all.'),
             },
         ],
-        answer: ['option_1', 'option_2', 'option_3'],
         field_type: 'radio',
     },
     {
@@ -53,58 +51,6 @@ export const trading_assessment_questions = [
                 question_text: localize('How much experience do you have in CFD trading?'),
                 field_type: 'dropdown',
                 form_control: 'cfd_trading_experience_mf',
-                answer_options: [
-                    {
-                        text: localize('No experience'),
-                        value: 'option_1',
-                    },
-                    {
-                        text: localize('Less than a year'),
-                        value: 'option_2',
-                    },
-                    {
-                        text: localize('1-2 years'),
-                        value: 'option_3',
-                    },
-                    {
-                        text: localize('Over 3 years'),
-                        value: 'option_4',
-                    },
-                ],
-                answer: ['option_2', 'option_3', 'option_4'],
-            },
-            {
-                question_text: localize('How many CFD trades have you placed in the past 12 months?'),
-                field_type: 'dropdown',
-                form_control: 'cfd_trading_frequency_mf',
-                answer_options: [
-                    {
-                        text: localize('None'),
-                        value: 'option_1',
-                    },
-                    {
-                        text: '1-5',
-                        value: 'option_2',
-                    },
-                    {
-                        text: '6-10',
-                        value: 'option_3',
-                    },
-                    {
-                        text: '11-39',
-                        value: 'option_4',
-                    },
-                    {
-                        text: localize('40 or more'),
-                        value: 'option_5',
-                    },
-                ],
-                answer: ['option_3,option_4,option_5'],
-            },
-            {
-                question_text: localize('How much experience do you have with other financial instruments?'),
-                field_type: 'dropdown',
-                form_control: 'trading_experience_financial_instruments',
                 answer_options: [
                     {
                         text: localize('No experience'),
@@ -120,10 +66,59 @@ export const trading_assessment_questions = [
                     },
                     {
                         text: localize('Over 3 years'),
+                        value: 'option_4',
+                    },
+                ],
+            },
+            {
+                question_text: localize('How many CFD trades have you placed in the past 12 months?'),
+                field_type: 'dropdown',
+                form_control: 'cfd_trading_frequency_mf',
+                answer_options: [
+                    {
+                        text: localize('None'),
+                        value: 'None',
+                    },
+                    {
+                        text: '1 - 5',
+                        value: '1 - 5 transactions in the past 12 months',
+                    },
+                    {
+                        text: '6 - 10',
+                        value: '6 - 10 transactions in the past 12 months',
+                    },
+                    {
+                        text: '11 - 39',
+                        value: '11 - 39 transactions in the past 12 months',
+                    },
+                    {
+                        text: localize('40 or more'),
+                        value: '40 or more',
+                    },
+                ],
+            },
+            {
+                question_text: localize('How much experience do you have with other financial instruments?'),
+                field_type: 'dropdown',
+                form_control: 'trading_experience_financial_instruments',
+                answer_options: [
+                    {
+                        text: localize('No experience'),
+                        value: 'No experience',
+                    },
+                    {
+                        text: localize('Less than a year'),
+                        value: 'Less than a year',
+                    },
+                    {
+                        text: localize('1 - 2 years'),
+                        value: '1 - 2 years',
+                    },
+                    {
+                        text: localize('Over 3 years'),
                         value: 'Over 3 years',
                     },
                 ],
-                answer: ['option_3', 'option_4', 'option_5'],
             },
             {
                 question_text: localize(
@@ -134,26 +129,25 @@ export const trading_assessment_questions = [
                 answer_options: [
                     {
                         text: localize('None'),
-                        value: 'option_1',
+                        value: 'None',
                     },
                     {
-                        text: '1-5',
-                        value: 'option_2',
+                        text: '1 - 5',
+                        value: '1 - 5 transactions in the past 12 months',
                     },
                     {
-                        text: '6-10',
-                        value: 'option_3',
+                        text: '6 - 10',
+                        value: '6 - 10 transactions in the past 12 months',
                     },
                     {
-                        text: '11-39',
-                        value: 'option_4',
+                        text: '11 - 39',
+                        value: '11 - 13 transactions in the past 12 months',
                     },
                     {
                         text: localize('40 or more'),
-                        value: 'option_5',
+                        value: '40 or more',
                     },
                 ],
-                answer: ['option_3', 'option_4', 'option_5'],
             },
         ],
     },
@@ -164,25 +158,24 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                value: 'option_1',
+                value: 'Purchase commodities or shares of a company.',
                 text: localize('Purchase commodities or shares of a company.'),
             },
             {
-                value: 'option_2',
+                value: 'Place a bet on the price movement of an asset where the outcome is a fixed return or nothing at all.',
                 text: localize(
                     'Place a bet on the price movement of an asset where the outcome is a fixed return or nothing at all.'
                 ),
             },
             {
-                value: 'option_3',
+                value: 'Speculate on the price movement of an asset without actually owning it.',
                 text: localize('Speculate on the price movement of an asset without actually owning it.'),
             },
             {
-                value: 'option_4',
+                value: 'Make a long-term investment for a guaranteed profit.',
                 text: localize('Make a long-term investment for a guaranteed profit.'),
             },
         ],
-        answer: ['option_3'],
     },
     {
         question_text: 'How does leverage affect CFD trading?',
@@ -191,22 +184,21 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                value: 'option_1',
+                value: 'Leverage is a risk mitigation technique.',
                 text: localize('Leverage helps to mitigate risk.'),
             },
             {
-                value: 'option_2',
+                value: 'Leverage prevents you from opening large positions.',
                 text: localize('Leverage prevents you from opening large positions.'),
             },
-            { value: 'option_3', text: localize('Leverage guarantees profits.') },
+            { value: 'Leverage guarantees profits.', text: localize('Leverage guarantees profits.') },
             {
-                value: 'option_4',
+                value: "Leverage lets you open larger positions for a fraction of the trade's value.",
                 text: localize(
                     'Leverage lets you open large positions for a fraction of trade value, which may result in increased profit or loss.'
                 ),
             },
         ],
-        answer: ['option_2'],
     },
     {
         question_text:
@@ -216,27 +208,26 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                value: 'option_1',
-                text: localize('Cancel your trade at any time within a specified timeframe.'),
+                value: 'Cancel your trade at any time within a chosen timeframe.',
+                text: localize('Cancel your trade at any time within a specified time frame.'),
             },
             {
-                value: 'option_2',
+                value: 'Close your trade automatically when the loss is more than or equal to a specific amount.',
                 text: localize(
                     'Close your trade automatically when the loss is equal to or more than a specified amount, as long as there is adequate market liquidity.'
                 ),
             },
             {
-                value: 'option_3',
+                value: 'Close your trade automatically when the profit is more than or equal to a specific amount.',
                 text: localize(
                     'Close your trade automatically when the profit is equal to or more than a specified amount, as long as there is adequate market liquidity.'
                 ),
             },
             {
-                value: 'option_4',
+                value: 'Make a guaranteed profit on your trade.',
                 text: localize('Make a guaranteed profit on your trade.'),
             },
         ],
-        answer: ['option_2'],
     },
     {
         question_text: 'When do you be required to pay an initial margin?',
@@ -245,17 +236,16 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                value: 'option_1',
+                value: 'When opening a Leveraged CFD trade.',
                 text: localize('When opening a leveraged CFD trade'),
             },
-            { value: 'option_2', text: 'When trading multipliers' },
+            { value: 'When trading Multipliers.', text: 'When trading multipliers' },
             {
-                value: 'option_3',
+                value: 'When buying shares of a company.',
                 text: localize('When buying shares of a company'),
             },
-            { value: 'option_4', text: localize('All of the above') },
+            { value: 'All of the above.', text: localize('All of the above') },
         ],
-        answer: ['option_1'],
     },
 ];
 

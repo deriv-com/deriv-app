@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import CFDPOA from '../cfd-poa';
@@ -6,20 +6,36 @@ import CFDPOA from '../cfd-poa';
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
     FileUploaderContainer: () => <div>FileUploaderContainer</div>,
-    FormSubHeader: () => <div>FormSubHeader</div>,
-    PoaExpired: () => <div>PoaExpired</div>,
-    PoaNeedsReview: () => <div>PoaNeedsReview</div>,
-    PoaVerified: () => <div>PoaVerified</div>,
-    PoaUnverified: () => <div>PoaUnverified</div>,
-    PoaSubmitted: () => <div>PoaSubmitted</div>,
-    PoaStatusCodes: {
-        EXPIRED: 'EXPIRED',
-        NEEDS_REVIEW: 'NEEDS_REVIEW',
-        VERIFIED: 'VERIFIED',
-        UNVERIFIED: 'UNVERIFIED',
-        SUBMITTED: 'SUBMITTED',
-    },
+    FormSubHeader: jest.fn(props => <div>{props.title}</div>),
+    PoaStatusCodes: jest.fn(() => {
+        poa_status_codes;
+    }),
 }));
+
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+    return {
+        ...original_module,
+        Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),
+    };
+});
+
+const poa_status_codes = {
+    none: 'none',
+    pending: 'pending',
+    rejected: 'rejected',
+    verified: 'verified',
+    expired: 'expired',
+    suspected: 'suspected',
+};
+
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+    return {
+        ...original_module,
+        Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),
+    };
+});
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
@@ -31,6 +47,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
         wait: (...payload) => {
             return Promise.resolve([...payload]);
         },
+        getSocket: jest.fn(),
     },
 }));
 
@@ -40,6 +57,12 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<CFDPOA />', () => {
+    const address_line_1 = 'First line of address*';
+    const address_line_2 = 'Second line of address';
+    const address_postcode = 'Postal/ZIP code';
+    const address_state = 'State/Province';
+    const address_town = 'Town/City*';
+
     let props;
 
     beforeEach(() => {
@@ -99,6 +122,7 @@ describe('<CFDPOA />', () => {
                 address_line_2: '',
                 address_postcode: '',
                 address_state: 'Default test state',
+                poa_status: 'verified',
             },
         };
     });
@@ -106,14 +130,14 @@ describe('<CFDPOA />', () => {
     it('should render the POA component', async () => {
         render(<CFDPOA {...props} />);
         await waitFor(() => {
-            expect(screen.getByText(/FormSubHeader/i)).toBeInTheDocument();
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
         });
     });
 
     it('should render the POA component with the correct texts and buttons', async () => {
         render(<CFDPOA {...props} />);
         await waitFor(() => {
-            expect(screen.getByText(/FormSubHeader/i)).toBeInTheDocument();
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
             expect(screen.getByText(/First line of address*/i)).toBeInTheDocument();
             expect(screen.getByText(/Second line of address \(optional\)/i)).toBeInTheDocument();
             expect(screen.getByText('Town/City*')).toBeInTheDocument();
@@ -125,9 +149,149 @@ describe('<CFDPOA />', () => {
         });
     });
     it('should render the correct input for all the fields', async () => {
+        render(<CFDPOA {...props} onSubmit={() => true} />);
+
+        await waitFor(() => {
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
+        });
+
+        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
+        const first_line_address_text = 'Test first line address';
+        expect(address_line_1_input.value).toBe('');
+        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
+        await waitFor(() => {
+            expect(address_line_1_input.value).toBe(first_line_address_text);
+        });
+
+        const address_line_2_input = screen.getByPlaceholderText(address_line_2);
+        const second_line_address_text = 'Test second line address';
+        expect(address_line_2_input.value).toBe('');
+        fireEvent.change(address_line_2_input, { target: { value: second_line_address_text } });
+        await waitFor(() => {
+            expect(address_line_2_input.value).toBe(second_line_address_text);
+        });
+
+        const address_town_input = screen.getByPlaceholderText(address_town);
+        const town_text = 'Test town';
+        expect(address_town_input.value).toBe('');
+        fireEvent.change(address_town_input, { target: { value: town_text } });
+        await waitFor(() => {
+            expect(address_town_input.value).toBe(town_text);
+        });
+
+        const address_state_input = screen.getByPlaceholderText(address_state);
+        const address_state_text = 'Test state';
+        expect(address_state_input.value).toBe('Default test state');
+        fireEvent.change(address_state_input, { target: { value: address_state_text } });
+        await waitFor(() => {
+            expect(address_state_input.value).toBe(address_state_text);
+        });
+
+        const address_postcode_input = screen.getByPlaceholderText(address_postcode);
+        const address_postcode_text = 'Test postcode';
+        expect(address_postcode_input.value).toBe('');
+        fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
+        await waitFor(() => {
+            expect(address_postcode_input.value).toBe(address_postcode_text);
+        });
+
+        const submit_btn = screen.getByRole('button', { name: /Submit/i });
+        await waitFor(() => {
+            fireEvent.click(submit_btn);
+        });
+        expect(submit_btn).toBeEnabled();
+    });
+
+    it('should call onCancel if the user clicks Previous button', async () => {
         render(<CFDPOA {...props} />);
         await waitFor(() => {
-            expect(screen.getByText(/FormSubHeader/i)).toBeInTheDocument();
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
+        });
+        const previous_btn = screen.getByRole('button', { name: /Previous/i });
+        expect(previous_btn).toBeInTheDocument();
+        fireEvent.click(previous_btn);
+        await waitFor(() => {
+            expect(props.onCancel).toHaveBeenCalled();
+        });
+    });
+
+    it('shouls show error if submit button is clicked', async () => {
+        render(<CFDPOA {...props} />);
+        await waitFor(() => {
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
+        });
+        const submit_btn = screen.getByRole('button', { name: /Submit/i });
+        fireEvent.click(submit_btn);
+        await waitFor(() => {
+            expect(screen.getByText(/First line of address is required/i)).toBeInTheDocument();
+            expect(screen.getByText('Town/City is required.')).toBeInTheDocument();
+        });
+    });
+
+    it('should show error message when user enters wrong input for address', async () => {
+        render(<CFDPOA {...props} />);
+        await waitFor(() => {
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
+        });
+        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
+        const first_line_address_text = '?';
+        expect(address_line_1_input.value).toBe('');
+        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
+        await waitFor(() => {
+            expect(address_line_1_input.value).toBe(first_line_address_text);
+        });
+    });
+    it('should trigger the onSave callback when the user clicks on the previous button', async () => {
+        render(<CFDPOA {...props} />);
+        await waitFor(() => {
+            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
+        });
+        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
+        const first_line_address_text = 'Test first line address';
+        expect(address_line_1_input.value).toBe('');
+        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
+        await waitFor(() => {
+            expect(address_line_1_input.value).toBe(first_line_address_text);
+        });
+
+        const address_line_2_input = screen.getByPlaceholderText(address_line_2);
+        const second_line_address_text = 'Test second line address';
+        expect(address_line_2_input.value).toBe('');
+        fireEvent.change(address_line_2_input, { target: { value: second_line_address_text } });
+        await waitFor(() => {
+            expect(address_line_2_input.value).toBe(second_line_address_text);
+        });
+
+        const address_town_input = screen.getByPlaceholderText(address_town);
+        const town_text = 'Test town';
+        expect(address_town_input.value).toBe('');
+        fireEvent.change(address_town_input, { target: { value: town_text } });
+        await waitFor(() => {
+            expect(address_town_input.value).toBe(town_text);
+        });
+
+        const address_state_input = screen.getByPlaceholderText(address_state);
+        const address_state_text = 'Test state';
+        expect(address_state_input.value).toBe('Default test state');
+        fireEvent.change(address_state_input, { target: { value: address_state_text } });
+        await waitFor(() => {
+            expect(address_state_input.value).toBe(address_state_text);
+        });
+
+        const address_postcode_input = screen.getByPlaceholderText(address_postcode);
+        const address_postcode_text = 'Test postcode';
+        expect(address_postcode_input.value).toBe('');
+        fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
+        await waitFor(() => {
+            expect(address_postcode_input.value).toBe(address_postcode_text);
+        });
+
+        const prev_btn = screen.getByRole('button', { name: /Previous/i });
+        await waitFor(() => {
+            fireEvent.click(prev_btn);
+        });
+        await waitFor(() => {
+            expect(props.onSave).toHaveBeenCalled();
         });
     });
 });

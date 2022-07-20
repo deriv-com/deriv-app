@@ -263,7 +263,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                     },
                 });
                 setTimeout(() => {
-                    handleCancel(get_settings);
+                    handleCancel(get_settnpmings);
                 }, 3000);
             }
         } catch (e: unknown) {
@@ -282,7 +282,6 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 const { document, identity } = get_account_status?.authentication || {};
                 const has_poi = !!(identity && identity.status === 'none');
                 setFormState({ ...form_state, ...{ poa_status: document?.status, has_poi } }, () => {
-
                     setIsLoading(false);
                     refreshNotifications();
                 });

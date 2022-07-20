@@ -5,7 +5,7 @@ import ApiToken from '../api-token';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    getPropertyValue: jest.fn().mockReturnValue([]),
+    getPropertyValue: jest.fn(() => []),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
     useIsMounted: jest.fn().mockImplementation(() => () => true),
@@ -16,19 +16,35 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
+let modal_root_el;
+beforeAll(() => {
+    modal_root_el = document.createElement('div');
+    modal_root_el.setAttribute('id', 'modal_root');
+    document.body.appendChild(modal_root_el);
+});
+
+afterAll(() => {
+    document.body.removeChild(modal_root_el);
+});
+
 describe('<ApiToken/>', () => {
-    const admin_description = 'Open accounts, manage settings, manage token usage, and more.';
+    const admin_scope_description =
+        'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more.';
+    const admin_scope_note =
+        'To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.';
     const learn_more_title = 'Learn more about API token';
+    const read_scope_description =
+        'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.';
     const our_access_description =
         "To access our mobile apps and other third-party apps, you'll first need to generate an API token.";
-    const payments_description = 'Withdraw to payment agents, and transfer funds between accounts.';
+    const trading_info_scope_description =
+        'This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.';
     const select_scopes_msg = 'Select scopes based on the access you need.';
     const token_creation_description = "Name your token and click on 'Create' to generate your token.";
     const token_using_description = 'Copy and paste the token into the app.';
-    const trade_description = 'Buy and sell contracts, renew expired purchases, and top up demo accounts.';
-    const trading_info_description = 'View the trading history.';
-    const view_activity_msg =
-        'View account activity such as settings, limits, balance sheets, trade purchase history, and more.';
+    const trade_scope_description =
+        'This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.';
+    const trading_info_description = 'This scope will allow third-party apps to view your trading history.';
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
@@ -63,15 +79,16 @@ describe('<ApiToken/>', () => {
 
         expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
 
-        expect(await screen.findByText(admin_description)).toBeInTheDocument();
-        expect(await screen.findByText(payments_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
+        expect(await screen.findByText(trading_info_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
         expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
         expect(await screen.findByText(token_using_description)).toBeInTheDocument();
-        expect(await screen.findByText(trade_description)).toBeInTheDocument();
+        expect(await screen.findByText(trade_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
         expect(await screen.findByText(your_access_description)).toBeInTheDocument();
-        expect(await screen.findByText(view_activity_msg)).toBeInTheDocument();
+        expect(await screen.findByText(read_scope_description)).toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
@@ -83,16 +100,17 @@ describe('<ApiToken/>', () => {
         expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
-        expect(screen.queryByText(admin_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(admin_scope_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(admin_scope_note)).not.toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
-        expect(screen.queryByText(payments_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(trading_info_scope_description)).not.toBeInTheDocument();
         expect(screen.queryByText(select_scopes_msg)).not.toBeInTheDocument();
         expect(screen.queryByText(token_creation_description)).not.toBeInTheDocument();
         expect(screen.queryByText(token_using_description)).not.toBeInTheDocument();
-        expect(screen.queryByText(trade_description)).not.toBeInTheDocument();
+        expect(screen.queryByText(trade_scope_description)).not.toBeInTheDocument();
         expect(screen.queryByText(trading_info_description)).not.toBeInTheDocument();
         expect(screen.queryByText(your_access_description)).not.toBeInTheDocument();
-        expect(screen.queryByText(view_activity_msg)).not.toBeInTheDocument();
+        expect(screen.queryByText(read_scope_description)).not.toBeInTheDocument();
     });
 
     it('should render ApiToken component without app_settings and footer for mobile', async () => {
@@ -101,14 +119,15 @@ describe('<ApiToken/>', () => {
 
         render(<ApiToken {...mock_props} />);
 
-        expect(await screen.findByText(admin_description)).toBeInTheDocument();
-        expect(await screen.findByText(payments_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
+        expect(await screen.findByText(trading_info_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
         expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
         expect(await screen.findByText(token_using_description)).toBeInTheDocument();
-        expect(await screen.findByText(trade_description)).toBeInTheDocument();
+        expect(await screen.findByText(trade_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
-        expect(await screen.findByText(view_activity_msg)).toBeInTheDocument();
+        expect(await screen.findByText(read_scope_description)).toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
@@ -201,7 +220,7 @@ describe('<ApiToken/>', () => {
             {
                 display_name: 'Second test token',
                 last_used: '',
-                scopes: ['Read', 'Payments', 'rade'],
+                scopes: ['Read', 'Payments', 'Trade'],
                 token: 'GHjaD2f4gDg5gSE',
                 valid_for_ip: '',
             },
@@ -209,7 +228,6 @@ describe('<ApiToken/>', () => {
 
         render(<ApiToken {...mock_props} />);
 
-        expect(await screen.findByText('Action')).toBeInTheDocument();
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Last used')).toBeInTheDocument();
         expect(await screen.findByText('Name')).toBeInTheDocument();
@@ -217,41 +235,101 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText('Scopes')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
 
-        const delete_btns_1 = await screen.findAllByRole('button', { name: /delete/i });
+        const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
         expect(delete_btns_1.length).toBe(2);
 
         fireEvent.click(delete_btns_1[0]);
-        const delete_btns_2 = await screen.findAllByRole('button', { name: /delete/i });
-        expect(delete_btns_2.length).toBe(1);
-        const no_btn_1 = screen.getByRole('button', { name: /no/i });
+        const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
         expect(no_btn_1).toBeInTheDocument();
 
         fireEvent.click(no_btn_1);
-        expect(no_btn_1).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(no_btn_1).not.toBeInTheDocument();
+        });
 
-        const delete_btns_3 = await screen.findAllByRole('button', { name: /delete/i });
-        expect(delete_btns_3.length).toBe(2);
+        const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
+        expect(delete_btns_2.length).toBe(2);
 
-        fireEvent.click(delete_btns_3[0]);
-        const yes_btn_1 = screen.getByRole('button', { name: /yes/i });
+        fireEvent.click(delete_btns_2[0]);
+        const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
         expect(yes_btn_1).toBeInTheDocument();
 
         fireEvent.click(yes_btn_1);
         const deleteToken = mock_props.ws.authorized.apiToken;
         expect(deleteToken).toHaveBeenCalled();
-        const delete_btns_4 = await screen.findAllByRole('button', { name: /delete/i });
-        expect(delete_btns_4.length).toBe(1);
+        await waitFor(() => {
+            expect(yes_btn_1).not.toBeInTheDocument();
+        });
+    });
 
-        fireEvent.click(delete_btns_4[0]);
-        const no_btn_2 = screen.getByRole('button', { name: /no/i });
-        expect(no_btn_2).toBeInTheDocument();
-        const yes_btn_2 = screen.getByRole('button', { name: /yes/i });
-        expect(yes_btn_2).toBeInTheDocument();
+    it('should trigger hide/unhide icon and trigger copy icon, should show dialog only for admin scope', async () => {
+        jest.useFakeTimers();
 
-        act(() => jest.advanceTimersByTime(10000));
+        const warning_msg =
+            'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf';
 
-        expect(no_btn_2).not.toBeInTheDocument();
-        expect(yes_btn_2).not.toBeInTheDocument();
+        document.execCommand = jest.fn();
+
+        getPropertyValue.mockReturnValue([
+            {
+                display_name: 'First test token',
+                last_used: '',
+                scopes: ['Read', 'Trade'],
+                token: 'FirstTokenID',
+                valid_for_ip: '',
+            },
+            {
+                display_name: 'Second test token',
+                last_used: '',
+                scopes: ['Read', 'Trade', 'Admin'],
+                token: 'SecondTokenID',
+                valid_for_ip: '',
+            },
+        ]);
+
+        render(<ApiToken {...mock_props} />);
+
+        expect(await screen.findByText('First test token')).toBeInTheDocument();
+        expect(screen.queryByText('FirstTokenID')).not.toBeInTheDocument();
+
+        const toggle_visibility_btns = await screen.findAllByTestId('dt_toggle_visibility_icon');
+        expect(toggle_visibility_btns.length).toBe(2);
+
+        fireEvent.click(toggle_visibility_btns[0]);
+        expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
+
+        fireEvent.click(toggle_visibility_btns[1]);
+        expect(screen.getByText('SecondTokenID')).toBeInTheDocument();
+
+        const copy_btns_1 = await screen.findAllByTestId('dt_copy_token_icon');
+        expect(copy_btns_1.length).toBe(2);
+
+        fireEvent.click(copy_btns_1[0]);
+        expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
+        expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
+
+        act(() => jest.advanceTimersByTime(2100));
+        expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
+
+        fireEvent.click(copy_btns_1[1]);
+        expect(await screen.findByText(warning_msg)).toBeInTheDocument();
+
+        expect(document.execCommand).toHaveBeenCalledTimes(1);
+
+        const ok_btn = screen.getByRole('button', { name: /ok/i });
+        expect(ok_btn).toBeInTheDocument();
+
+        fireEvent.click(ok_btn);
+        expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
+        const copy_btns_2 = await screen.findAllByTestId('dt_copy_token_icon');
+        expect(copy_btns_2.length).toBe(1);
+
+        act(() => jest.advanceTimersByTime(2100));
+        expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
+
+        expect(document.execCommand).toHaveBeenCalledTimes(2);
+
+        jest.clearAllMocks();
     });
 
     it('should render created tokens for mobile', async () => {
@@ -287,14 +365,11 @@ describe('<ApiToken/>', () => {
         expect((await screen.findAllByText('Name')).length).toBe(3);
         expect((await screen.findAllByText('Last Used')).length).toBe(3);
         expect((await screen.findAllByText('Token')).length).toBe(3);
-        expect((await screen.findAllByText('Scope')).length).toBe(3);
+        expect((await screen.findAllByText('Scopes')).length).toBe(3);
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
-        expect(await screen.findByText('SecondTokenID')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();
-        expect(screen.queryByText('Scopes')).not.toBeInTheDocument();
-        const all_scopes = await screen.findAllByText('All');
-        expect(all_scopes.length).toBe(1);
+        expect(screen.queryByText('SecondTokenID')).not.toBeInTheDocument();
         const never_used = await screen.findAllByText('Never');
         expect(never_used.length).toBe(2);
     });

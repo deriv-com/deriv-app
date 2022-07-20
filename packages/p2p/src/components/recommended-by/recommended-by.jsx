@@ -27,7 +27,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
                 alignment='top'
                 className='recommended-by--container'
                 message={message}
-                onClick={() => setIsRecommendedModalOpen(true)}
+                onClick={isMobile() ? () => setIsRecommendedModalOpen(true) : () => {}}
             >
                 <Icon className='recommended-by--icon' icon='IcThumbsUp' size={14} />
                 <Text color='less-prominent' line_height='s' size={isMobile() ? 'xxxs' : 'xs'}>

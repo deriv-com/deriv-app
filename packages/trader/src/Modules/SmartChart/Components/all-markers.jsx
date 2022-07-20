@@ -264,7 +264,9 @@ const TickContract = RawMarkerMaker(
             return;
         }
         const entry = ticks[0];
-        const current_tick = ticks[ticks.findIndex(t => t.epoch === current_spot_time.epoch)];
+        const current_tick_index = ticks.findIndex(t => t.epoch === current_spot_time.epoch);
+        const current_tick = ticks[current_tick_index];
+        const previous_tick = ticks[current_tick_index - 1] || ticks[0];
         const exit = ticks[ticks.length - 1];
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
@@ -424,7 +426,7 @@ const TickContract = RawMarkerMaker(
                 ctx.stroke();
             }
             const start_left =
-                start === current_tick || entry === current_tick ? current_tick.left : current_tick.left - 34 * scale;
+                start === current_tick || entry === current_tick ? current_tick.left : previous_tick.left;
             // draw custom barrier shadows with borders:
             if (profit > 0) {
                 draw_partial_shade({

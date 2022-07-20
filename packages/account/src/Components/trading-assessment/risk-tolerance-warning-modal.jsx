@@ -1,6 +1,6 @@
+import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import React from 'react';
 
 const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal }) => (
     <Modal

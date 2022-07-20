@@ -408,6 +408,7 @@ export const icons =
         'IcCurrencyBch',
         'IcCurrencyBtc',
         'IcCurrencyBusd',
+        'IcCurrencyCra',
         'IcCurrencyDai',
         'IcCurrencyEth',
         'IcCurrencyEur',

@@ -397,6 +397,7 @@ import './currency/ic-currency-aud.svg';
 import './currency/ic-currency-bch.svg';
 import './currency/ic-currency-btc.svg';
 import './currency/ic-currency-busd.svg';
+import './currency/ic-currency-cra.svg';
 import './currency/ic-currency-dai.svg';
 import './currency/ic-currency-eth.svg';
 import './currency/ic-currency-eur.svg';

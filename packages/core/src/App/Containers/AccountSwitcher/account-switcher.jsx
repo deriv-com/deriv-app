@@ -422,6 +422,10 @@ const AccountSwitcher = props => {
         return localize('Total assets in your Deriv real accounts.');
     };
 
+    const is_cra = loginid => {
+        return loginid?.toLowerCase().includes('cra');
+    };
+
     const isMT5Allowed = account_type => {
         if (!props.is_mt5_allowed) return false;
 
@@ -616,7 +620,7 @@ const AccountSwitcher = props => {
                                         key={account.loginid}
                                         balance={props.accounts[account.loginid].balance}
                                         currency={props.accounts[account.loginid].currency}
-                                        currency_icon={`IcCurrency-${account.icon}`}
+                                        currency_icon={`IcCurrency-${is_cra(account.loginid) ? 'cra' : account.icon}`}
                                         country_standpoint={props.country_standpoint}
                                         display_type={'currency'}
                                         has_balance={'balance' in props.accounts[account.loginid]}
@@ -946,6 +950,7 @@ const account_switcher = withRouter(
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
         country_standpoint: client.country_standpoint,
+        is_cra: client.is_cra,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,

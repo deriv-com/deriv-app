@@ -167,7 +167,7 @@ const JurisdictionCard = ({
                 return (
                     <div className={`${card_classname}__footer--none`}>
                         <Text as='p' size='xxxs' align='center' color={'prominent'}>
-                            <Localize i18n_default_text='You will need to submit proof of identity and address' />
+                            <Localize i18n_default_text='Proof of identity and address are required' />
                         </Text>
                     </div>
                 );
@@ -389,7 +389,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority(licence no. MB/18/0024).'
+                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>
@@ -461,7 +461,7 @@ const JurisdictionModalContent = ({
                     jurisdiction_selected_shortcode !== 'svg' && (
                         <div className={`${card_classname}__footnote--pending`}>
                             <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
-                                <Localize i18n_default_text='Your documents are being reviewed, we will notify you once this account is ready for you to create.' />
+                                <Localize i18n_default_text='You will be able to open this account once your submitted documents have been verified.' />
                             </Text>
                         </div>
                     )}
@@ -479,6 +479,22 @@ const JurisdictionModalContent = ({
         vanuatu: { name: 'Deriv (V) Ltd', tnc_url: 'tnc/general-terms.pdf' },
     };
 
+    const getCheckboxLabel = () => (
+        <Text as='p' align='center' size='xs' line_height='xs'>
+            <Localize
+                i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
+                values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}
+                components={[
+                    <StaticUrl
+                        key={0}
+                        className='link'
+                        href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
+                    />,
+                ]}
+            />
+        </Text>
+    );
+
     const ModalCheckbox = ({
         onCheck,
         is_checked,
@@ -487,20 +503,7 @@ const JurisdictionModalContent = ({
         is_checked: boolean;
     }) => (
         <div className={`${card_classname}__jurisdiction-checkbox`}>
-            <Checkbox onChange={() => onCheck(!checked)} value={is_checked} />
-            <Text as='p' align='center' size='xs' line_height='xs'>
-                <Localize
-                    i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
-                    values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}
-                    components={[
-                        <StaticUrl
-                            key={0}
-                            className='link'
-                            href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
-                        />,
-                    ]}
-                />
-            </Text>
+            <Checkbox onChange={() => onCheck(!checked)} value={is_checked} label={getCheckboxLabel()} />
         </div>
     );
 

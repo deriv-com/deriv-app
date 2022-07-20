@@ -78,13 +78,13 @@ export const jurisdiction_contents: TJurisdictionContent = {
         is_over_header_available: true,
         header: localize('Labuan'),
         synthetic_contents: [
-            `${localize('Regulated by the Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
+            `${localize('Regulated by the Labuan Financial Services Authority (Licence no. MB/18/0024)')}`,
             `${localize('Registered with the Financial Commission')}`,
             `${localize('80+ assets: forex and cryptocurrencies')}`,
             `${localize('Leverage up to 1:100')}`,
         ],
         financial_contents: [
-            `${localize('Regulated by the Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
+            `${localize('Regulated by the Labuan Financial Services Authority (Licence no. MB/18/0024)')}`,
             `${localize('Registered with the Financial Commission')}`,
             `${localize('80+ assets: forex and cryptocurrencies')}`,
             `${localize('Leverage up to 1:100')}`,

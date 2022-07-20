@@ -74,7 +74,7 @@ const eucontent: TModalContentProps[] = [
         attribute: localize('Regulator'),
         values: {
             financial_maltainvest: {
-                text: localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
+                text: localize('Malta Financial Services Authority (MFSA) (Licence no. IS/70156)'),
             },
         },
     },
@@ -116,7 +116,7 @@ const content: TModalContentProps[] = [
             financial_labuan: {
                 text: localize('Labuan STP account'),
                 tooltip_msg: localize(
-                    'Your Financial (STP) trades go directly to the market. A Financial (STP) account offers you deep liquidity, fast execution and tight spreads.'
+                    'Your Financial (STP) trades go directly to the market. A Financial (STP) account offers you tighter spreads.'
                 ),
             },
         },
@@ -146,11 +146,9 @@ const content: TModalContentProps[] = [
                 text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
             },
             financial_vanuatu: {
-                text: localize(
-                    'Vanuatu Financial Services Commission, and is a member of the Financial Markets Association'
-                ),
+                text: localize('Vanuatu Financial Services Commission'),
             },
-            financial_labuan: { text: localize('Labuan Financial Services Authority (licence no. MB/18/0024)') },
+            financial_labuan: { text: localize('Labuan Financial Services Authority (Licence no. MB/18/0024)') },
         },
     },
 

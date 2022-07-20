@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { TTradingPlatformAvailableAccount } from './jurisdiction-modal';
+import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 type TRowItem = {
@@ -271,45 +271,33 @@ const DMT5CompareModalContent = ({
             case 'synthetic_svg':
             case 'financial_svg':
                 toggleCompareAccounts();
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
             case 'financial_maltainvest':
                 toggleCompareAccounts();
-                setTimeout(() => {
-                    if (poi_poa_verified) {
-                        openPasswordModal(type_of_account);
-                    } else {
-                        toggleCFDVerificationModal();
-                    }
-                }, 260);
+                if (poi_poa_verified) {
+                    openPasswordModal(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
 
                 break;
 
             case 'financial_vanuatu':
             case 'financial_labuan':
                 toggleCompareAccounts();
-                setTimeout(() => {
-                    if (poi_poa_verified) {
-                        // for bvi, labuan & vanuatu:
-                        if (!has_real_mt5_login) {
-                            setTimeout(() => {
-                                toggleCFDPersonalDetailsModal();
-                            }, 260);
-                        } else {
-                            setTimeout(() => {
-                                openPasswordModal(type_of_account);
-                            }, 260);
-                        }
+                if (poi_poa_verified) {
+                    // for bvi, labuan & vanuatu:
+                    if (!has_real_mt5_login) {
+                        toggleCFDPersonalDetailsModal();
                     } else {
-                        setTimeout(() => {
-                            toggleCFDVerificationModal();
-                        }, 260);
+                        openPasswordModal(type_of_account);
                     }
-                }, 260);
+                } else {
+                    toggleCFDVerificationModal();
+                }
                 break;
 
             default:

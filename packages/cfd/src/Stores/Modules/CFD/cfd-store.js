@@ -204,7 +204,12 @@ export default class CFDStore extends BaseStore {
             zipCode: address_postcode,
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
-            ...type_request,
+            ...(this.jurisdiction_selected_shortcode !== 'labuan'
+                ? type_request
+                : {
+                      account_type: 'financial',
+                      mt5_account_type: 'financial_stp',
+                  }),
         });
     }
 

@@ -6,23 +6,7 @@ import RootStore from 'Stores/index';
 import { GetAccountSettingsResponse, GetSettings, LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { WS } from '@deriv/shared';
-
-export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
-    name: string;
-    requirements: {
-        after_first_deposit: {
-            financial_assessment: string[];
-        };
-        compliance: {
-            mt5: string[];
-            tax_information: string[];
-        };
-        signup: string[];
-    };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
-    sub_account_type: string;
-};
+import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
@@ -149,39 +133,25 @@ const JurisdictionModal = ({
 
         if (is_eu) {
             if (poi_poa_verified) {
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
             } else {
-                setTimeout(() => {
-                    toggleCFDVerificationModal();
-                }, 260);
+                toggleCFDVerificationModal();
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
             if (account_type.type === 'financial' && poi_poa_verified && !has_submitted_personal_details) {
-                setTimeout(() => {
-                    toggleCFDPersonalDetailsModal();
-                }, 260);
+                toggleCFDPersonalDetailsModal();
             } else {
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
             }
         } else if (poi_poa_verified) {
             // for bvi, labuan & vanuatu:
             if (!has_submitted_personal_details) {
-                setTimeout(() => {
-                    toggleCFDPersonalDetailsModal();
-                }, 260);
+                toggleCFDPersonalDetailsModal();
             } else {
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
             }
         } else {
-            setTimeout(() => {
-                toggleCFDVerificationModal();
-            }, 260);
+            toggleCFDVerificationModal();
         }
     };
 
@@ -235,9 +205,7 @@ const JurisdictionModal = ({
                                     primary
                                     onClick={() => {
                                         toggleJurisdictionModal();
-                                        setTimeout(() => {
-                                            onSelectRealAccount();
-                                        }, 260);
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     {buttonText()}
@@ -258,9 +226,7 @@ const JurisdictionModal = ({
                                     primary
                                     onClick={() => {
                                         toggleJurisdictionModal();
-                                        setTimeout(() => {
-                                            onSelectRealAccount();
-                                        }, 260);
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     {buttonText()}

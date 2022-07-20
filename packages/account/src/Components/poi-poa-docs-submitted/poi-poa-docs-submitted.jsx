@@ -1,12 +1,32 @@
-import { Icon, Button } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
 
-const PoiPoaSubmitted = ({ onClickOK }) => {
+const PoiPoaSubmitted = ({ onClickOK, onClickYes, account_type, mt5_login_list }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const message = localize('Your documents was submitted successfully');
+    let is_svg_created = false;
+    if (account_type.type && account_type.category) {
+        is_svg_created = mt5_login_list.filter(
+            data =>
+                data.market_type === account_type.type &&
+                data.landing_company_short === 'svg' &&
+                data.account_type === 'real'
+        );
+    }
+    const SVGRoutingData = () => (
+        <>
+            <Text size='xs' align='center' className='poi-poa-submitted__svg-text'>
+                {localize('Meanwhile, do you want to explore other accounts?')}
+            </Text>
+            <div className='poi-poa-submitted__svg-footer'>
+                <Button has_effect text={localize('No')} onClick={onClickOK} secondary />
+                <Button has_effect text={localize('Yes')} onClick={onClickYes} secondary />
+            </div>
+        </>
+    );
     return (
         <IconMessageContent
             message={message}
@@ -15,7 +35,11 @@ const PoiPoaSubmitted = ({ onClickOK }) => {
             full_width={is_appstore}
             className='poi-poa-submitted'
         >
-            <Button has_effect text={localize('OK')} onClick={onClickOK} primary />
+            {!is_svg_created.length ? (
+                <SVGRoutingData />
+            ) : (
+                <Button has_effect text={localize('OK')} onClick={onClickOK} primary />
+            )}
         </IconMessageContent>
     );
 };

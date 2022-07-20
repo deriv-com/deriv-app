@@ -68,7 +68,6 @@ export type TCFDAccountCard = {
     existing_accounts_data?: TExistingData;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
-    has_cfd_account: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;
     is_accounts_switcher_on?: boolean;

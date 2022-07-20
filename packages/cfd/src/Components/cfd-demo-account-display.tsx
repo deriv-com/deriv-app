@@ -39,10 +39,7 @@ type TCFDDemoAccountDisplayProps = {
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: string;
-    current_list: Array<DetailsOfEachMT5Loginid> & {
-        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
-    };
-    has_cfd_account: boolean;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
     landing_companies?: LandingCompany;
@@ -64,7 +61,6 @@ const CFDDemoAccountDisplay = ({
     openAccountTransfer,
     platform,
     current_list,
-    has_cfd_account,
     openPasswordManager,
     residence,
     toggleMT5TradeModal,
@@ -102,7 +98,6 @@ const CFDDemoAccountDisplay = ({
         <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
             {isSyntheticCardVisible('demo') && (
                 <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}
                     type={{
                         category: 'demo',
@@ -142,7 +137,7 @@ const CFDDemoAccountDisplay = ({
                     }
                     platform={platform}
                     descriptor={localize(
-                        'Trade CFDs on our synthetic indices that simulate real-world market movement.'
+                        'Trade CFDs on our synthetic indices that simulate real-world market movements.'
                     )}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
@@ -152,7 +147,6 @@ const CFDDemoAccountDisplay = ({
 
             {isFinancialCardVisible() && (
                 <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
                     title={is_eu_user ? localize('CFDs') : localize('Financial')}
                     is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}

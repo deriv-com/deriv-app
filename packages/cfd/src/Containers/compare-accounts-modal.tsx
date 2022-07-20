@@ -60,17 +60,7 @@ const CompareAccountsModal = ({
     const cfd_account_button_label =
         mt5_accounts.filter(Boolean).length === 1 ? localize('Account Information') : localize('Compare accounts');
 
-    const getCFDModalTitle = () => {
-        if (!is_dxtrade) {
-            return isMobile()
-                ? localize('Choose a jurisdiction for your account')
-                : localize('Choose a jurisdiction for your {{type}} {{platform}} account', {
-                      type: is_demo_tab ? 'demo' : 'real',
-                      platform: show_eu_related ? 'CFD' : 'DMT5',
-                  });
-        }
-        return cfd_account_button_label;
-    };
+    const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
 
     const getModalStyle = () => {
         if (is_dxtrade) {

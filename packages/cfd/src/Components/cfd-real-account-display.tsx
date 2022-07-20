@@ -47,10 +47,7 @@ type TCFDRealAccountDisplayProps = {
     isAccountOfTypeDisabled: (
         account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
     ) => boolean;
-    current_list: Array<DetailsOfEachMT5Loginid> & {
-        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
-    };
-    has_cfd_account: boolean;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
     toggleMT5TradeModal: (is_accounts_switcher_on?: boolean) => void;
@@ -76,7 +73,6 @@ const CFDRealAccountDisplay = ({
     openAccountTransfer,
     isAccountOfTypeDisabled,
     current_list,
-    has_cfd_account,
     openPasswordManager,
     platform,
     standpoint,
@@ -168,7 +164,6 @@ const CFDRealAccountDisplay = ({
     const synthetic_account_items = isSyntheticCardVisible('real') && (
         <CFDAccountCard
             key='real.synthetic'
-            has_cfd_account={has_cfd_account}
             has_cfd_account_error={has_cfd_account_error}
             title={localize('Synthetic')}
             has_real_account={has_real_account}
@@ -186,7 +181,7 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movement.')}
+            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
@@ -198,7 +193,6 @@ const CFDRealAccountDisplay = ({
     const financial_account = isFinancialCardVisible() && (
         <CFDAccountCard
             key='real.financial'
-            has_cfd_account={has_cfd_account}
             has_real_account={has_real_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
             title={is_eu_user ? localize('CFDs') : localize('Financial')}

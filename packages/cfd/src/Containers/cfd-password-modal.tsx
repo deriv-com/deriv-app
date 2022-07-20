@@ -719,7 +719,7 @@ const CFDPasswordModal = ({
     const password_modal = (
         <Modal
             className='cfd-password-modal'
-            has_close_icon={should_set_trading_password}
+            has_close_icon
             is_open={should_show_password_modal}
             toggleModal={closeModal}
             should_header_stick_body

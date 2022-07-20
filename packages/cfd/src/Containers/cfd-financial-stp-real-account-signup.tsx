@@ -170,7 +170,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             is_disabled={isDesktop()}
             height_offset='40px'
         >
-            <div className='cfd-financial-stp-modal__body'>
+            <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
                 <BodyComponent
                     value={form_value}
                     index={state_index}

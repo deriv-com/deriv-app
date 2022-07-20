@@ -622,7 +622,7 @@
     width: 30.4em;
     position: relative;
     @include desktop {
-        height: 100%;
+        height: fit-content;
     }
 
     &__item {

@@ -30,16 +30,17 @@ const PaymentAgentDepositWithdrawContainer = ({
                 resetPaymentAgent();
             }
         };
-    }, [resetPaymentAgent]);
+    }, [is_deposit, resetPaymentAgent]);
 
     React.useEffect(() => {
         return () => {
             onChangePaymentMethod({ target: { value: '0' } });
         };
-    }, []);
+    }, [onChangePaymentMethod]);
 
     React.useEffect(() => {
         if (app_contents_scroll_ref) app_contents_scroll_ref.current.scrollTop = 0;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_try_withdraw_successful, is_withdraw_successful]);
 
     const [is_unlisted_withdraw, setIsUnlistedWithdraw] = React.useState(false);

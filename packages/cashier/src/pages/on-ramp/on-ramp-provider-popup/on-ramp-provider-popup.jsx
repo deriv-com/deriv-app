@@ -176,6 +176,7 @@ const OnRampProviderPopup = ({
 OnRampProviderPopup.propTypes = {
     api_error: PropTypes.string,
     deposit_address: PropTypes.string,
+    is_dark_mode_on: PropTypes.bool,
     is_deposit_address_loading: PropTypes.bool,
     is_deposit_address_popover_open: PropTypes.bool,
     is_requesting_widget_html: PropTypes.bool,

@@ -127,6 +127,8 @@ const RealAccountSignup = ({
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [is_risk_warning_visible, setIsRiskWarningVisible] = React.useState(false);
+    const [real_account_form_data, setRealAccountFormData] = React.useState({});
+    const [risk_warning_title, setRiskWarningTitle] = React.useState('');
     const [modal_content] = React.useState([
         {
             action: 'signup',
@@ -140,6 +142,7 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                     onClose={closeModal}
                     realAccountSignup={realAccountSignup}
+                    setRealAccountFormData={setRealAccountFormData}
                 />
             ),
             title: WizardHeading,
@@ -347,6 +350,8 @@ const RealAccountSignup = ({
 
     //Reset Form data
     React.useEffect(() => {
+        console.log('Comp re-rendered');
+        setRiskWarningTitle(localize('Risk Tolerance Warning'));
         return () => setRealAccountSignupData(null);
     }, []);
 
@@ -422,10 +427,10 @@ const RealAccountSignup = ({
         getActiveModalIndex()
     );
 
-    const handleOnAccept = async form_value => {
+    const handleOnAccept = async () => {
         try {
-            console.log('handleOnAccept: ', form_value);
-            // const response = await realAccountSignup(form_value);
+            console.log('handleOnAccept: ', { ...real_account_form_data });
+            const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
             setShouldShowVerifiedAccount(true);
             setShouldShowAppropriatenessTestWarningModal(false);
             // TODO: Show Welcome Modal
@@ -434,14 +439,17 @@ const RealAccountSignup = ({
         }
     };
 
-    const handleOnDecline = async form_value => {
+    const handleOnDecline = async () => {
         try {
-            console.log('HandleOnDecline: ', form_value);
-            // const response = await realAccountSignup(form_value);
-            setShouldShowCooldownWarningModal(true);
-            setShouldShowAppropriatenessTestWarningModal(false);
+            console.log('HandleOnDecline: ', { ...real_account_form_data });
+            const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
             // TODO: Show CoolDown Modal
         } catch (sign_up_error) {
+            setRiskWarningTitle(localize('24-hour Cool Down Warning'));
+            if (sign_up_error.code === 'AppropriatenessTestFailed') {
+                setShouldShowAppropriatenessTestWarningModal(false);
+                setShouldShowRiskToleranceWarningModal(true);
+            }
             // TODO: Handle Error case
         }
     };
@@ -452,6 +460,7 @@ const RealAccountSignup = ({
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_tolerance_warning_modal}
                 setShowRiskModal={setShouldShowRiskToleranceWarningModal}
+                title={risk_warning_title}
             />
         );
     } else if (should_show_appropriateness_test_warning_modal) {

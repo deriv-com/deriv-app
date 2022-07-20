@@ -19,13 +19,13 @@ const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_ta
 
 export const getItems = props => {
     return [
-        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
-            ? [currencySelectorConfig(props, CurrencySelector)]
-            : []),
-        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
-            ? [personalDetailsConfig(props, PersonalDetails)]
-            : []),
-        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
+        // ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
+        //     ? [currencySelectorConfig(props, CurrencySelector)]
+        //     : []),
+        // ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
+        //     ? [personalDetailsConfig(props, PersonalDetails)]
+        //     : []),
+        // ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
         ...(shouldShowTradingAssessment(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
         termsOfUseConfig(props, TermsOfUse),
     ];

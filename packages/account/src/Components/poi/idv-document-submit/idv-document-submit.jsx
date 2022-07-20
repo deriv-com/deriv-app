@@ -189,6 +189,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     name='document_type'
                                                     error={touched.document_type && errors.document_type}
                                                     label={localize('Choose the document type')}
+                                                    placeholder={localize('Please select')}
                                                     list_items={document_list}
                                                     value={values.document_type.text}
                                                     onChange={e => {

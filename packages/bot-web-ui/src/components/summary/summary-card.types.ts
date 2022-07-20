@@ -1,27 +1,5 @@
-import RootStore from 'Stores/index';
 import moment from 'moment';
-
-type TRulesMessage = {
-    condition: (contract_store: TContractStore) => void;
-    message: string;
-};
-
-type TRulesObj = Record<'req' | 'custom', TRulesMessage>;
-
-type TRules = {
-    rules: Array<TRulesObj>;
-};
-
-type TContractUpdate = {
-    trigger: string;
-};
-
-type TValidationRules = {
-    contract_update_stop_loss: TRules;
-    contract_update_take_profit: TRules;
-    has_contract_update_stop_loss: TContractUpdate;
-    has_contract_update_take_profit: TContractUpdate;
-};
+import SummaryCardStore from 'Stores/summary-card-store';
 
 type TTransactionIds = {
     buy: number;
@@ -71,26 +49,6 @@ type TContractInfo = {
     validation_error: string;
 };
 
-type TContractStore = {
-    contract_id: string;
-    contract_info: TContractInfo;
-    contract_update_config: TValidationRules | Record<string, never>;
-    contract_update_stop_loss: string;
-    contract_update_take_profit: string;
-    disposeReactionsFn?: () => number | null;
-    disposeSwitchAcountListener?: () => number | null;
-    has_contract_update_stop_loss: boolean;
-    has_contract_update_take_profit: boolean;
-    indicative: number | null;
-    indicative_movement: string;
-    profit: number;
-    profit_loss: number;
-    profit_movement: string;
-    root_store: RootStore;
-    validation_errors: Record<string, string> | null;
-    validation_rules: TValidationRules;
-};
-
 type TToastConfig = {
     key?: number;
     content: string;
@@ -102,7 +60,7 @@ type TToastConfig = {
 export interface TSummaryCardProps {
     addToast: (toast_config: TToastConfig) => void;
     contract_info?: TContractInfo;
-    contract_store: TContractStore;
+    contract_store: SummaryCardStore;
     current_focus: string | null;
     is_contract_completed: boolean;
     is_contract_loading: boolean;

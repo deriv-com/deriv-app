@@ -263,7 +263,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                     },
                 });
                 setTimeout(() => {
-                    handleCancel(get_settnpmings);
+                    handleCancel(get_settings);
                 }, 3000);
             }
         } catch (e: unknown) {

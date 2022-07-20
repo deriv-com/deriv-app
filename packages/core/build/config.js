@@ -162,6 +162,18 @@ const generateSWConfig = is_release => ({
         },
         {
             urlPattern: ({ url }) => {
+                return url.pathname.match(/^\/js\/smartcharts\//);
+            },
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'smartchart-files',
+                expiration: {
+                    maxAgeSeconds: 60 * 60 * 24,
+                },
+            },
+        },
+        {
+            urlPattern: ({ url }) => {
                 return url.pathname.match(/^\/css\//);
             },
             handler: 'CacheFirst',
@@ -173,7 +185,7 @@ const generateSWConfig = is_release => ({
             },
         },
         {
-            urlPattern: /(account|appstore|bot|cashier|cfd|trader)\//,
+            urlPattern: /(account|appstore|bot|cashier|cfd|trader|reports)\//,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'packages-files',

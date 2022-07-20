@@ -196,7 +196,7 @@ const AccountWizard = props => {
                 ...payload,
             };
         }
-        props.setRealAccountSignupData(clone);
+        console.log('Get clone: ', clone);
 
         return props.realAccountSignup(clone);
     };
@@ -242,6 +242,7 @@ const AccountWizard = props => {
             .then(response => {
                 // TODO: Code for Success response
                 console.log('Response: ', response); // eslint-disable-line no-console
+                props.setShouldShowVerifiedAccount(true);
                 // props.setIsRiskWarningVisible(false);
                 // if (props.real_account_signup_target === 'maltainvest') {
                 //     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -253,22 +254,25 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 // TODO: Code for Error response
+                console.log('Check data: ', real_account_signup_data);
                 console.log('Error: ', error); // eslint-disable-line no-console
-
                 // if (error.code === 'show risk disclaimer') {
                 //     props.setIsRiskWarningVisible(true);
                 //     setShouldAcceptFinancialRisk(true);
                 // } else {
                 //     props.onError(error, state_items);
                 // }
-                if (error.code === 'AppropriatenessTestFailed' && payload.risk_tolerance === 'No') {
-                    props.closeRealAccountSignup();
+                if (error.code === 'AppropriatenessTestFailed' && real_account_signup_data?.risk_tolerance === 'No') {
+                    // props.closeRealAccountSignup();
                     props.setShouldShowRiskToleranceWarningModal(true);
                 } else {
-                    props.closeRealAccountSignup();
+                    // props.closeRealAccountSignup();
                 }
             })
-            .finally(() => props.setLoading(false));
+            .finally(() => {
+                props.closeRealAccountSignup();
+                props.setLoading(false);
+            });
     };
 
     const onAcceptRisk = () => {
@@ -359,7 +363,6 @@ AccountWizard.propTypes = {
     residence: PropTypes.string,
     residence_list: PropTypes.array,
     setShouldShowRiskToleranceWarningModal: PropTypes.func,
-    setRealAccountSignupData: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({
@@ -381,5 +384,5 @@ export default connect(({ client, notifications, ui }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
-    setRealAccountSignupData: ui.setRealAccountSignupData,
+    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
 }))(AccountWizard);

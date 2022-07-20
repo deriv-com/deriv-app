@@ -119,6 +119,9 @@ const RealAccountSignup = ({
     setShouldShowCooldownWarningModal,
     set_should_show_verified_account,
     setShouldShowVerifiedAccount,
+    fetchFinancialAssessment,
+    cfd_score,
+    setCFDScore,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -473,6 +476,9 @@ const RealAccountSignup = ({
                     /*TODO: Redirect to POI */
                 }}
                 onCancel={setShouldShowVerifiedAccount}
+                fetchFinancialAssessment={fetchFinancialAssessment}
+                setCFDScore={setCFDScore}
+                cfd_score={cfd_score}
             />
         );
     }
@@ -601,4 +607,7 @@ export default connect(({ ui, client, common, modules }) => ({
     setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
     set_should_show_verified_account: ui.set_should_show_verified_account,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
+    setCFDScore: client.setCFDScore,
+    cfd_score: client.cfd_score,
 }))(withRouter(RealAccountSignup));

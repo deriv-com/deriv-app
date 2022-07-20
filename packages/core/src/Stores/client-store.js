@@ -1081,9 +1081,9 @@ export default class ClientStore extends BaseStore {
         //             : {}),
         //     });
         // }
-
-        // return Promise.reject(response.error);
-        return Promise.resolve('Pass');
+        const response = { error: { code: 'AppropriatenessTestFailed' } };
+        return Promise.reject(response.error);
+        // return Promise.resolve('Pass');
     }
 
     @action.bound

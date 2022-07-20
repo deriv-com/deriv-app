@@ -37,6 +37,23 @@ export type TCFDAccountCardActionProps = {
     title: string;
 };
 
+export type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
+};
+
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
 
 export type TCFDAccountCard = {
@@ -49,6 +66,7 @@ export type TCFDAccountCard = {
     };
     is_hovered?: boolean;
     existing_accounts_data?: TExistingData;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
     has_cfd_account: boolean;
     has_cfd_account_error?: boolean;

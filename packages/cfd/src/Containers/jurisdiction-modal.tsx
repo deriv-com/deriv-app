@@ -6,23 +6,7 @@ import RootStore from 'Stores/index';
 import { GetAccountSettingsResponse, GetSettings, LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { WS } from '@deriv/shared';
-
-export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
-    name: string;
-    requirements: {
-        after_first_deposit: {
-            financial_assessment: string[];
-        };
-        compliance: {
-            mt5: string[];
-            tax_information: string[];
-        };
-        signup: string[];
-    };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
-    sub_account_type: string;
-};
+import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;

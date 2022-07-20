@@ -4,10 +4,10 @@ import { localize, Localize } from '@deriv/translations';
 
 const VerifiedAccountModal = ({ onSubmit, onCancel }) => {
     return (
-        <Modal width='44rem' height='30.4rem' is_vertical_centered>
+        <Modal width='44rem' height='30.4rem' is_vertical_centered is_open={true} className='verified_account'>
             <Modal.Body>
-                <Icon icon='IcCurrency-eur' />
-                <Text as='p' size='xs' align='center'>
+                <Icon icon='IcCurrency-eur' size={95} />
+                <Text as='p' size='s' align='center' weight='bold'>
                     <Localize i18n_default_text='Your account is ready' />
                 </Text>
                 <Text as='p' size='xs' align='center'>

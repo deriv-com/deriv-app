@@ -4,6 +4,7 @@ import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-ne
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 import { moduleLoader } from '@deriv/shared';
+import { VerifiedAccountModal } from '@deriv/account';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -42,8 +43,10 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
-    cfd_score,
     has_maltainvest_account,
+    fetchFinancialAssessment,
+    cfd_score,
+    setCFDScore,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -90,9 +93,15 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
-    if (has_maltainvest_account && cfd_score === 0) {
+    if (is_logged_in && has_maltainvest_account) {
         //TODO: Invoke Trading investment assessment modal
-        // ComponentToLoad = <RealityCheckModal />;
+        ComponentToLoad = (
+            <VerifiedAccountModal
+                fetchFinancialAssessment={fetchFinancialAssessment}
+                setCFDScore={setCFDScore}
+                cfd_score={cfd_score}
+            />
+        );
     }
 
     return (
@@ -113,6 +122,8 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
-    cfd_score: client.cfd_score,
     has_maltainvest_account: client.has_maltainvest_account,
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
+    setCFDScore: client.setCFDScore,
+    cfd_score: client.cfd_score,
 }))(AppModals);

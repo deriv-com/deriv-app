@@ -1040,6 +1040,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async realAccountSignup(form_values) {
+        console.log('Sending request: ', form_values);
         // const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
         const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
         // const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
@@ -1081,9 +1082,16 @@ export default class ClientStore extends BaseStore {
         //             : {}),
         //     });
         // }
-
-        // return Promise.reject(response.error);
-        return Promise.resolve('Pass');
+        const response = {
+            error: {
+                code: 'AppropriatenessTestFailed',
+                details: {
+                    cooling_off_expiration_date: '2022-07-19 14:48:17',
+                },
+            },
+        };
+        return Promise.reject(response.error);
+        // return Promise.resolve('Pass');
     }
 
     @action.bound

@@ -189,14 +189,14 @@ const AccountWizard = props => {
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
-
+        props.setRealAccountFormData(clone);
         if (payload) {
             clone = {
                 ...clone,
                 ...payload,
             };
         }
-        props.setRealAccountSignupData(clone);
+        console.log('Get clone: ', clone);
 
         return props.realAccountSignup(clone);
     };
@@ -238,10 +238,12 @@ const AccountWizard = props => {
 
     const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
+        let form_data = { ...form_values() };
         submitForm(payload)
             .then(response => {
                 // TODO: Code for Success response
                 console.log('Response: ', response); // eslint-disable-line no-console
+                props.setShouldShowVerifiedAccount(true);
                 // props.setIsRiskWarningVisible(false);
                 // if (props.real_account_signup_target === 'maltainvest') {
                 //     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -253,22 +255,26 @@ const AccountWizard = props => {
             })
             .catch(error => {
                 // TODO: Code for Error response
+                console.log('Check data: ', form_data);
                 console.log('Error: ', error); // eslint-disable-line no-console
-
                 // if (error.code === 'show risk disclaimer') {
                 //     props.setIsRiskWarningVisible(true);
                 //     setShouldAcceptFinancialRisk(true);
                 // } else {
                 //     props.onError(error, state_items);
                 // }
-                if (error.code === 'AppropriatenessTestFailed' && payload.risk_tolerance === 'No') {
-                    props.closeRealAccountSignup();
-                    props.setShouldShowRiskToleranceWarningModal(true);
-                } else {
-                    props.closeRealAccountSignup();
+                if (error.code === 'AppropriatenessTestFailed') {
+                    if (form_data?.risk_tolerance === 'No') {
+                        props.setShouldShowRiskToleranceWarningModal(true);
+                    } else {
+                        props.setShouldShowAppropriatenessTestWarningModal(true);
+                    }
                 }
             })
-            .finally(() => props.setLoading(false));
+            .finally(() => {
+                props.closeRealAccountSignup();
+                props.setLoading(false);
+            });
     };
 
     const onAcceptRisk = () => {
@@ -285,15 +291,6 @@ const AccountWizard = props => {
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
-
-    // if (should_display_appropriateness_warning) {
-    //     return (
-    //         <RiskToleranceWarningModal
-    //             show_risk_modal={should_display_appropriateness_warning}
-    //             setShowRiskModal={setShouldDisplayAppropriatenessWarning}
-    //         />
-    //     );
-    // }
 
     if (!mounted) return null;
     if (!finished) {
@@ -359,7 +356,6 @@ AccountWizard.propTypes = {
     residence: PropTypes.string,
     residence_list: PropTypes.array,
     setShouldShowRiskToleranceWarningModal: PropTypes.func,
-    setRealAccountSignupData: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({
@@ -381,5 +377,6 @@ export default connect(({ client, notifications, ui }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
-    setRealAccountSignupData: ui.setRealAccountSignupData,
+    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
+    setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
 }))(AccountWizard);

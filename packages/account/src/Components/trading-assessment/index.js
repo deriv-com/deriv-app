@@ -3,3 +3,4 @@ export { default as TradingAssessmentExistingUser } from './trading-assessment-e
 export { default as RiskToleranceWarningModal } from './risk-tolerance-warning-modal.jsx';
 export { default as CoolDownWarningModal } from './cooldown-warning-modal.jsx';
 export { default as VerifiedAccountModal } from './verified-account-modal.jsx';
+export { default as TestWarningModal } from './test-warning-modal.jsx';

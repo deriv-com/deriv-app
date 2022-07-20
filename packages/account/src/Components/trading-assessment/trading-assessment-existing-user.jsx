@@ -1,24 +1,15 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import {
-    // FormSubmitButton,
-    Text,
-    // Icon,
-    Button,
-    Modal,
-    DesktopWrapper,
-    MobileDialog,
-    MobileWrapper,
-} from '@deriv/components';
-import { generateValidationFunction, getDefaultFields, isMobile } from '@deriv/shared'; // eslint-disable-line no-unused-vars
+import { Text, Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { getDefaultFields, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { trading_assessment_form_config } from 'Configs/trading-assessment-config';
+import { trading_assessment_form_config, trading_assessment_questions } from 'Configs/trading-assessment-config';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 
-export const TradingAssessmentForm = ({ assessment_questions }) => {
-    const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false); // eslint-disable-line no-unused-vars
+export const TradingAssessmentForm = ({ assessment_questions, value, onSubmit }) => {
+    const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question_details, setCurrentQuestion] = React.useState({
         current_question_index: 0,
         current_question: {},
@@ -58,19 +49,11 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
         callBackFn(form_control, e.target.value);
         const latest_value = { ...values, [form_control]: e.target.value };
         if (latest_value.risk_tolerance === 'No') {
-            // TODO implement logic here
+            onSubmit(latest_value);
         }
     };
 
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
-    // eslint-disable-next-line no-unused-vars
-    const hideElement = condition => {
-        if (condition) {
-            return { visibility: 'hidden' };
-        }
-        return {};
-    };
-
     return (
         <div className='trading-assessment'>
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
@@ -86,13 +69,7 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
                 <div className='trading-assessment__header--arrow-down' />
             </section>
             <section className='trading-assessment__form'>
-                <Formik
-                    innerRef={selected_step_ref} // eslint-disable-line no-undef
-                    initialValues={{ ...value }} // eslint-disable-line no-undef
-                    onSubmit={(values, actions) => {
-                        onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep); // eslint-disable-line no-undef
-                    }}
-                >
+                <Formik initialValues={{ ...value }} onSubmit={onSubmit}>
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
                             current_question_details.current_question;
@@ -135,6 +112,8 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
                                         />
                                         <Button
                                             has_effect
+                                            is_disabled={!is_next_button_enabled}
+                                            onClick={!isAssessmentCompleted && handleNextButton}
                                             type={isAssessmentCompleted ? 'submit' : 'button'}
                                             text={localize('Next')}
                                             large
@@ -151,14 +130,39 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
     );
 };
 
-const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_assessment_incomplete }) => {
-    const form_values = getDefaultFields(real_account_signup_target, trading_assessment_form_config); // eslint-disable-line no-unused-vars
+const TradingAssessmentExistingUser = ({
+    real_account_signup_target,
+    is_trade_assessment_incomplete,
+    realAccountSignup,
+    setShouldShowRiskToleranceWarningModal,
+    should_show_risk_tolerance_warning_modal,
+}) => {
+    const [form_values, setStateItems] = React.useState({});
+
+    React.useEffect(() => {
+        const initial_fields = getDefaultFields(real_account_signup_target, trading_assessment_form_config);
+        setStateItems(initial_fields);
+    }, []);
+
+    const handleSubmit = async values => {
+        try {
+            const response = await realAccountSignup(values);
+        } catch (error) {
+            if (error.code === 'AppropriatenessTestFailed') {
+                //pass
+            }
+        }
+    };
 
     return (
         <React.Fragment>
             <DesktopWrapper>
                 <Modal is_open={is_trade_assessment_incomplete} title={localize('Trading Experience Assessment')}>
-                    <div />
+                    <TradingAssessmentForm
+                        assessment_questions={trading_assessment_questions}
+                        value={form_values}
+                        onSubmit={handleSubmit}
+                    />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -166,7 +170,11 @@ const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_as
                     visible={is_trade_assessment_incomplete}
                     title={localize('Trading Experience Assessment')}
                 >
-                    <div />
+                    <TradingAssessmentForm
+                        assessment_questions={trading_assessment_questions}
+                        value={form_values}
+                        onSubmit={handleSubmit}
+                    />
                 </MobileDialog>
             </MobileWrapper>
         </React.Fragment>
@@ -174,6 +182,9 @@ const TradingAssessmentExistingUser = ({ real_account_signup_target, is_trade_as
 };
 
 export default connect(({ client, ui }) => ({
-    is_trade_assessment_incomplete: client.is_trade_assessment_incomplete,
+    is_trade_assessment_incomplete: client.is_trading_experience_incomplete,
     real_account_signup_target: ui.real_account_signup_target,
+    realAccountSignup: client.realAccountSignup,
+    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
 }))(TradingAssessmentExistingUser);

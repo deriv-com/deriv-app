@@ -1,8 +1,9 @@
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import React from 'react';
 
-const TestWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
+const TestWarningModal = ({ show_risk_modal, onAccept, onDecline, set_real_account_signup_data }) => {
     return (
         <Modal
             width='44rem'
@@ -30,7 +31,7 @@ const TestWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
                     text={localize('Decline')}
                     secondary
                     onClick={() => {
-                        setShowRiskModal(false);
+                        onDecline({ ...set_real_account_signup_data, accept_risk: 0 });
                     }}
                 />
                 <Button
@@ -39,7 +40,7 @@ const TestWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
                     text={localize('Accept')}
                     primary
                     onClick={() => {
-                        setShowRiskModal(false);
+                        onAccept({ ...set_real_account_signup_data, accept_risk: 1 });
                     }}
                 />
             </Modal.Footer>
@@ -47,4 +48,6 @@ const TestWarningModal = ({ show_risk_modal, setShowRiskModal }) => {
     );
 };
 
-export default TestWarningModal;
+export default connect(({ ui }) => ({
+    real_account_signup_data: ui.real_account_signup_data,
+}))(TestWarningModal);

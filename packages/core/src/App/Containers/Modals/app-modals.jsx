@@ -42,6 +42,8 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
+    cfd_score,
+    has_maltainvest_account,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -88,6 +90,11 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
+    if (has_maltainvest_account && cfd_score === 0) {
+        //TODO: Invoke Trading investment assessment modal
+        // ComponentToLoad = <RealityCheckModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
@@ -106,4 +113,6 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    cfd_score: client.cfd_score,
+    has_maltainvest_account: client.has_maltainvest_account,
 }))(AppModals);

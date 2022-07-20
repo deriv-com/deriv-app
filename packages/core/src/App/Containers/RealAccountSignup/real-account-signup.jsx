@@ -4,7 +4,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
-import { RiskToleranceWarningModal } from '@deriv/account';
+import {
+    RiskToleranceWarningModal,
+    TestWarningModal,
+    CooldownWarningModal,
+    VerifiedAccountModal,
+} from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -104,8 +109,16 @@ const RealAccountSignup = ({
     state_index,
     state_value,
     deposit_real_account_signup_target,
-    should_show_warning_popup,
-    setShouldShowWarningPopup,
+    realAccountSignup,
+    should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal,
+    should_show_appropriateness_test_warning_modal,
+    setShouldShowAppropriatenessTestWarningModal,
+    setRealAccountSignupData,
+    should_show_cooldown_warning_modal,
+    setShouldShowCooldownWarningModal,
+    set_should_show_verified_account,
+    setShouldShowVerifiedAccount,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -123,6 +136,7 @@ const RealAccountSignup = ({
                     setLoading={setLoading}
                     onError={showErrorModal}
                     onClose={closeModal}
+                    realAccountSignup={realAccountSignup}
                 />
             ),
             title: WizardHeading,
@@ -328,6 +342,11 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
+    //Reset Form data
+    React.useEffect(() => {
+        return () => setRealAccountSignupData(null);
+    }, []);
+
     const closeModal = e => {
         replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
@@ -400,12 +419,60 @@ const RealAccountSignup = ({
         getActiveModalIndex()
     );
 
-    if (should_show_warning_popup) {
+    const handleOnAccept = async form_value => {
+        try {
+            console.log('handleOnAccept: ', form_value);
+            // const response = await realAccountSignup(form_value);
+            setShouldShowVerifiedAccount(true);
+            setShouldShowAppropriatenessTestWarningModal(false);
+            // TODO: Show Welcome Modal
+        } catch (sign_up_error) {
+            // TODO: Handle Error case
+        }
+    };
+
+    const handleOnDecline = async form_value => {
+        try {
+            console.log('HandleOnDecline: ', form_value);
+            // const response = await realAccountSignup(form_value);
+            setShouldShowCooldownWarningModal(true);
+            setShouldShowAppropriatenessTestWarningModal(false);
+            // TODO: Show CoolDown Modal
+        } catch (sign_up_error) {
+            // TODO: Handle Error case
+        }
+    };
+
+    if (should_show_risk_tolerance_warning_modal) {
         //TODO: handle other modals
         return (
             <RiskToleranceWarningModal
-                show_risk_modal={should_show_warning_popup}
-                setShowRiskModal={setShouldShowWarningPopup}
+                show_risk_modal={should_show_risk_tolerance_warning_modal}
+                setShowRiskModal={setShouldShowRiskToleranceWarningModal}
+            />
+        );
+    } else if (should_show_appropriateness_test_warning_modal) {
+        return (
+            <TestWarningModal
+                show_risk_modal={should_show_appropriateness_test_warning_modal}
+                onAccept={handleOnAccept}
+                onDecline={handleOnDecline}
+            />
+        );
+    } else if (should_show_cooldown_warning_modal) {
+        return (
+            <CooldownWarningModal
+                show_cool_down_modal={should_show_cooldown_warning_modal}
+                setShowCoolDownModal={setShouldShowCooldownWarningModal}
+            />
+        );
+    } else if (set_should_show_verified_account) {
+        return (
+            <VerifiedAccountModal
+                onSubmit={() => {
+                    /*TODO: Redirect to POI */
+                }}
+                onCancel={setShouldShowVerifiedAccount}
             />
         );
     }
@@ -524,6 +591,14 @@ export default connect(({ ui, client, common, modules }) => ({
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
-    should_show_warning_popup: ui.should_show_warning_popup,
-    setShouldShowWarningPopup: ui.setShouldShowWarningPopup,
+    realAccountSignup: client.realAccountSignup,
+    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
+    should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
+    setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
+    setRealAccountSignupData: ui.setRealAccountSignupData,
+    should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
+    setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
+    set_should_show_verified_account: ui.set_should_show_verified_account,
+    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
 }))(withRouter(RealAccountSignup));

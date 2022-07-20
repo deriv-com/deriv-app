@@ -128,6 +128,7 @@ export default class ClientStore extends BaseStore {
 
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
+    @observable cfd_score = 0;
 
     is_mt5_account_list_updated = false;
 
@@ -491,11 +492,6 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
-    }
-
-    @computed
-    get is_trade_assessment_incomplete() {
-        return this.account_status?.status?.includes('trade_experience_not_complete');
     }
 
     @computed
@@ -918,6 +914,12 @@ export default class ClientStore extends BaseStore {
             this.has_cookie_account = false;
         }
     }
+
+    @action.bound
+    setCFDScore(score) {
+        this.cfd_score = score;
+    }
+
     getSelfExclusion() {
         return new Promise(resolve => {
             WS.authorized.storage.getSelfExclusion().then(data => {

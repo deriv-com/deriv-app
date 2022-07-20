@@ -6,10 +6,8 @@ const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal }) => (
     <Modal
         width='44rem'
         height='44rem'
-        has_close_icon={false}
         title={localize('Risk Tolerance Warning')}
         is_open={show_risk_modal}
-        onClose={() => setShowRiskModal(false)}
         className='risk-acceptance'
     >
         <Modal.Body className='risk-acceptance__body'>
@@ -22,7 +20,7 @@ const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal }) => (
             </Text>
         </Modal.Body>
         <Modal.Footer>
-            <Button type='button' large text={localize('OK')} primary />
+            <Button type='button' large text={localize('OK')} primary onClick={() => setShowRiskModal(false)} />
         </Modal.Footer>
     </Modal>
 );

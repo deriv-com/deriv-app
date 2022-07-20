@@ -21,6 +21,10 @@ const StarRating = ({
     should_allow_hover_effect = true,
     star_size,
 }) => {
+    // Converts initial value to be in the form of x.0 or x.5
+    // to show full and half stars only
+    const fractionalized_value = Math.round(initial_value * 2) / 2;
+
     const EmptyIcon = () => {
         if (!!empty_star_icon && typeof empty_star_icon === 'string') {
             return <Icon icon={empty_star_icon} size={star_size} />;
@@ -49,7 +53,7 @@ const StarRating = ({
             fullClassName={full_star_className}
             fullIcon={<FullIcon />}
             iconsCount={number_of_stars}
-            initialValue={initial_value}
+            initialValue={fractionalized_value}
             onClick={onClick}
             readonly={is_readonly}
             rtl={rtl}
@@ -66,7 +70,7 @@ StarRating.propTypes = {
     full_star_color: PropTypes.string,
     full_star_className: PropTypes.string,
     full_star_icon: PropTypes.string,
-    initial_value: PropTypes.number,
+    initial_value: PropTypes.string,
     is_readonly: PropTypes.bool,
     number_of_stars: PropTypes.number,
     onClick: PropTypes.func,

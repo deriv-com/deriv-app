@@ -196,12 +196,12 @@ const CFDAccountCardComponent = ({
 
     const available_and_existing_are_same =
         type.type === 'synthetic'
-            ? synthetic_available_accounts.some(synthetic_accs =>
+            ? synthetic_available_accounts?.some(synthetic_accs =>
                   existing_accounts_data?.some(
                       existing_account => existing_account.landing_company_short === synthetic_accs.shortcode
                   )
               )
-            : financial_available_accounts.some(financial_accs =>
+            : financial_available_accounts?.some(financial_accs =>
                   existing_accounts_data?.some(
                       existing_account => existing_account.landing_company_short === financial_accs.shortcode
                   )

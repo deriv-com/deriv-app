@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { InfiniteDataList, Loading, Table } from '@deriv/components';
+import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
+import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import BlockUserRow from './block-user-row.jsx';
@@ -13,6 +14,7 @@ const BlockUserTable = () => {
     React.useEffect(() => {
         my_profile_store.setBlockedAdvertisersList([]);
         my_profile_store.getBlockedAdvertisersList();
+        my_profile_store.setSearchTerm('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -25,6 +27,16 @@ const BlockUserTable = () => {
         return <TableError message={general_store.block_unblock_user_error} />;
     }
 
+    if (my_profile_store.search_term && my_profile_store.rendered_blocked_advertisers_list.length === 0) {
+        return (
+            <div className='block-user__body'>
+                <Text size='s' line_height='m' weight={isMobile() ? 'normal' : 'bold'}>
+                    {localize('There are no matching name.')}
+                </Text>
+            </div>
+        );
+    }
+
     if (my_profile_store.blocked_advertisers_list.length) {
         return (
             <React.Fragment>
@@ -33,7 +45,7 @@ const BlockUserTable = () => {
                         <InfiniteDataList
                             data_list_className='block-user__data-list'
                             has_more_items_to_load={false}
-                            items={my_profile_store.blocked_advertisers_list}
+                            items={my_profile_store.rendered_blocked_advertisers_list}
                             keyMapperFn={item => item.id}
                             loadMoreRowsFn={() => {}}
                             rowRenderer={props => <BlockUserRow {...props} />}

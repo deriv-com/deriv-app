@@ -1,4 +1,9 @@
 .block-user {
+    &__body {
+        padding-top: 3rem;
+        text-align: center;
+    }
+
     &__data-list {
         flex: 1;
 
@@ -19,6 +24,11 @@
             height: 100%;
             overflow-x: hidden;
             width: 100vw;
+
+            .search-box {
+                margin: 1rem auto;
+                width: 91%;
+            }
         }
     }
 

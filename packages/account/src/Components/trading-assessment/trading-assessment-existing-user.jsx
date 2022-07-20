@@ -19,7 +19,7 @@ import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 
 export const TradingAssessmentForm = ({ assessment_questions }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false); // eslint-disable-line no-unused-vars
-    const [current_question, setCurrentQuestion] = React.useState({
+    const [current_question_details, setCurrentQuestion] = React.useState({
         current_question_index: 0,
         current_question: {},
     });
@@ -34,7 +34,7 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
     }, []);
     // eslint-disable-next-line no-unused-vars
     const handleNextButton = () => {
-        const next_question = current_question.current_question_index + 1;
+        const next_question = current_question_details.current_question_index + 1;
         if (next_question < assessment_questions.length) {
             setCurrentQuestion({
                 current_question_index: next_question,
@@ -44,7 +44,7 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
     };
 
     const handlePrevButton = () => {
-        const prev_question = current_question.current_question_index - 1;
+        const prev_question = current_question_details.current_question_index - 1;
         if (prev_question >= 0) {
             setCurrentQuestion({
                 current_question_index: prev_question,
@@ -79,7 +79,8 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
             <section className='trading-assessment__header'>
                 <div className='trading-assessment__header--background'>
                     <Text as='h1' color='prominent' weight='bold' size='xs'>
-                        {current_question.current_question_index + 1} {localize('of')} {assessment_questions.length}
+                        {current_question_details.current_question_index + 1} {localize('of')}{' '}
+                        {assessment_questions.length}
                     </Text>
                 </div>
                 <div className='trading-assessment__header--arrow-down' />
@@ -94,7 +95,7 @@ export const TradingAssessmentForm = ({ assessment_questions }) => {
                 >
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
-                            current_question.current_question;
+                            current_question_details.current_question;
 
                         return (
                             <Form className='trading-assessment__form--layout'>

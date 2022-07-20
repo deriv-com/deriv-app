@@ -37,7 +37,7 @@ const AppContents = ({
     const scroll_ref = React.useRef(null);
 
     React.useEffect(() => {
-        if (scroll_ref) setAppContentsScrollRef(scroll_ref);
+        if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

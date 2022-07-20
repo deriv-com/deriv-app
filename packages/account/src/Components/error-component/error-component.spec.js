@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import ErrorComponent from './error-component';
+import ErrorComponent from './error-component.jsx';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

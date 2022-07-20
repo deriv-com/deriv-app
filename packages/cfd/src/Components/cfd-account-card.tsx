@@ -187,10 +187,10 @@ const CFDAccountCardComponent = ({
     setMT5TradeAccount,
 }: TCFDAccountCard) => {
     const existing_data = type.category === 'real' ? existing_accounts_data?.[0] : existing_accounts_data;
-    const financial_available_accounts = trading_platform_available_accounts.filter(
+    const financial_available_accounts = trading_platform_available_accounts?.filter(
         available_account => available_account.market_type === 'financial'
     );
-    const synthetic_available_accounts = trading_platform_available_accounts.filter(
+    const synthetic_available_accounts = trading_platform_available_accounts?.filter(
         available_account => available_account.market_type === 'gaming'
     );
 

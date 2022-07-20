@@ -39,7 +39,7 @@ const PaymentAgentDepositWithdrawContainer = ({
     }, []);
 
     React.useEffect(() => {
-        if (app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
+        if (app_contents_scroll_ref) app_contents_scroll_ref.current.scrollTop = 0;
     }, [is_try_withdraw_successful, is_withdraw_successful]);
 
     const [is_unlisted_withdraw, setIsUnlistedWithdraw] = React.useState(false);

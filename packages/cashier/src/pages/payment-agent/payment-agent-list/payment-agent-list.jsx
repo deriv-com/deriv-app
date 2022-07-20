@@ -34,15 +34,17 @@ const PaymentAgentList = ({
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function' && !is_loading) {
-            setSideNotes(
-                !is_try_withdraw_successful
-                    ? [
-                          <SideNote has_title={false} key={0}>
-                              <PaymentAgentDisclaimer />
-                          </SideNote>,
-                      ]
-                    : []
-            );
+            const side_notes = [];
+
+            if (!is_try_withdraw_successful) {
+                side_notes.push(
+                    <SideNote has_title={false} key={0}>
+                        <PaymentAgentDisclaimer />
+                    </SideNote>
+                );
+            }
+
+            setSideNotes(side_notes);
         }
     }, [is_loading, is_try_withdraw_successful]);
 

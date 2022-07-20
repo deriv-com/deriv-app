@@ -69,9 +69,21 @@ const JurisdictionModal = ({
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
+    const poa_status = authentication_status?.document_status;
+    const poi_status = authentication_status?.identity_status;
+    const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
+    const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
+    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
+    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
+    const poi_poa_failed = poa_failed || poi_failed;
+    const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
-            setJurisdictionSelectedShortcode('');
+            if (poa_status === 'pending' || poi_status === 'pending') {
+                setJurisdictionSelectedShortcode('svg');
+            } else {
+                setJurisdictionSelectedShortcode('');
+            }
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
                 if (!account_settings) {
@@ -105,15 +117,6 @@ const JurisdictionModal = ({
         : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
-
-    const poa_status = authentication_status?.document_status;
-    const poi_status = authentication_status?.identity_status;
-    const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
-    const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
-    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
-    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
-    const poi_poa_failed = poa_failed || poi_failed;
-    const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
 
     const is_next_button_enabled =
         jurisdiction_selected_shortcode === 'svg' ||

@@ -195,13 +195,14 @@ const CFDAccountCardComponent = ({
     );
 
     const available_and_existing_are_same =
-        type.type === 'synthetic'
+        type.type === 'synthetic' && type.category === 'real'
             ? synthetic_available_accounts?.some(synthetic_accs =>
                   existing_accounts_data?.some(
                       existing_account => existing_account.landing_company_short === synthetic_accs.shortcode
                   )
               )
-            : financial_available_accounts?.some(financial_accs =>
+            : type.category === 'real' &&
+              financial_available_accounts?.some(financial_accs =>
                   existing_accounts_data?.some(
                       existing_account => existing_account.landing_company_short === financial_accs.shortcode
                   )
@@ -547,7 +548,8 @@ const CFDAccountCardComponent = ({
                     </div>
                 </div>
                 <React.Fragment>
-                    {(should_show_extra_add_account_button || (existing_data && !available_and_existing_are_same)) && (
+                    {(should_show_extra_add_account_button ||
+                        (type.category !== 'demo' && existing_data && !available_and_existing_are_same)) && (
                         <MobileWrapper>
                             <AddAccountButton
                                 ref={button_ref}
@@ -560,7 +562,10 @@ const CFDAccountCardComponent = ({
             </div>
             <DesktopWrapper>
                 <CSSTransition
-                    in={should_show_extra_add_account_button || (existing_data && !available_and_existing_are_same)}
+                    in={
+                        should_show_extra_add_account_button ||
+                        (type.category !== 'demo' && existing_data && !available_and_existing_are_same)
+                    }
                     timeout={0}
                     classNames='cfd-account-card__add-server'
                     unmountOnExit

@@ -52,7 +52,7 @@ type TContractInfo = {
 type TToastConfig = {
     key?: number;
     content: string;
-    timeout?: number | null;
+    timeout?: number;
     is_bottom?: boolean;
     type?: string;
 };

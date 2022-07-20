@@ -47,7 +47,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
         wait: (...payload) => {
             return Promise.resolve([...payload]);
         },
-        getSocket: jest.fn(),
     },
 }));
 

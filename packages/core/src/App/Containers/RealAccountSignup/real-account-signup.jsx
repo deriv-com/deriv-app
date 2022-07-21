@@ -114,7 +114,6 @@ const RealAccountSignup = ({
     setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
-    setRealAccountSignupData,
     should_show_cooldown_warning_modal,
     setShouldShowCooldownWarningModal,
     set_should_show_verified_account,
@@ -348,13 +347,6 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
-    //Reset Form data
-    React.useEffect(() => {
-        console.log('Comp re-rendered');
-        setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setRealAccountSignupData(null);
-    }, []);
-
     const closeModal = e => {
         replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
@@ -429,19 +421,19 @@ const RealAccountSignup = ({
 
     const handleOnAccept = async () => {
         try {
-            console.log('handleOnAccept: ', { ...real_account_form_data });
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
             setShouldShowVerifiedAccount(true);
             setShouldShowAppropriatenessTestWarningModal(false);
             // TODO: Show Welcome Modal
         } catch (sign_up_error) {
             // TODO: Handle Error case
+            setShouldShowVerifiedAccount(true);
+            setShouldShowAppropriatenessTestWarningModal(false);
         }
     };
 
     const handleOnDecline = async () => {
         try {
-            console.log('HandleOnDecline: ', { ...real_account_form_data });
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
             // TODO: Show CoolDown Modal
         } catch (sign_up_error) {
@@ -483,7 +475,7 @@ const RealAccountSignup = ({
         return (
             <VerifiedAccountModal
                 onSubmit={() => {
-                    /*TODO: Redirect to POI */
+                    history.push(routes.proof_of_identity);
                 }}
                 onCancel={setShouldShowVerifiedAccount}
                 fetchFinancialAssessment={fetchFinancialAssessment}
@@ -612,7 +604,6 @@ export default connect(({ ui, client, common, modules }) => ({
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
-    setRealAccountSignupData: ui.setRealAccountSignupData,
     should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
     setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
     set_should_show_verified_account: ui.set_should_show_verified_account,

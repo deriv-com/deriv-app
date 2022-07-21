@@ -146,7 +146,6 @@ export default class UIStore extends BaseStore {
     @observable should_show_appropriateness_test_warning_modal = false;
     @observable should_show_cooldown_warning_modal = false;
     @observable set_should_show_verified_account = false;
-    @observable real_account_signup_data = {};
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -421,11 +420,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     setShouldShowVerifiedAccount(value) {
         this.set_should_show_verified_account = value;
-    }
-
-    @action.bound
-    setRealAccountSignupData(form_data) {
-        this.real_account_signup_data = form_data;
     }
 
     @action.bound

@@ -23,6 +23,7 @@ const DigitSpot = ({ current_spot, is_selected_winning, is_lost, is_won }) => (
 DigitSpot.propTypes = {
     current_spot: PropTypes.string,
     is_lost: PropTypes.bool,
+    is_selected_winning: PropTypes.bool,
     is_won: PropTypes.bool,
 };
 

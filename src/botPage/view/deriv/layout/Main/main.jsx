@@ -25,6 +25,9 @@ import { observer as globalObserver } from "../../../../../common/utils/observer
 import { getRelatedDeriveOrigin } from "../../utils";
 import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
 import api from "../../api";
+import Helmet from "react-helmet";
+import { getLanguage } from '../../../../../common/lang';
+import { translate } from '../../../../../common/utils/tools';
 
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
@@ -122,6 +125,19 @@ const Main = () => {
 
 	return (
 		<div className="main">
+        	<Helmet
+				htmlAttributes={{
+					lang: getLanguage(),
+				}}
+				title={translate('example title')}
+				defer={false}
+				meta={[
+					{
+						name: translate('example description'),
+						content: translate('example contect'),
+					},
+				]}
+        	/>
 			<BotUnavailableMessage />
 			<div id="bot-blockly">
 				{blockly && <ToolBox blockly={blockly} />}

@@ -1,6 +1,6 @@
+import React from 'react';
 import { localize } from '@deriv/translations';
 import EmptyState from 'Components/empty-state';
-import React from 'react';
 
 const EmptyStateDocumentsExpired: React.FC = () => (
     <EmptyState

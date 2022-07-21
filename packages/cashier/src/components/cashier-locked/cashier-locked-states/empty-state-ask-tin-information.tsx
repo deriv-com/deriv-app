@@ -1,6 +1,6 @@
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import EmptyState from 'Components/empty-state';
-import React from 'react';
 
 const EmptyStateAskTINInformation: React.FC = () => (
     <EmptyState

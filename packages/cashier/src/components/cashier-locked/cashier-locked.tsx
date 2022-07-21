@@ -1,5 +1,5 @@
-import { Authorize, GetAccountStatus } from '@deriv/api-types';
 import React from 'react';
+import { Authorize, GetAccountStatus } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
 import { RootStore } from 'Types';
 import {

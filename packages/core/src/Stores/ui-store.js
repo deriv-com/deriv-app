@@ -145,7 +145,6 @@ export default class UIStore extends BaseStore {
     @observable should_show_risk_tolerance_warning_modal = false;
     @observable should_show_appropriateness_test_warning_modal = false;
     @observable should_show_cooldown_warning_modal = false;
-    @observable set_should_show_verified_account = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -418,11 +417,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowVerifiedAccount(value) {
-        this.set_should_show_verified_account = value;
-    }
-
-    @action.bound
     resetRealAccountSignupTarget() {
         this.deposit_real_account_signup_target = this.real_account_signup_target;
         this.real_account_signup_target = '';
@@ -431,6 +425,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     setManageRealAccountActiveTabIndex(index) {
         this.manage_real_account_tab_index = index;
+    }
+
+    @action.bound
+    setIsRealAccountSignupModalVisible(state) {
+        this.is_real_acc_signup_on = state;
     }
 
     @action.bound

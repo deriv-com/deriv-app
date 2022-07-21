@@ -128,7 +128,7 @@ export default class ClientStore extends BaseStore {
 
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
-    @observable cfd_score = 0;
+    @observable cfd_score = null;
 
     is_mt5_account_list_updated = false;
 
@@ -1085,6 +1085,7 @@ export default class ClientStore extends BaseStore {
                     : {}),
             });
         }
+        // const response = { error: { code: 'AppropriatenessTestFailed' } };
 
         return Promise.reject(response.error);
     }

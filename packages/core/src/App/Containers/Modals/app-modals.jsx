@@ -4,7 +4,7 @@ import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-ne
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 import { moduleLoader, routes } from '@deriv/shared';
-import { VerifiedAccountModal } from '@deriv/account';
+import { TradingExperienceModal } from '@deriv/account';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -95,20 +95,20 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
-    if (is_logged_in && has_maltainvest_account) {
-        //TODO: Invoke Trading investment assessment modal
-        ComponentToLoad = (
-            <VerifiedAccountModal
-                fetchFinancialAssessment={fetchFinancialAssessment}
-                setCFDScore={setCFDScore}
-                cfd_score={cfd_score}
-                onCancel={setShouldShowVerifiedAccount}
-                onSubmit={() => {
-                    history.push(routes.proof_of_identity);
-                }}
-            />
-        );
-    }
+    // if (is_logged_in && has_maltainvest_account) {
+    //     //TODO: Invoke Trading investment assessment modal
+    //     ComponentToLoad = (
+    //         <TradingExperienceModal
+    //             fetchFinancialAssessment={fetchFinancialAssessment}
+    //             setCFDScore={setCFDScore}
+    //             cfd_score={cfd_score ?? 1}
+    //             onCancel={setShouldShowVerifiedAccount}
+    //             onSubmit={() => {
+    //                 history.push(routes.proof_of_identity);
+    //             }}
+    //         />
+    //     );
+    // }
 
     return (
         <>

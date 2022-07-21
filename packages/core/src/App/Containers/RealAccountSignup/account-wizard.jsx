@@ -237,12 +237,12 @@ const AccountWizard = props => {
 
     const createRealAccount = (payload = undefined, should_override = false) => {
         console.log('createRealAccount payload: ', payload);
+        console.log('should override: ', should_override);
         props.setLoading(true);
         const form_data = { ...form_values() };
         submitForm(payload, should_override)
             .then(response => {
                 // TODO: Code for Success response
-                console.log('props.real_account_signup_target: ', props.real_account_signup_target);
                 console.log('createRealAccount Response: ', response); // eslint-disable-line no-console
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
@@ -262,7 +262,7 @@ const AccountWizard = props => {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else if (error.code === 'AppropriatenessTestFailed') {
-                    props.closeRealAccountSignup();
+                    props.setIsRealAccountSignupModalVisible();
                     if (form_data?.risk_tolerance === 'No') {
                         props.setShouldShowRiskToleranceWarningModal(true);
                     } else {
@@ -379,4 +379,5 @@ export default connect(({ client, notifications, ui }) => ({
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
+    setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
 }))(AccountWizard);

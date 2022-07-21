@@ -1,9 +1,24 @@
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import React from 'react';
+import { Localize, localize } from '@deriv/translations';
 
-const TradingExperienceModal = () => {
+const TradingExperienceModal = ({ fetchFinancialAssessment, setCFDScore, cfd_score, onSubmit }) => {
+    console.log('cfd_score', cfd_score);
+    React.useEffect(() => {
+        const fetchFinancialScore = async () => {
+            try {
+                const response = await fetchFinancialAssessment();
+                console.log('fetchFinancialAssessment: ', response);
+                setCFDScore(response?.cfd_score ?? 0);
+            } catch (err) {
+                console.log('Error: ', err);
+            }
+        };
+
+        fetchFinancialScore();
+    }, []);
     return (
-        <Modal width='44rem' className='center-risk-modal' is_open={true}>
+        <Modal width='44rem' className='center-risk-modal' is_open={cfd_score === 0}>
             <Modal.Body>
                 <Icon icon='IcCurrency-eur-check' size={95} />
                 <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
@@ -17,7 +32,7 @@ const TradingExperienceModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button type='button' large text={localize('OK')} primary />
+                <Button type='button' large text={localize('OK')} primary onClick={onSubmit} />
             </Modal.Footer>
         </Modal>
     );

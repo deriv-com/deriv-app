@@ -46,14 +46,6 @@ export default class BuySellStore extends BaseStore {
     filter_payment_methods = [];
     payment_method_ids = [];
 
-    // eslint-disable-next-line class-methods-use-this
-    get sort_list() {
-        return [
-            { text: localize('Exchange rate (Default)'), value: 'rate' },
-            { text: localize('User rating'), value: 'rating' },
-        ];
-    }
-
     @computed
     get account_currency() {
         return this.advert?.account_currency;
@@ -121,6 +113,14 @@ export default class BuySellStore extends BaseStore {
     get should_filter_by_payment_method() {
         const { my_profile_store } = this.root_store;
         return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate'), value: 'rate' },
+            { text: localize('User rating'), value: 'rating' },
+        ];
     }
 
     @action.bound

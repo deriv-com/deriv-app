@@ -60,5 +60,3 @@ We have a separate folder for each component.
 **utils:** We place all the common and helper methods which are required for the workspace in this folder.
 
 <!-- TODO: explain the purpose of crowdin folder -->
-
-## Troubleshooting

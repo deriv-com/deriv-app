@@ -19,42 +19,59 @@ Reusable UI components for Deriv.
 ## Commands
 
 Setup:
+The `npm run bootstrap` command should be run in the root of the project, because it does not exist in the components package.js
 
 ```sh
-lerna bootstrap
+npm run bootstrap
 ```
 
 Serve:
+The `npm run serve` command is used to serve the components package
 
 ```sh
 npm run serve
 ```
 
 Build:
+The `npm run build` command is used to build the components package
 
 ```sh
 npm run build
 ```
 
 Test:
+The `npm run test` command is used to check whether the icon names are valid in the components package
 
 ```sh
 npm run test
+```
+
+Test:
+The `npm run test:eslint` command is used to run eslint on the components package
+
+```sh
+npm run test:eslint
 ```
 
 ## Storybook
 
 -   [`Storybook`](https://github.com/binary-com/deriv-app/blob/master/storybook/README.md)
 
+The `npm run storybook` command is used to start storybook within the components package
+
 ```shell script
 npm run storybook
 ```
+
+The `npm run storybook:build` command is used to build storybook within the components package
 
 storybook:build:
 
 ```sh
 npm run storybook:build
 ```
+
+The `npm run storybook:deploy br_storybook` command is used to deploy storybook within the components package to the specified branch. In this case, br_storybook
 
 storybook:deploy:
 

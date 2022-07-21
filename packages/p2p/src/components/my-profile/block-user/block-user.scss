@@ -1,9 +1,4 @@
 .block-user {
-    &__body {
-        padding-top: 3rem;
-        text-align: center;
-    }
-
     &__data-list {
         flex: 1;
 
@@ -56,6 +51,12 @@
                 margin-left: 1.6rem;
             }
         }
+    }
+
+    &__text {
+        display: inline-block;
+        padding-top: 3rem;
+        width: 100%;
     }
 
     &__row {

@@ -381,11 +381,7 @@ export default class MyProfileStore extends BaseStore {
                 blocked_advertiser.name.toLowerCase().includes(this.search_term.toLowerCase().trim())
             );
 
-            if (search_results.length) {
-                this.setSearchResults(search_results);
-            } else {
-                this.setSearchResults([]);
-            }
+            this.setSearchResults(search_results);
         }
         this.setIsLoading(false);
     }

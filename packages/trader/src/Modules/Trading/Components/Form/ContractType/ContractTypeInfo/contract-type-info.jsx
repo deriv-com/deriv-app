@@ -50,6 +50,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
 
 Info.propTypes = {
     handleSelect: PropTypes.func,
+    initial_index: PropTypes.number,
     item: PropTypes.object,
     list: PropTypes.array,
     handleNavigationClick: PropTypes.func,

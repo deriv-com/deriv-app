@@ -7,7 +7,7 @@ export class ChartMarkerStore {
     constructor(marker_config, content_config) {
         makeObservable(this, {
             marker_config: observable,
-            content_config: observable
+            content_config: observable,
         });
 
         this.marker_config = marker_config;

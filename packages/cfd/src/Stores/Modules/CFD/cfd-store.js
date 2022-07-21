@@ -1,4 +1,4 @@
-import { action, computed, observable, runInAction, makeObservable, override } from 'mobx';
+import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
@@ -26,6 +26,11 @@ export default class CFDStore extends BaseStore {
 
     error_type = undefined;
 
+    dxtrade_tokens = {
+        demo: '',
+        real: '',
+    };
+
     constructor({ root_store }) {
         super({ root_store });
 
@@ -43,6 +48,7 @@ export default class CFDStore extends BaseStore {
             is_cfd_pending_dialog_open: observable,
             current_account: observable,
             error_type: observable,
+            dxtrade_tokens: observable,
             has_cfd_account: computed,
             account_title: computed,
             current_list: computed,
@@ -78,7 +84,18 @@ export default class CFDStore extends BaseStore {
             openPendingDialog: action.bound,
             sendVerifyEmail: action.bound,
             setCFDPasswordResetModal: action.bound,
+            setDxtradeToken: action.bound,
+            loadDxtradeTokens: action.bound,
         });
+
+        reaction(
+            () => [this.root_store.client.dxtrade_accounts_list],
+            () => {
+                if (this.root_store.client.dxtrade_accounts_list.length > 0) {
+                    this.loadDxtradeTokens();
+                }
+            }
+        );
     }
 
     get has_cfd_account() {
@@ -504,6 +521,27 @@ export default class CFDStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
+    }
+
+    setDxtradeToken(response, server) {
+        if (!response.error) {
+            const { dxtrade } = response.service_token;
+            this.dxtrade_tokens[server] = dxtrade.token;
+        }
+    }
+
+    loadDxtradeTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
+                account => account.account_type === account_type
+            );
+
+            if (!this.dxtrade_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
+                    this.setDxtradeToken(response, account_type)
+                );
+            }
+        });
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {

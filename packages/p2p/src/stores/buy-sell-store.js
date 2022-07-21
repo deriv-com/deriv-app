@@ -34,7 +34,7 @@ export default class BuySellStore extends BaseStore {
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';
-    submitForm = () => {};
+    submitForm = () => { };
     table_type = buy_sell.BUY;
     form_props = {};
 
@@ -45,14 +45,18 @@ export default class BuySellStore extends BaseStore {
     };
     filter_payment_methods = [];
     payment_method_ids = [];
-    sort_list = [
-        { text: localize('Exchange rate (Default)'), value: 'rate' },
-        { text: localize('Completion rate'), value: 'completion' },
-    ];
 
-    constructor({ general_store, root_store }) {
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate (Default)'), value: 'rate' },
+            { text: localize('Completion rate'), value: 'completion' },
+        ];
+    }
+
+    constructor({ root_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super({ general_store, root_store });
+        super({ root_store });
 
         makeObservable(this, {
             api_error_message: observable,
@@ -138,6 +142,7 @@ export default class BuySellStore extends BaseStore {
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
             validatePopup: action.bound,
+            sort_list: computed,
         });
     }
 
@@ -244,8 +249,8 @@ export default class BuySellStore extends BaseStore {
             // Validate extra information for sell adverts.
             ...(this.is_sell_advert
                 ? {
-                      contact_info: values.contact_info,
-                  }
+                    contact_info: values.contact_info,
+                }
                 : {}),
         });
 
@@ -281,7 +286,7 @@ export default class BuySellStore extends BaseStore {
                 p2p_advert_list: 1,
                 counterparty_type,
                 offset: startIndex,
-                limit: general_store.list_item_limit,
+                limit: general_store?.list_item_limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
                 ...(this.selected_payment_method_value.length > 0
@@ -295,7 +300,7 @@ export default class BuySellStore extends BaseStore {
                         if (response.echo_req.counterparty_type === counterparty_type) {
                             const { list } = response.p2p_advert_list;
 
-                            this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                            this.setHasMoreItemsToLoad(list.length >= general_store?.list_item_limit);
 
                             const old_items = [...this.items];
                             const new_items = [];
@@ -376,7 +381,7 @@ export default class BuySellStore extends BaseStore {
     registerIsListedReaction() {
         const { general_store } = this.root_store;
         const disposeIsListedReaction = reaction(
-            () => general_store.is_listed,
+            () => general_store?.is_listed,
             () => {
                 this.setItems([]);
                 this.loadMoreItems({ startIndex: 0 });
@@ -508,7 +513,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     setSelectedAdvert(selected_advert) {
-        if (!this.root_store.general_store.is_advertiser) {
+        if (!this.root_store?.general_store?.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
             this.getAdvertiserInfo();

@@ -17,17 +17,15 @@ export default class GeneralStore extends BaseStore {
             cashier_route_tab_index: observable,
             is_deposit: observable,
             should_show_all_available_currencies: observable,
-            is_cashier_default: observable,
+            is_cashier_onboarding: observable,
             deposit_target: observable,
             should_set_currency_modal_title_change: observable,
             p2p_advertiser_error: observable,
             has_set_currency: observable,
             should_percentage_reset: observable,
             percentage: observable,
-            show_p2p_in_cashier_default: observable,
-            onRemount: observable,
-            is_cashier_onboarding: observable,
             show_p2p_in_cashier_onboarding: observable,
+            onRemount: observable,
             setOnRemount: action.bound,
             is_crypto: computed,
             is_p2p_enabled: computed,
@@ -92,19 +90,15 @@ export default class GeneralStore extends BaseStore {
     cashier_route_tab_index = 0;
     is_deposit = false;
     should_show_all_available_currencies = false;
-    is_cashier_default = true;
+    is_cashier_onboarding = true;
     deposit_target = '';
     should_set_currency_modal_title_change = false;
     p2p_advertiser_error = undefined;
     has_set_currency = false;
     should_percentage_reset = false;
     percentage = 0;
-    show_p2p_in_cashier_default = false;
-    onRemount = () => {};
-
-    is_cashier_onboarding = true;
-
     show_p2p_in_cashier_onboarding = false;
+    onRemount = () => { };
 
     active_container = Constants.containers.deposit;
     is_populating_values = false;
@@ -314,7 +308,8 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
-            payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+            await payment_agent.setPaymentAgentList();
+            await payment_agent.filterPaymentAgentList();
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();
@@ -322,6 +317,10 @@ export default class GeneralStore extends BaseStore {
 
             if (!account_transfer.accounts_list.length) {
                 account_transfer.sortAccountsTransfer();
+            }
+
+            if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
+                common.routeTo(routes.cashier_deposit);
             }
 
             if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {

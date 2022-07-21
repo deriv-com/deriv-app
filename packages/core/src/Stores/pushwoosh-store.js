@@ -49,7 +49,7 @@ export default class PushwooshStore extends BaseStore {
                         }
                     });
                     // eslint-disable-next-line no-empty
-                } catch {}
+                } catch { }
 
                 this.sendTags(api);
             },

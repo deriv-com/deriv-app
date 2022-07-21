@@ -40,7 +40,7 @@ export class ChartBarrierStore {
             onBarrierChange: action.bound,
             updateBarrierColor: action.bound,
             barrier_count: computed,
-            default_shade: computed
+            default_shade: computed,
         });
 
         this.color = color;
@@ -49,7 +49,7 @@ export class ChartBarrierStore {
 
         // trade_store's action to process new barriers on dragged
         this.onChartBarrierChange =
-            typeof onChartBarrierChange === 'function' ? onChartBarrierChange.bind(this) : () => {};
+            typeof onChartBarrierChange === 'function' ? onChartBarrierChange.bind(this) : () => { };
 
         this.high = +high_barrier || 0; // 0 to follow the price
         if (low_barrier) {

@@ -19,11 +19,11 @@ export default class AdvertiserPageStore extends BaseStore {
     is_loading_adverts = true;
     is_submit_disabled = true;
     show_ad_popup = false;
-    submitForm = () => {};
+    submitForm = () => { };
 
-    constructor() {
+    constructor({ root_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super();
+        super({ root_store });
 
         makeObservable(this, {
             active_index: observable,

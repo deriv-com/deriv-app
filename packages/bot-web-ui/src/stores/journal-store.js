@@ -47,6 +47,13 @@ export default class JournalStore {
     JOURNAL_CACHE = 'journal_cache';
 
     is_filter_dialog_visible = false;
+
+    filters = [
+        { id: message_types.ERROR, label: localize('Errors') },
+        { id: message_types.NOTIFY, label: localize('Notifications') },
+        { id: message_types.SUCCESS, label: localize('System') },
+    ];
+
     journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
     unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.root_store?.core.client.loginid, []);
 

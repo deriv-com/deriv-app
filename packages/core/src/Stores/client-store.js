@@ -185,6 +185,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             has_enabled_two_fa: observable,
             balance: computed,
+            account_open_date: computed,
             is_reality_check_visible: computed,
             is_svg: computed,
             reality_check_duration: computed,
@@ -365,6 +366,13 @@ export default class ClientStore extends BaseStore {
         if (isEmptyObject(this.accounts)) return undefined;
         return this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]
             ? this.accounts[this.loginid].balance.toString()
+            : undefined;
+    }
+
+    get account_open_date() {
+        if (isEmptyObject(this.accounts)) return undefined;
+        return Object.keys(this.accounts[this.loginid]).includes('created_at')
+            ? this.accounts[this.loginid].created_at
             : undefined;
     }
 
@@ -1768,6 +1776,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         this.mt5_login_list = [];
+        this.dxtrade_accounts_list = [];
         this.landing_companies = {};
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));

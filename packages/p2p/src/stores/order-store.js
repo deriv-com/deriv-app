@@ -4,7 +4,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 
 export default class OrderStore {
-    constructor(root_store) {
+    constructor({ root_store }) {
         makeObservable(this, {
             api_error_message: observable,
             cancellation_block_duration: observable,

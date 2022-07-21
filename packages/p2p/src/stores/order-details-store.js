@@ -4,7 +4,7 @@ import ServerTime from 'Utils/server-time';
 import { localize } from 'Components/i18next';
 
 export default class OrderDetailsStore {
-    constructor(root_store) {
+    constructor({ root_store }) {
         makeObservable(this, {
             interval: observable,
             popup_options: observable,

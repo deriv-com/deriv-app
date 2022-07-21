@@ -19,18 +19,18 @@ The `npm run bootstrap` command should be run in the root of the project, becaus
 npm run bootstrap
 ```
 
-Serve:
-The `npm run serve` command is used to serve the components package
-
-```sh
-npm run serve
-```
-
 Build:
 The `npm run build` command is used to build the components package
 
 ```sh
 npm run build
+```
+
+Serve:
+The `npm run serve` command is used to serve the components package
+
+```sh
+npm run serve components
 ```
 
 Test:
@@ -45,6 +45,12 @@ The `npm run test:eslint` command is used to run eslint on the components packag
 
 ```sh
 npm run test:eslint
+```
+
+The `eslint .` command is used to run eslint on the components package. It should be used along with `npm run test:eslint`
+
+```sh
+eslint .
 ```
 
 ## Storybook

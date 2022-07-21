@@ -18,27 +18,27 @@ export const trading_assessment_questions = [
         form_control: 'source_of_experience',
         answer_options: [
             {
-                value: 'I have an academic degree, professional certification, and/or work experience related to financial services.',
+                value: 'I have an academic degree, professional certification, and/or work experience.',
                 text: localize(
                     'I have an academic degree, professional certification, and/or work experience related to financial services.'
                 ),
             },
             {
-                value: 'I trade forex CFDs and other complex financial instruments regularly on other platforms.',
+                value: 'I trade forex CFDs and other complex financial instruments.',
                 text: localize(
                     'I trade forex CFDs and other complex financial instruments regularly on other platforms.'
                 ),
             },
             {
-                value: 'I have attended seminars, training, and/or workshops related to trading.',
+                value: 'I have attended seminars, training, and/or workshops.',
                 text: localize('I have attended seminars, training, and/or workshops related to trading.'),
             },
             {
-                value: 'I am interested in trading but have very little experience.',
+                value: 'I have little experience.',
                 text: localize('I am interested in trading but have very little experience.'),
             },
             {
-                value: 'I have no knowledge and experience in trading at all.',
+                value: 'I have no knowledge.',
                 text: localize('I have no knowledge and experience in trading at all.'),
             },
         ],
@@ -61,12 +61,12 @@ export const trading_assessment_questions = [
                         value: 'Less than a year',
                     },
                     {
-                        text: localize('1-2 years'),
-                        value: '1-2 years',
+                        text: localize('1 - 2 years'),
+                        value: '1 - 2 years',
                     },
                     {
                         text: localize('Over 3 years'),
-                        value: 'option_4',
+                        value: 'Over 3 years',
                     },
                 ],
             },
@@ -77,7 +77,7 @@ export const trading_assessment_questions = [
                 answer_options: [
                     {
                         text: localize('None'),
-                        value: 'None',
+                        value: 'No transactions in the past 12 months',
                     },
                     {
                         text: '1 - 5',
@@ -93,7 +93,7 @@ export const trading_assessment_questions = [
                     },
                     {
                         text: localize('40 or more'),
-                        value: '40 or more',
+                        value: '40 transactions or more in the past 12 months',
                     },
                 ],
             },
@@ -129,7 +129,7 @@ export const trading_assessment_questions = [
                 answer_options: [
                     {
                         text: localize('None'),
-                        value: 'None',
+                        value: 'No transactions in the past 12 months',
                     },
                     {
                         text: '1 - 5',
@@ -141,11 +141,11 @@ export const trading_assessment_questions = [
                     },
                     {
                         text: '11 - 39',
-                        value: '11 - 13 transactions in the past 12 months',
+                        value: '11 - 39 transactions in the past 12 months',
                     },
                     {
                         text: localize('40 or more'),
-                        value: '40 or more',
+                        value: '40 transactions or more in the past 12 months',
                     },
                 ],
             },
@@ -158,21 +158,21 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                value: 'Purchase commodities or shares of a company.',
+                value: 'Purchase shares of a company or physical commodities.',
                 text: localize('Purchase commodities or shares of a company.'),
             },
             {
-                value: 'Place a bet on the price movement of an asset where the outcome is a fixed return or nothing at all.',
+                value: 'Place a bet on the price movement.',
                 text: localize(
                     'Place a bet on the price movement of an asset where the outcome is a fixed return or nothing at all.'
                 ),
             },
             {
-                value: 'Speculate on the price movement of an asset without actually owning it.',
+                value: 'Speculate on the price movement.',
                 text: localize('Speculate on the price movement of an asset without actually owning it.'),
             },
             {
-                value: 'Make a long-term investment for a guaranteed profit.',
+                value: 'Make a long-term investment.',
                 text: localize('Make a long-term investment for a guaranteed profit.'),
             },
         ],
@@ -239,7 +239,7 @@ export const trading_assessment_questions = [
                 value: 'When opening a Leveraged CFD trade.',
                 text: localize('When opening a leveraged CFD trade'),
             },
-            { value: 'When trading Multipliers.', text: 'When trading multipliers' },
+            { value: 'When trading Multipliers.', text: localize('When trading multipliers') },
             {
                 value: 'When buying shares of a company.',
                 text: localize('When buying shares of a company'),

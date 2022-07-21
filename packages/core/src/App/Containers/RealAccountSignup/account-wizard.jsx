@@ -186,7 +186,7 @@ const AccountWizard = props => {
         clearError();
     };
 
-    const submitForm = (payload = undefined) => {
+    const submitForm = (payload = undefined, should_override = false) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
         props.setRealAccountFormData(clone);
@@ -197,7 +197,7 @@ const AccountWizard = props => {
             };
         }
 
-        return props.realAccountSignup(clone);
+        return props.realAccountSignup(clone, should_override);
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
@@ -206,7 +206,7 @@ const AccountWizard = props => {
 
         // Check if account wizard is not finished
         if (should_override || index + 1 >= state_items.length) {
-            createRealAccount();
+            createRealAccount({}, should_override);
         } else {
             goToNextStep();
         }
@@ -235,15 +235,16 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const createRealAccount = (payload = undefined) => {
+    const createRealAccount = (payload = undefined, should_override = false) => {
+        console.log('createRealAccount payload: ', payload);
         props.setLoading(true);
         const form_data = { ...form_values() };
-        submitForm(payload)
+        submitForm(payload, should_override)
             .then(response => {
                 // TODO: Code for Success response
-                console.log('Response: ', response); // eslint-disable-line no-console
+                console.log('props.real_account_signup_target: ', props.real_account_signup_target);
+                console.log('createRealAccount Response: ', response); // eslint-disable-line no-console
                 props.setIsRiskWarningVisible(false);
-                props.setShouldShowVerifiedAccount(true);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
@@ -251,6 +252,7 @@ const AccountWizard = props => {
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
+                // props.setShouldShowVerifiedAccount(true);
             })
             .catch(error => {
                 // TODO: Code for Error response
@@ -260,6 +262,7 @@ const AccountWizard = props => {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else if (error.code === 'AppropriatenessTestFailed') {
+                    props.closeRealAccountSignup();
                     if (form_data?.risk_tolerance === 'No') {
                         props.setShouldShowRiskToleranceWarningModal(true);
                     } else {
@@ -270,7 +273,6 @@ const AccountWizard = props => {
                 }
             })
             .finally(() => {
-                props.closeRealAccountSignup();
                 props.setLoading(false);
             });
     };

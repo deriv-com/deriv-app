@@ -1,14 +1,13 @@
 import React from 'react';
 import { Modal, Text, Icon, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const VerifiedAccountModal = ({ onSubmit, onCancel, fetchFinancialAssessment, setCFDScore, cfd_score }) => {
     React.useEffect(() => {
         const fetchFinancialScore = async () => {
             try {
                 const response = await fetchFinancialAssessment();
-                console.log('Response: ', response);
+                console.log('fetchFinancialAssessment: ', response);
                 setCFDScore(response?.cfd_score ?? 0);
             } catch (err) {
                 console.log('Error: ', err);
@@ -19,7 +18,7 @@ const VerifiedAccountModal = ({ onSubmit, onCancel, fetchFinancialAssessment, se
     }, []);
 
     return (
-        <Modal width='44rem' is_open={true} className='center-risk-modal'>
+        <Modal width='44rem' is_open={tcfd_scorerue} className='center-risk-modal'>
             <Modal.Body>
                 <Icon icon='IcCurrency-eur' size={95} />
                 <Text as='p' size='s' align='center' weight='bold'>

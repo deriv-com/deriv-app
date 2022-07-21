@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+    @observable has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -160,6 +161,14 @@ export default class ClientStore extends BaseStore {
         if (isEmptyObject(this.accounts)) return undefined;
         return this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]
             ? this.accounts[this.loginid].balance.toString()
+            : undefined;
+    }
+
+    @computed
+    get account_open_date() {
+        if (isEmptyObject(this.accounts)) return undefined;
+        return Object.keys(this.accounts[this.loginid]).includes('created_at')
+            ? this.accounts[this.loginid].created_at
             : undefined;
     }
 
@@ -1226,9 +1235,23 @@ export default class ClientStore extends BaseStore {
         const search = window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
+        const code_param = search_params?.get('code');
+        const action_param = search_params?.get('action');
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+
+        if (search) {
+            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                }, 0);
+            });
+        }
+
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1270,7 +1293,7 @@ export default class ClientStore extends BaseStore {
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
                 const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    search_params?.get('action')
+                    action_param
                 );
 
                 if (has_action) {
@@ -1312,7 +1335,7 @@ export default class ClientStore extends BaseStore {
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
-
+            await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -1669,6 +1692,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         this.mt5_login_list = [];
+        this.dxtrade_accounts_list = [];
         this.landing_companies = {};
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
@@ -2238,6 +2262,26 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
+        });
+    }
+
+    @action.bound
+    setTwoFAStatus(status) {
+        this.has_enabled_two_fa = status;
+    }
+
+    @action.bound
+    getTwoFAStatus() {
+        return new Promise(resolve => {
+            WS.authorized.accountSecurity({ account_security: 1, totp_action: 'status' }).then(response => {
+                if (response.error) {
+                    resolve(response.error);
+                } else {
+                    const is_enabled = !!getPropertyValue(response, ['account_security', 'totp', 'is_enabled']);
+                    this.setTwoFAStatus(is_enabled);
+                    resolve(is_enabled);
+                }
+            });
         });
     }
 }

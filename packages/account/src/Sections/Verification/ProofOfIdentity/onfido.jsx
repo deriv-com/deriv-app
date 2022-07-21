@@ -1,9 +1,9 @@
 import React from 'react';
-import UploadComplete from 'Components/poi-upload-complete';
-import Expired from 'Components/poi-expired';
-import Verified from 'Components/poi-verified';
-import RejectedReasons from 'Components/poi-rejected-reasons';
-import Limited from 'Components/poi-limited';
+import UploadComplete from 'Components/poi/status/upload-complete';
+import Expired from 'Components/poi/status/expired';
+import Verified from 'Components/poi/status/verified';
+import RejectedReasons from 'Components/poi/status/rejected-reasons';
+import Limited from 'Components/poi/status/limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Onfido = ({ handleRequireSubmission, is_from_external, needs_poa, onfido, redirect_button }) => {

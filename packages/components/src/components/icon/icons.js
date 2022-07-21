@@ -97,6 +97,7 @@ import './cashier/ic-cashier-pay-now-dark.svg';
 import './cashier/ic-cashier-pay-now-light.svg';
 import './cashier/ic-cashier-pay-retailers-dark.svg';
 import './cashier/ic-cashier-pay-retailers-light.svg';
+import './cashier/ic-cashier-payment-agent.svg';
 import './cashier/ic-cashier-perfect-money-dark.svg';
 import './cashier/ic-cashier-perfect-money-light.svg';
 import './cashier/ic-cashier-poli-dark.svg';

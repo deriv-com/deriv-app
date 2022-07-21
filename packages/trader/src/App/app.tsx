@@ -10,16 +10,23 @@ import { MobxContentProvider } from 'Stores/connect';
 import initStore from './init-store.js'; // eslint-disable-line import/extensions
 import 'Sass/app.scss';
 
+type Apptypes = {
+    passthrough: {
+        root_store: any;
+        WS: any;
+    };
+};
+
 const TradeModals = Loadable({
     loader: () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */ './Containers/Modals'),
     loading: () => null,
 });
 
-const App = ({ passthrough }: any) => {
+const App = ({ passthrough }: Apptypes) => {
     const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
-    }, []);
+    }, [root_store]);
 
     return (
         <MobxContentProvider store={root_store}>

@@ -9,8 +9,8 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 
-const BlockUser = () => {
-    const { general_store, my_profile_store } = useStores();
+const BlockedAdvertisersList = () => {
+    const { my_profile_store } = useStores();
 
     const loadBlockedAdvertisers = debounce(search => {
         my_profile_store.setSearchTerm(search.trim());
@@ -32,6 +32,19 @@ const BlockUser = () => {
 
     return (
         <React.Fragment>
+            {my_profile_store.blocked_advertisers_list.length > 0 && (
+                <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search')} />
+            )}
+            <BlockUserTable />
+        </React.Fragment>
+    );
+};
+
+const BlockUser = () => {
+    const { general_store, my_profile_store } = useStores();
+
+    return (
+        <React.Fragment>
             <BlockUserModal
                 advertiser_name={my_profile_store.selected_blocked_user.name}
                 is_advertiser_blocked
@@ -40,10 +53,7 @@ const BlockUser = () => {
                 onSubmit={my_profile_store.onSubmit}
             />
             <DesktopWrapper>
-                {my_profile_store.blocked_advertisers_list.length > 0 && (
-                    <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search')} />
-                )}
-                <BlockUserTable />
+                <BlockedAdvertisersList />
             </DesktopWrapper>
             <MobileWrapper>
                 <MobileFullPageModal
@@ -55,10 +65,7 @@ const BlockUser = () => {
                     page_header_text={localize('Blocked advertisers')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
-                    {my_profile_store.blocked_advertisers_list.length > 0 && (
-                        <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search')} />
-                    )}
-                    <BlockUserTable />
+                    <BlockedAdvertisersList />
                 </MobileFullPageModal>
             </MobileWrapper>
         </React.Fragment>

@@ -248,7 +248,7 @@ const JurisdictionCard = ({
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
                     <div className={classNames(`${card_classname}__over-header`)}>
-                        <Text as='p' color={'blue'} line_height='xxl' weight='bold'>
+                        <Text as='p' color={'info-blue'} line_height='xxl' weight='bold'>
                             <Localize
                                 i18n_default_text={
                                     jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents]

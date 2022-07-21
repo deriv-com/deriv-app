@@ -20,9 +20,9 @@ const VerifiedAccountModal = ({ onSubmit, onCancel, fetchFinancialAssessment, se
     return (
         <Modal width='44rem' is_open={tcfd_scorerue} className='center-risk-modal'>
             <Modal.Body>
-                <Icon icon='IcCurrency-eur' size={95} />
-                <Text as='p' size='s' align='center' weight='bold'>
-                    <Localize i18n_default_text='Your account is ready' />
+                <Icon icon='IcCurrency-eur-check' size={95} />
+                <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
+                    <Localize i18n_default_text='Your account is ready<0/>' components={[<br key={0} />]} />
                 </Text>
                 <Text as='p' size='xs' align='center'>
                     <Localize i18n_default_text='We need proofs of your identity and address before you can start trading.' />

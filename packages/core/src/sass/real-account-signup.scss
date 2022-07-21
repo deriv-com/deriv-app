@@ -155,7 +155,7 @@
         position: relative;
 
         @include mobile {
-            max-height: calc(100% - 1rem);
+            max-height: calc(100% - 5rem);
         }
     }
     @include mobile {

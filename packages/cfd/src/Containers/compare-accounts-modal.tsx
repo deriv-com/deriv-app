@@ -3,7 +3,7 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { isMobile, CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';

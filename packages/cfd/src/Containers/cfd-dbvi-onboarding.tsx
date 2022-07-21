@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, UILoader } from '@deriv/components';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaSubmitted } from '@deriv/account';
@@ -59,34 +59,54 @@ const CFDDbViOnBoarding = ({
     React.useEffect(() => {
         getAccountStausFromAPI();
     }, []);
+
+    const ModalContent = () => (
+        <>
+            {showSubmittedModal ? (
+                <PoiPoaSubmitted
+                    onClickOK={toggleCFDVerificationModal}
+                    account_type={account_type}
+                    mt5_login_list={mt5_login_list}
+                    onClickYes={handleOpenJurisditionModal}
+                />
+            ) : (
+                <CFDFinancialStpRealAccountSignup
+                    onFinish={() => {
+                        setShowSubmittedModal(true);
+                    }}
+                />
+            )}
+        </>
+    );
+
     return (
         <React.Suspense fallback={<UILoader />}>
-            <Modal
-                className='cfd-financial-stp-modal'
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_open={is_cfd_verification_modal_visible}
-                title={localize('Submit your proof of identity and address')}
-                toggleModal={toggleCFDVerificationModal}
-                height='700px'
-                width='996px'
-                onMount={() => getAccountStausFromAPI()}
-            >
-                {showSubmittedModal ? (
-                    <PoiPoaSubmitted
-                        onClickOK={toggleCFDVerificationModal}
-                        account_type={account_type}
-                        mt5_login_list={mt5_login_list}
-                        onClickYes={handleOpenJurisditionModal}
-                    />
-                ) : (
-                    <CFDFinancialStpRealAccountSignup
-                        onFinish={() => {
-                            setShowSubmittedModal(true);
-                        }}
-                    />
-                )}
-            </Modal>
+            <DesktopWrapper>
+                <Modal
+                    className='cfd-financial-stp-modal'
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    is_open={is_cfd_verification_modal_visible}
+                    title={localize('Submit your proof of identity and address')}
+                    toggleModal={toggleCFDVerificationModal}
+                    height='700px'
+                    width='996px'
+                    onMount={() => getAccountStausFromAPI()}
+                >
+                    <ModalContent />
+                </Modal>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <MobileDialog
+                    portal_element_id='deriv_app'
+                    title={localize('Submit your proof of identity and address')}
+                    wrapper_classname='cfd-financial-stp-modal'
+                    visible={is_cfd_verification_modal_visible}
+                    onClose={toggleCFDVerificationModal}
+                >
+                    <ModalContent />
+                </MobileDialog>
+            </MobileWrapper>
         </React.Suspense>
     );
 };

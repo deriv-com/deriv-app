@@ -20,7 +20,7 @@ export default class CryptoFiatConverterStore {
             validateToAmount: action.bound,
             onChangeConverterFromAmount: action.bound,
             onChangeConverterToAmount: action.bound,
-            resetConverter: action.bound
+            resetConverter: action.bound,
         });
 
         this.root_store = root_store;

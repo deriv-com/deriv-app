@@ -23,7 +23,7 @@ export default class MenuStore extends BaseStore {
         makeObservable(this, {
             extensions: observable,
             attach: action.bound,
-            detach: action.bound
+            detach: action.bound,
         });
     }
 

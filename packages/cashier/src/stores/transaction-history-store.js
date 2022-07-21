@@ -29,7 +29,7 @@ export default class TransactionHistoryStore {
             showCryptoTransactionsStatusModal: action.bound,
             hideCryptoTransactionsStatusModal: action.bound,
             setLoading: action.bound,
-            setIsCryptoTransactionsVisible: action.bound
+            setIsCryptoTransactionsVisible: action.bound,
         });
 
         this.root_store = root_store;

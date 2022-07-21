@@ -57,7 +57,7 @@ export default class OnRampStore extends BaseStore {
             setShouldShowWidget: action.bound,
             setOnrampProviders: action.bound,
             setWidgetError: action.bound,
-            setWidgetHtml: action.bound
+            setWidgetHtml: action.bound,
         });
 
         this.WS = WS;

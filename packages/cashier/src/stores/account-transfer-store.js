@@ -80,7 +80,7 @@ export default class AccountTransferStore {
             resetAccountTransfer: action.bound,
             setTransferPercentageSelectorResult: action.bound,
             validateTransferFromAmount: action.bound,
-            validateTransferToAmount: action.bound
+            validateTransferToAmount: action.bound,
         });
 
         this.root_store = root_store;

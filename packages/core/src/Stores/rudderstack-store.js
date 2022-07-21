@@ -17,7 +17,7 @@ export default class RudderStackStore extends BaseStore {
             identifyEvent: action.bound,
             pageView: action.bound,
             reset: action.bound,
-            track: action.bound
+            track: action.bound,
         });
     }
 

@@ -24,7 +24,7 @@ export default class PaymentAgentTransferStore {
             onMountPaymentAgentTransfer: action.bound,
             requestTryPaymentAgentTransfer: action.bound,
             requestPaymentAgentTransfer: action.bound,
-            resetPaymentAgentTransfer: action.bound
+            resetPaymentAgentTransfer: action.bound,
         });
 
         this.root_store = root_store;

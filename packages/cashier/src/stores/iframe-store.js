@@ -14,7 +14,7 @@ export default class IframeStore {
             setTimeoutCashierUrl: action.bound,
             setIframeUrl: action.bound,
             setContainerHeight: action.bound,
-            clearIframe: action.bound
+            clearIframe: action.bound,
         });
 
         this.root_store = root_store;
@@ -76,10 +76,14 @@ export default class IframeStore {
         }, 60000);
     }
 
+<<<<<<< HEAD
     setIframeUrl(
         url,
         container = this.root_store.modules.cashier.general_store.active_container
     ) {
+=======
+    setIframeUrl(url, container = this.root_store.modules.cashier.general_store.active_container) {
+>>>>>>> bf821e9807afa991d8844ec0a1ca07bdd13afcaf
         const { client, ui } = this.root_store;
 
         if (url) {

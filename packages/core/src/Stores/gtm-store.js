@@ -19,7 +19,7 @@ export default class GTMStore extends BaseStore {
             pushDataLayer: action.bound,
             pushTransactionData: action.bound,
             eventHandler: action.bound,
-            setLoginFlag: action.bound
+            setLoginFlag: action.bound,
         });
 
         this.onSwitchAccount(this.accountSwitcherListener);

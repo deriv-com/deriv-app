@@ -80,7 +80,7 @@ export default class BaseStore {
             disposeThemeChange: action.bound,
             disposeRealAccountSignupEnd: action.bound,
             onUnmount: action.bound,
-            assertHasValidCache: action.bound
+            assertHasValidCache: action.bound,
         });
 
         const { root_store, local_storage_properties, session_storage_properties, validation_rules, store_name } =

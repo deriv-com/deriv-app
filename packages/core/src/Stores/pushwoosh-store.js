@@ -15,7 +15,7 @@ export default class PushwooshStore extends BaseStore {
 
         makeObservable(this, {
             init: action.bound,
-            sendTags: action.bound
+            sendTags: action.bound,
         });
     }
 

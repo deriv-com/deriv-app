@@ -163,6 +163,7 @@ export default class ClientStore extends BaseStore {
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
+            has_enabled_two_fa: observable,
             landing_companies: observable,
             standpoint: observable,
             upgradeable_landing_companies: observable,
@@ -183,7 +184,6 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
-            has_enabled_two_fa: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -337,6 +337,7 @@ export default class ClientStore extends BaseStore {
             setRealityCheckDuration: action.bound,
             cleanupRealityCheck: action.bound,
             fetchFinancialAssessment: action.bound,
+            is_poi_dob_mismatch: computed,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
         });
@@ -640,6 +641,10 @@ export default class ClientStore extends BaseStore {
         const { terms_conditions_version } = this.website_status;
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
+    }
+
+    get is_poi_dob_mismatch() {
+        return this.account_status?.status?.includes('poi_dob_mismatch') ?? false;
     }
 
     get is_social_signup() {

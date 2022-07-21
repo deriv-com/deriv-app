@@ -46,7 +46,7 @@ export default class CommonStore extends BaseStore {
             setAppRouterHistory: action.bound,
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
-            routeBackInApp: action.bound
+            routeBackInApp: action.bound,
         });
     }
 
@@ -181,17 +181,15 @@ export default class CommonStore extends BaseStore {
         };
     }
 
-    showError(
-        {
-            message,
-            header,
-            redirect_label,
-            redirectOnClick,
-            should_show_refresh,
-            redirect_to,
-            should_clear_error_on_click,
-        }
-    ) {
+    showError({
+        message,
+        header,
+        redirect_label,
+        redirectOnClick,
+        should_show_refresh,
+        redirect_to,
+        should_clear_error_on_click,
+    }) {
         this.setError(true, {
             header,
             message,

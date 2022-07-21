@@ -20,7 +20,7 @@ export default class ErrorDialogStore {
             setShouldNotShowTitle: action.bound,
             setHasNoCloseIcon: action.bound,
             openReadMoreDialog: action.bound,
-            reset: action.bound
+            reset: action.bound,
         });
     }
 

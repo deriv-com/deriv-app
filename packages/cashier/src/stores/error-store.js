@@ -29,7 +29,7 @@ export default class ErrorStore {
             setIsAskUkFundsProtection: action.bound,
             setIsSelfExclusionMaxTurnoverSet: action.bound,
             setIsAskAuthentication: action.bound,
-            setIsAskFinancialRiskApproval: action.bound
+            setIsAskFinancialRiskApproval: action.bound,
         });
     }
 

@@ -110,14 +110,14 @@ export default class AdvertiserPageStore extends BaseStore {
                 counterparty_type: this.counterparty_type,
                 advertiser_id: this.advertiser_details_id,
                 offset: startIndex,
-                limit: general_store.list_item_limit,
+                limit: general_store?.list_item_limit,
             }).then(response => {
                 if (response.error) {
                     this.setErrorMessage(response.error);
                 } else {
                     const { list } = response.p2p_advert_list;
                     this.setAdverts(list);
-                    this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
+                    this.setHasMoreAdvertsToLoad(list.length >= general_store?.list_item_limit);
                 }
 
                 this.setIsLoadingAdverts(false);

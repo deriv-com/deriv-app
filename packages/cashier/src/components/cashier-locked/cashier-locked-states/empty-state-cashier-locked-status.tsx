@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
+import EmptyState from 'Components/empty-state';
 import React from 'react';
-import EmptyState from '../../empty-state';
 
 const EmptyStateCashierLockedStatus: React.FC = () => (
     <EmptyState

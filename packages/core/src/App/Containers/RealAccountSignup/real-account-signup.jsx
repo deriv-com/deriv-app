@@ -421,19 +421,19 @@ const RealAccountSignup = ({
 
     const handleOnAccept = async () => {
         try {
-            console.log('handleOnAccept: ', { ...real_account_form_data });
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
             setShouldShowVerifiedAccount(true);
             setShouldShowAppropriatenessTestWarningModal(false);
             // TODO: Show Welcome Modal
         } catch (sign_up_error) {
             // TODO: Handle Error case
+            setShouldShowVerifiedAccount(true);
+            setShouldShowAppropriatenessTestWarningModal(false);
         }
     };
 
     const handleOnDecline = async () => {
         try {
-            console.log('HandleOnDecline: ', { ...real_account_form_data });
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
             // TODO: Show CoolDown Modal
         } catch (sign_up_error) {
@@ -474,7 +474,7 @@ const RealAccountSignup = ({
         return (
             <VerifiedAccountModal
                 onSubmit={() => {
-                    /*TODO: Redirect to POI */
+                    history.push(routes.proof_of_identity);
                 }}
                 onCancel={setShouldShowVerifiedAccount}
                 fetchFinancialAssessment={fetchFinancialAssessment}

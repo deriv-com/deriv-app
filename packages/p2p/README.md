@@ -48,9 +48,6 @@ src
     │   ├── validations.js
     │   ├── websocket.js
 
-// message.json ??
-// scripts ??
-// websocket ??
 ```
 
 **components:** This folder contains all the reusable components that we need for developing this workspace.
@@ -61,5 +58,7 @@ We have a separate folder for each component.
 **stores:** We use Mobx as state management tool, and this is the place for putting the relevant store files.
 
 **utils:** We place all the common and helper methods which are required for the workspace in this folder.
+
+<!-- TODO: explain the purpose of crowdin folder -->
 
 ## Troubleshooting

@@ -146,6 +146,7 @@ export const icons = {
         'IcCashierPayRetailersLight',
         'IcCashierPaypalDark',
         'IcCashierPaypalLight',
+        'IcCashierPaymentAgent',
         'IcCashierPerfectMoneyDark',
         'IcCashierPerfectMoneyLight',
         'IcCashierPermatabankDark',

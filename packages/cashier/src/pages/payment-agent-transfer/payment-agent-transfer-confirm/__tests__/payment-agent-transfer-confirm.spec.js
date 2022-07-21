@@ -32,7 +32,7 @@ describe('<PaymentAgentTransferConfirm />', () => {
         render(<PaymentAgentTransferConfirm transfer_to={transfer_to} error={error} />);
 
         expect(screen.getByTestId('dti_red_warning_icon')).toBeInTheDocument();
-        expect(screen.getByText('Check Transfer Information')).toBeInTheDocument();
+        expect(screen.getByText('Check transfer information')).toBeInTheDocument();
     });
 
     it(`setIsTryTransferSuccessful func should be triggered when click on 'Back' button`, () => {

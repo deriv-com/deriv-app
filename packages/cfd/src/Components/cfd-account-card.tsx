@@ -221,7 +221,7 @@ const CFDAccountCardComponent = ({
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
     const has_popular_banner: boolean = type.type === 'synthetic';
-    const has_demo_banner: boolean = type.category === 'demo' && platform !== CFD_PLATFORMS.MT5;
+    const has_demo_banner: boolean = type.category === 'demo';
     const has_server_banner =
         is_logged_in &&
         existing_data &&
@@ -378,11 +378,19 @@ const CFDAccountCardComponent = ({
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'demo' && (
                                 <div className='cfd-account-card__item'>
-                                    {existing_data?.display_balance && is_logged_in && (
+                                    {/* {existing_data?.display_balance && is_logged_in && (
                                         <div className='cfd-account-card__item--banner'>
-                                            <Localize i18n_default_text='Demo' />
+                                            <Localize
+                                                i18n_default_text={
+                                                    existing_data.landing_company_short &&
+                                                    existing_data.landing_company_short !== 'svg'
+                                                        ? existing_data.landing_company_short?.charAt(0).toUpperCase() +
+                                                          existing_data.landing_company_short.slice(1)
+                                                        : existing_data.landing_company_short?.toUpperCase()
+                                                }
+                                            />
                                         </div>
-                                    )}
+                                    )} */}
                                     {existing_data?.display_balance && is_logged_in && (
                                         <Text size='xxl' className='cfd-account-card__balance--value'>
                                             <Money

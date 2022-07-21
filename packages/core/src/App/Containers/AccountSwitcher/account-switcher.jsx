@@ -508,7 +508,6 @@ const AccountSwitcher = props => {
                                                 loginid={account.display_login}
                                                 redirectAccount={() => redirectToMt5Demo(account.market_type)}
                                                 platform={CFD_PLATFORMS.MT5}
-                                                shortcode={account.landing_company_short}
                                             />
                                         ))}
                                     </div>

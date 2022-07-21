@@ -6,23 +6,7 @@ import RootStore from 'Stores/index';
 import { GetAccountSettingsResponse, GetSettings, LandingCompany } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { WS } from '@deriv/shared';
-
-export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
-    name: string;
-    requirements: {
-        after_first_deposit: {
-            financial_assessment: string[];
-        };
-        compliance: {
-            mt5: string[];
-            tax_information: string[];
-        };
-        signup: string[];
-    };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
-    sub_account_type: string;
-};
+import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
@@ -85,9 +69,21 @@ const JurisdictionModal = ({
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
+    const poa_status = authentication_status?.document_status;
+    const poi_status = authentication_status?.identity_status;
+    const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
+    const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
+    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
+    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
+    const poi_poa_failed = poa_failed || poi_failed;
+    const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
-            setJurisdictionSelectedShortcode('');
+            if (poa_status === 'pending' || poi_status === 'pending') {
+                setJurisdictionSelectedShortcode('svg');
+            } else {
+                setJurisdictionSelectedShortcode('');
+            }
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
                 if (!account_settings) {
@@ -122,15 +118,6 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
 
-    const poa_status = authentication_status?.document_status;
-    const poi_status = authentication_status?.identity_status;
-    const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
-    const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
-    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
-    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
-    const poi_poa_failed = poa_failed || poi_failed;
-    const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
-
     const is_next_button_enabled =
         jurisdiction_selected_shortcode === 'svg' ||
         (jurisdiction_selected_shortcode &&
@@ -146,47 +133,33 @@ const JurisdictionModal = ({
 
         if (is_eu) {
             if (poi_poa_verified) {
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
             } else {
-                setTimeout(() => {
-                    toggleCFDVerificationModal();
-                }, 260);
+                toggleCFDVerificationModal();
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
             if (account_type.type === 'financial' && poi_poa_verified && !has_submitted_personal_details) {
-                setTimeout(() => {
-                    toggleCFDPersonalDetailsModal();
-                }, 260);
+                toggleCFDPersonalDetailsModal();
             } else {
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
             }
         } else if (poi_poa_verified) {
             // for bvi, labuan & vanuatu:
             if (!has_submitted_personal_details) {
-                setTimeout(() => {
-                    toggleCFDPersonalDetailsModal();
-                }, 260);
+                toggleCFDPersonalDetailsModal();
             } else {
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
             }
         } else {
-            setTimeout(() => {
-                toggleCFDVerificationModal();
-            }, 260);
+            toggleCFDVerificationModal();
         }
     };
 
     const buttonText = () => {
         const is_non_svg_selected = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
-        if (poa_failed && is_non_svg_selected) {
+        if (poa_failed && is_non_svg_selected && !poi_poa_not_submitted) {
             return <Localize i18n_default_text='Resubmit proof of address' />;
-        } else if (poi_failed && is_non_svg_selected) {
+        } else if (poi_failed && is_non_svg_selected && !poi_poa_not_submitted) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
         } else if (poa_failed && poi_failed && is_non_svg_selected) {
             return <Localize i18n_default_text='Resubmit' />;
@@ -232,9 +205,7 @@ const JurisdictionModal = ({
                                     primary
                                     onClick={() => {
                                         toggleJurisdictionModal();
-                                        setTimeout(() => {
-                                            onSelectRealAccount();
-                                        }, 260);
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     {buttonText()}
@@ -255,9 +226,7 @@ const JurisdictionModal = ({
                                     primary
                                     onClick={() => {
                                         toggleJurisdictionModal();
-                                        setTimeout(() => {
-                                            onSelectRealAccount();
-                                        }, 260);
+                                        onSelectRealAccount();
                                     }}
                                 >
                                     {buttonText()}

@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { TTradingPlatformAvailableAccount } from './jurisdiction-modal';
+import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 type TRowItem = {
@@ -219,8 +219,7 @@ const DMT5CompareModalContent = ({
     const getAvailableAccountsContent = (_content: TModalContentProps[]) => {
         return _content.map(row_data => {
             const available_accounts_values = Object.entries(row_data.values).reduce(
-                (acc, [key, value]) =>
-                    available_accounts_keys.includes(key) ? { ...acc, [key as keyof TValues]: value } : acc,
+                (acc, [key, value]) => (available_accounts_keys.includes(key) ? { ...acc, [key]: value } : acc),
                 {} as TValues
             );
             const content_data = { ...row_data, values: {} as TValues };
@@ -238,17 +237,15 @@ const DMT5CompareModalContent = ({
                     (acc, el) => (available_accounts_keys.includes(el) ? { ...acc, [el]: undefined } : acc),
                     {}
                 );
-                if (row_data.id === 'leverage') {
-                    if (available_accounts_keys.includes('financial_svg'))
-                        content_data.values.financial_svg = row_data.values.financial_vanuatu;
-                    if (available_accounts_keys.includes('financial_bvi'))
-                        content_data.values.financial_bvi = row_data.values.financial_vanuatu;
-                } else if (row_data.id === 'instruments') {
-                    if (available_accounts_keys.includes('synthetic_bvi'))
-                        content_data.values.synthetic_bvi = row_data.values.synthetic_svg;
-                    if (available_accounts_keys.includes('financial_bvi'))
-                        content_data.values.financial_bvi = row_data.values.financial_svg;
-                }
+                available_accounts_keys.forEach(key => {
+                    if (row_data.id === 'leverage' && (key === 'financial_svg' || key === 'financial_bvi')) {
+                        content_data.values[key] = row_data.values.financial_vanuatu;
+                    } else if (row_data.id === 'instruments' && key === 'synthetic_bvi') {
+                        content_data.values[key] = row_data.values.synthetic_svg;
+                    } else if (row_data.id === 'instruments' && key === 'financial_bvi') {
+                        content_data.values[key] = row_data.values.financial_svg;
+                    }
+                });
             }
             return { ...content_data, values: { ...content_data.values, ...available_accounts_values } };
         });
@@ -274,45 +271,33 @@ const DMT5CompareModalContent = ({
             case 'synthetic_svg':
             case 'financial_svg':
                 toggleCompareAccounts();
-                setTimeout(() => {
-                    openPasswordModal(type_of_account);
-                }, 260);
+                openPasswordModal(type_of_account);
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
             case 'financial_maltainvest':
                 toggleCompareAccounts();
-                setTimeout(() => {
-                    if (poi_poa_verified) {
-                        openPasswordModal(type_of_account);
-                    } else {
-                        toggleCFDVerificationModal();
-                    }
-                }, 260);
+                if (poi_poa_verified) {
+                    openPasswordModal(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
 
                 break;
 
             case 'financial_vanuatu':
             case 'financial_labuan':
                 toggleCompareAccounts();
-                setTimeout(() => {
-                    if (poi_poa_verified) {
-                        // for bvi, labuan & vanuatu:
-                        if (!has_real_mt5_login) {
-                            setTimeout(() => {
-                                toggleCFDPersonalDetailsModal();
-                            }, 260);
-                        } else {
-                            setTimeout(() => {
-                                openPasswordModal(type_of_account);
-                            }, 260);
-                        }
+                if (poi_poa_verified) {
+                    // for bvi, labuan & vanuatu:
+                    if (!has_real_mt5_login) {
+                        toggleCFDPersonalDetailsModal();
                     } else {
-                        setTimeout(() => {
-                            toggleCFDVerificationModal();
-                        }, 260);
+                        openPasswordModal(type_of_account);
                     }
-                }, 260);
+                } else {
+                    toggleCFDVerificationModal();
+                }
                 break;
 
             default:
@@ -437,14 +422,16 @@ const DMT5CompareModalContent = ({
                                 }
                             >
                                 <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                {!show_eu_related && (
+                                {!show_eu_related && synthetic_accounts_count > 0 && (
                                     <Table.Head className='cfd-real-compare-accounts__table-header-item'>
                                         {localize('Synthetic')}
                                     </Table.Head>
                                 )}
-                                <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                    {show_eu_related ? localize('CFDs') : localize('Financial')}
-                                </Table.Head>
+                                {financial_accounts_count > 0 && (
+                                    <Table.Head className='cfd-real-compare-accounts__table-header-item'>
+                                        {show_eu_related ? localize('CFDs') : localize('Financial')}
+                                    </Table.Head>
+                                )}
                             </Table.Row>
                         </Table.Header>
 

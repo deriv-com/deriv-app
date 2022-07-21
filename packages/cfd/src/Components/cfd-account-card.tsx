@@ -180,18 +180,41 @@ const CFDAccountCardComponent = ({
     onPasswordManager,
     can_have_more_real_synthetic_mt5,
     can_have_more_real_financial_mt5,
+    trading_platform_available_accounts,
     toggleAccountsDialog,
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     setMT5TradeAccount,
 }: TCFDAccountCard) => {
+    const existing_data = type.category === 'real' ? existing_accounts_data?.[0] : existing_accounts_data;
+    const financial_available_accounts = trading_platform_available_accounts?.filter(
+        available_account => available_account.market_type === 'financial'
+    );
+    const synthetic_available_accounts = trading_platform_available_accounts?.filter(
+        available_account => available_account.market_type === 'gaming'
+    );
+
+    const available_and_existing_are_same =
+        type.type === 'synthetic' && type.category === 'real'
+            ? synthetic_available_accounts?.some(synthetic_accs =>
+                  existing_accounts_data?.some(
+                      existing_account => existing_account.landing_company_short === synthetic_accs.shortcode
+                  )
+              )
+            : type.category === 'real' &&
+              financial_available_accounts?.some(financial_accs =>
+                  existing_accounts_data?.some(
+                      existing_account => existing_account.landing_company_short === financial_accs.shortcode
+                  )
+              );
+
     const should_show_extra_add_account_button =
         is_logged_in &&
         !is_eu &&
         has_real_account &&
         platform === CFD_PLATFORMS.MT5 &&
         (type.type === 'synthetic' ? can_have_more_real_synthetic_mt5 : can_have_more_real_financial_mt5);
-    const existing_data = type.category === 'real' ? existing_accounts_data?.[0] : existing_accounts_data;
+
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
@@ -374,7 +397,8 @@ const CFDAccountCardComponent = ({
                                             <Localize
                                                 i18n_default_text={
                                                     acc.landing_company_short &&
-                                                    acc.landing_company_short !== ('svg' || 'bvi')
+                                                    acc.landing_company_short !== 'svg' &&
+                                                    acc.landing_company_short !== 'bvi'
                                                         ? acc.landing_company_short?.charAt(0).toUpperCase() +
                                                           acc.landing_company_short.slice(1)
                                                         : acc.landing_company_short?.toUpperCase()
@@ -524,7 +548,8 @@ const CFDAccountCardComponent = ({
                     </div>
                 </div>
                 <React.Fragment>
-                    {should_show_extra_add_account_button && (
+                    {(should_show_extra_add_account_button ||
+                        (type.category !== 'demo' && existing_data && !available_and_existing_are_same)) && (
                         <MobileWrapper>
                             <AddAccountButton
                                 ref={button_ref}
@@ -537,7 +562,10 @@ const CFDAccountCardComponent = ({
             </div>
             <DesktopWrapper>
                 <CSSTransition
-                    in={should_show_extra_add_account_button}
+                    in={
+                        should_show_extra_add_account_button ||
+                        (type.category !== 'demo' && existing_data && !available_and_existing_are_same)
+                    }
                     timeout={0}
                     classNames='cfd-account-card__add-server'
                     unmountOnExit
@@ -557,6 +585,7 @@ const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
     can_have_more_real_financial_mt5: client.can_have_more_real_financial_mt5,
+    trading_platform_available_accounts: client.trading_platform_available_accounts,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
 }))(CFDAccountCardComponent);
 

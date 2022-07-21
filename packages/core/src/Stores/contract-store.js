@@ -55,34 +55,6 @@ export default class ContractStore extends BaseStore {
             updateLimitOrder: action.bound,
         });
 
-        makeObservable(this, {
-            digits_info: observable,
-            sell_info: observable,
-            contract_config: observable.ref,
-            display_status: observable,
-            is_ended: observable,
-            is_digit_contract: observable,
-            error_message: observable,
-            contract_info: observable.ref,
-            is_static_chart: observable,
-            end_time: observable,
-            contract_update_take_profit: observable,
-            contract_update_stop_loss: observable,
-            has_contract_update_take_profit: observable,
-            has_contract_update_stop_loss: observable,
-            contract_update_history: observable.ref,
-            margin: observable,
-            barriers_array: observable.shallow,
-            markers_array: observable.shallow,
-            marker: observable.ref,
-            populateConfig: action.bound,
-            populateContractUpdateConfig: action.bound,
-            populateContractUpdateHistory: action.bound,
-            clearContractUpdateConfigValues: action.bound,
-            onChange: action.bound,
-            updateLimitOrder: action.bound
-        });
-
         this.root_store = root_store;
         this.contract_id = contract_id;
     }

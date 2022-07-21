@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import CFDPOA from '../cfd-poa';
 
@@ -73,7 +73,7 @@ describe('<CFDPOA />', () => {
             index: 1,
             onSubmit: jest.fn(),
             refreshNotifications: jest.fn(),
-            form_error: '',
+            form_error: 'test',
             get_settings: {
                 account_opening_reason: '',
                 address_city: 'Woodlands',
@@ -124,13 +124,6 @@ describe('<CFDPOA />', () => {
                 poa_status: 'verified',
             },
         };
-    });
-
-    it('should render the POA component', async () => {
-        render(<CFDPOA {...props} />);
-        await waitFor(() => {
-            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
-        });
     });
 
     it('should render the POA component with the correct texts and buttons', async () => {
@@ -214,7 +207,7 @@ describe('<CFDPOA />', () => {
         });
     });
 
-    it('shouls show error if submit button is clicked', async () => {
+    it('should show error if submit button is clicked', async () => {
         render(<CFDPOA {...props} />);
         await waitFor(() => {
             expect(screen.getByText(/Address information/i)).toBeInTheDocument();
@@ -227,19 +220,6 @@ describe('<CFDPOA />', () => {
         });
     });
 
-    it('should show error message when user enters wrong input for address', async () => {
-        render(<CFDPOA {...props} />);
-        await waitFor(() => {
-            expect(screen.getByText(/Address information/i)).toBeInTheDocument();
-        });
-        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
-        const first_line_address_text = '?';
-        expect(address_line_1_input.value).toBe('');
-        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
-        await waitFor(() => {
-            expect(address_line_1_input.value).toBe(first_line_address_text);
-        });
-    });
     it('should trigger the onSave callback when the user clicks on the previous button', async () => {
         render(<CFDPOA {...props} />);
         await waitFor(() => {

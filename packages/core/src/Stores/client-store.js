@@ -474,6 +474,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_poi_dob_mismatch() {
+        return this.account_status?.status?.includes('poi_dob_mismatch') ?? false;
+    }
+
+    @computed
     get is_social_signup() {
         return this.account_status?.status?.includes('social_signup');
     }

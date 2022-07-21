@@ -95,7 +95,7 @@ describe('<Confirm />', () => {
         render(<Confirm {...props} is_payment_agent_transfer />);
 
         expect(
-            screen.getByLabelText('I confirm that I have checked and verified the client’s transfer information')
+            screen.getByLabelText('I confirm that I have verified the client’s transfer information.')
         ).toBeInTheDocument();
     });
 

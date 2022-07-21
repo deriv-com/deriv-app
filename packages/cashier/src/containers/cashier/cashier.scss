@@ -59,6 +59,7 @@
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
             @media (max-width: 926px) {
                 width: 100vw;
+                min-height: calc(100vh - 80px);
             }
 
             @include mobile {

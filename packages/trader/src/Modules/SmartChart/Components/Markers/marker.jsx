@@ -34,6 +34,7 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
 };
 
 ChartMarker.propTypes = {
+    is_bottom_widget_visible: PropTypes.bool,
     marker_config: PropTypes.object,
     marker_content_props: PropTypes.object,
 };

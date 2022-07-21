@@ -109,7 +109,8 @@ const TimePicker = ({
 };
 
 TimePicker.propTypes = {
-    end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+    current_focus: PropTypes.string,
+    end_times: PropTypes.array,
     is_clearable: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     name: PropTypes.string,
@@ -117,7 +118,9 @@ TimePicker.propTypes = {
     padding: PropTypes.string,
     placeholder: PropTypes.string,
     selected_time: PropTypes.string,
-    start_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+    setCurrentFocus: PropTypes.func,
+    start_times: PropTypes.array,
+    validation_errors: PropTypes.array,
 };
 
 export default observer(

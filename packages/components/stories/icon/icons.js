@@ -380,6 +380,7 @@ export const icons =
         'IcUserOutline',
         'IcUser',
         'IcUtility',
+        'IcVerificationSuccess',
         'IcVerification',
         'IcWebTerminal',
         'IcWebsite',

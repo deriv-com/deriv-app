@@ -114,7 +114,6 @@ const RealAccountSignup = ({
     setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
-    setRealAccountSignupData,
     should_show_cooldown_warning_modal,
     setShouldShowCooldownWarningModal,
     set_should_show_verified_account,
@@ -347,13 +346,6 @@ const RealAccountSignup = ({
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
-
-    //Reset Form data
-    React.useEffect(() => {
-        console.log('Comp re-rendered');
-        setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setRealAccountSignupData(null);
-    }, []);
 
     const closeModal = e => {
         replaceCashierMenuOnclick();
@@ -611,7 +603,6 @@ export default connect(({ ui, client, common, modules }) => ({
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
-    setRealAccountSignupData: ui.setRealAccountSignupData,
     should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
     setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
     set_should_show_verified_account: ui.set_should_show_verified_account,

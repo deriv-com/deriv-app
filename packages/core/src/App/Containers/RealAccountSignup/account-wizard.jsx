@@ -55,7 +55,7 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
-    const [should_accept_financial_risk, setShouldAccesptFinancialRisk] = React.useState(false); // eslint-disable-line no-unused-vars
+    const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false); // eslint-disable-line no-unused-vars
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -196,7 +196,6 @@ const AccountWizard = props => {
                 ...payload,
             };
         }
-        console.log('Get clone: ', clone);
 
         return props.realAccountSignup(clone);
     };
@@ -238,37 +237,36 @@ const AccountWizard = props => {
 
     const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
-        let form_data = { ...form_values() };
+        const form_data = { ...form_values() };
         submitForm(payload)
             .then(response => {
                 // TODO: Code for Success response
                 console.log('Response: ', response); // eslint-disable-line no-console
+                props.setIsRiskWarningVisible(false);
                 props.setShouldShowVerifiedAccount(true);
-                // props.setIsRiskWarningVisible(false);
-                // if (props.real_account_signup_target === 'maltainvest') {
-                //     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
-                // } else if (props.real_account_signup_target === 'samoa') {
-                //     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
-                // } else {
-                //     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
-                // }
+                if (props.real_account_signup_target === 'maltainvest') {
+                    props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                } else if (props.real_account_signup_target === 'samoa') {
+                    props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                } else {
+                    props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                }
             })
             .catch(error => {
                 // TODO: Code for Error response
                 console.log('Check data: ', form_data);
                 console.log('Error: ', error); // eslint-disable-line no-console
-                // if (error.code === 'show risk disclaimer') {
-                //     props.setIsRiskWarningVisible(true);
-                //     setShouldAcceptFinancialRisk(true);
-                // } else {
-                //     props.onError(error, state_items);
-                // }
-                if (error.code === 'AppropriatenessTestFailed') {
+                if (error.code === 'show risk disclaimer') {
+                    props.setIsRiskWarningVisible(true);
+                    setShouldAcceptFinancialRisk(true);
+                } else if (error.code === 'AppropriatenessTestFailed') {
                     if (form_data?.risk_tolerance === 'No') {
                         props.setShouldShowRiskToleranceWarningModal(true);
                     } else {
                         props.setShouldShowAppropriatenessTestWarningModal(true);
                     }
+                } else {
+                    props.onError(error, state_items);
                 }
             })
             .finally(() => {

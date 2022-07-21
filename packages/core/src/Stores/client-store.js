@@ -1082,6 +1082,7 @@ export default class ClientStore extends BaseStore {
         //             : {}),
         //     });
         // }
+
         const response = {
             error: {
                 code: 'AppropriatenessTestFailed',
@@ -1091,6 +1092,7 @@ export default class ClientStore extends BaseStore {
             },
         };
         return Promise.reject(response.error);
+
         // return Promise.resolve('Pass');
     }
 

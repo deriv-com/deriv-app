@@ -1,5 +1,6 @@
 import { StaticUrl } from '@deriv/components';
 import {
+    daysSince,
     formatDate,
     getPathname,
     getPlatformSettings,
@@ -53,6 +54,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.modules?.cashier?.general_store?.is_p2p_visible,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
+                root_store.client.has_enabled_two_fa,
             ],
             () => {
                 if (
@@ -171,6 +173,7 @@ export default class NotificationStore extends BaseStore {
         const {
             account_settings,
             account_status,
+            account_open_date,
             accounts,
             has_iom_account,
             has_malta_account,
@@ -184,6 +187,7 @@ export default class NotificationStore extends BaseStore {
             loginid,
             obj_total_balance,
             website_status,
+            has_enabled_two_fa,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -216,8 +220,10 @@ export default class NotificationStore extends BaseStore {
                 withdrawal_locked,
             } = getStatusValidations(status || []);
 
-            if (obj_total_balance.amount_real > 0) {
+            if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
             if (loginid !== LocalStore.get('active_loginid')) return;
@@ -346,11 +352,9 @@ export default class NotificationStore extends BaseStore {
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
-
-                if (is_website_up && !has_trustpilot) {
+                if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
                     this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
-
                 if (is_tnc_needed) {
                     this.addNotificationMessage(this.client_notifications.tnc);
                 }

@@ -400,6 +400,7 @@ import './currency/ic-currency-btc.svg';
 import './currency/ic-currency-busd.svg';
 import './currency/ic-currency-dai.svg';
 import './currency/ic-currency-eth.svg';
+import './currency/ic-currency-eur-check.svg';
 import './currency/ic-currency-eur.svg';
 import './currency/ic-currency-eurs.svg';
 import './currency/ic-currency-eusdt.svg';

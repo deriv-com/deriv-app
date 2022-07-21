@@ -411,6 +411,7 @@ export const icons =
         'IcCurrencyBusd',
         'IcCurrencyDai',
         'IcCurrencyEth',
+        'IcCurrencyEurCheck',
         'IcCurrencyEur',
         'IcCurrencyEurs',
         'IcCurrencyEusdt',

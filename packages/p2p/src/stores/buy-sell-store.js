@@ -45,10 +45,14 @@ export default class BuySellStore extends BaseStore {
     };
     filter_payment_methods = [];
     payment_method_ids = [];
-    sort_list = [
-        { text: localize('Exchange rate'), value: 'rate' },
-        { text: localize('User rating'), value: 'rating' },
-    ];
+
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate (Default)'), value: 'rate' },
+            { text: localize('User rating'), value: 'rating' },
+        ];
+    }
 
     @computed
     get account_currency() {

@@ -22,6 +22,7 @@ There are 2 types of dependencies:
     - `@deriv/bot-skeleton`
     - `@deriv/bot-web-ui`
     - `@deriv/cashier`
+    - `@deriv/cfd`
     - `@deriv/p2p`
     - `@deriv/trader`
 

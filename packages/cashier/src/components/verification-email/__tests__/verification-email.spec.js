@@ -2,6 +2,12 @@ import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import VerificationEmail from '../verification-email';
 
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
+
 describe('<VerificationEmail />', () => {
     const resendVerificationEmail = jest.fn();
     const setIsResendClicked = jest.fn();
@@ -26,30 +32,9 @@ describe('<VerificationEmail />', () => {
         expect(container.querySelector('.verification-email__resend-button')).toBeInTheDocument();
     });
 
-    it("resendVerificationEmail func should not be triggered when 'resend_timeout' prop is less than 60", () => {
-        const resend_timeout = 59;
+    it('resendVerificationEmail func should be triggered when resend button in clicked', () => {
         const { container } = render(
-            <VerificationEmail
-                is_resend_clicked
-                resend_timeout={resend_timeout}
-                resendVerificationEmail={resendVerificationEmail}
-            />
-        );
-
-        const btn = container.querySelector('.verification-email__resend-button');
-        fireEvent.click(btn);
-
-        expect(resendVerificationEmail).toHaveBeenCalledTimes(0);
-    });
-
-    it("resendVerificationEmail func should be triggered when 'resend_timeout' prop is more or equal 60", () => {
-        const resend_timeout = 60;
-        const { container } = render(
-            <VerificationEmail
-                is_resend_clicked
-                resend_timeout={resend_timeout}
-                resendVerificationEmail={resendVerificationEmail}
-            />
+            <VerificationEmail is_resend_clicked resendVerificationEmail={resendVerificationEmail} />
         );
 
         const btn = container.querySelector('.verification-email__resend-button');

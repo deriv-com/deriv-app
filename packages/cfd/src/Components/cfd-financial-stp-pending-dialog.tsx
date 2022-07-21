@@ -3,6 +3,7 @@ import { Modal, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { TCFDFinancialStpPendingDialog } from './props.types';
+import RootStore from 'Stores/index';
 
 const CFDFinancialStpPendingDialog = ({
     enableApp,
@@ -34,7 +35,7 @@ const CFDFinancialStpPendingDialog = ({
     </Modal>
 );
 
-export default connect(({ ui, client, modules: { cfd } }: any) => ({
+export default connect(({ ui, client, modules: { cfd } }: RootStore) => ({
     is_fully_authenticated: client.is_fully_authenticated,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,

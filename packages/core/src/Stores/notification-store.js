@@ -1,5 +1,6 @@
 import { StaticUrl } from '@deriv/components';
 import {
+    daysSince,
     formatDate,
     getPathname,
     getPlatformSettings,
@@ -172,6 +173,7 @@ export default class NotificationStore extends BaseStore {
         const {
             account_settings,
             account_status,
+            account_open_date,
             accounts,
             has_iom_account,
             has_malta_account,
@@ -350,11 +352,9 @@ export default class NotificationStore extends BaseStore {
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
-
-                if (is_website_up && !has_trustpilot) {
+                if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
                     this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
-
                 if (is_tnc_needed) {
                     this.addNotificationMessage(this.client_notifications.tnc);
                 }

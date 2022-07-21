@@ -2,6 +2,7 @@ const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+
 const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
@@ -48,6 +49,14 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/reports/dist/reports/js/'),
+            to: 'reports/js',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/reports/dist/reports/css/'),
+            to: 'reports/css',
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/cfd/dist/cfd'),

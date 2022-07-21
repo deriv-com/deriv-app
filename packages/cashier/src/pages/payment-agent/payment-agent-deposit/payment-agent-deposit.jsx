@@ -14,6 +14,12 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
         ...supported_banks,
     ];
 
+    React.useEffect(() => {
+        return () => {
+            onChangePaymentMethod({ target: { value: '0' } });
+        };
+    }, [onChangePaymentMethod]);
+
     return (
         <React.Fragment>
             <div className='payment-agent-list__list-header'>
@@ -44,7 +50,7 @@ const PaymentAgentDeposit = ({ onChangePaymentMethod, payment_agent_list, select
                         </DesktopWrapper>
                         <MobileWrapper>
                             <SelectNative
-                                placeholder={localize('Please select')}
+                                placeholder={localize('All payment agents')}
                                 name='payment_methods'
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}

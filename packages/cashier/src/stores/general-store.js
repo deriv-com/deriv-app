@@ -223,7 +223,7 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { account_prompt_dialog, withdraw } = modules.cashier;
+            const { account_prompt_dialog, payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
@@ -233,6 +233,10 @@ export default class GeneralStore extends BaseStore {
                 account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();
+                    payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+                    if (!payment_agent_transfer.is_payment_agent) {
+                        payment_agent_transfer.checkIsPaymentAgent();
+                    }
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();
@@ -278,7 +282,8 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
-            payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+            await payment_agent.setPaymentAgentList();
+            await payment_agent.filterPaymentAgentList();
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();
@@ -286,6 +291,10 @@ export default class GeneralStore extends BaseStore {
 
             if (!account_transfer.accounts_list.length) {
                 account_transfer.sortAccountsTransfer();
+            }
+
+            if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
+                common.routeTo(routes.cashier_deposit);
             }
 
             if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {

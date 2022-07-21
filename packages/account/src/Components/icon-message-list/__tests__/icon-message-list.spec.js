@@ -14,7 +14,7 @@ describe('<IconMessageList/>', () => {
     const messages_list = ['Sample Text1', 'Sample Text2', 'Sample Text3', 'Sample Text4'];
     it('should render IconMessageList component', () => {
         render(<IconMessageList />);
-        expect(screen.getByTestId('icon_message_list')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_icon_message_list')).toBeInTheDocument();
     });
 
     it('should render icon passed to the component', () => {

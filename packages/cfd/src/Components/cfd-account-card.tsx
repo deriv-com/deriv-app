@@ -249,7 +249,13 @@ const CFDAccountCardComponent = ({
     const checkMultipleSvgAcc = () => {
         existing_accounts_data?.map(acc => {
             if (acc.landing_company_short === 'svg') {
-                all_svg_acc.push(acc);
+                if (all_svg_acc.length) {
+                    all_svg_acc.find(svg_acc => {
+                        if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
+                    });
+                } else {
+                    all_svg_acc.push(acc);
+                }
             }
         });
         return all_svg_acc;

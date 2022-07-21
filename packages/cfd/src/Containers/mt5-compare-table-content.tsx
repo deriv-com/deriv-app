@@ -460,7 +460,9 @@ const DMT5CompareModalContent = ({
                                             disabled={Object.entries(current_list).some(([, value]) => {
                                                 const [market, type] = item.action.split('_');
                                                 return (
-                                                    value.market_type === market && value.landing_company_short === type
+                                                    value.market_type === market &&
+                                                    value.landing_company_short === type &&
+                                                    value.account_type === 'real'
                                                 );
                                             })}
                                             type='button'

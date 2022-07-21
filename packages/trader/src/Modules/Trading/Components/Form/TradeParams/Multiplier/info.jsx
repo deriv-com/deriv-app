@@ -113,10 +113,16 @@ const MultipliersInfo = ({
 };
 
 MultipliersInfo.propTypes = {
+    amount: PropTypes.number,
     className: PropTypes.string,
+    commission: PropTypes.number,
     commission_text_size: PropTypes.string,
+    currency: PropTypes.string,
+    has_stop_loss: PropTypes.bool,
     is_tooltip_relative: PropTypes.bool,
+    multiplier: PropTypes.number,
     should_show_tooltip: PropTypes.bool,
+    stop_out: PropTypes.number,
     stop_out_text_size: PropTypes.string,
 };
 

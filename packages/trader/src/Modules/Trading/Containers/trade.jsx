@@ -346,12 +346,6 @@ const Chart = props => {
     return (
         <SmartChartWithRef
             ref={charts_ref}
-            initialData={{
-                activeSymbols: active_symbols,
-            }}
-            chartData={{
-                activeSymbols: active_symbols,
-            }}
             barriers={barriers}
             bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}

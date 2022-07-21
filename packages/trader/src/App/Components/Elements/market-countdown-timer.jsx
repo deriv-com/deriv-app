@@ -198,6 +198,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
 };
 
 MarketCountdownTimer.propTypes = {
+    active_symbols: PropTypes.array,
     is_main_page: PropTypes.bool,
     setIsTimerLoading: PropTypes.func,
     onMarketOpen: PropTypes.func,

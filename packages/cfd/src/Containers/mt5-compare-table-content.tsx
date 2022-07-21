@@ -457,9 +457,12 @@ const DMT5CompareModalContent = ({
                                     <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
                                         <Button
                                             className='cfd-real-compare-accounts__table-footer__button'
-                                            disabled={Object.entries(current_list).some(
-                                                ([, value]) => value.landing_company_short === item.action.split('_')[1]
-                                            )}
+                                            disabled={Object.entries(current_list).some(([, value]) => {
+                                                const [market, type] = item.action.split('_');
+                                                return (
+                                                    value.market_type === market && value.landing_company_short === type
+                                                );
+                                            })}
                                             type='button'
                                             primary_light
                                             onClick={() => {

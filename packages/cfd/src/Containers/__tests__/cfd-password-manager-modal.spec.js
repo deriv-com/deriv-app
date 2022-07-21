@@ -29,43 +29,11 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => ({
     getErrorMessages: jest.fn(() => ({
         password_warnings: mock_errors,
-        password: mock_form_error_messages,
     })),
     validLength: jest.fn(() => {
         validLengthMock;
     }),
 }));
-const validatePassword = () => {
-    const errors = {};
-
-    if (
-        !validLength(values.new_password, {
-            min: 8,
-            max: 25,
-        })
-    ) {
-        errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
-            min_number: 8,
-            max_number: 25,
-        });
-    } else if (!validPassword(values.new_password)) {
-        errors.new_password = getErrorMessages().password();
-    } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
-        errors.new_password = localize('Your password cannot be the same as your email address.');
-    }
-
-    if (!values.old_password && values.old_password !== undefined) {
-        errors.old_password = localize('This field is required');
-    }
-
-    return errors;
-};
-
-const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-
-const mock_form_error_messages = {
-    password: () => localize('Password should have lower and uppercase English letters with numbers.'),
-};
 
 const validLengthMock = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
@@ -134,9 +102,7 @@ describe('<CFDPasswordManagerModal />', () => {
         selected_server: 'p01_ts03',
         sendVerifyEmail: jest.fn(),
         password_warnings: mock_errors,
-        password: mock_form_error_messages,
         selected_step_ref: { current: { isSubmitting: false } },
-        validatePassword: validatePassword,
     };
 
     it('should render the DMT5 password modal', () => {
@@ -151,6 +117,7 @@ describe('<CFDPasswordManagerModal />', () => {
             screen.getByText(/Use this password to log in to your DMT5 accounts on the desktop, web, and mobile apps/i)
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Change DMT5 password/i })).toBeInTheDocument();
+        screen.debug();
     });
 
     it('should render change-password-confirmation-modal if Change DMT5 password button is clicked', () => {
@@ -302,6 +269,7 @@ describe('<CFDPasswordManagerModal />', () => {
                 /If this is the first time you try to create a password, or you have forgotten your password, please reset it/i
             )
         ).toBeInTheDocument();
+        screen.debug();
     });
 
     it('should change input of current investor password and new investor password and trigger change investor password button', async () => {

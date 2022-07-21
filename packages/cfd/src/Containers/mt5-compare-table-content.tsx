@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
 type TRowItem = {
     text: string | Array<string>;
@@ -34,6 +34,8 @@ type TOpenAccountTransferMeta = {
 };
 
 type TDMT5CompareModalContentProps = {
+    account_settings: GetSettings;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
     account_type: {
         type: string;
         category: string;
@@ -49,8 +51,8 @@ type TDMT5CompareModalContentProps = {
         document_status: string;
         identity_status: string;
     };
-    has_real_mt5_login: boolean;
     toggleCFDPersonalDetailsModal: () => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
 };
 
@@ -199,8 +201,9 @@ const eu_footer_button: TFooterButtonData[] = [{ label: localize('Add'), action:
 
 const DMT5CompareModalContent = ({
     authentication_status,
+    account_settings,
+    setAccountSettings,
     current_list,
-    has_real_mt5_login,
     is_logged_in,
     is_demo_tab,
     openPasswordModal,
@@ -209,12 +212,35 @@ const DMT5CompareModalContent = ({
     toggleCompareAccounts,
     trading_platform_available_accounts,
     show_eu_related,
+    setJurisdictionSelectedShortcode,
 }: TDMT5CompareModalContentProps) => {
+    const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
+
     const available_accounts_keys = trading_platform_available_accounts.map(
         account => `${account.market_type === 'gaming' ? 'synthetic' : account.market_type}_${account.shortcode}`
     );
     const synthetic_accounts_count = available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
     const financial_accounts_count = available_accounts_keys.filter(key => key.startsWith('financial')).length;
+
+    React.useEffect(() => {
+        if (!has_submitted_personal_details) {
+            let get_settings_response: GetSettings = {};
+            if (!account_settings) {
+                WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
+                    get_settings_response = response.get_settings as GetSettings;
+                    setAccountSettings(response.get_settings as GetSettings);
+                });
+            } else {
+                get_settings_response = account_settings;
+            }
+            const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+                get_settings_response as GetSettings;
+            if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
+                setHasSubmittedPersonalDetails(true);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getAvailableAccountsContent = (_content: TModalContentProps[]) => {
         return _content.map(row_data => {
@@ -269,28 +295,62 @@ const DMT5CompareModalContent = ({
 
         switch (item.action) {
             case 'synthetic_svg':
+                toggleCompareAccounts();
+                setJurisdictionSelectedShortcode('svg');
+                openPasswordModal(type_of_account);
+                break;
             case 'financial_svg':
                 toggleCompareAccounts();
-                openPasswordModal(type_of_account);
+                setJurisdictionSelectedShortcode('svg');
+                if (poi_poa_verified && !has_submitted_personal_details) {
+                    toggleCFDPersonalDetailsModal();
+                } else {
+                    openPasswordModal(type_of_account);
+                }
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
+                toggleCompareAccounts();
+                setJurisdictionSelectedShortcode('bvi');
+                if (poi_poa_verified) {
+                    if (!has_submitted_personal_details) {
+                        toggleCFDPersonalDetailsModal();
+                    } else {
+                        openPasswordModal(type_of_account);
+                    }
+                } else {
+                    toggleCFDVerificationModal();
+                }
+                break;
             case 'financial_maltainvest':
                 toggleCompareAccounts();
+                setJurisdictionSelectedShortcode('maltainvest');
                 if (poi_poa_verified) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
                 }
+                break;
 
+            case 'financial_labuan':
+                toggleCompareAccounts();
+                setJurisdictionSelectedShortcode('labuan');
+                if (poi_poa_verified) {
+                    if (!has_submitted_personal_details) {
+                        toggleCFDPersonalDetailsModal();
+                    } else {
+                        openPasswordModal(type_of_account);
+                    }
+                } else {
+                    toggleCFDVerificationModal();
+                }
                 break;
 
             case 'financial_vanuatu':
-            case 'financial_labuan':
                 toggleCompareAccounts();
+                setJurisdictionSelectedShortcode('vanuatu');
                 if (poi_poa_verified) {
-                    // for bvi, labuan & vanuatu:
-                    if (!has_real_mt5_login) {
+                    if (!has_submitted_personal_details) {
                         toggleCFDPersonalDetailsModal();
                     } else {
                         openPasswordModal(type_of_account);
@@ -486,9 +546,12 @@ const DMT5CompareModalContent = ({
 
 export default connect(({ modules, client }: RootStore) => ({
     account_type: modules.cfd.account_type,
+    account_settings: client.account_settings,
+    setAccountSettings: client.setAccountSettings,
     current_list: modules.cfd.current_list,
     has_real_mt5_login: client.has_real_mt5_login,
     authentication_status: client.authentication_status,
+    setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,

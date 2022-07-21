@@ -136,12 +136,13 @@ const PositionsDrawer = ({
 
 PositionsDrawer.propTypes = {
     all_positions: MobxPropTypes.arrayOrObservableArray,
-    children: PropTypes.any,
+    children: PropTypes.node,
     error: PropTypes.string,
     is_mobile: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
+    onHoverPosition: PropTypes.func,
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
@@ -158,6 +159,7 @@ PositionsDrawer.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     toggleCancellationWarning: PropTypes.func,
     toggleUnsupportedContractModal: PropTypes.func,
+    trade_contract_type: PropTypes.string,
 };
 
 export default connect(({ modules, ui, client, common, portfolio, contract_trade }) => ({

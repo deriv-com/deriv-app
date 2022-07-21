@@ -625,6 +625,25 @@
         height: fit-content;
     }
 
+    &__balance {
+        margin-bottom: 0.8rem;
+        &--region {
+            border: 1px solid #2a3052;
+            border-radius: 1rem;
+            background-color: #2a3052;
+            padding: 0.2rem 0.8rem;
+        }
+        &--value {
+            @include typeface(--title-left-bold-black);
+            color: var(--text-profit-success);
+            padding: 0.8rem;
+        }
+    }
+
+    &--login-id {
+        padding: 0 0.8rem;
+    }
+
     &__item {
         width: 90%;
         background-color: var(--general-section-1);
@@ -667,7 +686,6 @@
     &__wrapper {
         display: grid;
         grid-template-rows: 1fr;
-        height: 100%;
         justify-content: center;
 
         @include mobile {
@@ -677,10 +695,6 @@
             &:not(:last-child) {
                 margin-bottom: 2.4rem;
             }
-        }
-
-        @include desktop {
-            height: 100%;
         }
     }
 
@@ -758,11 +772,6 @@
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
         line-height: 1.45;
-    }
-    &--balance {
-        @include typeface(--title-left-bold-black);
-        color: var(--text-profit-success);
-        padding: 0.8rem;
     }
     &__banner {
         position: absolute;

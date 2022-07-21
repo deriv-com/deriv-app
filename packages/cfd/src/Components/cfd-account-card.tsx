@@ -193,6 +193,7 @@ const CFDAccountCardComponent = ({
     const synthetic_available_accounts = trading_platform_available_accounts?.filter(
         available_account => available_account.market_type === 'gaming'
     );
+    const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
 
     const available_and_existing_are_same =
         type.type === 'synthetic' && type.category === 'real'
@@ -244,6 +245,29 @@ const CFDAccountCardComponent = ({
         }
         return getPlatformDXTradeDownloadLink('android');
     };
+
+    const checkMultipleSvgAcc = () => {
+        existing_accounts_data?.map(acc => {
+            if (acc.landing_company_short === 'svg') {
+                all_svg_acc.push(acc);
+            }
+        });
+        return all_svg_acc;
+    };
+
+    const getServerName: (value: DetailsOfEachMT5Loginid) => string = React.useCallback(server => {
+        if (server) {
+            const server_region = (server as DetailsOfEachMT5Loginid).server_info?.geolocation?.region;
+            if (server_region) {
+                return `${server_region} ${
+                    (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence === 1
+                        ? ''
+                        : (server as DetailsOfEachMT5Loginid)?.server_info?.geolocation?.sequence
+                }`;
+            }
+        }
+        return '';
+    }, []);
 
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
     const tbody_content = platform === CFD_PLATFORMS.DXTRADE && (
@@ -298,7 +322,7 @@ const CFDAccountCardComponent = ({
                             <p className='cfd-account-card--paragraph'>{descriptor}</p>
                         )}
                         {existing_data?.display_balance && is_logged_in && platform === CFD_PLATFORMS.DXTRADE && (
-                            <Text size='xxl' className='cfd-account-card--balance'>
+                            <Text size='xxl' className='cfd-account-card__balance--value'>
                                 <Money
                                     amount={existing_data.display_balance}
                                     currency={existing_data.currency}
@@ -354,7 +378,7 @@ const CFDAccountCardComponent = ({
                                         </div>
                                     )}
                                     {existing_data?.display_balance && is_logged_in && (
-                                        <Text size='xxl' className='cfd-account-card--balance'>
+                                        <Text size='xxl' className='cfd-account-card__balance--value'>
                                             <Money
                                                 amount={existing_data.display_balance}
                                                 currency={existing_data.currency}
@@ -406,15 +430,34 @@ const CFDAccountCardComponent = ({
                                             />
                                         </div>
                                     )}
+                                    {(acc as TTradingPlatformAccounts)?.display_login && (
+                                        <div className='cfd-account-card--login-id'>
+                                            <Text size='xxxs' weight='bold'>
+                                                {(acc as TTradingPlatformAccounts)?.display_login}
+                                            </Text>
+                                        </div>
+                                    )}
                                     {existing_data?.display_balance && is_logged_in && (
-                                        <Text size='xxl' className='cfd-account-card--balance'>
-                                            <Money
-                                                amount={acc.display_balance}
-                                                currency={acc.currency}
-                                                has_sign={!!acc.balance && acc.balance < 0}
-                                                show_currency
-                                            />
-                                        </Text>
+                                        <div className='cfd-account-card__balance'>
+                                            <Text size='xxl' className='cfd-account-card__balance--value'>
+                                                <Money
+                                                    amount={acc.display_balance}
+                                                    currency={acc.currency}
+                                                    has_sign={!!acc.balance && acc.balance < 0}
+                                                    show_currency
+                                                />
+                                            </Text>
+                                            {checkMultipleSvgAcc()?.length > 1 && (
+                                                <Text
+                                                    className='cfd-account-card__balance--region'
+                                                    color='colored-background'
+                                                    size='xxxs'
+                                                    weight='bold'
+                                                >
+                                                    {getServerName(acc)}
+                                                </Text>
+                                            )}
+                                        </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
                                         {existing_data && is_logged_in && (

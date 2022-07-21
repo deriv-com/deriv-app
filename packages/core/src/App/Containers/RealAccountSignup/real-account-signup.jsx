@@ -448,7 +448,8 @@ const RealAccountSignup = ({
             setRiskWarningTitle(localize('24-hour Cool Down Warning'));
             if (sign_up_error.code === 'AppropriatenessTestFailed') {
                 setShouldShowAppropriatenessTestWarningModal(false);
-                setShouldShowRiskToleranceWarningModal(true);
+                setShouldShowRiskToleranceWarningModal(false);
+                setShouldShowCooldownWarningModal(true);
             }
             // TODO: Handle Error case
         }

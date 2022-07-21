@@ -54,20 +54,21 @@ const DetailComponent = ({
                     lifetimeValid: +(lifetime_valid && !expiration_date),
                 })
                     .then(response => {
+                        file_to_upload_index += 1;
                         if (response.warning || response.error) {
                             setStatus(STATUS.IS_FAILED);
                             setError(
                                 response.message || (response.error ? response.error.message : localize('Failed'))
                             );
-                        } else {
-                            file_to_upload_index += 1;
                             if (file_to_upload_index < files_length) {
+                                uploadNext();
+                            }
+                        } else if (file_to_upload_index < files_length) {
                                 results.push(response);
                                 uploadNext();
                             } else {
                                 resolve(results);
                             }
-                        }
                     })
                     .catch(error => {
                         reject(error);
@@ -81,7 +82,9 @@ const DetailComponent = ({
         setStatus(STATUS.IS_UPLOADING);
 
         uploadFiles(values).then(() => {
-            setStatus(STATUS.IS_COMPLETED);
+            if (status === STATUS.IS_UPLOADING) {
+                setStatus(STATUS.IS_COMPLETED);
+            }
         });
     };
 

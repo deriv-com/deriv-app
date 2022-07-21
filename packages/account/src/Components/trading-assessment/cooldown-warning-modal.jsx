@@ -6,15 +6,17 @@ const CooldownWarningModal = ({ show_cool_down_modal, setShowCoolDownModal }) =>
     return (
         <Modal
             width='44rem'
-            height='44.4rem'
             title={localize('24-hour Cool Down Warning')}
             is_open={show_cool_down_modal}
-            className='risk-tolerance'
+            className='center-risk-modal'
         >
             <Modal.Body>
-                <Icon icon='IcRedWarning' size={63} />
                 <Text as='p' size='xs' align='center'>
-                    <Localize i18n_default_text='You can create your account on 11 June at 2:00 pm. Please click ‘OK’ to continue.' />
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the risk of losing your money.
+                        <0/><0/> As you have declined our previous warning, you would need to wait 24 hours before you can proceed further.'
+                        components={[<br key={0} />]}
+                    />
                 </Text>
             </Modal.Body>
             <Modal.Footer>

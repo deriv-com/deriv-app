@@ -17,8 +17,8 @@ const TestWarningModal = ({ show_risk_modal, onAccept, onDecline }) => {
                 </Text>
                 <Text as='p' size='xs'>
                     <Localize
-                        i18n_default_text='<0/>On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
-                        components={[<br key={0} />, <br key={1} />]}
+                        i18n_default_text='<0/>On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><0/>'
+                        components={[<br key={0} />]}
                     />
                 </Text>
                 <Text as='p' size='xs'>

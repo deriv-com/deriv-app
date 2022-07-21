@@ -52,9 +52,17 @@ const ContractTypeDialog = ({
 );
 
 ContractTypeDialog.propTypes = {
+    categories: PropTypes.array,
     children: PropTypes.element,
+    is_info_dialog_open: PropTypes.bool,
+    is_open: PropTypes.bool,
+    item: PropTypes.object,
+    list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    onBackButtonClick: PropTypes.func,
+    onCategoryClick: PropTypes.func,
+    onChangeInput: PropTypes.func,
     onClose: PropTypes.func,
-    open: PropTypes.bool,
+    selected: PropTypes.string,
     show_loading: PropTypes.bool,
 };
 

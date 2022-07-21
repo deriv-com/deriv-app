@@ -6,15 +6,9 @@ Reusable UI components for Deriv.
 
 **In this document**
 
--   [Other documents](#other-documents)
 -   [Commands](#commands)
 -   [Storybook](#storybook)
 -   [Usage](#usage)
-
-## Other documents
-
--   [General](docs/README.md) - Contains general philosophy and overview of this package
--   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
 
 ## Commands
 

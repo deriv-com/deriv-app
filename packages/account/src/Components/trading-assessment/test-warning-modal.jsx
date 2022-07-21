@@ -7,19 +7,21 @@ const TestWarningModal = ({ show_risk_modal, onAccept, onDecline }) => {
         <Modal
             width='44rem'
             has_close_icon={false}
-            is_vertical_centered
             title={localize('Appropriateness Test Warning')}
             is_open={show_risk_modal}
-            className='_risk-tolerance'
+            className='risk-tolerance'
         >
-            <Modal.Body className='risk-tolerance__body'>
+            <Modal.Body>
                 <Text as='p' size='xs'>
                     <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you and whether you possess the experience and knowledge to understand the risks involved.' />
                 </Text>
-                <Text as='p' size='xs' className='risk-tolerance__body--main-text'>
-                    <Localize i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.' />
+                <Text as='p' size='xs'>
+                    <Localize
+                        i18n_default_text='<0/>On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
+                        components={[<br key={0} />, <br key={1} />]}
+                    />
                 </Text>
-                <Text as='p' size='xs' className='risk-tolerance__body--bottom-text'>
+                <Text as='p' size='xs'>
                     <Localize i18n_default_text='By clicking ‘Accept’ and proceeding with the account opening, you should note that you may be exposing yourself to risks. These risks, which may be significant, include the risk of losing the entire sum invested, and you may not have the knowledge and experience to properly assess or mitigate them.' />
                 </Text>
             </Modal.Body>

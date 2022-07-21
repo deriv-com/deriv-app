@@ -6,20 +6,19 @@ const CooldownWarningModal = ({ show_cool_down_modal, setShowCoolDownModal }) =>
     return (
         <Modal
             width='44rem'
-            is_vertical_centered
+            height='44.4rem'
             title={localize('24-hour Cool Down Warning')}
             is_open={show_cool_down_modal}
             className='risk-tolerance'
         >
-            <Modal.Body className='risk-tolerance__body'>
-                <Icon icon='IcRedWarning' size={63} className='risk-tolerance__body--icon' color='red' />
-                <Text as='p' size='xs' align='center' className='risk-tolerance__body-text'>
+            <Modal.Body>
+                <Icon icon='IcRedWarning' size={63} />
+                <Text as='p' size='xs' align='center'>
                     <Localize i18n_default_text='You can create your account on 11 June at 2:00 pm. Please click ‘OK’ to continue.' />
                 </Text>
             </Modal.Body>
-            <Modal.Footer className='risk-tolerance__footer'>
+            <Modal.Footer>
                 <Button
-                    className='risk-tolerance__footer--button'
                     type='button'
                     large
                     text={localize('OK')}

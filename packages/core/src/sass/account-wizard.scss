@@ -580,8 +580,14 @@
 }
 
 .dc-modal__container_risk-acceptance {
+    .dc-modal-header {
+        border-bottom: 2px solid #F2F3F4;
+    }
     .dc-modal-body {
         text-align: center;
+        .risk-acceptance__text{
+            margin: 2.4rem auto;
+        }
     }
 
     .dc-modal-footer {

@@ -391,15 +391,24 @@ const CFDAccountCardComponent = ({
                                             />
                                         </div>
                                     )} */}
+                                    {(existing_data as TTradingPlatformAccounts)?.display_login && (
+                                        <div className='cfd-account-card--login-id'>
+                                            <Text size='xxxs' weight='bold'>
+                                                {(existing_data as TTradingPlatformAccounts)?.display_login}
+                                            </Text>
+                                        </div>
+                                    )}
                                     {existing_data?.display_balance && is_logged_in && (
-                                        <Text size='xxl' className='cfd-account-card__balance--value'>
-                                            <Money
-                                                amount={existing_data.display_balance}
-                                                currency={existing_data.currency}
-                                                has_sign={!!existing_data.balance && existing_data.balance < 0}
-                                                show_currency
-                                            />
-                                        </Text>
+                                        <div className='cfd-account-card__balance'>
+                                            <Text size='xxl' className='cfd-account-card__balance--value'>
+                                                <Money
+                                                    amount={existing_data.display_balance}
+                                                    currency={existing_data.currency}
+                                                    has_sign={!!existing_data.balance && existing_data.balance < 0}
+                                                    show_currency
+                                                />
+                                            </Text>
+                                        </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
                                         {existing_data && is_logged_in && (

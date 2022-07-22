@@ -26,14 +26,23 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     },
 }));
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => ({
-    getErrorMessages: jest.fn(() => ({
-        password_warnings: mock_errors,
-    })),
-    validLength: jest.fn(() => {
-        validLengthMock;
-    }),
-}));
+jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => {
+    const original_module = jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules.js');
+    return {
+        ...original_module,
+        validPassword: jest.fn(() => {
+            validPasswordMock;
+        }),
+        validLength: jest.fn(() => {
+            validLengthMock;
+        }),
+        getErrorMessages: jest.fn(() => ({
+            password_warnings: mock_errors,
+        })),
+    };
+});
+
+const validPasswordMock = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 
 const validLengthMock = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
@@ -101,8 +110,6 @@ describe('<CFDPasswordManagerModal />', () => {
         selected_account_group: 'demo',
         selected_server: 'p01_ts03',
         sendVerifyEmail: jest.fn(),
-        password_warnings: mock_errors,
-        selected_step_ref: { current: { isSubmitting: false } },
     };
 
     it('should render the DMT5 password modal', () => {
@@ -117,7 +124,6 @@ describe('<CFDPasswordManagerModal />', () => {
             screen.getByText(/Use this password to log in to your DMT5 accounts on the desktop, web, and mobile apps/i)
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Change DMT5 password/i })).toBeInTheDocument();
-        screen.debug();
     });
 
     it('should render change-password-confirmation-modal if Change DMT5 password button is clicked', () => {
@@ -273,7 +279,8 @@ describe('<CFDPasswordManagerModal />', () => {
     });
 
     it('should change input of current investor password and new investor password and trigger change investor password button', async () => {
-        renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
+        const handleSubmit = jest.fn();
+        renderwithRouter(<CFDPasswordManagerModal {...mock_props} onSubmit={handleSubmit} />);
         expect(screen.getByText(/Investor password/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/Investor password/i));
 
@@ -293,13 +300,10 @@ describe('<CFDPasswordManagerModal />', () => {
         await waitFor(() => {
             fireEvent.change(new_investor_password, { target: { value: 'abcabcabc' } });
         });
-        // await waitFor(() => {
-        //     expect(
-        //         screen.getByText(/Repeats like "abcabcabc" are only slightly harder to guess than "abc"/i)
-        //     ).toBeInTheDocument();
-        // });
 
-        fireEvent.click(screen.getByRole('button', { name: /Change investor password/i }));
+        fireEvent.click(await screen.findByRole('button', { name: /Change investor password/i }));
+        expect(current_investor_password).toHaveValue('Testing1234');
+        expect(new_investor_password).toHaveValue('abcabcabc');
     });
 
     it('should render SentEmailModal if the user clicks create or reset investor password', async () => {

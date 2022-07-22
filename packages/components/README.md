@@ -27,8 +27,9 @@ npm run build
 ```
 
 > The following commands are to be executed inside of the components directory and not the project root directory
-> Serve:
-> The `npm run serve` command is used to serve the components package
+
+Serve:
+The `npm run serve` command is used to serve the components package
 
 ```sh
 npm run serve

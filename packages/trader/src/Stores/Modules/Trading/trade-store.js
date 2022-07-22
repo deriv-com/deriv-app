@@ -271,7 +271,7 @@ export default class TradeStore extends BaseStore {
 
         await this.setActiveSymbols();
         await this.root_store.active_symbols.setActiveSymbols();
-        if (should_set_default_symbol && !this.root_store.common.is_language_changing) {
+        if (should_set_default_symbol) {
             await this.setDefaultSymbol();
         }
 
@@ -397,7 +397,6 @@ export default class TradeStore extends BaseStore {
                 false
             );
         });
-
         await this.loadActiveSymbols(should_set_default_symbol);
         await this.setContractTypes();
         await this.processNewValuesAsync(
@@ -1049,7 +1048,11 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
-        await this.loadActiveSymbols(true, false);
+        if (this.root_store.common.is_language_changing) {
+            await this.loadActiveSymbols(false, false);
+        } else {
+            await this.loadActiveSymbols(true, false);
+        }
 
         this.resetErrorServices();
         await this.setContractTypes();

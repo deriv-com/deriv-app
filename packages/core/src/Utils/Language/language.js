@@ -9,7 +9,9 @@ export const currentLanguage = getLanguage();
 
 export const getURL = lang => urlForLanguage(lang);
 
+let timerID;
 export const changeLanguage = (key, changeCurrentLanguage, setLanguageChanging) => {
+    if (timerID) clearTimeout(timerID);
     setLanguageChanging(true);
     const request = {
         set_settings: 1,
@@ -35,7 +37,7 @@ export const changeLanguage = (key, changeCurrentLanguage, setLanguageChanging) 
             });
         })
         .then(() => {
-            setTimeout(() => {
+            timerID = setTimeout(() => {
                 setLanguageChanging(false);
             }, 10000);
         });

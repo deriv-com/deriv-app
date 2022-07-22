@@ -335,7 +335,12 @@ export default class AccountTransferStore {
                       platform: account.account_type,
                       is_eu: this.root_store.client.is_eu,
                   })} ${
-                      account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
+                      account.landing_company_short &&
+                      account.landing_company_short !== 'svg' &&
+                      account.landing_company_short !== 'bvi'
+                          ? account.landing_company_short?.charAt(0).toUpperCase() +
+                            account.landing_company_short?.slice(1)
+                          : account.landing_company_short.toUpperCase()
                   }`
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency

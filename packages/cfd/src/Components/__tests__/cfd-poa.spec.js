@@ -56,11 +56,13 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<CFDPOA />', () => {
-    const address_line_1 = 'First line of address*';
-    const address_line_2 = 'Second line of address';
-    const address_postcode = 'Postal/ZIP code';
-    const address_state = 'State/Province';
-    const address_town = 'Town/City*';
+    const address = {
+        address_line_1: 'First line of address*',
+        address_line_2: 'Second line of address',
+        address_postcode: 'Postal/ZIP code',
+        address_state: 'State/Province',
+        address_town: 'Town/City*',
+    };
 
     let props;
 
@@ -147,23 +149,23 @@ describe('<CFDPOA />', () => {
             expect(screen.getByText(/Address information/i)).toBeInTheDocument();
         });
 
-        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
+        const address_line_1_input = screen.getByPlaceholderText(address.address_line_1);
         const first_line_address_text = 'Test first line address';
         expect(address_line_1_input.value).toBe('');
 
-        const address_line_2_input = screen.getByPlaceholderText(address_line_2);
+        const address_line_2_input = screen.getByPlaceholderText(address.address_line_2);
         const second_line_address_text = 'Test second line address';
         expect(address_line_2_input.value).toBe('');
 
-        const address_town_input = screen.getByPlaceholderText(address_town);
+        const address_town_input = screen.getByPlaceholderText(address.address_town);
         const town_text = 'Test town';
         expect(address_town_input.value).toBe('');
 
-        const address_state_input = screen.getByPlaceholderText(address_state);
+        const address_state_input = screen.getByPlaceholderText(address.address_state);
         const address_state_text = 'Test state';
         expect(address_state_input.value).toBe('Default test state');
 
-        const address_postcode_input = screen.getByPlaceholderText(address_postcode);
+        const address_postcode_input = screen.getByPlaceholderText(address.address_postcode);
         const address_postcode_text = 'Test postcode';
         expect(address_postcode_input.value).toBe('');
 
@@ -223,23 +225,23 @@ describe('<CFDPOA />', () => {
         await waitFor(() => {
             expect(screen.getByText(/Address information/i)).toBeInTheDocument();
         });
-        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
+        const address_line_1_input = screen.getByPlaceholderText(address.address_line_1);
         const first_line_address_text = 'Test first line address';
         expect(address_line_1_input.value).toBe('');
 
-        const address_line_2_input = screen.getByPlaceholderText(address_line_2);
+        const address_line_2_input = screen.getByPlaceholderText(address.address_line_2);
         const second_line_address_text = 'Test second line address';
         expect(address_line_2_input.value).toBe('');
 
-        const address_town_input = screen.getByPlaceholderText(address_town);
+        const address_town_input = screen.getByPlaceholderText(address.address_town);
         const town_text = 'Test town';
         expect(address_town_input.value).toBe('');
 
-        const address_state_input = screen.getByPlaceholderText(address_state);
+        const address_state_input = screen.getByPlaceholderText(address.address_state);
         const address_state_text = 'Test state';
         expect(address_state_input.value).toBe('Default test state');
 
-        const address_postcode_input = screen.getByPlaceholderText(address_postcode);
+        const address_postcode_input = screen.getByPlaceholderText(address.address_postcode);
         const address_postcode_text = 'Test postcode';
         expect(address_postcode_input.value).toBe('');
 

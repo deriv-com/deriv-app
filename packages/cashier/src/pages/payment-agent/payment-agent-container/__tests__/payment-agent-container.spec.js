@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
-import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
+import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
 
 jest.mock('Stores/connect.js', () => ({
@@ -21,7 +21,7 @@ jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () => () => <div
 jest.mock('Pages/payment-agent/payment-agent-receipt', () => () => <div>PaymentAgentReceipt</div>);
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
 
-describe('<PaymentAgentDepositWithdrawContainer />', () => {
+describe('<PaymentAgentContainer />', () => {
     const props = {
         app_contents_scroll_ref: {
             current: {},
@@ -72,7 +72,7 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
     };
 
     it('should show proper messages and icons', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} />);
+        render(<PaymentAgentContainer {...props} />);
 
         expect(
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
@@ -86,7 +86,7 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
     });
 
     it('should show proper header when is_deposit is equal to false', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} is_deposit={false} />);
+        render(<PaymentAgentContainer {...props} is_deposit={false} />);
 
         expect(
             screen.getByText(
@@ -97,7 +97,7 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
     });
 
     it('should show PaymentAgentUnlistedWithdrawForm when the user clicks on "search for them using their account number" link', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} is_deposit={false} />);
+        render(<PaymentAgentContainer {...props} is_deposit={false} />);
 
         const el_withdrawal_link = screen.getByTestId('dt_withdrawal_link');
         fireEvent.click(el_withdrawal_link);
@@ -106,20 +106,20 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
     });
 
     it('should show PaymentAgentWithdrawConfirm component when is_try_withdraw_successful is equal to true', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} is_try_withdraw_successful />);
+        render(<PaymentAgentContainer {...props} is_try_withdraw_successful />);
 
         expect(screen.getByText('PaymentAgentWithdrawConfirm')).toBeInTheDocument();
     });
 
     it('should show PaymentAgentReceipt component when is_withdraw_successful is equal to true', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} is_withdraw_successful />);
+        render(<PaymentAgentContainer {...props} is_withdraw_successful />);
 
         expect(screen.getByText('PaymentAgentReceipt')).toBeInTheDocument();
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(<PaymentAgentDepositWithdrawContainer {...props} />);
+        render(<PaymentAgentContainer {...props} />);
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });

@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import VerificationEmail from 'Components/verification-email';
-import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
+import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';
@@ -63,11 +63,7 @@ const PaymentAgentList = ({
                     header_fit_content={isDesktop()}
                 >
                     <div label={localize('Deposit')}>
-                        {is_loading ? (
-                            <Loading is_fullscreen={false} />
-                        ) : (
-                            <PaymentAgentDepositWithdrawContainer is_deposit />
-                        )}
+                        {is_loading ? <Loading is_fullscreen={false} /> : <PaymentAgentContainer is_deposit />}
                     </div>
                     <div label={localize('Withdrawal')}>
                         {error?.code ? (
@@ -86,7 +82,7 @@ const PaymentAgentList = ({
                                     </div>
                                 ) : (
                                     (verification_code || is_payment_agent_withdraw) && (
-                                        <PaymentAgentDepositWithdrawContainer verification_code={verification_code} />
+                                        <PaymentAgentContainer verification_code={verification_code} />
                                     )
                                 )}
                             </div>

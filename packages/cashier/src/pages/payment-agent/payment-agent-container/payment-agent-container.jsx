@@ -11,7 +11,7 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';
 
-const PaymentAgentDepositWithdrawContainer = ({
+const PaymentAgentContainer = ({
     app_contents_scroll_ref,
     is_dark_mode_on,
     is_deposit,
@@ -141,7 +141,7 @@ const PaymentAgentDepositWithdrawContainer = ({
     );
 };
 
-PaymentAgentDepositWithdrawContainer.propTypes = {
+PaymentAgentContainer.propTypes = {
     app_contents_scroll_ref: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_deposit: PropTypes.bool,
@@ -165,4 +165,4 @@ export default connect(({ modules, ui }) => ({
     selected_bank: modules.cashier.payment_agent.selected_bank,
     supported_banks: modules.cashier.payment_agent.supported_banks,
     app_contents_scroll_ref: ui.app_contents_scroll_ref,
-}))(PaymentAgentDepositWithdrawContainer);
+}))(PaymentAgentContainer);

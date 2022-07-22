@@ -275,7 +275,6 @@ describe('<CFDPasswordManagerModal />', () => {
                 /If this is the first time you try to create a password, or you have forgotten your password, please reset it/i
             )
         ).toBeInTheDocument();
-        screen.debug();
     });
 
     it('should change input of current investor password and new investor password and trigger change investor password button', async () => {

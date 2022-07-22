@@ -140,8 +140,8 @@ describe('<CFDPOA />', () => {
             expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
         });
     });
-    it('should render the correct input for all the fields', async () => {
-        render(<CFDPOA {...props} onSubmit={() => true} />);
+    it('should render the correct input for all the fields and enable the submit button ', async () => {
+        render(<CFDPOA {...props} />);
 
         await waitFor(() => {
             expect(screen.getByText(/Address information/i)).toBeInTheDocument();
@@ -150,40 +150,38 @@ describe('<CFDPOA />', () => {
         const address_line_1_input = screen.getByPlaceholderText(address_line_1);
         const first_line_address_text = 'Test first line address';
         expect(address_line_1_input.value).toBe('');
-        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
-        await waitFor(() => {
-            expect(address_line_1_input.value).toBe(first_line_address_text);
-        });
 
         const address_line_2_input = screen.getByPlaceholderText(address_line_2);
         const second_line_address_text = 'Test second line address';
         expect(address_line_2_input.value).toBe('');
-        fireEvent.change(address_line_2_input, { target: { value: second_line_address_text } });
-        await waitFor(() => {
-            expect(address_line_2_input.value).toBe(second_line_address_text);
-        });
 
         const address_town_input = screen.getByPlaceholderText(address_town);
         const town_text = 'Test town';
         expect(address_town_input.value).toBe('');
-        fireEvent.change(address_town_input, { target: { value: town_text } });
-        await waitFor(() => {
-            expect(address_town_input.value).toBe(town_text);
-        });
 
         const address_state_input = screen.getByPlaceholderText(address_state);
         const address_state_text = 'Test state';
         expect(address_state_input.value).toBe('Default test state');
-        fireEvent.change(address_state_input, { target: { value: address_state_text } });
-        await waitFor(() => {
-            expect(address_state_input.value).toBe(address_state_text);
-        });
 
         const address_postcode_input = screen.getByPlaceholderText(address_postcode);
         const address_postcode_text = 'Test postcode';
         expect(address_postcode_input.value).toBe('');
+
+        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
+
+        fireEvent.change(address_line_2_input, { target: { value: second_line_address_text } });
+
+        fireEvent.change(address_town_input, { target: { value: town_text } });
+
+        fireEvent.change(address_state_input, { target: { value: address_state_text } });
+
         fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
+
         await waitFor(() => {
+            expect(address_line_1_input.value).toBe(first_line_address_text);
+            expect(address_line_2_input.value).toBe(second_line_address_text);
+            expect(address_town_input.value).toBe(town_text);
+            expect(address_state_input.value).toBe(address_state_text);
             expect(address_postcode_input.value).toBe(address_postcode_text);
         });
 
@@ -228,48 +226,42 @@ describe('<CFDPOA />', () => {
         const address_line_1_input = screen.getByPlaceholderText(address_line_1);
         const first_line_address_text = 'Test first line address';
         expect(address_line_1_input.value).toBe('');
-        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
-        await waitFor(() => {
-            expect(address_line_1_input.value).toBe(first_line_address_text);
-        });
 
         const address_line_2_input = screen.getByPlaceholderText(address_line_2);
         const second_line_address_text = 'Test second line address';
         expect(address_line_2_input.value).toBe('');
-        fireEvent.change(address_line_2_input, { target: { value: second_line_address_text } });
-        await waitFor(() => {
-            expect(address_line_2_input.value).toBe(second_line_address_text);
-        });
 
         const address_town_input = screen.getByPlaceholderText(address_town);
         const town_text = 'Test town';
         expect(address_town_input.value).toBe('');
-        fireEvent.change(address_town_input, { target: { value: town_text } });
-        await waitFor(() => {
-            expect(address_town_input.value).toBe(town_text);
-        });
 
         const address_state_input = screen.getByPlaceholderText(address_state);
         const address_state_text = 'Test state';
         expect(address_state_input.value).toBe('Default test state');
-        fireEvent.change(address_state_input, { target: { value: address_state_text } });
-        await waitFor(() => {
-            expect(address_state_input.value).toBe(address_state_text);
-        });
 
         const address_postcode_input = screen.getByPlaceholderText(address_postcode);
         const address_postcode_text = 'Test postcode';
         expect(address_postcode_input.value).toBe('');
-        fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
-        await waitFor(() => {
-            expect(address_postcode_input.value).toBe(address_postcode_text);
-        });
 
         const prev_btn = screen.getByRole('button', { name: /Previous/i });
+
+        fireEvent.change(address_line_1_input, { target: { value: first_line_address_text } });
+
+        fireEvent.change(address_line_2_input, { target: { value: second_line_address_text } });
+
+        fireEvent.change(address_town_input, { target: { value: town_text } });
+
+        fireEvent.change(address_state_input, { target: { value: address_state_text } });
+
+        fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
+
         await waitFor(() => {
+            expect(address_line_1_input.value).toBe(first_line_address_text);
+            expect(address_line_2_input.value).toBe(second_line_address_text);
+            expect(address_town_input.value).toBe(town_text);
+            expect(address_state_input.value).toBe(address_state_text);
+            expect(address_postcode_input.value).toBe(address_postcode_text);
             fireEvent.click(prev_btn);
-        });
-        await waitFor(() => {
             expect(props.onSave).toHaveBeenCalled();
         });
     });

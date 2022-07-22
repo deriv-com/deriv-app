@@ -69,7 +69,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
             return <PoincVerified />;
         case income_status_codes.rejected:
             return <PoincUnverified onReSubmit={onReSubmit} />;
-        case income_status_codes.suspected:
+        case income_status_codes.locked:
             return <PoincLimited />;
         default:
             return null;

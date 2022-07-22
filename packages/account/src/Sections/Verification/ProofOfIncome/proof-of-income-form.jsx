@@ -31,6 +31,7 @@ const ProofOfIncomeForm = ({
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [inactive_items, setInactiveItems] = React.useState([2]);
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
+    const [uploading_document_type, setUploadingDocumentType] = React.useState('');
 
     const initial_form_values = {
         document_type: '',
@@ -58,6 +59,7 @@ const ProofOfIncomeForm = ({
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         values.document_type = poinc_documents_list.find(doc => doc.text === values.document_type)?.value;
+        setUploadingDocumentType(values.document_type);
         setStatus({ msg: '' });
         WS.setSettings(values).then(data => {
             if (!data.error) {
@@ -195,6 +197,7 @@ const ProofOfIncomeForm = ({
                                         })
                                     }
                                     getSocket={WS.getSocket}
+                                    document_type={uploading_document_type}
                                 />
                             </div>
                         </Timeline.Item>

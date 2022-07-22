@@ -3,9 +3,10 @@
         display: flex;
         border-left: var(--brand-red-coral) solid 1px;
         position: relative;
+        transition: filter 0.2s linear;
 
         &-inactive {
-            opacity: 0.68;
+            filter: opacity(32%); /* using filter instead of simple opacity helps to prevent blinking */
             & * {
                 cursor: not-allowed;
                 & * {

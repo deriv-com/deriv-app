@@ -31,7 +31,7 @@ export const compressImageFiles = files => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files, getFileReadErrorMessage) => {
+export const readFiles = (files, getFileReadErrorMessage, document_type) => {
     const promises = [];
     files.forEach(f => {
         const fr = new FileReader();
@@ -40,7 +40,7 @@ export const readFiles = (files, getFileReadErrorMessage) => {
                 const file_obj = {
                     filename: f.name,
                     buffer: fr.result,
-                    documentType: 'utility_bill',
+                    documentType: document_type || 'utility_bill',
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
                 };

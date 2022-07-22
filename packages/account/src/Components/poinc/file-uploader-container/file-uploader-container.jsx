@@ -6,7 +6,7 @@ import { isDesktop, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import FileUploader from '../../file-uploader';
 
-const PoincFileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
+const PoincFileUploaderContainer = ({ document_type, is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -51,13 +51,19 @@ const PoincFileUploaderContainer = ({ is_description_enabled = true, getSocket, 
                     'account__file-uploader-file--dashboard': isDesktop(),
                 })}
             >
-                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
+                <FileUploader
+                    getSocket={getSocketFunc}
+                    ref={ref}
+                    onFileDrop={onFileDrop}
+                    document_type={document_type}
+                />
             </div>
         </div>
     );
 };
 
 PoincFileUploaderContainer.propTypes = {
+    document_type: PropTypes.string,
     is_description_enabled: PropTypes.bool,
     getSocket: PropTypes.func,
     onFileDrop: PropTypes.func,

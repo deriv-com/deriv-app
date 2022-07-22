@@ -270,7 +270,7 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const needs_poinc =
                     needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
-                const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'suspected';
+                const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
                 this.addVerificationNotifications(identity, document);
@@ -718,12 +718,12 @@ export default class NotificationStore extends BaseStore {
             needs_poinc: {
                 action: {
                     route: routes.proof_of_income,
-                    text: localize('Verify income'),
+                    text: localize('Go to my account settings'),
                 },
                 key: 'needs_poinc',
                 header: localize('Please verify your proof of income'),
-                message: localize('To continue trading with us, please confirm your income.') /* need clarify design */,
-                type: 'danger',
+                message: localize('To continue trading with us, please submit your proof of income.'),
+                type: 'warning',
             },
             needs_poa_virtual: {
                 action: {

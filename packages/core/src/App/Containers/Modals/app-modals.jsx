@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
-import { moduleLoader } from '@deriv/shared';
-import { VerifiedAccountModal } from '@deriv/account';
+import { moduleLoader, routes } from '@deriv/shared';
+import { TradingExperienceModal } from '@deriv/account';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -47,9 +47,11 @@ const AppModals = ({
     fetchFinancialAssessment,
     cfd_score,
     setCFDScore,
+    setShouldShowVerifiedAccount,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
+    const history = useHistory();
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -93,16 +95,20 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
-    if (is_logged_in && has_maltainvest_account) {
-        //TODO: Invoke Trading investment assessment modal
-        ComponentToLoad = (
-            <VerifiedAccountModal
-                fetchFinancialAssessment={fetchFinancialAssessment}
-                setCFDScore={setCFDScore}
-                cfd_score={cfd_score}
-            />
-        );
-    }
+    // if (is_logged_in && has_maltainvest_account) {
+    //     //TODO: Invoke Trading investment assessment modal
+    //     ComponentToLoad = (
+    //         <TradingExperienceModal
+    //             fetchFinancialAssessment={fetchFinancialAssessment}
+    //             setCFDScore={setCFDScore}
+    //             cfd_score={cfd_score ?? 1}
+    //             onCancel={setShouldShowVerifiedAccount}
+    //             onSubmit={() => {
+    //                 history.push(routes.proof_of_identity);
+    //             }}
+    //         />
+    //     );
+    // }
 
     return (
         <>
@@ -126,4 +132,5 @@ export default connect(({ client, ui }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
+    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
 }))(AppModals);

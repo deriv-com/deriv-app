@@ -4,12 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
-import {
-    RiskToleranceWarningModal,
-    TestWarningModal,
-    CooldownWarningModal,
-    VerifiedAccountModal,
-} from '@deriv/account';
+import { RiskToleranceWarningModal, TestWarningModal, CooldownWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -116,11 +111,6 @@ const RealAccountSignup = ({
     setShouldShowAppropriatenessTestWarningModal,
     should_show_cooldown_warning_modal,
     setShouldShowCooldownWarningModal,
-    set_should_show_verified_account,
-    setShouldShowVerifiedAccount,
-    fetchFinancialAssessment,
-    cfd_score,
-    setCFDScore,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -326,6 +316,10 @@ const RealAccountSignup = ({
         setError(err);
     };
 
+    React.useEffect(() => {
+        setRiskWarningTitle(localize('Risk Tolerance Warning'));
+    }, []);
+
     // setCurrentAction callback useEffect to set error details
     React.useEffect(() => {
         if (!error) return;
@@ -422,17 +416,19 @@ const RealAccountSignup = ({
     const handleOnAccept = async () => {
         try {
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
-            setShouldShowVerifiedAccount(true);
+            // setShouldShowVerifiedAccount(true);
             setShouldShowAppropriatenessTestWarningModal(false);
             // TODO: Show Welcome Modal
         } catch (sign_up_error) {
             // TODO: Handle Error case
-            setShouldShowVerifiedAccount(true);
+            // setShouldShowVerifiedAccount(true);
             setShouldShowAppropriatenessTestWarningModal(false);
         }
     };
 
     const handleOnDecline = async () => {
+        const input = { ...real_account_form_data, accept_risk: 0 };
+        console.log('Called Decline', input);
         try {
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
             // TODO: Show CoolDown Modal
@@ -468,27 +464,18 @@ const RealAccountSignup = ({
         return (
             <CooldownWarningModal
                 show_cool_down_modal={should_show_cooldown_warning_modal}
-                setShowCoolDownModal={setShouldShowCooldownWarningModal}
-            />
-        );
-    } else if (set_should_show_verified_account) {
-        return (
-            <VerifiedAccountModal
-                onSubmit={() => {
-                    history.push(routes.proof_of_identity);
+                setShowCoolDownModal={state => {
+                    closeRealAccountSignup();
+                    setShouldShowCooldownWarningModal(state);
                 }}
-                onCancel={setShouldShowVerifiedAccount}
-                fetchFinancialAssessment={fetchFinancialAssessment}
-                setCFDScore={setCFDScore}
-                cfd_score={cfd_score}
             />
         );
     }
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                {is_real_acc_signup_on && (
+            {is_real_acc_signup_on && (
+                <DesktopWrapper>
                     <Modal
                         id='real_account_signup_modal'
                         className={classNames('real-account-signup-modal', {
@@ -536,10 +523,10 @@ const RealAccountSignup = ({
                             deposit_target={deposit_target}
                         />
                     </Modal>
-                )}
-            </DesktopWrapper>
-            <MobileWrapper>
-                {is_real_acc_signup_on && (
+                </DesktopWrapper>
+            )}
+            {is_real_acc_signup_on && (
+                <MobileWrapper>
                     <MobileDialog
                         portal_element_id='modal_root'
                         wrapper_classname='account-signup-mobile-dialog'
@@ -571,8 +558,8 @@ const RealAccountSignup = ({
                             deposit_target={deposit_target}
                         />
                     </MobileDialog>
-                )}
-            </MobileWrapper>
+                </MobileWrapper>
+            )}
         </React.Fragment>
     );
 };
@@ -606,7 +593,6 @@ export default connect(({ ui, client, common, modules }) => ({
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
     setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
-    set_should_show_verified_account: ui.set_should_show_verified_account,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,

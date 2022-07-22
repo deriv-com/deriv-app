@@ -128,7 +128,7 @@ export default class ClientStore extends BaseStore {
 
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
-    @observable cfd_score = 0;
+    @observable cfd_score = null;
 
     is_mt5_account_list_updated = false;
 
@@ -1039,61 +1039,55 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async realAccountSignup(form_values) {
-        console.log('Sending request: ', form_values);
-        // const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
+    async realAccountSignup(form_values, should_override = false) {
+        const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
         const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
-        // const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
-        // let currency = '';
+        const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
+        let currency = '';
         form_values.residence = this.residence;
 
-        if (is_maltainvest_account) {
-            // currency = form_values.currency;
-            form_values.accept_risk = form_values.accept_risk || 0;
+        if (is_maltainvest_account && !should_override) {
+            currency = form_values.currency;
+            form_values.accept_risk = form_values.accept_risk ?? 0;
+        } else {
+            currency = form_values.currency;
+            delete form_values?.accept_risk;
         }
 
-        // const response = is_maltainvest_account
-        //     ? await WS.newAccountRealMaltaInvest(form_values)
-        //     : await WS.newAccountReal(form_values);
+        console.log('Submitting form_values: ', form_values);
+        const response = is_maltainvest_account
+            ? await WS.newAccountRealMaltaInvest(form_values)
+            : await WS.newAccountReal(form_values);
 
-        // if (!response.error) {
-        //     await this.accountRealReaction(response);
-        //     if (is_samoa_account) {
-        //         await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
-        //     }
-        //     localStorage.removeItem('real_account_signup_wizard');
-        //     await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-        //     return Promise.resolve({
-        //         ...response,
-        //         ...(is_maltainvest_account
-        //             ? {
-        //                   new_account_maltainvest: {
-        //                       ...response.new_account_maltainvest,
-        //                       currency,
-        //                   },
-        //               }
-        //             : {}),
-        //         ...(is_samoa_account
-        //             ? {
-        //                   new_account_samoa: {
-        //                       currency,
-        //                   },
-        //               }
-        //             : {}),
-        //     });
-        // }
+        if (!response.error) {
+            await this.accountRealReaction(response);
+            if (is_samoa_account) {
+                await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
+            }
+            localStorage.removeItem('real_account_signup_wizard');
+            await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
+            return Promise.resolve({
+                ...response,
+                ...(is_maltainvest_account
+                    ? {
+                          new_account_maltainvest: {
+                              ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
+                    : {}),
+                ...(is_samoa_account
+                    ? {
+                          new_account_samoa: {
+                              currency,
+                          },
+                      }
+                    : {}),
+            });
+        }
+        // const response = { error: { code: 'AppropriatenessTestFailed' } };
 
-        const response = {
-            error: {
-                code: 'AppropriatenessTestFailed',
-                details: {
-                    cooling_off_expiration_date: '2022-07-19 14:48:17',
-                },
-            },
-        };
         return Promise.reject(response.error);
-
-        // return Promise.resolve('Pass');
     }
 
     @action.bound

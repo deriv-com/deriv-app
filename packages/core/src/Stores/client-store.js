@@ -403,10 +403,7 @@ export default class ClientStore extends BaseStore {
         const number_of_available_synthetics = this.trading_platform_available_accounts.filter(
             p => p.market_type === 'synthetic' || p.market_type === 'gaming'
         ).length;
-        return (
-            number_of_current_added_synthetics > 0 &&
-            number_of_available_synthetics > number_of_current_added_synthetics
-        );
+        return number_of_available_synthetics > number_of_current_added_synthetics;
     }
 
     @computed
@@ -418,9 +415,7 @@ export default class ClientStore extends BaseStore {
         const number_of_available_financial = this.trading_platform_available_accounts.filter(
             p => p.market_type === 'financial'
         ).length;
-        return (
-            number_of_current_added_financial > 0 && number_of_available_financial > number_of_current_added_financial
-        );
+        return number_of_available_financial > number_of_current_added_financial;
     }
 
     @computed

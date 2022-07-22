@@ -20,17 +20,18 @@ npm run bootstrap
 ```
 
 Build:
-The `npm run build` command is used to build the components package
+The `npm run build` command is used to build the components package. It can be run both in the root directory (to build the entire project) and in the components directory (to build the components package)
 
 ```sh
 npm run build
 ```
 
-Serve:
-The `npm run serve` command is used to serve the components package
+> The following commands are to be executed inside of the components directory and not the project root directory
+> Serve:
+> The `npm run serve` command is used to serve the components package
 
 ```sh
-npm run serve components
+npm run serve
 ```
 
 Test:

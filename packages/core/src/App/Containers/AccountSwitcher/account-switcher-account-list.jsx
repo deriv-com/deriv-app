@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -13,6 +13,7 @@ const AccountList = ({
     has_balance,
     has_error,
     has_reset_balance,
+    is_dark_mode_on,
     is_disabled,
     is_virtual,
     is_eu,
@@ -21,6 +22,7 @@ const AccountList = ({
     redirectAccount,
     onClickResetVirtualBalance,
     selected_loginid,
+    server,
     shortcode,
     sub_account_type,
     platform,
@@ -56,9 +58,11 @@ const AccountList = ({
                             <AccountDisplay
                                 is_eu={is_eu}
                                 market_type={market_type}
+                                server={server}
                                 sub_account_type={sub_account_type}
                                 has_error={has_error}
                                 platform={platform}
+                                is_dark_mode_on={is_dark_mode_on}
                                 shortcode={shortcode}
                             />
                         )}
@@ -139,7 +143,16 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, market_type, sub_account_type, platform, is_eu, shortcode }) => {
+const AccountDisplay = ({
+    has_error,
+    market_type,
+    sub_account_type,
+    platform,
+    server,
+    is_dark_mode_on,
+    is_eu,
+    shortcode,
+}) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
@@ -147,9 +160,31 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, platform, is
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
+                {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+                    <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                        {server.server_info.geolocation.region}&nbsp;
+                        {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
+                    </Text>
+                )}
             </div>
         );
-    return <div>{getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}</div>;
+    return (
+        <div>
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
+            {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+                <Text
+                    color={is_dark_mode_on ? 'general' : 'colored-background'}
+                    size='xxs'
+                    className={classNames('badge-server', {
+                        'badge-server-bot': isBot(),
+                    })}
+                >
+                    {server.server_info.geolocation.region}&nbsp;
+                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
+                </Text>
+            )}
+        </div>
+    );
 };
 
 export default AccountList;

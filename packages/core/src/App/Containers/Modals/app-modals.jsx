@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
-import { moduleLoader, routes } from '@deriv/shared';
-import { TradingExperienceModal } from '@deriv/account';
+import { moduleLoader } from '@deriv/shared';
+import { TradingExperienceModal } from './trading-experience-modal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -51,7 +51,6 @@ const AppModals = ({
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
-    const history = useHistory();
 
     let ComponentToLoad = null;
     switch (url_action_param) {

@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { TAccountIconValues, TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
-import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase, getCFDAccountKey } from '@deriv/shared';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 
 type TMT5TradeModalProps = {
@@ -158,11 +158,17 @@ const MT5TradeModal = ({
                         <PasswordBox
                             platform='mt5'
                             onClick={() => {
+                                const account_type = getCFDAccountKey({
+                                    market_type: mt5_trade_account.market_type,
+                                    sub_account_type: mt5_trade_account.sub_account_type,
+                                    platform: CFD_PLATFORMS.DMT5,
+                                    shortcode: mt5_trade_account.landing_company_short,
+                                });
                                 onPasswordManager(
                                     mt5_trade_account?.login,
                                     getTitle(mt5_trade_account.market_type, is_eu_user),
                                     mt5_trade_account.account_type,
-                                    mt5_trade_account.market_type,
+                                    account_type,
                                     (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
                                 );
                                 toggleModal();

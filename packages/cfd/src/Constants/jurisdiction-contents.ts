@@ -57,7 +57,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     vanuatu: {
-        over_header: localize('Better leverage & spreads'),
+        over_header: localize('Better spreads'),
         is_over_header_available: true,
         header: localize('Vanuatu'),
         synthetic_contents: [
@@ -92,7 +92,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     maltainvest: {
-        over_header: localize('Better leverage & spreads'),
+        over_header: localize('Better spreads'),
         is_over_header_available: true,
         header: localize('Malta Financial'),
         synthetic_contents: [
@@ -109,7 +109,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     bvi: {
-        over_header: localize('Better leverage & spreads'),
+        over_header: localize('Better spreads'),
         is_over_header_available: true,
         header: localize('British Virgin Islands'),
         synthetic_contents: [

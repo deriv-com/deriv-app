@@ -104,6 +104,7 @@ export const getCFDAccountDisplay = ({
 
     if (cfd_account_key === 'financial' && is_eu) {
         if (is_remaining_account) cfd_account_key = 'cfd';
+        else if (is_eu) cfd_account_key = 'cfd';
         else cfd_account_key = 'mt5_cfds_mfsa';
     }
 

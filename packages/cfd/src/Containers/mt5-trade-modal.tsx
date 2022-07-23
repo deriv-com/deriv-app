@@ -117,7 +117,7 @@ const MT5TradeModal = ({
     const getPageContent = () => (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                <Icon icon={account_icons.mt5[mt5_trade_account.market_type]} size={24} />
+                <Icon icon={account_icons.mt5[is_eu_user ? 'cfd' : mt5_trade_account.market_type]} size={24} />
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                         {getHeadingTitle()}

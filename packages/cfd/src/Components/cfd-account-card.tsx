@@ -444,11 +444,13 @@ const CFDAccountCardComponent = ({
                                             <Localize
                                                 i18n_default_text={
                                                     acc.landing_company_short &&
-                                                    acc.landing_company_short !== 'svg' &&
-                                                    acc.landing_company_short !== 'bvi'
+                                                    (is_eu
+                                                        ? 'MFSA'
+                                                        : acc.landing_company_short !== 'svg' &&
+                                                          acc.landing_company_short !== 'bvi'
                                                         ? acc.landing_company_short?.charAt(0).toUpperCase() +
                                                           acc.landing_company_short.slice(1)
-                                                        : acc.landing_company_short?.toUpperCase()
+                                                        : acc.landing_company_short?.toUpperCase())
                                                 }
                                             />
                                         </div>

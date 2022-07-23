@@ -145,6 +145,7 @@ export type TCFDPasswordManagerTabContent = {
 export type TCFDPasswordManagerModal = {
     enableApp: () => void;
     email: string;
+    is_eu: boolean;
     disableApp: () => void;
     is_visible: boolean;
     platform: CFD_Platform;

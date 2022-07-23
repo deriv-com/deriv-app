@@ -28,8 +28,4 @@ const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal, title })
     );
 };
 
-// export default connect(({ ui }) => ({
-//     is_real_acc_signup_on: ui.is_real_acc_signup_on,
-// }))(RiskToleranceWarningModal);
-
 export default RiskToleranceWarningModal;

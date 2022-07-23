@@ -645,7 +645,12 @@ const AccountSwitcher = props => {
                             <Button
                                 id='dt_core_account-switcher_add-new-account'
                                 onClick={() => {
-                                    props.openRealAccountSignup(account);
+                                    console.log('Called: ', props.real_account_creation_unlock_date);
+                                    if (props.real_account_creation_unlock_date) {
+                                        props.setShouldShowCooldownWarningModal(true);
+                                    } else {
+                                        props.openRealAccountSignup(account);
+                                    }
                                 }}
                                 className='acc-switcher__new-account-btn'
                                 secondary
@@ -932,6 +937,8 @@ AccountSwitcher.propTypes = {
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     updateMt5LoginList: PropTypes.func,
+    real_account_creation_unlock_date: PropTypes.number,
+    setShouldShowCooldownWarningModal: PropTypes.fn,
 };
 
 const account_switcher = withRouter(
@@ -986,6 +993,8 @@ const account_switcher = withRouter(
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+        real_account_creation_unlock_date: client.real_account_creation_unlock_date,
+        setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
     }))(AccountSwitcher)
 );
 

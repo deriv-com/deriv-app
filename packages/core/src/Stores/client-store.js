@@ -475,6 +475,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get real_account_creation_unlock_date() {
+        console.log('Called unlick date');
+        const { cooling_off_expiration_date } = this.account_settings;
+        return 1658565165;
+        // return cooling_off_expiration_date;
+    }
+
+    @computed
     get is_social_signup() {
         return this.account_status?.status?.includes('social_signup');
     }

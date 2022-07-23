@@ -79,6 +79,18 @@ const CFDDemoAccountDisplay = ({
         }
     };
 
+    const financial_accounts_data = () => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.financial`))
+            ? Object.keys(current_list)
+                  .filter(key => key.startsWith(`${platform}.demo.financial`))
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
+                  }, [] as DetailsOfEachMT5Loginid[])
+            : undefined;
+        return acc;
+    };
+
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         if (residence === 'au') {
@@ -156,13 +168,7 @@ const CFDDemoAccountDisplay = ({
                         type: 'financial',
                         platform,
                     }}
-                    existing_accounts_data={
-                        current_list[
-                            Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.financial`)
-                            ) || ''
-                        ]
-                    }
+                    existing_accounts_data={financial_accounts_data()}
                     commission_message={localize('No commission')}
                     onSelectAccount={openCFDAccount}
                     onPasswordManager={openPasswordManager}

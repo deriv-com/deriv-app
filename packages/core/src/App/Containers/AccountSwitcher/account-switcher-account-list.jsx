@@ -18,6 +18,7 @@ const AccountList = ({
     is_virtual,
     is_eu,
     loginid,
+    account_type,
     market_type,
     redirectAccount,
     onClickResetVirtualBalance,
@@ -57,6 +58,7 @@ const AccountList = ({
                         ) : (
                             <AccountDisplay
                                 is_eu={is_eu}
+                                account_type={account_type}
                                 market_type={market_type}
                                 server={server}
                                 sub_account_type={sub_account_type}
@@ -145,6 +147,7 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
 
 const AccountDisplay = ({
     has_error,
+    account_type,
     market_type,
     sub_account_type,
     platform,
@@ -170,7 +173,9 @@ const AccountDisplay = ({
         );
     return (
         <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
+            {!(account_type === 'demo' && shortcode === 'svg')
+                ? getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })
+                : getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu })}
             {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}

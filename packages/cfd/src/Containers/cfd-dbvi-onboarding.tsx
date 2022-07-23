@@ -57,8 +57,10 @@ const CFDDbViOnBoarding = ({
         });
     };
     React.useEffect(() => {
-        getAccountStausFromAPI();
-    }, []);
+        if (is_cfd_verification_modal_visible) {
+            getAccountStausFromAPI();
+        }
+    }, [is_cfd_verification_modal_visible]);
 
     return (
         <React.Suspense fallback={<UILoader />}>

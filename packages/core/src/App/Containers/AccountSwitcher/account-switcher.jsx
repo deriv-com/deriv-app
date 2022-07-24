@@ -610,6 +610,24 @@ const AccountSwitcher = props => {
                     }}
                 >
                     <div className='acc-switcher__accounts'>
+                        {/* TODO I just added this here to handle the onclick, I'll change that when the BE gets ready */}
+                        {/* TODO I need to add this type to store | sort that, it sould be the toppest account */}
+                        <AccountList
+                            account_type='CRA'
+                            is_dark_mode_on={props.is_dark_mode_on}
+                            loginid='CRA1234567'
+                            balance='1000.00 USD'
+                            currency='cra'
+                            currency_icon={`IcCurrency-cra`}
+                            country_standpoint={props.country_standpoint}
+                            display_type={'currency'}
+                            is_eu={props.is_eu}
+                            redirectAccount={() => {
+                                // TODO add the redirect here
+                            }}
+                            selected_loginid={props.account_loginid}
+                        />
+
                         {getSortedAccountList(props.account_list, props.accounts)
                             .filter(account => !account.is_virtual)
                             .map(account => {

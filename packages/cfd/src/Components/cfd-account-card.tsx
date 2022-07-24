@@ -252,6 +252,7 @@ const CFDAccountCardComponent = ({
                 if (all_svg_acc.length) {
                     all_svg_acc.find(svg_acc => {
                         if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
+                        return all_svg_acc;
                     });
                 } else {
                     all_svg_acc.push(acc);

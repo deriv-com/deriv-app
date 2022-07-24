@@ -5,8 +5,10 @@ import { CommonPropTypes } from './types';
 import { month_headers } from '../helpers';
 
 const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }) => {
-    const moment_date = toMoment(calendar_date);
-    const moment_selected_date = toMoment(selected_date);
+    // Setting moment locale to `en` as a temporarily solution for the issue with the
+    // months names in the calendar since the month names are not localized.
+    const moment_date = toMoment(calendar_date).locale('en');
+    const moment_selected_date = toMoment(selected_date).locale('en');
 
     return (
         <div className='dc-calendar__body dc-calendar__body--month'>

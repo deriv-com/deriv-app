@@ -27,6 +27,7 @@ const AccountList = ({
     shortcode,
     sub_account_type,
     platform,
+    should_show_server_name = false,
 }) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -66,6 +67,7 @@ const AccountList = ({
                                 platform={platform}
                                 is_dark_mode_on={is_dark_mode_on}
                                 shortcode={shortcode}
+                                should_show_server_name={should_show_server_name}
                             />
                         )}
                         <div
@@ -155,6 +157,7 @@ const AccountDisplay = ({
     is_dark_mode_on,
     is_eu,
     shortcode,
+    should_show_server_name,
 }) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
@@ -163,7 +166,7 @@ const AccountDisplay = ({
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
-                {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+                {server?.server_info?.geolocation && should_show_server_name && (
                     <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
                         {server.server_info.geolocation.region}&nbsp;
                         {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
@@ -176,7 +179,7 @@ const AccountDisplay = ({
             {!(account_type === 'demo' && shortcode === 'svg')
                 ? getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })
                 : getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu })}
-            {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+            {server?.server_info?.geolocation && should_show_server_name && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}
                     size='xxs'

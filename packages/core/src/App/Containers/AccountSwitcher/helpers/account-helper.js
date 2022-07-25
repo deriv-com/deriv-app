@@ -94,11 +94,12 @@ export const getCFDConfig = (
     }
     if (!is_eu && trading_platform_available_accounts && platform === CFD_PLATFORMS.MT5) {
         // show remaining Synthetic and/or Financial while a client can still open more accounts of this particular type
-        ['synthetic', 'financial'].forEach(account_type => {
+        ['gaming', 'financial'].forEach(account_type => {
             if (account_type === market_type) {
                 const can_have_more_accounts =
-                    existing_cfd_accounts.filter(a => a.market_type === account_type).length <
-                    trading_platform_available_accounts.filter(p => p.market_type === account_type).length;
+                    existing_cfd_accounts.filter(
+                        a => (a.market_type === 'synthetic' ? 'gaming' : 'financial') === account_type
+                    ).length < trading_platform_available_accounts.filter(p => p.market_type === account_type).length;
                 if (can_have_more_accounts) {
                     cfd_config.push({
                         icon: getCFDAccount({ market_type, sub_account_type: 'financial', platform, is_eu }),

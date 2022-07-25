@@ -188,6 +188,7 @@ const JurisdictionModal = ({
                             type='button'
                             height='664px'
                             width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
+                            exit_classname='cfd-modal--custom-exit'
                         >
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}

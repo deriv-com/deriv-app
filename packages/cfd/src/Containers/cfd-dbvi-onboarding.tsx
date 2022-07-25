@@ -75,6 +75,7 @@ const CFDDbViOnBoarding = ({
                     height='700px'
                     width='996px'
                     onMount={() => getAccountStausFromAPI()}
+                    exit_classname='cfd-modal--custom-exit'
                 >
                     {showSubmittedModal ? (
                         <PoiPoaSubmitted

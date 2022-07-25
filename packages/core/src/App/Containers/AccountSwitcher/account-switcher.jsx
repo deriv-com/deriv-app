@@ -211,17 +211,30 @@ const AccountSwitcher = props => {
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
     const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu) => {
-        const gaming_config = getCFDConfig(
-            'synthetic',
+        const gaming_config =
             platform === CFD_PLATFORMS.MT5
-                ? props.landing_companies?.mt_gaming_company
-                : props.landing_companies?.dxtrade_gaming_company,
-            existing_cfd_accounts,
-            props.mt5_trading_servers,
-            platform,
-            is_eu,
-            props.trading_platform_available_accounts
-        );
+                ? getCFDConfig(
+                      'synthetic',
+                      platform === CFD_PLATFORMS.MT5
+                          ? props.landing_companies?.mt_gaming_company
+                          : props.landing_companies?.dxtrade_gaming_company,
+                      existing_cfd_accounts,
+                      props.mt5_trading_servers,
+                      platform,
+                      is_eu,
+                      props.trading_platform_available_accounts
+                  )
+                : getCFDConfig(
+                      'gaming',
+                      platform === CFD_PLATFORMS.MT5
+                          ? props.landing_companies?.mt_gaming_company
+                          : props.landing_companies?.dxtrade_gaming_company,
+                      existing_cfd_accounts,
+                      props.mt5_trading_servers,
+                      platform,
+                      is_eu,
+                      props.trading_platform_available_accounts
+                  );
         const financial_config = getCFDConfig(
             'financial',
             platform === CFD_PLATFORMS.MT5

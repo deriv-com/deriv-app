@@ -159,6 +159,7 @@ const CFDPersonalDetailsModal = ({
                     title={localize('Add a real MT5 account')}
                     toggleModal={toggleCFDPersonalDetailsModal}
                     width='904px'
+                    exit_classname='cfd-modal--custom-exit'
                 >
                     {getPersonalDetailsForm()}
                 </Modal>

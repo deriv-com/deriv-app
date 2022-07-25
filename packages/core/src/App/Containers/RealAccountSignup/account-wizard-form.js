@@ -9,10 +9,8 @@ import {
     TermsOfUse,
 } from '@deriv/account';
 import CurrencySelector from './currency-selector.jsx';
-// import FinancialDetails from './financial-details.jsx';
 import AddressDetails from './address-details.jsx';
 
-// const { TradingAssessmentNewUser } = TradingAssessment;
 const shouldShowTradingAssessment = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
 const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
     real_account_signup_target !== 'samoa';

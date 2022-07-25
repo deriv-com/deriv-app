@@ -550,11 +550,6 @@ const PersonalDetails = ({
                                                                 legal_entity_name: getLegalEntityName('maltainvest'),
                                                             }
                                                         )}
-                                                        // renderlabel={title => (
-                                                        //     <Text size='xs' line_height='s'>
-                                                        //         {title}
-                                                        //     </Text>
-                                                        // )}
                                                         withTabIndex='0'
                                                         data-testid='tax_identification_confirm'
                                                     />

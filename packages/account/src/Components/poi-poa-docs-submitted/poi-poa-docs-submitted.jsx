@@ -6,7 +6,7 @@ import IconMessageContent from 'Components/icon-message-content';
 
 const PoiPoaSubmitted = ({ onClickOK, onClickYes, account_type, mt5_login_list }) => {
     const { is_appstore } = React.useContext(PlatformContext);
-    const message = localize('Your documents was submitted successfully');
+    const message = localize('Your documents were submitted successfully');
     let is_svg_created = false;
     if (account_type.type && account_type.category) {
         is_svg_created = mt5_login_list.filter(

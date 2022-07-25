@@ -37,7 +37,7 @@ const LanguageLink = ({ lang }) => (
     </React.Fragment>
 );
 
-const LanguageSettings = ({ changeCurrentLanguage, current_language, setIsLanguageChanging, toggleSettingsModal }) => {
+const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSettingsModal }) => {
     const { i18n } = useTranslation();
 
     return (
@@ -58,7 +58,7 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, setIsLangua
                             id={`dt_settings_${key}_button`}
                             key={key}
                             onClick={async () => {
-                                await changeLanguage(key, changeCurrentLanguage, setIsLanguageChanging);
+                                await changeLanguage(key, changeCurrentLanguage);
                                 await i18n.changeLanguage(key);
                                 toggleSettingsModal();
                             }}
@@ -87,13 +87,11 @@ NonClickableLink.propTypes = {
 LanguageSettings.propTypes = {
     changeCurrentLanguage: PropTypes.func,
     current_language: PropTypes.string,
-    setIsLanguageChanging: PropTypes.func,
     toggleSettingsModal: PropTypes.func,
 };
 
 export default connect(({ common, ui }) => ({
     changeCurrentLanguage: common.changeCurrentLanguage,
-    setIsLanguageChanging: common.setIsLanguageChanging,
     current_language: common.current_language,
     toggleSettingsModal: ui.toggleSettingsModal,
 }))(LanguageSettings);

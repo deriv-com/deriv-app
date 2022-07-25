@@ -1,6 +1,6 @@
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -38,6 +38,8 @@ export default class CommonStore extends BaseStore {
     @observable platform = '';
     @observable selected_contract_type = '';
 
+    @observable changing_language_timer_id = '';
+
     @action.bound
     setSelectedContractType(contract_type) {
         this.selected_contract_type = contract_type;
@@ -59,15 +61,13 @@ export default class CommonStore extends BaseStore {
     @action.bound
     changeCurrentLanguage(new_language) {
         if (this.current_language !== new_language) {
+            if (this.changing_language_timer_id) clearTimeout(this.changing_language_timer_id);
             this.current_language = new_language;
+            this.is_language_changing = true;
+            this.changing_language_timer_id = setTimeout(() => {
+                this.is_language_changing = false;
+            }, 10000);
         }
-    }
-
-    @action.bound
-    setIsLanguageChanging(is_language_changing) {
-        runInAction(() => {
-            this.is_language_changing = is_language_changing;
-        });
     }
 
     @action.bound

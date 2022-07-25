@@ -9,10 +9,7 @@ export const currentLanguage = getLanguage();
 
 export const getURL = lang => urlForLanguage(lang);
 
-let timerID;
-export const changeLanguage = (key, changeCurrentLanguage, setLanguageChanging) => {
-    if (timerID) clearTimeout(timerID);
-    setLanguageChanging(true);
+export const changeLanguage = (key, changeCurrentLanguage) => {
     const request = {
         set_settings: 1,
         preferred_language: key,
@@ -22,23 +19,17 @@ export const changeLanguage = (key, changeCurrentLanguage, setLanguageChanging) 
         window.localStorage.setItem('i18n_language', key);
     }
 
-    WS.setSettings(request)
-        .then(() => {
-            const new_url = new URL(window.location.href);
-            if (key === 'EN') {
-                new_url.searchParams.delete('lang');
-            } else {
-                new_url.searchParams.set('lang', key);
-            }
-            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguageTranslation(key, () => {
-                changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
-            });
-        })
-        .then(() => {
-            timerID = setTimeout(() => {
-                setLanguageChanging(false);
-            }, 10000);
+    WS.setSettings(request).then(() => {
+        const new_url = new URL(window.location.href);
+        if (key === 'EN') {
+            new_url.searchParams.delete('lang');
+        } else {
+            new_url.searchParams.set('lang', key);
+        }
+        window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+        changeLanguageTranslation(key, () => {
+            changeCurrentLanguage(key);
+            BinarySocket.closeAndOpenNewConnection(key);
         });
+    });
 };

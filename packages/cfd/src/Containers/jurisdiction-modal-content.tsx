@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Text, Checkbox, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import RootStore from 'Stores/index';
@@ -356,7 +357,7 @@ const JurisdictionModalContent = ({
             <>
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                        <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
                                 values={{ account_type: account_type_name }}
@@ -367,7 +368,7 @@ const JurisdictionModalContent = ({
 
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'bvi' && (
                     <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                        <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
                                 values={{ account_type: account_type_name, line_break: '\n' }}
@@ -377,7 +378,7 @@ const JurisdictionModalContent = ({
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'vanuatu' && (
                     <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                        <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add Your DMT5 {{account_type}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
                                 values={{ account_type: account_type_name }}
@@ -387,7 +388,7 @@ const JurisdictionModalContent = ({
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'labuan' && (
                     <div className={`${card_classname}__footnote`}>
-                        <Text as='p' weight='bold' align='center' size='xs' line_height='xs'>
+                        <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
                                 i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
                                 values={{ account_type: account_type_name }}
@@ -398,6 +399,7 @@ const JurisdictionModalContent = ({
                 {poi_poa_none && jurisdiction_selected_shortcode && jurisdiction_selected_shortcode !== 'svg' && (
                     <Text
                         as='p'
+                        color='prominent'
                         align='center'
                         size='xs'
                         weight='bold'
@@ -414,6 +416,7 @@ const JurisdictionModalContent = ({
                     jurisdiction_selected_shortcode !== 'svg' && (
                         <Text
                             as='p'
+                            color='prominent'
                             align='center'
                             size='xs'
                             weight='bold'
@@ -430,6 +433,7 @@ const JurisdictionModalContent = ({
                     jurisdiction_selected_shortcode !== 'svg' && (
                         <Text
                             as='p'
+                            color='prominent'
                             align='center'
                             size='xs'
                             weight='bold'
@@ -445,6 +449,7 @@ const JurisdictionModalContent = ({
                     jurisdiction_selected_shortcode !== 'svg' && (
                         <Text
                             as='p'
+                            color='prominent'
                             align='center'
                             size='xs'
                             weight='bold'
@@ -480,7 +485,7 @@ const JurisdictionModalContent = ({
     };
 
     const getCheckboxLabel = () => (
-        <Text as='p' align='center' size='xs' line_height='xs'>
+        <Text as='p' align={!isMobile() ? 'center' : ''} size='xs' line_height='xs'>
             <Localize
                 i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
                 values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}

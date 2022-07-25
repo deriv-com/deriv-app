@@ -550,7 +550,9 @@
         justify-content: center;
         margin: 2.4rem auto 0;
         color: #333333;
-        width: 99.2rem;
+        @include desktop {
+            width: 99.2rem;
+        }
 
         &--pending {
             color: #ffad3a;
@@ -666,7 +668,7 @@
                 left: 21.8rem;
             }
             @include mobile {
-                margin-left: 2.3rem;
+                margin-left: 1.8rem;
             }
             top: 1rem;
             color: #fff;

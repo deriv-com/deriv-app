@@ -317,6 +317,15 @@ const CFDPersonalDetailsForm = ({
                                         align='center'
                                         className='details-form__description'
                                         data-testid='dt_cfd_details_form_description'
+                                        style={
+                                            isMobile()
+                                                ? {
+                                                      textAlign: 'center',
+                                                      fontSize: is_in_personal_details_modal ? '1.2rem' : '1rem',
+                                                      color: '#333333',
+                                                  }
+                                                : {}
+                                        }
                                     >
                                         <Localize
                                             i18n_default_text={

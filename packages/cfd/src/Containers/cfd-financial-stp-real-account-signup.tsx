@@ -256,7 +256,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             is_disabled={isDesktop()}
             height_offset='40px'
         >
-            <div className='cfd-financial-stp-modal__heading'>
+            <div className='cfd-financial-stp-modal__heading' data-testid='dt_cfd_financial_stp_modal_heading'>
                 {getCurrent() && (
                     <>
                         <DesktopWrapper>

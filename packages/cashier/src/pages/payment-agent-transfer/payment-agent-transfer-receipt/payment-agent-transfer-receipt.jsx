@@ -23,17 +23,7 @@ const PaymentAgentTransferReceipt = ({
     <div className='cashier__wrapper payment-agent-transfer-receipt__wrapper'>
         <div className='cashier__success'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
-                <Localize i18n_default_text='Your funds have been transferred' />
-            </Text>
-            <Text
-                as='p'
-                size='l'
-                weight='bold'
-                lh='xs'
-                color='profit-success'
-                align='center'
-                className='cashier__transferred-amount'
-            >
+                <Localize i18n_default_text="You've transferred" />{' '}
                 {formatMoney(currency, receipt.amount_transferred, true)} {getCurrencyDisplayCode(currency)}
             </Text>
             <div className='cashier__transferred-details-wrapper'>
@@ -50,9 +40,9 @@ const PaymentAgentTransferReceipt = ({
                 </span>
                 <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                 <span className='account-transfer__transfer-details-to'>
-                    <Icon icon='IcClient' />
+                    <Icon icon='IcCashierPaymentAgent' />
                     <span className='cashier__transferred-details'>
-                        <Text size='xs' line_height='xs' weight='bold' align='center'>
+                        <Text size='xs' line_height='xs' weight='bold'>
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='less-prominent'>
@@ -67,7 +57,7 @@ const PaymentAgentTransferReceipt = ({
                 <Button
                     className='cashier__form-submit-button'
                     has_effect
-                    text={localize('View in statement')}
+                    text={localize('View transactions')}
                     onClick={() => openStatement(history, resetPaymentAgentTransfer)}
                     secondary
                     large

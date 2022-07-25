@@ -395,12 +395,17 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get can_have_more_real_synthetic_mt5() {
-        const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
+        const number_of_svg_accounts = this.mt5_login_list.filter(
+            svg_accounts => svg_accounts.market_type === 'synthetic' && svg_accounts.landing_company_short === 'svg'
+        ).length;
+        const total_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
             const is_included =
                 cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
-            // acc.landing_company_shortcode !== cur.landing_company_shortcode;
+
             return is_included ? acc + 1 : acc;
         }, 0);
+        const number_of_current_added_synthetics =
+            total_of_current_added_synthetics - (number_of_svg_accounts > 1 ? number_of_svg_accounts - 1 : 0);
         const number_of_available_synthetics = this.trading_platform_available_accounts.filter(
             p => p.market_type === 'synthetic' || p.market_type === 'gaming'
         ).length;
@@ -490,11 +495,6 @@ export default class ClientStore extends BaseStore {
         const { terms_conditions_version } = this.website_status;
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
-    }
-
-    @computed
-    get is_poi_dob_mismatch() {
-        return this.account_status?.status?.includes('poi_dob_mismatch') ?? false;
     }
 
     @computed

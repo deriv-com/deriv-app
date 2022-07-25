@@ -96,10 +96,21 @@ export const getCFDConfig = (
         // show remaining Synthetic and/or Financial while a client can still open more accounts of this particular type
         ['gaming', 'financial'].forEach(account_type => {
             if (account_type === market_type) {
+                const number_of_svg_accounts_count = existing_cfd_accounts.filter(
+                    svg_accounts =>
+                        (svg_accounts.market_type === 'gaming' || svg_accounts.market_type === 'synthetic') &&
+                        svg_accounts.landing_company_short === 'svg'
+                ).length;
                 const can_have_more_accounts =
                     existing_cfd_accounts.filter(
                         a => (a.market_type === 'synthetic' ? 'gaming' : 'financial') === account_type
-                    ).length < trading_platform_available_accounts.filter(p => p.market_type === account_type).length;
+                    ).length -
+                        (account_type === 'gaming'
+                            ? number_of_svg_accounts_count > 1
+                                ? number_of_svg_accounts_count - 1
+                                : 0
+                            : 0) <
+                    trading_platform_available_accounts.filter(p => p.market_type === account_type).length;
                 if (can_have_more_accounts) {
                     cfd_config.push({
                         icon: getCFDAccount({ market_type, sub_account_type: 'financial', platform, is_eu }),

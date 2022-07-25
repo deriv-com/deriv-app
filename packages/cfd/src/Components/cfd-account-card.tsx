@@ -387,7 +387,7 @@ const CFDAccountCardComponent = ({
                                         </div>
                                     )}
                                     {(acc as TTradingPlatformAccounts)?.display_login && (
-                                        <div className='cfd-account-card--login-id'>
+                                        <div className='cfd-account-card--login-id-demo'>
                                             <Text size='xxxs' weight='bold'>
                                                 {(acc as TTradingPlatformAccounts)?.display_login}
                                             </Text>
@@ -428,7 +428,6 @@ const CFDAccountCardComponent = ({
                                     </div>
                                 </div>
                             ))}
-                        :
                         {existing_data?.login &&
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&
@@ -436,7 +435,7 @@ const CFDAccountCardComponent = ({
                             type.category === 'demo' && (
                                 <div className='cfd-account-card__item'>
                                     {(existing_data as TTradingPlatformAccounts)?.display_login && (
-                                        <div className='cfd-account-card--login-id'>
+                                        <div className='cfd-account-card--login-id-demo'>
                                             <Text size='xxxs' weight='bold'>
                                                 {(existing_data as TTradingPlatformAccounts)?.display_login}
                                             </Text>

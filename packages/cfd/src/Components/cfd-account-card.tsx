@@ -387,7 +387,11 @@ const CFDAccountCardComponent = ({
                                         </div>
                                     )}
                                     {(acc as TTradingPlatformAccounts)?.display_login && (
-                                        <div className='cfd-account-card--login-id-demo'>
+                                        <div
+                                            className={`cfd-account-card--login-id${
+                                                acc.landing_company_short === 'labuan' ? '' : '-demo'
+                                            }`}
+                                        >
                                             <Text size='xxxs' weight='bold'>
                                                 {(acc as TTradingPlatformAccounts)?.display_login}
                                             </Text>

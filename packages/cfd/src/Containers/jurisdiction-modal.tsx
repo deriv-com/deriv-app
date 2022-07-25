@@ -226,19 +226,6 @@ const JurisdictionModal = ({
                             title={modal_title}
                             visible={is_jurisdiction_modal_visible}
                             onClose={toggleJurisdictionModal}
-                            footer={
-                                <Button
-                                    style={{ width: '100%' }}
-                                    disabled={!is_next_button_enabled}
-                                    primary
-                                    onClick={() => {
-                                        toggleJurisdictionModal();
-                                        onSelectRealAccount();
-                                    }}
-                                >
-                                    {buttonText()}
-                                </Button>
-                            }
                         >
                             <JurisdictionModalContent
                                 financial_available_accounts={financial_available_accounts}
@@ -257,6 +244,19 @@ const JurisdictionModal = ({
                                 poi_failed={poi_failed}
                                 poa_failed={poa_failed}
                             />
+                            <Modal.Footer has_separator>
+                                <Button
+                                    style={{ width: '100%' }}
+                                    disabled={!is_next_button_enabled}
+                                    primary
+                                    onClick={() => {
+                                        toggleJurisdictionModal();
+                                        onSelectRealAccount();
+                                    }}
+                                >
+                                    {buttonText()}
+                                </Button>
+                            </Modal.Footer>
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Suspense>

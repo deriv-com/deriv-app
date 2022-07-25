@@ -18,7 +18,7 @@ import USDTSideNote from 'Components/usdt-side-note';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import RecentTransaction from 'Components/recent-transaction';
 
-const WithdrawalSideNote = ({ currency }) => {
+const WithdrawalSideNote = ({ is_mobile, currency }) => {
     const notes = [
         <Localize
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
@@ -35,10 +35,8 @@ const WithdrawalSideNote = ({ currency }) => {
             <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
         );
     }
-    const side_note_title =
-        notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
-    return <SideNote has_bullets notes={notes} title={side_note_title} />;
+    return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
 
 const Withdrawal = ({
@@ -128,7 +126,12 @@ const Withdrawal = ({
         return <WithdrawalLocked />;
     }
     if (!+balance) {
-        return <NoBalance />;
+        return (
+            <>
+                <NoBalance />
+                {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
+            </>
+        );
     }
     if (error.is_show_full_page && error.message) {
         return <Error error={error} />;
@@ -140,7 +143,12 @@ const Withdrawal = ({
         return <Withdraw />;
     }
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
-        return <CryptoWithdrawForm />;
+        return (
+            <>
+                <CryptoWithdrawForm />
+                {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
+            </>
+        );
     }
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
@@ -148,16 +156,25 @@ const Withdrawal = ({
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
-    return <WithdrawalVerificationEmail />;
+
+    return (
+        <>
+            <WithdrawalVerificationEmail />
+            {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
+        </>
+    );
 };
 
 Withdrawal.propTypes = {
     balance: PropTypes.string,
+    check10kLimit: PropTypes.func,
     container: PropTypes.string,
     crypto_transactions: PropTypes.array,
+    currency: PropTypes.string,
     current_currency_type: PropTypes.string,
     error: PropTypes.object,
     iframe_url: PropTypes.string,
+    is_10k_withdrawal_limit_reached: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
@@ -168,8 +185,12 @@ Withdrawal.propTypes = {
     is_withdrawal_locked: PropTypes.bool,
     recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setErrorMessage: PropTypes.func,
+    setSideNotes: PropTypes.func,
     tab_index: PropTypes.number,
     verification_code: PropTypes.string,
+    verify_error: PropTypes.object,
+    willMountWithdraw: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({

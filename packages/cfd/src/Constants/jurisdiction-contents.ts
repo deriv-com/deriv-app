@@ -74,7 +74,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     labuan: {
-        over_header: localize('Straight through processing'),
+        over_header: localize('Straight-through processing'),
         is_over_header_available: true,
         header: localize('Labuan'),
         synthetic_contents: [
@@ -88,7 +88,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
             `${localize('Registered with the Financial Commission')}`,
             `${localize('80+ assets: forex and cryptocurrencies')}`,
             `${localize('Leverage up to 1:100')}`,
-            `${localize('Straight through processing')}`,
+            `${localize('Straight-through processing')}`,
         ],
     },
     maltainvest: {

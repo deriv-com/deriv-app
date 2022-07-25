@@ -397,9 +397,8 @@ export default class ClientStore extends BaseStore {
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
             const is_included =
-                cur.account_type === 'real' &&
-                (cur.market_type === 'synthetic' || cur.market_type === 'gaming') &&
-                acc.landing_company_shortcode !== cur.landing_company_shortcode;
+                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
+            // acc.landing_company_shortcode !== cur.landing_company_shortcode;
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetics = this.trading_platform_available_accounts.filter(

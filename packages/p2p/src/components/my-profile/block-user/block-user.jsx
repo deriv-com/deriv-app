@@ -9,7 +9,7 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 
-const BlockedAdvertisersList = () => {
+const BlockUserList = () => {
     const { my_profile_store } = useStores();
 
     const loadBlockedAdvertisers = debounce(search => {
@@ -53,7 +53,7 @@ const BlockUser = () => {
                 onSubmit={my_profile_store.onSubmit}
             />
             <DesktopWrapper>
-                <BlockedAdvertisersList />
+                <BlockUserList />
             </DesktopWrapper>
             <MobileWrapper>
                 <MobileFullPageModal
@@ -65,7 +65,7 @@ const BlockUser = () => {
                     page_header_text={localize('Blocked advertisers')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
-                    <BlockedAdvertisersList />
+                    <BlockUserList />
                 </MobileFullPageModal>
             </MobileWrapper>
         </React.Fragment>

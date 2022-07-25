@@ -174,7 +174,8 @@ export default class TransactionsStore {
 
     recoverPendingContractsById(contract_id) {
         const { ws } = this.root_store;
-        const token = this.root_store.core.client.accounts[this.root_store.core.client.loginid].token;
+        const client = ws.core?.client;
+        const token = client?.account[client?.loginid]?.token;
 
         ws.send(JSON.stringify({ authorize: token })).then(() => {
             ws.send({ proposal_open_contract: 1, contract_id }).then(response => {

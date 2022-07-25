@@ -597,6 +597,10 @@
     padding: 2.4rem;
 }
 
+.cfd-modal--custom-exit {
+    display: none;
+}
+
 .cfd-real-accounts-display {
     transition: margin-bottom 0.3s ease-in-out;
     margin-bottom: var(--cfd-real-acc-margin-bottom);

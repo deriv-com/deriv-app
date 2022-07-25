@@ -116,9 +116,9 @@ const content: TModalContentProps[] = [
             financial_bvi: { text: localize('British Virgin Islands') },
             financial_vanuatu: { text: localize('Vanuatu') },
             financial_labuan: {
-                text: localize('Labuan STP account'),
+                text: localize('Labuan'),
                 tooltip_msg: localize(
-                    'Your Financial (STP) trades go directly to the market. A Financial (STP) account offers you tighter spreads.'
+                    'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
                 ),
             },
         },

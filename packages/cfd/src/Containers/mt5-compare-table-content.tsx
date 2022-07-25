@@ -175,7 +175,6 @@ const content: TModalContentProps[] = [
                     localize('Forex: standard/micro'),
                     localize('Stocks'),
                     localize('Stock indices'),
-                    localize('Equities'),
                     localize('Commodities'),
                     localize('Basket indices'),
                     localize('Cryptocurrencies'),

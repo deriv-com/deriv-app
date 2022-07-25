@@ -9,9 +9,9 @@ import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
+import DerivChart from '../../DerivChart';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
-import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
@@ -239,9 +239,9 @@ export default connect(({ client, common, modules, ui }) => ({
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import { SmartChart } from 'Modules/SmartChart';
+// import { SmartChart } from 'Modules/SmartChart';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
+// const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
 // ChartMarkers --------------------------
 const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }) =>
@@ -343,58 +343,60 @@ const Chart = props => {
 
     if (!symbol || active_symbols.length === 0) return null;
 
-    return (
-        <SmartChartWithRef
-            ref={charts_ref}
-            barriers={barriers}
-            bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
-            crosshair={isMobile() ? 0 : undefined}
-            crosshairTooltipLeftAllow={560}
-            showLastDigitStats={isDesktop() ? show_digits_stats : false}
-            chartControlsWidgets={null}
-            chartStatusListener={v => setChartStatus(!v)}
-            chartType={chart_type}
-            initialData={{
-                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
-            }}
-            chartData={{
-                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
-            }}
-            feedCall={{
-                activeSymbols: false,
-            }}
-            enabledNavigationWidget={isDesktop()}
-            enabledChartFooter={false}
-            id='trade'
-            isMobile={isMobile()}
-            maxTick={isMobile() ? max_ticks : undefined}
-            granularity={granularity}
-            requestAPI={wsSendRequest}
-            requestForget={wsForget}
-            requestForgetStream={wsForgetStream}
-            requestSubscribe={wsSubscribe}
-            settings={settings}
-            stateChangeListener={chartStateChange}
-            symbol={symbol}
-            topWidgets={is_trade_enabled ? topWidgets : null}
-            isConnectionOpened={is_socket_opened}
-            clearChart={false}
-            toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-            )}
-            importedLayout={chart_layout}
-            onExportLayout={exportLayout}
-            shouldFetchTradingTimes={!end_epoch}
-            hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
-            getMarketsOrder={getMarketsOrder}
-            yAxisMargin={{
-                top: isMobile() ? 76 : 106,
-            }}
-        >
-            <ChartMarkers />
-        </SmartChartWithRef>
-    );
+    return <DerivChart />;
+
+    // return (
+    //     <SmartChartWithRef
+    //         ref={charts_ref}
+    //         barriers={barriers}
+    //         bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
+    //         crosshair={isMobile() ? 0 : undefined}
+    //         crosshairTooltipLeftAllow={560}
+    //         showLastDigitStats={isDesktop() ? show_digits_stats : false}
+    //         chartControlsWidgets={null}
+    //         chartStatusListener={v => setChartStatus(!v)}
+    //         chartType={chart_type}
+    //         initialData={{
+    //             activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+    //         }}
+    //         chartData={{
+    //             activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+    //         }}
+    //         feedCall={{
+    //             activeSymbols: false,
+    //         }}
+    //         enabledNavigationWidget={isDesktop()}
+    //         enabledChartFooter={false}
+    //         id='trade'
+    //         isMobile={isMobile()}
+    //         maxTick={isMobile() ? max_ticks : undefined}
+    //         granularity={granularity}
+    //         requestAPI={wsSendRequest}
+    //         requestForget={wsForget}
+    //         requestForgetStream={wsForgetStream}
+    //         requestSubscribe={wsSubscribe}
+    //         settings={settings}
+    //         stateChangeListener={chartStateChange}
+    //         symbol={symbol}
+    //         topWidgets={is_trade_enabled ? topWidgets : null}
+    //         isConnectionOpened={is_socket_opened}
+    //         clearChart={false}
+    //         toolbarWidget={() => (
+    //             <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+    //         )}
+    //         importedLayout={chart_layout}
+    //         onExportLayout={exportLayout}
+    //         shouldFetchTradingTimes={!end_epoch}
+    //         hasAlternativeSource={has_alternative_source}
+    //         refToAddTick={refToAddTick}
+    //         getMarketsOrder={getMarketsOrder}
+    //         yAxisMargin={{
+    //             top: isMobile() ? 76 : 106,
+    //         }}
+    //     >
+    //         <ChartMarkers />
+    //     </SmartChartWithRef>
+    // );
 };
 
 Chart.propTypes = {

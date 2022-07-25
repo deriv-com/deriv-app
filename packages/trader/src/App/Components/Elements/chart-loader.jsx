@@ -1,13 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import Loading from '_common/components/loading';
 
-const ChartLoader = ({ is_dark, is_visible }) =>
-    is_visible ? (
-        <div className='chart-container__loader'>
-            <Loading theme={is_dark ? 'dark' : 'light'} />
-        </div>
-    ) : null;
+const ChartLoader = ({ is_visible }) => (is_visible ? null : null);
 
 ChartLoader.propTypes = {
     is_dark: PropTypes.bool,

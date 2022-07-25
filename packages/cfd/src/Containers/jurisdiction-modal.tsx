@@ -77,6 +77,7 @@ const JurisdictionModal = ({
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
     const poi_poa_failed = poa_failed || poi_failed;
     const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
+
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
             if (poa_status === 'pending' || poi_status === 'pending') {
@@ -103,6 +104,12 @@ const JurisdictionModal = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_jurisdiction_modal_visible]);
+
+    React.useEffect(() => {
+        if (jurisdiction_selected_shortcode) {
+            setChecked(false);
+        }
+    }, [jurisdiction_selected_shortcode]);
 
     const financial_available_accounts = trading_platform_available_accounts.filter(
         available_account => available_account.market_type === 'financial'

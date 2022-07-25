@@ -109,7 +109,7 @@ const JurisdictionModal = ({
         if (jurisdiction_selected_shortcode) {
             setChecked(false);
         }
-    }, [jurisdiction_selected_shortcode]);
+    }, [jurisdiction_selected_shortcode, is_jurisdiction_modal_visible]);
 
     const financial_available_accounts = trading_platform_available_accounts.filter(
         available_account => available_account.market_type === 'financial'

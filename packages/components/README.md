@@ -26,7 +26,7 @@ The `npm run build` command is used to build the components package. It can be r
 npm run build
 ```
 
-> The following commands are to be executed inside of the components directory and not the project root directory
+> The following commands should executed inside of the components directory not in the root of the project.
 
 Serve:
 The `npm run serve` command is used to serve the components package

@@ -167,6 +167,7 @@ Digits.displayName = 'Digits';
 
 Digits.propTypes = {
     contract_info: PropTypes.object,
+    digits_array: PropTypes.array,
     digits_info: PropTypes.object,
     display_status: PropTypes.string,
     is_digit_contract: PropTypes.bool,
@@ -175,6 +176,7 @@ Digits.propTypes = {
     trade_type: PropTypes.string,
     onDigitChange: PropTypes.func,
     selected_digit: PropTypes.number,
+    underlying: PropTypes.string,
 };
 
 export default Digits;

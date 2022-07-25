@@ -150,7 +150,7 @@ describe('<ResetTradingPasswordModal/>', () => {
         );
         await interactWithPasswordField(false);
 
-        fireEvent.click(screen.getByTestId('dt_password_input__visibility_icon'));
+        fireEvent.click(screen.getByTestId('dt_password_input_visibility_icon'));
         await waitFor(() => {
             expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
         });
@@ -163,7 +163,7 @@ describe('<ResetTradingPasswordModal/>', () => {
             </Router>
         );
         await interactWithPasswordField(false);
-        const el_visibility_icon = await screen.findByTestId('dt_password_input__visibility_icon');
+        const el_visibility_icon = await screen.findByTestId('dt_password_input_visibility_icon');
         fireEvent.click(el_visibility_icon);
 
         await waitFor(() => {

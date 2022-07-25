@@ -109,6 +109,7 @@ const RealAccountSignup = ({
     setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
+    fetchAccountSettings,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -431,6 +432,7 @@ const RealAccountSignup = ({
         } catch (sign_up_error) {
             setRiskWarningTitle(localize('24-hour Cool Down Warning'));
             if (sign_up_error.code === 'AppropriatenessTestFailed') {
+                fetchAccountSettings();
                 setShouldShowAppropriatenessTestWarningModal(false);
                 setShouldShowRiskToleranceWarningModal(true);
             }
@@ -582,4 +584,5 @@ export default connect(({ ui, client, common, modules }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
+    fetchAccountSettings: client.fetchAccountSettings,
 }))(withRouter(RealAccountSignup));

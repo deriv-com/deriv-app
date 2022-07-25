@@ -261,6 +261,7 @@ const AccountWizard = props => {
                 } else if (error.code === 'AppropriatenessTestFailed') {
                     props.setIsRealAccountSignupModalVisible();
                     if (form_data?.risk_tolerance === 'No') {
+                        props.fetchAccountSettings();
                         props.setShouldShowRiskToleranceWarningModal(true);
                     } else {
                         props.setShouldShowAppropriatenessTestWarningModal(true);
@@ -353,6 +354,7 @@ AccountWizard.propTypes = {
     residence: PropTypes.string,
     residence_list: PropTypes.array,
     setShouldShowRiskToleranceWarningModal: PropTypes.func,
+    fetchAccountSettings: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({
@@ -376,4 +378,5 @@ export default connect(({ client, notifications, ui }) => ({
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
+    fetchAccountSettings: client.fetchAccountSettings,
 }))(AccountWizard);

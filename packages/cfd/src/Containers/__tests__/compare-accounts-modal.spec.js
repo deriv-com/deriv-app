@@ -76,21 +76,22 @@ describe('should render the <CompareAccountsModal /> component', () => {
         expect(screen.getAllByText('USD')[0]).toBeInTheDocument();
     });
 
-    it('should render the proper text if the user is from an uk country', () => {
-        render(
-            <CompareAccountsModal
-                {...mock_props}
-                landing_companies={all_landing_companies}
-                is_uk={true}
-                is_compare_accounts_visible={true}
-            />
-        );
-    });
-
     it('should render the proper style for Dxtrade platforms', () => {
         render(<CompareAccountsModal {...mock_props} landing_companies={only_gaming_company} platform='dxtrade' />);
         const div_element = document.getElementsByClassName('cfd-compare-accounts-modal__wrapper');
         const style = window.getComputedStyle(div_element[0]);
         expect(style.marginTop).toBe('5rem');
+    });
+
+    it('should render modal if the user is from an eu country and not logged in', () => {
+        render(
+            <CompareAccountsModal
+                {...mock_props}
+                landing_companies={all_landing_companies}
+                is_eu_country={true}
+                is_logged_in={false}
+            />
+        );
+        expect(screen.getByText(/Compare accounts/i)).toBeInTheDocument();
     });
 });

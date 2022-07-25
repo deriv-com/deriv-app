@@ -166,7 +166,7 @@ const JurisdictionCard = ({
                 // if poi or poa is not submitted
                 return (
                     <div className={`${card_classname}__footer--none`}>
-                        <Text as='p' size='xxxs' align='center' color={'prominent'}>
+                        <Text as='p' size='xxs' align='center' color={'prominent'}>
                             <Localize i18n_default_text='Proof of identity and address are required' />
                         </Text>
                     </div>

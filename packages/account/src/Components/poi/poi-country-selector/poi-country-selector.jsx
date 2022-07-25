@@ -116,6 +116,7 @@ const CountrySelector = ({
                                                     name='country_input'
                                                     error={touched.country_input && errors.country_input}
                                                     label={localize('Country')}
+                                                    placeholder={localize('Please select')}
                                                     list_items={country_list}
                                                     value={values.country_input}
                                                     onChange={e => {

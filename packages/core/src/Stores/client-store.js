@@ -480,6 +480,9 @@ export default class ClientStore extends BaseStore {
         //return 1658565165;
         return cooling_off_expiration_date;
     }
+    get is_poi_dob_mismatch() {
+        return this.account_status?.status?.includes('poi_dob_mismatch') ?? false;
+    }
 
     @computed
     get is_social_signup() {

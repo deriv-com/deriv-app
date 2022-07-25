@@ -129,12 +129,12 @@ const Main = () => {
 				htmlAttributes={{
 					lang: getLanguage(),
 				}}
-				title={translate('example title')}
+				title={translate('Bot trading |  Automated trading system – Deriv')}
 				defer={false}
 				meta={[
 					{
-						name: translate('example description'),
-						content: translate('example contect'),
+						name: 'description',
+						content: translate('Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.'),
 					},
 				]}
         	/>

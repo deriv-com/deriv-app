@@ -34,6 +34,8 @@ const DetailComponent = ({
     const [status, setStatus] = React.useState();
     const [response_error, setError] = React.useState();
 
+    let is_any_failed = false;
+
     const uploadFiles = data =>
         new Promise((resolve, reject) => {
             const docs = document.details.documents.map(item => item.name);
@@ -56,6 +58,7 @@ const DetailComponent = ({
                     .then(response => {
                         file_to_upload_index += 1;
                         if (response.warning || response.error) {
+                            is_any_failed = true;
                             setStatus(STATUS.IS_FAILED);
                             setError(
                                 response.message || (response.error ? response.error.message : localize('Failed'))
@@ -64,11 +67,11 @@ const DetailComponent = ({
                                 uploadNext();
                             }
                         } else if (file_to_upload_index < files_length) {
-                                results.push(response);
-                                uploadNext();
-                            } else {
-                                resolve(results);
-                            }
+                            results.push(response);
+                            uploadNext();
+                        } else {
+                            resolve(results);
+                        }
                     })
                     .catch(error => {
                         reject(error);
@@ -82,7 +85,7 @@ const DetailComponent = ({
         setStatus(STATUS.IS_UPLOADING);
 
         uploadFiles(values).then(() => {
-            if (status === STATUS.IS_UPLOADING) {
+            if (!is_any_failed) {
                 setStatus(STATUS.IS_COMPLETED);
             }
         });

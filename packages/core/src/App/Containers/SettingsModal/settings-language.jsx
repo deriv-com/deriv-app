@@ -84,12 +84,6 @@ NonClickableLink.propTypes = {
     lang: PropTypes.string,
 };
 
-LanguageSettings.propTypes = {
-    changeCurrentLanguage: PropTypes.func,
-    current_language: PropTypes.string,
-    toggleSettingsModal: PropTypes.func,
-};
-
 export default connect(({ common, ui }) => ({
     changeCurrentLanguage: common.changeCurrentLanguage,
     current_language: common.current_language,

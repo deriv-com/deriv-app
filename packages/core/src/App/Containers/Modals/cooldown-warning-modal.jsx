@@ -1,0 +1,50 @@
+import React from 'react';
+import { connect } from 'Stores/connect';
+import { Button, Modal, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { formatDate } from '@deriv/shared';
+
+const CooldownWarningModal = ({
+    should_show_cooldown_warning_modal,
+    setShouldShowCooldownWarningModal,
+    real_account_creation_unlock_date,
+}) => {
+    const real_account_unblock_date = formatDate(real_account_creation_unlock_date, 'DD MMM [at] hh:mm a');
+
+    return (
+        <Modal
+            width='44rem'
+            title={localize('24-hour Cool Down Warning')}
+            is_open={should_show_cooldown_warning_modal}
+            className='center-risk-modal'
+            has_close_icon={false}
+        >
+            <Modal.Body>
+                <Text as='p' size='xs' align='center'>
+                    <Localize
+                        i18n_default_text='You can create your account on {{real_account_unblock_date}}. <0/>Please click ‘OK’ to continue.'
+                        values={{ real_account_unblock_date }}
+                        components={[<br key={0} />]}
+                    />
+                </Text>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button
+                    type='button'
+                    large
+                    text={localize('OK')}
+                    primary
+                    onClick={() => {
+                        setShouldShowCooldownWarningModal(false);
+                    }}
+                />
+            </Modal.Footer>
+        </Modal>
+    );
+};
+
+export default connect(({ client, ui }) => ({
+    real_account_creation_unlock_date: client.real_account_creation_unlock_date,
+    should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
+    setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
+}))(CooldownWarningModal);

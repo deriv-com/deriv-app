@@ -145,6 +145,7 @@ export default class UIStore extends BaseStore {
     @observable should_show_risk_tolerance_warning_modal = false;
     @observable should_show_appropriateness_test_warning_modal = false;
     @observable should_show_cooldown_warning_modal = false;
+    @observable should_show_trading_assessment_modal = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -414,6 +415,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     setShouldShowCooldownWarningModal(value) {
         this.should_show_cooldown_warning_modal = value;
+    }
+
+    @action.bound
+    shouldShowTradingAssessmentModal(value) {
+        this.should_show_trading_assessment_modal = value;
     }
 
     @action.bound

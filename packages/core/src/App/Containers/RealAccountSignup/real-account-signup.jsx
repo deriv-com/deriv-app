@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
-import { RiskToleranceWarningModal, TestWarningModal, CooldownWarningModal } from '@deriv/account';
+import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -109,8 +109,6 @@ const RealAccountSignup = ({
     setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
-    should_show_cooldown_warning_modal,
-    setShouldShowCooldownWarningModal,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -436,8 +434,7 @@ const RealAccountSignup = ({
             setRiskWarningTitle(localize('24-hour Cool Down Warning'));
             if (sign_up_error.code === 'AppropriatenessTestFailed') {
                 setShouldShowAppropriatenessTestWarningModal(false);
-                setShouldShowRiskToleranceWarningModal(false);
-                setShouldShowCooldownWarningModal(true);
+                setShouldShowRiskToleranceWarningModal(true);
             }
             // TODO: Handle Error case
         }
@@ -458,16 +455,6 @@ const RealAccountSignup = ({
                 show_risk_modal={should_show_appropriateness_test_warning_modal}
                 onAccept={handleOnAccept}
                 onDecline={handleOnDecline}
-            />
-        );
-    } else if (should_show_cooldown_warning_modal) {
-        return (
-            <CooldownWarningModal
-                show_cool_down_modal={should_show_cooldown_warning_modal}
-                setShowCoolDownModal={state => {
-                    closeRealAccountSignup();
-                    setShouldShowCooldownWarningModal(state);
-                }}
             />
         );
     }
@@ -591,8 +578,6 @@ export default connect(({ ui, client, common, modules }) => ({
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
-    should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
-    setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,

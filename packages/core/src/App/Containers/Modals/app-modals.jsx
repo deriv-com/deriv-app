@@ -1,10 +1,11 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
-import { moduleLoader, routes } from '@deriv/shared';
-import { TradingExperienceModal } from '@deriv/account';
+import { moduleLoader } from '@deriv/shared';
+import TradingExperienceModal from './trading-experience-modal';
+import CooldownWarningModal from './cooldown-warning-modal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -48,10 +49,10 @@ const AppModals = ({
     cfd_score,
     setCFDScore,
     setShouldShowVerifiedAccount,
+    should_show_cooldown_warning_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
-    const history = useHistory();
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -95,6 +96,10 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
+    if (should_show_cooldown_warning_modal) {
+        ComponentToLoad = <CooldownWarningModal />;
+    }
+
     // if (is_logged_in && has_maltainvest_account) {
     //     //TODO: Invoke Trading investment assessment modal
     //     ComponentToLoad = (
@@ -133,4 +138,5 @@ export default connect(({ client, ui }) => ({
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
+    should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
 }))(AppModals);

@@ -3,8 +3,6 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
 const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal, title }) => {
-    console.log('title: ', title);
-
     return (
         <Modal
             width='44rem'

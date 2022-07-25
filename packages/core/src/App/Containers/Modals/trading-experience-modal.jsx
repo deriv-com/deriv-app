@@ -1,15 +1,23 @@
-import { Button, Icon, Modal, Text } from '@deriv/components';
 import React from 'react';
+import { connect } from 'Stores/connect';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
-const TradingExperienceModal = ({ fetchFinancialAssessment, setCFDScore, cfd_score, onSubmit }) => {
-    console.log('cfd_score', cfd_score);
+const TradingExperienceModal = ({
+    fetchFinancialAssessment,
+    setCFDScore,
+    is_trading_experience_incomplete,
+    onSubmit,
+    shouldShowTradingAssessmentModal,
+    should_show_trading_assessment_modal,
+}) => {
     React.useEffect(() => {
         const fetchFinancialScore = async () => {
             try {
                 const response = await fetchFinancialAssessment();
-                console.log('fetchFinancialAssessment: ', response);
                 setCFDScore(response?.cfd_score ?? 0);
+                if (response?.cfd_score === 0) shouldShowTradingAssessmentModal(true);
+                else shouldShowTradingAssessmentModal(false);
             } catch (err) {
                 console.log('Error: ', err);
             }
@@ -18,7 +26,11 @@ const TradingExperienceModal = ({ fetchFinancialAssessment, setCFDScore, cfd_sco
         fetchFinancialScore();
     }, []);
     return (
-        <Modal width='44rem' className='center-risk-modal' is_open={cfd_score === 0}>
+        <Modal
+            width='44rem'
+            className='center-risk-modal'
+            is_open={is_trading_experience_incomplete || should_show_trading_assessment_modal}
+        >
             <Modal.Body>
                 <Icon icon='IcCurrency-eur-check' size={95} />
                 <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
@@ -38,4 +50,11 @@ const TradingExperienceModal = ({ fetchFinancialAssessment, setCFDScore, cfd_sco
     );
 };
 
-export default TradingExperienceModal;
+export default connect(({ client, ui }) => ({
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
+    setCFDScore: client.setCFDScore,
+    cfd_score: client.cfd_score,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    shouldShowTradingAssessmentModal: ui.shouldShowTradingAssessmentModal,
+    should_show_trading_assessment_modal: ui.should_show_trading_assessment_modal,
+}))(TradingExperienceModal);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
+import { DesktopWrapper, Loading, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaSubmitted } from '@deriv/account';
@@ -33,6 +33,7 @@ const CFDDbViOnBoarding = ({
     mt5_login_list,
     toggleJurisdictionModal,
 }: TVerificationModalProps) => {
+    const [is_loading, setIsLoading] = React.useState(true);
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const handleOpenJurisditionModal = () => {
         toggleCFDVerificationModal();
@@ -44,7 +45,7 @@ const CFDDbViOnBoarding = ({
             if (get_account_status?.authentication) {
                 const identity_status = get_account_status?.authentication?.identity?.status;
                 const document_status = get_account_status?.authentication?.document?.status;
-
+                setIsLoading(false);
                 if (
                     (identity_status === 'pending' || identity_status === 'verified') &&
                     (document_status === 'pending' || document_status === 'verified')
@@ -58,10 +59,12 @@ const CFDDbViOnBoarding = ({
     };
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
+            setIsLoading(true);
             getAccountStausFromAPI();
         }
     }, [is_cfd_verification_modal_visible]);
 
+    if (is_loading) return <Loading is_fullscreen />;
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>

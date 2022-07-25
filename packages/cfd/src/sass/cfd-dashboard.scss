@@ -2026,7 +2026,7 @@
         }
     }
     &__table-header {
-        grid-template-columns: 0.9fr 1.39fr 2.7fr;
+        grid-template-columns: 0.9fr 1.39fr 2.74fr;
     }
     @for $financial_accounts_count from 0 through 6 {
         @for $synthetic_accounts_count from 0 through 2 {
@@ -2048,12 +2048,12 @@
     }
 
     &__table-row {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.61fr 0.7fr;
+        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
         &--leverage {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 2fr 0.7fr;
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
         }
         &--instruments {
-            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.61fr 0.7fr;
+            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
         }
     }
 
@@ -2065,10 +2065,21 @@
         }
     }
     &__table-footer {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.61fr 0.7fr;
+        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
         height: 4.8rem;
         &__item {
             height: 4.8rem;
+            justify-content: center;
+            &--verification-pending {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 4px 8px;
+                // width: 105px;
+                height: 22px;
+                background: #ffad3a;
+                border-radius: 4px;
+            }
         }
         &__button {
             width: 100%;

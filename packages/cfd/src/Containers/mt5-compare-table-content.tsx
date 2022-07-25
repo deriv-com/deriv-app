@@ -221,6 +221,9 @@ const DMT5CompareModalContent = ({
     const synthetic_accounts_count = available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
     const financial_accounts_count = available_accounts_keys.filter(key => key.startsWith('financial')).length;
 
+    const poa_status = authentication_status?.document_status;
+    const poi_status = authentication_status?.identity_status;
+
     React.useEffect(() => {
         if (!has_submitted_personal_details) {
             let get_settings_response: GetSettings = {};
@@ -281,9 +284,6 @@ const DMT5CompareModalContent = ({
     };
 
     const onSelectRealAccount = (item: { label: string; action: string }) => {
-        const poa_status = authentication_status?.document_status;
-        const poi_status = authentication_status?.identity_status;
-
         const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
 
@@ -369,6 +369,7 @@ const DMT5CompareModalContent = ({
         if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
         return isDesktop() ? 'xxxs' : 'xxxxs';
     };
+
     const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
         <Table.Row
             className={
@@ -464,6 +465,17 @@ const DMT5CompareModalContent = ({
         );
     };
 
+    const should_show_pending_status = (item: TFooterButtonData) => {
+        const poa_acknowledged = poa_status === 'pending' || poa_status === 'verified';
+        const poi_acknowledged = poi_status === 'pending' || poi_status === 'verified';
+        const poa_poi_verified = poa_status === 'verified' && poi_status === 'verified';
+
+        if (poa_acknowledged && poi_acknowledged && !poa_poi_verified) {
+            return item.action.split('_')[1] !== 'svg';
+        }
+        return false;
+    };
+
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
             <div className='cfd-real-compare-accounts'>
@@ -514,24 +526,32 @@ const DMT5CompareModalContent = ({
                                 <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
                                 {getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
                                     <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
-                                        <Button
-                                            className='cfd-real-compare-accounts__table-footer__button'
-                                            disabled={Object.entries(current_list).some(([, value]) => {
-                                                const [market, type] = item.action.split('_');
-                                                return (
-                                                    value.market_type === market &&
-                                                    value.landing_company_short === type &&
-                                                    value.account_type === 'real'
-                                                );
-                                            })}
-                                            type='button'
-                                            primary_light
-                                            onClick={() => {
-                                                onSelectRealAccount(item);
-                                            }}
-                                        >
-                                            {item.label}
-                                        </Button>
+                                        {should_show_pending_status(item) ? (
+                                            <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
+                                                <Text size={isDesktop ? 'xxxs' : 'xxxxs'} color={'prominent'}>
+                                                    {localize('Pending verification')}
+                                                </Text>
+                                            </div>
+                                        ) : (
+                                            <Button
+                                                className='cfd-real-compare-accounts__table-footer__button'
+                                                disabled={Object.entries(current_list).some(([, value]) => {
+                                                    const [market, type] = item.action.split('_');
+                                                    return (
+                                                        value.market_type === market &&
+                                                        value.landing_company_short === type &&
+                                                        value.account_type === 'real'
+                                                    );
+                                                })}
+                                                type='button'
+                                                primary_light
+                                                onClick={() => {
+                                                    onSelectRealAccount(item);
+                                                }}
+                                            >
+                                                {item.label}
+                                            </Button>
+                                        )}
                                     </Table.Cell>
                                 ))}
                             </Table.Row>

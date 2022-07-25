@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
-import { localize } from '@deriv/translations';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -26,6 +25,19 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     },
 }));
 
+jest.mock('@contentpass/zxcvbn', () => ({
+    ...jest.requireActual('@contentpass/zxcvbn'),
+    lib: {
+        zxcvbn: jest.fn(() => ({
+            score: 0,
+            feedback: {
+                warning: '',
+                suggestions: [],
+            },
+        })),
+    },
+}));
+
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => {
     const original_module = jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules.js');
     return {
@@ -44,39 +56,39 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', 
 
 const validPasswordMock = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 
-const validLengthMock = (value = '', options) =>
+const validLengthMock = (value, options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 
 const mock_errors = {
-    password: () => localize('Password should have lower and uppercase English letters with numbers.'),
-    use_a_few_words: () => localize('Use a few words, avoid common phrases'),
-    no_need_for_mixed_chars: () => localize('No need for symbols, digits, or uppercase letters'),
-    uncommon_words_are_better: () => localize('Add another word or two. Uncommon words are better.'),
-    straight_rows_of_keys_are_easy: () => localize('Straight rows of keys are easy to guess'),
-    short_keyboard_patterns_are_easy: () => localize('Short keyboard patterns are easy to guess'),
-    use_longer_keyboard_patterns: () => localize('Use a longer keyboard pattern with more turns'),
-    repeated_chars_are_easy: () => localize('Repeats like "aaa" are easy to guess'),
-    repeated_patterns_are_easy: () => localize('Repeats like "abcabcabc" are only slightly harder to guess than "abc"'),
-    avoid_repeated_chars: () => localize('Avoid repeated words and characters'),
-    sequences_are_easy: () => localize('Sequences like abc or 6543 are easy to guess'),
-    avoid_sequences: () => localize('Avoid sequences'),
-    recent_years_are_easy: () => localize('Recent years are easy to guess'),
-    avoid_recent_years: () => localize('Avoid recent years'),
-    avoid_associated_years: () => localize('Avoid years that are associated with you'),
-    dates_are_easy: () => localize('Dates are often easy to guess'),
-    avoid_associated_dates_and_years: () => localize('Avoid dates and years that are associated with you'),
-    top10_common_password: () => localize('This is a top-10 common password'),
-    top100_common_password: () => localize('This is a top-100 common password'),
-    very_common_password: () => localize('This is a very common password'),
-    similar_to_common_password: () => localize('This is similar to a commonly used password'),
-    a_word_is_easy: () => localize('A word by itself is easy to guess'),
-    names_are_easy: () => localize('Names and surnames by themselves are easy to guess'),
-    common_names_are_easy: () => localize('Common names and surnames are easy to guess'),
-    capitalization_doesnt_help: () => localize("Capitalization doesn't help very much"),
-    all_uppercase_doesnt_help: () => localize('All-uppercase is almost as easy to guess as all-lowercase'),
-    reverse_doesnt_help: () => localize("Reversed words aren't much harder to guess"),
-    substitution_doesnt_help: () => localize("Predictable substitutions like '@' instead of 'a' don't help very much"),
-    user_dictionary: () => localize('This password is on the blacklist'),
+    password: 'Password should have lower and uppercase English letters with numbers.',
+    use_a_few_words: 'Use a few words, avoid common phrases',
+    no_need_for_mixed_chars: 'No need for symbols, digits, or uppercase letters',
+    uncommon_words_are_better: 'Add another word or two. Uncommon words are better.',
+    straight_rows_of_keys_are_easy: 'Straight rows of keys are easy to guess',
+    short_keyboard_patterns_are_easy: 'Short keyboard patterns are easy to guess',
+    use_longer_keyboard_patterns: 'Use a longer keyboard pattern with more turns',
+    repeated_chars_are_easy: 'Repeats like "aaa" are easy to guess',
+    repeated_patterns_are_easy: 'Repeats like "abcabcabc" are only slightly harder to guess than "abc"',
+    avoid_repeated_chars: 'Avoid repeated words and characters',
+    sequences_are_easy: 'Sequences like abc or 6543 are easy to guess',
+    avoid_sequences: 'Avoid sequences',
+    recent_years_are_easy: 'Recent years are easy to guess',
+    avoid_recent_years: 'Avoid recent years',
+    avoid_associated_years: 'Avoid years that are associated with you',
+    dates_are_easy: 'Dates are often easy to guess',
+    avoid_associated_dates_and_years: 'Avoid dates and years that are associated with you',
+    top10_common_password: 'This is a top-10 common password',
+    top100_common_password: 'This is a top-100 common password',
+    very_common_password: 'This is a very common password',
+    similar_to_common_password: 'This is similar to a commonly used password',
+    a_word_is_easy: 'A word by itself is easy to guess',
+    names_are_easy: 'Names and surnames by themselves are easy to guess',
+    common_names_are_easy: 'Common names and surnames are easy to guess',
+    capitalization_doesnt_help: "Capitalization doesn't help very much",
+    all_uppercase_doesnt_help: 'All-uppercase is almost as easy to guess as all-lowercase',
+    reverse_doesnt_help: "Reversed words aren't much harder to guess",
+    substitution_doesnt_help: "Predictable substitutions like '@' instead of 'a' don't help very much",
+    user_dictionary: 'This password is on the blacklist',
 };
 
 describe('<CFDPasswordManagerModal />', () => {
@@ -281,21 +293,21 @@ describe('<CFDPasswordManagerModal />', () => {
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
         expect(screen.getByText(/Investor password/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/Investor password/i));
-
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
-
+        await waitFor(() => {
+            expect(screen.getByText(/New investor password/i)).toBeInTheDocument();
+        });
         const current_investor_password = screen.getByLabelText(/Current investor password/i);
         const new_investor_password = screen.getByLabelText('New investor password');
 
+        fireEvent.change(current_investor_password, { target: { value: 'Testing1234' } });
+        fireEvent.blur(current_investor_password);
+        fireEvent.change(new_investor_password, { target: { value: 'XCvnhnkdh!111' } });
+        fireEvent.blur(new_investor_password);
         await waitFor(() => {
-            fireEvent.change(current_investor_password, { target: { value: 'Testing1234' } });
-            fireEvent.change(new_investor_password, { target: { value: 'abcabcabc' } });
+            expect(current_investor_password).toHaveValue('Testing1234');
+            expect(new_investor_password).toHaveValue('XCvnhnkdh!111');
+            expect(screen.getByRole('button', { name: /Change investor password/i })).toBeDisabled(); //should be enabled
         });
-        expect(current_investor_password).toHaveValue('Testing1234');
-        expect(new_investor_password).toHaveValue('abcabcabc');
-
-        fireEvent.click(await screen.findByRole('button', { name: /Change investor password/i }));
-        expect(await screen.findByRole('button', { name: /Change investor password/i })).toBeDisabled(); // button should be enabled after user enters password
     });
 
     it('should render SentEmailModal if the user clicks create or reset investor password', async () => {

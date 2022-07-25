@@ -109,6 +109,7 @@ Routes.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    onUnmountPortfolio: PropTypes.func,
     passthrough: PropTypes.object,
     setPromptHandler: PropTypes.func,
     setTradeMountingPolicy: PropTypes.func,

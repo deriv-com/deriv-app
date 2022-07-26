@@ -4,6 +4,8 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
@@ -77,7 +79,7 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
         </div>
         <Popover alignment='bottom' message={localize('Change Password')}>
             <Button
-                className='cfd-account-card__password-action toolbar__btn--icon'
+                className='cfd-account-card__password-action'
                 transparent
                 onClick={onClick}
                 icon={
@@ -155,10 +157,11 @@ const CFDAccountCardAction = ({
     );
 };
 
-const CFDAccountCard = ({
+const CFDAccountCardComponent = ({
     button_label,
     commission_message,
     descriptor,
+    dxtrade_tokens,
     is_hovered,
     existing_data,
     has_banner,
@@ -184,7 +187,9 @@ const CFDAccountCard = ({
     toggleShouldShowRealAccountsList,
 }: TCFDAccountCard) => {
     const platform_icon = is_eu ? 'cfd' : type.type;
-    const icon: any = type.type ? <Icon icon={account_icons[type.platform][platform_icon]} size={64} /> : null;
+    const icon: React.ReactElement | null = type.type ? (
+        <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
+    ) : null;
     const has_popular_banner: boolean =
         type.type === 'synthetic' &&
         type.category === 'real' &&
@@ -483,7 +488,10 @@ const CFDAccountCard = ({
                                 type='button'
                                 href={
                                     platform === CFD_PLATFORMS.DXTRADE
-                                        ? getDXTradeWebTerminalLink(type.category)
+                                        ? getDXTradeWebTerminalLink(
+                                              type.category,
+                                              dxtrade_tokens[type.category as 'demo' | 'real']
+                                          )
                                         : getMT5WebTerminalLink({
                                               category: type.category,
                                               loginid: (existing_data as TTradingPlatformAccounts).display_login,
@@ -554,5 +562,9 @@ const CFDAccountCard = ({
         </div>
     );
 };
+
+const CFDAccountCard = connect(({ modules: { cfd } }: RootStore) => ({
+    dxtrade_tokens: cfd.dxtrade_tokens,
+}))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import BinaryRoutes from '../Components/Routes';
 import { connect } from '../Stores/connect';
-import ErrorComponent from '../Components/Errors/error-component';
+import ErrorComponent from '../Components/Errors/error-component.jsx';
 
 const Routes = props => {
     if (props.has_error) {
@@ -24,7 +24,9 @@ Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    passthrough: PropTypes.object,
 };
 
 // need to wrap withRouter around connect

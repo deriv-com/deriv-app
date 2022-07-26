@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { getUnsupportedContracts } from '@deriv/shared';
 
 export const getMarketNamesMap = () => ({
     FRXAUDCAD: localize('AUD/CAD'),
@@ -94,77 +95,6 @@ export const getMarketNamesMap = () => ({
     CRYETHUSD: localize('ETH/USD'),
     CRYEOSUSD: localize('EOS/USD'),
     CRYLTCUSD: localize('LTC/USD'),
-});
-
-export const getUnsupportedContracts = () => ({
-    EXPIRYMISS: {
-        name: <Localize i18n_default_text='Ends Outside' />,
-        position: 'top',
-    },
-    EXPIRYRANGE: {
-        name: <Localize i18n_default_text='Ends Between' />,
-        position: 'bottom',
-    },
-    RANGE: {
-        name: <Localize i18n_default_text='Stays Between' />,
-        position: 'top',
-    },
-    UPORDOWN: {
-        name: <Localize i18n_default_text='Goes Outside' />,
-        position: 'bottom',
-    },
-    RESETCALL: {
-        name: <Localize i18n_default_text='Reset Call' />,
-        position: 'top',
-    },
-    RESETPUT: {
-        name: <Localize i18n_default_text='Reset Put' />,
-        position: 'bottom',
-    },
-    TICKHIGH: {
-        name: <Localize i18n_default_text='High Tick' />,
-        position: 'top',
-    },
-    TICKLOW: {
-        name: <Localize i18n_default_text='Low Tick' />,
-        position: 'bottom',
-    },
-    ASIANU: {
-        name: <Localize i18n_default_text='Asian Up' />,
-        position: 'top',
-    },
-    ASIAND: {
-        name: <Localize i18n_default_text='Asian Down' />,
-        position: 'bottom',
-    },
-    LBFLOATCALL: {
-        name: <Localize i18n_default_text='Close-to-Low' />,
-        position: 'top',
-    },
-    LBFLOATPUT: {
-        name: <Localize i18n_default_text='High-to-Close' />,
-        position: 'top',
-    },
-    LBHIGHLOW: {
-        name: <Localize i18n_default_text='High-to-Low' />,
-        position: 'top',
-    },
-    CALLSPREAD: {
-        name: <Localize i18n_default_text='Spread Up' />,
-        position: 'top',
-    },
-    PUTSPREAD: {
-        name: <Localize i18n_default_text='Spread Down' />,
-        position: 'bottom',
-    },
-    RUNHIGH: {
-        name: <Localize i18n_default_text='Only Ups' />,
-        position: 'top',
-    },
-    RUNLOW: {
-        name: <Localize i18n_default_text='Only Downs' />,
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = is_high_low => ({

@@ -174,39 +174,35 @@ export default class TransactionsStore {
 
     recoverPendingContractsById(contract_id) {
         const { ws } = this.root_store;
-        const client = ws.core?.client;
-        const token = client?.account[client?.loginid]?.token;
 
-        ws.send(JSON.stringify({ authorize: token })).then(() => {
-            ws.send({ proposal_open_contract: 1, contract_id }).then(response => {
-                if (!response.error) {
-                    const { proposal_open_contract } = response;
+        ws.authorized.subscribeProposalOpenContract(contract_id, response => {
+            if (!response.error) {
+                const { proposal_open_contract } = response;
 
-                    const { contract_info } = this.root_store.summary_card;
+                const { contract_info } = this.root_store.summary_card;
 
-                    if (proposal_open_contract.contract_id === contract_info?.contract_id) return;
+                if (proposal_open_contract.contract_id === contract_info?.contract_id) return;
 
-                    this.onBotContractEvent(proposal_open_contract);
+                this.onBotContractEvent(proposal_open_contract);
 
-                    if (!this.recovered_transactions.includes(proposal_open_contract.contract_id)) {
-                        this.recovered_transactions.push(proposal_open_contract.contract_id);
-                    }
-
-                    if (
-                        !this.recovered_completed_transactions.includes(proposal_open_contract.contract_id) &&
-                        isEnded(proposal_open_contract)
-                    ) {
-                        this.recovered_completed_transactions.push(proposal_open_contract.contract_id);
-
-                        const { currency, profit } = proposal_open_contract;
-
-                        this.root_store.journal.onLogSuccess({
-                            log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
-                            extra: { currency, profit },
-                        });
-                    }
+                if (!this.recovered_transactions.includes(proposal_open_contract.contract_id)) {
+                    this.recovered_transactions.push(proposal_open_contract.contract_id);
                 }
-            });
+
+                if (
+                    !this.recovered_completed_transactions.includes(proposal_open_contract.contract_id) &&
+                    isEnded(proposal_open_contract)
+                ) {
+                    this.recovered_completed_transactions.push(proposal_open_contract.contract_id);
+
+                    const { currency, profit } = proposal_open_contract;
+
+                    this.root_store.journal.onLogSuccess({
+                        log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
+                        extra: { currency, profit },
+                    });
+                }
+            }
         });
     }
 }

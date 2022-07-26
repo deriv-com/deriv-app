@@ -2070,19 +2070,25 @@
     }
     &__table-footer {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
-        height: 4.8rem;
+        height: 5.8rem;
         &__item {
-            height: 4.8rem;
+            height: 5.8rem;
             justify-content: center;
             &--verification-pending {
                 display: flex;
                 flex-direction: row;
+                justify-content: center;
                 align-items: center;
-                padding: 4px 8px;
-                // width: 105px;
-                height: 22px;
-                background: #ffad3a;
+                padding: 3px 8px;
+                background: rgba(255, 68, 79, 0.16);
+                opacity: 0.32;
                 border-radius: 4px;
+                width: 100%;
+                .dc-text {
+                    font-style: normal;
+                    font-weight: 700;
+                    color: var(--brand-red-coral);
+                }
             }
         }
         &__button {

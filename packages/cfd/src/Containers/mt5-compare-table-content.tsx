@@ -528,7 +528,7 @@ const DMT5CompareModalContent = ({
                                     <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
                                         {should_show_pending_status(item) ? (
                                             <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
-                                                <Text size={isDesktop ? 'xxxs' : 'xxxxs'} color={'prominent'}>
+                                                <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
                                                     {localize('Pending verification')}
                                                 </Text>
                                             </div>

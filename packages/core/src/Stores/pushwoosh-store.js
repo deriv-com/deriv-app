@@ -1,6 +1,6 @@
 import { action, when } from 'mobx';
 import { Pushwoosh } from 'web-push-notifications';
-import { getAppId, getBrandWebsiteName, urlForCurrentDomain } from '@deriv/shared';
+import { getAppId, getBrandWebsiteName, urlForCurrentDomain, detectSafariBrowser } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BaseStore from './base-store';
 
@@ -40,7 +40,7 @@ export default class PushwooshStore extends BaseStore {
             api => {
                 try {
                     this.push_woosh.isSubscribed().then(is_subscribed => {
-                        if (!is_subscribed) {
+                        if (!is_subscribed && !detectSafariBrowser) {
                             this.push_woosh.subscribe();
                         }
                     });
@@ -50,6 +50,18 @@ export default class PushwooshStore extends BaseStore {
                 this.sendTags(api);
             },
         ]);
+    };
+
+    @action.bound
+    forceSubscribe = async () => {
+        if (detectSafariBrowser) {
+            this.push_woosh.subscribe();
+        }
+    };
+
+    @action.bound
+    isSubscribed = () => {
+        return this.push_woosh.isSubscribed();
     };
 
     /**

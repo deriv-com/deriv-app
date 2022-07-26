@@ -32,6 +32,7 @@ import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
+import { SafariPushwooshNotification } from './Components/Elements/safari-pushwoosh-notification/safari-pushwoosh-notification.jsx';
 
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
@@ -115,6 +116,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                             <SmartTraderIFrame />
                             <BinaryBotIFrame />
                             <AppToastMessages />
+                            <SafariPushwooshNotification />
                         </PlatformContainer>
                     </MobxContentProvider>
                 </Router>

@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
@@ -56,6 +57,7 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
+            <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

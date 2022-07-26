@@ -240,8 +240,6 @@ const AccountWizard = props => {
         const form_data = { ...form_values() };
         submitForm(payload, should_override)
             .then(response => {
-                // TODO: Code for Success response
-                console.log('createRealAccount Response: ', response); // eslint-disable-line no-console
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -252,14 +250,10 @@ const AccountWizard = props => {
                 }
             })
             .catch(error => {
-                // TODO: Code for Error response
-                console.log('Check data: ', form_data);
-                console.log('Error: ', error); // eslint-disable-line no-console
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else if (error.code === 'AppropriatenessTestFailed') {
-                    props.setIsRealAccountSignupModalVisible();
                     if (form_data?.risk_tolerance === 'No') {
                         props.fetchAccountSettings();
                         props.setShouldShowRiskToleranceWarningModal(true);

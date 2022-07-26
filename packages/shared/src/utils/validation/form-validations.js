@@ -7,6 +7,7 @@ import { getPreBuildDVRs } from './declarative-validation-rules';
  * @param {object} schema
  */
 export const getDefaultFields = (landing_company, schema) => {
+    console.log('landing_company: ', landing_company, schema);
     const output = {};
     Object.entries(filterByLandingCompany(landing_company, schema)).forEach(([field_name, opts]) => {
         output[field_name] = opts.default_value;

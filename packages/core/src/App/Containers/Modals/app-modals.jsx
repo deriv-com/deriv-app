@@ -6,6 +6,7 @@ import { connect } from 'Stores/connect';
 import { moduleLoader } from '@deriv/shared';
 import TradingExperienceModal from './trading-experience-modal';
 import CooldownWarningModal from './cooldown-warning-modal';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -45,11 +46,8 @@ const AppModals = ({
     is_eu,
     is_logged_in,
     has_maltainvest_account,
-    fetchFinancialAssessment,
-    cfd_score,
-    setCFDScore,
-    setShouldShowVerifiedAccount,
     should_show_cooldown_warning_modal,
+    should_show_trade_assessment_form,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -100,20 +98,14 @@ const AppModals = ({
         ComponentToLoad = <CooldownWarningModal />;
     }
 
-    // if (is_logged_in && has_maltainvest_account) {
-    //     //TODO: Invoke Trading investment assessment modal
-    //     ComponentToLoad = (
-    //         <TradingExperienceModal
-    //             fetchFinancialAssessment={fetchFinancialAssessment}
-    //             setCFDScore={setCFDScore}
-    //             cfd_score={cfd_score ?? 1}
-    //             onCancel={setShouldShowVerifiedAccount}
-    //             onSubmit={() => {
-    //                 history.push(routes.proof_of_identity);
-    //             }}
-    //         />
-    //     );
-    // }
+    if (is_logged_in && has_maltainvest_account) {
+        ComponentToLoad = <TradingExperienceModal />;
+    }
+
+    if (should_show_trade_assessment_form) {
+        console.log('should_show_trade_assessment_form: ', should_show_trade_assessment_form);
+        ComponentToLoad = <TradingAssessmentExistingUser />;
+    }
 
     return (
         <>
@@ -139,4 +131,5 @@ export default connect(({ client, ui }) => ({
     cfd_score: client.cfd_score,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
+    should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
 }))(AppModals);

@@ -18,8 +18,6 @@
             display: flex;
 
             @include mobile {
-                margin: 0 1.6rem;
-
                 .dp2p-avatar {
                     align-self: center;
                 }

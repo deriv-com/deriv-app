@@ -13,6 +13,7 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
+import RecommendedBy from 'Components/recommended-by';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
@@ -27,6 +28,8 @@ const AdvertiserPage = () => {
         last_name,
         rating_average,
         rating_count,
+        recommended_average,
+        recommended_count,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
@@ -88,9 +91,9 @@ const AdvertiserPage = () => {
                             )}
                         </div>
                         <div className='advertiser-page__rating'>
-                            <div className='advertiser-page__rating--row'>
-                                {!!rating_count && !!rating_average ? (
-                                    <React.Fragment>
+                            {rating_count && recommended_average ? (
+                                <React.Fragment>
+                                    <div className='advertiser-page__rating--row'>
                                         <StarRating
                                             empty_star_className='advertiser-page__rating--star'
                                             empty_star_icon='IcEmptyStar'
@@ -120,25 +123,35 @@ const AdvertiserPage = () => {
                                                 )}
                                             </Text>
                                         </div>
-                                    </React.Fragment>
-                                ) : (
+                                    </div>
+                                    <div className='advertiser-page__rating--row'>
+                                        <RecommendedBy
+                                            recommended_average={recommended_average}
+                                            recommended_count={recommended_count}
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            ) : (
+                                <div className='advertiser-page__rating--row'>
                                     <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                         <Localize i18n_default_text='Not rated yet' />
                                     </Text>
+                                </div>
+                            )}
+                            <Text
+                                className='advertiser-page__rating--row'
+                                color='less-prominent'
+                                size={isMobile() ? 'xxxs' : 'xs'}
+                            >
+                                {joined_since > 0 ? (
+                                    <Localize
+                                        i18n_default_text='Joined {{days_since_joined}}d'
+                                        values={{ days_since_joined: joined_since }}
+                                    />
+                                ) : (
+                                    <Localize i18n_default_text='Joined today' />
                                 )}
-                            </div>
-                            <div className='advertiser-page__rating--row'>
-                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                    {joined_since > 0 ? (
-                                        <Localize
-                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                            values={{ days_since_joined: joined_since }}
-                                        />
-                                    ) : (
-                                        <Localize i18n_default_text='Joined today' />
-                                    )}
-                                </Text>
-                            </div>
+                            </Text>
                         </div>
                         <div className='advertiser-page__row'>
                             <TradeBadge

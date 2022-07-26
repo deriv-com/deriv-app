@@ -961,7 +961,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
-        this.user_id = response.authorize.user_id;
+        this.user_id = String(response.authorize.user_id); // Convert user_id to string to prevent console error by rudderstack [Storage] setUserId:: userId should be string
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 

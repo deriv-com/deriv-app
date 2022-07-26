@@ -65,6 +65,8 @@ export type TCFDAccountCard = {
         real: string;
     };
     is_hovered?: boolean;
+    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
+    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
     existing_accounts_data?: TExistingData;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
@@ -90,8 +92,6 @@ export type TCFDAccountCard = {
         arg4: string,
         arg5: string | undefined
     ) => void;
-    can_have_more_real_synthetic_mt5?: boolean;
-    can_have_more_real_financial_mt5?: boolean;
     toggleAccountsDialog?: (arg?: boolean) => void;
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;

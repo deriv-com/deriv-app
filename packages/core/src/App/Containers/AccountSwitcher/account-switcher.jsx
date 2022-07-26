@@ -210,7 +210,7 @@ const AccountSwitcher = props => {
     // * we should map them to landing_company:
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
-    const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu) => {
+    const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu, getIsEligibleForMoreAccounts) => {
         const gaming_config = getCFDConfig(
             'gaming',
             platform === CFD_PLATFORMS.MT5
@@ -220,7 +220,8 @@ const AccountSwitcher = props => {
             props.mt5_trading_servers,
             platform,
             is_eu,
-            props.trading_platform_available_accounts
+            props.trading_platform_available_accounts,
+            getIsEligibleForMoreAccounts
         );
         const financial_config = getCFDConfig(
             'financial',
@@ -231,7 +232,8 @@ const AccountSwitcher = props => {
             props.mt5_trading_servers,
             platform,
             is_eu,
-            props.trading_platform_available_accounts
+            props.trading_platform_available_accounts,
+            getIsEligibleForMoreAccounts
         );
         // Handling CFD for EU
         // TODO: Move this logic inside getCFDConfig when CFD added to landing_companies API
@@ -264,7 +266,7 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingDemoMT5 = () => {
-        return getRemainingAccounts(getDemoMT5(), CFD_PLATFORMS.MT5, props.is_eu);
+        return getRemainingAccounts(getDemoMT5(), CFD_PLATFORMS.MT5, props.is_eu, props.isEligibleForMoreDemoMt5Svg);
     };
 
     const getRemainingDemoDXTrade = () => {
@@ -287,7 +289,7 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingRealMT5 = () => {
-        return getRemainingAccounts(getRealMT5(), CFD_PLATFORMS.MT5, props.is_eu);
+        return getRemainingAccounts(getRealMT5(), CFD_PLATFORMS.MT5, props.is_eu, props.isEligibleForMoreRealMt5);
     };
 
     const getRemainingRealDXTrade = () => {
@@ -527,7 +529,6 @@ const AccountSwitcher = props => {
                                                 is_dark_mode_on={props.is_dark_mode_on}
                                                 is_eu={props.is_eu}
                                                 key={account.login}
-                                                account_type={account.account_type}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
@@ -545,7 +546,11 @@ const AccountSwitcher = props => {
                                                 loginid={account.display_login}
                                                 redirectAccount={() => redirectToMt5Demo(account.market_type)}
                                                 platform={CFD_PLATFORMS.MT5}
-                                                shortcode={account.landing_company_short}
+                                                shortcode={
+                                                    account.market_type === 'financial' &&
+                                                    account.landing_company_short === 'labuan' &&
+                                                    account.landing_company_short
+                                                }
                                             />
                                         ))}
                                     </div>
@@ -737,7 +742,6 @@ const AccountSwitcher = props => {
                                                 is_dark_mode_on={props.is_dark_mode_on}
                                                 is_eu={props.is_eu}
                                                 key={account.login}
-                                                account_type={account.account_type}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
@@ -965,6 +969,8 @@ AccountSwitcher.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
+    isEligibleForMoreDemoMt5Svg: PropTypes.func,
+    isEligibleForMoreRealMt5: PropTypes.func,
     landing_company_shortcode: PropTypes.string,
     logoutClient: PropTypes.func,
     mt5_disabled_signup_types: PropTypes.object,
@@ -1008,8 +1014,8 @@ const account_switcher = withRouter(
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
-        can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
-        can_have_more_real_financial_mt5: client.can_have_more_real_financial_mt5,
+        isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
+        isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
         dxtrade_accounts_list: client.dxtrade_accounts_list,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,

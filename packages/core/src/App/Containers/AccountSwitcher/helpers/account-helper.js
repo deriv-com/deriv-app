@@ -52,7 +52,8 @@ export const getCFDConfig = (
     mt5_trading_servers,
     platform,
     is_eu,
-    trading_platform_available_accounts
+    trading_platform_available_accounts,
+    getIsEligibleForMoreAccounts
 ) => {
     const cfd_config = [];
 
@@ -91,26 +92,11 @@ export const getCFDConfig = (
             }
         });
     }
-    if (!is_eu && trading_platform_available_accounts && platform === CFD_PLATFORMS.MT5) {
-        // show remaining Synthetic and/or Financial while a client can still open more accounts of this particular type
-        ['gaming', 'financial'].forEach(account_type => {
-            if (account_type === market_type) {
-                const number_of_svg_accounts_count = existing_cfd_accounts.filter(
-                    svg_accounts =>
-                        (svg_accounts.market_type === 'gaming' || svg_accounts.market_type === 'synthetic') &&
-                        svg_accounts.landing_company_short === 'svg'
-                ).length;
-                const can_have_more_accounts =
-                    existing_cfd_accounts.filter(
-                        a => (a.market_type === 'synthetic' ? 'gaming' : 'financial') === account_type
-                    ).length -
-                        (account_type === 'gaming'
-                            ? number_of_svg_accounts_count > 1
-                                ? number_of_svg_accounts_count - 1
-                                : 0
-                            : 0) <
-                    trading_platform_available_accounts.filter(p => p.market_type === account_type).length;
-                if (can_have_more_accounts) {
+    if (!is_eu && platform === CFD_PLATFORMS.MT5) {
+        // show remaining Synthetic and/or Financial while a client can still open more real accounts or more demo svg
+        ['synthetic', 'financial'].forEach(account_type => {
+            if ((account_type === 'synthetic' ? 'gaming' : 'financial') === market_type) {
+                if (getIsEligibleForMoreAccounts(account_type)) {
                     cfd_config.push({
                         icon: getCFDAccount({ market_type, sub_account_type: 'financial', platform, is_eu }),
                         title: getCFDAccountDisplay({
@@ -119,7 +105,7 @@ export const getCFDConfig = (
                             platform,
                             is_eu,
                         }),
-                        type: account_type === 'gaming' ? 'synthetic' : 'financial',
+                        type: account_type,
                     });
                 }
             }

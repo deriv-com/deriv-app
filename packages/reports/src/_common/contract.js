@@ -1,6 +1,5 @@
-import React from 'react';
-import { localize, Localize } from '@deriv/translations';
-import { getUnsupportedContracts } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { getUnsupportedContracts, getSupportedContracts } from '@deriv/shared';
 
 export const getMarketNamesMap = () => ({
     FRXAUDCAD: localize('AUD/CAD'),
@@ -95,65 +94,6 @@ export const getMarketNamesMap = () => ({
     CRYETHUSD: localize('ETH/USD'),
     CRYEOSUSD: localize('EOS/USD'),
     CRYLTCUSD: localize('LTC/USD'),
-});
-
-export const getSupportedContracts = is_high_low => ({
-    CALL: {
-        name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
-        position: 'top',
-    },
-    PUT: {
-        name: is_high_low ? <Localize i18n_default_text='Lower' /> : <Localize i18n_default_text='Fall' />,
-        position: 'bottom',
-    },
-    CALLE: {
-        name: <Localize i18n_default_text='Rise' />,
-        position: 'top',
-    },
-    PUTE: {
-        name: <Localize i18n_default_text='Fall' />,
-        position: 'bottom',
-    },
-    DIGITMATCH: {
-        name: <Localize i18n_default_text='Matches' />,
-        position: 'top',
-    },
-    DIGITDIFF: {
-        name: <Localize i18n_default_text='Differs' />,
-        position: 'bottom',
-    },
-    DIGITEVEN: {
-        name: <Localize i18n_default_text='Even' />,
-        position: 'top',
-    },
-    DIGITODD: {
-        name: <Localize i18n_default_text='Odd' />,
-        position: 'bottom',
-    },
-    DIGITOVER: {
-        name: <Localize i18n_default_text='Over' />,
-        position: 'top',
-    },
-    DIGITUNDER: {
-        name: <Localize i18n_default_text='Under' />,
-        position: 'bottom',
-    },
-    ONETOUCH: {
-        name: <Localize i18n_default_text='Touch' />,
-        position: 'top',
-    },
-    NOTOUCH: {
-        name: <Localize i18n_default_text='No Touch' />,
-        position: 'bottom',
-    },
-    MULTUP: {
-        name: <Localize i18n_default_text='Up' />,
-        position: 'top',
-    },
-    MULTDOWN: {
-        name: <Localize i18n_default_text='Down' />,
-        position: 'bottom',
-    },
 });
 
 export const getContractConfig = is_high_low => ({

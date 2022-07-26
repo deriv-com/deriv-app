@@ -64,6 +64,8 @@ export default class TicksService {
             ?.reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
             .toObject();
           resolve(this.pipSizes);
+        }).catch(error => {
+          globalObserver.emit("Error", error);
         });
       });
     }

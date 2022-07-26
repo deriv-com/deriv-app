@@ -1,16 +1,8 @@
 import { TrackJS } from "trackjs";
 import { observer as globalObserver } from "../../common/utils/observer";
-import { isProduction, isMobile } from "../../common/utils/tools";
+import { isMobile } from "../../common/utils/tools";
 import { isIOS } from "./osDetect";
-
-const default_errors_to_ignore = [
-  'CallError',
-  'WrongResponse',
-  'GetProposalFailure',
-  'RateLimit',
-  'DisconnectError',
-  'MarketIsClosed',
-];
+import { trackJSTrack } from "../../common/integrations/trackJSTrack";
 
 const log = (type, ...args) => {
   if (type === "warn") {
@@ -48,43 +40,10 @@ export class TrackJSError extends Error {
 }
 
 const notifyError = error => {
-  if (!error) {
-    return;
-  }
-
-  let message;
-  let code;
-
-  if (typeof error === "string") {
-    code = "Unknown";
-    message = error;
-  } else if (error.error) {
-    if (error.error.error) {
-      ({ message } = error.error.error);
-      ({ code } = error.error.error);
-    } else {
-      ({ message } = error.error);
-      ({ code } = error.error);
-    }
-  } else {
-    ({ message } = error);
-    ({ code } = error);
-  }
-
-  // Exceptions:
-  if (message === "Cannot read property 'open_time' of undefined") {
-    // SmartCharts error workaround, don't log nor show.
-    return;
-  }
-
+  if (!error) return;
+  const {message} =  trackJSTrack(error);
   notify({ className: "error", message, position: isMobile() ? 'left' : 'right' });
-
-  if (isProduction()) {
-    if(!default_errors_to_ignore.includes(code)){
-      TrackJS.track(code);
-    }
-  }
-};
+}
 
 const waitForNotifications = () => {
   const notifList = ["success", "info", "warn", "error"];

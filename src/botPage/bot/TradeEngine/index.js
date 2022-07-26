@@ -111,7 +111,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.token = token;
         resolve();
       })
-    );
+      ).catch(error => {
+        globalObserver.emit("Error", error);
+      });
   }
 
   getContractDuration() {

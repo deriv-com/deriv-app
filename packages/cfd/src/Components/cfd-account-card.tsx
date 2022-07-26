@@ -230,9 +230,10 @@ const CFDAccountCardComponent = ({
         existing_accounts_data?.map(acc => {
             if (acc.landing_company_short === 'svg') {
                 if (all_svg_acc.length) {
-                    all_svg_acc.filter(svg_acc =>
-                        svg_acc.server !== acc.server ? all_svg_acc.push(acc) : all_svg_acc
-                    );
+                    all_svg_acc.map(svg_acc => {
+                        if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
+                        return all_svg_acc;
+                    });
                 } else {
                     all_svg_acc.push(acc);
                 }

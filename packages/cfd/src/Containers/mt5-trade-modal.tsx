@@ -286,6 +286,7 @@ const MT5TradeModal = ({
                     should_header_stick_body={false}
                     width='600px'
                     height='709px'
+                    exit_classname='cfd-modal--custom-exit'
                 >
                     {getPageContent()}
                 </Modal>

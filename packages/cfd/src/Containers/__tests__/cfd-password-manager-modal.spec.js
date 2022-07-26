@@ -303,11 +303,17 @@ describe('<CFDPasswordManagerModal />', () => {
         fireEvent.blur(current_investor_password);
         fireEvent.change(new_investor_password, { target: { value: 'XCvnhnkdh!111' } });
         fireEvent.blur(new_investor_password);
-        await waitFor(() => {
-            expect(current_investor_password).toHaveValue('Testing1234');
-            expect(new_investor_password).toHaveValue('XCvnhnkdh!111');
-            expect(screen.getByRole('button', { name: /Change investor password/i })).toBeDisabled(); //should be enabled
-        });
+
+        expect(current_investor_password).toHaveValue('Testing1234');
+        expect(new_investor_password).toHaveValue('XCvnhnkdh!111');
+        expect(screen.getByRole('button', { name: /Change investor password/i })).toBeEnabled();
+
+        fireEvent.click(screen.getByRole('button', { name: /Change investor password/i }));
+        expect(
+            await screen.findByText(
+                /If this is the first time you try to create a password, or you have forgotten your password, please reset it/i
+            )
+        ).toBeInTheDocument();
     });
 
     it('should render SentEmailModal if the user clicks create or reset investor password', async () => {

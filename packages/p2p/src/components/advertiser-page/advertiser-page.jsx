@@ -11,7 +11,7 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
-import StarRating from '../star-rating/star-rating.jsx';
+import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
 
@@ -100,26 +100,26 @@ const AdvertiserPage = () => {
                                             is_readonly
                                             number_of_stars={5}
                                             should_allow_hover_effect={false}
-                                            star_size={20}
+                                            star_size={isMobile() ? 17 : 20}
                                         />
-                                        &nbsp;
-                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_average_decimal}
-                                        </Text>
-                                        &nbsp;
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_count === 1 ? (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} rating)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} ratings)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            )}
-                                        </Text>
+                                        <div className='advertiser-page__rating--text'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_count === 1 ? (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} rating)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} ratings)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                )}
+                                            </Text>
+                                        </div>
                                     </React.Fragment>
                                 ) : (
                                     <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>

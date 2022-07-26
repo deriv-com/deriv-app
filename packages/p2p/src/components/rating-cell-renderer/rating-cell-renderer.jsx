@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import OrdersUserRatingButton from 'Components/orders/orders-user-rating-button';
+import UserRatingButton from 'Components/user-rating-button';
 import StarRating from 'Components/star-rating';
 
-const RatingCellRenderer = ({ rating, rating_button_expiry_time, review_details }) => {
+const RatingCellRenderer = ({ is_reviewable, rating, review_details }) => {
     return review_details ? (
         <div className='rating-cell-renderer'>
             <StarRating
@@ -20,13 +20,13 @@ const RatingCellRenderer = ({ rating, rating_button_expiry_time, review_details 
             />
         </div>
     ) : (
-        <OrdersUserRatingButton has_full_text={false} is_disabled={rating_button_expiry_time > 24} />
+        <UserRatingButton has_full_text={false} is_disabled={is_reviewable} />
     );
 };
 
 RatingCellRenderer.propTypes = {
+    is_reviewable: PropTypes.bool,
     rating: PropTypes.number,
-    rating_button_expiry_time: PropTypes.number,
     review_details: PropTypes.object,
 };
 

@@ -18,7 +18,7 @@ const OnRampSideNote = () => {
         />,
     ];
 
-    return <SideNote notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
+    return <SideNote side_notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
 };
 const OnRampInfo = () => (
     <div className='on-ramp__info'>
@@ -140,10 +140,12 @@ const OnRamp = ({
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
+    is_cashier_onboarding: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     is_onramp_modal_open: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
     menu_options: PropTypes.array,
     onMountOnramp: PropTypes.func,
     onUnmountOnramp: PropTypes.func,

@@ -4,52 +4,26 @@
 
 **In this document**
 
--   [Commands](#commands)
--   [Usage](#Usage)
-    -   [Base styles](base-styles)
+-   [Usage](#usage)
+    -   [Base styles](#base-styles)
         -   [Resources loader](#resources-loader)
         -   [Browser css reset](#browser-css-reset)
         -   [Google fonts](#google-fonts)
     -   [ Utility functions](#utility-functions)
 
-## Commands
-
-Setup:
-
-```sh
-lerna bootstrap
-```
-
-Serve:
-
-```sh
-npm run serve
-```
-
-Build :
-
-```sh
-npm run build
-```
-
-Test:
-
-```sh
-npm run test
-```
-
 ## Usage
 
-### Base styles
+## Base styles
 
-#### Resources loader
+### Resources loader
 
 For Fonts, Constants, Mixins, Themes, Devices:
 
 1. Run `npm i sass-resources-loader --save-dev`
 2. Add the following in your webpack css loader
 
-```js {
+```js
+{
     loader: 'sass-resources-loader',
     options: {
         resources: require('@deriv/shared/src/styles/index.js'),
@@ -57,19 +31,19 @@ For Fonts, Constants, Mixins, Themes, Devices:
 }
 ```
 
-#### Browser css reset
+### Browser css reset
 
 ```scss
-@import @deriv/shared/utils/styles/reset.scss;
+@import @deriv / shared/utils/styles/reset.scss;
 ```
 
-#### Google fonts
+### Google fonts
 
 ```scss
-@import @deriv/shared/utils/styles/google-fonts.scss;
+@import @deriv / shared/utils/styles/google-fonts.scss;
 ```
 
-### Utility functions
+## Utility functions
 
 ```js
 import { toMoment } '@deriv/shared'

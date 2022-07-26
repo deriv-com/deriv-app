@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { getExpiryTime, secondsToTimer } from 'Utils/date-time';
+import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
@@ -42,6 +42,7 @@ const OrderRow = ({ style, row: order }) => {
         id,
         is_buy_order,
         is_my_ad,
+        is_reviewable,
         is_sell_order,
         local_currency,
         order_expiry_milliseconds,
@@ -89,7 +90,6 @@ const OrderRow = ({ style, row: order }) => {
     const transaction_amount = `${Number(amount * rate).toFixed(2)} ${local_currency}`;
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
-    const rating_button_expiry_time = getExpiryTime(order_purchase_datetime);
 
     if (isMobile()) {
         return (
@@ -141,11 +141,13 @@ const OrderRow = ({ style, row: order }) => {
                                 />
                             </div>
                         ) : (
-                            <RatingCellRenderer
-                                rating={order.review_details?.rating}
-                                rating_button_expiry_time={rating_button_expiry_time}
-                                review_details={order.review_details}
-                            />
+                            status_string === 'Completed' && (
+                                <RatingCellRenderer
+                                    is_reviewable={!is_reviewable}
+                                    rating={order.review_details?.rating}
+                                    review_details={order.review_details}
+                                />
+                            )
                         )}
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
@@ -189,11 +191,13 @@ const OrderRow = ({ style, row: order }) => {
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
                     ) : (
-                        <RatingCellRenderer
-                            rating={order.review_details?.rating}
-                            rating_button_expiry_time={rating_button_expiry_time}
-                            review_details={order.review_details}
-                        />
+                        status_string === 'Completed' && (
+                            <RatingCellRenderer
+                                is_reviewable={!is_reviewable}
+                                rating={order.review_details?.rating}
+                                review_details={order.review_details}
+                            />
+                        )
                     )}
                 </Table.Cell>
             </Table.Row>

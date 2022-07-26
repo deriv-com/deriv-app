@@ -20,6 +20,7 @@ import {
     website_name,
     getTotalProfit,
     getContractPath,
+    getCardLabels,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -32,7 +33,6 @@ import {
 } from 'Constants/data-table-constants';
 import PositionsDrawerCard from '../Components/Elements/PositionsDrawerCard';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
-import { getCardLabels } from '_common/contract';
 import { connect } from 'Stores/connect';
 
 const EmptyPlaceholderWrapper = props => (

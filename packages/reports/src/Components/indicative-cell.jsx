@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money, DesktopWrapper, ContractCard } from '@deriv/components';
-import { getCardLabels } from '_common/contract';
+import { getCardLabels } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
 const IndicativeCell = ({ amount, currency, contract_info, is_footer, onClickSell, is_sell_requested }) => {

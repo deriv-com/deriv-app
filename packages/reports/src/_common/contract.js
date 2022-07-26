@@ -1,39 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 
-export const getCardLabels = () => ({
-    APPLY: localize('Apply'),
-    STAKE: localize('Stake:'),
-    CLOSE: localize('Close'),
-    CANCEL: localize('Cancel'),
-    CURRENT_STAKE: localize('Current stake:'),
-    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
-    TAKE_PROFIT: localize('Take profit:'),
-    BUY_PRICE: localize('Buy price:'),
-    STOP_LOSS: localize('Stop loss:'),
-    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
-    PROFIT_LOSS: localize('Profit/Loss:'),
-    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-    INDICATIVE_PRICE: localize('Indicative price:'),
-    PAYOUT: localize('Sell price:'),
-    PURCHASE_PRICE: localize('Buy price:'),
-    POTENTIAL_PAYOUT: localize('Payout limit:'),
-    TICK: localize('Tick '),
-    WON: localize('Won'),
-    LOST: localize('Lost'),
-    DAYS: localize('days'),
-    DAY: localize('day'),
-    SELL: localize('Sell'),
-    INCREMENT_VALUE: localize('Increment value'),
-    DECREMENT_VALUE: localize('Decrement value'),
-    TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
-        'Take profit and/or stop loss are not available while deal cancellation is active.'
-    ),
-    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
-    RESALE_NOT_OFFERED: localize('Resale not offered'),
-    NOT_AVAILABLE: localize('N/A'),
-});
-
 export const getMarketNamesMap = () => ({
     FRXAUDCAD: localize('AUD/CAD'),
     FRXAUDCHF: localize('AUD/CHF'),

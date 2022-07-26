@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Label, Money, ContractCard } from '@deriv/components';
-import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
+import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation, getCardLabels } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream.jsx';
 
-import { getCardLabels } from '_common/contract';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';

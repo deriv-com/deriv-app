@@ -2,7 +2,6 @@ const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
-
 const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {

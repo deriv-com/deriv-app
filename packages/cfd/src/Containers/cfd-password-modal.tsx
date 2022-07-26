@@ -204,7 +204,7 @@ const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
             return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
         case 'financial':
             if (is_eu) {
-                return <Icon icon='IcMt5Cfds' size={128} />;
+                return <Icon icon='IcMt5CfdPlatform' size={128} />;
             }
             return <Icon icon='IcMt5FinancialPlatform' size={128} />;
         default:

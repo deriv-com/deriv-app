@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Text, Checkbox, StaticUrl } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Icon, Text, Checkbox, Popover, StaticUrl } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
@@ -290,6 +290,21 @@ const JurisdictionCard = ({
                                   <Text as='p' size='xs' color={'prominent'}>
                                       <Localize i18n_default_text={item} />
                                   </Text>
+                                  {/* TODO: find a better solution */}
+                                  {/Straight-through processing/.test(item) && (
+                                      <Popover
+                                          alignment='left'
+                                          className='cfd-compare-accounts-tooltip'
+                                          classNameBubble='cfd-compare-accounts-tooltip--msg'
+                                          icon='info'
+                                          disable_message_icon
+                                          is_bubble_hover_enabled
+                                          message={localize(
+                                              'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
+                                          )}
+                                          zIndex={9999}
+                                      />
+                                  )}
                               </div>
                           ))}
                 </div>

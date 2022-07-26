@@ -64,7 +64,10 @@ const CFDDbViOnBoarding = ({
         }
     }, [is_cfd_verification_modal_visible]);
 
-    if (is_loading) return <Loading is_fullscreen />;
+    if (is_cfd_verification_modal_visible && is_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
+
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>

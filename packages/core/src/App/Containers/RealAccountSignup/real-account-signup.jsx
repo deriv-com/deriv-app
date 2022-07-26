@@ -259,7 +259,6 @@ const RealAccountSignup = ({
     };
 
     const showStatusDialog = curr => {
-        console.log('Cur: ', curr);
         setParams({
             active_modal_index: modal_pages_indices.status_dialog,
             currency: curr,
@@ -418,7 +417,6 @@ const RealAccountSignup = ({
         try {
             setShouldShowAppropriatenessTestWarningModal(false);
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
-            console.log('createRealAccount Response: ', response);
             if (real_account_signup_target === 'maltainvest') {
                 showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
             }

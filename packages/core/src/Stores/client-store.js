@@ -1055,22 +1055,10 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
-
-        console.log('Form Values input to realAccountSignup: ', form_values);
-        console.log('Checks: ', is_maltainvest_account, should_override);
-
-        // if (is_maltainvest_account && !should_override) {
-        //     currency = form_values.currency;
-        //     form_values.accept_risk = form_values.accept_risk ?? 0;
-        // } else {
-        //     currency = form_values.currency;
-        //     delete form_values?.accept_risk;
-        // }
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
 
-        console.log('Submitting form_values: ', form_values);
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(form_values)
             : await WS.newAccountReal(form_values);

@@ -103,7 +103,6 @@ const AppModals = ({
     }
 
     if (should_show_trade_assessment_form) {
-        console.log('should_show_trade_assessment_form: ', should_show_trade_assessment_form);
         ComponentToLoad = <TradingAssessmentExistingUser />;
     }
 

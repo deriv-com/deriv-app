@@ -6,7 +6,7 @@
     @include mobile {
         .page-return {
             border-bottom: 2px solid var(--general-section-1);
-            margin: unset;
+            margin: 1rem 0;
             padding: 0 1.6rem 1.6rem;
         }
 
@@ -190,6 +190,7 @@
                 position: fixed;
                 right: 0;
                 width: 100vw;
+                z-index: 4;
             }
         }
     }
@@ -254,17 +255,30 @@
         &-price {
             color: var(--text-profit-success);
             font-weight: bold;
+
+            .display-layout {
+                display: flex;
+                flex-direction: column;
+            }
         }
         &-popovers {
             background-color: var(--general-main-1);
             display: flex;
-            height: 100%;
+            height: 99%;
             justify-content: center;
-            min-width: 11rem;
+            min-width: 14rem;
             padding: 1.6rem;
             position: absolute;
             right: 0;
             top: 0;
+
+            &--disable {
+                cursor: not-allowed;
+
+                @include mobile {
+                    background-color: var(--checkbox-disabled-grey) !important;
+                }
+            }
 
             @include mobile {
                 display: flex;
@@ -291,7 +305,7 @@
 
                 @include mobile {
                     align-items: center;
-                    background-color: var(--brand-orange);
+                    background-color: var(--status-warning);
                     display: flex;
                     height: 100%;
                     justify-content: center;
@@ -387,7 +401,7 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: repeat(3, 2fr) repeat(2, 2.3fr) 1.2fr;
+            grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
 
             .dc-table__cell:last-child {
                 word-break: unset;
@@ -397,6 +411,12 @@
                 grid-template-columns: unset;
                 padding: 1.6rem;
                 width: 100%;
+            }
+
+            &__type-and-status {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.8rem;
             }
 
             &-details {
@@ -433,6 +453,22 @@
 
         &-status {
             width: 100%;
+
+            &-warning {
+                align-items: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+
+                @include mobile {
+                    align-items: center;
+                    display: flex;
+                    justify-content: unset;
+                    width: unset;
+                    gap: 1rem;
+                }
+            }
         }
 
         &--disabled {
@@ -628,13 +664,14 @@
         width: fit-content;
 
         @include mobile {
-            margin: 1.6rem 1.6rem 0;
+            margin: 1rem 2rem;
 
             .dc-hint-box {
                 align-items: normal;
 
                 &__icon {
                     width: 3.5rem;
+                    align-items: flex-start;
                 }
             }
         }
@@ -656,6 +693,12 @@
             color: var(--text-less-prominent);
         }
     }
+
+    &__expand-button {
+        vertical-align: unset;
+        border-radius: unset;
+        height: unset;
+    }
 }
 
 .p2p-my-ads__modal-error {
@@ -673,6 +716,23 @@
     }
 }
 
+.edit-ad__offer-amt {
+    .dc-input__label {
+        color: var(--text-general);
+        -webkit-text-fill-color: var(--text-general);
+    }
+
+    .dc-input__field:disabled {
+        color: var(--text-less-prominent);
+        -webkit-text-fill-color: var(--text-less-prominent);
+    }
+}
+
+.dc-modal__container_switch-ads {
+    @include mobile {
+        min-width: 328px !important;
+    }
+}
 .p2p-my-ads__modal-icon {
     margin-right: 0.8rem;
 }

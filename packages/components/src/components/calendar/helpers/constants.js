@@ -1,19 +1,19 @@
 import { toMoment } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
-// TODO: localize
 export const month_headers = {
-    Jan: 'Jan',
-    Feb: 'Feb',
-    Mar: 'Mar',
-    Apr: 'Apr',
-    May: 'May',
-    Jun: 'Jun',
-    Jul: 'Jul',
-    Aug: 'Aug',
-    Sep: 'Sep',
-    Oct: 'Oct',
-    Nov: 'Nov',
-    Dec: 'Dec',
+    Jan: () => localize('Jan'),
+    Feb: () => localize('Feb'),
+    Mar: () => localize('Mar'),
+    Apr: () => localize('Apr'),
+    May: () => localize('May'),
+    Jun: () => localize('Jun'),
+    Jul: () => localize('Jul'),
+    Aug: () => localize('Aug'),
+    Sep: () => localize('Sep'),
+    Oct: () => localize('Oct'),
+    Nov: () => localize('Nov'),
+    Dec: () => localize('Dec'),
 };
 
 export const week_headers = {

@@ -29,7 +29,7 @@ const Header = ({
     const end_of_decade = (is_year_view ? decade : century).split('-')[1];
     const month_number = Number(moment_date.format('M'));
     const month = Object.entries(month_headers)[month_number];
-    const month_name = month[1];
+    const month_name = month[1]();
 
     const is_prev_month_disabled = isPeriodDisabled(subMonths(moment_date, 1), 'month');
     const is_prev_year_disabled = isPeriodDisabled(subYears(moment_date, num_of_years), 'month');

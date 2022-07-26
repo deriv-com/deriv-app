@@ -13,6 +13,7 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
     return (
         <div className='dc-calendar__body dc-calendar__body--month'>
             {Object.keys(month_headers).map((month, index) => {
+                const month_name = month_headers[month]();
                 const month_number = index + 1;
                 const is_active = month_number === selected_month_number && is_same_year;
                 const is_disabled = isPeriodDisabled(moment_date.clone().month(month), 'month');
@@ -27,7 +28,7 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
                         onClick={is_disabled ? undefined : e => updateSelected(e, 'month')}
                         data-month={index}
                     >
-                        {month_headers[month]}
+                        {month_name}
                     </span>
                 );
             })}

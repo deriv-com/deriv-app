@@ -42,9 +42,9 @@ export default class MyProfileStore extends BaseStore {
     should_show_add_payment_method_form = false;
     should_show_edit_payment_method_form = false;
 
-    constructor({ root_store }) {
+    constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super({ root_store });
+        super(root_store);
 
         makeObservable(this, {
             active_tab: observable,

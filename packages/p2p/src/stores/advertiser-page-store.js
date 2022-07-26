@@ -21,9 +21,9 @@ export default class AdvertiserPageStore extends BaseStore {
     show_ad_popup = false;
     submitForm = () => {};
 
-    constructor({ root_store }) {
+    constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super({ root_store });
+        super(root_store);
 
         makeObservable(this, {
             active_index: observable,
@@ -110,14 +110,14 @@ export default class AdvertiserPageStore extends BaseStore {
                 counterparty_type: this.counterparty_type,
                 advertiser_id: this.advertiser_details_id,
                 offset: startIndex,
-                limit: general_store?.list_item_limit,
+                limit: general_store.list_item_limit,
             }).then(response => {
                 if (response.error) {
                     this.setErrorMessage(response.error);
                 } else {
                     const { list } = response.p2p_advert_list;
                     this.setAdverts(list);
-                    this.setHasMoreAdvertsToLoad(list.length >= general_store?.list_item_limit);
+                    this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
 
                 this.setIsLoadingAdverts(false);

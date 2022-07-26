@@ -4,7 +4,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 
 export default class OrderStore {
-    constructor({ root_store }) {
+    constructor(root_store) {
         makeObservable(this, {
             api_error_message: observable,
             cancellation_block_duration: observable,
@@ -140,14 +140,14 @@ export default class OrderStore {
                 p2p_order_list: 1,
                 active,
                 offset: startIndex,
-                limit: general_store?.list_item_limit,
+                limit: general_store.list_item_limit,
             }).then(response => {
                 if (!response.error) {
                     // Ignore any responses that don't match our request. This can happen
                     // due to quickly switching between Active/Past tabs.
                     if (response.echo_req.active === active) {
                         const { list } = response.p2p_order_list;
-                        this.setHasMoreItemsToLoad(list.length >= general_store?.list_item_limit);
+                        this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
                         const old_list = [...this.orders];
                         const new_list = [];

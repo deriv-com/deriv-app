@@ -84,7 +84,6 @@ export const getCFDConfig = (
                             sub_account_type: company,
                             platform,
                             is_eu,
-                            is_remaining_account: true,
                         }),
                         type,
                     });

@@ -97,15 +97,14 @@ export const getCFDAccountDisplay = ({
     platform,
     is_eu,
     shortcode,
-    is_remaining_account,
+    is_mt5_trade_modal,
 }) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
-        if (is_remaining_account) cfd_account_key = 'cfd';
-        else if (is_eu) cfd_account_key = 'cfd';
-        else cfd_account_key = 'mt5_cfds_mfsa';
+        if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds_mfsa';
+        else cfd_account_key = 'cfd';
     }
 
     return CFD_text_translated[cfd_account_key]();

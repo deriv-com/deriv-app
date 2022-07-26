@@ -113,6 +113,7 @@ const MT5TradeModal = ({
             platform: CFD_PLATFORMS.MT5,
             is_eu: is_eu_user,
             shortcode: mt5_trade_account.landing_company_short,
+            is_mt5_trade_modal: true,
         });
     const getPageContent = () => (
         <div className='cfd-trade-modal-container'>

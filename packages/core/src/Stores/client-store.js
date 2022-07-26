@@ -394,42 +394,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get can_have_more_real_synthetic_mt5() {
-        const number_of_svg_accounts = this.mt5_login_list.filter(
-            svg_accounts => svg_accounts.market_type === 'synthetic' && svg_accounts.landing_company_short === 'svg'
-        ).length;
-        const total_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included =
-                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
-
-            return is_included ? acc + 1 : acc;
-        }, 0);
-        const number_of_current_added_synthetics =
-            total_of_current_added_synthetics - (number_of_svg_accounts > 1 ? number_of_svg_accounts - 1 : 0);
-        const number_of_available_synthetics = this.trading_platform_available_accounts.filter(
-            p => p.market_type === 'synthetic' || p.market_type === 'gaming'
-        ).length;
-        return (
-            number_of_current_added_synthetics > 0 &&
-            number_of_available_synthetics > number_of_current_added_synthetics
-        );
-    }
-
-    @computed
-    get can_have_more_real_financial_mt5() {
-        const number_of_current_added_financial = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included = cur.account_type === 'real' && cur.market_type === 'financial';
-            return is_included ? acc + 1 : acc;
-        }, 0);
-        const number_of_available_financial = this.trading_platform_available_accounts.filter(
-            p => p.market_type === 'financial'
-        ).length;
-        return (
-            number_of_current_added_financial > 0 && number_of_available_financial > number_of_current_added_financial
-        );
-    }
-
-    @computed
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)
@@ -758,6 +722,36 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    getIsMarketTypeMatching = (account, market_type) =>
+        market_type === 'synthetic'
+            ? account.market_type === market_type || account.market_type === 'gaming'
+            : account.market_type === 'financial';
+
+    @action.bound
+    isEligibleForMoreDemoMt5Svg(market_type) {
+        const existing_demo_accounts = this.mt5_login_list.filter(
+            account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)
+        );
+        return (
+            this.trading_platform_available_accounts.some(
+                account =>
+                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
+                    account.shortcode === 'svg'
+            ) && existing_demo_accounts.every(account => !(account.landing_company_short === 'svg'))
+        );
+    }
+
+    @action.bound
+    isEligibleForMoreRealMt5(market_type) {
+        const number_of_available_real_accounts = this.trading_platform_available_accounts.filter(
+            account => (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type
+        ).length;
+        const number_of_added_real_accounts = this.mt5_login_list.filter(
+            account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
+        ).length;
+        return number_of_available_real_accounts > number_of_added_real_accounts;
     }
 
     isMT5Allowed = landing_companies => {

@@ -8,6 +8,7 @@ const mock_connect_props = {
         real: '',
     },
     setMT5TradeAccount: jest.fn(),
+    isEligibleForMoreDemoMt5Svg: () => true,
 };
 
 jest.mock('Stores/connect.js', () => ({

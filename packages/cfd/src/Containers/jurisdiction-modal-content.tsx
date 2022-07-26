@@ -411,6 +411,16 @@ const JurisdictionModalContent = ({
                         </Text>
                     </div>
                 )}
+                {is_fully_authenticated && jurisdiction_selected_shortcode === 'maltainvest' && (
+                    <div className={`${card_classname}__footnote`}>
+                        <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
+                            <Localize
+                                i18n_default_text='Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
+                                values={{ account_type: account_type_name }}
+                            />
+                        </Text>
+                    </div>
+                )}
                 {poi_poa_none && jurisdiction_selected_shortcode && jurisdiction_selected_shortcode !== 'svg' && (
                     <Text
                         as='p'

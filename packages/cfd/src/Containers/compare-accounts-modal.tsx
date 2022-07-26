@@ -105,6 +105,7 @@ const CompareAccountsModal = ({
                             type='button'
                             height={getModalStyle().height}
                             width={getModalStyle().width}
+                            exit_classname='cfd-modal--custom-exit'
                         >
                             {is_dxtrade ? (
                                 <ModalContent

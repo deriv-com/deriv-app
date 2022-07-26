@@ -9,10 +9,9 @@ const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setField
 
     const checkIfAllFieldsFilled = () => {
         let enable_next_section = false;
-
         if (
-            values.cfd_trading_experience_mf &&
-            values.cfd_trading_frequency_mf &&
+            values.cfd_experience &&
+            values.cfd_frequency &&
             values.trading_experience_financial_instruments &&
             values.trading_frequency_financial_instruments
         ) {

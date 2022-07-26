@@ -236,8 +236,6 @@ const AccountWizard = props => {
     };
 
     const createRealAccount = (payload = undefined, should_override = false) => {
-        console.log('createRealAccount payload: ', payload);
-        console.log('should override: ', should_override);
         props.setLoading(true);
         const form_data = { ...form_values() };
         submitForm(payload, should_override)
@@ -252,7 +250,6 @@ const AccountWizard = props => {
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-                // props.setShouldShowVerifiedAccount(true);
             })
             .catch(error => {
                 // TODO: Code for Error response
@@ -264,6 +261,7 @@ const AccountWizard = props => {
                 } else if (error.code === 'AppropriatenessTestFailed') {
                     props.setIsRealAccountSignupModalVisible();
                     if (form_data?.risk_tolerance === 'No') {
+                        props.fetchAccountSettings();
                         props.setShouldShowRiskToleranceWarningModal(true);
                     } else {
                         props.setShouldShowAppropriatenessTestWarningModal(true);
@@ -352,16 +350,17 @@ AccountWizard.propTypes = {
     onLoading: PropTypes.func,
     onFinishSuccess: PropTypes.func,
     onOpenWelcomeModal: PropTypes.func,
-    // realAccountSignup: PropTypes.func,
+    realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
     setShouldShowRiskToleranceWarningModal: PropTypes.func,
+    fetchAccountSettings: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
-    // realAccountSignup: client.realAccountSignup,
+    realAccountSignup: client.realAccountSignup,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     is_virtual: client.is_virtual,
     has_real_account: client.has_active_real_account,
@@ -377,7 +376,7 @@ export default connect(({ client, notifications, ui }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
     setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
-    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
+    fetchAccountSettings: client.fetchAccountSettings,
 }))(AccountWizard);

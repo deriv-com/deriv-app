@@ -59,7 +59,6 @@ module.exports = function (env) {
             'trading-assessment-new-user': 'Components/trading-assessment/trading-assessment-new-user.jsx',
             'trading-assessment-existing-user': 'Components/trading-assessment/trading-assessment-existing-user.jsx',
             'risk-tolerance-warning-modal': 'Components/trading-assessment/risk-tolerance-warning-modal.jsx',
-            // 'cooldown-warning-modal': 'Components/trading-assessment/cooldown-warning-modal.jsx',
             'verified-account-modal': 'Components/trading-assessment/verified-account-modal.jsx',
             'test-warning-modal': 'Components/trading-assessment/test-warning-modal.jsx',
         },

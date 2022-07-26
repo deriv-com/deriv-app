@@ -18,7 +18,17 @@ const TradingAssessmentNewUser = ({
     };
 
     const handleSubmit = (values, actions, should_override) => {
-        onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep, should_override);
+        let process_form_values = { ...values };
+        if (should_override) {
+            // Remove the keys with no values
+            process_form_values = Object.entries(process_form_values).reduce((accumulator, [key, val]) => {
+                if (val !== '') {
+                    return { ...accumulator, [key]: val };
+                }
+                return { ...accumulator };
+            }, {});
+        }
+        onSubmit(getCurrentStep() - 1, process_form_values, actions.setSubmitting, goToNextStep, should_override);
     };
 
     return (

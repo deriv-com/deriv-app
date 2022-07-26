@@ -50,7 +50,7 @@ export const trading_assessment_questions = [
             {
                 question_text: localize('How much experience do you have in CFD trading?'),
                 field_type: 'dropdown',
-                form_control: 'cfd_trading_experience_mf',
+                form_control: 'cfd_experience',
                 answer_options: [
                     {
                         text: localize('No experience'),
@@ -73,7 +73,7 @@ export const trading_assessment_questions = [
             {
                 question_text: localize('How many CFD trades have you placed in the past 12 months?'),
                 field_type: 'dropdown',
-                form_control: 'cfd_trading_frequency_mf',
+                form_control: 'cfd_frequency',
                 answer_options: [
                     {
                         text: localize('None'),
@@ -261,10 +261,10 @@ export const trading_assessment_form_config = {
     source_of_experience: {
         ...default_form_config,
     },
-    cfd_trading_experience_mf: {
+    cfd_experience: {
         ...default_form_config,
     },
-    cfd_trading_frequency_mf: {
+    cfd_frequency: {
         ...default_form_config,
     },
     trading_experience_financial_instruments: {

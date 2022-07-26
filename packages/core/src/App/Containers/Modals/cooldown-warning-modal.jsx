@@ -9,7 +9,7 @@ const CooldownWarningModal = ({
     setShouldShowCooldownWarningModal,
     real_account_creation_unlock_date,
 }) => {
-    const real_account_unblock_date = formatDate(real_account_creation_unlock_date, 'DD MMM [at] hh:mm a');
+    const real_account_unblock_date = formatDate(real_account_creation_unlock_date, 'DD MMMM [at] hh:mm a');
 
     return (
         <Modal

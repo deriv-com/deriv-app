@@ -109,6 +109,7 @@ const RealAccountSignup = ({
     setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
+    fetchAccountSettings,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -412,31 +413,32 @@ const RealAccountSignup = ({
     );
 
     const handleOnAccept = async () => {
+        setLoading(true);
         try {
-            const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
-            // setShouldShowVerifiedAccount(true);
             setShouldShowAppropriatenessTestWarningModal(false);
-            // TODO: Show Welcome Modal
+            await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
         } catch (sign_up_error) {
-            // TODO: Handle Error case
-            // setShouldShowVerifiedAccount(true);
-            setShouldShowAppropriatenessTestWarningModal(false);
+            // TODO: Handle Error
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleOnDecline = async () => {
-        const input = { ...real_account_form_data, accept_risk: 0 };
-        console.log('Called Decline', input);
+        setLoading(true);
         try {
-            const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
+            await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
             // TODO: Show CoolDown Modal
         } catch (sign_up_error) {
             setRiskWarningTitle(localize('24-hour Cool Down Warning'));
             if (sign_up_error.code === 'AppropriatenessTestFailed') {
+                fetchAccountSettings();
                 setShouldShowAppropriatenessTestWarningModal(false);
                 setShouldShowRiskToleranceWarningModal(true);
             }
             // TODO: Handle Error case
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -582,4 +584,5 @@ export default connect(({ ui, client, common, modules }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
+    fetchAccountSettings: client.fetchAccountSettings,
 }))(withRouter(RealAccountSignup));

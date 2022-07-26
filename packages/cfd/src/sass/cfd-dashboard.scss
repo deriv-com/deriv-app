@@ -457,6 +457,9 @@
     width: 27.6em;
     position: relative;
     padding: 1.6rem;
+    @include mobile {
+        margin-bottom: 2rem;
+    }
 
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);

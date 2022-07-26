@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
@@ -58,6 +59,7 @@ const AdvertiserPage = () => {
                 'advertiser-page--no-scroll': !!advertiser_page_store.is_counterparty_advertiser_blocked,
             })}
         >
+            <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
             <BlockUserModal
                 is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked}
                 is_block_user_modal_open={general_store.is_block_user_modal_open}

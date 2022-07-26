@@ -11,6 +11,7 @@ import { get, init, timePromise } from '_common/server_time';
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
     currency,
+    current_focus,
     history,
     is_dark_mode_on,
     is_logging_in,
@@ -22,6 +23,8 @@ const P2PCashier = ({
     platform,
     residence,
     setNotificationCount,
+    setCurrentFocus,
+    balance,
     setOnRemount,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
@@ -75,6 +78,7 @@ const P2PCashier = ({
     return (
         <P2P
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            balance={balance}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}
@@ -89,12 +93,16 @@ const P2PCashier = ({
             setOrderId={setQueryOrder}
             should_show_verification={/verification/.test(location.hash)}
             websocket_api={WS}
+            current_focus={current_focus}
+            setCurrentFocus={setCurrentFocus}
         />
     );
 };
 
 P2PCashier.propTypes = {
+    balance: PropTypes.string,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_logging_in: PropTypes.bool,
@@ -106,10 +114,12 @@ P2PCashier.propTypes = {
     platform: PropTypes.any,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
 };
 
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
+        balance: client.balance,
         currency: client.currency,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
@@ -121,5 +131,7 @@ export default withRouter(
         setNotificationCount: modules.cashier.general_store.setNotificationCount,
         setOnRemount: modules.cashier.general_store.setOnRemount,
         is_mobile: ui.is_mobile,
+        setCurrentFocus: ui.setCurrentFocus,
+        current_focus: ui.current_focus,
     }))(P2PCashier)
 );

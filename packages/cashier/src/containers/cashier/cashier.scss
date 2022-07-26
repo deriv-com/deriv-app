@@ -32,6 +32,13 @@
                 height: inherit;
             }
 
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (max-width: 926px) {
+                width: auto;
+                height: auto;
+                margin: 0 1.6rem;
+            }
+
             .inline-icon .color1-fill {
                 fill: var(--text-general);
             }
@@ -49,6 +56,12 @@
             align-items: center;
         }
         &--is-mobile {
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (max-width: 926px) {
+                width: 100vw;
+                min-height: calc(100vh - 80px);
+            }
+
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;

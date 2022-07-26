@@ -23,6 +23,7 @@ const Routes = ({
     error,
     has_error,
     history,
+    is_cra,
     is_logged_in,
     is_logging_in,
     location,
@@ -64,6 +65,11 @@ const Routes = ({
         return <Error {...error} />;
     }
 
+    // we need to redirect CRA clients to reports, as it's the default page for them
+    if (location.pathname === '/' && is_cra) {
+        window.location.replace(`/reports`);
+    }
+
     // we need to replace state of history object on every route
     // to prevent language query parameter from disappering
     // for non-english languages. Upon visiting with a
@@ -83,6 +89,7 @@ Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
     history: PropTypes.object,
+    is_cra: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -94,6 +101,7 @@ Routes.propTypes = {
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common }) => ({
+        is_cra: client.is_cra,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         error: common.error,

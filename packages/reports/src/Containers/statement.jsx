@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name, getContractPath } from '@deriv/shared';
+import {
+    extractInfoFromShortcode,
+    isForwardStarting,
+    urlFor,
+    website_name,
+    getContractPath,
+    getSupportedContracts,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
-import { getSupportedContracts } from '_common/contract';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';

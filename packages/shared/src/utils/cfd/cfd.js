@@ -158,22 +158,49 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) =
 };
 
 export const getIdentityStatusInfo = account_status => {
-    const idv_status = account_status.authentication?.identity?.services?.onfido?.status;
-    const onfido_status = account_status.authentication?.identity?.services?.onfido?.status;
-    const manual_status = account_status.authentication?.identity?.services?.manual?.status;
+    const poa_status = account_status?.authentication?.document?.status;
+    const poi_status = account_status?.authentication?.identity?.status;
+
+    const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
+    const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
+    const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
+
     const acknowledged_status = ['pending', 'verified'];
+
     const poi_acknowledged_for_vanuatu =
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
 
     const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
 
+    const poi_acknowledged_for_bvi_labuan =
+        (idv_status && acknowledged_status.includes(idv_status)) ||
+        (onfido_status && acknowledged_status.includes(onfido_status)) ||
+        (manual_status && acknowledged_status.includes(manual_status));
+    const need_poi_for_bvi_labuan = !poi_acknowledged_for_bvi_labuan;
+
+    const poa_acknowledged = acknowledged_status.includes(poa_status);
+    const poi_acknowledged = acknowledged_status.includes(poi_status);
+    const poa_poi_verified = poa_status === 'verified' && poi_status === 'verified';
+
+    const need_poa_submission = !poa_acknowledged;
+
     const idv_acknowledged = idv_status && acknowledged_status.includes(idv_status);
     return {
+        poa_status,
+        poi_status,
+        idv_status,
         onfido_status,
         manual_status,
         acknowledged_status,
+        poi_acknowledged_for_vanuatu,
         need_poi_for_vanuatu,
+        poa_acknowledged,
+        poi_acknowledged,
+        poa_poi_verified,
         idv_acknowledged,
+        need_poi_for_bvi_labuan,
+        poi_acknowledged_for_bvi_labuan,
+        need_poa_submission,
     };
 };

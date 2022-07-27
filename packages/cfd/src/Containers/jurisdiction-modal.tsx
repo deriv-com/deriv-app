@@ -3,9 +3,9 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { GetAccountSettingsResponse, GetSettings, LandingCompany } from '@deriv/api-types';
+import { GetAccountSettingsResponse, GetSettings, LandingCompany, GetAccountStatus } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { WS } from '@deriv/shared';
+import { WS, getIdentityStatusInfo } from '@deriv/shared';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 
 type TCompareAccountsReusedProps = {
@@ -46,6 +46,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     toggleCFDVerificationModal: () => void;
+    account_status: GetAccountStatus;
 };
 
 const JurisdictionModal = ({
@@ -65,17 +66,18 @@ const JurisdictionModal = ({
     setAccountSettings,
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
+    account_status,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
-    const poa_status = authentication_status?.document_status;
-    const poi_status = authentication_status?.identity_status;
+    const { poa_status, poi_status, need_poi_for_vanuatu, need_poi_for_bvi_labuan, need_poa_submission } =
+        getIdentityStatusInfo(account_status);
+
     const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
     const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
-    const poi_poa_failed = poa_failed || poi_failed;
     const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
 
     React.useEffect(() => {
@@ -125,12 +127,29 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
 
-    const is_next_button_enabled =
-        jurisdiction_selected_shortcode === 'svg' ||
-        (jurisdiction_selected_shortcode &&
-            jurisdiction_selected_shortcode !== 'svg' &&
-            (poi_poa_not_submitted || poi_poa_failed || (poi_poa_verified && checked)) &&
-            !poi_poa_pending);
+    const isNextButtonEnabled = () => {
+        if (jurisdiction_selected_shortcode) {
+            if (jurisdiction_selected_shortcode === 'svg') {
+                return true;
+            } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+                return (
+                    (poi_poa_not_submitted ||
+                        need_poi_for_vanuatu ||
+                        need_poa_submission ||
+                        (poi_poa_verified && checked)) &&
+                    !poi_poa_pending
+                );
+            }
+            return (
+                (poi_poa_not_submitted ||
+                    need_poi_for_bvi_labuan ||
+                    need_poa_submission ||
+                    (poi_poa_verified && checked)) &&
+                !poi_poa_pending
+            );
+        }
+        return false;
+    };
 
     const onSelectRealAccount = () => {
         const type_of_account = {
@@ -150,8 +169,22 @@ const JurisdictionModal = ({
             } else {
                 openPasswordModal(type_of_account);
             }
+        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+            if (need_poi_for_vanuatu) {
+                toggleCFDVerificationModal();
+            } else if (poi_poa_verified) {
+                // for bvi, labuan & vanuatu:
+                if (!has_submitted_personal_details) {
+                    toggleCFDPersonalDetailsModal();
+                } else {
+                    openPasswordModal(type_of_account);
+                }
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (need_poi_for_bvi_labuan) {
+            toggleCFDVerificationModal();
         } else if (poi_poa_verified) {
-            // for bvi, labuan & vanuatu:
             if (!has_submitted_personal_details) {
                 toggleCFDPersonalDetailsModal();
             } else {
@@ -209,7 +242,7 @@ const JurisdictionModal = ({
                             />
                             <Modal.Footer has_separator>
                                 <Button
-                                    disabled={!is_next_button_enabled}
+                                    disabled={!isNextButtonEnabled()}
                                     primary
                                     onClick={() => {
                                         toggleJurisdictionModal();
@@ -248,7 +281,7 @@ const JurisdictionModal = ({
                             <Modal.Footer has_separator>
                                 <Button
                                     style={{ width: '100%' }}
-                                    disabled={!is_next_button_enabled}
+                                    disabled={!isNextButtonEnabled()}
                                     primary
                                     onClick={() => {
                                         toggleJurisdictionModal();
@@ -286,4 +319,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     residence: client.residence,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
+    account_status: client.account_status,
 }))(JurisdictionModal);

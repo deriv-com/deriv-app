@@ -226,7 +226,8 @@ const DMT5CompareModalContent = ({
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
 
-    const { need_poi_for_vanuatu, idv_acknowledged } = getIdentityStatusInfo(account_status);
+    const { need_poi_for_vanuatu, idv_acknowledged, poa_acknowledged, poi_acknowledged, poa_poi_verified } =
+        getIdentityStatusInfo(account_status);
 
     React.useEffect(() => {
         if (!has_submitted_personal_details) {
@@ -472,11 +473,7 @@ const DMT5CompareModalContent = ({
     };
 
     const should_show_pending_status = (item: TFooterButtonData) => {
-        const poa_acknowledged = poa_status === 'pending' || poa_status === 'verified';
-        const poi_acknowledged = poi_status === 'pending' || poi_status === 'verified';
-        const poa_poi_verified = poa_status === 'verified' && poi_status === 'verified';
         const type = item.action.split('_')[1];
-
         if (type === 'svg') {
             return false;
         } else if (type === 'vanuatu') {

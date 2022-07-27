@@ -4,7 +4,7 @@ import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-ne
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 import { moduleLoader } from '@deriv/shared';
-import TradingExperienceModal from './trading-experience-modal';
+// import TradingExperienceModal from './trading-experience-modal';
 import CooldownWarningModal from './cooldown-warning-modal';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user';
 
@@ -98,11 +98,11 @@ const AppModals = ({
         ComponentToLoad = <CooldownWarningModal />;
     }
 
-    if (is_logged_in && has_maltainvest_account) {
-        ComponentToLoad = <TradingExperienceModal />;
-    }
+    // if (is_logged_in && has_maltainvest_account) {
+    //     ComponentToLoad = <TradingExperienceModal />;
+    // }
 
-    if (should_show_trade_assessment_form) {
+    if (is_logged_in && has_maltainvest_account) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
     }
 

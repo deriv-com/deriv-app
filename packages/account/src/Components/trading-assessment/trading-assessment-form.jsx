@@ -16,6 +16,8 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
 
     const last_question_index = assessment_questions.length - 1;
 
+    // console.log('form_value: ', form_value);
+
     React.useEffect(() => {
         setCurrentQuestion(prevState => ({
             ...prevState,
@@ -44,6 +46,7 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
     };
 
     const handleValueSelection = (e, form_control, callBackFn, values) => {
+        console.log('Values in handleValueSelection: ', values);
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
         const latest_value = { ...values, [form_control]: e.target.value };
@@ -59,7 +62,11 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
         return {};
     };
 
-    const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
+    const isAssessmentCompleted = answers => {
+        console.log('answers: ', answers);
+        const state = Object.values(answers).every(answer => Boolean(answer));
+        return state;
+    };
 
     return (
         <div className='trading-assessment'>
@@ -103,6 +110,8 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
                             current_question_details.current_question;
+
+                        console.log('Values in formik: ', values);
 
                         return (
                             <Form className='trading-assessment__form--layout'>
@@ -153,8 +162,8 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
                                             <Button
                                                 has_effect
                                                 is_disabled={!is_next_button_enabled}
-                                                onClick={!isAssessmentCompleted && handleNextButton}
-                                                type={isAssessmentCompleted ? 'submit' : 'button'}
+                                                onClick={!isAssessmentCompleted(values) && handleNextButton}
+                                                type={isAssessmentCompleted(values) ? 'submit' : 'button'}
                                                 text={localize('Next')}
                                                 large
                                                 primary

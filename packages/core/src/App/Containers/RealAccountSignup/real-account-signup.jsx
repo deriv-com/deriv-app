@@ -238,6 +238,8 @@ const RealAccountSignup = ({
         },
     ]);
 
+    console.log('Rendered: RealAccountSignup');
+
     const getModalHeight = () => {
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
@@ -446,13 +448,21 @@ const RealAccountSignup = ({
         }
     };
 
+    const handleRiskAcceptance = () => setShouldShowRiskToleranceWarningModal(false);
+
     if (should_show_risk_tolerance_warning_modal) {
         //TODO: handle other modals
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_tolerance_warning_modal}
-                setShowRiskModal={setShouldShowRiskToleranceWarningModal}
+                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                body_content={
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'
+                        components={[<br key={0} />]}
+                    />
+                }
             />
         );
     } else if (should_show_appropriateness_test_warning_modal) {

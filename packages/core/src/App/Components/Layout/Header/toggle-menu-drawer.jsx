@@ -264,8 +264,8 @@ const ToggleMenuDrawer = React.forwardRef(
                     submenu_suffix_icon='IcChevronRight'
                     onToggle={expandSubMenu}
                 >
-                    {Object.keys(getAllowedLanguages()).map((lang, idx) => (
-                        <MobileDrawer.Item key={idx}>
+                    {Object.keys(getAllowedLanguages()).map(lang => (
+                        <MobileDrawer.Item key={lang}>
                             <MenuLink
                                 is_language
                                 is_active={currentLanguage === lang}

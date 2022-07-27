@@ -41,8 +41,8 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
-                {platform_config.map((platform, idx) => (
-                    <div key={idx} onClick={closeDrawer} ref={ref}>
+                {platform_config.map(platform => (
+                    <div key={platform.icon} onClick={closeDrawer} ref={ref}>
                         {platform.link_to ? (
                             <BinaryLink
                                 to={platform.link_to}

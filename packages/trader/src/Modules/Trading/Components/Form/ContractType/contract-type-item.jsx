@@ -6,10 +6,10 @@ import { Icon, DesktopWrapper, Text } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 
 const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
-    contract_types.map((type, idx) => (
+    contract_types.map(type => (
         <div
             id={`dt_contract_${type.value}_item`}
-            key={idx}
+            key={type.value}
             className={classNames('contract-type-item', {
                 'contract-type-item--selected': value === type.value,
             })}

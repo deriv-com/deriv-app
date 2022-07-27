@@ -56,7 +56,7 @@ const VerticalTabHeaders = ({
         >
             {!is_floating && header_title && <VerticalTabHeaderTitle header_title={header_title} />}
             {Array.isArray(item_groups)
-                ? item_groups.map((group, idx) => (
+                ? item_groups.map(group => (
                       <VerticalTabHeaderGroup
                           onChange={onChange}
                           onToggle={setShouldSkipAnimation}
@@ -72,7 +72,7 @@ const VerticalTabHeaders = ({
                           is_collapsible={is_collapsible}
                           is_routed={is_routed}
                           group={group}
-                          key={idx}
+                          key={group.label}
                       >
                           {group.subitems?.map((item_idx, header_idx) => (
                               <VerticalTabHeader
@@ -81,20 +81,20 @@ const VerticalTabHeaders = ({
                                   is_floating={is_floating}
                                   is_routed={is_routed}
                                   selected={selected}
-                                  key={header_idx}
+                                  key={items[item_idx]?.path}
                                   selectedKey={selectedKey}
                               />
                           ))}
                       </VerticalTabHeaderGroup>
                   ))
-                : items.map((item, idx) => (
+                : items.map(item => (
                       <VerticalTabHeader
                           item={item}
                           onChange={onChange}
                           is_floating={is_floating}
                           is_routed={is_routed}
                           selected={selected}
-                          key={idx}
+                          key={item?.path}
                           selectedKey={selectedKey}
                       />
                   ))}

@@ -42,10 +42,10 @@ const NotificationsContent = ({
     return (
         <div className='notification-messages' style={style}>
             <TransitionGroup component='div'>
-                {notifications.map((notification, idx) => (
+                {notifications.map(notification => (
                     <CSSTransition
                         appear={!is_notification_loaded}
-                        key={idx}
+                        key={notification.message.header}
                         in={!!notification.header}
                         timeout={150}
                         classNames={{

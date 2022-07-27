@@ -71,8 +71,18 @@ const JurisdictionModal = ({
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
-    const { poa_status, poi_status, need_poi_for_vanuatu, need_poi_for_bvi_labuan, need_poa_submission } =
-        getIdentityStatusInfo(account_status);
+    const {
+        poa_status,
+        poi_status,
+        need_poi_for_vanuatu,
+        need_poi_for_bvi_labuan,
+        need_poa_submission,
+        poi_verified_for_vanuatu,
+        poi_verified_for_labuan_bvi,
+        poa_verified,
+        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_vanuatu,
+    } = getIdentityStatusInfo(account_status);
 
     const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
@@ -239,6 +249,13 @@ const JurisdictionModal = ({
                                 setChecked={setChecked}
                                 poi_failed={poi_failed}
                                 poa_failed={poa_failed}
+                                poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+                                poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
+                                poa_verified={poa_verified}
+                                poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
+                                poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+                                need_poi_for_vanuatu={need_poi_for_vanuatu}
+                                need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
                             />
                             <Modal.Footer has_separator>
                                 <Button
@@ -277,6 +294,13 @@ const JurisdictionModal = ({
                                 setChecked={setChecked}
                                 poi_failed={poi_failed}
                                 poa_failed={poa_failed}
+                                poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+                                poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
+                                poa_verified={poa_verified}
+                                poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
+                                poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+                                need_poi_for_vanuatu={need_poi_for_vanuatu}
+                                need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
                             />
                             <Modal.Footer has_separator>
                                 <Button

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, getIdentityStatusInfo } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
@@ -42,6 +42,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     account_status: GetAccountStatus;
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
+    needs_poi_for_vanuatu: boolean;
 };
 
 type TSetSubmiting = (isSubmitting: boolean) => void;
@@ -59,7 +60,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const { refreshNotifications, authentication_status, fetchStatesList } = props;
     const [step, setStep] = React.useState<number>(0);
     const [form_error, setFormError] = React.useState<string>('');
-
+    const { need_poi_for_vanuatu } = getIdentityStatusInfo(props.account_status);
     const poi_config: TItemsState = {
         header: {
             active_title: localize('Complete your proof of identity'),
@@ -96,13 +97,18 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
     };
 
-    const should_show_poi = !(
-        authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified'
-    );
+    const should_show_poi = () => {
+        if (props.jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
+            return true;
+        }
+        return !(
+            authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified'
+        );
+    };
     const should_show_poa = !(
         authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
     );
-    const verification_configs = [...(should_show_poi ? [poi_config] : []), ...(should_show_poa ? [poa_config] : [])];
+    const verification_configs = [...(should_show_poi() ? [poi_config] : []), ...(should_show_poa ? [poa_config] : [])];
 
     const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
 

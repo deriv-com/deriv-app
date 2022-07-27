@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS } from '@deriv/shared';
+import { isDesktop, WS, getIdentityStatusInfo } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
-import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse, GetAccountStatus } from '@deriv/api-types';
 
 type TRowItem = {
     text: string | Array<string>;
@@ -54,6 +54,7 @@ type TDMT5CompareModalContentProps = {
     toggleCFDPersonalDetailsModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
+    account_status: GetAccountStatus;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -212,6 +213,7 @@ const DMT5CompareModalContent = ({
     trading_platform_available_accounts,
     show_eu_related,
     setJurisdictionSelectedShortcode,
+    account_status,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -223,6 +225,8 @@ const DMT5CompareModalContent = ({
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
+
+    const { need_poi_for_vanuatu, idv_acknowledged } = getIdentityStatusInfo(account_status);
 
     React.useEffect(() => {
         if (!has_submitted_personal_details) {
@@ -348,7 +352,9 @@ const DMT5CompareModalContent = ({
             case 'financial_vanuatu':
                 toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('vanuatu');
-                if (poi_poa_verified) {
+                if (need_poi_for_vanuatu) {
+                    toggleCFDVerificationModal();
+                } else if (poi_poa_verified) {
                     if (!has_submitted_personal_details) {
                         toggleCFDPersonalDetailsModal();
                     } else {
@@ -469,11 +475,17 @@ const DMT5CompareModalContent = ({
         const poa_acknowledged = poa_status === 'pending' || poa_status === 'verified';
         const poi_acknowledged = poi_status === 'pending' || poi_status === 'verified';
         const poa_poi_verified = poa_status === 'verified' && poi_status === 'verified';
+        const type = item.action.split('_')[1];
 
-        if (poa_acknowledged && poi_acknowledged && !poa_poi_verified) {
-            return item.action.split('_')[1] !== 'svg';
+        if (type === 'svg') {
+            return false;
+        } else if (type === 'vanuatu') {
+            if (need_poi_for_vanuatu) {
+                return false;
+            }
+            return poa_acknowledged && poi_acknowledged && !poa_poi_verified;
         }
-        return false;
+        return poa_acknowledged && (idv_acknowledged || poa_acknowledged) && !poa_poi_verified;
     };
 
     return (
@@ -575,4 +587,5 @@ export default connect(({ modules, client }: RootStore) => ({
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
+    account_status: client.account_status,
 }))(DMT5CompareModalContent);

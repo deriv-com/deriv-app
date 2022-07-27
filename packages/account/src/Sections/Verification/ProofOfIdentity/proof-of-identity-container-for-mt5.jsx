@@ -4,7 +4,7 @@ import { WS, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
-import { identity_status_codes, service_code } from './proof-of-identity-utils';
+import { service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ShowDemoMessage = () => (
@@ -68,47 +68,33 @@ const ProofOfIdentityContainerforMt5 = ({
     }
 
     const verification_status = populateVerificationStatus(account_status);
-    const {
-        idv,
-        allow_poi_resubmission,
-        has_attempted_idv,
-        identity_last_attempt,
-        identity_status,
-        is_idv_disallowed,
-        manual,
-        needs_poa,
-        onfido,
-        needs_poi,
-    } = verification_status;
+    const { idv, has_attempted_idv, identity_last_attempt, is_idv_disallowed, manual, needs_poa, onfido } =
+        verification_status;
 
     const poi_resubmission_cases = ['rejected', 'suspected', 'expired'];
-    const resubmit_poi = poi_resubmission_cases.includes(identity_status) && needs_poi;
 
     const has_idv_error =
         identity_last_attempt?.service && service_code.idv && poi_resubmission_cases.includes(idv.status);
 
-    if (identity_status === identity_status_codes.none || allow_poi_resubmission || has_idv_error || resubmit_poi) {
-        return (
-            <POISubmissionForMT5
-                has_attempted_idv={has_attempted_idv}
-                height={height ?? null}
-                identity_last_attempt={identity_last_attempt}
-                idv={idv}
-                is_from_external={!!is_from_external}
-                is_idv_disallowed={is_idv_disallowed}
-                manual={manual}
-                needs_poa={needs_poa}
-                onfido={onfido}
-                onStateChange={onStateChange}
-                refreshNotifications={refreshNotifications}
-                residence_list={residence_list}
-                citizen_data={citizen_data}
-                has_idv_error={has_idv_error}
-                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-            />
-        );
-    }
-    return null;
+    return (
+        <POISubmissionForMT5
+            has_attempted_idv={has_attempted_idv}
+            height={height ?? null}
+            identity_last_attempt={identity_last_attempt}
+            idv={idv}
+            is_from_external={!!is_from_external}
+            is_idv_disallowed={is_idv_disallowed}
+            manual={manual}
+            needs_poa={needs_poa}
+            onfido={onfido}
+            onStateChange={onStateChange}
+            refreshNotifications={refreshNotifications}
+            residence_list={residence_list}
+            citizen_data={citizen_data}
+            has_idv_error={has_idv_error}
+            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+        />
+    );
 };
 
 export default ProofOfIdentityContainerforMt5;

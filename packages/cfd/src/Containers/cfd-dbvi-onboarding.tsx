@@ -1,10 +1,10 @@
 import React from 'react';
-import { DesktopWrapper, Loading, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
-import { WS } from '@deriv/shared';
+import { WS, getIdentityStatusInfo } from '@deriv/shared';
 import { AccountStatusResponse, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
@@ -22,6 +22,7 @@ type TVerificationModalProps = {
     };
     mt5_login_list: TExtendedDetailsOfEachMT5Loginid[];
     toggleJurisdictionModal: () => void;
+    jurisdiction_selected_shortcode: string;
 };
 
 const CFDDbViOnBoarding = ({
@@ -32,8 +33,8 @@ const CFDDbViOnBoarding = ({
     account_type,
     mt5_login_list,
     toggleJurisdictionModal,
+    jurisdiction_selected_shortcode,
 }: TVerificationModalProps) => {
-    const [is_loading, setIsLoading] = React.useState(true);
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const handleOpenJurisditionModal = () => {
         toggleCFDVerificationModal();
@@ -45,8 +46,10 @@ const CFDDbViOnBoarding = ({
             if (get_account_status?.authentication) {
                 const identity_status = get_account_status?.authentication?.identity?.status;
                 const document_status = get_account_status?.authentication?.document?.status;
-                setIsLoading(false);
-                if (
+                const { need_poi_for_vanuatu } = getIdentityStatusInfo(get_account_status);
+                if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
+                    setShowSubmittedModal(false);
+                } else if (
                     (identity_status === 'pending' || identity_status === 'verified') &&
                     (document_status === 'pending' || document_status === 'verified')
                 ) {
@@ -59,10 +62,10 @@ const CFDDbViOnBoarding = ({
     };
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
-            setIsLoading(true);
             getAccountStausFromAPI();
+            setShowSubmittedModal(false);
         }
-    }, [is_cfd_verification_modal_visible]);
+    }, [is_cfd_verification_modal_visible, getAccountStausFromAPI]);
 
     return (
         <React.Suspense fallback={<UILoader />}>
@@ -131,4 +134,5 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     account_type: modules.cfd.account_type,
     mt5_login_list: client.mt5_login_list,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
+    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
 }))(CFDDbViOnBoarding);

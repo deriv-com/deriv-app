@@ -156,3 +156,24 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) =
     }
     return false;
 };
+
+export const getIdentityStatusInfo = account_status => {
+    const idv_status = account_status.authentication?.identity?.services?.onfido?.status;
+    const onfido_status = account_status.authentication?.identity?.services?.onfido?.status;
+    const manual_status = account_status.authentication?.identity?.services?.manual?.status;
+    const acknowledged_status = ['pending', 'verified'];
+    const poi_acknowledged_for_vanuatu =
+        (onfido_status && acknowledged_status.includes(onfido_status)) ||
+        (manual_status && acknowledged_status.includes(manual_status));
+
+    const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
+
+    const idv_acknowledged = idv_status && acknowledged_status.includes(idv_status);
+    return {
+        onfido_status,
+        manual_status,
+        acknowledged_status,
+        need_poi_for_vanuatu,
+        idv_acknowledged,
+    };
+};

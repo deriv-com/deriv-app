@@ -136,7 +136,6 @@
         "react-router-dom": "^5.2.0",
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "^4.3.0",
-        "react-window": "^1.8.6",
         "web-push-notifications": "^3.24.0"
     }
 }

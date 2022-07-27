@@ -86,7 +86,6 @@ module.exports = function () {
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',
-                'react-window': 'react-window',
             },
             /^@deriv\/shared\/.+$/,
         ],

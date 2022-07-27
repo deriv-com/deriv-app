@@ -12,7 +12,7 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
+    const { balance, className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -47,11 +47,19 @@ const App = props => {
     }, []);
 
     React.useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
+
+    React.useEffect(() => {
         if (order_id) {
             general_store.redirectTo('orders');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
+
+    React.useEffect(() => {
+        general_store.setAccountBalance(balance);
+    }, [balance]);
 
     React.useEffect(() => {
         setLanguage(lang);
@@ -75,11 +83,13 @@ App.propTypes = {
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
+    balance: PropTypes.string,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
+    setOnRemount: PropTypes.func,
 };
 
 export default observer(App);

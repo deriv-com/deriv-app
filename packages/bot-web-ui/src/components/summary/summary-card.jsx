@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
 import ContractCardLoader from 'Components/contract-card-loading';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import { getContractTypeDisplay } from 'Constants/contract';
+import { getCardLabels } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Utils/multiplier';
 

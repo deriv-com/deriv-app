@@ -102,6 +102,11 @@ const ScreenSmall = ({
 };
 
 ScreenSmall.propTypes = {
+    contract_start_type: PropTypes.string,
+    contract_type: PropTypes.string,
+    contract_types_list: PropTypes.object,
+    duration_unit: PropTypes.string,
+    expiry_type: PropTypes.string,
     is_trade_enabled: PropTypes.bool,
 };
 

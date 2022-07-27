@@ -54,11 +54,12 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
                     }
                 )}
                 classNameBubble='cfd-trade-modal__password-tooltip'
+                zIndex={9999}
             >
                 <Text size='xs'>***************</Text>
             </Popover>
         </div>
-        <Popover alignment='bottom' message={localize('Change Password')}>
+        <Popover alignment='bottom' message={localize('Change Password')} zIndex={9999}>
             <Button
                 className='cfd-trade-modal__password-action'
                 transparent

@@ -427,6 +427,9 @@ const BuySellForm = props => {
                                                             initial_character_count={buy_sell_store.payment_info.length}
                                                             max_characters={300}
                                                             disabled={should_disable_field}
+                                                            onBlur={event => {
+                                                                buy_sell_store.setPaymentInfo(event.target.value);
+                                                            }}
                                                         />
                                                     )}
                                                 </Field>
@@ -446,6 +449,9 @@ const BuySellForm = props => {
                                                         initial_character_count={buy_sell_store.contact_info.length}
                                                         max_characters={300}
                                                         disabled={should_disable_field}
+                                                        onBlur={event => {
+                                                            buy_sell_store.setContactInfo(event.target.value);
+                                                        }}
                                                     />
                                                 )}
                                             </Field>

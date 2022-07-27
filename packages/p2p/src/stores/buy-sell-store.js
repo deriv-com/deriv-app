@@ -36,7 +36,7 @@ export default class BuySellStore extends BaseStore {
     show_filter_payment_methods = false;
     show_rate_change_popup = false;
     sort_by = 'rate';
-    submitForm = () => { };
+    submitForm = () => {};
     table_type = buy_sell.BUY;
     form_props = {};
 
@@ -211,7 +211,6 @@ export default class BuySellStore extends BaseStore {
         return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
     }
 
-
     fetchAdvertiserAdverts() {
         this.setItems([]);
         this.setIsLoading(true);
@@ -220,7 +219,6 @@ export default class BuySellStore extends BaseStore {
             this.root_store.my_profile_store.getAdvertiserPaymentMethods();
         }
     }
-
 
     getAdvertiserInfo() {
         requestWS({
@@ -265,8 +263,8 @@ export default class BuySellStore extends BaseStore {
             // Validate extra information for sell adverts.
             ...(this.is_sell_advert
                 ? {
-                    contact_info: values.contact_info,
-                }
+                      contact_info: values.contact_info,
+                  }
                 : {}),
         };
         if (values.rate !== null) {
@@ -473,7 +471,7 @@ export default class BuySellStore extends BaseStore {
         this.payment_info = payment_info;
     }
 
-    setInitialReceiveAmount() {
+    setInitialReceiveAmount(initial_price) {
         this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
     }
 

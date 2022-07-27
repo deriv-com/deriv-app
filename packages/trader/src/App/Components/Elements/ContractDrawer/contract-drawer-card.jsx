@@ -2,12 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
-import {
-    isCryptoContract,
-    isDesktop,
-    getEndTime,
-    getSymbolDisplayName,
-} from '@deriv/shared';
+import { isCryptoContract, isDesktop, getEndTime, getSymbolDisplayName } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';

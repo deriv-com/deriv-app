@@ -57,10 +57,10 @@ module.exports = function (env) {
             'terms-of-use-config': 'Configs/terms-of-use-config',
             'trading-assessment-config': 'Configs/trading-assessment-config',
             'trading-assessment-new-user': 'Components/trading-assessment/trading-assessment-new-user.jsx',
-            'trading-assessment-existing-user': 'Components/trading-assessment/trading-assessment-existing-user.jsx',
             'risk-tolerance-warning-modal': 'Components/trading-assessment/risk-tolerance-warning-modal.jsx',
             'verified-account-modal': 'Components/trading-assessment/verified-account-modal.jsx',
             'test-warning-modal': 'Components/trading-assessment/test-warning-modal.jsx',
+            'trading-assessment-form': 'Components/trading-assessment/trading-assessment-form.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

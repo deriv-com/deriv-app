@@ -7,17 +7,17 @@ const TradingExperienceModal = ({
     fetchFinancialAssessment,
     setCFDScore,
     is_trading_experience_incomplete,
-    onSubmit,
-    shouldShowTradingAssessmentModal,
+    setShouldShowTradingAssessmentModal,
     should_show_trading_assessment_modal,
+    setShouldShowTradeAssessmentForm,
 }) => {
     React.useEffect(() => {
         const fetchFinancialScore = async () => {
             try {
                 const response = await fetchFinancialAssessment();
                 setCFDScore(response?.cfd_score ?? 0);
-                if (response?.cfd_score === 0) shouldShowTradingAssessmentModal(true);
-                else shouldShowTradingAssessmentModal(false);
+                if (response?.cfd_score === 0) setShouldShowTradingAssessmentModal(true);
+                else setShouldShowTradingAssessmentModal(false);
             } catch (err) {
                 console.log('Error: ', err);
             }
@@ -25,11 +25,17 @@ const TradingExperienceModal = ({
 
         fetchFinancialScore();
     }, []);
+
+    const handleOnSubmit = () => {
+        setShouldShowTradingAssessmentModal(false);
+        setShouldShowTradeAssessmentForm(true);
+    };
+
     return (
         <Modal
             width='44rem'
             className='center-risk-modal'
-            is_open={is_trading_experience_incomplete || should_show_trading_assessment_modal}
+            is_open={is_trading_experience_incomplete && should_show_trading_assessment_modal}
         >
             <Modal.Body>
                 <Icon icon='IcCurrency-eur-check' size={95} />
@@ -44,7 +50,7 @@ const TradingExperienceModal = ({
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button type='button' large text={localize('OK')} primary onClick={onSubmit} />
+                <Button type='button' large text={localize('OK')} primary onClick={handleOnSubmit} />
             </Modal.Footer>
         </Modal>
     );
@@ -53,8 +59,8 @@ const TradingExperienceModal = ({
 export default connect(({ client, ui }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
-    cfd_score: client.cfd_score,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    shouldShowTradingAssessmentModal: ui.shouldShowTradingAssessmentModal,
+    setShouldShowTradingAssessmentModal: ui.setShouldShowTradingAssessmentModal,
     should_show_trading_assessment_modal: ui.should_show_trading_assessment_modal,
+    setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
 }))(TradingExperienceModal);

@@ -2,21 +2,7 @@ import React from 'react';
 import { Modal, Text, Icon, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-const VerifiedAccountModal = ({ onSubmit, onCancel, fetchFinancialAssessment, setCFDScore }) => {
-    React.useEffect(() => {
-        const fetchFinancialScore = async () => {
-            try {
-                const response = await fetchFinancialAssessment();
-                console.log('fetchFinancialAssessment: ', response);
-                setCFDScore(response?.cfd_score ?? 0);
-            } catch (err) {
-                console.log('Error: ', err);
-            }
-        };
-
-        fetchFinancialScore();
-    }, []);
-
+const VerifiedAccountModal = ({ onSubmit, onCancel }) => {
     return (
         <Modal width='44rem' is_open={true} className='center-risk-modal'>
             <Modal.Body>

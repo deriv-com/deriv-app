@@ -1,5 +1,5 @@
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 
 const CompletedAssessmentModal = () => {

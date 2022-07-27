@@ -146,6 +146,7 @@ export default class UIStore extends BaseStore {
     @observable should_show_appropriateness_test_warning_modal = false;
     @observable should_show_cooldown_warning_modal = false;
     @observable should_show_trading_assessment_modal = false;
+    @observable should_show_trade_assessment_form = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -418,8 +419,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    shouldShowTradingAssessmentModal(value) {
+    setShouldShowTradingAssessmentModal(value) {
         this.should_show_trading_assessment_modal = value;
+    }
+
+    @action.bound
+    setShouldShowTradeAssessmentForm(value) {
+        this.should_show_trade_assessment_form = value;
     }
 
     @action.bound

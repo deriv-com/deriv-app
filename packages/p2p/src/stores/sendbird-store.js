@@ -20,9 +20,9 @@ export default class SendbirdStore extends BaseStore {
     service_token_timeout = null;
     scroll_debounce = null;
 
-    constructor({ root_store }) {
+    constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super({ root_store });
+        super(root_store);
 
         makeObservable(this, {
             active_chat_channel: observable,

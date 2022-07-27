@@ -129,7 +129,7 @@ const BuySellForm = props => {
                 validate={buy_sell_store.validatePopup}
                 validateOnMount={!should_disable_field}
                 initialValues={{
-                    amount: input_amount,
+                    amount: min_order_amount_limit,
                     contact_info: buy_sell_store.contact_info,
                     payment_info: buy_sell_store.payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,
@@ -137,7 +137,7 @@ const BuySellForm = props => {
                 initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
                 onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
             >
-                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
+                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched }) => {
                     buy_sell_store.form_props.setIsSubmitDisabled(
                         !isValid ||
                             isSubmitting ||
@@ -390,7 +390,7 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     required
-                                                    value={values.amount}
+                                                    value={input_amount}
                                                     disabled={should_disable_field}
                                                 />
                                             )}
@@ -427,9 +427,6 @@ const BuySellForm = props => {
                                                             initial_character_count={buy_sell_store.payment_info.length}
                                                             max_characters={300}
                                                             disabled={should_disable_field}
-                                                            onBlur={event => {
-                                                                buy_sell_store.setPaymentInfo(event.target.value);
-                                                            }}
                                                         />
                                                     )}
                                                 </Field>
@@ -449,9 +446,6 @@ const BuySellForm = props => {
                                                         initial_character_count={buy_sell_store.contact_info.length}
                                                         max_characters={300}
                                                         disabled={should_disable_field}
-                                                        onBlur={event => {
-                                                            buy_sell_store.setContactInfo(event.target.value);
-                                                        }}
                                                     />
                                                 )}
                                             </Field>

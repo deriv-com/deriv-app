@@ -27,10 +27,12 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_loading: boolean;
     is_eu: boolean;
     is_eu_country: boolean;
+    is_real_enabled: boolean;
     residence: string;
     is_demo_tab: boolean;
     toggleCompareAccounts: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openDerivRealAccountNeededModal: () => void;
 };
 
 const CompareAccountsModal = ({
@@ -43,11 +45,13 @@ const CompareAccountsModal = ({
     is_eu,
     is_uk,
     is_eu_country,
+    is_real_enabled,
     platform,
     residence,
     is_demo_tab,
     toggleCompareAccounts,
     openPasswordModal,
+    openDerivRealAccountNeededModal,
 }: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
@@ -120,9 +124,12 @@ const CompareAccountsModal = ({
                             ) : (
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
+                                    openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                     openPasswordModal={openPasswordModal}
                                     is_demo_tab={is_demo_tab}
                                     show_eu_related={show_eu_related}
+                                    is_real_enabled={is_real_enabled}
+                                    toggleCompareAccounts={toggleCompareAccounts}
                                 />
                             )}
                         </Modal>
@@ -149,9 +156,12 @@ const CompareAccountsModal = ({
                             ) : (
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
+                                    openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                     openPasswordModal={openPasswordModal}
                                     is_demo_tab={is_demo_tab}
                                     show_eu_related={show_eu_related}
+                                    is_real_enabled={is_real_enabled}
+                                    toggleCompareAccounts={toggleCompareAccounts}
                                 />
                             )}
                         </MobileDialog>
@@ -174,4 +184,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     landing_companies: client.landing_companies,
     residence: client.residence,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
+    openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
 }))(CompareAccountsModal);

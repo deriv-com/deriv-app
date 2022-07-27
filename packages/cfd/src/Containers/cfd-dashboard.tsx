@@ -556,6 +556,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 platform={platform}
                                 is_demo_tab={is_demo_tab}
                                 openPasswordModal={openRealPasswordModal}
+                                is_real_enabled={is_real_enabled}
                             />
                             <JurisdictionModal
                                 platform={platform}

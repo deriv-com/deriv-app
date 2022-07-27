@@ -4,7 +4,8 @@ import { observer } from 'mobx-react-lite';
 // import { localize } from 'Components/i18next';
 // import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
-import CreateAdForm from './create-ad-form.jsx';
+// import CreateAdForm from './create-ad-form.jsx';
+import CreateAdFormRenderer from './create-ad-form-renderer.jsx';
 
 const CreateAd = () => {
     const { my_ads_store } = useStores();
@@ -14,7 +15,7 @@ const CreateAd = () => {
 
     return (
         <React.Fragment>
-            {my_ads_store.is_form_loading ? <Loading is_fullscreen={false} /> : <CreateAdForm />}
+            {my_ads_store.is_form_loading ? <Loading is_fullscreen={false} /> : <CreateAdFormRenderer />}
         </React.Fragment>
     );
 };

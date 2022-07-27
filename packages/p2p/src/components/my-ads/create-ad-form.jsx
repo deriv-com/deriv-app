@@ -24,7 +24,6 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
-import PageReturn from 'Components/page-return/page-return.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -130,10 +129,6 @@ const CreateAdForm = () => {
 
                     return (
                         <React.Fragment>
-                            <PageReturn
-                                onClick={() => my_ads_store.setShowAdForm(false)}
-                                page_title={localize('Create new ad')}
-                            />
                             <div className='p2p-my-ads__form' data-testid='dp2p-create-ad-form_container'>
                                 <Form
                                     className={classNames('p2p-my-ads__form-element', {

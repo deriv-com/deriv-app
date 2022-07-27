@@ -40,9 +40,14 @@ type TDMT5CompareModalContentProps = {
         type: string;
         category: string;
     };
+    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
+    clearCFDError: () => void;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
+    has_real_account: boolean;
     is_logged_in: boolean;
     is_demo_tab: boolean;
+    is_real_enabled: boolean;
+    openDerivRealAccountNeededModal: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
@@ -55,6 +60,7 @@ type TDMT5CompareModalContentProps = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
     account_status: GetAccountStatus;
+    upgradeable_landing_companies: unknown[];
 };
 
 const eucontent: TModalContentProps[] = [
@@ -203,9 +209,14 @@ const DMT5CompareModalContent = ({
     authentication_status,
     account_settings,
     setAccountSettings,
+    setAccountType,
+    clearCFDError,
     current_list,
+    has_real_account,
     is_logged_in,
     is_demo_tab,
+    is_real_enabled,
+    openDerivRealAccountNeededModal,
     openPasswordModal,
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
@@ -214,14 +225,25 @@ const DMT5CompareModalContent = ({
     show_eu_related,
     setJurisdictionSelectedShortcode,
     account_status,
+    upgradeable_landing_companies,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     const available_accounts_keys = trading_platform_available_accounts.map(
         account => `${account.market_type === 'gaming' ? 'synthetic' : account.market_type}_${account.shortcode}`
     );
-    const synthetic_accounts_count = available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
-    const financial_accounts_count = available_accounts_keys.filter(key => key.startsWith('financial')).length;
+    const logged_out_available_accounts_count = show_eu_related ? 1 : 6;
+    const available_accounts_count = is_logged_in
+        ? available_accounts_keys.length
+        : logged_out_available_accounts_count;
+    const synthetic_accounts_count =
+        !is_logged_in && !show_eu_related
+            ? 2
+            : available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
+    const financial_accounts_count =
+        !is_logged_in && !show_eu_related
+            ? 4
+            : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
@@ -250,6 +272,7 @@ const DMT5CompareModalContent = ({
     }, []);
 
     const getAvailableAccountsContent = (_content: TModalContentProps[]) => {
+        if (!is_logged_in) return _content;
         return _content.map(row_data => {
             const available_accounts_values = Object.entries(row_data.values).reduce(
                 (acc, [key, value]) => (available_accounts_keys.includes(key) ? { ...acc, [key]: value } : acc),
@@ -288,7 +311,7 @@ const DMT5CompareModalContent = ({
         return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
 
-    const onSelectRealAccount = (item: { label: string; action: string }) => {
+    const onSelectRealAccount = (item: TFooterButtonData) => {
         const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
 
@@ -296,15 +319,15 @@ const DMT5CompareModalContent = ({
             category: is_demo_tab ? 'demo' : 'real',
             type: account_type,
         };
+        clearCFDError();
+        setAccountType(type_of_account);
 
         switch (item.action) {
             case 'synthetic_svg':
-                toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('svg');
                 openPasswordModal(type_of_account);
                 break;
             case 'financial_svg':
-                toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('svg');
                 if (poi_poa_verified && !has_submitted_personal_details) {
                     toggleCFDPersonalDetailsModal();
@@ -314,7 +337,6 @@ const DMT5CompareModalContent = ({
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
-                toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('bvi');
                 if (poi_poa_verified) {
                     if (!has_submitted_personal_details) {
@@ -327,7 +349,6 @@ const DMT5CompareModalContent = ({
                 }
                 break;
             case 'financial_maltainvest':
-                toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('maltainvest');
                 if (poi_poa_verified) {
                     openPasswordModal(type_of_account);
@@ -337,7 +358,6 @@ const DMT5CompareModalContent = ({
                 break;
 
             case 'financial_labuan':
-                toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('labuan');
                 if (poi_poa_verified) {
                     if (!has_submitted_personal_details) {
@@ -351,7 +371,6 @@ const DMT5CompareModalContent = ({
                 break;
 
             case 'financial_vanuatu':
-                toggleCompareAccounts();
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (need_poi_for_vanuatu) {
                     toggleCFDVerificationModal();
@@ -370,6 +389,15 @@ const DMT5CompareModalContent = ({
         }
     };
 
+    const onButtonClick = (item: TFooterButtonData) => {
+        const should_show_missing_real_account =
+            is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0 && is_real_enabled;
+        toggleCompareAccounts();
+        if (should_show_missing_real_account) {
+            openDerivRealAccountNeededModal();
+        } else onSelectRealAccount(item);
+    };
+
     const modal_content = show_eu_related ? eucontent : content;
     const modal_footer = show_eu_related ? eu_footer_button : footer_buttons;
     const getContentSize = (id: string) => {
@@ -383,8 +411,8 @@ const DMT5CompareModalContent = ({
                 show_eu_related
                     ? 'cfd-real-compare-accounts-row-eu'
                     : classNames('cfd-real-compare-accounts__table-row--instruments', {
-                          [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_keys.length + 1}`]:
-                              available_accounts_keys.length < 6,
+                          [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
+                              available_accounts_count < 6,
                       })
             }
         >
@@ -424,9 +452,8 @@ const DMT5CompareModalContent = ({
                         ? 'cfd-real-compare-accounts-row-eu'
                         : classNames('cfd-real-compare-accounts__table-row', {
                               'cfd-real-compare-accounts__table-row--leverage': is_leverage,
-                              [`cfd-real-compare-accounts__row-with-columns-count-${
-                                  available_accounts_keys.length + 1
-                              }`]: available_accounts_keys.length < 6,
+                              [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
+                                  available_accounts_count < 6,
                           })
                 }
             >
@@ -497,7 +524,7 @@ const DMT5CompareModalContent = ({
                                         ? 'cfd-real-compare-accounts-row-eu'
                                         : classNames('cfd-real-compare-accounts__table-header', {
                                               [`cfd-real-compare-accounts__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}`]:
-                                                  available_accounts_keys.length < 6,
+                                                  available_accounts_count < 6,
                                           })
                                 }
                             >
@@ -520,51 +547,53 @@ const DMT5CompareModalContent = ({
                                 <Row key={row.id} {...row} />
                             ))}
                         </Table.Body>
-                        {is_logged_in && (
+                        {
                             <Table.Row
                                 className={
                                     show_eu_related
                                         ? 'cfd-real-compare-accounts-row-eu columns-2'
                                         : classNames('cfd-real-compare-accounts__table-footer', {
                                               [`cfd-real-compare-accounts__row-with-columns-count-${
-                                                  available_accounts_keys.length + 1
-                                              }`]: available_accounts_keys.length < 6,
+                                                  available_accounts_count + 1
+                                              }`]: available_accounts_count < 6,
                                           })
                                 }
                             >
                                 <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                {getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
-                                    <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
-                                        {should_show_pending_status(item) ? (
-                                            <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
-                                                <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
-                                                    {localize('Pending verification')}
-                                                </Text>
-                                            </div>
-                                        ) : (
-                                            <Button
-                                                className='cfd-real-compare-accounts__table-footer__button'
-                                                disabled={Object.entries(current_list).some(([, value]) => {
-                                                    const [market, type] = item.action.split('_');
-                                                    return (
-                                                        value.market_type === market &&
-                                                        value.landing_company_short === type &&
-                                                        value.account_type === 'real'
-                                                    );
-                                                })}
-                                                type='button'
-                                                primary_light
-                                                onClick={() => {
-                                                    onSelectRealAccount(item);
-                                                }}
-                                            >
-                                                {item.label}
-                                            </Button>
-                                        )}
-                                    </Table.Cell>
-                                ))}
+                                {is_logged_in &&
+                                    getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
+                                        <Table.Cell
+                                            key={index}
+                                            className='cfd-real-compare-accounts__table-footer__item'
+                                        >
+                                            {should_show_pending_status(item) ? (
+                                                <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
+                                                    <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
+                                                        {localize('Pending verification')}
+                                                    </Text>
+                                                </div>
+                                            ) : (
+                                                <Button
+                                                    className='cfd-real-compare-accounts__table-footer__button'
+                                                    disabled={Object.entries(current_list).some(([, value]) => {
+                                                        const [market, type] = item.action.split('_');
+                                                        return (
+                                                            value.market_type === market &&
+                                                            value.landing_company_short === type &&
+                                                            value.account_type === 'real'
+                                                        );
+                                                    })}
+                                                    type='button'
+                                                    primary_light
+                                                    onClick={() => onButtonClick(item)}
+                                                >
+                                                    {item.label}
+                                                </Button>
+                                            )}
+                                        </Table.Cell>
+                                    ))}
                             </Table.Row>
-                        )}
+                        }
                     </Table>
                 </div>
             </div>
@@ -575,14 +604,17 @@ const DMT5CompareModalContent = ({
 export default connect(({ modules, client }: RootStore) => ({
     account_type: modules.cfd.account_type,
     account_settings: client.account_settings,
+    authentication_status: client.authentication_status,
+    has_real_account: client.has_active_real_account,
     setAccountSettings: client.setAccountSettings,
+    setAccountType: modules.cfd.setAccountType,
+    clearCFDError: modules.cfd.clearCFDError,
     current_list: modules.cfd.current_list,
     has_real_mt5_login: client.has_real_mt5_login,
-    authentication_status: client.authentication_status,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
-    toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     account_status: client.account_status,
+    upgradeable_landing_companies: client.upgradeable_landing_companies,
 }))(DMT5CompareModalContent);

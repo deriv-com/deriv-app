@@ -26,7 +26,7 @@ const AccountList = ({
     shortcode,
     sub_account_type,
     platform,
-    should_show_server_name = false,
+    should_show_server_name,
 }) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -157,35 +157,50 @@ const AccountDisplay = ({
     should_show_server_name,
 }) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
+    const getServerName = React.useCallback(account => {
+        if (account) {
+            const server_region = account.server_info?.geolocation?.region;
+            if (server_region) {
+                return `${server_region} ${
+                    account?.server_info?.geolocation?.sequence === 1 ? '' : account?.server_info?.geolocation?.sequence
+                }`;
+            }
+        }
+        return '';
+    }, []);
     if (has_error)
         return (
             <div>
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
-                {server?.server_info?.geolocation && should_show_server_name && (
-                    <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
-                        {server.server_info.geolocation.region}&nbsp;
-                        {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
-                    </Text>
-                )}
+                {server?.server_info?.geolocation &&
+                    should_show_server_name &&
+                    market_type === 'synthetic' &&
+                    shortcode === 'svg' && (
+                        <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                            {getServerName(server)}
+                        </Text>
+                    )}
             </div>
         );
     return (
         <div>
             {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
-            {server?.server_info?.geolocation && should_show_server_name && (
-                <Text
-                    color={is_dark_mode_on ? 'general' : 'colored-background'}
-                    size='xxs'
-                    className={classNames('badge-server', {
-                        'badge-server-bot': isBot(),
-                    })}
-                >
-                    {server.server_info.geolocation.region}&nbsp;
-                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
-                </Text>
-            )}
+            {server?.server_info?.geolocation &&
+                should_show_server_name &&
+                market_type === 'synthetic' &&
+                shortcode === 'svg' && (
+                    <Text
+                        color={is_dark_mode_on ? 'general' : 'colored-background'}
+                        size='xxs'
+                        className={classNames('badge-server', {
+                            'badge-server-bot': isBot(),
+                        })}
+                    >
+                        {getServerName(server)}
+                    </Text>
+                )}
         </div>
     );
 };

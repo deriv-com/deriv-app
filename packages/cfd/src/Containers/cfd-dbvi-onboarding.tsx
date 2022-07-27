@@ -40,7 +40,7 @@ const CFDDbViOnBoarding = ({
         toggleCFDVerificationModal();
         toggleJurisdictionModal();
     };
-    const getAccountStausFromAPI = () => {
+    const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
             if (get_account_status?.authentication) {
@@ -62,10 +62,10 @@ const CFDDbViOnBoarding = ({
     };
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
-            getAccountStausFromAPI();
+            getAccountStatusFromAPI();
             setShowSubmittedModal(false);
         }
-    }, [is_cfd_verification_modal_visible, getAccountStausFromAPI]);
+    }, [is_cfd_verification_modal_visible, getAccountStatusFromAPI]);
 
     return (
         <React.Suspense fallback={<UILoader />}>
@@ -79,7 +79,7 @@ const CFDDbViOnBoarding = ({
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
-                    onMount={() => getAccountStausFromAPI()}
+                    onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
                     {showSubmittedModal ? (

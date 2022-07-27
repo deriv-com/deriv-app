@@ -499,7 +499,7 @@ const CFDAccountCardComponent = ({
                                                     show_currency
                                                 />
                                             </Text>
-                                            {checkMultipleSvgAcc()?.length > 1 && (
+                                            {checkMultipleSvgAcc()?.length > 1 && acc.landing_company_short === 'svg' && (
                                                 <Text
                                                     className='cfd-account-card__balance--region'
                                                     color='colored-background'

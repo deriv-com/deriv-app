@@ -18,7 +18,6 @@ import {
     routes,
     formatMoney,
     getCFDAccount,
-    getAccountListKey,
     getAccountTypeFields,
     getPlatformSettings,
     CFD_PLATFORMS,
@@ -439,29 +438,14 @@ const AccountSwitcher = props => {
         return props.is_dxtrade_allowed;
     };
 
-    const shouldShowServerName = (platform, market_type) => {
+    const checkMultipleSvgAcc = () => {
         const all_svg_acc = [];
-        const current_list = {};
-        props.mt5_login_list.forEach(account => {
-            current_list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
-                ...account,
-            };
-        });
-        const existing_accounts_data = () => {
-            return Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${market_type}`))
-                ? Object.keys(current_list)
-                      .filter(key => key.startsWith(`${platform}.real.${market_type}`))
-                      .reduce((_acc, cur) => {
-                          _acc.push(current_list[cur]);
-                          return _acc;
-                      }, [])
-                : undefined;
-        };
-        existing_accounts_data()?.forEach(acc => {
+        getRealMT5().map(acc => {
             if (acc.landing_company_short === 'svg') {
                 if (all_svg_acc.length) {
                     all_svg_acc.forEach(svg_acc => {
                         if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
+                        return all_svg_acc;
                     });
                 } else {
                     all_svg_acc.push(acc);
@@ -673,6 +657,7 @@ const AccountSwitcher = props => {
                                             account.is_disabled ? undefined : () => doSwitch(account.loginid)
                                         }
                                         selected_loginid={props.account_loginid}
+                                        should_show_server_name={checkMultipleSvgAcc()}
                                     />
                                 );
                             })}
@@ -766,10 +751,7 @@ const AccountSwitcher = props => {
                                                 server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
                                                 shortcode={account.landing_company_short}
-                                                should_show_server_name={shouldShowServerName(
-                                                    CFD_PLATFORMS.MT5,
-                                                    account.market_type
-                                                )}
+                                                should_show_server_name={checkMultipleSvgAcc()}
                                             />
                                         ))}
                                     </div>

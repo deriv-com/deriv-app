@@ -40,6 +40,8 @@ type TDMT5CompareModalContentProps = {
         type: string;
         category: string;
     };
+    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
+    clearCFDError: () => void;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     has_real_account: boolean;
     is_logged_in: boolean;
@@ -206,6 +208,8 @@ const DMT5CompareModalContent = ({
     authentication_status,
     account_settings,
     setAccountSettings,
+    setAccountType,
+    clearCFDError,
     current_list,
     has_real_account,
     is_logged_in,
@@ -310,6 +314,8 @@ const DMT5CompareModalContent = ({
             category: is_demo_tab ? 'demo' : 'real',
             type: account_type,
         };
+        clearCFDError();
+        setAccountType(type_of_account);
 
         switch (item.action) {
             case 'synthetic_svg':
@@ -592,6 +598,8 @@ export default connect(({ modules, client }: RootStore) => ({
     authentication_status: client.authentication_status,
     has_real_account: client.has_active_real_account,
     setAccountSettings: client.setAccountSettings,
+    setAccountType: modules.cfd.setAccountType,
+    clearCFDError: modules.cfd.clearCFDError,
     current_list: modules.cfd.current_list,
     has_real_mt5_login: client.has_real_mt5_login,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,

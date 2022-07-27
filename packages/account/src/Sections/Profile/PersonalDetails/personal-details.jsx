@@ -47,7 +47,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
         const value = values[field];
-        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = 'he he he';
+        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = err_msg;
     });
 };
 

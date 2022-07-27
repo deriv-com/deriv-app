@@ -745,13 +745,16 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     isEligibleForMoreRealMt5(market_type) {
-        const number_of_available_real_accounts = this.trading_platform_available_accounts.filter(
-            account => (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type
-        ).length;
-        const number_of_added_real_accounts = this.mt5_login_list.filter(
+        const existing_real_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
+        );
+        const available_real_accounts_shortcodes = this.trading_platform_available_accounts
+            .filter(account => (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type)
+            .map(account => account.shortcode);
+
+        return !!available_real_accounts_shortcodes.filter(shortcode =>
+            existing_real_accounts.every(account => account.landing_company_short !== shortcode)
         ).length;
-        return number_of_available_real_accounts > number_of_added_real_accounts;
     }
 
     isMT5Allowed = landing_companies => {

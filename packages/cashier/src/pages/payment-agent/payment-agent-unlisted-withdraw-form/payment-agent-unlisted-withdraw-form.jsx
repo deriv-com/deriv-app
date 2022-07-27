@@ -27,7 +27,8 @@ const validateWithdrawal = (values, { balance, currency }) => {
         errors.amount = localize('Insufficient balance.');
     } else if (!values.account_number) {
         errors.account_number = localize('This field is required.');
-    } else if (!/^[A-Z]{2}[A-Z\d]\d+$/.test(values.account_number)) {
+        // TODO: improve broker code validation of the account number when the wallets project will be released
+    } else if (!/^[C][R]\d+$/.test(values.account_number)) {
         errors.account_number = localize('Please enter a valid account number. Example: CR123456789');
     }
 

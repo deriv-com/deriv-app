@@ -144,6 +144,9 @@ const plugins = ({ base, is_test_env, env }) => {
         new webpack.optimize.MinChunkSizePlugin({
             minChunkSize: 204800, // ~50kb
         }),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 30,
+        }),
         new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
         ...(IS_RELEASE
             ? []

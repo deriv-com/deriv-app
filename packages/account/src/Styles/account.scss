@@ -2015,8 +2015,8 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
-/** @define deactivate-account; weak */
-.deactivate-account {
+/** @define closing-account; weak */
+.closing-account {
     max-width: 67.2rem;
     padding-bottom: 1.6rem;
 
@@ -2040,7 +2040,16 @@ $MIN_HEIGHT_FLOATING: calc(
         margin-top: 1.6rem;
         @include typeface(--paragraph-left-normal-prominent, none);
         line-height: 1.43;
+
+        & > ul {
+            padding-left: 3%;
+            list-style-type: disc;
+            @include mobile {
+                padding-left: 5%;
+            }
+        }
     }
+
     &__title {
         margin-bottom: 0.8rem;
     }
@@ -2049,19 +2058,46 @@ $MIN_HEIGHT_FLOATING: calc(
         font-weight: bold;
         text-decoration: none;
     }
-    &__button {
-        margin-top: 2.4rem;
-        float: right;
+    &__buttons-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        align-self: flex-end;
+        background-color: transparent;
 
         @include mobile {
-            float: none;
-            margin: 2.4rem auto 3.2rem;
-            &--dashboard {
-                width: 100%;
+            align-self: center;
+        }
+    }
+    &__button {
+        &--cancel {
+            margin-top: 2.4rem;
+            margin-right: 10px;
+            float: right;
+
+            @include mobile {
+                margin-top: -8px;
+                margin-right: 10px;
+                float: right;
+                &--dashboard {
+                    width: 100%;
+                }
+            }
+        }
+        &--close-account {
+            margin-top: 2.4rem;
+            float: right;
+
+            @include mobile {
+                float: none;
+                margin: 2.4rem auto 3.2rem;
+                &--dashboard {
+                    width: 100%;
+                }
             }
         }
     }
-    .deactivate-account-reasons {
+    .closing-account-reasons {
         color: var(--text-prominent);
         font-size: var(--text-size-xs);
         line-height: 1.43;
@@ -2077,7 +2113,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 100%;
                 }
             }
-            & .deactivate-account-reasons__title {
+            & .closing-account-reasons__title {
                 margin: 1.6rem 0 0.8rem;
             }
             & form {
@@ -2123,7 +2159,7 @@ $MIN_HEIGHT_FLOATING: calc(
         width: calc(100% - 3rem);
         margin: 0 auto;
 
-        .deactivate-account-reasons {
+        .closing-account-reasons {
             &__footer {
                 display: flex;
                 flex-direction: column;
@@ -2148,15 +2184,13 @@ $MIN_HEIGHT_FLOATING: calc(
             & > div {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-                justify-content: center;
             }
         }
     }
 }
 
 /* stylelint-disable */
-.dc-modal__container_deactivate-account-reasons {
+.dc-modal__container_closing-account-reasons {
     @include mobile {
         max-height: 70vh;
     }
@@ -2208,9 +2242,16 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0.4rem;
             }
         }
+        &__close-account-button {
+            .dc-btn {
+                &--primary {
+                    padding: 1rem 6rem;
+                }
+            }
+        }
     }
 
-    .deactivate-account-error {
+    .closing-account-error {
         padding: 0 2.4rem;
         margin-bottom: 2.4rem;
         &__description {

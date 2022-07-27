@@ -19,14 +19,12 @@ type TErrors = {
     poi_state: boolean;
 };
 
-type TFormValues =
-    | {
-          citizen?: string;
-          tax_residence?: string;
-          tax_identification_number?: string;
-          account_opening_reason?: string;
-      }
-    | {};
+type TFormValues = {
+    citizen?: string;
+    tax_residence?: string;
+    tax_identification_number?: string;
+    account_opening_reason?: string;
+};
 
 type TCFDAppRoutingHistory = {
     pathname: string;
@@ -83,14 +81,19 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                 poi_state: value.poi_state,
             }}
             validate={validateForm}
-            onSubmit={(_values: TFormValues, actions: FormikActions<TCFDValue>) =>
+            onSubmit={(_values: TFormValues, actions: FormikActions<TFormValues>) =>
                 onSubmit(index, { poi_state }, actions.setSubmitting)
             }
         >
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
-                        <form ref={setRef} className='cfd-proof-of-identity' onSubmit={handleSubmit}>
+                        <form
+                            ref={setRef}
+                            className='cfd-proof-of-identity'
+                            onSubmit={handleSubmit}
+                            data-testid='dt_cfd_proof_of_identity'
+                        >
                             <div className='details-form'>
                                 <input type='hidden' name='poi_state' value={poi_state} readOnly />
                                 <Div100vhContainer
@@ -102,7 +105,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         {...props}
                                         height={height}
                                         is_from_external={true}
-                                        onStateChange={(status: any) => setPOIState(status)}
+                                        onStateChange={(status: string) => setPOIState(status)}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>

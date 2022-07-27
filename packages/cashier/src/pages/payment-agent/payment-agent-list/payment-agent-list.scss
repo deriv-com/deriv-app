@@ -1,0 +1,175 @@
+.payment-agent-list {
+    &__instructions {
+        margin-top: 2.4rem;
+        @include mobile {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 0.8rem;
+        }
+
+        &-section {
+            border: 1px solid var(--border-normal);
+            flex: 1;
+            padding: 1.6rem;
+            border-radius: $BORDER_RADIUS;
+            @include desktop {
+                &:not(:first-child) {
+                    margin-left: 24px;
+                    margin-left: 1.6rem;
+                }
+            }
+            @include mobile {
+                display: flex;
+
+                &:first-child {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                /* postcss-bem-linter: ignore */
+                &:last-child {
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+
+                    & h2 {
+                        margin: 0;
+                    }
+                    & .dc-btn {
+                        margin: 0 0 0 auto;
+                        padding: 0.3rem 0.8rem;
+                        height: 3rem;
+
+                        &__text {
+                            font-size: 1.2rem;
+                        }
+                        /* iPhone SE screen height fixes due to UI space restrictions */
+                        @media only screen and (max-height: 480px) {
+                            height: 4.8rem;
+
+                            &__text {
+                                width: 14rem;
+                                white-space: normal;
+                            }
+                        }
+                    }
+                }
+                /* postcss-bem-linter: ignore */
+                & .cashier__paragraph {
+                    padding-left: 0;
+                }
+            }
+        }
+        .dc-tabs__list--header--tabs--desktop {
+            margin: 0 auto;
+
+            @include mobile {
+                margin: 0 3.5rem;
+            }
+        }
+        .verification-email__icon {
+            margin-top: 2.8rem;
+        }
+    }
+    &__list {
+        &-header {
+            margin-top: 2.8rem;
+            margin-bottom: 1.8rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            &-text {
+                min-width: 12rem;
+            }
+
+            &-line {
+                border-bottom: 1px solid var(--general-section-1);
+                width: 100%;
+                height: 1px;
+            }
+        }
+        &-selector {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+
+            .cashier {
+                &__paragraph {
+                    margin-right: 0.8rem;
+                }
+            }
+            .dc-dropdown__display-text {
+                color: var(--text-less-prominent);
+            }
+        }
+        @include mobile {
+            &-header {
+                position: relative;
+                z-index: 1;
+            }
+            &-selector {
+                margin-bottom: 1.8rem;
+
+                /* postcss-bem-linter: ignore */
+                & .dc-input {
+                    width: 18rem;
+                    margin-left: auto;
+                }
+                /* postcss-bem-linter: ignore */
+                & .dc-select-native__placeholder {
+                    background-color: var(--general-main-1);
+                }
+            }
+        }
+    }
+    &__filter {
+        min-width: 22.8rem;
+        margin-top: 0;
+
+        &-display {
+            min-height: 3.2rem;
+            min-width: 22.8rem;
+        }
+    }
+    &__disclaimer {
+        background-color: var(--general-section-1);
+        margin-top: 2.4rem;
+        margin-bottom: 2.4rem;
+        padding: 1.6rem;
+    }
+    @include mobile {
+        &__accordion {
+            & .dc-accordion {
+                &__item {
+                    font-size: 1.2rem;
+                    position: relative;
+                    user-select: none;
+                    -webkit-touch-callout: none;
+                    -webkit-tap-highlight-color: transparent;
+
+                    &-header {
+                        max-width: calc(100% - 3.2rem);
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        padding-right: 0;
+
+                        &-icon-wrapper {
+                            top: 0;
+                            right: 0;
+                            width: 36px;
+                            height: 3.4rem;
+                            padding-left: 0;
+                            float: unset;
+                            display: flex;
+                            position: absolute;
+                            align-items: center;
+                            justify-content: center;
+                            border-bottom: 1px solid var(--general-section-1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

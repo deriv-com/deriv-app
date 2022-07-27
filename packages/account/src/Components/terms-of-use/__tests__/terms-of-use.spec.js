@@ -168,8 +168,8 @@ describe('<TermsOfUse/>', () => {
 
         const agree_checkbox = screen.getByLabelText(agree_check);
         const not_pep_checkbox = screen.getByLabelText(not_pep_check);
-        expect(agree_checkbox.checked).toBeFalse();
-        expect(not_pep_checkbox.checked).toBeFalse();
+        expect(agree_checkbox.checked).toBeFalsy();
+        expect(not_pep_checkbox.checked).toBeFalsy();
 
         fireEvent.click(agree_checkbox);
         fireEvent.click(not_pep_checkbox);

@@ -8,63 +8,67 @@ import {
     TestWarningModal,
     tradingAssessmentConfig,
 } from '@deriv/account';
-import TradingExperienceModal from './trading-experience-modal';
+import TradingExperienceModal from './trading-experience-modal.jsx';
 
 const TradingAssessmentExistingUser = ({
+    updateAccountStatus,
     should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm,
     setFinancialAndTradingAssessment,
-    should_show_risk_tolerance_warning_modal_for_ex_user,
-    shouldShowRiskToleranceWarningModalForExUser,
+    should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
+    setShouldShowAssessmentCompleteModal,
+    setIsTradingAssessmentForExistingUserEnabled,
 }) => {
     // Get the Trading assessment questions and initial_value
     const [form_values, setFormValue] = React.useState({});
-    const [props, setProps] = React.useState({});
+    const [assessment_questions, setAssessmentQuestions] = React.useState({});
 
     React.useEffect(() => {
+        setIsTradingAssessmentForExistingUserEnabled(true);
         const { form_value, props } = tradingAssessmentConfig({ real_account_signup_target: 'maltainvest' }, null);
         setFormValue(form_value);
-        setProps(props);
-        // console.log('Form_value on render: ', form_value);
+        setAssessmentQuestions(props.assessment_questions ?? []);
+
+        return () => setIsTradingAssessmentForExistingUserEnabled(false);
     }, []);
 
     const handleSubmit = async values => {
-        console.log('On submit called');
         if (values.risk_tolerance === 'No') {
             setShouldShowTradeAssessmentForm(false);
-            shouldShowRiskToleranceWarningModalForExUser(true);
+            setShouldShowRiskToleranceWarningModal(true);
         } else {
             const form_payload = {
                 trading_experience_maltainvest: { ...values },
             };
-            try {
-                const response = await setFinancialAndTradingAssessment(form_payload);
-                console.log('Response: ', response);
-            } catch (error) {
-                if (error.code === 'AppropriatenessTestFailed') {
-                    //pass
-                    shouldShowRiskToleranceWarningModalForExUser(true);
-                }
+            const { trading_score } = await setFinancialAndTradingAssessment(form_payload);
+            await updateAccountStatus();
+            setShouldShowTradeAssessmentForm(false);
+            if (trading_score === 0) {
+                setShouldShowAppropriatenessTestWarningModal(true);
+            } else {
+                setShouldShowAssessmentCompleteModal(true);
             }
         }
     };
 
     const handleAcceptAppropriatenessTestWarning = () => {
         setShouldShowAppropriatenessTestWarningModal(false);
+        setShouldShowAssessmentCompleteModal(true);
     };
 
     const handleAcceptRisk = () => {
         setFormValue(prev_state => ({ ...prev_state, risk_tolerance: 'Yes' }));
-        shouldShowRiskToleranceWarningModalForExUser(false);
+        setShouldShowRiskToleranceWarningModal(false);
         setShouldShowTradeAssessmentForm(true);
     };
 
-    if (should_show_risk_tolerance_warning_modal_for_ex_user) {
+    if (should_show_risk_tolerance_warning_modal) {
         return (
             <RiskToleranceWarningModal
-                show_risk_modal={should_show_risk_tolerance_warning_modal_for_ex_user}
+                show_risk_modal={should_show_risk_tolerance_warning_modal}
                 title={localize('Risk Tolerance Warning')}
                 button_text={localize('Yes, I understand the risk.')}
                 onClick={handleAcceptRisk}
@@ -87,7 +91,7 @@ const TradingAssessmentExistingUser = ({
                             components={[<br key={0} />, <br key={1} />]}
                         />
                         <Localize
-                            i18n_default_text='Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs. CFD trading is risky and you could potentially lose all of your capital.'
+                            i18n_default_text='Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs. CFD trading is risky and you could potentially lose all of your capital.<0/><0/>'
                             components={[<br key={0} />, <br key={1} />]}
                         />
                         <Localize i18n_default_text='Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge or experience to properly assess or mitigate these risks, which may be significant, including the risk of losing the entire sum you have invested' />
@@ -119,7 +123,7 @@ const TradingAssessmentExistingUser = ({
                         className='real-account-signup-modal'
                     >
                         <TradingAssessmentForm
-                            assessment_questions={props.assessment_questions}
+                            assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
                         />
@@ -132,7 +136,7 @@ const TradingAssessmentExistingUser = ({
                         portal_element_id='modal_root'
                     >
                         <TradingAssessmentForm
-                            assessment_questions={props.assessment_questions}
+                            assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
                         />
@@ -146,10 +150,13 @@ const TradingAssessmentExistingUser = ({
 
 export default connect(({ client, ui }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    should_show_risk_tolerance_warning_modal_for_ex_user: ui.should_show_risk_tolerance_warning_modal_for_ex_user,
-    shouldShowRiskToleranceWarningModalForExUser: ui.shouldShowRiskToleranceWarningModalForExUser,
+    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
+    setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
+    updateAccountStatus: client.updateAccountStatus,
+    setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
 }))(TradingAssessmentExistingUser);

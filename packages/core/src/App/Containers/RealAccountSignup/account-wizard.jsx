@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false); // eslint-disable-line no-unused-vars
 
     React.useEffect(() => {
+        props.setIsTradingAssessmentForNewUserEnabled(true);
         props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
         const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
@@ -244,7 +245,7 @@ const AccountWizard = props => {
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
-                    props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                    props.onOpenWelcomeModal(response.new_account_samoa.currenecy.toLowerCase());
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
@@ -373,4 +374,5 @@ export default connect(({ client, notifications, ui }) => ({
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
     fetchAccountSettings: client.fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(AccountWizard);

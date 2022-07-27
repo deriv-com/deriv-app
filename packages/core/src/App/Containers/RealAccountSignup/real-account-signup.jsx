@@ -110,6 +110,7 @@ const RealAccountSignup = ({
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
     fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -238,8 +239,6 @@ const RealAccountSignup = ({
         },
     ]);
 
-    console.log('Rendered: RealAccountSignup');
-
     const getModalHeight = () => {
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
@@ -319,6 +318,7 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
+        return () => setIsTradingAssessmentForNewUserEnabled(false);
     }, []);
 
     // setCurrentAction callback useEffect to set error details
@@ -448,7 +448,10 @@ const RealAccountSignup = ({
         }
     };
 
-    const handleRiskAcceptance = () => setShouldShowRiskToleranceWarningModal(false);
+    const handleRiskAcceptance = () => {
+        closeRealAccountSignup();
+        setShouldShowRiskToleranceWarningModal(false);
+    };
 
     if (should_show_risk_tolerance_warning_modal) {
         //TODO: handle other modals
@@ -491,7 +494,6 @@ const RealAccountSignup = ({
             />
         );
     }
-
     return (
         <React.Fragment>
             {is_real_acc_signup_on && (
@@ -616,4 +618,5 @@ export default connect(({ ui, client, common, modules }) => ({
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
     fetchAccountSettings: client.fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(withRouter(RealAccountSignup));

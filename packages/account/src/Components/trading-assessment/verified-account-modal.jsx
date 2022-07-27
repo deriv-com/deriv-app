@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Text, Icon, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
+// TODO: Remove the component as it is not used
 const VerifiedAccountModal = ({ onSubmit, onCancel }) => {
     return (
         <Modal width='44rem' is_open={true} className='center-risk-modal'>

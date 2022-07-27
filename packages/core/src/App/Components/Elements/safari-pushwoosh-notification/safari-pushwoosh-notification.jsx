@@ -4,8 +4,8 @@ import { connect } from 'Stores/connect';
 import { detectSafariBrowser } from '@deriv/shared';
 import { Button, Text, Modal } from '@deriv/components';
 
-export const SafariPushwooshNotification = ({ onClose, is_logged_in, forceSubscribe, isSubscribed }) => {
-    const is_open = detectSafariBrowser && is_logged_in && isSubscribed;
+const SafariPushwooshNotification = ({ onClose, is_logged_in, forceSubscribe, isSubscribed }) => {
+    const is_open = detectSafariBrowser() && is_logged_in && isSubscribed;
     const [is_modal_open, setModalOpen] = React.useState(is_open);
 
     return (

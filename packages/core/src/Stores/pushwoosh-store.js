@@ -31,32 +31,32 @@ export default class PushwooshStore extends BaseStore {
                 defaultNotificationTitle: getBrandWebsiteName(),
                 defaultNotificationImage: urlForCurrentDomain('https://deriv.com/favicons/favicon-192x192.png'),
                 serviceWorkerUrl: '/service-worker.js',
+                autoSubscribe: false,
             },
         ]);
         this.has_initialized = true;
 
-        this.push_woosh.push([
-            'onReady',
-            api => {
-                try {
-                    this.push_woosh.isSubscribed().then(is_subscribed => {
-                        if (!is_subscribed && !detectSafariBrowser) {
-                            this.push_woosh.subscribe();
-                        }
-                    });
-                    // eslint-disable-next-line no-empty
-                } catch {}
-
-                this.sendTags(api);
-            },
-        ]);
+        if (!detectSafariBrowser()) {
+            this.push_woosh.push([
+                'onReady',
+                api => {
+                    try {
+                        this.push_woosh.isSubscribed().then(is_subscribed => {
+                            if (!is_subscribed && !detectSafariBrowser) {
+                                this.push_woosh.subscribe();
+                            }
+                        });
+                        // eslint-disable-next-line no-empty
+                    } catch {}
+                    this.sendTags(api);
+                },
+            ]);
+        }
     };
 
     @action.bound
-    forceSubscribe = async () => {
-        if (detectSafariBrowser) {
-            this.push_woosh.subscribe();
-        }
+    forceSubscribe = () => {
+        this.push_woosh.subscribe(true);
     };
 
     @action.bound

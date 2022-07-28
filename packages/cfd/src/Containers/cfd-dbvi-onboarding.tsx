@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaSubmitted } from '@deriv/account';
@@ -36,6 +36,7 @@ const CFDDbViOnBoarding = ({
     jurisdiction_selected_shortcode,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
+    const [is_loading, setIsLoading] = React.useState(true);
     const handleOpenJurisditionModal = () => {
         toggleCFDVerificationModal();
         toggleJurisdictionModal();
@@ -43,6 +44,7 @@ const CFDDbViOnBoarding = ({
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
+            setIsLoading(false);
             if (get_account_status?.authentication) {
                 const identity_status = get_account_status?.authentication?.identity?.status;
                 const document_status = get_account_status?.authentication?.document?.status;
@@ -63,11 +65,14 @@ const CFDDbViOnBoarding = ({
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
             getAccountStatusFromAPI();
+            setIsLoading(true);
             setShowSubmittedModal(false);
         }
-    }, [is_cfd_verification_modal_visible, getAccountStatusFromAPI]);
+    }, [is_cfd_verification_modal_visible]);
 
-    return (
+    return is_loading ? (
+        <Loading />
+    ) : (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal

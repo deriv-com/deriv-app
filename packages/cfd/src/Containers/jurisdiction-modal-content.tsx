@@ -87,14 +87,11 @@ const JurisdictionCard = ({
     synthetic_available_accounts,
     financial_available_accounts,
     account_type,
-    poa_status,
-    poi_status,
     poi_poa_none,
     setJurisdictionSelectedShortcode,
     type_of_card,
     disabled,
     poa_failed,
-    poi_failed,
     poa_acknowledged,
     poi_acknowledged,
     is_fully_authenticated,
@@ -230,7 +227,7 @@ const JurisdictionCard = ({
                         <div className={`${card_classname}__verification-status`}>
                             <div className={`${card_classname}__verification-status--POA_POI`}>
                                 <Text size='xxxs' color={'white'}>
-                                    <Localize i18n_default_text='Check your proof of identity' />
+                                    <Localize i18n_default_text='Proof of identity required ' />
                                 </Text>
                             </div>
                         </div>
@@ -257,27 +254,27 @@ const JurisdictionCard = ({
                             </div>
                         </div>
                     );
+                } else if (need_poi_for_bvi_labuan && poa_acknowledged) {
+                    return (
+                        <div className={`${card_classname}__verification-status`}>
+                            <div className={`${card_classname}__verification-status--POA_POI`}>
+                                <Text size='xxxs' color={'white'}>
+                                    <Localize i18n_default_text='Check your proof of identity' />
+                                </Text>
+                            </div>
+                        </div>
+                    );
+                } else if (need_poi_for_bvi_labuan && !poa_acknowledged) {
+                    return (
+                        <div className={`${card_classname}__verification-status`}>
+                            <div className={`${card_classname}__verification-status--POA_POI`}>
+                                <Text size='xxxs' color={'white'}>
+                                    <Localize i18n_default_text='Check your proof of identity and address' />
+                                </Text>
+                            </div>
+                        </div>
+                    );
                 }
-            } else if (need_poi_for_bvi_labuan && poa_acknowledged) {
-                return (
-                    <div className={`${card_classname}__verification-status`}>
-                        <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={'white'}>
-                                <Localize i18n_default_text='Check your proof of identity' />
-                            </Text>
-                        </div>
-                    </div>
-                );
-            } else if (need_poi_for_bvi_labuan && !poa_acknowledged) {
-                return (
-                    <div className={`${card_classname}__verification-status`}>
-                        <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={'white'}>
-                                <Localize i18n_default_text='Check your proof of identity and address' />
-                            </Text>
-                        </div>
-                    </div>
-                );
             }
             return null;
         }

@@ -88,16 +88,14 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     fetchExchangeRate(response) {
-        const { local_currency_config, ws_subscriptions } = this.root_store.general_store.client;
+        const { client, ws_subscriptions } = this.root_store.general_store;
         if (response) {
             if (response.error) {
                 this.setApiErrorMessage(response.error.message);
-                if (ws_subscriptions.exchange_rate_subscription.unsubscribe) {
-                    ws_subscriptions.unsubscribe();
-                }
+                ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
             } else {
                 const { rates } = response.exchange_rates;
-                this.setExchangeRate(rates[local_currency_config?.currency]);
+                this.setExchangeRate(rates[client?.local_currency_config?.currency]);
                 this.setApiErrorMessage(null);
             }
         }

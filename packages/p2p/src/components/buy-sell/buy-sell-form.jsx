@@ -379,7 +379,7 @@ const BuySellForm = props => {
                                                     onChange={event => {
                                                         if (event.target.value === '') {
                                                             setFieldValue('amount', '');
-                                                            setInputAmount(0);
+                                                            setInputAmount('');
                                                         } else {
                                                             const amount = getRoundedNumber(
                                                                 event.target.value,

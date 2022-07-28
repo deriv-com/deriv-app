@@ -168,6 +168,9 @@
     &__wrapper {
         border-radius: $BORDER_RADIUS;
         position: absolute;
+        @include tablet {
+            position: unset;
+        }
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
         box-shadow: 0 8px 16px 0 var(--shadow-menu);
         right: 0;

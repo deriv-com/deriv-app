@@ -1,13 +1,4 @@
 import { getCurrencyDisplayCode } from '@deriv/shared';
-
-const template = (string, content) => {
-    let to_replace = content;
-    if (content && !Array.isArray(content)) {
-        to_replace = [content];
-    }
-    return string.replace(/\[_(\d+)]/g, (s, index) => to_replace[+index - 1]);
-};
-
 /**
  * Creates a DOM element and adds any attributes to it.
  *
@@ -104,4 +95,4 @@ const getAccountText = account => {
     return account_text;
 };
 
-export { copyToClipboard, createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass, template };
+export { copyToClipboard, createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass };

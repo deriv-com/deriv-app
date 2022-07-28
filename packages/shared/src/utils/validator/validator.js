@@ -1,7 +1,7 @@
 import { getPreBuildDVRs } from '../validation';
 import Error from './errors';
 
-const template = (string, content) => {
+export const template = (string, content) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
         to_replace = [content];

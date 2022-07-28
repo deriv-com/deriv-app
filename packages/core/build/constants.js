@@ -142,10 +142,10 @@ const plugins = ({ base, is_test_env, env }) => {
         new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
         new MiniCssExtractPlugin(cssConfig()),
         new webpack.optimize.MinChunkSizePlugin({
-            minChunkSize: 204800, // ~50kb
+            minChunkSize: 204800, // ~200kb
         }),
         new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 30,
+            maxChunks: 10,
         }),
         new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
         ...(IS_RELEASE

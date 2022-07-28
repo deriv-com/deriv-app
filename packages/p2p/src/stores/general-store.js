@@ -12,6 +12,7 @@ export default class GeneralStore extends BaseStore {
     active_index = 0;
     active_notification_count = 0;
     advertiser_id = null;
+    balance;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_blocked = false;
@@ -51,6 +52,7 @@ export default class GeneralStore extends BaseStore {
             active_index: observable,
             active_notification_count: observable,
             advertiser_id: observable,
+            balance: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_blocked: observable,
@@ -72,6 +74,8 @@ export default class GeneralStore extends BaseStore {
             is_high_risk_fully_authed_without_fa: observable,
             is_modal_open: observable,
             client: computed,
+            current_focus: computed,
+            setCurrentFocus: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
@@ -86,6 +90,7 @@ export default class GeneralStore extends BaseStore {
             redirectTo: action.bound,
             setActiveIndex: action.bound,
             setActiveNotificationCount: action.bound,
+            setAccountBalance: action.bound,
             setAdvertiserId: action.bound,
             setAppProps: action.bound,
             setInactiveNotificationCount: action.bound,
@@ -101,6 +106,7 @@ export default class GeneralStore extends BaseStore {
             setNicknameError: action.bound,
             setNotificationCount: action.bound,
             setOrderTableType: action.bound,
+            setP2PConfig: action.bound,
             setP2pOrderList: action.bound,
             setParameters: action.bound,
             setPoiStatus: action.bound,
@@ -115,7 +121,15 @@ export default class GeneralStore extends BaseStore {
     }
 
     get client() {
-        return this.props?.client || {};
+        return { ...this.props?.client } || {};
+    }
+
+    get current_focus() {
+        return this.props?.current_focus;
+    }
+
+    get setCurrentFocus() {
+        return this.props?.setCurrentFocus;
     }
 
     get blocked_until_date_time() {
@@ -291,6 +305,9 @@ export default class GeneralStore extends BaseStore {
             this.setIsLoading(false);
 
             const { sendbird_store } = this.root_store;
+
+            this.setP2PConfig();
+
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -307,6 +324,15 @@ export default class GeneralStore extends BaseStore {
                         limit: this.list_item_limit,
                     },
                     [this.setP2pOrderList]
+                ),
+                exchange_rate_subscription: subscribeWS(
+                    {
+                        exchange_rates: 1,
+                        base_currency: this.client.currency,
+                        subscribe: 1,
+                        target_currency: this.client.local_currency_config?.currency,
+                    },
+                    [this.root_store.floating_rate_store.fetchExchangeRate]
                 ),
             };
 
@@ -357,6 +383,10 @@ export default class GeneralStore extends BaseStore {
 
     setActiveNotificationCount(active_notification_count) {
         this.active_notification_count = active_notification_count;
+    }
+
+    setAccountBalance(value) {
+        this.balance = value;
     }
 
     setAdvertiserId(advertiser_id) {
@@ -419,6 +449,23 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
+    }
+
+    setP2PConfig() {
+        const { floating_rate_store } = this.root_store;
+        requestWS({ website_status: 1 }).then(response => {
+            if (!!response && response.error) {
+                floating_rate_store.setApiErrorMessage(response.error.message);
+            } else {
+                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
+                    response.website_status.p2p_config;
+                floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
+                floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
+                floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
+                floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
+                floating_rate_store.setApiErrorMessage(null);
+            }
+        });
     }
 
     setP2pOrderList(order_response) {

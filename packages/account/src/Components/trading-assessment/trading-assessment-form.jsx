@@ -16,6 +16,8 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
 
     const last_question_index = assessment_questions.length - 1;
 
+    // console.log('form_value: ', form_value);
+
     React.useEffect(() => {
         setCurrentQuestion(prevState => ({
             ...prevState,
@@ -40,6 +42,12 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
                 current_question_index: prev_question,
                 current_question: assessment_questions[prev_question],
             });
+        }
+    };
+
+    const handleOnClickNext = values => {
+        if (!isAssessmentCompleted(values)) {
+            handleNextButton();
         }
     };
 
@@ -153,8 +161,8 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
                                             <Button
                                                 has_effect
                                                 is_disabled={!is_next_button_enabled}
-                                                onClick={!isAssessmentCompleted && handleNextButton}
-                                                type={isAssessmentCompleted ? 'submit' : 'button'}
+                                                onClick={() => handleOnClickNext(values)}
+                                                type={isAssessmentCompleted(values) ? 'submit' : 'button'}
                                                 text={localize('Next')}
                                                 large
                                                 primary

@@ -903,6 +903,7 @@ export default class ClientStore extends BaseStore {
             preferred_language,
             user_id,
         } = this;
+
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
@@ -2283,7 +2284,6 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async setFinancialAndTradingAssessment(payload) {
-        console.log('Payload: ', payload);
         const { set_financial_assessment } = await WS.setFinancialAndTradingAssessment(payload);
         return set_financial_assessment;
     }

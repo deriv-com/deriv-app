@@ -8,49 +8,78 @@ import {
     TestWarningModal,
     tradingAssessmentConfig,
 } from '@deriv/account';
+import TradingExperienceModal from './trading-experience-modal.jsx';
 
 const TradingAssessmentExistingUser = ({
+    updateAccountStatus,
     should_show_trade_assessment_form,
+    setShouldShowTradeAssessmentForm,
     setFinancialAndTradingAssessment,
     should_show_risk_tolerance_warning_modal,
     setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
+    setShouldShowAssessmentCompleteModal,
+    setIsTradingAssessmentForExistingUserEnabled,
 }) => {
-    const [form_values, setStateItems] = React.useState({});
-
-    const { form_value, props } = tradingAssessmentConfig({ real_account_signup_target: 'maltainvest' }, null);
+    // Get the Trading assessment questions and initial_value
+    const [form_values, setFormValue] = React.useState({});
+    const [assessment_questions, setAssessmentQuestions] = React.useState({});
 
     React.useEffect(() => {
-        const initial_fields = form_value;
-        setStateItems(initial_fields);
+        setIsTradingAssessmentForExistingUserEnabled(true);
+        const { form_value, props } = tradingAssessmentConfig({ real_account_signup_target: 'maltainvest' }, null);
+        setFormValue(form_value);
+        setAssessmentQuestions(props.assessment_questions ?? []);
+
+        return () => setIsTradingAssessmentForExistingUserEnabled(false);
     }, []);
 
     const handleSubmit = async values => {
-        const form_payload = {
-            trading_experience_maltainvest: { ...values },
-        };
-        try {
-            const response = await setFinancialAndTradingAssessment(form_payload);
-        } catch (error) {
-            if (error.code === 'AppropriatenessTestFailed') {
-                //pass
-                setShouldShowRiskToleranceWarningModal(true);
+        if (values.risk_tolerance === 'No') {
+            setShouldShowTradeAssessmentForm(false);
+            setShouldShowRiskToleranceWarningModal(true);
+        } else {
+            const form_payload = {
+                trading_experience_maltainvest: { ...values },
+            };
+            const { trading_score } = await setFinancialAndTradingAssessment(form_payload);
+            await updateAccountStatus();
+            setShouldShowTradeAssessmentForm(false);
+            if (trading_score === 0) {
+                setShouldShowAppropriatenessTestWarningModal(true);
+            } else {
+                setShouldShowAssessmentCompleteModal(true);
             }
         }
     };
 
     const handleAcceptAppropriatenessTestWarning = () => {
         setShouldShowAppropriatenessTestWarningModal(false);
+        setShouldShowAssessmentCompleteModal(true);
+    };
+
+    const handleAcceptRisk = () => {
+        setFormValue(prev_state => ({ ...prev_state, risk_tolerance: 'Yes' }));
+        setShouldShowRiskToleranceWarningModal(false);
+        setShouldShowTradeAssessmentForm(true);
     };
 
     if (should_show_risk_tolerance_warning_modal) {
-        <RiskToleranceWarningModal
-            show_risk_modal={should_show_risk_tolerance_warning_modal}
-            setShowRiskModal={setShouldShowRiskToleranceWarningModal}
-            title={localize('Risk Tolerance Warning')}
-            button_text={localize('Yes, I understand the risk.')}
-        />;
+        return (
+            <RiskToleranceWarningModal
+                show_risk_modal={should_show_risk_tolerance_warning_modal}
+                title={localize('Risk Tolerance Warning')}
+                button_text={localize('Yes, I understand the risk.')}
+                onClick={handleAcceptRisk}
+                body_content={
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, you must confirm that you understand your capital is at risk'
+                        components={[<br key={0} />]}
+                    />
+                }
+            />
+        );
     } else if (should_show_appropriateness_test_warning_modal) {
         return (
             <TestWarningModal
@@ -62,7 +91,7 @@ const TradingAssessmentExistingUser = ({
                             components={[<br key={0} />, <br key={1} />]}
                         />
                         <Localize
-                            i18n_default_text='Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs. CFD trading is risky and you could potentially lose all of your capital.'
+                            i18n_default_text='Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs. CFD trading is risky and you could potentially lose all of your capital.<0/><0/>'
                             components={[<br key={0} />, <br key={1} />]}
                         />
                         <Localize i18n_default_text='Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge or experience to properly assess or mitigate these risks, which may be significant, including the risk of losing the entire sum you have invested' />
@@ -81,46 +110,53 @@ const TradingAssessmentExistingUser = ({
                 }
             />
         );
+    } else if (should_show_trade_assessment_form) {
+        return (
+            <React.Fragment>
+                <DesktopWrapper>
+                    <Modal
+                        is_open={should_show_trade_assessment_form}
+                        title={localize('Trading Experience Assessment')}
+                        width='904px'
+                        has_close_icon={false}
+                        height='740px'
+                        className='real-account-signup-modal'
+                    >
+                        <TradingAssessmentForm
+                            assessment_questions={assessment_questions}
+                            form_value={form_values}
+                            onSubmit={handleSubmit}
+                        />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        visible={should_show_trade_assessment_form}
+                        title={localize('Trading Experience Assessment')}
+                        portal_element_id='modal_root'
+                    >
+                        <TradingAssessmentForm
+                            assessment_questions={assessment_questions}
+                            form_value={form_values}
+                            onSubmit={handleSubmit}
+                        />
+                    </MobileDialog>
+                </MobileWrapper>
+            </React.Fragment>
+        );
     }
-
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <Modal
-                    is_open={should_show_trade_assessment_form}
-                    title={localize('Trading Experience Assessment')}
-                    width='904px'
-                    has_close_icon={false}
-                >
-                    <TradingAssessmentForm
-                        assessment_questions={props.assessment_questions}
-                        form_values={form_values}
-                        onSubmit={handleSubmit}
-                    />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    visible={should_show_trade_assessment_form}
-                    title={localize('Trading Experience Assessment')}
-                    portal_element_id='modal_root'
-                >
-                    <TradingAssessmentForm
-                        assessment_questions={props.assessment_questions}
-                        value={form_values}
-                        onSubmit={handleSubmit}
-                    />
-                </MobileDialog>
-            </MobileWrapper>
-        </React.Fragment>
-    );
+    return <TradingExperienceModal />;
 };
 
 export default connect(({ client, ui }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    should_show_risk_tolerance_warning_modal: client.should_show_risk_tolerance_warning_modal,
-    setShouldShowRiskToleranceWarningModal: client.setShouldShowRiskToleranceWarningModal,
+    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
+    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
     should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
+    setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
+    setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
+    updateAccountStatus: client.updateAccountStatus,
+    setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
 }))(TradingAssessmentExistingUser);

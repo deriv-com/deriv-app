@@ -110,6 +110,7 @@ const RealAccountSignup = ({
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
     fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -317,6 +318,7 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
+        return () => setIsTradingAssessmentForNewUserEnabled(false);
     }, []);
 
     // setCurrentAction callback useEffect to set error details
@@ -446,13 +448,24 @@ const RealAccountSignup = ({
         }
     };
 
+    const handleRiskAcceptance = () => {
+        closeRealAccountSignup();
+        setShouldShowRiskToleranceWarningModal(false);
+    };
+
     if (should_show_risk_tolerance_warning_modal) {
         //TODO: handle other modals
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_tolerance_warning_modal}
-                setShowRiskModal={setShouldShowRiskToleranceWarningModal}
+                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                body_content={
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'
+                        components={[<br key={0} />]}
+                    />
+                }
             />
         );
     } else if (should_show_appropriateness_test_warning_modal) {
@@ -481,7 +494,6 @@ const RealAccountSignup = ({
             />
         );
     }
-
     return (
         <React.Fragment>
             {is_real_acc_signup_on && (
@@ -606,4 +618,5 @@ export default connect(({ ui, client, common, modules }) => ({
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
     fetchAccountSettings: client.fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(withRouter(RealAccountSignup));

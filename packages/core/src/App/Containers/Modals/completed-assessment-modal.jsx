@@ -1,10 +1,20 @@
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import React from 'react';
 
-const CompletedAssessmentModal = () => {
+const CompletedAssessmentModal = ({ should_show_assessment_complete_modal, setShouldShowAssessmentCompleteModal }) => {
+    const handleOnClick = () => {
+        setShouldShowAssessmentCompleteModal(false);
+    };
+
     return (
-        <Modal width='4.4rem' has_close_icon={false} className='center-risk-modal'>
+        <Modal
+            width='4.4rem'
+            has_close_icon={false}
+            className='center-risk-modal'
+            is_open={should_show_assessment_complete_modal}
+        >
             <Modal.Body>
                 <Icon icon='IcCheckmarkCircle' color='green' size={80} />
                 <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
@@ -18,10 +28,13 @@ const CompletedAssessmentModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button type='button' large text={localize('OK')} primary />
+                <Button type='button' large text={localize('OK')} primary onClick={handleOnClick} />
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default CompletedAssessmentModal;
+export default connect(({ ui }) => ({
+    should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
+    setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
+}))(CompletedAssessmentModal);

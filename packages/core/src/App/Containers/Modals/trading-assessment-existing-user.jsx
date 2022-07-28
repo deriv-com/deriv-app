@@ -45,7 +45,7 @@ const TradingAssessmentExistingUser = ({
             setShouldShowRiskToleranceWarningModal(true);
         } else {
             const form_payload = {
-                trading_experience_maltainvest: { ...values },
+                trading_experience_regulated: { ...values },
             };
             const { trading_score } = await setFinancialAndTradingAssessment(form_payload);
             await updateAccountStatus();

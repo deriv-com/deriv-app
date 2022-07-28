@@ -1,0 +1,5 @@
+.dc-modal__container_rate-changed-modal {
+    @include mobile {
+        min-width: 328px;
+    }
+}

@@ -6,7 +6,6 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
-import RiskToleranceWarningModal from './risk-tolerance-warning-modal';
 
 const TradingAssessmentForm = ({
     assessment_questions,
@@ -21,35 +20,33 @@ const TradingAssessmentForm = ({
         current_question_index: 0,
         current_question: {},
     });
-    const [show_popup, setShowPopup] = React.useState(null);
+    const [form_data, setFormData] = React.useState({});
 
     const last_question_index = assessment_questions.length - 1;
-
-    // console.log('form_value: ', form_value);
 
     React.useEffect(() => {
         setCurrentQuestion(prevState => ({
             ...prevState,
             current_question: assessment_questions[prevState.current_question_index],
         }));
+        setFormData(form_value);
     }, []);
 
     const displayNextPage = () => {
-        const next_question = current_question_details.current_question_index + 1;
-
-        if (next_question < assessment_questions.length) {
-            setCurrentQuestion({
-                current_question_index: next_question,
-                current_question: assessment_questions[next_question],
-            });
+        if (form_data.risk_tolerance === 'No') {
+            onSubmit(form_data, true, true);
+        } else {
+            const next_question = current_question_details.current_question_index + 1;
+            if (next_question < assessment_questions.length) {
+                setCurrentQuestion({
+                    current_question_index: next_question,
+                    current_question: assessment_questions[next_question],
+                });
+            }
         }
     };
 
-    const handleNextButton = () => {
-        show_popup !== null ? onSubmit(show_popup, true, true) : displayNextPage();
-    };
-
-    const handlePrevButton = () => {
+    const displayPreviousPage = () => {
         const prev_question = current_question_details.current_question_index - 1;
         if (prev_question >= 0) {
             setCurrentQuestion({
@@ -61,18 +58,14 @@ const TradingAssessmentForm = ({
 
     const handleOnClickNext = values => {
         if (!isAssessmentCompleted(values)) {
-            handleNextButton();
+            displayNextPage();
         }
     };
 
-    const handleValueSelection = (e, form_control, callBackFn, values) => {
+    const handleValueSelection = (e, form_control, callBackFn) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
-        const latest_value = { ...values, [form_control]: e.target.value };
-        setShowPopup(null);
-        if (latest_value.risk_tolerance === 'No') {
-            setShowPopup(latest_value);
-        }
+        setFormData(prev_form => ({ ...prev_form, [form_control]: e.target.value }));
     };
 
     const hideElement = condition => {
@@ -92,7 +85,7 @@ const TradingAssessmentForm = ({
             <section className='trading-assessment__header'>
                 <div className='trading-assessment__header--background'>
                     <Button
-                        onClick={handlePrevButton}
+                        onClick={displayPreviousPage}
                         transparent
                         style={hideElement(
                             !is_header_navigation || current_question_details.current_question_index === 0
@@ -106,7 +99,7 @@ const TradingAssessmentForm = ({
                         {assessment_questions.length}
                     </Text>
                     <Button
-                        onClick={handleNextButton}
+                        onClick={displayNextPage}
                         transparent
                         is_disabled={!is_next_button_enabled}
                         className={classNames({ 'disable-pointer': !is_next_button_enabled })}
@@ -167,7 +160,7 @@ const TradingAssessmentForm = ({
                                         <Button.Group>
                                             <Button
                                                 has_effect
-                                                onClick={handlePrevButton}
+                                                onClick={displayPreviousPage}
                                                 text={localize('Previous')}
                                                 type='button'
                                                 secondary

@@ -42,7 +42,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected_buy_methods, selected_sell_methods]);
+    }, [is_sell_advert, selected_buy_methods, selected_sell_methods]);
 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {

@@ -72,6 +72,8 @@ const JurisdictionModal = ({
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     const {
+        onfido_status,
+        manual_status,
         poa_status,
         poi_status,
         need_poi_for_vanuatu,
@@ -209,6 +211,11 @@ const JurisdictionModal = ({
         const is_non_svg_selected = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
         if (poa_failed && is_non_svg_selected && !poi_poa_not_submitted) {
             return <Localize i18n_default_text='Resubmit proof of address' />;
+        } else if (
+            jurisdiction_selected_shortcode === 'vanuatu' &&
+            (onfido_status === 'none' || manual_status === 'none')
+        ) {
+            return <Localize i18n_default_text='Next' />;
         } else if (poi_failed && is_non_svg_selected && !poi_poa_not_submitted) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
         } else if (poa_failed && poi_failed && is_non_svg_selected) {

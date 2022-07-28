@@ -136,7 +136,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                         <div className='proof-of-identity__container'>
                                             <DocumentSubmitLogo className='icon' />
                                             <Text className='proof-of-identity btm-spacer' align='center' weight='bold'>
-                                                {localize('Identity information')}
+                                                {has_idv_error
+                                                    ? localize('Verify your identity')
+                                                    : localize('Identity information')}
                                             </Text>
                                             <Text className='proof-of-identity__text btm-spacer' size='xs'>
                                                 {localize('Please select the document type and enter the ID number.')}
@@ -144,7 +146,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                             {has_idv_error && !is_doc_selected && (
                                                 <>
                                                     <Text
-                                                        className='proof-of-identity btm-spacer'
+                                                        className='proof-of-identity'
                                                         size='xs'
                                                         align='center'
                                                         color='loss-danger'

@@ -1,10 +1,11 @@
 import { action, computed, observable, reaction } from 'mobx';
-import { formatMoney, getDecimalPlaces, getRoundedNumber, isMobile } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import { removeTrailingZeros } from 'Utils/format-value.js';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
@@ -33,6 +34,7 @@ export default class BuySellStore extends BaseStore {
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
     @observable show_filter_payment_methods = false;
+    @observable show_rate_change_popup = false;
     @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
@@ -124,6 +126,16 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    fetchAdvertiserAdverts() {
+        this.setItems([]);
+        this.setIsLoading(true);
+        this.loadMoreItems({ startIndex: 0 });
+        if (!this.is_buy) {
+            this.root_store.my_profile_store.getAdvertiserPaymentMethods();
+        }
+    }
+
+    @action.bound
     getAdvertiserInfo() {
         requestWS({
             p2p_advertiser_info: 1,
@@ -160,7 +172,7 @@ export default class BuySellStore extends BaseStore {
 
         this.form_props.setErrorMessage(null);
 
-        const order = await requestWS({
+        const payload = {
             p2p_order_create: 1,
             advert_id: this.advert.id,
             amount: values.amount,
@@ -172,12 +184,20 @@ export default class BuySellStore extends BaseStore {
                       contact_info: values.contact_info,
                   }
                 : {}),
-        });
+        };
+        if (values.rate !== null) {
+            payload.rate = values.rate;
+        }
+
+        const order = await requestWS({ ...payload });
 
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
             this.setFormErrorCode(order.error.code);
         } else {
+            this.form_props.setErrorMessage(null);
+            this.setShowRateChangePopup(false);
+            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
             this.form_props.handleClose();
@@ -392,11 +412,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setInitialReceiveAmount() {
-        this.receive_amount = getRoundedNumber(
-            this.advert.min_order_amount_limit * this.advert.price,
-            this.advert.local_currency
-        );
+    setInitialReceiveAmount(initial_price) {
+        this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
     }
 
     @action.bound
@@ -437,6 +454,9 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
+        if (!this.should_show_popup) {
+            this.fetchAdvertiserAdverts();
+        }
     }
 
     @action.bound
@@ -495,6 +515,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setShowRateChangePopup(show_rate_change_popup) {
+        this.show_rate_change_popup = show_rate_change_popup;
+    }
+
+    @action.bound
     showVerification() {
         this.setShouldShowVerification(true);
     }
@@ -506,6 +531,7 @@ export default class BuySellStore extends BaseStore {
                 v => !!v,
                 v => v >= this.advert.min_order_amount_limit,
                 v => v <= this.advert.max_order_amount_limit,
+                v => (this.root_store.buy_sell_store.is_buy_advert ? true : v <= this.root_store.general_store.balance),
                 v => countDecimalPlaces(v) <= getDecimalPlaces(this.account_currency),
             ],
         };
@@ -529,6 +555,10 @@ export default class BuySellStore extends BaseStore {
             localize('Maximum is {{value}} {{currency}}', {
                 currency: this.account_currency,
                 value: display_max_amount,
+            }),
+            localize('Maximum is {{value}} {{currency}}', {
+                currency: this.account_currency,
+                value: formatMoney(this.account_currency, this.root_store.general_store.balance, true),
             }),
             localize('Enter a valid amount'),
         ];

@@ -373,6 +373,7 @@ import './common/ic-ups-downs.svg';
 import './common/ic-user-outline.svg';
 import './common/ic-user.svg';
 import './common/ic-utility.svg';
+import './common/ic-verification-success.svg';
 import './common/ic-verification.svg';
 import './common/ic-web-terminal.svg';
 import './common/ic-website.svg';

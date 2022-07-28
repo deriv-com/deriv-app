@@ -37,8 +37,10 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
-                minSize: 30000,
+                minSize: 100000,
+                //minSizeReduction:100000,
                 maxSize: 240000,
+                //enforceSizeThreshold: 240000,
                 minChunks: 1,
                 maxAsyncRequests: 5,
                 maxInitialRequests: 3,

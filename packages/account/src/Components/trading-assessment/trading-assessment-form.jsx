@@ -6,6 +6,7 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
+import RiskToleranceWarningModal from './risk-tolerance-warning-modal';
 
 const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onCancel, is_header_navigation }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
@@ -13,6 +14,7 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
         current_question_index: 0,
         current_question: {},
     });
+    const [show_popup, setShowPopup] = React.useState(null);
 
     const last_question_index = assessment_questions.length - 1;
 
@@ -23,14 +25,19 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
         }));
     }, []);
 
-    const handleNextButton = () => {
+    const displayNextPage = () => {
         const next_question = current_question_details.current_question_index + 1;
+
         if (next_question < assessment_questions.length) {
             setCurrentQuestion({
                 current_question_index: next_question,
                 current_question: assessment_questions[next_question],
             });
         }
+    };
+
+    const handleNextButton = () => {
+        show_popup !== null ? onSubmit(show_popup, true, true) : displayNextPage();
     };
 
     const handlePrevButton = () => {
@@ -47,8 +54,9 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
         const latest_value = { ...values, [form_control]: e.target.value };
+        setShowPopup(null);
         if (latest_value.risk_tolerance === 'No') {
-            onSubmit(latest_value, true, true);
+            setShowPopup(latest_value);
         }
     };
 

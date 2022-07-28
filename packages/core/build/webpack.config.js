@@ -38,7 +38,7 @@ module.exports = function (env) {
             splitChunks: {
                 chunks: 'all',
                 minSize: 100000,
-                //minSizeReduction:100000,
+                minSizeReduction: 100000,
                 maxSize: 240000,
                 //enforceSizeThreshold: 240000,
                 minChunks: 1,

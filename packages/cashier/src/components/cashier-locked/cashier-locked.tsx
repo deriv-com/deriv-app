@@ -38,7 +38,7 @@ const CashierLocked = ({
         is_deposit_locked,
         is_withdrawal_locked,
         is_identity_verification_needed,
-        excluded_until: is_deposit_locked ? accounts[loginid].excluded_until : undefined,
+        excluded_until: accounts ? accounts[loginid]?.excluded_until : undefined,
     });
 
     return <EmptyState icon={state.icon} title={state.title} description={state.description} />;

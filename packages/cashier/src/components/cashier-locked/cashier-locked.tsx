@@ -3,7 +3,7 @@ import { Authorize, GetAccountStatus } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
 import { RootStore } from 'Types';
 import EmptyState from 'Components/empty-state';
-import provider from './cashier-locked-provider';
+import getMessage from './cashier-locked-provider';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -30,7 +30,7 @@ const CashierLocked = ({
     loginid,
     is_identity_verification_needed,
 }: TProps) => {
-    const state = provider.getMessage({
+    const state = getMessage({
         cashier_validation: account_status.cashier_validation,
         is_crypto: current_currency_type === 'crypto',
         is_system_maintenance,

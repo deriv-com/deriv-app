@@ -363,6 +363,4 @@ const getMessage = ({
     };
 };
 
-export default {
-    getMessage,
-};
+export default getMessage;

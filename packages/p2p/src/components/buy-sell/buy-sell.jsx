@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
+import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
@@ -79,6 +80,7 @@ const BuySell = () => {
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
             />
+            <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
         </div>
     );
 };

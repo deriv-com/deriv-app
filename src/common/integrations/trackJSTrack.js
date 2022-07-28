@@ -9,7 +9,6 @@ export const default_errors_to_ignore = [
     'RateLimit',
     'DisconnectError',
     'MarketIsClosed',
-    'Cannot read property `open_time` of undefined', // Exception: SmartCharts error workaround, don't log nor show.
   ];
 
 export function trackJSTrack (error) {
@@ -31,8 +30,14 @@ export function trackJSTrack (error) {
       ({ code } = error);
     }
 
+          // Exceptions:
+  if (message === undefined || message === "Cannot read property 'open_time' of undefined") {
+    // SmartCharts error workaround, don't log nor show.
+    return undefined;
+  }
+
   if (isProduction()) {
-    if(!default_errors_to_ignore.includes(code) && message !== undefined){
+    if(!default_errors_to_ignore.includes(code)){
       TrackJS.track(code);
     }
   }

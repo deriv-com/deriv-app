@@ -76,7 +76,7 @@ type TStoreProofOfAddress = (file_uploader_ref: React.RefObject<(HTMLElement | n
 export type TCFDPOAProps = {
     onSave: (index: number, values: TFormValues) => void;
     index: number;
-    onSubmit: (index: number, value: TFormValues, setSubmitting?: boolean | ((isSubmitting: boolean) => void)) => void;
+    onSubmit: (index: number, value: TFormValues) => void;
     refreshNotifications: () => void;
     form_error: string;
     get_settings: GetSettings;
@@ -241,7 +241,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
         onSave(index, values);
-        onSubmit(index, values, false);
+        onSubmit(index, values);
     };
 
     // didMount hook

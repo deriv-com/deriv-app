@@ -68,6 +68,7 @@ const CFDDbViOnBoarding = ({
             setIsLoading(true);
             setShowSubmittedModal(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
     return is_loading ? (

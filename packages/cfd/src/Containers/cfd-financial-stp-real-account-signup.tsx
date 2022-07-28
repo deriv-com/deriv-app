@@ -45,9 +45,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     needs_poi_for_vanuatu: boolean;
 };
 
-type TSetSubmiting = (isSubmitting: boolean) => void;
-
-type TNextStep = (submitting: TSetSubmiting) => void;
+type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
 
 type TItemsState = {
     header: { [key: string]: string };
@@ -58,8 +56,11 @@ type TItemsState = {
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
     const { refreshNotifications, authentication_status, fetchStatesList } = props;
-    const [step, setStep] = React.useState<number>(0);
-    const [form_error, setFormError] = React.useState<string>('');
+    const [step, setStep] = React.useState(0);
+    const [form_error, setFormError] = React.useState('');
+    const state_index = step;
+    const height = 'auto';
+    let is_mounted = React.useRef(true).current;
     const { need_poi_for_vanuatu } = getIdentityStatusInfo(props.account_status);
     const poi_config: TItemsState = {
         header: {
@@ -112,32 +113,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
 
-    const state_index = step;
-
     const clearError = () => {
         setFormError('');
-    };
-
-    const nextStep: TNextStep = async () => {
-        clearError();
-        if (step + 1 < items.length) {
-            setStep(step + 1);
-        } else {
-            props.onFinish();
-        }
-    };
-
-    const prevStep = () => {
-        setStep(step - 1);
-        setFormError('');
-    };
-    const updateValue = async (
-        index: number,
-        value: { [key: string]: string | undefined },
-        setSubmitting: TSetSubmiting
-    ) => {
-        saveFormData(index, value);
-        nextStep(setSubmitting);
     };
 
     React.useEffect(() => {
@@ -148,16 +125,38 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         fetchStatesList();
     }, [fetchStatesList]);
 
-    const getCurrent = (key?: keyof TItemsState) => {
-        return key ? items[state_index][key] : items[state_index];
+    const unmount = () => {
+        is_mounted = false;
+        props.onFinish();
     };
 
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
+        if (!is_mounted) return; // avoiding state update on unmounted component
         const cloned_items: TItemsState[] = [...items];
         cloned_items[index].form_value = value;
         setItems(cloned_items);
     };
-    const BodyComponent = getCurrent('body') as React.FunctionComponent<any>;
+
+    const nextStep: TNextStep = (index, value) => {
+        clearError();
+        if (step + 1 < items.length) {
+            saveFormData(index, value);
+            setStep(step + 1);
+        } else unmount();
+    };
+
+    const prevStep = () => {
+        if (step - 1 >= 0) {
+            setStep(step - 1);
+            setFormError('');
+        } else unmount();
+    };
+
+    const getCurrent = (key?: keyof TItemsState) => {
+        return key ? items[state_index][key] : items[state_index];
+    };
+
+    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA;
     const form_value = getCurrent('form_value');
 
     const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
@@ -168,7 +167,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         },
         {}
     );
-    const height = 'auto';
+
     return (
         <Div100vhContainer
             className='cfd-financial-stp-modal'
@@ -180,7 +179,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                 <BodyComponent
                     value={form_value}
                     index={state_index}
-                    onSubmit={updateValue}
+                    onSubmit={nextStep}
                     height={height}
                     onCancel={prevStep}
                     onSave={saveFormData}

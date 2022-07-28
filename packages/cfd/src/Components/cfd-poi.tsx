@@ -22,7 +22,7 @@ type TCFDNotificationMessage = {
 
 export type TCFDPOIProps = {
     index: number;
-    onSubmit: (index: number, value: TCFDValue, setSubmitting: boolean | ((isSubmitting: boolean) => void)) => void;
+    onSubmit: (index: number, value: TCFDValue) => void;
     value: TCFDValue;
     account_status?: GetAccountStatus;
     addNotificationByKey: (key: string) => void;
@@ -48,7 +48,7 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
     const onStateChange = (status: string) => {
         setPOIState(status);
         onSave(index, { poi_state: status });
-        onSubmit(index, { poi_state }, false);
+        onSubmit(index, { poi_state });
     };
     return (
         <ProofOfIdentityContainerforMt5

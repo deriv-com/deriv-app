@@ -187,7 +187,7 @@ const AccountWizard = props => {
         clearError();
     };
 
-    const submitForm = (payload = undefined, should_override = false) => {
+    const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
         props.setRealAccountFormData(clone);
@@ -198,7 +198,7 @@ const AccountWizard = props => {
             };
         }
 
-        return props.realAccountSignup(clone, should_override);
+        return props.realAccountSignup(clone);
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
@@ -207,7 +207,7 @@ const AccountWizard = props => {
 
         // Check if account wizard is not finished
         if (should_override || index + 1 >= state_items.length) {
-            createRealAccount({}, should_override);
+            createRealAccount({});
         } else {
             goToNextStep();
         }
@@ -236,10 +236,10 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const createRealAccount = (payload = undefined, should_override = false) => {
+    const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
         const form_data = { ...form_values() };
-        submitForm(payload, should_override)
+        submitForm(payload)
             .then(response => {
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {

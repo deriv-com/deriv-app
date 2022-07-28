@@ -1055,7 +1055,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async realAccountSignup(form_values, should_override = false) {
+    async realAccountSignup(form_values) {
         const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
         const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
@@ -1442,7 +1442,6 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setLoginId(loginid) {
-        console.log('Login ID set: ', loginid);
         this.loginid = loginid;
     }
 

@@ -423,7 +423,6 @@ const RealAccountSignup = ({
                 showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
             }
         } catch (sign_up_error) {
-            console.log('handleOnAccept sign_up_error: ', sign_up_error);
             // TODO: Handle Error
         } finally {
             fetchAccountSettings();

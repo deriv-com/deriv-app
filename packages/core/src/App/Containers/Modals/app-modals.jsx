@@ -58,10 +58,8 @@ const AppModals = ({
 
     React.useEffect(() => {
         const fetchFinancialScore = async () => {
-            try {
-                const response = await fetchFinancialAssessment();
-                setCFDScore(response?.cfd_score ?? 0);
-            } catch (err) {}
+            const response = await fetchFinancialAssessment();
+            setCFDScore(response?.cfd_score ?? 0);
         };
         if (is_logged_in) {
             fetchFinancialScore();

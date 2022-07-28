@@ -288,7 +288,6 @@ export const trading_assessment_form_config = {
 };
 
 const tradingAssessmentConfig = ({ real_account_signup_target }, TradingAssessmentNewUser) => {
-    console.log('real_account_signup_target: ', real_account_signup_target);
     return {
         header: {
             active_title: localize('Complete your trading assessment'),

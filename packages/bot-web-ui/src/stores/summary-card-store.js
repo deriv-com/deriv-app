@@ -1,9 +1,8 @@
 import { action, computed, observable, reaction } from 'mobx';
-import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@deriv/shared';
+import { getIndicativePrice, isEqualObject, isMultiplierContract, Validator } from '@deriv/shared';
 import { contract_stages } from 'Constants/contract-stage';
 import { getValidationRules } from 'Constants/contract';
 import { getContractUpdateConfig } from 'Utils/multiplier';
-import Validator from 'Utils/validator';
 
 export default class SummaryCardStore {
     @observable contract_info = null;

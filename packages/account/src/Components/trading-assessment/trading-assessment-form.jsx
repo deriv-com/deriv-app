@@ -7,7 +7,14 @@ import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
 
-const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onCancel, is_header_navigation }) => {
+const TradingAssessmentForm = ({
+    assessment_questions,
+    class_name,
+    form_value,
+    onSubmit,
+    onCancel,
+    is_header_navigation,
+}) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question_details, setCurrentQuestion] = React.useState({
         current_question_index: 0,
@@ -70,7 +77,7 @@ const TradingAssessmentForm = ({ assessment_questions, form_value, onSubmit, onC
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
 
     return (
-        <div className='trading-assessment'>
+        <div className={classNames('trading-assessment', class_name)}>
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.' />
             </Text>

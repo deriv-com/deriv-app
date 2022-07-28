@@ -747,6 +747,11 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    @computed
+    get active_account_landing_company() {
+        return this.is_logged_in ? this.getAccount().landing_company_shortcode : null;
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
@@ -1437,6 +1442,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setLoginId(loginid) {
+        console.log('Login ID set: ', loginid);
         this.loginid = loginid;
     }
 

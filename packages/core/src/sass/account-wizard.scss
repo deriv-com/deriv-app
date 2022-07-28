@@ -455,6 +455,12 @@
         overflow: auto;
     }
 
+    &--margin-top {
+        @include desktop() {
+            margin-top: 9.2rem;
+        }
+    }
+
     &__wrapper__dropdown--list--display {
         @include mobile() {
             height: 5.5rem !important;
@@ -585,10 +591,10 @@
     }
     .dc-modal-body {
         text-align: center;
-        .risk-acceptance__text{
+        .risk-acceptance__text {
             margin-top: 2.4rem;
         }
-        .verified-account__text{
+        .verified-account__text {
             margin-top: 2.4rem;
         }
     }

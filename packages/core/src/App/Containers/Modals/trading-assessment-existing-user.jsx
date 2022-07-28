@@ -12,6 +12,7 @@ import TradingExperienceModal from './trading-experience-modal.jsx';
 
 const TradingAssessmentExistingUser = ({
     updateAccountStatus,
+    active_account_landing_company,
     should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm,
     setFinancialAndTradingAssessment,
@@ -28,7 +29,10 @@ const TradingAssessmentExistingUser = ({
 
     React.useEffect(() => {
         setIsTradingAssessmentForExistingUserEnabled(true);
-        const { form_value, props } = tradingAssessmentConfig({ real_account_signup_target: 'maltainvest' }, null);
+        const { form_value, props } = tradingAssessmentConfig(
+            { real_account_signup_target: active_account_landing_company },
+            null
+        );
         setFormValue(form_value);
         setAssessmentQuestions(props.assessment_questions ?? []);
 
@@ -119,13 +123,14 @@ const TradingAssessmentExistingUser = ({
                         title={localize('Trading Experience Assessment')}
                         width='904px'
                         has_close_icon={false}
-                        height='740px'
+                        height='688px'
                         className='real-account-signup-modal'
                     >
                         <TradingAssessmentForm
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            class_name='trading-assessment--margin-top'
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -159,4 +164,5 @@ export default connect(({ client, ui }) => ({
     setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
     updateAccountStatus: client.updateAccountStatus,
     setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
+    active_account_landing_company: client.active_account_landing_company,
 }))(TradingAssessmentExistingUser);

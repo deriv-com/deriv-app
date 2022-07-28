@@ -45,14 +45,13 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
-    has_maltainvest_account,
     should_show_cooldown_warning_modal,
     should_show_assessment_complete_modal,
-    is_virtual,
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
     cfd_score,
+    active_account_landing_company,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -64,7 +63,9 @@ const AppModals = ({
                 setCFDScore(response?.cfd_score ?? 0);
             } catch (err) {}
         };
-        if (is_logged_in) fetchFinancialScore();
+        if (is_logged_in) {
+            fetchFinancialScore();
+        }
     }, [is_logged_in]);
 
     let ComponentToLoad = null;
@@ -111,8 +112,7 @@ const AppModals = ({
 
     if (
         is_logged_in &&
-        !is_virtual &&
-        has_maltainvest_account &&
+        active_account_landing_company === 'maltainvest' &&
         !is_trading_assessment_for_new_user_enabled &&
         cfd_score === 0
     ) {
@@ -152,6 +152,6 @@ export default connect(({ client, ui }) => ({
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
-    is_virtual: client.is_virtual,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
+    active_account_landing_company: client.active_account_landing_company,
 }))(AppModals);

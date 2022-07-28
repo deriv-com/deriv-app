@@ -39,6 +39,7 @@ export default class MyAdsStore extends BaseStore {
     @observable show_ad_form = false;
     @observable selected_ad_id = '';
     @observable selected_advert = null;
+    @observable selected_methods = [];
     @observable should_show_add_payment_method = false;
     @observable should_show_add_payment_method_modal = false;
     @observable show_edit_ad_form = false;
@@ -578,6 +579,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setRequiredAdType(change_ad_type) {
         this.required_ad_type = change_ad_type;
+    }
+
+    @action.bound
+    setSelectedMethods(selected_methods) {
+        this.selected_methods = selected_methods;
     }
 
     @action.bound

@@ -130,7 +130,7 @@ const TradingAssessmentExistingUser = ({
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
-                            class_name='trading-assessment--margin-top'
+                            class_name='trading-assessment--existing-usr'
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -144,6 +144,7 @@ const TradingAssessmentExistingUser = ({
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            class_name='trading-assessment--existing-usr'
                         />
                     </MobileDialog>
                 </MobileWrapper>

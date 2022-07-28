@@ -10,7 +10,7 @@ const CompletedAssessmentModal = ({ should_show_assessment_complete_modal, setSh
 
     return (
         <Modal
-            width='4.4rem'
+            width='44rem'
             has_close_icon={false}
             className='center-risk-modal'
             is_open={should_show_assessment_complete_modal}

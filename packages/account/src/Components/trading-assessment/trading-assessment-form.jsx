@@ -157,15 +157,18 @@ const TradingAssessmentForm = ({
                                             onCancel={() => onCancel(values)}
                                         />
                                     ) : (
-                                        <Button.Group>
-                                            <Button
-                                                has_effect
-                                                onClick={displayPreviousPage}
-                                                text={localize('Previous')}
-                                                type='button'
-                                                secondary
-                                                large
-                                            />
+                                        <Button.Group className='trading-assessment__btn-group'>
+                                            {current_question_details.current_question_index !== 0 && (
+                                                <Button
+                                                    has_effect
+                                                    onClick={displayPreviousPage}
+                                                    text={localize('Previous')}
+                                                    type='button'
+                                                    secondary
+                                                    large
+                                                    className='trading-assessment__btn-group--btn'
+                                                />
+                                            )}
                                             <Button
                                                 has_effect
                                                 is_disabled={!is_next_button_enabled}
@@ -174,6 +177,7 @@ const TradingAssessmentForm = ({
                                                 text={localize('Next')}
                                                 large
                                                 primary
+                                                className='trading-assessment__btn-group--btn'
                                             />
                                         </Button.Group>
                                     )}

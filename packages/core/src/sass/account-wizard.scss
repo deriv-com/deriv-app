@@ -455,9 +455,20 @@
         overflow: auto;
     }
 
-    &--margin-top {
+    &--existing-usr {
         @include desktop() {
             margin-top: 9.2rem;
+        }
+
+        @include mobile() {
+            height: calc(100vh - 40px);
+            .trading-assessment__side-note {
+                padding: 2.2rem 1.6rem;
+            }
+
+            .trading-assessment__header {
+                margin-top: unset;
+            }
         }
     }
 
@@ -582,6 +593,19 @@
         position: fixed;
         bottom: 0;
         width: -webkit-fill-available;
+    }
+
+    &__btn-group {
+        position: absolute;
+        bottom: 0;
+        padding: 1.6rem;
+        border-top: 2px solid var(--general-disabled);
+        width: 100%;
+        display: flex;
+
+        &--btn {
+            width: 100%;
+        }
     }
 }
 

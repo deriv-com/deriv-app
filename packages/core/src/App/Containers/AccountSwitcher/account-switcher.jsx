@@ -441,7 +441,7 @@ const AccountSwitcher = props => {
     const checkMultipleSvgAcc = () => {
         const all_svg_acc = [];
         getRealMT5().map(acc => {
-            if (acc.landing_company_short === 'svg') {
+            if (acc.landing_company_short === 'svg' && acc.market_type === 'synthetic') {
                 if (all_svg_acc.length) {
                     all_svg_acc.forEach(svg_acc => {
                         if (svg_acc.server !== acc.server) all_svg_acc.push(acc);

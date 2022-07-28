@@ -1,20 +1,22 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Icon, Input, Text } from '@deriv/components';
-import { getRoundedNumber, getFormattedText, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { HintBox, Icon, Input, Text } from '@deriv/components';
+import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
+import { ad_type } from 'Constants/floating-rate.js';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
+import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value.js';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
-
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
 
@@ -28,12 +30,31 @@ const BuySellForm = props => {
         min_order_amount_limit_display,
         payment_method_names,
         price,
+        rate,
+        rate_type,
     } = buy_sell_store?.advert || {};
+    const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
+
+    const should_disable_field =
+        !buy_sell_store.is_buy_advert &&
+        (parseFloat(general_store.balance) === 0 ||
+            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit);
 
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
+        cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
+
+    const { effective_rate, display_effective_rate } = generateEffectiveRate({
+        price,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
+
+    const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
 
     React.useEffect(
         () => {
@@ -46,13 +67,7 @@ const BuySellForm = props => {
                 () => buy_sell_store.receive_amount,
                 () => {
                     if (isMobile() && typeof setPageFooterParent === 'function') {
-                        setPageFooterParent(
-                            <BuySellFormReceiveAmount
-                                is_sell_advert={buy_sell_store.is_sell_advert}
-                                local_currency={local_currency}
-                                receive_amount={buy_sell_store.receive_amount}
-                            />
-                        );
+                        setPageFooterParent(<BuySellFormReceiveAmount />);
                     }
                 }
             );
@@ -62,7 +77,8 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            buy_sell_store.setInitialReceiveAmount();
+            buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
+            buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
@@ -72,45 +88,64 @@ const BuySellForm = props => {
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
+    React.useEffect(() => {
+        const receive_amount = input_amount * calculated_rate;
+        buy_sell_store.setReceiveAmount(receive_amount);
+    }, [input_amount, effective_rate]);
+
     const onClickPaymentMethodCard = payment_method => {
-        if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
-            if (buy_sell_store.payment_method_ids.length < 3) {
-                buy_sell_store.payment_method_ids.push(payment_method.ID);
-                setSelectedMethods([...selected_methods, payment_method.ID]);
+        if (!should_disable_field) {
+            if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
+                if (buy_sell_store.payment_method_ids.length < 3) {
+                    buy_sell_store.payment_method_ids.push(payment_method.ID);
+                    setSelectedMethods([...selected_methods, payment_method.ID]);
+                }
+            } else {
+                buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
+                    payment_method_id => payment_method_id !== payment_method.ID
+                );
+                setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
-        } else {
-            buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.ID
-            );
-            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
     };
 
     return (
-        <Formik
-            enableReinitialize
-            validate={buy_sell_store.validatePopup}
-            validateOnMount
-            initialValues={{
-                amount: min_order_amount_limit,
-                contact_info: buy_sell_store.contact_info,
-                payment_info: buy_sell_store.payment_info,
-            }}
-            initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
-            onSubmit={(...args) => {
-                buy_sell_store.handleSubmit(() => isMounted(), ...args);
-            }}
-        >
-            {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
-                buy_sell_store.form_props.setIsSubmitDisabled(
-                    !isValid ||
-                        isSubmitting ||
-                        (buy_sell_store.is_sell_advert && payment_method_names && selected_methods.length < 1)
-                );
-                buy_sell_store.form_props.setSubmitForm(submitForm);
+        <React.Fragment>
+            {rate_type === ad_type.FLOAT && !should_disable_field && (
+                <div className='buy-sell__modal-hintbox'>
+                    <HintBox
+                        icon='IcAlertInfo'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
+                            </Text>
+                        }
+                        is_info
+                    />
+                </div>
+            )}
+            <Formik
+                enableReinitialize
+                validate={buy_sell_store.validatePopup}
+                validateOnMount={!should_disable_field}
+                initialValues={{
+                    amount: min_order_amount_limit,
+                    contact_info: buy_sell_store.contact_info,
+                    payment_info: buy_sell_store.payment_info,
+                    rate: rate_type === ad_type.FLOAT ? effective_rate : null,
+                }}
+                initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
+                onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
+            >
+                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched }) => {
+                    buy_sell_store.form_props.setIsSubmitDisabled(
+                        !isValid ||
+                            isSubmitting ||
+                            (buy_sell_store.is_sell_advert && payment_method_names && selected_methods.length < 1)
+                    );
+                    buy_sell_store.form_props.setSubmitForm(submitForm);
 
-                return (
-                    <React.Fragment>
+                    return (
                         <Form noValidate>
                             <div className='buy-sell__modal-content'>
                                 <div className='buy-sell__modal-field-wrapper'>
@@ -134,7 +169,7 @@ const BuySellForm = props => {
                                             />
                                         </Text>
                                         <Text as='p' color='general' line_height='m' size='xs'>
-                                            {getFormattedText(price, local_currency)}
+                                            {display_effective_rate} {local_currency}
                                         </Text>
                                     </div>
                                 </div>
@@ -205,146 +240,171 @@ const BuySellForm = props => {
                                 </div>
                                 <div className='buy-sell__modal-line' />
                                 {buy_sell_store.is_sell_advert && payment_method_names && (
-                                    <div>
-                                        <Text
-                                            as='p'
-                                            className='buy-sell__modal-payment-method--title'
-                                            color='less-prominent'
-                                            line_height='m'
-                                            size='xxs'
-                                        >
-                                            <Localize i18n_default_text='Receive payment to' />
-                                        </Text>
-                                        <Text as='p' color='prominent' line_height='m' size='xxs'>
-                                            {my_profile_store.advertiser_has_payment_methods ? (
-                                                <Localize i18n_default_text='You may choose up to 3.' />
-                                            ) : (
-                                                <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
-                                            )}
-                                        </Text>
-                                        <Observer>
-                                            {() => (
-                                                <div className='buy-sell__modal--sell-payment-methods'>
-                                                    {payment_method_names
-                                                        ?.map((add_payment_method, key) => {
-                                                            const {
-                                                                advertiser_payment_methods_list,
-                                                                setSelectedPaymentMethodDisplayName,
-                                                                setShouldShowAddPaymentMethodForm,
-                                                            } = my_profile_store;
-                                                            const matching_payment_methods =
-                                                                advertiser_payment_methods_list.filter(
-                                                                    advertiser_payment_method =>
-                                                                        advertiser_payment_method.display_name ===
-                                                                        add_payment_method
-                                                                );
-                                                            return matching_payment_methods.length > 0 ? (
-                                                                matching_payment_methods.map(payment_method => (
+                                    <React.Fragment>
+                                        <div className='buy-sell__modal-payment-method'>
+                                            <Text
+                                                as='p'
+                                                className='buy-sell__modal-payment-method--title'
+                                                color='less-prominent'
+                                                line_height='m'
+                                                size='xxs'
+                                            >
+                                                <Localize i18n_default_text='Receive payment to' />
+                                            </Text>
+                                            <Text as='p' color='prominent' line_height='m' size='xxs'>
+                                                {my_profile_store.advertiser_has_payment_methods ? (
+                                                    <Localize i18n_default_text='You may choose up to 3.' />
+                                                ) : (
+                                                    <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
+                                                )}
+                                            </Text>
+                                            <Observer>
+                                                {() => (
+                                                    <div
+                                                        className={classNames('buy-sell__modal--sell-payment-methods', {
+                                                            'buy-sell__modal--sell-payment-methods--disable':
+                                                                should_disable_field,
+                                                        })}
+                                                    >
+                                                        {payment_method_names
+                                                            ?.map((add_payment_method, key) => {
+                                                                const {
+                                                                    advertiser_payment_methods_list,
+                                                                    setSelectedPaymentMethodDisplayName,
+                                                                    setShouldShowAddPaymentMethodForm,
+                                                                } = my_profile_store;
+                                                                const matching_payment_methods =
+                                                                    advertiser_payment_methods_list.filter(
+                                                                        advertiser_payment_method =>
+                                                                            advertiser_payment_method.display_name ===
+                                                                            add_payment_method
+                                                                    );
+                                                                return matching_payment_methods.length > 0 ? (
+                                                                    matching_payment_methods.map(payment_method => (
+                                                                        <PaymentMethodCard
+                                                                            is_vertical_ellipsis_visible={false}
+                                                                            key={key}
+                                                                            medium
+                                                                            onClick={() =>
+                                                                                onClickPaymentMethodCard(payment_method)
+                                                                            }
+                                                                            payment_method={payment_method}
+                                                                            style={
+                                                                                selected_methods.includes(
+                                                                                    payment_method.ID
+                                                                                )
+                                                                                    ? style
+                                                                                    : {}
+                                                                            }
+                                                                            disabled={should_disable_field}
+                                                                        />
+                                                                    ))
+                                                                ) : (
                                                                     <PaymentMethodCard
-                                                                        is_vertical_ellipsis_visible={false}
+                                                                        add_payment_method={add_payment_method}
+                                                                        is_add
                                                                         key={key}
                                                                         medium
-                                                                        onClick={() =>
-                                                                            onClickPaymentMethodCard(payment_method)
-                                                                        }
-                                                                        payment_method={payment_method}
-                                                                        style={
-                                                                            selected_methods.includes(payment_method.ID)
-                                                                                ? style
-                                                                                : {}
-                                                                        }
+                                                                        onClickAdd={() => {
+                                                                            if (!should_disable_field) {
+                                                                                setSelectedPaymentMethodDisplayName(
+                                                                                    add_payment_method
+                                                                                );
+                                                                                setShouldShowAddPaymentMethodForm(true);
+                                                                            }
+                                                                        }}
+                                                                        disabled={should_disable_field}
+                                                                        style={{
+                                                                            cursor: should_disable_field
+                                                                                ? 'not-allowed'
+                                                                                : 'pointer',
+                                                                        }}
                                                                     />
-                                                                ))
-                                                            ) : (
-                                                                <PaymentMethodCard
-                                                                    add_payment_method={add_payment_method}
-                                                                    is_add
-                                                                    key={key}
-                                                                    medium
-                                                                    onClickAdd={() => {
-                                                                        setSelectedPaymentMethodDisplayName(
-                                                                            add_payment_method
-                                                                        );
-                                                                        setShouldShowAddPaymentMethodForm(true);
-                                                                    }}
-                                                                />
-                                                            );
-                                                        })
-                                                        .sort(payment_method_card_node =>
-                                                            Array.isArray(payment_method_card_node) &&
-                                                            !payment_method_card_node[0].props?.is_add
-                                                                ? -1
-                                                                : 1
-                                                        )}
-                                                </div>
-                                            )}
-                                        </Observer>
-                                    </div>
-                                )}
-                                <div className='buy-sell__modal-field-wrapper'>
-                                    <Field name='amount'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                data-lpignore='true'
-                                                type='number'
-                                                error={errors.amount}
-                                                label={
-                                                    buy_sell_store.is_buy_advert
-                                                        ? localize('Buy amount')
-                                                        : localize('Sell amount')
-                                                }
-                                                hint={
-                                                    <Localize
-                                                        i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
-                                                        values={{
-                                                            min: min_order_amount_limit_display,
-                                                            max: max_order_amount_limit_display,
-                                                            currency: buy_sell_store.account_currency,
-                                                        }}
-                                                    />
-                                                }
-                                                is_relative_hint
-                                                className='buy-sell__modal-field'
-                                                trailing_icon={
-                                                    <Text color='less-prominet' line-height='m' size='xs'>
-                                                        {buy_sell_store.account_currency}
-                                                    </Text>
-                                                }
-                                                onKeyDown={event => {
-                                                    if (!floatingPointValidator(event.key)) {
-                                                        event.preventDefault();
-                                                    }
-                                                }}
-                                                onChange={event => {
-                                                    if (event.target.value === '') {
-                                                        setFieldValue('amount', '');
-                                                        buy_sell_store.setReceiveAmount(0);
-                                                    } else {
-                                                        const input_amount = getRoundedNumber(
-                                                            event.target.value,
-                                                            buy_sell_store.account_currency
-                                                        );
-
-                                                        setFieldValue('amount', getRoundedNumber(input_amount));
-                                                        buy_sell_store.setReceiveAmount(
-                                                            getRoundedNumber(
-                                                                input_amount * price,
-                                                                buy_sell_store.account_currency
-                                                            )
-                                                        );
-                                                    }
-                                                }}
-                                                required
-                                                value={values.amount}
-                                            />
-                                        )}
-                                    </Field>
-                                    {isDesktop() && (
-                                        <div className='buy-sell__modal-field'>
-                                            <BuySellFormReceiveAmount />
+                                                                );
+                                                            })
+                                                            .sort(payment_method_card_node =>
+                                                                Array.isArray(payment_method_card_node) &&
+                                                                !payment_method_card_node[0].props?.is_add
+                                                                    ? -1
+                                                                    : 1
+                                                            )}
+                                                    </div>
+                                                )}
+                                            </Observer>
                                         </div>
-                                    )}
+                                        <div className='buy-sell__modal-line' />
+                                    </React.Fragment>
+                                )}
+                                <div className='buy-sell__modal--input'>
+                                    <Text color='less-prominent' size='xxs'>
+                                        {localize('Enter {{transaction_type}} amount', {
+                                            transaction_type: buy_sell_store.is_buy_advert ? 'buy' : 'sell',
+                                        })}
+                                    </Text>
+                                    <section className='buy-sell__modal--input-field'>
+                                        <Field name='amount'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    data-lpignore='true'
+                                                    type='number'
+                                                    error={errors.amount}
+                                                    label={localize('{{ad_type}}', {
+                                                        ad_type: buy_sell_store.is_buy_advert
+                                                            ? 'Buy amount'
+                                                            : 'Sell amount',
+                                                    })}
+                                                    hint={
+                                                        <Localize
+                                                            i18n_default_text='Limit: {{min}}–{{max}} {{currency}}'
+                                                            values={{
+                                                                min: min_order_amount_limit_display,
+                                                                max: max_order_amount_limit_display,
+                                                                currency: buy_sell_store.account_currency,
+                                                            }}
+                                                        />
+                                                    }
+                                                    is_relative_hint
+                                                    className='buy-sell__modal-field'
+                                                    trailing_icon={
+                                                        <Text color='less-prominent' line-height='m' size='xs'>
+                                                            {buy_sell_store.account_currency}
+                                                        </Text>
+                                                    }
+                                                    onKeyDown={event => {
+                                                        if (!floatingPointValidator(event.key)) {
+                                                            event.preventDefault();
+                                                        }
+                                                    }}
+                                                    onChange={event => {
+                                                        if (event.target.value === '') {
+                                                            setFieldValue('amount', '');
+                                                            setInputAmount('');
+                                                        } else {
+                                                            const amount = getRoundedNumber(
+                                                                event.target.value,
+                                                                buy_sell_store.account_currency
+                                                            );
+                                                            setFieldValue('amount', amount);
+                                                            setInputAmount(amount);
+                                                        }
+                                                    }}
+                                                    required
+                                                    value={input_amount}
+                                                    disabled={should_disable_field}
+                                                />
+                                            )}
+                                        </Field>
+                                        {isDesktop() && (
+                                            <div
+                                                className={classNames('buy-sell__modal-field', {
+                                                    'buy-sell__modal-field--disable': should_disable_field,
+                                                })}
+                                            >
+                                                <BuySellFormReceiveAmount />
+                                            </div>
+                                        )}
+                                    </section>
                                 </div>
                                 {buy_sell_store.is_sell_advert && (
                                     <React.Fragment>
@@ -366,6 +426,7 @@ const BuySellForm = props => {
                                                             has_character_counter
                                                             initial_character_count={buy_sell_store.payment_info.length}
                                                             max_characters={300}
+                                                            disabled={should_disable_field}
                                                         />
                                                     )}
                                                 </Field>
@@ -384,6 +445,7 @@ const BuySellForm = props => {
                                                         has_character_counter
                                                         initial_character_count={buy_sell_store.contact_info.length}
                                                         max_characters={300}
+                                                        disabled={should_disable_field}
                                                     />
                                                 )}
                                             </Field>
@@ -392,10 +454,10 @@ const BuySellForm = props => {
                                 )}
                             </div>
                         </Form>
-                    </React.Fragment>
-                );
-            }}
-        </Formik>
+                    );
+                }}
+            </Formik>
+        </React.Fragment>
     );
 };
 

@@ -7,9 +7,11 @@ import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
+import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { generateErrorDialogTitle } from 'Utils/adverts.js';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
+import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
 import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
@@ -24,18 +26,55 @@ const getHeaders = offered_currency => [
     { text: '' }, // empty header for delete and archive icons
 ];
 
-const MyAdsTable = () => {
-    const { general_store, my_ads_store } = useStores();
+const AdSwitchHintBox = () => {
+    const { floating_rate_store, general_store } = useStores();
 
+    if (floating_rate_store.rate_type === ad_type.FLOAT) {
+        return floating_rate_store.reached_target_date ? (
+            <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
+        ) : (
+            <Localize
+                i18n_default_text={
+                    'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}.'
+                }
+                values={{
+                    local_currency: general_store.client.local_currency_config.currency || '',
+                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                }}
+            />
+        );
+    }
+
+    return floating_rate_store.reached_target_date ? (
+        <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
+    ) : (
+        <Localize
+            i18n_default_text={
+                'Fixed rates are enabled for {{local_currency}}. Ads with floating rates will be deactivated. Switch to fixed rates by {{end_date}}.'
+            }
+            values={{
+                local_currency: general_store.client.local_currency_config.currency || '',
+                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+            }}
+        />
+    );
+};
+
+const MyAdsTable = () => {
+    const { floating_rate_store, general_store, my_ads_store } = useStores();
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
+        general_store.setP2PConfig();
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
-        return () => my_ads_store.setApiErrorCode(null);
+        return () => {
+            my_ads_store.setApiErrorCode(null);
+            floating_rate_store.setChangeAdAlert(false);
+        };
     }, []);
 
     if (my_ads_store.is_table_loading) {
@@ -50,17 +89,18 @@ const MyAdsTable = () => {
         return (
             <React.Fragment>
                 {selected_advert && <QuickAddModal advert={selected_advert} />}
-                {my_ads_store.has_missing_payment_methods && (
-                    <HintBox
-                        className='p2p-my-ads__warning'
-                        icon='IcAlertWarning'
-                        message={
-                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text="Some of your ads don't contain payment methods. To make it easier for people to pay you, please add payment methods to all your ads." />
-                            </Text>
-                        }
-                        is_warn
-                    />
+                {floating_rate_store.change_ad_alert && (
+                    <div className='p2p-my-ads__warning'>
+                        <HintBox
+                            icon='IcAlertWarning'
+                            message={
+                                <Text as='p' size='xxxs' color='prominent' line_height='xs'>
+                                    <AdSwitchHintBox />
+                                </Text>
+                            }
+                            is_warn
+                        />
+                    </div>
                 )}
                 <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
@@ -115,6 +155,7 @@ const MyAdsTable = () => {
                     </div>
                 )}
                 <MyAdsDeleteModal />
+                <MyAdsFloatingRateSwitchModal />
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}

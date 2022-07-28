@@ -29,6 +29,7 @@ const AllowEquals = ({ onChange, is_allow_equal, has_equals_only, className }) =
 };
 
 AllowEquals.propTypes = {
+    className: PropTypes.string,
     is_allow_equal: PropTypes.bool,
     has_equals_only: PropTypes.bool,
     onChange: PropTypes.func,

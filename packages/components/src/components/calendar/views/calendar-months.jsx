@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { toMoment } from '@deriv/shared';
 import { CommonPropTypes } from './types';
-import { month_headers } from '../helpers';
 
 const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }) => {
     const moment_date = toMoment(calendar_date);
@@ -12,26 +11,27 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
 
     return (
         <div className='dc-calendar__body dc-calendar__body--month'>
-            {Object.keys(month_headers).map((month, index) => {
-                const month_name = month_headers[month]();
-                const month_number = index + 1;
-                const is_active = month_number === selected_month_number && is_same_year;
-                const is_disabled = isPeriodDisabled(moment_date.clone().month(month), 'month');
+            {Array(12)
+                .fill()
+                .map((_, index) => {
+                    const month = moment_date.clone().month(index);
+                    const is_active = is_same_year && selected_month_number === index + 1;
+                    const is_disabled = isPeriodDisabled(month, 'month');
 
-                return (
-                    <span
-                        key={month_number}
-                        className={classNames('dc-calendar__cell', {
-                            'dc-calendar__cell--active': is_active,
-                            'dc-calendar__cell--disabled': is_disabled,
-                        })}
-                        onClick={is_disabled ? undefined : e => updateSelected(e, 'month')}
-                        data-month={index}
-                    >
-                        {month_name}
-                    </span>
-                );
-            })}
+                    return (
+                        <span
+                            key={index}
+                            className={classNames('dc-calendar__cell', {
+                                'dc-calendar__cell--active': is_active,
+                                'dc-calendar__cell--disabled': is_disabled,
+                            })}
+                            onClick={is_disabled ? undefined : e => updateSelected(e, 'month')}
+                            data-month={index}
+                        >
+                            {month.format('MMM')}
+                        </span>
+                    );
+                })}
         </div>
     );
 };

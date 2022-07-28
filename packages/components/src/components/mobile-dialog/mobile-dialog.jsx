@@ -8,8 +8,17 @@ import Text from '../text/text.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
-    const { title, visible, children, has_full_height, portal_element_id, renderTitle, wrapper_classname, footer } =
-        props;
+    const {
+        title,
+        visible,
+        children,
+        has_full_height,
+        portal_element_id,
+        renderTitle,
+        wrapper_classname,
+        footer,
+        has_close_icon,
+    } = props;
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
@@ -84,9 +93,11 @@ const MobileDialog = props => {
                         >
                             {renderTitle ? renderTitle() : title}
                         </Text>
-                        <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
-                            <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
-                        </div>
+                        {has_close_icon && (
+                            <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                            </div>
+                        )}
                     </div>
                     <div
                         className={classNames('dc-mobile-dialog__content', {
@@ -114,11 +125,16 @@ const MobileDialog = props => {
     );
 };
 
+MobileDialog.defaultProps = {
+    has_close_icon: true,
+};
+
 MobileDialog.propTypes = {
     content_height_offset: PropTypes.string,
     children: PropTypes.any,
     onClose: PropTypes.func,
     has_content_scroll: PropTypes.bool,
+    has_close_icon: PropTypes.bool,
     portal_element_id: PropTypes.string.isRequired,
     renderTitle: PropTypes.func,
     title: PropTypes.string,

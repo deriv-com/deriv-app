@@ -473,9 +473,7 @@
     }
 
     &__wrapper__dropdown--list--display {
-        @include mobile() {
-            height: 5.5rem !important;
-        }
+        height: 40px;
     }
 
     &__side-note {
@@ -556,12 +554,17 @@
 
     &__wrapper__question {
         .dc-radio-group {
-            gap: 1rem;
+            gap: 1.6rem;
+        }
+        @include mobile() {
+            .dc-radio-group__circle {
+                align-self: flex-start !important;
+            }
         }
     }
 
     &__wrapper__dropdown {
-        gap: 1rem;
+        gap: 2.4rem;
         display: flex;
         flex-direction: column;
         width: -webkit-fill-available;
@@ -606,6 +609,22 @@
         &--btn {
             width: 100%;
         }
+    }
+}
+
+.dc-mobile-dialog {
+    &__risk-acceptance {
+        margin-top: 9.4rem;
+        margin-inline: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        row-gap: 2.4rem;
+    }
+    &__test-warning {
+        margin-inline: 1.6rem;
+        margin-top: 1.6rem;
     }
 }
 

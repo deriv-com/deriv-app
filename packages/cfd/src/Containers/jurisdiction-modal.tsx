@@ -94,7 +94,7 @@ const JurisdictionModal = ({
 
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
-            if (poa_status === 'pending' || poi_status === 'pending') {
+            if ((poa_status === 'pending' || poi_status === 'pending') && !is_eu) {
                 setJurisdictionSelectedShortcode('svg');
             } else {
                 setJurisdictionSelectedShortcode('');

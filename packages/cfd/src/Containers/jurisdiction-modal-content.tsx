@@ -194,7 +194,7 @@ const JurisdictionCard = ({
                 //if both verified for vanuatu
                 return null;
             } else if (
-                (type_of_card === 'bvi' || type_of_card === 'labuan') &&
+                (type_of_card === 'bvi' || type_of_card === 'labuan' || type_of_card === 'maltainvest') &&
                 poa_verified &&
                 poi_verified_for_labuan_bvi
             ) {
@@ -241,7 +241,7 @@ const JurisdictionCard = ({
                         </div>
                     );
                 }
-            } else if (type_of_card === 'bvi' || type_of_card === 'labuan') {
+            } else if (type_of_card === 'bvi' || type_of_card === 'labuan' || type_of_card === 'maltainvest') {
                 if (poi_acknowledged_for_bvi_labuan && poa_acknowledged) {
                     return (
                         <div className={`${card_classname}__verification-status`}>
@@ -510,7 +510,9 @@ const JurisdictionModalContent = ({
                         </Text>
                     )}
                 {jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') &&
+                    (jurisdiction_selected_shortcode === 'bvi' ||
+                        jurisdiction_selected_shortcode === 'labuan' ||
+                        jurisdiction_selected_shortcode === 'maltainvest') &&
                     need_poi_for_bvi_labuan &&
                     poa_acknowledged &&
                     !poi_poa_none && (
@@ -566,7 +568,9 @@ const JurisdictionModalContent = ({
                 {poa_failed &&
                     !poa_acknowledged &&
                     jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') &&
+                    (jurisdiction_selected_shortcode === 'bvi' ||
+                        jurisdiction_selected_shortcode === 'labuan' ||
+                        jurisdiction_selected_shortcode === 'maltainvest') &&
                     need_poi_for_bvi_labuan && (
                         <Text
                             as='p'
@@ -597,7 +601,9 @@ const JurisdictionModalContent = ({
                     poi_acknowledged_for_bvi_labuan &&
                     !poi_poa_verified &&
                     jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') && (
+                    (jurisdiction_selected_shortcode === 'bvi' ||
+                        jurisdiction_selected_shortcode === 'labuan' ||
+                        jurisdiction_selected_shortcode === 'maltainvest') && (
                         <div className={`${card_classname}__footnote--pending`}>
                             <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
                                 <Localize i18n_default_text='You will be able to open this account once your submitted documents have been verified.' />

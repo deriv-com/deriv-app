@@ -80,4 +80,4 @@ StarRating.propTypes = {
     star_size: PropTypes.number,
 };
 
-export default StarRating;
+export default React.memo(StarRating);

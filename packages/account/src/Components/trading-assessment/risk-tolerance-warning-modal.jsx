@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Icon, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 
 const RiskToleranceWarningModal = ({ show_risk_modal, setShowRiskModal, title }) => {
     return (

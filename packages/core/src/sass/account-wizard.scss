@@ -599,15 +599,17 @@
     }
 
     &__btn-group {
-        position: absolute;
-        bottom: 0;
-        padding: 1.6rem;
-        border-top: 2px solid var(--general-disabled);
-        width: 100%;
-        display: flex;
-
-        &--btn {
+        @include mobile() {
+            position: absolute;
+            bottom: 0;
+            padding: 1.6rem;
+            border-top: 2px solid var(--general-disabled);
             width: 100%;
+            display: flex;
+
+            &--btn {
+                width: 100%;
+            }
         }
     }
 }

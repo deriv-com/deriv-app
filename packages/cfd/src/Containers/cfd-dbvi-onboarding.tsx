@@ -36,7 +36,7 @@ const CFDDbViOnBoarding = ({
     jurisdiction_selected_shortcode,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
-    const [is_loading, setIsLoading] = React.useState(true);
+    const [is_loading, setIsLoading] = React.useState(false);
     const handleOpenJurisditionModal = () => {
         toggleCFDVerificationModal();
         toggleJurisdictionModal();

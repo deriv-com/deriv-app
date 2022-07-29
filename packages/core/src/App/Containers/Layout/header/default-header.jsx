@@ -221,6 +221,7 @@ DefaultHeader.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
+    is_cra: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,

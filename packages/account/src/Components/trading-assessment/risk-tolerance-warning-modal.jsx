@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
+
 const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_text, body_content }) => {
     return (
         <React.Fragment>

@@ -100,7 +100,7 @@ const QuickAddModal = ({ advert }) => {
                     secondary
                     text={localize('Cancel')}
                     renderPageFooterChildren={() => (
-                        <>
+                        <React.Fragment>
                             <Button
                                 has_effect
                                 large
@@ -119,7 +119,7 @@ const QuickAddModal = ({ advert }) => {
                                 primary
                                 text={localize('Add')}
                             />
-                        </>
+                        </React.Fragment>
                     )}
                 >
                     <div className='p2p-my-ads__info'>
@@ -265,7 +265,7 @@ const QuickAddModal = ({ advert }) => {
                 text={localize('Cancel')}
                 renderPageFooterChildren={() =>
                     !my_ads_store.should_show_add_payment_method && (
-                        <>
+                        <React.Fragment>
                             <Button
                                 has_effect
                                 large
@@ -284,14 +284,14 @@ const QuickAddModal = ({ advert }) => {
                                 primary
                                 text={localize('Add')}
                             />
-                        </>
+                        </React.Fragment>
                     )
                 }
             >
                 {my_ads_store.should_show_add_payment_method ? (
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer />
                 ) : (
-                    <>
+                    <React.Fragment>
                         <Text color='prominent' size='xxs'>
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
@@ -300,7 +300,7 @@ const QuickAddModal = ({ advert }) => {
                             selected_methods={selected_methods}
                             onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                         />
-                    </>
+                    </React.Fragment>
                 )}
             </MobileFullPageModal>
         );

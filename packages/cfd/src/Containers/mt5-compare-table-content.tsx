@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getIdentityStatusInfo } from '@deriv/shared';
+import { isDesktop, WS, getIdentityStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
@@ -575,12 +575,13 @@ const DMT5CompareModalContent = ({
                                             ) : (
                                                 <Button
                                                     className='cfd-real-compare-accounts__table-footer__button'
-                                                    disabled={Object.entries(current_list).some(([, value]) => {
+                                                    disabled={Object.entries(current_list).some(([key, value]) => {
                                                         const [market, type] = item.action.split('_');
                                                         return (
                                                             value.market_type === market &&
                                                             value.landing_company_short === type &&
-                                                            value.account_type === 'real'
+                                                            value.account_type === 'real' &&
+                                                            key.includes(CFD_PLATFORMS.MT5)
                                                         );
                                                     })}
                                                     type='button'

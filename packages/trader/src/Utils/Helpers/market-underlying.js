@@ -1,4 +1,4 @@
-import { getMarketNamesMap, getContractConfig } from 'Constants/contract';
+import { getMarketNamesMap, getContractConfig } from '@deriv/shared';
 
 /**
  * Fetch market information from shortcode

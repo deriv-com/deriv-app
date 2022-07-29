@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject, getContractTypePosition } from '@deriv/shared';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
-import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 
 const Purchase = ({

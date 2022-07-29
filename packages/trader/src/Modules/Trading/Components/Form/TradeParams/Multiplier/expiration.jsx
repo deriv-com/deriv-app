@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { formatDuration, getDiffDuration } from '@deriv/shared';
+import { formatDuration, getDiffDuration, getCardLabels } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { getCardLabels } from 'Constants/contract';
 
 const Expiration = ({ expiration, start_time, is_text_only, text_size }) => {
     const { days, timestamp } = formatDuration(getDiffDuration(start_time.unix(), expiration), 'HH:mm');

@@ -13,13 +13,14 @@ import {
     isOpen,
     getSymbolDisplayName,
     getEndTime,
+    getContractTypeDisplay,
+    getCardLabels,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
-import { getContractTypeDisplay } from 'Constants/contract';
+import { getContractTypeDisplay } from '@deriv/shared';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 // TODO [lazy-loading-required] Responsive related components

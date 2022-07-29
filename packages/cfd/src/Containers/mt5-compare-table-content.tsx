@@ -509,7 +509,7 @@ const DMT5CompareModalContent = ({
             }
             return poa_acknowledged && poi_acknowledged && !poa_poi_verified;
         }
-        return poa_acknowledged && (idv_acknowledged || poa_acknowledged) && !poa_poi_verified;
+        return poa_acknowledged && (idv_acknowledged || poi_acknowledged) && !poa_poi_verified;
     };
 
     return (

@@ -300,7 +300,11 @@ const CreateAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
     const os = mobileOSDetect();
     const should_not_show_auto_archive_message_again = React.useRef(false);
-    const formik_ref = React.useRef();
+
+    React.useEffect(() => {
+      
+    }, [my_ads_store.selected_methods])
+    
 
     const onCheckboxChange = () =>
         (should_not_show_auto_archive_message_again.current = !should_not_show_auto_archive_message_again.current);
@@ -352,7 +356,6 @@ const CreateAdForm = () => {
     return (
         <React.Fragment>
             <Formik
-                innerRef={formik_ref}
                 initialValues={{
                     contact_info: my_ads_store.contact_info,
                     default_advert_description: my_ads_store.default_advert_description,
@@ -414,6 +417,12 @@ const CreateAdForm = () => {
                                                     values={values}
                                                     onChangeAdTypeHandler={onChangeAdTypeHandler}
                                                 />
+                                                {console.log(
+                                                    isSubmitting,
+                                                    !isValid,
+                                                    !my_ads_store.selected_methods.length,
+                                                    my_ads_store.selected_methods.length
+                                                )}
                                             </CreateAdFormWrapper>
                                         </ThemedScrollbars>
                                     </Form>
@@ -454,15 +463,14 @@ const CreateAdForm = () => {
                                                                 !my_ads_store.selected_methods?.length
                                                             }
                                                         >
-                                                            {console.log(
-                                                                isSubmitting,
-                                                                !isValid,
-                                                                !my_ads_store.selected_methods.length
-                                                            )}
-                                                            {console.log(my_ads_store.selected_methods.length)}
                                                             <Localize i18n_default_text='Post ad' />
                                                         </Button>
                                                     </Button.Group>
+                                                    {console.log(
+                                                        isSubmitting,
+                                                        !isValid,
+                                                        !my_ads_store.selected_methods.length,
+                                                    )}
                                                 </div>
                                             )}
                                         >

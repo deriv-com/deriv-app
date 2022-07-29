@@ -47,7 +47,8 @@ const TradingAssessmentExistingUser = ({
             const form_payload = {
                 trading_experience_regulated: { ...values },
             };
-            const { trading_score } = await setFinancialAndTradingAssessment(form_payload);
+            const response = await setFinancialAndTradingAssessment(form_payload);
+            const { trading_score } = response.set_financial_assessment ?? {};
             await updateAccountStatus();
             setShouldShowTradeAssessmentForm(false);
             if (trading_score === 0) {

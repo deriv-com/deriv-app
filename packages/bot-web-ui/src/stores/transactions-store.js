@@ -16,6 +16,7 @@ export default class TransactionsStore {
     @observable active_transaction_id = null;
     recovered_completed_transactions = [];
     recovered_transactions = [];
+    is_called_proposal_open_contract = false;
 
     @computed
     get transactions() {
@@ -172,37 +173,45 @@ export default class TransactionsStore {
         });
     }
 
+    updateResultsCompletedContract(contract) {
+        const { journal, summary_card } = this.root_store;
+        const { contract_info } = summary_card;
+        const { currency, profit } = contract;
+
+        if (contract.contract_id !== contract_info?.contract_id) {
+            this.onBotContractEvent(contract);
+
+            if (!this.recovered_transactions.includes(contract.contract_id)) {
+                this.recovered_transactions.push(contract.contract_id);
+            }
+            if (!this.recovered_completed_transactions.includes(contract.contract_id) && isEnded(contract)) {
+                this.recovered_completed_transactions.push(contract.contract_id);
+
+                journal.onLogSuccess({
+                    log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
+                    extra: { currency, profit },
+                });
+            }
+        }
+    }
+
     recoverPendingContractsById(contract_id) {
-        const { ws } = this.root_store;
+        const { ws, core } = this.root_store;
+        const positions = core.portfolio.positions;
 
         ws.authorized.subscribeProposalOpenContract(contract_id, response => {
+            this.is_called_proposal_open_contract = true;
             if (!response.error) {
                 const { proposal_open_contract } = response;
-
-                const { contract_info } = this.root_store.summary_card;
-
-                if (proposal_open_contract.contract_id === contract_info?.contract_id) return;
-
-                this.onBotContractEvent(proposal_open_contract);
-
-                if (!this.recovered_transactions.includes(proposal_open_contract.contract_id)) {
-                    this.recovered_transactions.push(proposal_open_contract.contract_id);
-                }
-
-                if (
-                    !this.recovered_completed_transactions.includes(proposal_open_contract.contract_id) &&
-                    isEnded(proposal_open_contract)
-                ) {
-                    this.recovered_completed_transactions.push(proposal_open_contract.contract_id);
-
-                    const { currency, profit } = proposal_open_contract;
-
-                    this.root_store.journal.onLogSuccess({
-                        log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
-                        extra: { currency, profit },
-                    });
-                }
+                this.updateResultsCompletedContract(proposal_open_contract);
             }
         });
+
+        if (!this.is_called_proposal_open_contract) {
+            positions.forEach(position => {
+                const contract_details = position.contract_info;
+                this.updateResultsCompletedContract(contract_details);
+            });
+        }
     }
 }

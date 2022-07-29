@@ -438,7 +438,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &-note {
                 color: var(--text-prominent);
                 font-size: var(--text-size-xxs);
-                height: 4rem;
                 line-height: 1.5;
                 text-align: right;
                 width: 27.6rem;
@@ -1148,7 +1147,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &__row,
             &__header {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 19rem 7.5rem 24.8rem minmax(13.3rem, 30.8rem) 12rem;
+                grid-template-columns: 19rem minmax(max-content, 7.5rem) 24.8rem minmax(13.3rem, 30.8rem) 12rem;
                 padding: 1rem;
                 padding-left: 0;
                 background-color: var(--general-main-1);

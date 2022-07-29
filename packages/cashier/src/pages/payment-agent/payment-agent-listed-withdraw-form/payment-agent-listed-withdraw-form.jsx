@@ -42,11 +42,20 @@ const PaymentAgentListedWithdrawForm = ({
     payment_agent,
     payment_agent_list,
     requestTryPaymentAgentWithdraw,
+    selected_bank,
     verification_code,
 }) => {
     React.useEffect(() => {
         onMount();
     }, [onMount]);
+
+    const input_ref = React.useRef(null);
+
+    React.useEffect(() => {
+        if (input_ref.current) {
+            input_ref.current.value = null;
+        }
+    }, [selected_bank]);
 
     const validateWithdrawalPassthrough = values =>
         validateWithdrawal(values, {
@@ -131,6 +140,7 @@ const PaymentAgentListedWithdrawForm = ({
                                         autoComplete='off'
                                         maxLength='30'
                                         hint={getHint()}
+                                        ref={input_ref}
                                         trailing_icon={
                                             <span
                                                 className={classNames('symbols', `symbols--${currency.toLowerCase()}`)}
@@ -168,6 +178,7 @@ PaymentAgentListedWithdrawForm.propTypes = {
     payment_agent: PropTypes.object,
     payment_agent_list: PropTypes.array,
     requestTryPaymentAgentWithdraw: PropTypes.func,
+    selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     verification_code: PropTypes.string,
 };
 
@@ -180,5 +191,6 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
     payment_agent_list: modules.cashier.payment_agent.agents,
     requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
+    selected_bank: modules.cashier.payment_agent.selected_bank,
     verification_code: client.verification_code.payment_agent_withdraw,
 }))(PaymentAgentListedWithdrawForm);

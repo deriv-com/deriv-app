@@ -38,8 +38,8 @@ module.exports = function (env) {
             splitChunks: {
                 chunks: 'all',
                 minSize: 102400,
-                minSizeReduction: 100000,
-                maxSize: 240000,
+                minSizeReduction: 102400,
+                maxSize: 204800,
                 //enforceSizeThreshold: 240000,
                 minChunks: 1,
                 maxAsyncRequests: 5,

@@ -2289,8 +2289,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async setFinancialAndTradingAssessment(payload) {
-        const { set_financial_assessment } = await WS.setFinancialAndTradingAssessment(payload);
-        return set_financial_assessment;
+        const response = await WS.setFinancialAndTradingAssessment(payload);
+        return response;
+        // return set_financial_assessment;
     }
 
     @action.bound

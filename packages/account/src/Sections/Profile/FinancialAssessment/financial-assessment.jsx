@@ -185,6 +185,7 @@ const FinancialAssessment = ({
     removeNotificationByKey,
     removeNotificationMessage,
     routeBackInApp,
+    setFinancialAndTradingAssessment,
 }) => {
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
@@ -237,29 +238,31 @@ const FinancialAssessment = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSubmit = (values, { setSubmitting, setStatus }) => {
+    const onSubmit = async (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
-        WS.setFinancialAssessment(values).then(data => {
-            if (data.error) {
+        const form_payload = {
+            financial_information: { ...values },
+        };
+        const data = await setFinancialAndTradingAssessment(form_payload);
+        if (data.error) {
+            setIsBtnLoading(false);
+            setStatus({ msg: data.error.message });
+        } else {
+            WS.authorized.storage.getFinancialAssessment().then(res_data => {
+                setInitialFormValues(res_data.get_financial_assessment);
+                setIsSubmitSuccess(true);
                 setIsBtnLoading(false);
-                setStatus({ msg: data.error.message });
-            } else {
-                WS.authorized.storage.getFinancialAssessment().then(res_data => {
-                    setInitialFormValues(res_data.get_financial_assessment);
-                    setIsSubmitSuccess(true);
-                    setIsBtnLoading(false);
 
-                    if (isDesktop()) {
-                        setTimeout(() => setIsSubmitSuccess(false), 10000);
-                    }
+                if (isDesktop()) {
+                    setTimeout(() => setIsSubmitSuccess(false), 10000);
+                }
 
-                    removeNotificationMessage({ key: 'risk' });
-                    removeNotificationByKey({ key: 'risk' });
-                });
-            }
+                removeNotificationMessage({ key: 'risk' });
+                removeNotificationByKey({ key: 'risk' });
+            });
             setSubmitting(false);
-        });
+        }
     };
 
     const validateFields = values => {
@@ -990,4 +993,5 @@ export default connect(({ client, common, notifications }) => ({
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,
     routeBackInApp: common.routeBackInApp,
+    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
 }))(withRouter(FinancialAssessment));

@@ -22,7 +22,7 @@ import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase, g
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: any;
+    mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
     disableApp: () => void;
     enableApp: () => void;
     is_eu_user: boolean;
@@ -107,13 +107,24 @@ const MT5TradeModal = ({
     onPasswordManager,
     toggleModal,
 }: TMT5TradeModalProps) => {
+    const getCompanyShortcode = () => {
+        if (
+            (mt5_trade_account.account_type === 'demo' &&
+                mt5_trade_account.market_type === 'financial' &&
+                mt5_trade_account.landing_company_short === 'labuan') ||
+            mt5_trade_account.account_type === 'real'
+        ) {
+            return mt5_trade_account.landing_company_short;
+        }
+        return undefined;
+    };
     const getHeadingTitle = () =>
         getCFDAccountDisplay({
             market_type: mt5_trade_account.market_type,
             sub_account_type: mt5_trade_account.sub_account_type,
             platform: CFD_PLATFORMS.MT5,
             is_eu: is_eu_user,
-            shortcode: mt5_trade_account.landing_company_short,
+            shortcode: getCompanyShortcode(),
             is_mt5_trade_modal: true,
         });
     const getPageContent = () => (

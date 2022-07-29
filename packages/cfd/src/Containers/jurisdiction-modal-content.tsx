@@ -658,7 +658,7 @@ const JurisdictionModalContent = ({
                 poi_verified_for_labuan_bvi
             ) {
                 return true;
-            }
+            } else if (is_fully_authenticated && poi_poa_verified) return true;
             return false;
         }
         return false;

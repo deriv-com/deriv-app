@@ -1,8 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
+import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Button } from '@deriv/components';
+import {
+    routes as shared_routes,
+    isMobile,
+    matchRoute,
+    getSelectedRoute,
+    getStaticUrl,
+    PlatformContext,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -28,6 +35,7 @@ const AccountLogout = ({ logout, history }) => {
 };
 
 const PageOverlayWrapper = ({
+    is_cra,
     is_from_derivgo,
     is_appstore,
     list_groups,
@@ -74,6 +82,17 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
+                tab_headers_note={
+                    is_cra && (
+                        <Button
+                            id='payment-methods_learn_more'
+                            className='account-wrapper-button'
+                            text={localize('Learn more about payment methods')}
+                            onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                            secondary
+                        />
+                    )
+                }
             />
         </PageOverlay>
     );
@@ -82,6 +101,7 @@ const PageOverlayWrapper = ({
 const Account = ({
     currency,
     history,
+    is_cra,
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
@@ -95,6 +115,19 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
+    routes.forEach(menu_item => {
+        menu_item.subroutes = menu_item.subroutes.filter(route => !is_cra || (is_cra && route.is_affiliate));
+        menu_item.subroutes?.forEach(route => {
+            if (route.path === shared_routes.financial_assessment) {
+                route.is_disabled = is_virtual;
+            }
+
+            if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
+                route.is_disabled = !should_allow_authentication;
+            }
+        });
+    });
+
     const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
@@ -109,18 +142,6 @@ const Account = ({
     React.useEffect(() => {
         toggleAccount(true);
     }, [toggleAccount]);
-
-    routes.forEach(menu_item => {
-        menu_item.subroutes.forEach(route => {
-            if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled = is_virtual;
-            }
-
-            if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
-                route.is_disabled = !should_allow_authentication;
-            }
-        });
-    });
 
     if (!selected_content) {
         // fallback
@@ -157,6 +178,7 @@ const Account = ({
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
                 <PageOverlayWrapper
+                    is_cra={is_cra}
                     is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
                     list_groups={list_groups}
@@ -174,6 +196,7 @@ const Account = ({
 Account.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
+    is_cra: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_from_derivgo: PropTypes.bool,
@@ -190,6 +213,7 @@ Account.propTypes = {
 
 export default connect(({ client, common, ui }) => ({
     currency: client.currency,
+    is_cra: client.is_cra,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_from_derivgo: common.is_from_derivgo,

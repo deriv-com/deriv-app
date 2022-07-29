@@ -25,12 +25,14 @@ const initRoutesConfig = () => {
                     component: lazyLoadReportComponent('OpenPositions'),
                     getTitle: () => localize('Open positions'),
                     icon_component: 'IcOpenPositions',
+                    is_affiliate: false,
                     default: true,
                 },
                 {
                     path: routes.profit,
                     component: lazyLoadReportComponent('ProfitTable'),
                     getTitle: () => localize('Profit table'),
+                    is_affiliate: false,
                     icon_component: 'IcProfitTable',
                 },
                 {
@@ -38,6 +40,7 @@ const initRoutesConfig = () => {
                     component: lazyLoadReportComponent('Statement'),
                     getTitle: () => localize('Statement'),
                     icon_component: 'IcStatement',
+                    is_affiliate: true,
                 },
             ],
         },

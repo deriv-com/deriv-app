@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
+    Button,
     Div100vhContainer,
     VerticalTab,
     DesktopWrapper,
@@ -11,13 +12,14 @@ import {
     SelectNative,
     Loading,
 } from '@deriv/components';
-import { getSelectedRoute } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
 
 const Reports = ({
     history,
+    is_cra,
     is_logged_in,
     is_logging_in,
     is_from_derivgo,
@@ -47,13 +49,15 @@ const Reports = ({
         const options = [];
 
         routes.forEach(route => {
-            options.push({
-                default: route.default,
-                icon: route.icon_component,
-                label: route.getTitle(),
-                value: route.component,
-                path: route.path,
-            });
+            if (!is_cra || (is_cra && route.is_affiliate)) {
+                options.push({
+                    default: route.default,
+                    icon: route.icon_component,
+                    label: route.getTitle(),
+                    value: route.component,
+                    path: route.path,
+                });
+            }
         });
 
         return options;
@@ -67,7 +71,12 @@ const Reports = ({
     return (
         <FadeWrapper is_visible={is_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>
-                <PageOverlay header={localize('Reports')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+                <PageOverlay
+                    header={localize('Reports')}
+                    onClickClose={onClickClose}
+                    is_cra={is_cra}
+                    is_from_app={is_from_derivgo}
+                >
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -80,6 +89,17 @@ const Reports = ({
                             setVerticalTabIndex={setTabIndex}
                             vertical_tab_index={selected_route.default ? 0 : tab_index}
                             list={menu_options()}
+                            tab_headers_note={
+                                is_cra && (
+                                    <Button
+                                        id='payment-methods_learn_more'
+                                        className='reports__tab-wrapper-button'
+                                        text={localize('Learn more about payment methods')}
+                                        onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                                        secondary
+                                    />
+                                )
+                            }
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -107,6 +127,7 @@ const Reports = ({
 
 Reports.propTypes = {
     history: PropTypes.object,
+    is_cra: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_from_derivgo: PropTypes.bool,
@@ -121,6 +142,7 @@ Reports.propTypes = {
 };
 
 export default connect(({ client, common, ui }) => ({
+    is_cra: client.is_cra,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_from_derivgo: common.is_from_derivgo,

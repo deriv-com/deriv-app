@@ -223,6 +223,8 @@ const BinarySocketBase = (() => {
             get_financial_assessment: 1,
         });
 
+    const setFinancialAndTradingAssessment = payload => deriv_api.send({ set_financial_assessment: 1, ...payload });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -428,6 +430,7 @@ const BinarySocketBase = (() => {
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,
+        setFinancialAndTradingAssessment,
         mt5NewAccount,
         newAccountVirtual,
         newAccountReal,

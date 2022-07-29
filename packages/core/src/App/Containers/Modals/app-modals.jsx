@@ -1,11 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { moduleLoader } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import { connect } from 'Stores/connect';
-import { moduleLoader } from '@deriv/shared';
-import TradingExperienceModal from './trading-experience-modal';
-import CooldownWarningModal from './cooldown-warning-modal';
+import CooldownWarningModal from './cooldown-warning-modal.jsx';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -44,15 +45,26 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
-    has_maltainvest_account,
-    fetchFinancialAssessment,
-    cfd_score,
-    setCFDScore,
-    setShouldShowVerifiedAccount,
     should_show_cooldown_warning_modal,
+    should_show_assessment_complete_modal,
+    is_trading_assessment_for_new_user_enabled,
+    fetchFinancialAssessment,
+    setCFDScore,
+    cfd_score,
+    active_account_landing_company,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
+
+    React.useEffect(() => {
+        const fetchFinancialScore = async () => {
+            const response = await fetchFinancialAssessment();
+            setCFDScore(response?.cfd_score ?? 0);
+        };
+        if (is_logged_in) {
+            fetchFinancialScore();
+        }
+    }, [is_logged_in]);
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -96,24 +108,22 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
+    if (
+        is_logged_in &&
+        active_account_landing_company === 'maltainvest' &&
+        !is_trading_assessment_for_new_user_enabled &&
+        cfd_score === 0
+    ) {
+        ComponentToLoad = <TradingAssessmentExistingUser />;
+    }
+
     if (should_show_cooldown_warning_modal) {
         ComponentToLoad = <CooldownWarningModal />;
     }
 
-    // if (is_logged_in && has_maltainvest_account) {
-    //     //TODO: Invoke Trading investment assessment modal
-    //     ComponentToLoad = (
-    //         <TradingExperienceModal
-    //             fetchFinancialAssessment={fetchFinancialAssessment}
-    //             setCFDScore={setCFDScore}
-    //             cfd_score={cfd_score ?? 1}
-    //             onCancel={setShouldShowVerifiedAccount}
-    //             onSubmit={() => {
-    //                 history.push(routes.proof_of_identity);
-    //             }}
-    //         />
-    //     );
-    // }
+    if (should_show_assessment_complete_modal) {
+        ComponentToLoad = <CompletedAssessmentModal />;
+    }
 
     return (
         <>
@@ -139,4 +149,7 @@ export default connect(({ client, ui }) => ({
     cfd_score: client.cfd_score,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
+    should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
+    is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
+    active_account_landing_company: client.active_account_landing_company,
 }))(AppModals);

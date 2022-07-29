@@ -2,7 +2,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
@@ -110,6 +110,7 @@ const RealAccountSignup = ({
     should_show_appropriateness_test_warning_modal,
     setShouldShowAppropriatenessTestWarningModal,
     fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -317,6 +318,7 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
+        return () => setIsTradingAssessmentForNewUserEnabled(false);
     }, []);
 
     // setCurrentAction callback useEffect to set error details
@@ -416,10 +418,14 @@ const RealAccountSignup = ({
         setLoading(true);
         try {
             setShouldShowAppropriatenessTestWarningModal(false);
-            await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
+            const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
+            if (real_account_signup_target === 'maltainvest') {
+                showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
+            }
         } catch (sign_up_error) {
             // TODO: Handle Error
         } finally {
+            fetchAccountSettings();
             setLoading(false);
         }
     };
@@ -428,18 +434,22 @@ const RealAccountSignup = ({
         setLoading(true);
         try {
             await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
-            // TODO: Show CoolDown Modal
         } catch (sign_up_error) {
             setRiskWarningTitle(localize('24-hour Cool Down Warning'));
             if (sign_up_error.code === 'AppropriatenessTestFailed') {
-                fetchAccountSettings();
                 setShouldShowAppropriatenessTestWarningModal(false);
                 setShouldShowRiskToleranceWarningModal(true);
             }
             // TODO: Handle Error case
         } finally {
+            fetchAccountSettings();
             setLoading(false);
         }
+    };
+
+    const handleRiskAcceptance = () => {
+        closeRealAccountSignup();
+        setShouldShowRiskToleranceWarningModal(false);
     };
 
     if (should_show_risk_tolerance_warning_modal) {
@@ -447,20 +457,42 @@ const RealAccountSignup = ({
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_tolerance_warning_modal}
-                setShowRiskModal={setShouldShowRiskToleranceWarningModal}
+                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                body_content={
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'
+                        components={[<br key={0} />]}
+                    />
+                }
             />
         );
     } else if (should_show_appropriateness_test_warning_modal) {
         return (
             <TestWarningModal
                 show_risk_modal={should_show_appropriateness_test_warning_modal}
-                onAccept={handleOnAccept}
-                onDecline={handleOnDecline}
+                body_content={
+                    <Text as='p' size='xs'>
+                        <Localize
+                            i18n_default_text='In providing our services to you, we are required to ask you for some information to assess if a given product or service is appropriate for you and whether you have the experience and knowledge to understand the risks involved.<0/><1/>'
+                            components={[<br key={0} />, <br key={1} />]}
+                        />
+                        <Localize
+                            i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
+                            components={[<br key={0} />, <br key={1} />]}
+                        />
+                        <Localize i18n_default_text='By clicking ‘Accept’ and proceeding with the account opening, you should note that you may be exposing yourself to risks. These risks, which may be significant, include the risk of losing the entire sum invested, and you may not have the knowledge and experience to properly assess or mitigate them.' />
+                    </Text>
+                }
+                footer_content={
+                    <React.Fragment>
+                        <Button type='button' large text={localize('Decline')} secondary onClick={handleOnDecline} />
+                        <Button type='button' large text={localize('Accept')} primary onClick={handleOnAccept} />
+                    </React.Fragment>
+                }
             />
         );
     }
-
     return (
         <React.Fragment>
             {is_real_acc_signup_on && (
@@ -585,4 +617,5 @@ export default connect(({ ui, client, common, modules }) => ({
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
     fetchAccountSettings: client.fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(withRouter(RealAccountSignup));

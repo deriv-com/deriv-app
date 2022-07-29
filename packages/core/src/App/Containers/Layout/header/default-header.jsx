@@ -60,6 +60,7 @@ const DefaultHeader = ({
     toggleNotifications,
     changeCurrentLanguage,
     is_social_signup,
+    is_trading_assessment_for_existing_user_enabled,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -183,7 +184,7 @@ const DefaultHeader = ({
                     </div>
                 </div>
             </div>
-            <RealAccountSignup />
+            {!is_trading_assessment_for_existing_user_enabled && <RealAccountSignup />}
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
             <TempAppSettings />
@@ -279,4 +280,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
+    is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
 }))(withRouter(DefaultHeader));

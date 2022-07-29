@@ -455,6 +455,23 @@
         overflow: auto;
     }
 
+    &--existing-usr {
+        @include desktop() {
+            margin-top: 9.2rem;
+        }
+
+        @include mobile() {
+            height: calc(100vh - 40px);
+            .trading-assessment__side-note {
+                padding: 2.2rem 1.6rem;
+            }
+
+            .trading-assessment__header {
+                margin-top: unset;
+            }
+        }
+    }
+
     &__wrapper__dropdown--list--display {
         height: 40px;
     }
@@ -539,7 +556,7 @@
         .dc-radio-group {
             gap: 1.6rem;
         }
-        @include mobile(){
+        @include mobile() {
             .dc-radio-group__circle {
                 align-self: flex-start !important;
             }
@@ -580,10 +597,23 @@
         bottom: 0;
         width: -webkit-fill-available;
     }
+
+    &__btn-group {
+        position: absolute;
+        bottom: 0;
+        padding: 1.6rem;
+        border-top: 2px solid var(--general-disabled);
+        width: 100%;
+        display: flex;
+
+        &--btn {
+            width: 100%;
+        }
+    }
 }
 
-.dc-mobile-dialog{
-    &__risk-acceptance{
+.dc-mobile-dialog {
+    &__risk-acceptance {
         margin-top: 9.4rem;
         margin-inline: 1.6rem;
         display: flex;
@@ -592,7 +622,7 @@
         justify-content: center;
         row-gap: 2.4rem;
     }
-    &__test-warning{
+    &__test-warning {
         margin-inline: 1.6rem;
         margin-top: 1.6rem;
     }
@@ -604,10 +634,10 @@
     }
     .dc-modal-body {
         text-align: center;
-        .risk-acceptance__text{
+        .risk-acceptance__text {
             margin-top: 2.4rem;
         }
-        .verified-account__text{
+        .verified-account__text {
             margin-top: 2.4rem;
         }
     }

@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false); // eslint-disable-line no-unused-vars
 
     React.useEffect(() => {
+        props.setIsTradingAssessmentForNewUserEnabled(true);
         props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
         const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
@@ -186,7 +187,7 @@ const AccountWizard = props => {
         clearError();
     };
 
-    const submitForm = (payload = undefined, should_override = false) => {
+    const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
         props.setRealAccountFormData(clone);
@@ -197,7 +198,7 @@ const AccountWizard = props => {
             };
         }
 
-        return props.realAccountSignup(clone, should_override);
+        return props.realAccountSignup(clone);
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
@@ -206,7 +207,7 @@ const AccountWizard = props => {
 
         // Check if account wizard is not finished
         if (should_override || index + 1 >= state_items.length) {
-            createRealAccount({}, should_override);
+            createRealAccount({});
         } else {
             goToNextStep();
         }
@@ -235,31 +236,25 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const createRealAccount = (payload = undefined, should_override = false) => {
+    const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
         const form_data = { ...form_values() };
-        submitForm(payload, should_override)
+        submitForm(payload)
             .then(response => {
-                // TODO: Code for Success response
-                console.log('createRealAccount Response: ', response); // eslint-disable-line no-console
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
-                    props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                    props.onOpenWelcomeModal(response.new_account_samoa.currenecy.toLowerCase());
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
             })
             .catch(error => {
-                // TODO: Code for Error response
-                console.log('Check data: ', form_data);
-                console.log('Error: ', error); // eslint-disable-line no-console
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else if (error.code === 'AppropriatenessTestFailed') {
-                    props.setIsRealAccountSignupModalVisible();
                     if (form_data?.risk_tolerance === 'No') {
                         props.fetchAccountSettings();
                         props.setShouldShowRiskToleranceWarningModal(true);
@@ -379,4 +374,5 @@ export default connect(({ client, notifications, ui }) => ({
     setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
     setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
     fetchAccountSettings: client.fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(AccountWizard);

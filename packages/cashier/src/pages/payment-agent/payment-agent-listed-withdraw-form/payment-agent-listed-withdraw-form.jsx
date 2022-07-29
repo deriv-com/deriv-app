@@ -36,6 +36,7 @@ const PaymentAgentListedWithdrawForm = ({
     balance,
     currency,
     error,
+    is_crypto,
     is_loading,
     onMount,
     payment_agent,
@@ -120,7 +121,9 @@ const PaymentAgentListedWithdrawForm = ({
                                 {({ field }) => (
                                     <Input
                                         {...field}
-                                        className='dc-input--no-placeholder'
+                                        className={classNames('dc-input--no-placeholder', {
+                                            'dc-input--crypto-hint': is_crypto,
+                                        })}
                                         type='text'
                                         label={localize('Enter amount')}
                                         error={touched.amount && errors.amount}
@@ -159,6 +162,7 @@ PaymentAgentListedWithdrawForm.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     error: PropTypes.object,
+    is_crypto: PropTypes.bool,
     is_loading: PropTypes.bool,
     onMount: PropTypes.func,
     payment_agent: PropTypes.object,
@@ -171,6 +175,7 @@ export default connect(({ client, modules }) => ({
     balance: client.balance,
     currency: client.currency,
     error: modules.cashier.payment_agent.error,
+    is_crypto: modules.cashier.general_store.is_crypto,
     is_loading: modules.cashier.general_store.is_loading,
     onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
     payment_agent_list: modules.cashier.payment_agent.agents,

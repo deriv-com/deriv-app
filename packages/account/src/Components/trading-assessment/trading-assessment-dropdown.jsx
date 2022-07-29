@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
     React.useEffect(() => {
@@ -26,7 +27,7 @@ const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setField
                 <Field name={question.form_control} key={index}>
                     {() => {
                         return (
-                            <>
+                            <React.Fragment>
                                 <DesktopWrapper>
                                     <Dropdown
                                         classNameDisplay='trading-assessment__wrapper__dropdown--mobile--display'
@@ -43,7 +44,7 @@ const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setField
                                         {question?.question_text}
                                     </Text>
                                     <SelectNative
-                                        placeholder={question?.answer_options[0].text}
+                                        placeholder={localize('Please select')}
                                         label={question?.answer_options[0].text}
                                         name={question?.question_text}
                                         list_items={question?.answer_options}
@@ -51,11 +52,10 @@ const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setField
                                             onChange(e, question.form_control, setFieldValue);
                                         }}
                                         value={values[question.form_control]}
-                                        should_show_empty_option={false}
                                         hide_placeholder={true}
                                     />
                                 </MobileWrapper>
-                            </>
+                            </React.Fragment>
                         );
                     }}
                 </Field>

@@ -2137,11 +2137,6 @@
         height: 100%;
         font-size: 1.2rem;
 
-        .cfd-real-compare-accounts__table-empty-cell.dc-table__cell--fixed {
-            margin-left: -1px;
-            border: 1px solid var(--general-active);
-            border-width: 1px 1px 0px 0px;
-        }
         .dc-table {
             height: 100%;
             margin: 25px;
@@ -2155,16 +2150,42 @@
                     }
                 }
             }
-            &__header,
-            &__row {
+        }
+        &__table {
+            &-header,
+            &-footer,
+            &-row,
+            &-row--leverage,
+            &-row--instruments {
                 width: 250vw;
             }
-            .cfd-real-compare-accounts-row-eu {
+        }
+        .cfd-real-compare-accounts {
+            &__table-empty-cell.dc-table {
+                &__cell--fixed {
+                    margin-left: -1px;
+                    border: 1px solid var(--general-active);
+                    border-width: 1px 1px 0px 0px;
+                }
+                &__head {
+                    border-top: none;
+                }
+            }
+            &-row-eu {
                 width: unset;
                 height: unset;
             }
-            .dc-table__head.cfd-real-compare-accounts__table-empty-cell {
-                border-top: none;
+        }
+        @for $column_count from 1 through 7 {
+            .cfd-real-compare-accounts__row-with-columns-count-#{$column_count} {
+                width: calc(250vw / 7 * #{$column_count});
+            }
+        }
+        @for $financial_accounts_count from 0 through 6 {
+            @for $synthetic_accounts_count from 0 through 2 {
+                .cfd-real-compare-accounts__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
+                    width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 1));
+                }
             }
         }
     }

@@ -547,7 +547,7 @@ const DMT5CompareModalContent = ({
                                 <Row key={row.id} {...row} />
                             ))}
                         </Table.Body>
-                        {
+                        {is_logged_in && (
                             <Table.Row
                                 className={
                                     show_eu_related
@@ -560,41 +560,37 @@ const DMT5CompareModalContent = ({
                                 }
                             >
                                 <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                {is_logged_in &&
-                                    getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
-                                        <Table.Cell
-                                            key={index}
-                                            className='cfd-real-compare-accounts__table-footer__item'
-                                        >
-                                            {should_show_pending_status(item) ? (
-                                                <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
-                                                    <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
-                                                        {localize('Pending verification')}
-                                                    </Text>
-                                                </div>
-                                            ) : (
-                                                <Button
-                                                    className='cfd-real-compare-accounts__table-footer__button'
-                                                    disabled={Object.entries(current_list).some(([key, value]) => {
-                                                        const [market, type] = item.action.split('_');
-                                                        return (
-                                                            value.market_type === market &&
-                                                            value.landing_company_short === type &&
-                                                            value.account_type === 'real' &&
-                                                            key.includes(CFD_PLATFORMS.MT5)
-                                                        );
-                                                    })}
-                                                    type='button'
-                                                    primary_light
-                                                    onClick={() => onButtonClick(item)}
-                                                >
-                                                    {item.label}
-                                                </Button>
-                                            )}
-                                        </Table.Cell>
-                                    ))}
+                                {getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
+                                    <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
+                                        {should_show_pending_status(item) ? (
+                                            <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
+                                                <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
+                                                    {localize('Pending verification')}
+                                                </Text>
+                                            </div>
+                                        ) : (
+                                            <Button
+                                                className='cfd-real-compare-accounts__table-footer__button'
+                                                disabled={Object.entries(current_list).some(([key, value]) => {
+                                                    const [market, type] = item.action.split('_');
+                                                    return (
+                                                        value.market_type === market &&
+                                                        value.landing_company_short === type &&
+                                                        value.account_type === 'real' &&
+                                                        key.includes(CFD_PLATFORMS.MT5)
+                                                    );
+                                                })}
+                                                type='button'
+                                                primary_light
+                                                onClick={() => onButtonClick(item)}
+                                            >
+                                                {item.label}
+                                            </Button>
+                                        )}
+                                    </Table.Cell>
+                                ))}
                             </Table.Row>
-                        }
+                        )}
                     </Table>
                 </div>
             </div>

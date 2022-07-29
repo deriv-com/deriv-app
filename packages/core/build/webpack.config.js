@@ -39,8 +39,6 @@ module.exports = function (env) {
                 chunks: 'all',
                 minSize: 102400,
                 minSizeReduction: 102400,
-                maxSize: 204800,
-                //enforceSizeThreshold: 240000,
                 minChunks: 1,
                 maxAsyncRequests: 5,
                 maxInitialRequests: 3,
@@ -49,6 +47,7 @@ module.exports = function (env) {
                     default: {
                         minChunks: 2,
                         minSize: 102400,
+                        enforceSizeThreshold: 500000,
                         priority: -20,
                         reuseExistingChunk: true,
                     },

@@ -186,7 +186,6 @@
     }
     &__profit-loss {
         font-size: 1.2rem;
-        text-align: center;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -196,7 +195,7 @@
             font-size: 0.8rem;
             margin-bottom: 4px;
             font-weight: normal;
-            white-space: nowrap;
+            white-space: normal;
             max-width: 90px;
             color: var(--text-general);
             /* iPhone SE screen height fixes due to UI space restrictions */

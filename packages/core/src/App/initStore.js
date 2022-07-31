@@ -19,6 +19,9 @@ const setStorageEvents = root_store => {
                 break;
             }
             case 'active_loginid':
+                if (localStorage.getItem('active_loginid') === 'null') {
+                    root_store.client.logout();
+                }
                 if (document.hidden) {
                     window.location.reload();
                 }

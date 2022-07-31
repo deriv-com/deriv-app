@@ -1,5 +1,13 @@
-import { getPlatformInformation, isMobile, isTouchDevice, LocalStore, platform_name, routes } from '@deriv/shared';
-import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
+import {
+    getPlatformInformation,
+    isMobile,
+    isTouchDevice,
+    LocalStore,
+    platform_name,
+    routes,
+    MAX_MOBILE_WIDTH,
+    MAX_TABLET_WIDTH,
+} from '@deriv/shared';
 import { action, autorun, computed, observable } from 'mobx';
 import BaseStore from './base-store';
 

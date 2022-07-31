@@ -121,7 +121,7 @@ const AccountActions = React.memo(
                             <Button
                                 className='acc-info__button'
                                 has_effect
-                                text={!is_cra ? localize('withdrawal') : localize('Deposit')}
+                                text={is_cra ? localize('withdrawal') : localize('Deposit')}
                                 onClick={onClickDeposit}
                                 primary
                             />

@@ -141,9 +141,6 @@ const plugins = ({ base, is_test_env, env }) => {
         new PreloadWebpackPlugin(htmlPreloadConfig()),
         new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
         new MiniCssExtractPlugin(cssConfig()),
-        new webpack.optimize.MinChunkSizePlugin({
-            minChunkSize: 102400, // ~100kb
-        }),
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 10,
         }),

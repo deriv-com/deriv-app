@@ -54,6 +54,11 @@ $card-width: 456px;
         width: 100%;
     }
 
+    &__title {
+        display: flex;
+        justify-content: space-between;
+    }
+
     &--padding {
         padding: 1rem 2.4rem;
 
@@ -99,6 +104,7 @@ $card-width: 456px;
         color: var(--text-general);
         position: relative;
         border-bottom: 1px solid var(--general-section-1);
+        align-items: center;
 
         @include tablet-up {
             padding: 1.6rem 2.4rem;

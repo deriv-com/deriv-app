@@ -6,13 +6,14 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 // import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
-import StarRating from '../star-rating/star-rating.jsx';
+import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
 
@@ -59,6 +60,7 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
+            <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
@@ -103,32 +105,26 @@ const AdvertiserPage = () => {
                                             is_readonly
                                             number_of_stars={5}
                                             should_allow_hover_effect={false}
-                                            star_size={20}
+                                            star_size={isMobile() ? 17 : 20}
                                         />
-                                        &nbsp;
-                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_average_decimal}
-                                        </Text>
-                                        &nbsp;
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_count === 1 ? (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} rating)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} ratings)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            )}
-                                        </Text>
-                                        {/* <div className='advertiser-page__rating--row'>
-                                            <RecommendedBy
-                                                recommended_average={recommended_average}
-                                                recommended_count={recommended_count}
-                                            />
-                                        </div> */}
+                                        <div className='advertiser-page__rating--text'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_count === 1 ? (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} rating)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} ratings)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                )}
+                                            </Text>
+                                        </div>
                                     </React.Fragment>
                                 ) : (
                                     <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>

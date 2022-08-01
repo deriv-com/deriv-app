@@ -1,14 +1,15 @@
-import { Table, Text, Icon } from '@deriv/components';
-import { isMobile, formatMoney } from '@deriv/shared';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
+import { Table, Text, Icon } from '@deriv/components';
+import { isMobile, formatMoney } from '@deriv/shared';
+import { localize } from 'Components/i18next';
+import UserRatingButton from 'Components/user-rating-button';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -41,6 +42,7 @@ const OrderRow = ({ style, row: order }) => {
         id,
         is_buy_order,
         is_my_ad,
+        is_reviewable,
         is_sell_order,
         local_currency,
         order_expiry_milliseconds,
@@ -103,7 +105,11 @@ const OrderRow = ({ style, row: order }) => {
                             'orders__table-grid--active': general_store.is_active_tab,
                         })}
                     >
-                        <div
+                        <Text
+                            as='div'
+                            align='center'
+                            size='xxs' // TODO: Change the font-size once design is ready
+                            weight='bold'
                             className={classNames('orders__mobile-status', {
                                 'orders__table-status--danger': should_highlight_danger,
                                 'orders__table-status--alert': should_highlight_alert,
@@ -112,7 +118,7 @@ const OrderRow = ({ style, row: order }) => {
                             })}
                         >
                             {status_string}
-                        </div>
+                        </Text>
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-header-right'>
                         {is_timer_visible && (
@@ -126,17 +132,25 @@ const OrderRow = ({ style, row: order }) => {
                                 {remaining_time}
                             </Text>
                         )}
-                        <div className='orders__mobile-chat'>
-                            <Icon
-                                icon='IcChat'
-                                height={15}
-                                width={16}
-                                onClick={() => {
-                                    sendbird_store.setShouldShowChatModal(true);
-                                    sendbird_store.setShouldShowChatOnOrders(true);
-                                }}
-                            />
-                        </div>
+                        {general_store.is_active_tab ? (
+                            <div className='orders__mobile-chat'>
+                                <Icon
+                                    icon='IcChat'
+                                    height={15}
+                                    width={16}
+                                    onClick={() => {
+                                        sendbird_store.setShouldShowChatModal(true);
+                                        sendbird_store.setShouldShowChatOnOrders(true);
+                                    }}
+                                />
+                            </div>
+                        ) : (
+                            <div className='orders__mobile-chat'>
+                                {status_string === 'Completed' && (
+                                    <UserRatingButton has_full_text={false} is_disabled={!is_reviewable} />
+                                )}
+                            </div>
+                        )}
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title
@@ -162,7 +176,10 @@ const OrderRow = ({ style, row: order }) => {
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{other_user_details.name}</Table.Cell>
                 <Table.Cell>
-                    <div
+                    <Text
+                        as='div'
+                        size='xxs' // TODO: Change the font-size once design is ready
+                        weight='bold'
                         className={classNames('orders__table-status', {
                             'orders__table-status--danger': should_highlight_danger,
                             'orders__table-status--alert': should_highlight_alert,
@@ -171,7 +188,7 @@ const OrderRow = ({ style, row: order }) => {
                         })}
                     >
                         {status_string}
-                    </div>
+                    </Text>
                 </Table.Cell>
                 <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
                 <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
@@ -179,7 +196,9 @@ const OrderRow = ({ style, row: order }) => {
                     {general_store.is_active_tab ? (
                         <div className='orders__table-time'>{remaining_time}</div>
                     ) : (
-                        order_purchase_datetime
+                        status_string === 'Completed' && (
+                            <UserRatingButton has_full_text={false} is_disabled={!is_reviewable} />
+                        )
                     )}
                 </Table.Cell>
             </Table.Row>

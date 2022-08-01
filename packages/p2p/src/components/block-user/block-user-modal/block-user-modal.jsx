@@ -7,6 +7,7 @@ import { Localize } from 'Components/i18next';
 const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, is_block_user_modal_open, onCancel, onSubmit }) => {
     return (
         <Modal
+            className='block-user-modal'
             has_close_icon={false}
             is_open={is_block_user_modal_open}
             small
@@ -30,7 +31,7 @@ const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, is_block_user_
                 </Text>
             }
         >
-            <Modal.Body>
+            <Modal.Body className='block-user-modal__body'>
                 <Text color='prominent' size='xs'>
                     {is_advertiser_blocked ? (
                         <Localize

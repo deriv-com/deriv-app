@@ -1077,11 +1077,7 @@ export default class TradeStore extends BaseStore {
         this.clearContracts();
         this.refresh();
         this.resetErrorServices();
-        if (this.root_store.common.is_language_changing) {
-            await this.loadActiveSymbols(false);
-        } else {
-            await this.loadActiveSymbols();
-        }
+        await this.loadActiveSymbols();
         await this.setContractTypes();
         this.debouncedProposal();
     }

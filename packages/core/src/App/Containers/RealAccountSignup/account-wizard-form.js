@@ -7,13 +7,23 @@ import {
     tradingAssessmentConfig,
     TradingAssessmentNewUser,
     TermsOfUse,
+    proofOfIdentityConfig,
+    ProofOfIdentityFormOnSignup,
+    financialDetailsConfig,
 } from '@deriv/account';
-import CurrencySelector from './currency-selector.jsx';
 import AddressDetails from './address-details.jsx';
+import CurrencySelector from './currency-selector.jsx';
+import FinancialDetails from './financial-details.jsx';
 
-const shouldShowTradingAssessment = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
+const isMaltaAccount = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
 const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
     real_account_signup_target !== 'samoa';
+
+const shouldShowIdentityInformation = ({ account_settings, residence, residence_list }) => {
+    const citizen = account_settings.citizen || residence;
+    const country = residence_list.find(item => item.value === citizen);
+    return citizen && country?.identity?.services?.idv?.is_country_supported;
+};
 
 export const getItems = props => {
     return [
@@ -24,7 +34,9 @@ export const getItems = props => {
             ? [personalDetailsConfig(props, PersonalDetails)]
             : []),
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
-        ...(shouldShowTradingAssessment(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
+        ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
+        ...(shouldShowIdentityInformation(props) ? [proofOfIdentityConfig(props, ProofOfIdentityFormOnSignup)] : []),
+        ...(isMaltaAccount(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
         termsOfUseConfig(props, TermsOfUse),
     ];
 };

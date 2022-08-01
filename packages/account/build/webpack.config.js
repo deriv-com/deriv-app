@@ -60,6 +60,11 @@ module.exports = function (env) {
             'risk-tolerance-warning-modal': 'Components/trading-assessment/risk-tolerance-warning-modal.jsx',
             'test-warning-modal': 'Components/trading-assessment/test-warning-modal.jsx',
             'trading-assessment-form': 'Components/trading-assessment/trading-assessment-form.jsx',
+            'proof-of-identity-config': 'Configs/proof-of-identity-config',
+            'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
+            'proof-of-identity-containerfor-mt5':
+                'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
+            'poi-poa-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

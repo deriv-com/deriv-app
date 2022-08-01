@@ -7,6 +7,7 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -36,6 +37,7 @@ const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-em
 const CloseUKAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
 );
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_welcome_modal_visible,
@@ -52,6 +54,7 @@ const AppModals = ({
     setCFDScore,
     cfd_score,
     active_account_landing_company,
+    is_deriv_account_needed_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -89,9 +92,11 @@ const AppModals = ({
             }
             break;
     }
+
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     }
+
     if (is_close_uk_account_modal_visible) {
         ComponentToLoad = <CloseUKAccountModal />;
     }
@@ -125,6 +130,10 @@ const AppModals = ({
         ComponentToLoad = <CompletedAssessmentModal />;
     }
 
+    if (is_deriv_account_needed_modal_visible) {
+        ComponentToLoad = <DerivRealAccountRequiredModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
@@ -152,4 +161,5 @@ export default connect(({ client, ui }) => ({
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
     active_account_landing_company: client.active_account_landing_company,
+    is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
 }))(AppModals);

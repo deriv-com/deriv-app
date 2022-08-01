@@ -257,6 +257,12 @@ const BinarySocketBase = (() => {
             ...payload,
         });
 
+    const tradingPlatformAvailableAccounts = platform =>
+        deriv_api.send({
+            trading_platform_available_accounts: 1,
+            platform,
+        });
+
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
@@ -442,6 +448,7 @@ const BinarySocketBase = (() => {
         verifyEmail,
         tradingPlatformPasswordChange,
         tradingPlatformPasswordReset,
+        tradingPlatformAvailableAccounts,
         tradingPlatformInvestorPasswordChange,
         tradingPlatformInvestorPasswordReset,
         activeSymbols,

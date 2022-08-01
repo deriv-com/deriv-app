@@ -18,6 +18,7 @@ const MobileDialog = props => {
         wrapper_classname,
         footer,
         has_close_icon,
+        header_classname,
     } = props;
 
     const footer_ref = React.useRef(false);
@@ -82,7 +83,7 @@ const MobileDialog = props => {
                     })}
                     height_offset={props.content_height_offset || '8px'}
                 >
-                    <div className='dc-mobile-dialog__header'>
+                    <div className={classNames('dc-mobile-dialog__header', header_classname)}>
                         <Text
                             as='h2'
                             size='xs'
@@ -140,6 +141,7 @@ MobileDialog.propTypes = {
     title: PropTypes.string,
     visible: PropTypes.bool,
     wrapper_classname: PropTypes.string,
+    header_classname: PropTypes.string,
 };
 
 export default MobileDialog;

@@ -17,7 +17,7 @@ const Expiration = ({ expiration, start_time, is_text_only, text_size }) => {
             <React.Fragment>
                 {expiration ? (
                     <Text size={text_size} align='center'>
-                        {days} {unit} {timestamp}
+                        {date} at {timestamp}
                     </Text>
                 ) : (
                     '-'

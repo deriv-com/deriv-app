@@ -4,6 +4,7 @@ let currencies_config = {};
 
 const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
 const crypto_currencies_display_order = [
+    'TUSDT',
     'BTC',
     'ETH',
     'LTC',
@@ -190,6 +191,14 @@ export const CryptoConfig = (() => {
             eUSDT: {
                 display_code: 'eUSDT',
                 name: 'Tether ERC20',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            TUSDT: {
+                display_code: 'TUSDT',
+                name: 'Tether TRC20',
                 min_withdrawal: 0.002,
                 pa_max_withdrawal: 5,
                 pa_min_withdrawal: 0.002,

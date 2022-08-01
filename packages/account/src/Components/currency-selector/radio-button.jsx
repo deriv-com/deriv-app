@@ -15,6 +15,15 @@ const USTPopover = ({ id }) => {
                 components={[<br key={0} />]}
             />
         );
+    }
+    if (/^tUSDT$/i.test(id)) {
+        popover_message = (
+            <Localize
+                i18n_default_text={
+                    'Tether as an TRC20 token (TUSDT) is a version of Tether that is hosted on Ethereum, an open software platform where anyone can build and deploy decentralised applications.'
+                }
+            />
+        );
     } else {
         popover_message = (
             <Localize
@@ -82,7 +91,7 @@ const RadioButton = ({
                 ) : (
                     <React.Fragment>
                         <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
-                        {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
+                        {/^(UST|eUSDT|tUSDT)$/i.test(id) && <USTPopover id={id} />}
                         <div className='label currency-list__item-text'>
                             <div className='currency-list__item-label'>{label}</div>
                             <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>

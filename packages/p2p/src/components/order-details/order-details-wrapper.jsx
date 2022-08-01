@@ -39,7 +39,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
     ) : (
         <React.Fragment>
             <PageReturn onClick={onPageReturn} page_title={page_title} />
-            <ThemedScrollbars height={'70vh'}>{children}</ThemedScrollbars>
+            <ThemedScrollbars height='70vh'>{children}</ThemedScrollbars>
         </React.Fragment>
     );
 };

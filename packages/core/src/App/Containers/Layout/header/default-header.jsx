@@ -77,7 +77,8 @@ const DefaultHeader = ({
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
-    const onClickDeposit = () => history.push(routes.cashier_deposit);
+    const deposit_path = is_cra ? routes.cashier_withdrawal : routes.cashier_deposit;
+    const onClickDeposit = () => history.push(deposit_path);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {

@@ -108,7 +108,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     replaceCashierMenuOnclick() {
-        const { menu, ui } = this.root_store;
+        const { menu, ui, client } = this.root_store;
 
         this.setHasSetCurrency();
 
@@ -117,7 +117,7 @@ export default class GeneralStore extends BaseStore {
                 id: 'dt_cashier_tab',
                 icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
                 text: () => localize('Cashier'),
-                link_to: this.has_set_currency && routes.cashier,
+                link_to: client.is_cra ? routes.cashier_withdrawal : this.has_set_currency && routes.cashier,
                 onClick: !this.has_set_currency ? ui.toggleSetCurrencyModal : false,
                 login_only: true,
             },

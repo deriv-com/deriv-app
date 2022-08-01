@@ -1,21 +1,24 @@
+import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import React from 'react';
-import { PlatformContext } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
 
-const PoiPoaSubmitted = ({ onClickOK, onClickYes, account_type, mt5_login_list }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+const PoiPoaSubmitted = ({ onClickOK, onClickYes, account_type, mt5_login_list, is_eu }) => {
+    const [should_show_svg_msg, setShouldShowSvgMsg] = React.useState(false);
     const message = localize('Your documents were submitted successfully');
-    let is_svg_created = false;
-    if (account_type.type && account_type.category) {
-        is_svg_created = mt5_login_list.filter(
-            data =>
-                data.market_type === account_type.type &&
-                data.landing_company_short === 'svg' &&
-                data.account_type === 'real'
-        );
-    }
+    React.useEffect(() => {
+        if (account_type.type && account_type.category && !is_eu) {
+            const svg_accounts = mt5_login_list.filter(
+                data =>
+                    data.market_type === account_type.type &&
+                    data.landing_company_short === 'svg' &&
+                    data.account_type === 'real'
+            );
+            if (!svg_accounts.length) {
+                setShouldShowSvgMsg(true);
+            }
+        }
+    }, []);
     const SVGRoutingData = () => (
         <>
             <Text size='xs' align='center' className='poi-poa-submitted__svg-text'>
@@ -32,10 +35,9 @@ const PoiPoaSubmitted = ({ onClickOK, onClickYes, account_type, mt5_login_list }
             message={message}
             text={localize('We’ll review your documents and notify you of its status within 1 to 3 days.')}
             icon={<Icon icon='IcDocsSubmit' size={128} />}
-            full_width={is_appstore}
             className='poi-poa-submitted'
         >
-            {!is_svg_created.length ? (
+            {should_show_svg_msg ? (
                 <SVGRoutingData />
             ) : (
                 <Button has_effect text={localize('OK')} onClick={onClickOK} primary />

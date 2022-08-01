@@ -23,6 +23,7 @@ type TVerificationModalProps = {
     mt5_login_list: TExtendedDetailsOfEachMT5Loginid[];
     toggleJurisdictionModal: () => void;
     jurisdiction_selected_shortcode: string;
+    is_eu: boolean;
 };
 
 const CFDDbViOnBoarding = ({
@@ -34,6 +35,7 @@ const CFDDbViOnBoarding = ({
     mt5_login_list,
     toggleJurisdictionModal,
     jurisdiction_selected_shortcode,
+    is_eu,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -94,6 +96,7 @@ const CFDDbViOnBoarding = ({
                             account_type={account_type}
                             mt5_login_list={mt5_login_list}
                             onClickYes={handleOpenJurisditionModal}
+                            is_eu={is_eu}
                         />
                     ) : (
                         <CFDFinancialStpRealAccountSignup
@@ -118,6 +121,7 @@ const CFDDbViOnBoarding = ({
                             account_type={account_type}
                             mt5_login_list={mt5_login_list}
                             onClickYes={handleOpenJurisditionModal}
+                            is_eu={is_eu}
                         />
                     ) : (
                         <CFDFinancialStpRealAccountSignup
@@ -141,4 +145,5 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
+    is_eu: client.is_eu,
 }))(CFDDbViOnBoarding);

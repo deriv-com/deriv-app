@@ -16,7 +16,7 @@ const TradingAssessmentForm = ({
     is_header_navigation,
 }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
-    const [current_question_details, setCurrentQuestion] = React.useState({
+    const [current_question_details, setCurrentQuestionDetails] = React.useState({
         current_question_index: 0,
         current_question: {},
     });
@@ -25,7 +25,7 @@ const TradingAssessmentForm = ({
     const last_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
-        setCurrentQuestion(prevState => ({
+        setCurrentQuestionDetails(prevState => ({
             ...prevState,
             current_question: assessment_questions[prevState.current_question_index],
         }));
@@ -34,11 +34,12 @@ const TradingAssessmentForm = ({
 
     const displayNextPage = () => {
         if (form_data.risk_tolerance === 'No') {
-            onSubmit(form_data, true, true);
+            // onSubmit hold reference to a function that takes 3 params - values, action and should_override
+            onSubmit(form_data, null, true);
         } else {
             const next_question = current_question_details.current_question_index + 1;
             if (next_question < assessment_questions.length) {
-                setCurrentQuestion({
+                setCurrentQuestionDetails({
                     current_question_index: next_question,
                     current_question: assessment_questions[next_question],
                 });
@@ -49,7 +50,7 @@ const TradingAssessmentForm = ({
     const displayPreviousPage = () => {
         const prev_question = current_question_details.current_question_index - 1;
         if (prev_question >= 0) {
-            setCurrentQuestion({
+            setCurrentQuestionDetails({
                 current_question_index: prev_question,
                 current_question: assessment_questions[prev_question],
             });
@@ -80,7 +81,7 @@ const TradingAssessmentForm = ({
     return (
         <div className={classNames('trading-assessment', class_name)}>
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
-                <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to asses whether a given product or service is appropriate for you.' />
+                <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
             <section className='trading-assessment__header'>
                 <div className='trading-assessment__header--background'>

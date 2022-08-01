@@ -10,8 +10,8 @@ const Row = ({ item_key, label, value }) => (
     <div className='confirm__row'>
         {Array.isArray(label) ? (
             <div>
-                {label.map((label_text, idx) => (
-                    <Text as='div' key={idx} size='xs' align='left'>
+                {label.map(label_text => (
+                    <Text as='div' key={label_text} size='xs' align='left'>
                         {label_text}
                     </Text>
                 ))}
@@ -21,8 +21,8 @@ const Row = ({ item_key, label, value }) => (
         )}
         {Array.isArray(value) ? (
             <div>
-                {value.map((v, idx) => (
-                    <Text as='div' key={idx} size='xs' weight='bold' align='right'>
+                {value.map(v => (
+                    <Text as='div' key={v} size='xs' weight='bold' align='right'>
                         {v}
                     </Text>
                 ))}
@@ -75,14 +75,14 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
             <div className='confirm__column-wrapper'>
                 <div className='confirm__column'>
                     {data.map((d, key) => (
-                        <Row item_key={key} label={d.label} value={d.value} key={key} />
+                        <Row item_key={key} label={d.label} value={d.value} key={d.label} />
                     ))}
                 </div>
             </div>
             {warning_messages && (
                 <div className='confirm__warnings'>
-                    {warning_messages.map((warning, idx) => (
-                        <WarningBullet key={idx}>
+                    {warning_messages.map((warning, index) => (
+                        <WarningBullet key={`${warning}-${index}`}>
                             <Text as='p' size='xxs' color='loss-danger' align='left'>
                                 {warning}
                             </Text>

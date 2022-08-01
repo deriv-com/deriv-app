@@ -5,6 +5,7 @@ import { Icon } from '@deriv/components';
 import './payment-agent-details.scss';
 
 const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
+    debugger;
     const detail = Array.isArray(children) ? children : children.split(',');
     return (
         <div className='payment-agent-details__accordion-content-line'>
@@ -14,7 +15,7 @@ const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
             <div>
                 {detail.map((child, id) => (
                     <a
-                        key={id}
+                        key={child}
                         className='payment-agent-details__contact cashier__paragraph'
                         href={`${action ? `${action}:` : ''}${child}`}
                         {...rest}

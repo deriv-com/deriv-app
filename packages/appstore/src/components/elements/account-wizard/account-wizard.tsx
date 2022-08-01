@@ -319,7 +319,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 has_currency={has_currency}
                 form_error={form_error}
                 {...passthrough}
-                key={step_index}
+                key={step.header.title}
             />
         );
     });

@@ -5,15 +5,15 @@ import Indice from './indice';
 const Indices: React.FC<TIndicesProps> = ({ indice_data }) => {
     return (
         <div className='dw-indices'>
-            {indice_data.map((item, idx) => (
-                <div key={idx} className='dw-indices__container'>
+            {indice_data.map(item => (
+                <div key={item.title} className='dw-indices__container'>
                     <Text size='sm' weight='bold'>
                         {item.title}
                     </Text>
                     <Text>{item.sub_title}</Text>
                     <div className='dw-indices__pair-wrapper'>
-                        {item.data.map((pair, id) => (
-                            <div key={id}>
+                        {item.data.map(pair => (
+                            <div key={pair.icon}>
                                 <Indice icon={pair.icon} description={pair.description} />
                             </div>
                         ))}

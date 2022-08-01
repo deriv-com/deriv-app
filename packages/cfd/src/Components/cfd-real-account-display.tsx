@@ -237,7 +237,7 @@ const CFDRealAccountDisplay = ({
                   .map((acc, index) => {
                       return (
                           <CFDAccountCard
-                              key={index}
+                              key={acc.account_type}
                               has_cfd_account={has_cfd_account}
                               has_cfd_account_error={has_cfd_account_error}
                               title={localize('Synthetic')}

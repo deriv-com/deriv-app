@@ -419,8 +419,8 @@ const CFDAccountCardComponent = ({
                                 <table className='cfd-account-card__specs-table'>
                                     <tbody>
                                         {typeof specs !== 'undefined' &&
-                                            Object.keys(specs).map((spec_attribute, idx) => (
-                                                <tr key={idx} className='cfd-account-card__specs-table-row'>
+                                            Object.keys(specs).map(spec_attribute => (
+                                                <tr key={spec_attribute} className='cfd-account-card__specs-table-row'>
                                                     <td className='cfd-account-card__specs-table-attribute'>
                                                         <p className='cfd-account-card--paragraph'>
                                                             {specs[spec_attribute].key()}

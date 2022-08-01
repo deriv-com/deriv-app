@@ -45,9 +45,9 @@ storiesOf('Tick Progress', module)
                     paddingTop: '10px',
                 }}
             >
-                {tick_progresses.map((item, index) => {
+                {tick_progresses.map(item => {
                     return (
-                        <Theme is_dark={item.is_dark} key={index}>
+                        <Theme is_dark={item.is_dark} key={item.value}>
                             <TickProgress value={item.value} rows={item.rows} columns={item.columns} size={item.size} />
                         </Theme>
                     );

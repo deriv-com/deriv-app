@@ -38,7 +38,7 @@ const FormProgress = ({ steps, current_step }) => {
                         }}
                     />
                     {steps.map((item, idx) => (
-                        <React.Fragment key={idx + 1}>
+                        <React.Fragment key={item.header.title}>
                             {(active = idx === current_step)}
                             <div className='dc-form-progress__step'>
                                 <Text

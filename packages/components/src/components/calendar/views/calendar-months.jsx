@@ -17,7 +17,7 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
                 const is_disabled = isPeriodDisabled(moment_date.clone().month(month), 'month');
                 return (
                     <span
-                        key={idx}
+                        key={`${month}${idx}`}
                         className={classNames('dc-calendar__cell', {
                             'dc-calendar__cell--active': is_active,
                             'dc-calendar__cell--disabled': is_disabled,

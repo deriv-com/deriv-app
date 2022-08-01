@@ -13,14 +13,14 @@ const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_anima
 
     const menu = React.useMemo(
         () =>
-            buttons_arr.map((val, idx) => {
+            buttons_arr.map(val => {
                 const menuClassNames = classNames('dc-button-menu__button', {
                     'dc-button-menu__button--active': val.value === value,
                 });
                 return (
                     <Button
                         id={`dc_${val.value}_toggle_item`}
-                        key={idx}
+                        key={val.value}
                         onClick={() => changeValue(val.value)}
                         className={menuClassNames}
                         is_button_toggle

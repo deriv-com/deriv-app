@@ -27,7 +27,7 @@ const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelecte
                 const is_other_century = idx === 0 || idx === 11;
                 return (
                     <span
-                        key={idx}
+                        key={`${decade}${idx}`}
                         className={classNames('dc-calendar__cell', {
                             'dc-calendar__cell--active': is_active,
                             'dc-calendar__cell--disabled': is_disabled,

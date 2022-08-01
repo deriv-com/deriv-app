@@ -9,14 +9,14 @@ const Instruments: React.FC<TInstrumentsProps> = ({ title, pair_data }) => {
                 {title}
             </Text>
             <div className='dw-instruments__container'>
-                {pair_data.map((item, idx) => (
-                    <div key={idx}>
+                {pair_data.map(item => (
+                    <div key={item.title}>
                         <Text size='sm' weight='bold'>
                             {item.title}
                         </Text>
                         <div className='dw-instruments__pair-wrapper'>
-                            {item.data.map((pair, id) => (
-                                <div key={id}>
+                            {item.data.map(pair => (
+                                <div key={pair.icon}>
                                     <Pair icon={pair.icon} description={pair.description} />
                                 </div>
                             ))}

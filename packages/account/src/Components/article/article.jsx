@@ -21,8 +21,8 @@ const Article = ({ title, descriptions, onClickLearnMore }) => {
                         </Text>
                     ) : (
                         <ul className='da-article__list'>
-                            {descriptions.map((description, idx) => (
-                                <li key={idx}>
+                            {descriptions.map(description => (
+                                <li key={description?.component || description}>
                                     <Text size='xxs' line_height='xs'>
                                         {description.component || description}
                                     </Text>

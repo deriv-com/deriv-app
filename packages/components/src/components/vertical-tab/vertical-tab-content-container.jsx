@@ -11,7 +11,7 @@ const SideNotes = ({ class_name, side_notes }) => {
             data-testid='vertical_tab_side_note'
         >
             {side_notes?.map((note, i) => (
-                <div className='dc-vertical-tab__content-side-note-item' key={i}>
+                <div className='dc-vertical-tab__content-side-note-item' key={`${note}${i}`}>
                     {note}
                 </div>
             ))}
@@ -55,7 +55,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
                         const Component = value || component;
                         return (
                             <Route
-                                key={idx}
+                                key={icon}
                                 path={path}
                                 render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
                             />
@@ -102,12 +102,12 @@ const VerticalTabContentContainer = ({
                     {action_bar.map(({ component, icon, onClick }, idx) => {
                         const Component = component;
                         return component ? (
-                            <Component key={idx} />
+                            <Component key={icon} />
                         ) : (
                             <div
                                 id={`dt_${id}_close_icon`}
                                 className='dc-vertical-tab__action-bar-wrapper'
-                                key={idx}
+                                key={icon}
                                 onClick={onClick}
                             >
                                 <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />

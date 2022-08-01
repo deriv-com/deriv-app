@@ -34,9 +34,9 @@ const Nav = ({
                             backgroundColor: active_bullet_color,
                         }}
                     />
-                    {list.slice(item_per_window - 1).map((_, idx) => (
+                    {list.slice(item_per_window - 1).map((item, idx) => (
                         <li
-                            key={idx}
+                            key={`${item}${idx}`}
                             className='dc-carousel__nav-item'
                             style={{
                                 backgroundColor: bullet_color,

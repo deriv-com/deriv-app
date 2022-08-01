@@ -82,7 +82,7 @@ const PageError = ({
                                     size='s'
                                     align={isMobile() ? 'center' : 'left'}
                                     line_height='x'
-                                    key={index}
+                                    key={`message${index}`}
                                     className='dc-page-error__message-paragraph'
                                     dangerouslySetInnerHTML={{ __html: message.message }}
                                 />
@@ -92,7 +92,7 @@ const PageError = ({
                                     size='s'
                                     align={isMobile() ? 'center' : 'left'}
                                     line_height='x'
-                                    key={index}
+                                    key={`${message}${index}`}
                                     className='dc-page-error__message-paragraph'
                                 >
                                     {message}
@@ -109,7 +109,7 @@ const PageError = ({
                                 to={url}
                                 onClick={onClickHandler}
                                 size={buttonSize || 'large'}
-                                key={index}
+                                key={url}
                             >
                                 <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
                                     {redirect_labels[index]}

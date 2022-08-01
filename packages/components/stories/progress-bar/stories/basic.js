@@ -32,9 +32,9 @@ const Basic = () => {
                 paddingTop: '10px',
             }}
         >
-            {progress_bars.map((item, index) => {
+            {progress_bars.map(item => {
                 return (
-                    <Wrapper className='progress-bar-storybook' is_dark={boolean('Dark Theme', false)} key={index}>
+                    <Wrapper className='progress-bar-storybook' is_dark={boolean('Dark Theme', false)} key={item.label}>
                         <ProgressBar value={item.value} label={item.label} />
                     </Wrapper>
                 );

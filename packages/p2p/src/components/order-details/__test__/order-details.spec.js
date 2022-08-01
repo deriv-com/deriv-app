@@ -73,6 +73,8 @@ jest.mock('Components/order-details/order-info-block.jsx', () => jest.fn(() => <
 
 jest.mock('Components/orders/chat/chat.jsx', () => jest.fn(() => <div>Chat section</div>));
 
+jest.mock('Components/p2p-accordion/p2p-accordion.jsx', () => jest.fn(() => <div>Payment methods listed</div>));
+
 describe('<OrderDetails/>', () => {
     it('should render component with loss of funds warning banner', () => {
         useStores.mockReturnValue({
@@ -83,14 +85,10 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(
-            screen.getByText(
-                'To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.'
-            )
+            screen.getByText("Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead.")
         ).toBeInTheDocument();
     });
-
     it('should render success message when highlight success is true', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -100,10 +98,8 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('Result str')).toBeInTheDocument();
     });
-
     it('should display footer info when show_order_footer is set', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -113,10 +109,8 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('Order details footer')).toBeInTheDocument();
     });
-
     it('should display formatted currency when the order is pending', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -126,10 +120,8 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('40.00 AED')).toBeInTheDocument();
     });
-
     it('should display payment details when Order is active', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -140,10 +132,8 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('Payment details')).toBeInTheDocument();
     });
-
     it('should render Chat component if show_chaton_orders is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -152,10 +142,8 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store, should_show_chat_on_orders: true },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('Chat section')).toBeInTheDocument();
     });
-
     it('should display Buy section when is_buy_order flag is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -165,10 +153,8 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
     });
-
     it('should display Buy section when is_sell_order as well as is_my_ad flag is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
@@ -178,7 +164,6 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />);
-
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
     });
 });

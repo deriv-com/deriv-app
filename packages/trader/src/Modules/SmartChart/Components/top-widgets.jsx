@@ -77,9 +77,14 @@ const TopWidgets = ({
 
 TopWidgets.propTypes = {
     InfoBox: PropTypes.node,
+    is_digits_widget_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_title_enabled: PropTypes.bool,
     onSymbolChange: PropTypes.func,
+    open: PropTypes.bool,
+    open_market: PropTypes.object,
+    theme: PropTypes.string,
+    y_axis_width: PropTypes.number,
 };
 
 export default TopWidgets;

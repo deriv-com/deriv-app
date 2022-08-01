@@ -1,0 +1,222 @@
+.floating-rate {
+    display: flex;
+    flex-direction: column;
+    &__field {
+        display: flex;
+        align-items: center;
+
+        @include mobile {
+            margin-top: -3rem;
+        }
+
+        &--prefix {
+            margin-right: 2rem;
+        }
+    }
+    &__input {
+        height: 4rem;
+        align-self: center;
+        appearance: none;
+        box-sizing: border-box;
+        border-radius: $BORDER_RADIUS;
+        color: var(--text-general);
+        background-image: none;
+        text-overflow: ellipsis;
+        @include mobile {
+            padding: 0;
+        }
+
+        &--error-field {
+            color: $color-red-1;
+            border-color: $color-red;
+        }
+    }
+
+    &__percent {
+        order: 3;
+        background: transparent;
+        border-color: transparent;
+        padding: 0 0.2rem;
+        color: inherit;
+        @include mobile {
+            position: relative;
+            right: 9rem;
+        }
+
+        &--symbol {
+            font-size: 1.4rem;
+            line-height: 1.5;
+        }
+        &:before {
+            @include typeface(--paragraph-center-normal-black);
+            color: inherit;
+        }
+    }
+
+    &__mkt-rate {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0.4rem 0.6rem;
+        position: static;
+        left: 10rem;
+        top: 0px;
+        background-color: var(--transparent-hint);
+        border-radius: 0px 4px 4px 0px;
+        /* Inside auto layout */
+        flex: none;
+        order: 1;
+        align-self: stretch;
+        flex-grow: 1;
+        gap: 0.2rem;
+
+        @include mobile {
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        &--label {
+            position: static;
+            font-style: normal;
+            flex: none;
+            order: 1;
+            flex-grow: 0;
+            margin: 0px;
+        }
+
+        &--msg {
+            position: static;
+            height: 18px;
+            left: 8px;
+            top: 18px;
+            font-style: normal;
+            flex: none;
+            order: 2;
+            flex-grow: 0;
+            margin: 0px;
+        }
+    }
+
+    &__hint {
+        padding-left: 4rem;
+        text-transform: none;
+        margin-top: 0.3rem;
+        @include mobile {
+            padding-left: 1rem;
+        }
+    }
+
+    &__error-message {
+        padding-left: 4rem;
+        text-transform: none;
+        @include mobile {
+            padding-left: 1rem;
+        }
+    }
+
+    .dc-input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 4px;
+
+        &--error {
+            border: 1px solid $color-red;
+        }
+
+        .dc-input-wrapper__button {
+            top: unset;
+            &--increment {
+                right: unset;
+                order: 4;
+            }
+
+            &--decrement {
+                left: unset;
+            }
+        }
+
+        .input {
+            text-align: right;
+            border: unset;
+            background-color: unset;
+            padding: unset;
+            &:focus {
+                border-color: unset;
+            }
+            &:hover {
+                border-color: unset;
+            }
+            &--has-inline-prefix {
+                padding-right: unset !important;
+            }
+            @include mobile {
+                text-align: center;
+            }
+        }
+
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:active,
+        &:focus {
+            border-color: var(--border-active);
+        }
+
+        button.dc-input-wrapper__button {
+            position: inherit !important;
+            @include mobile {
+                // In some browsers the background color for button remains set as they consider hover as focus
+                &:hover {
+                    background-color: unset !important;
+                }
+
+                &:active {
+                    background-color: var(--state-hover) !important;
+                }
+            }
+        }
+
+        &--error:hover {
+            border-color: $color-red !important;
+        }
+    }
+
+    .dc-input-suffix {
+        display: flex;
+        align-items: center;
+
+        @include mobile {
+            width: -webkit-fill-available;
+        }
+    }
+}
+
+.dc-input-wrapper__button,
+button.dc-input-wrapper__button {
+    top: 0.6rem;
+    z-index: auto;
+}
+
+.dc-input-field {
+    @include mobile {
+        width: 100%;
+    }
+
+    @include desktop {
+        margin: unset;
+    }
+}
+
+.mobile-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.p2p-my-ads__form-field {
+    @include mobile {
+        height: auto !important;
+    }
+}

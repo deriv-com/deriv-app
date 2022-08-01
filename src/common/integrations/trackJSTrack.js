@@ -1,5 +1,6 @@
-import { isProduction } from "../utils/tools";
 import { TrackJS } from 'trackjs';
+import { isProduction } from "../utils/tools";
+
 
 export const default_errors_to_ignore = [
     'CallError',
@@ -7,15 +8,16 @@ export const default_errors_to_ignore = [
     'GetProposalFailure',
     'RateLimit',
     'DisconnectError',
-    'MarketIsClosed'
+    'MarketIsClosed',
   ];
 
-export const trackJSTrack = (error) => {
-    let message, code;
-   if (typeof error === "string") {
+export function trackJSTrack (error) {
+  let message;
+  let code;
+  if (typeof error === "string") {
       code = "Unknown";
       message = error;
-    } else if (error?.error && typeof error.error === 'object') {
+  } else if (error?.error && typeof error.error === 'object') {
       if (error?.error?.error && typeof error.error.error === 'object') {
         ({ message } = error.error.error);
         ({ code } = error.error.error);
@@ -27,16 +29,17 @@ export const trackJSTrack = (error) => {
       ({ message } = error);
       ({ code } = error);
     }
-      // Exceptions:
+
+          // Exceptions:
   if (message === undefined || message === "Cannot read property 'open_time' of undefined") {
     // SmartCharts error workaround, don't log nor show.
-    return;
+    return undefined;
   }
 
-    if (isProduction()) {
-      if(!default_errors_to_ignore.includes(code)){
-        TrackJS.track(code);
-      }
+  if (isProduction()) {
+    if(!default_errors_to_ignore.includes(code)){
+      TrackJS.track(code);
     }
-    return {code, message}
+  }
+  return {code, message};
 }

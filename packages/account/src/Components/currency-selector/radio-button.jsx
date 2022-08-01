@@ -15,8 +15,7 @@ const USTPopover = ({ id }) => {
                 components={[<br key={0} />]}
             />
         );
-    }
-    if (/^tUSDT$/i.test(id)) {
+    } else if (/^tUSDT$/i.test(id)) {
         popover_message = (
             <Localize
                 i18n_default_text={

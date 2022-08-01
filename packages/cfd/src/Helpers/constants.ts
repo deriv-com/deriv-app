@@ -25,7 +25,7 @@ const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android') => {
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
-            return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
+            return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case 'macos':

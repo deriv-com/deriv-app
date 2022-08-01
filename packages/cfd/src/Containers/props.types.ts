@@ -1,7 +1,28 @@
 import { RouteComponentProps } from 'react-router';
-import { DetailsOfEachMT5Loginid, VerifyEmailResponse } from '@deriv/api-types';
+import {
+    DetailsOfEachMT5Loginid,
+    GetSettings,
+    LandingCompany,
+    ResidenceList,
+    VerifyEmailResponse,
+} from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+
+export type TCFDPersonalDetailsModalProps = {
+    account_settings: GetSettings;
+    enableApp: () => void;
+    disableApp: () => void;
+    getChangeableFields: () => string[];
+    is_open: boolean;
+    openPasswordModal: () => void;
+    toggleCFDPersonalDetailsModal: () => void;
+    toggleJurisdictionModal: () => void;
+    is_fully_authenticated: boolean;
+    landing_company: LandingCompany;
+    residence_list: ResidenceList;
+    setAccountSettings: (account_settings: GetSettings) => void;
+};
 
 type CFD_Platform = 'dxtrade' | 'mt5';
 
@@ -26,8 +47,8 @@ export type TCFDDashboardContainer = {
 export type TMT5AccountOpeningRealFinancialStpModal = {
     enableApp: () => void;
     disableApp: () => void;
-    disableMt5FinancialStpModal: () => void;
-    is_mt5_financial_stp_modal_open: boolean;
+    toggleCFDVerificationModal: () => void;
+    is_cfd_verification_modal_visible: boolean;
 };
 
 export type TMissingRealAccount = {
@@ -48,7 +69,7 @@ export type TPasswordResetAndTradingPasswordManager = {
 };
 
 export type TResetPasswordIntent = {
-    current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     children({ ...props }): React.ReactElement;
     is_eu: boolean;
 };
@@ -59,7 +80,7 @@ export type TError = {
 };
 
 export type TCFDResetPasswordModal = RouteComponentProps & {
-    current_list: Array<DetailsOfEachMT5Loginid> & Record<string, DetailsOfEachMT5Loginid>;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
@@ -124,6 +145,7 @@ export type TCFDPasswordManagerTabContent = {
 export type TCFDPasswordManagerModal = {
     enableApp: () => void;
     email: string;
+    is_eu: boolean;
     disableApp: () => void;
     is_visible: boolean;
     platform: CFD_Platform;

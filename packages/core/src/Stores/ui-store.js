@@ -150,6 +150,7 @@ export default class UIStore extends BaseStore {
     @observable is_trading_assessment_for_existing_user_enabled = false;
     @observable is_trading_assessment_for_new_user_enabled = false;
     @observable should_show_assessment_complete_modal = false;
+    @observable is_deriv_account_needed_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -721,5 +722,10 @@ export default class UIStore extends BaseStore {
         if (this.choose_crypto_currency_target === routes.cashier_deposit) {
             this.root_store.modules.cashier.general_store.setIsDeposit(true);
         }
+    }
+
+    @action.bound
+    openDerivRealAccountNeededModal() {
+        this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 }

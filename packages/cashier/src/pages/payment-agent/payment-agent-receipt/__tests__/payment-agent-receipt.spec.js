@@ -49,7 +49,7 @@ describe('<PaymentAgentReceipt />', () => {
         expect(
             screen.getByText(/to receive your funds, contact the payment agent with the details below/i)
         ).toBeInTheDocument();
-        expect(screen.getByText(/we’ve sent you a summary of this transaction via email/i)).toBeInTheDocument();
+        expect(screen.getByText(/you can view the summary of this transaction in your email/i)).toBeInTheDocument();
         expect(screen.getByText('Ms QA script reshmacrcdD')).toBeInTheDocument();
         expect(screen.getByText("'s")).toBeInTheDocument();
         expect(screen.getByText('contact details')).toBeInTheDocument();

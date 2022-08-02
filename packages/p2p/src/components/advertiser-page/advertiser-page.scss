@@ -17,6 +17,14 @@
 
         &-container {
             margin-top: 0;
+
+            &--disabled {
+                margin-top: 0;
+
+                span {
+                    color: var(--text-disabled) !important;
+                }
+            }
         }
     }
 

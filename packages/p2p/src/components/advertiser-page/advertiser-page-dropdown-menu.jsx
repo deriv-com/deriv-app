@@ -1,11 +1,12 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
+import PropTypes from 'prop-types';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { observer } from 'mobx-react-lite';
 import './advertiser-page.scss';
 
-const AdvertiserPageDropdownMenu = () => {
+const AdvertiserPageDropdownMenu = ({ is_my_advert }) => {
     const { advertiser_page_store } = useStores();
 
     return (
@@ -21,7 +22,7 @@ const AdvertiserPageDropdownMenu = () => {
             {advertiser_page_store.is_dropdown_menu_visible && (
                 <div className='advertiser-page__dropdown' onClick={advertiser_page_store.showBlockUserModal}>
                     <Dropdown
-                        className='advertiser-page__dropdown-container'
+                        className={`advertiser-page__dropdown-container${is_my_advert ? '--disabled' : ''}`}
                         is_align_text_right
                         list={['Block']}
                         name='block_user_dropdown'
@@ -45,3 +46,7 @@ const AdvertiserPageDropdownMenu = () => {
 };
 
 export default observer(AdvertiserPageDropdownMenu);
+
+AdvertiserPageDropdownMenu.propTypes = {
+    is_my_advert: PropTypes.bool,
+};

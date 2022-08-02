@@ -28,11 +28,13 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
+        id,
         last_name,
         name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
     const joined_since = daysSince(created_time);
+    const is_my_advert = id === general_store.advertiser_id;
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
@@ -81,7 +83,7 @@ const AdvertiserPage = () => {
                     page_title={localize("Advertiser's page")}
                 />
                 <MobileWrapper>
-                    <AdvertiserPageDropdownMenu />
+                    <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />
                 </MobileWrapper>
             </div>
             <BlockUserOverlay
@@ -128,7 +130,7 @@ const AdvertiserPage = () => {
                             </div>
                         </div>
                         <DesktopWrapper>
-                            <AdvertiserPageDropdownMenu />
+                            <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />
                         </DesktopWrapper>
                     </div>
                     <AdvertiserPageStats />

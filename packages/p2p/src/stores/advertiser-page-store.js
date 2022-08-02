@@ -248,7 +248,10 @@ export default class AdvertiserPageStore extends BaseStore {
 
     @action.bound
     showBlockUserModal() {
-        if (!this.is_counterparty_advertiser_blocked) {
+        if (
+            !this.is_counterparty_advertiser_blocked &&
+            this.advertiser_info.id !== this.root_store.general_store.advertiser_id
+        ) {
             this.root_store.general_store.setIsBlockUserModalOpen(true);
         }
     }

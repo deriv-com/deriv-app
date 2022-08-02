@@ -10,7 +10,7 @@ const USTPopover = ({ id }) => {
         popover_message = (
             <Localize
                 i18n_default_text={
-                    'Send only Tether Omni to this deposit address.<0 /><0 />Sending Tether ERC20 to this address will result in the loss of your deposit.'
+                    'Tether as an Omni token (USDT) is a version of Tether that is hosted on the Omni layer on the Bitcoin blockchain.'
                 }
                 components={[<br key={0} />]}
             />
@@ -18,16 +18,14 @@ const USTPopover = ({ id }) => {
     } else if (/^tUSDT$/i.test(id)) {
         popover_message = (
             <Localize
-                i18n_default_text={
-                    'Tether as an TRC20 token (TUSDT) is a version of Tether that is hosted on Ethereum, an open software platform where anyone can build and deploy decentralised applications.'
-                }
+                i18n_default_text={'Tether as a TRC20 token (tUSDT) is a version of Tether that is hosted on Tron.'}
             />
         );
     } else {
         popover_message = (
             <Localize
                 i18n_default_text={
-                    'Tether as an ERC20 token (eUSDT) is a version of Tether that is hosted on Ethereum, an open software platform where anyone can build and deploy decentralised applications.'
+                    'Tether as an ERC20 token (eUSDT) is a version of Tether that is hosted on Ethereum.'
                 }
             />
         );

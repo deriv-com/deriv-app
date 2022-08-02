@@ -172,6 +172,18 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
+                                <Text
+                                    as='p'
+                                    size='xxxs'
+                                    align='center'
+                                    className='details-form__description'
+                                >
+                                    <Localize
+                                        i18n_default_text={
+                                            'Any information you provide is confidential and will be used for verification purposes only.'
+                                        }
+                                    />
+                                </Text>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>
@@ -408,159 +420,159 @@ const PersonalDetails = ({
                                         )}
                                         {('tax_residence' in props.value ||
                                             'tax_identification_number' in props.value) && (
-                                            <React.Fragment>
-                                                <FormSubHeader title={localize('Tax information')} />
-                                                {'tax_residence' in props.value && (
-                                                    <Field name='tax_residence'>
-                                                        {({ field }) => (
-                                                            <div className='details-form__tax'>
-                                                                <DesktopWrapper>
-                                                                    <Autocomplete
-                                                                        {...field}
-                                                                        data-lpignore='true'
-                                                                        autoComplete='off' // prevent chrome autocomplete
-                                                                        type='text'
-                                                                        label={localize('Tax residence')}
-                                                                        error={
-                                                                            touched.tax_residence &&
-                                                                            errors.tax_residence
-                                                                        }
-                                                                        list_items={residence_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'tax_residence',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                        list_portal_id='modal_root'
-                                                                        data-testid='tax_residence'
-                                                                    />
-                                                                </DesktopWrapper>
-                                                                <MobileWrapper>
-                                                                    <SelectNative
-                                                                        placeholder={localize('Tax residence')}
-                                                                        name={field.name}
-                                                                        label={localize('Tax residence')}
-                                                                        list_items={residence_list}
-                                                                        value={values.tax_residence}
-                                                                        use_text={true}
-                                                                        error={
-                                                                            touched.tax_residence &&
-                                                                            errors.tax_residence
-                                                                        }
-                                                                        onChange={e => {
-                                                                            handleChange(e);
-                                                                            setFieldValue(
-                                                                                'tax_residence',
-                                                                                e.target.value,
-                                                                                true
-                                                                            );
+                                                <React.Fragment>
+                                                    <FormSubHeader title={localize('Tax information')} />
+                                                    {'tax_residence' in props.value && (
+                                                        <Field name='tax_residence'>
+                                                            {({ field }) => (
+                                                                <div className='details-form__tax'>
+                                                                    <DesktopWrapper>
+                                                                        <Autocomplete
+                                                                            {...field}
+                                                                            data-lpignore='true'
+                                                                            autoComplete='off' // prevent chrome autocomplete
+                                                                            type='text'
+                                                                            label={localize('Tax residence')}
+                                                                            error={
+                                                                                touched.tax_residence &&
+                                                                                errors.tax_residence
+                                                                            }
+                                                                            list_items={residence_list}
+                                                                            onItemSelection={({ value, text }) =>
+                                                                                setFieldValue(
+                                                                                    'tax_residence',
+                                                                                    value ? text : '',
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                            list_portal_id='modal_root'
+                                                                            data-testid='tax_residence'
+                                                                        />
+                                                                    </DesktopWrapper>
+                                                                    <MobileWrapper>
+                                                                        <SelectNative
+                                                                            placeholder={localize('Tax residence')}
+                                                                            name={field.name}
+                                                                            label={localize('Tax residence')}
+                                                                            list_items={residence_list}
+                                                                            value={values.tax_residence}
+                                                                            use_text={true}
+                                                                            error={
+                                                                                touched.tax_residence &&
+                                                                                errors.tax_residence
+                                                                            }
+                                                                            onChange={e => {
+                                                                                handleChange(e);
+                                                                                setFieldValue(
+                                                                                    'tax_residence',
+                                                                                    e.target.value,
+                                                                                    true
+                                                                                );
+                                                                            }}
+                                                                            {...field}
+                                                                            required
+                                                                            data_testid='tax_residence_mobile'
+                                                                        />
+                                                                    </MobileWrapper>
+                                                                    <div
+                                                                        data-testid='tax_residence_pop_over'
+                                                                        onClick={e => {
+                                                                            setIsTaxResidencePopoverOpen(true);
+                                                                            setIsTinPopoverOpen(false);
+                                                                            e.stopPropagation();
                                                                         }}
-                                                                        {...field}
-                                                                        required
-                                                                        data_testid='tax_residence_mobile'
-                                                                    />
-                                                                </MobileWrapper>
-                                                                <div
-                                                                    data-testid='tax_residence_pop_over'
-                                                                    onClick={e => {
-                                                                        setIsTaxResidencePopoverOpen(true);
-                                                                        setIsTinPopoverOpen(false);
-                                                                        e.stopPropagation();
-                                                                    }}
-                                                                >
-                                                                    <Popover
-                                                                        alignment={isDesktop() ? 'right' : 'left'}
-                                                                        icon='info'
-                                                                        message={localize(
-                                                                            'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
-                                                                        )}
-                                                                        zIndex={9998}
-                                                                        disable_message_icon
-                                                                        is_open={is_tax_residence_popover_open}
-                                                                    />
+                                                                    >
+                                                                        <Popover
+                                                                            alignment={isDesktop() ? 'right' : 'left'}
+                                                                            icon='info'
+                                                                            message={localize(
+                                                                                'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
+                                                                            )}
+                                                                            zIndex={9998}
+                                                                            disable_message_icon
+                                                                            is_open={is_tax_residence_popover_open}
+                                                                        />
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        )}
-                                                    </Field>
-                                                )}
-                                                {'tax_identification_number' in props.value && (
-                                                    <div className='details-form__tax'>
-                                                        <FormInputField
-                                                            name='tax_identification_number'
-                                                            label={localize('Tax Identification Number')}
-                                                            placeholder={localize('Tax Identification Number')}
-                                                            warn={warning_items?.tax_identification_number}
-                                                            data-testid='tax_identification_number'
-                                                        />
-                                                        <div
-                                                            data-testid='tax_identification_number_pop_over'
-                                                            onClick={e => {
-                                                                setIsTaxResidencePopoverOpen(false);
-                                                                setIsTinPopoverOpen(true);
-                                                                e.stopPropagation();
-                                                            }}
-                                                        >
-                                                            <Popover
-                                                                alignment={isDesktop() ? 'right' : 'left'}
-                                                                icon='info'
-                                                                is_open={is_tin_popover_open}
-                                                                message={
-                                                                    <Localize
-                                                                        i18n_default_text={
-                                                                            "Don't know your tax identification number? Click <0>here</0> to learn more."
-                                                                        }
-                                                                        components={[
-                                                                            <a
-                                                                                key={0}
-                                                                                className='link link--red'
-                                                                                rel='noopener noreferrer'
-                                                                                target='_blank'
-                                                                                href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-                                                                            />,
-                                                                        ]}
-                                                                    />
-                                                                }
-                                                                zIndex={9998}
-                                                                disable_message_icon
+                                                            )}
+                                                        </Field>
+                                                    )}
+                                                    {'tax_identification_number' in props.value && (
+                                                        <div className='details-form__tax'>
+                                                            <FormInputField
+                                                                name='tax_identification_number'
+                                                                label={localize('Tax Identification Number')}
+                                                                placeholder={localize('Tax Identification Number')}
+                                                                warn={warning_items?.tax_identification_number}
+                                                                data-testid='tax_identification_number'
                                                             />
+                                                            <div
+                                                                data-testid='tax_identification_number_pop_over'
+                                                                onClick={e => {
+                                                                    setIsTaxResidencePopoverOpen(false);
+                                                                    setIsTinPopoverOpen(true);
+                                                                    e.stopPropagation();
+                                                                }}
+                                                            >
+                                                                <Popover
+                                                                    alignment={isDesktop() ? 'right' : 'left'}
+                                                                    icon='info'
+                                                                    is_open={is_tin_popover_open}
+                                                                    message={
+                                                                        <Localize
+                                                                            i18n_default_text={
+                                                                                "Don't know your tax identification number? Click <0>here</0> to learn more."
+                                                                            }
+                                                                            components={[
+                                                                                <a
+                                                                                    key={0}
+                                                                                    className='link link--red'
+                                                                                    rel='noopener noreferrer'
+                                                                                    target='_blank'
+                                                                                    href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                                                                />,
+                                                                            ]}
+                                                                        />
+                                                                    }
+                                                                    zIndex={9998}
+                                                                    disable_message_icon
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )}
-                                                {warning_items?.tax_identification_number && (
-                                                    <div className='details-form__tin-warn-divider' />
-                                                )}
-                                                {'tax_identification_confirm' in props.value && (
-                                                    <Checkbox
-                                                        name='tax_identification_confirm'
-                                                        className='details-form__tin-confirm'
-                                                        data-lpignore
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                'tax_identification_confirm',
-                                                                !values.tax_identification_confirm,
-                                                                true
-                                                            )
-                                                        }
-                                                        value={values.tax_identification_confirm}
-                                                        label={localize(
-                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                                                            {
-                                                                legal_entity_name: getLegalEntityName('maltainvest'),
+                                                    )}
+                                                    {warning_items?.tax_identification_number && (
+                                                        <div className='details-form__tin-warn-divider' />
+                                                    )}
+                                                    {'tax_identification_confirm' in props.value && (
+                                                        <Checkbox
+                                                            name='tax_identification_confirm'
+                                                            className='details-form__tin-confirm'
+                                                            data-lpignore
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    'tax_identification_confirm',
+                                                                    !values.tax_identification_confirm,
+                                                                    true
+                                                                )
                                                             }
-                                                        )}
-                                                        renderlabel={title => (
-                                                            <Text size='xs' line_height='s'>
-                                                                {title}
-                                                            </Text>
-                                                        )}
-                                                        withTabIndex='0'
-                                                        data-testid='tax_identification_confirm'
-                                                    />
-                                                )}
-                                            </React.Fragment>
-                                        )}
+                                                            value={values.tax_identification_confirm}
+                                                            label={localize(
+                                                                'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
+                                                                {
+                                                                    legal_entity_name: getLegalEntityName('maltainvest'),
+                                                                }
+                                                            )}
+                                                            renderlabel={title => (
+                                                                <Text size='xs' line_height='s'>
+                                                                    {title}
+                                                                </Text>
+                                                            )}
+                                                            withTabIndex='0'
+                                                            data-testid='tax_identification_confirm'
+                                                        />
+                                                    )}
+                                                </React.Fragment>
+                                            )}
                                         {'account_opening_reason' in props.value && ( // TODO: [deriv-eu] Remove account opening reason once api is optional
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Account opening reason')} />

@@ -108,7 +108,9 @@ describe('PaymentAgentStore', () => {
                         paymentagent_list: mocked_payment_agent_list,
                     })
                 ),
-                paymentAgentWithdraw: jest.fn(() => Promise.resolve({ paymentagent_withdraw: '2' })),
+                paymentAgentWithdraw: jest.fn(() =>
+                    Promise.resolve({ paymentagent_withdraw: '2', paymentagent_name: 'name' })
+                ),
             },
             wait: () => Promise.resolve(),
         };
@@ -373,7 +375,7 @@ describe('PaymentAgentStore', () => {
             amount: '200',
             currency: 'USD',
             loginid: 'CR90000000',
-            payment_agent_name: 'Payment Agent of CR90000000',
+            payment_agent_name: 'name',
         });
         expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });

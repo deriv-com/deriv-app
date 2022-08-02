@@ -43,7 +43,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         expect(screen.getByText('CR90000100')).toBeInTheDocument();
         expect(screen.getByText('To account number')).toBeInTheDocument();
         expect(screen.getByText('CR90000999')).toBeInTheDocument();
-        expect(screen.getByText('ALICHARGER')).toBeInTheDocument();
+        expect(screen.getByText('Alicharger')).toBeInTheDocument();
         expect(screen.getByText('Amount')).toBeInTheDocument();
         expect(screen.getByText('20.00 USD')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();

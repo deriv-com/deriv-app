@@ -4,12 +4,12 @@ import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import PageReturn from 'Components/page-return/page-return.jsx';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
-import PageReturn from 'Components/page-return/page-return.jsx';
-// import RecommendedBy from 'Components/recommended-by';
+import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
@@ -30,7 +30,7 @@ const AdvertiserPage = () => {
         rating_average,
         rating_count,
         recommended_average,
-        // recommended_count,
+        recommended_count,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
@@ -124,6 +124,12 @@ const AdvertiserPage = () => {
                                                     />
                                                 )}
                                             </Text>
+                                        </div>
+                                        <div className='advertiser-page__rating--row'>
+                                            <RecommendedBy
+                                                recommended_average={recommended_average}
+                                                recommended_count={recommended_count}
+                                            />
                                         </div>
                                     </React.Fragment>
                                 ) : (

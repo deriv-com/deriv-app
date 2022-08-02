@@ -606,6 +606,7 @@
             border-top: 2px solid var(--general-disabled);
             width: 100%;
             display: flex;
+            background: var(--general-main-1);
 
             &--btn {
                 width: 100%;
@@ -625,8 +626,22 @@
         row-gap: 2.4rem;
     }
     &__test-warning {
-        margin-inline: 1.6rem;
         margin-top: 1.6rem;
+        .dc-modal-body {
+            padding-inline: 1.6rem;
+        }
+        .dc-modal-footer {
+            position: fixed;
+            bottom: 0;
+            padding: 1.6rem;
+            border-top: 2px solid var(--general-disabled);
+            width: 100%;
+            display: flex;
+            background: var(--general-main-1);
+            .dc-btn {
+                width: 100%;
+            }
+        }
     }
 }
 

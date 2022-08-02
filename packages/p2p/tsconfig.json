@@ -11,8 +11,7 @@
             "Utils/*": ["src/utils/*"],
             "@deriv/*": ["../*/src"]
         },
-        "outDir": "./lib",
-        "rootDir": "./src"
+        "outDir": "./lib"
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

@@ -1917,7 +1917,7 @@ export default class ClientStore extends BaseStore {
             'utm_content',
             'affiliate_token',
         ];
-        const signup_params = { type: 'wallet' };
+        const signup_params = {};
         const url_params = new URLSearchParams(window.location.search);
 
         param_list.forEach(key => {

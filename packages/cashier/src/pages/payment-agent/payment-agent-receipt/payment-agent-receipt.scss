@@ -23,9 +23,21 @@
         }
     }
     &__header {
-        margin: 9.6rem 0 4.8rem;
+        margin-top: 9.6rem;
         @include mobile {
-            margin: 3.2rem 0 1.6rem;
+            margin-top: 3.2rem;
+        }
+        &-listed {
+            margin-bottom: 4.8rem;
+            @include mobile {
+                margin-bottom: 1.6rem;
+            }
+        }
+        &-unlisted {
+            margin-bottom: 7.4rem;
+            @include mobile {
+                margin-bottom: 8.5rem;
+            }
         }
     }
     &__transferred-contact {
@@ -64,6 +76,12 @@
         margin: 0.8rem 0 2.4rem;
         @include mobile {
             width: 32rem;
+        }
+        &-unlisted {
+            margin-bottom: 7.4rem;
+            @include mobile {
+                margin-bottom: 8.5rem;
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -50,11 +51,14 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
             <Text
                 as='h1'
                 align='center'
-                className='payment-agent-receipt__header'
                 color='prominent'
                 line_height='m'
                 size={isMobile() ? 'xsm' : 'sm'}
                 weight='bold'
+                className={classNames('payment-agent-receipt__header', {
+                    'payment-agent-receipt__header-listed': receipt.payment_agent_name,
+                    'payment-agent-receipt__header-unlisted': !receipt.payment_agent_name,
+                })}
             >
                 <Localize
                     i18n_default_text='You’ve transferred {{amount}} {{currency}}'
@@ -70,13 +74,18 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
                 color='prominent'
                 size='xxs'
                 line_height='m'
-                className='payment-agent-receipt__explanation'
+                className={classNames('payment-agent-receipt__explanation', {
+                    'payment-agent-receipt__explanation-unlisted': !receipt.payment_agent_name,
+                })}
             >
                 <Localize
-                    i18n_default_text={
-                        'To receive your funds, contact the payment agent with the details below. <0></0>We’ve sent you a summary of this transaction via email.'
-                    }
+                    i18n_default_text={'{{ text }}. <0></0>You can view the summary of this transaction in your email.'}
                     components={!isMobile() ? [<br key={0} />] : []}
+                    values={{
+                        text: receipt.payment_agent_name
+                            ? localize('To receive your funds, contact the payment agent with the details below')
+                            : localize('To receive your funds, contact the payment agent'),
+                    }}
                     key={0}
                 />
             </Text>
@@ -102,7 +111,7 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
                     <Button
                         className='cashier__form-submit-button'
                         has_effect
-                        text={localize('View transactions')}
+                        text={localize('View transaction')}
                         onClick={() => openStatement(history, resetPaymentAgent)}
                         secondary
                         large

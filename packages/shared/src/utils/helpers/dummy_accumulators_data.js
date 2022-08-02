@@ -10,6 +10,14 @@ const tick_8_price = 92.678;
 const previous_tick_price = 92.693;
 const current_spot = 95.426;
 const take_profit_price = 90.021;
+const limit_order = {
+    take_profit: {
+        display_name: 'Take profit',
+        order_amount: take_profit_price,
+        order_date: 1653292620,
+        value: `${take_profit_price}`,
+    },
+};
 const contract_status = 'open';
 const position_status = 'profit'; // 'profit' or 'loss'
 const profit_loss = +0.15;
@@ -60,14 +68,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             is_sold: 0,
             is_valid_to_cancel: 0,
             is_valid_to_sell: 1,
-            limit_order: {
-                take_profit: {
-                    display_name: 'Take profit',
-                    order_amount: 150,
-                    order_date: dummy_start_time - 10,
-                    value: `${take_profit_price}`,
-                },
-            },
+            limit_order,
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             growth_rate: 0.01,
             profit: profit_loss,
@@ -228,14 +229,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 is_sold: 0,
                 is_valid_to_cancel: 0,
                 is_valid_to_sell: 1,
-                limit_order: {
-                    take_profit: {
-                        display_name: 'Take profit',
-                        order_amount: 150,
-                        order_date: dummy_start_time - 10,
-                        value: `${take_profit_price}`,
-                    },
-                },
+                limit_order,
                 longcode:
                     'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
                 growth_rate: 0.01,
@@ -297,9 +291,7 @@ export const getDummyAllPositionsForACCU = time_now => {
         },
     ];
 };
-export const getDummyProposalInfoForACCU = (growth_rate, time_now, response) => {
-    const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
-    const dummy_start_time = dummy_current_time - 7;
+export const getDummyProposalInfoForACCU = (growth_rate, response) => {
     return {
         tick_size_barrier: response.proposal.tick_size_barrier,
         ticks_count_since_loss_condition: response.proposal.ticks_count_since_loss_condition,
@@ -313,14 +305,7 @@ export const getDummyProposalInfoForACCU = (growth_rate, time_now, response) => 
         has_error_details: false,
         has_increased: null,
         id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-        limit_order: {
-            take_profit: {
-                display_name: 'Take profit',
-                order_amount: 150,
-                order_date: dummy_start_time - 10,
-                value: `${take_profit_price}`,
-            },
-        },
+        limit_order,
         message: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
         obj_contract_basis: {
             text: '',
@@ -408,14 +393,7 @@ export const getDummyProposalResponseForACCU = time_now => {
             date_start: dummy_start_time,
             display_value: '10.00',
             id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-            limit_order: {
-                take_profit: {
-                    display_name: 'Take profit',
-                    order_amount: 150,
-                    order_date: dummy_start_time - 10,
-                    value: `${take_profit_price}`,
-                },
-            },
+            limit_order,
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             growth_rate: 0.01,
             payout: 27.45,

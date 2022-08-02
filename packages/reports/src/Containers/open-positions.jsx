@@ -14,6 +14,7 @@ import {
 } from '@deriv/components';
 import {
     urlFor,
+    isAccumulatorContract,
     isMobile,
     isMultiplierContract,
     getTimePercentage,
@@ -28,6 +29,7 @@ import { getContractDurationType } from '../Helpers/market-underlying';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import {
     getOpenPositionsColumnsTemplate,
+    getAccumulatorOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
 import PositionsDrawerCard from '../Components/Elements/PositionsDrawerCard';
@@ -236,7 +238,7 @@ const getRowAction = row_obj =>
  */
 const isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
 
-const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected) => {
+const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected, is_accumulator_selected) => {
     let totals;
 
     if (is_multiplier_selected) {
@@ -272,6 +274,32 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
                 ask_price,
             };
         }
+    } else if (is_accumulator_selected) {
+        let buy_price = 0;
+        let bid_price = 0;
+        let take_profit = 0;
+        let profit = 0;
+
+        active_positions_filtered?.forEach(portfolio_pos => {
+            buy_price += +portfolio_pos.contract_info.buy_price;
+            bid_price += +portfolio_pos.contract_info.bid_price;
+            take_profit += portfolio_pos.contract_info.limit_order?.take_profit?.order_amount;
+            if (portfolio_pos.contract_info) {
+                profit += getTotalProfit(portfolio_pos.contract_info);
+            }
+        });
+        totals = {
+            contract_info: {
+                buy_price,
+                bid_price,
+                profit,
+                limit_order: {
+                    take_profit: {
+                        order_amount: take_profit,
+                    },
+                },
+            },
+        };
     } else {
         let indicative = 0;
         let purchase = 0;
@@ -310,7 +338,8 @@ const OpenPositions = ({
     ...props
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
-    // Tabs should be visible only when there is at least one active multiplier contract
+    // Tabs should be visible only when there is at least one active multiplier or accumulator contract
+    const [has_accumulator_contract, setAccumulatorContract] = React.useState(false);
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
 
@@ -321,15 +350,23 @@ const OpenPositions = ({
          */
 
         onMount();
+        checkForAccumulatorContract();
         checkForMultiplierContract();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
+        checkForAccumulatorContract(previous_active_positions);
         checkForMultiplierContract(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
+
+    const checkForAccumulatorContract = (prev_active_positions = []) => {
+        if (!has_accumulator_contract && active_positions !== prev_active_positions) {
+            setAccumulatorContract(active_positions.some(p => isAccumulatorContract(p.contract_info?.contract_type)));
+        }
+    };
 
     const checkForMultiplierContract = (prev_active_positions = []) => {
         if (!has_multiplier_contract && active_positions !== prev_active_positions) {
@@ -342,26 +379,50 @@ const OpenPositions = ({
     if (error) return <p>{error}</p>;
 
     const is_multiplier_selected = has_multiplier_contract && active_index === 1;
+    const is_accumulator_selected =
+        (has_accumulator_contract && !has_multiplier_contract && active_index === 1) ||
+        (has_accumulator_contract && active_index === 2);
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
-            return is_multiplier_selected
-                ? isMultiplierContract(p.contract_info.contract_type)
-                : !isMultiplierContract(p.contract_info.contract_type);
+            if (is_multiplier_selected) {
+                return isMultiplierContract(p.contract_info.contract_type);
+            } else if (is_accumulator_selected) {
+                return isAccumulatorContract(p.contract_info.contract_type);
+            }
+            return (
+                !isMultiplierContract(p.contract_info.contract_type) &&
+                !isAccumulatorContract(p.contract_info.contract_type)
+            );
         }
         return true;
     });
 
-    const active_positions_filtered_totals = getOpenPositionsTotals(active_positions_filtered, is_multiplier_selected);
+    const active_positions_filtered_totals = getOpenPositionsTotals(
+        active_positions_filtered,
+        is_multiplier_selected,
+        is_accumulator_selected
+    );
 
-    const columns = is_multiplier_selected
-        ? getMultiplierOpenPositionsColumnsTemplate({
-              currency,
-              onClickCancel,
-              onClickSell,
-              getPositionById,
-              server_time,
-          })
-        : getOpenPositionsColumnsTemplate(currency);
+    const getColumns = () => {
+        if (is_multiplier_selected) {
+            return getMultiplierOpenPositionsColumnsTemplate({
+                currency,
+                onClickCancel,
+                onClickSell,
+                getPositionById,
+                server_time,
+            });
+        } else if (is_accumulator_selected) {
+            return getAccumulatorOpenPositionsColumnsTemplate({
+                currency,
+                onClickSell,
+                getPositionById,
+            });
+        }
+        return getOpenPositionsColumnsTemplate(currency);
+    };
+
+    const columns = getColumns();
 
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index] = item;
@@ -393,7 +454,7 @@ const OpenPositions = ({
     return (
         <React.Fragment>
             <NotificationMessages />
-            {has_multiplier_contract ? (
+            {has_multiplier_contract || has_accumulator_contract ? (
                 <Tabs
                     active_index={active_index}
                     className='open-positions'
@@ -409,15 +470,28 @@ const OpenPositions = ({
                             row_size={isMobile() ? 5 : 63}
                         />
                     </div>
-                    <div label={localize('Multipliers')}>
-                        <OpenPositionsTable
-                            className='open-positions-multiplier open-positions'
-                            is_multiplier_tab
-                            columns={columns}
-                            row_size={isMobile() ? 3 : 68}
-                            {...shared_props}
-                        />
-                    </div>
+                    {has_multiplier_contract && (
+                        <div label={localize('Multipliers')}>
+                            <OpenPositionsTable
+                                className='open-positions-multiplier open-positions'
+                                is_multiplier_tab
+                                columns={columns}
+                                row_size={isMobile() ? 3 : 68}
+                                {...shared_props}
+                            />
+                        </div>
+                    )}
+                    {has_accumulator_contract && (
+                        <div label={localize('Accumulators')}>
+                            <OpenPositionsTable
+                                className='open-positions-multiplier open-positions'
+                                is_multiplier_tab
+                                columns={columns}
+                                row_size={isMobile() ? 3 : 68}
+                                {...shared_props}
+                            />
+                        </div>
+                    )}
                 </Tabs>
             ) : (
                 <OpenPositionsTable

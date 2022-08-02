@@ -50,7 +50,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     if (store.contract_type === 'accumulator') {
         // maryia: temporary dummy proposal info for accumulators:
-        return getDummyProposalInfoForACCU(store.growth_rate, Date.now(), response);
+        return getDummyProposalInfoForACCU(store.growth_rate, response);
     }
     return {
         commission,

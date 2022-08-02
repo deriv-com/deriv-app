@@ -262,12 +262,11 @@ export default class PaymentAgentStore {
             dry_run: 1,
         });
         if (+payment_agent_withdraw.paymentagent_withdraw === 2) {
-            const selected_agent = this.agents.find(agent => agent.value === loginid);
             this.setConfirmation({
                 amount,
                 currency,
                 loginid,
-                ...(selected_agent && { payment_agent_name: selected_agent.text }),
+                payment_agent_name: payment_agent_withdraw.paymentagent_name,
             });
             this.setIsTryWithdrawSuccessful(true);
         } else {

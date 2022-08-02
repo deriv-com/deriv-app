@@ -1,10 +1,11 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
-import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
+import { decimalValidator, lengthValidator, rangeValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
@@ -22,7 +23,6 @@ export default class MyAdsStore extends BaseStore {
     @observable edit_ad_form_error = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
-    @observable has_missing_payment_methods = false;
     @observable is_ad_created_modal_visible = false;
     @observable is_ad_exceeds_daily_limit_modal_open = false;
     @observable is_api_error_modal_visible = false;
@@ -33,19 +33,26 @@ export default class MyAdsStore extends BaseStore {
     @observable is_quick_add_modal_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
+    @observable is_switch_modal_open = false;
     @observable item_offset = 0;
     @observable p2p_advert_information = {};
+    @observable show_ad_form = false;
     @observable selected_ad_id = '';
     @observable selected_advert = null;
     @observable should_show_add_payment_method = false;
     @observable should_show_add_payment_method_modal = false;
-    @observable show_ad_form = false;
     @observable show_edit_ad_form = false;
     @observable update_payment_methods_error_message = '';
+    @observable required_ad_type;
     @observable error_code = '';
 
     payment_method_ids = [];
     payment_method_names = [];
+
+    @computed
+    get selected_ad_type() {
+        return this.p2p_advert_information.rate_type;
+    }
 
     @action.bound
     getAccountStatus() {
@@ -70,40 +77,45 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     getAdvertInfo() {
         this.setIsFormLoading(true);
-
         requestWS({
             p2p_advert_info: 1,
             id: this.selected_ad_id,
-        }).then(response => {
-            if (!response.error) {
-                const { p2p_advert_info } = response;
-                if (!p2p_advert_info.payment_method_names)
-                    p2p_advert_info.payment_method_names = this.payment_method_names;
-                if (!p2p_advert_info.payment_method_details)
-                    p2p_advert_info.payment_method_details = this.payment_method_details;
-                this.setP2pAdvertInformation(p2p_advert_info);
-            }
-            this.setIsFormLoading(false);
-        });
+        })
+            .then(response => {
+                if (response) {
+                    if (!response.error) {
+                        const { p2p_advert_info } = response;
+                        if (!p2p_advert_info.payment_method_names)
+                            p2p_advert_info.payment_method_names = this.payment_method_names;
+                        if (!p2p_advert_info.payment_method_details)
+                            p2p_advert_info.payment_method_details = this.payment_method_details;
+                        this.setP2pAdvertInformation(p2p_advert_info);
+                    } else {
+                        this.setApiErrorMessage(response.error.message);
+                    }
+                }
+            })
+            .finally(() => this.setIsFormLoading(false));
     }
 
     @action.bound
     getAdvertiserInfo() {
         this.setIsFormLoading(true);
-
         requestWS({
             p2p_advertiser_info: 1,
         }).then(response => {
-            if (!response.error) {
-                const { p2p_advertiser_info } = response;
-                this.setContactInfo(p2p_advertiser_info.contact_info);
-                this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.setAvailableBalance(p2p_advertiser_info.balance_available);
-            } else {
-                this.setContactInfo('');
-                this.setDefaultAdvertDescription('');
+            if (response) {
+                if (!response.error) {
+                    const { p2p_advertiser_info } = response;
+                    this.setContactInfo(p2p_advertiser_info.contact_info);
+                    this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                    this.setAvailableBalance(p2p_advertiser_info.balance_available);
+                } else {
+                    this.setContactInfo('');
+                    this.setDefaultAdvertDescription('');
+                }
+                this.setIsFormLoading(false);
             }
-            this.setIsFormLoading(false);
         });
     }
 
@@ -134,7 +146,8 @@ export default class MyAdsStore extends BaseStore {
             amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            rate: Number(values.price_rate),
+            rate_type: this.root_store.floating_rate_store.rate_type,
+            rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -241,24 +254,25 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickEdit(id) {
+    onClickEdit(id, rate_type) {
         if (!this.root_store.general_store.is_barred) {
             this.setSelectedAdId(id);
-            this.setShowEditAdForm(true);
+            this.setRequiredAdType(rate_type);
             this.getAdvertInfo();
+            this.setShowEditAdForm(true);
         }
     }
 
     @action.bound
     onClickSaveEditAd(values, { setSubmitting }) {
         const is_sell_ad = values.type === buy_sell.SELL;
-
         const update_advert = {
             p2p_advert_update: 1,
             id: this.selected_ad_id,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
-            rate: Number(values.price_rate),
+            rate_type: this.required_ad_type,
+            rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -274,16 +288,21 @@ export default class MyAdsStore extends BaseStore {
         if (values.description) {
             update_advert.description = values.description;
         }
+        if (this.root_store.floating_rate_store.reached_target_date) {
+            update_advert.is_active = values.is_active;
+        }
 
         requestWS(update_advert).then(response => {
             // If there's an error, let the user submit the form again.
-            if (response && response.error) {
-                setSubmitting(false);
-                this.setApiErrorCode(response.error.code);
-                this.setEditAdFormError(response.error.message);
-                this.setIsEditAdErrorModalVisible(true);
-            } else {
-                this.setShowEditAdForm(false);
+            if (response) {
+                if (response.error) {
+                    setSubmitting(false);
+                    this.setApiErrorCode(response.error.code);
+                    this.setEditAdFormError(response.error.message);
+                    this.setIsEditAdErrorModalVisible(true);
+                } else {
+                    this.setShowEditAdForm(false);
+                }
             }
         });
     }
@@ -318,22 +337,31 @@ export default class MyAdsStore extends BaseStore {
             this.setIsTableLoading(true);
             this.setApiErrorMessage('');
         }
-
-        const { list_item_limit } = this.root_store.general_store;
-
+        const { floating_rate_store, general_store } = this.root_store;
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_adverts: 1,
                 offset: startIndex,
-                limit: list_item_limit,
+                limit: general_store.list_item_limit,
             }).then(response => {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_adverts;
-                    this.setHasMoreItemsToLoad(list.length >= list_item_limit);
+                    this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
-                    this.setMissingPaymentMethods(!!list.find(payment_method => !payment_method.payment_method_names));
+                    if (!floating_rate_store.change_ad_alert) {
+                        let should_update_ads = false;
+                        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                            // Check if there are any Fixed rate ads
+                            should_update_ads = list.some(ad => ad.rate_type === ad_type.FIXED);
+                            floating_rate_store.setChangeAdAlert(should_update_ads);
+                        } else if (floating_rate_store.rate_type === ad_type.FIXED) {
+                            // Check if there are any Float rate ads
+                            should_update_ads = list.some(ad => ad.rate_type === ad_type.FLOAT);
+                            floating_rate_store.setChangeAdAlert(should_update_ads);
+                        }
+                    }
                 } else if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
+                    general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
                 }
@@ -345,15 +373,26 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    restrictLength = (e, handleChange) => {
+    restrictLength = (e, handleChange, max_characters = 15) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
-        const max_characters = 15;
         if (e.target.value.length > max_characters) {
             e.target.value = e.target.value.slice(0, max_characters);
             return;
         }
         handleChange(e);
+    };
+
+    @action.bound
+    restrictDecimalPlace = (e, handleChangeCallback) => {
+        const pattern = new RegExp(/^[+-]?\d{0,4}(\.\d{0,2})?$/);
+        if (e.target.value.length > 8) {
+            e.target.value = e.target.value.slice(0, 8);
+            return;
+        }
+        if (pattern.test(e.target.value)) {
+            handleChangeCallback(e);
+        }
     };
 
     @action.bound
@@ -435,11 +474,6 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
-    }
-
-    @action.bound
-    setMissingPaymentMethods(has_missing_payment_methods) {
-        this.has_missing_payment_methods = has_missing_payment_methods;
     }
 
     @action.bound
@@ -530,6 +564,20 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+        if (!this.show_edit_ad_form) {
+            // this.setRequiredAdType(null);
+        }
+    }
+
+    @action.bound
+    setIsSwitchModalOpen(is_switch_modal_open, ad_id) {
+        this.setSelectedAdId(ad_id);
+        this.getAdvertInfo();
+        this.is_switch_modal_open = is_switch_modal_open;
+    }
+    @action.bound
+    setRequiredAdType(change_ad_type) {
+        this.required_ad_type = change_ad_type;
     }
 
     @action.bound
@@ -539,6 +587,7 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     validateCreateAdForm(values) {
+        const { general_store, floating_rate_store } = this.root_store;
         const validations = {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -547,7 +596,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -557,7 +606,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -568,17 +617,23 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
-            price_rate: [
+            rate_type: [
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= this.root_store.general_store.client.local_currency_config.decimal_places,
+                    floating_rate_store.rate_type === ad_type.FIXED
+                        ? v > 0 &&
+                          decimalValidator(v) &&
+                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
+                        : true,
+                v =>
+                    floating_rate_store.rate_type === ad_type.FLOAT
+                        ? rangeValidator(parseFloat(v), floating_rate_store.float_rate_offset_limit)
+                        : true,
             ],
         };
 
@@ -592,7 +647,9 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            price_rate: localize('Fixed rate'),
+            payment_info: localize('Payment instructions'),
+            rate_type:
+                floating_rate_store.rate_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -643,6 +700,9 @@ export default class MyAdsStore extends BaseStore {
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
+            localize("Enter a value thats's within -{{limit}}% to +{{limit}}%", {
+                limit: floating_rate_store.float_rate_offset_limit,
+            }),
         ];
 
         const errors = {};
@@ -666,7 +726,7 @@ export default class MyAdsStore extends BaseStore {
                     case 'min_transaction':
                         errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
-                    case 'price_rate':
+                    case 'rate_type':
                         errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
@@ -686,6 +746,7 @@ export default class MyAdsStore extends BaseStore {
 
     @action.bound
     validateEditAdForm(values) {
+        const { general_store, floating_rate_store } = this.root_store;
         const validations = {
             description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -694,7 +755,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -704,29 +765,23 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
-            // Offer amount disabled for edit ads
-            // offer_amount: [
-            //     v => !!v,
-            //     v => !isNaN(v),
-            //     v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
-            //     v =>
-            //         v > 0 &&
-            //         decimalValidator(v) &&
-            //         countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
-            //     v => (values.min_transaction ? +v >= values.min_transaction : true),
-            //     v => (values.max_transaction ? +v >= values.max_transaction : true),
-            // ],
-            price_rate: [
+            rate_type: [
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= this.root_store.general_store.client.local_currency_config.decimal_places,
+                    this.required_ad_type === ad_type.FIXED
+                        ? v > 0 &&
+                          decimalValidator(v) &&
+                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
+                        : true,
+                v =>
+                    this.required_ad_type === ad_type.FLOAT
+                        ? rangeValidator(v, parseFloat(floating_rate_store.float_rate_offset_limit))
+                        : true,
             ],
         };
 
@@ -740,7 +795,7 @@ export default class MyAdsStore extends BaseStore {
             max_transaction: localize('Max limit'),
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
-            price_rate: localize('Fixed rate'),
+            rate_type: this.required_ad_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -762,15 +817,6 @@ export default class MyAdsStore extends BaseStore {
             ),
         ];
 
-        // const getOfferAmountMessages = field_name => [
-        //     localize('{{field_name}} is required', { field_name }),
-        //     localize('Enter a valid amount'),
-        //     localize('Max available amount is {{value}}', { value: this.available_balance }),
-        //     localize('Enter a valid amount'),
-        //     localize('{{field_name}} should not be below Min limit', { field_name }),
-        //     localize('{{field_name}} should not be below Max limit', { field_name }),
-        // ];
-
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
@@ -791,6 +837,9 @@ export default class MyAdsStore extends BaseStore {
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
+            localize("Enter a value thats's within -{{limit}}% to +{{limit}}%", {
+                limit: floating_rate_store.float_rate_offset_limit,
+            }),
         ];
 
         const errors = {};
@@ -805,16 +854,13 @@ export default class MyAdsStore extends BaseStore {
                     case 'description':
                         errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
                         break;
-                    // case 'offer_amount':
-                    //     errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
-                    //     break;
                     case 'max_transaction':
                         errors[key] = getMaxTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
                     case 'min_transaction':
                         errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
-                    case 'price_rate':
+                    case 'rate_type':
                         errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
@@ -830,5 +876,13 @@ export default class MyAdsStore extends BaseStore {
         }
 
         return errors;
+    }
+
+    toggleMyAdsRateSwitchModal(change_ad_type, is_open_edit_form) {
+        this.setRequiredAdType(change_ad_type);
+        if (is_open_edit_form) {
+            this.setShowEditAdForm(true);
+        }
+        this.setIsSwitchModalOpen(false, this.selected_ad_id);
     }
 }

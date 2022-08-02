@@ -125,6 +125,7 @@ const PurchaseButton = ({
 };
 
 PurchaseButton.propTypes = {
+    basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
     has_deal_cancellation: PropTypes.bool,
@@ -138,6 +139,7 @@ PurchaseButton.propTypes = {
     is_proposal_empty: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,
+    should_fade: PropTypes.bool,
     setPurchaseState: PropTypes.func,
     type: PropTypes.string,
 };

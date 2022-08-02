@@ -62,12 +62,14 @@ const TakeProfit = ({
 };
 
 TakeProfit.propTypes = {
+    addToast: PropTypes.func,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     has_take_profit: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeMultiple: PropTypes.func,
+    removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     take_profit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors: PropTypes.object,

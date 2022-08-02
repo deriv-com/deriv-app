@@ -100,7 +100,6 @@ export default class BuySellStore extends BaseStore {
             modal_title: computed,
             rendered_items: computed,
             should_filter_by_payment_method: computed,
-            fetchAdvertiserAdverts: action.bound,
             getAdvertiserInfo: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
@@ -144,10 +143,11 @@ export default class BuySellStore extends BaseStore {
             setSelectedAdvert: action.bound,
             setSubmitFormFn: action.bound,
             showAdvertiserPage: action.bound,
-            setShowRateChangePopup: action.bound,
             showVerification: action.bound,
             validatePopup: action.bound,
             sort_list: computed,
+            fetchAdvertiserAdverts: action.bound,
+            setShowRateChangePopup: action.bound,
         });
     }
 

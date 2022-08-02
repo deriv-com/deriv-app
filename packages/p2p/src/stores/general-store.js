@@ -74,6 +74,8 @@ export default class GeneralStore extends BaseStore {
             is_high_risk_fully_authed_without_fa: observable,
             is_modal_open: observable,
             client: computed,
+            current_focus: computed,
+            setCurrentFocus: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
@@ -122,12 +124,10 @@ export default class GeneralStore extends BaseStore {
         return { ...this.props?.client } || {};
     }
 
-    @computed
     get current_focus() {
         return this.props?.current_focus;
     }
 
-    @computed
     get setCurrentFocus() {
         return this.props?.setCurrentFocus;
     }
@@ -385,11 +385,9 @@ export default class GeneralStore extends BaseStore {
         this.active_notification_count = active_notification_count;
     }
 
-
     setAccountBalance(value) {
         this.balance = value;
     }
-
 
     setAdvertiserId(advertiser_id) {
         this.advertiser_id = advertiser_id;

@@ -23,7 +23,6 @@ export default class MyAdsStore extends BaseStore {
     edit_ad_form_error = '';
     error_message = '';
     has_more_items_to_load = false;
-    has_missing_payment_methods = false;
     is_ad_created_modal_visible = false;
     is_ad_exceeds_daily_limit_modal_open = false;
     is_api_error_modal_visible = false;
@@ -69,7 +68,6 @@ export default class MyAdsStore extends BaseStore {
             edit_ad_form_error: observable,
             error_message: observable,
             has_more_items_to_load: observable,
-            has_missing_payment_methods: observable,
             is_ad_created_modal_visible: observable,
             is_ad_exceeds_daily_limit_modal_open: observable,
             is_api_error_modal_visible: observable,
@@ -144,6 +142,8 @@ export default class MyAdsStore extends BaseStore {
             setShouldShowAddPaymentMethodModal: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
+            setIsSwitchModalOpen: action.bound,
+            setRequiredAdType: action.bound,
             setUpdatePaymentMethodsErrorMessage: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
@@ -215,7 +215,7 @@ export default class MyAdsStore extends BaseStore {
         });
     }
 
-    getWebsiteStatus(createAd = () => { }, setSubmitting) {
+    getWebsiteStatus(createAd = () => {}, setSubmitting) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setApiErrorMessage(response.error.message);
@@ -542,7 +542,6 @@ export default class MyAdsStore extends BaseStore {
         this.has_more_items_to_load = has_more_items_to_load;
     }
 
-    @action.bound
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
     }
@@ -618,13 +617,12 @@ export default class MyAdsStore extends BaseStore {
         }
     }
 
-    @action.bound
     setIsSwitchModalOpen(is_switch_modal_open, ad_id) {
         this.setSelectedAdId(ad_id);
         this.getAdvertInfo();
         this.is_switch_modal_open = is_switch_modal_open;
     }
-    @action.bound
+
     setRequiredAdType(change_ad_type) {
         this.required_ad_type = change_ad_type;
     }
@@ -674,8 +672,8 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     floating_rate_store.rate_type === ad_type.FIXED
                         ? v > 0 &&
-                        decimalValidator(v) &&
-                        countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
+                          decimalValidator(v) &&
+                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
@@ -821,8 +819,8 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     this.required_ad_type === ad_type.FIXED
                         ? v > 0 &&
-                        decimalValidator(v) &&
-                        countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
+                          decimalValidator(v) &&
+                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
                         : true,
                 v =>
                     this.required_ad_type === ad_type.FLOAT

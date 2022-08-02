@@ -296,6 +296,7 @@ const CFDPasswordManagerModal = ({
     disableApp,
     is_visible,
     platform,
+    is_eu,
     selected_login,
     selected_account,
     toggleModal,
@@ -320,11 +321,11 @@ const CFDPasswordManagerModal = ({
         return selected_account_group === 'real'
             ? localize('Manage {{platform}} Real {{account_title}} account password', {
                   platform: getCFDPlatformLabel(platform),
-                  account_title: selected_account,
+                  account_title: is_eu ? 'CFDs' : selected_account,
               })
             : localize('Manage {{platform}} Demo {{account_title}} account password', {
                   platform: getCFDPlatformLabel(platform),
-                  account_title: selected_account,
+                  account_title: is_eu ? 'CFDs' : selected_account,
               });
     };
 
@@ -419,5 +420,6 @@ export default connect(({ modules: { cfd }, client, ui }: RootStore) => ({
     email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    is_eu: client.is_eu,
     sendVerifyEmail: cfd.sendVerifyEmail,
 }))(CFDPasswordManagerModal);

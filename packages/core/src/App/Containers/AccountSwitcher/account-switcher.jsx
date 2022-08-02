@@ -965,6 +965,7 @@ AccountSwitcher.propTypes = {
     is_visible: PropTypes.bool,
     isEligibleForMoreDemoMt5Svg: PropTypes.func,
     isEligibleForMoreRealMt5: PropTypes.func,
+    landing_companies: PropTypes.object,
     landing_company_shortcode: PropTypes.string,
     logoutClient: PropTypes.func,
     mt5_disabled_signup_types: PropTypes.object,
@@ -974,6 +975,7 @@ AccountSwitcher.propTypes = {
     dxtrade_disabled_signup_types: PropTypes.object,
     obj_total_balance: PropTypes.object,
     openAccountNeededModal: PropTypes.func,
+    openDerivRealAccountNeededModal: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     routeBackInApp: PropTypes.func,
     should_show_real_accounts_list: PropTypes.bool,
@@ -984,6 +986,7 @@ AccountSwitcher.propTypes = {
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     trading_platform_available_accounts: PropTypes.array,
+    upgradeable_landing_companies: PropTypes.array,
     updateMt5LoginList: PropTypes.func,
 };
 

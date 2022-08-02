@@ -340,6 +340,7 @@ const AccountWizard = props => {
 };
 
 AccountWizard.propTypes = {
+    account_settings: PropTypes.object,
     fetchResidenceList: PropTypes.func,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,

@@ -60,6 +60,10 @@ SetCitizenshipForm.propTypes = {
     children: PropTypes.node,
     class_prefix: PropTypes.string,
     citizenship_list: PropTypes.arrayOf(PropTypes.object),
+    errors: PropTypes.object,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
+    touched: PropTypes.object,
 };
 
 export default SetCitizenshipForm;

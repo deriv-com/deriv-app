@@ -44,6 +44,7 @@ const LastDigitStat = ({ is_max, is_min, is_selected, percentage }) => {
 LastDigitStat.propTypes = {
     is_max: PropTypes.bool,
     is_min: PropTypes.bool,
+    is_selected: PropTypes.bool,
     percentage: PropTypes.number,
 };
 

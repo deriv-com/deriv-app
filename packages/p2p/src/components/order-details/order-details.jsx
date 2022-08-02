@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText, isDesktop, isMobile } from '@deriv/shared';
+import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -13,13 +13,16 @@ import OrderDetailsFooter from 'Components/order-details/order-details-footer.js
 import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx';
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
+import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
+import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
+    const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const { order_store, sendbird_store } = useStores();
     const {
         account_currency,
@@ -39,7 +42,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
         local_currency,
         other_user_details,
         payment_info,
-        price,
         purchase_time,
         rate,
         review_details,
@@ -83,6 +85,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
         return <Chat />;
     }
 
+    const display_payment_amount = removeTrailingZeros(
+        formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
+    );
+
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
             {is_active_order && (
@@ -106,7 +112,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         icon='IcAlertWarning'
                         message={
                             <Text size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                                <Localize i18n_default_text="Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead." />
                             </Text>
                         }
                         is_warn
@@ -135,7 +141,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {getFormattedText(price, local_currency)}
+                                    {display_payment_amount} {local_currency}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -151,11 +157,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.counterparty_nickname_label}
-                                    value={
-                                        <Text size='xs' line_height='m'>
-                                            {other_user_details.name}
-                                        </Text>
-                                    }
+                                    value={<Text size='xs'>{other_user_details.name}</Text>}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -169,11 +171,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={getFormattedText(price, local_currency)}
+                                    value={`${display_payment_amount} ${local_currency}`}
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={getFormattedText(rate, local_currency)}
+                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -184,15 +186,30 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         {is_active_order && (
                             <React.Fragment>
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 {order_store?.has_order_payment_method_details ? (
                                     <div className='order-details-card--padding'>
-                                        <Text size='xs' weight='bold'>
-                                            {labels.payment_details}
-                                        </Text>
-                                        <Accordion
+                                        <section className='order-details-card__title'>
+                                            <Text size='xs' weight='bold'>
+                                                {labels.payment_details}
+                                            </Text>
+                                            <Button
+                                                className='p2p-my-ads__expand-button'
+                                                onClick={() => setShouldExpandAll(prev_state => !prev_state)}
+                                                transparent
+                                            >
+                                                <Text size='xss' weight='bold' color='red'>
+                                                    {localize('{{accordion_state}}', {
+                                                        accordion_state: should_expand_all
+                                                            ? 'Collapse all'
+                                                            : 'Expand all',
+                                                    })}
+                                                </Text>
+                                            </Button>
+                                        </section>
+                                        <P2PAccordion
                                             className='order-details-card__accordion'
                                             icon_close='IcChevronRight'
                                             icon_open='IcChevronDown'
@@ -204,119 +221,121 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                                     <PaymentMethodAccordionContent payment_method={payment_method} />
                                                 ),
                                             }))}
+                                            is_expand_all={should_expand_all}
+                                            onChange={setShouldExpandAll}
                                         />
                                     </div>
                                 ) : (
                                     <OrderInfoBlock
                                         className='order-details-card--padding'
-                                        label={
-                                            <Text size='xs' weight='bold'>
-                                                {labels.payment_details}
-                                            </Text>
-                                        }
+                                        label={labels.payment_details}
+                                        size='xs'
+                                        weight='bold'
                                         value={payment_info || '-'}
                                     />
                                 )}
+                            </React.Fragment>
+                        )}
+                        {is_active_order && (
+                            <React.Fragment>
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
-                                    label={
-                                        <Text size='xs' weight='bold'>
-                                            {labels.contact_details}
-                                        </Text>
-                                    }
+                                    label={labels.contact_details}
+                                    size='xs'
+                                    weight='bold'
                                     value={contact_info || '-'}
                                 />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
-                                    label={
-                                        <Text size='xs' weight='bold'>
-                                            {labels.instructions}
-                                        </Text>
-                                    }
+                                    label={labels.instructions}
+                                    size='xs'
+                                    weight='bold'
                                     value={advert_details.description.trim() || '-'}
                                 />
-                            </React.Fragment>
-                        )}
-                        {is_completed_order && !review_details && (
-                            <React.Fragment>
-                                <RatingModal
-                                    is_buy_order_for_user={is_buy_order_for_user}
-                                    is_rating_modal_open={order_store.is_rating_modal_open}
-                                    onClickDone={() => order_store.setOrderRating(id)}
-                                    onClickNotRecommended={() => order_store.setIsRecommended(0)}
-                                    onClickRecommended={() => order_store.setIsRecommended(1)}
-                                    onClickSkip={() => order_store.setIsRatingModalOpen(false)}
-                                    onClickStar={order_store.handleRating}
-                                    rating_value={order_store.rating_value}
-                                />
-                                <div className='order-details-card--rating'>
-                                    <UserRatingButton
-                                        button_text={
-                                            is_reviewable ? localize('Rate this transaction') : localize('Not rated')
-                                        }
-                                        is_disabled={!is_reviewable}
-                                        large
-                                        onClick={() => order_store.setIsRatingModalOpen(true)}
-                                    />
-                                </div>
-                                <Text color='less-prominent' size='xxxs'>
-                                    {!is_reviewable && (
-                                        <Localize i18n_default_text='You can no longer rate this transaction.' />
-                                    )}
-                                </Text>
-                            </React.Fragment>
-                        )}
-                        {review_details && (
-                            <div className='order-details-card__ratings'>
-                                <Text color='prominent' size='s' weight='bold'>
-                                    <Localize i18n_default_text='Your transaction experience' />
-                                </Text>
-                                <div className='order-details-card__ratings--row'>
-                                    <StarRating
-                                        empty_star_className='order-details-card__star'
-                                        empty_star_icon='IcEmptyStar'
-                                        full_star_className='order-details-card__star'
-                                        full_star_icon='IcFullStar'
-                                        initial_value={rating_average_decimal}
-                                        is_readonly
-                                        number_of_stars={5}
-                                        should_allow_hover_effect={false}
-                                        star_size={isMobile() ? 17 : 20}
-                                    />
-                                    <div className='order-details-card__ratings--row'>
-                                        {review_details.recommended === 1 ? (
-                                            <React.Fragment>
-                                                <Icon
-                                                    className='order-details-card__ratings--icon'
-                                                    custom_color='var(--status-success)'
-                                                    icon='IcThumbsUp'
-                                                    size={14}
-                                                />
-                                                <Text color='prominent' size='xxs'>
-                                                    <Localize i18n_default_text='Recommended' />
-                                                </Text>
-                                            </React.Fragment>
-                                        ) : (
-                                            <React.Fragment>
-                                                <Icon
-                                                    className='order-details-card__ratings--icon'
-                                                    custom_color='var(--status-danger)'
-                                                    icon='IcThumbsDown'
-                                                    size={14}
-                                                />
-                                                <Text color='prominent' size='xxs'>
-                                                    <Localize i18n_default_text='Not Recommended' />
-                                                </Text>
-                                            </React.Fragment>
-                                        )}
+                                {is_completed_order && !review_details && (
+                                    <React.Fragment>
+                                        <RatingModal
+                                            is_buy_order_for_user={is_buy_order_for_user}
+                                            is_rating_modal_open={order_store.is_rating_modal_open}
+                                            onClickaaDone={() => order_store.setOrderRating(id)}
+                                            onClickNotRecommended={() => order_store.setIsRecommended(0)}
+                                            onClickRecommended={() => order_store.setIsRecommended(1)}
+                                            onClickSkip={() => order_store.setIsRatingModalOpen(false)}
+                                            onClickStar={order_store.handleRating}
+                                            rating_value={order_store.rating_value}
+                                        />
+                                        <div className='order-details-card--rating'>
+                                            <UserRatingButton
+                                                button_text={
+                                                    is_reviewable
+                                                        ? localize('Rate this transaction')
+                                                        : localize('Not rated')
+                                                }
+                                                is_disabled={!is_reviewable}
+                                                large
+                                                onClick={() => order_store.setIsRatingModalOpen(true)}
+                                            />
+                                        </div>
+                                        <Text color='less-prominent' size='xxxs'>
+                                            {!is_reviewable && (
+                                                <Localize i18n_default_text='You can no longer rate this transaction.' />
+                                            )}
+                                        </Text>
+                                    </React.Fragment>
+                                )}
+                                {review_details && (
+                                    <div className='order-details-card__ratings'>
+                                        <Text color='prominent' size='s' weight='bold'>
+                                            <Localize i18n_default_text='Your transaction experience' />
+                                        </Text>
+                                        <div className='order-details-card__ratings--row'>
+                                            <StarRating
+                                                empty_star_className='order-details-card__star'
+                                                empty_star_icon='IcEmptyStar'
+                                                full_star_className='order-details-card__star'
+                                                full_star_icon='IcFullStar'
+                                                initial_value={rating_average_decimal}
+                                                is_readonly
+                                                number_of_stars={5}
+                                                should_allow_hover_effect={false}
+                                                star_size={isMobile() ? 17 : 20}
+                                            />
+                                            <div className='order-details-card__ratings--row'>
+                                                {review_details.recommended === 1 ? (
+                                                    <React.Fragment>
+                                                        <Icon
+                                                            className='order-details-card__ratings--icon'
+                                                            custom_color='var(--status-success)'
+                                                            icon='IcThumbsUp'
+                                                            size={14}
+                                                        />
+                                                        <Text color='prominent' size='xxs'>
+                                                            <Localize i18n_default_text='Recommended' />
+                                                        </Text>
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <React.Fragment>
+                                                        <Icon
+                                                            className='order-details-card__ratings--icon'
+                                                            custom_color='var(--status-danger)'
+                                                            icon='IcThumbsDown'
+                                                            size={14}
+                                                        />
+                                                        <Text color='prominent' size='xxs'>
+                                                            <Localize i18n_default_text='Not Recommended' />
+                                                        </Text>
+                                                    </React.Fragment>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        )}
-                        {should_show_order_footer && isDesktop() && (
-                            <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                )}
+                                {should_show_order_footer && isDesktop() && (
+                                    <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                )}
+                            </React.Fragment>
                         )}
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (

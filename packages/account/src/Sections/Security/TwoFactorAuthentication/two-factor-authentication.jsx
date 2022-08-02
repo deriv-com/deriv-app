@@ -116,7 +116,7 @@ const TwoFactorAuthentication = ({
                         <Timeline.Item
                             item_title={
                                 <Localize
-                                    i18n_default_text='Scan the QR code below with your 2FA app. We recommend <0>Authy</0> or <1>Google Authenticator</1>. We do not support <2>Duo Mobile</2>.'
+                                    i18n_default_text='Scan the QR code below with your 2FA app. We recommend <0>Authy</0> or <1>Google Authenticator</1>.'
                                     components={[
                                         <a
                                             className='link two-factor__link'
@@ -131,13 +131,6 @@ const TwoFactorAuthentication = ({
                                             target='_blank'
                                             rel='noopener noreferrer'
                                             key={1}
-                                        />,
-                                        <a
-                                            className='link two-factor__link'
-                                            href='https://help.duo.com/s/article/2112?language=en_US'
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            key={2}
                                         />,
                                     ]}
                                 />

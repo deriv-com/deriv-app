@@ -375,7 +375,7 @@ describe('PaymentAgentStore', () => {
             amount: '200',
             currency: 'USD',
             loginid: 'CR90000000',
-            payment_agent_name: 'name',
+            payment_agent_name: 'Payment Agent of CR90000000',
         });
         expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });

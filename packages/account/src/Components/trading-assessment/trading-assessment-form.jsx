@@ -14,6 +14,7 @@ const TradingAssessmentForm = ({
     onSubmit,
     onCancel,
     is_header_navigation,
+    should_move_to_next,
 }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
@@ -31,6 +32,10 @@ const TradingAssessmentForm = ({
         }));
         setFormData(form_value);
     }, []);
+
+    React.useEffect(() => {
+        if (should_move_to_next) displayNextPage();
+    }, [should_move_to_next]);
 
     const displayNextPage = () => {
         if (form_data.risk_tolerance === 'No') {

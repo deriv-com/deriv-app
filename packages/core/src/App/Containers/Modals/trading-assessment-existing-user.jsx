@@ -26,6 +26,7 @@ const TradingAssessmentExistingUser = ({
     // Get the Trading assessment questions and initial_value
     const [form_values, setFormValue] = React.useState({});
     const [assessment_questions, setAssessmentQuestions] = React.useState({});
+    const [should_move_to_next, setShouldMoveToNext] = React.useState(false);
 
     React.useEffect(() => {
         setIsTradingAssessmentForExistingUserEnabled(true);
@@ -66,6 +67,7 @@ const TradingAssessmentExistingUser = ({
 
     const handleAcceptRisk = () => {
         setFormValue(prev_state => ({ ...prev_state, risk_tolerance: 'Yes' }));
+        setShouldMoveToNext(true);
         setShouldShowRiskToleranceWarningModal(false);
         setShouldShowTradeAssessmentForm(true);
     };
@@ -140,12 +142,14 @@ const TradingAssessmentExistingUser = ({
                         visible={should_show_trade_assessment_form}
                         title={localize('Trading Experience Assessment')}
                         portal_element_id='modal_root'
+                        has_close_icon={false}
                     >
                         <TradingAssessmentForm
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-usr'
+                            should_move_to_next={should_move_to_next}
                         />
                     </MobileDialog>
                 </MobileWrapper>

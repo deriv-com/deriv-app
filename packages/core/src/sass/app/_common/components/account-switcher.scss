@@ -377,6 +377,7 @@
     }
     &__balance {
         margin-left: auto;
+        text-align: right;
     }
     &__separator {
         display: block;
@@ -450,7 +451,6 @@
     line-height: 1.5;
     text-align: right;
 }
-
 /** @define badge-server; weak */
 .badge-server {
     display: inline-block;

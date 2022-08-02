@@ -11,7 +11,8 @@
             "Stores/*": ["src/stores/*"],
             "Stores": ["src/stores/index"],
             "Types": ["src/types"],
-            "Utils": ["src/utils"]
+            "Utils": ["src/utils"],
+            "@deriv/*": ["../*/src"]
         }
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx"]

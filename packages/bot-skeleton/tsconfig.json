@@ -3,7 +3,10 @@
     "compilerOptions": {
         "outDir": "./dist",
         "rootDir": "./src",
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "paths": {
+            "@deriv/*": ["../*/src"]
+        }
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"] // *** The files TypeScript should type check ***
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"] // *** The files TypeScript should type check ***
 }

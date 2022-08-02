@@ -4,17 +4,18 @@
         "paths": {
             "Components/*": ["components/*"],
             "Config/*": ["config/*"],
-            "Constants/*":["constants/*"],
+            "Constants/*": ["constants/*"],
             "Containers/*": ["containers/*"],
             "Images/*": ["public/images/*"],
             "Pages/*": ["pages/*"],
             "Stores/*": ["stores/*"],
             "Types": ["types"],
             "Utils/*": ["utils/*"],
+            "@deriv/*": ["../../*/src"]
         },
         "outDir": "./dist",
         "rootDir": "./src",
-        "baseUrl": "src",
+        "baseUrl": "src"
     },
-    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx"]
 }

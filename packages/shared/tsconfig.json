@@ -2,7 +2,10 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "./src",
-        "baseUrl": "src"
+        "baseUrl": "src",
+        "paths": {
+            "@deriv/*": ["../*/src"]
+        }
     },
-    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx"]
 }

@@ -1917,7 +1917,7 @@ export default class ClientStore extends BaseStore {
             'utm_content',
             'affiliate_token',
         ];
-        const signup_params = {};
+        const signup_params = { type: 'wallet' };
         const url_params = new URLSearchParams(window.location.search);
 
         param_list.forEach(key => {
@@ -1958,7 +1958,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, 'wallet', this.getSignupParams()).then(
             async response => {
                 if (response.error) {
                     cb(response.error.message);

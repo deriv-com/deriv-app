@@ -189,12 +189,13 @@ const BinarySocketBase = (() => {
     const cancelCryptoTransaction = transaction_id =>
         deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });
 
-    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
+    const newAccountVirtual = (verification_code, client_password, residence, type = 'trading', device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
+            type,
             ...device_data,
         });
 

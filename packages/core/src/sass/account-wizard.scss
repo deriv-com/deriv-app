@@ -487,7 +487,6 @@
 
     &__header {
         margin-top: 2.4rem;
-        width: -webkit-fill-available;
         padding: 0 7rem;
 
         @include mobile() {
@@ -539,7 +538,7 @@
         }
 
         .dc-themed-scrollbars {
-            width: -webkit-fill-available;
+            width: 100%;
         }
 
         .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
@@ -567,7 +566,6 @@
         gap: 2.4rem;
         display: flex;
         flex-direction: column;
-        width: -webkit-fill-available;
     }
 
     .disable-pointer {
@@ -595,7 +593,7 @@
         padding: 1rem 2rem;
         position: fixed;
         bottom: 0;
-        width: -webkit-fill-available;
+        width: 100%;
     }
 
     &__btn-group {

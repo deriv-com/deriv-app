@@ -9,11 +9,9 @@ import {
     TermsOfUse,
     proofOfIdentityConfig,
     ProofOfIdentityFormOnSignup,
-    financialDetailsConfig,
 } from '@deriv/account';
 import AddressDetails from './address-details.jsx';
 import CurrencySelector from './currency-selector.jsx';
-import FinancialDetails from './financial-details.jsx';
 
 const isMaltaAccount = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
 const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
@@ -36,7 +34,6 @@ export const getItems = props => {
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
         ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
         ...(shouldShowIdentityInformation(props) ? [proofOfIdentityConfig(props, ProofOfIdentityFormOnSignup)] : []),
-        ...(isMaltaAccount(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
         termsOfUseConfig(props, TermsOfUse),
     ];
 };

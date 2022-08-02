@@ -676,6 +676,7 @@ const AccountSwitcher = props => {
                                 id='dt_core_account-switcher_add-new-account'
                                 onClick={() => {
                                     if (props.real_account_creation_unlock_date) {
+                                        closeAccountsDialog();
                                         props.setShouldShowCooldownWarningModal(true);
                                     } else {
                                         props.openRealAccountSignup(account);

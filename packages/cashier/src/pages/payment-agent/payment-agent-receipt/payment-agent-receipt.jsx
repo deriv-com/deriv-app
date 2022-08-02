@@ -79,7 +79,7 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
                 })}
             >
                 <Localize
-                    i18n_default_text={'{{ text }}. <0></0>You can view the summary of this transaction in your email.'}
+                    i18n_default_text='{{ text }}. <0></0>You can view the summary of this transaction in your email.'
                     components={!isMobile() ? [<br key={0} />] : []}
                     values={{
                         text: receipt.payment_agent_name

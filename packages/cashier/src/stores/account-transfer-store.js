@@ -329,12 +329,26 @@ export default class AccountTransferStore {
                 is_eu: this.root_store.client.is_eu,
             })}`;
             const account_text_display = is_cfd
-                ? `${cfd_text_display} ${getCFDAccountDisplay({
-                      market_type: account.market_type,
-                      sub_account_type: account.sub_account_type,
-                      platform: account.account_type,
-                      is_eu: this.root_store.client.is_eu,
-                  })}`
+                ? account.account_type === 'mt5'
+                    ? `${cfd_text_display} ${getCFDAccountDisplay({
+                          market_type: account.market_type,
+                          sub_account_type: account.sub_account_type,
+                          platform: account.account_type,
+                          is_eu: this.root_store.client.is_eu,
+                      })} ${
+                          account.landing_company_short &&
+                          account.landing_company_short !== 'svg' &&
+                          account.landing_company_short !== 'bvi'
+                              ? account.landing_company_short?.charAt(0).toUpperCase() +
+                                account.landing_company_short?.slice(1)
+                              : account.landing_company_short?.toUpperCase()
+                      }`
+                    : `${cfd_text_display} ${getCFDAccountDisplay({
+                          market_type: account.market_type,
+                          sub_account_type: account.sub_account_type,
+                          platform: account.account_type,
+                          is_eu: this.root_store.client.is_eu,
+                      })}`
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
                   );

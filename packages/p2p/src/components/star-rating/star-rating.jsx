@@ -76,6 +76,7 @@ StarRating.propTypes = {
     is_readonly: PropTypes.bool,
     number_of_stars: PropTypes.number,
     onClick: PropTypes.func,
+    rating_value: PropTypes.number,
     rtl: PropTypes.bool,
     should_allow_half_icon: PropTypes.bool,
     should_allow_hover_effect: PropTypes.bool,

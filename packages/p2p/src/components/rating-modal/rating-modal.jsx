@@ -28,6 +28,7 @@ const RatingModal = ({
                     empty_star_icon='IcEmptyStar'
                     full_star_className='rating-modal--star'
                     full_star_icon='IcFullStar'
+                    initial_value={0}
                     number_of_stars={5}
                     onClick={onClickStar}
                     rating_value={rating_value}

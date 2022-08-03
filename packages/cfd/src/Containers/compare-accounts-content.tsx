@@ -409,6 +409,12 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
             const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
             const footnote_counter = footnote ? ++footnote_number : null;
 
+            if (platform === CFD_PLATFORMS.DXTRADE) {
+                return {
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
+                    ...synthetic_object,
+                };
+            }
             if (is_logged_in) {
                 return {
                     attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
@@ -417,13 +423,6 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
                     ...(landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
                         ? { financial_stp: mt5?.financial_stp }
                         : {}),
-                };
-            }
-            if (platform === CFD_PLATFORMS.DXTRADE) {
-                return {
-                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote_counter} />,
-                    ...synthetic_object,
-                    ...financial_object,
                 };
             }
             return {
@@ -564,7 +563,7 @@ const ModalContent = ({
 }: TModalContentProps) => {
     const [cols, setCols] = React.useState<Array<Record<string, string | React.ReactNode | undefined>>>([]);
     const [template_columns, updateColumnsStyle] = React.useState(
-        platform === CFD_PLATFORMS.DXTRADE ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
+        platform === CFD_PLATFORMS.DXTRADE ? '1fr 1.5fr' : '1.5fr 1fr 2fr 1fr'
     );
 
     React.useEffect(() => {
@@ -577,11 +576,7 @@ const ModalContent = ({
                 } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
             );
         } else if (is_logged_in && platform === CFD_PLATFORMS.DXTRADE) {
-            updateColumnsStyle(
-                `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
-                    landing_companies?.dxtrade_financial_company ? '2fr' : ''
-                }`
-            );
+            updateColumnsStyle(`1fr ${landing_companies?.dxtrade_gaming_company ? '1.5fr' : ''}`);
         }
     }, [
         landing_companies?.mt_financial_company,
@@ -613,7 +608,11 @@ const ModalContent = ({
                                 {is_logged_in ? (
                                     <React.Fragment>
                                         {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (
-                                            <Table.Head>{localize('Synthetic')}</Table.Head>
+                                            <Table.Head>
+                                                {platform === CFD_PLATFORMS.DXTRADE
+                                                    ? localize('CFDs')
+                                                    : localize('Synthetic')}
+                                            </Table.Head>
                                         )}
                                         {isLandingCompanyEnabled({
                                             landing_companies,

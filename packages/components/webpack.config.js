@@ -18,6 +18,7 @@ module.exports = function () {
             alias: {
                 Components: path.resolve(__dirname, 'src', 'components'),
             },
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             minimize: true,
@@ -83,11 +84,13 @@ module.exports = function () {
                 'react-dom': 'react-dom',
                 'react-dropzone': 'react-dropzone',
                 '@deriv/shared': '@deriv/shared',
+                '@deriv/translations': '@deriv/translations',
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',
             },
             /^@deriv\/shared\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
     };
 };

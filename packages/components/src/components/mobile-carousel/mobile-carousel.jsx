@@ -39,6 +39,7 @@ export const MobileCarousel = ({ children, ...props }) => {
 
     const swipedLeft = () => goNext();
     const swipedRight = () => goPrev();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const swipe_handlers = useSwipeable({
         onSwipedLeft: swipedLeft,
         onSwipedRight: swipedRight,

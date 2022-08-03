@@ -95,57 +95,5 @@ describe('<CFDPOI />', () => {
     it('should render ProofOfIdentityContainerforMt5', () => {
         render(<CFDPOI {...props} />);
         expect(screen.getByText(ProofOfIdentityContainerforMt5)).toBeInTheDocument();
-        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
-        expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_modal_footer')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
-    });
-
-    it('should render without modal footer wrapper on mobile', () => {
-        isMobile.mockReturnValue(true);
-        render(<CFDPOI {...props} />);
-
-        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
-        expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_modal_footer')).not.toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(2);
-    });
-
-    it('should trigger onCancel callback when Previous button is clicked', () => {
-        render(<CFDPOI {...props} />);
-
-        const previous_button = screen.getByRole('button', { name: /previous/i });
-
-        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
-        expect(previous_button).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
-
-        fireEvent.click(previous_button);
-        expect(props.onCancel).toHaveBeenCalledTimes(1);
-    });
-
-    it('should enable Next button when poi_state has changed to pending as a result of POI submission', () => {
-        jest.spyOn(React, 'useState').mockReturnValueOnce(['pending', () => {}]);
-        render(<CFDPOI {...props} />);
-
-        const next_button = screen.getByRole('button', { name: /next/i });
-
-        expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
-        expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
-        expect(next_button).toBeEnabled();
-
-        fireEvent.click(next_button);
-        expect(props.onSubmit).toHaveBeenCalledTimes(1);
-    });
-
-    it('should show an error message received from server that is passed via props as form_error', () => {
-        const form_error = 'Form submission failed.';
-        render(<CFDPOI {...props} form_error={form_error} />);
-
-        expect(screen.getByText(form_error)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
     });
 });

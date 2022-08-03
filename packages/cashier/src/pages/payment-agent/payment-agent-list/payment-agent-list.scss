@@ -3,6 +3,10 @@
     @include mobile {
         padding: 0;
     }
+    .side-note--mobile {
+        padding: 0;
+        margin: 0;
+    }
     &__instructions {
         @include mobile {
             display: grid;
@@ -20,6 +24,20 @@
             }
             .dc-tabs__content {
                 margin-top: 7.2rem;
+            }
+        }
+        &-hide-tabs {
+            & .dc-tabs__list {
+                display: none;
+            }
+
+            & .dc-tabs__content {
+                margin-top: 0;
+            }
+
+            & .dc-tabs__list--header--tabs--desktop {
+                display: none;
+                padding: 1.6rem 5rem;
             }
         }
         .verification-email__icon {
@@ -54,6 +72,9 @@
                         padding-right: 3.2rem;
                         color: var(--text-less-prominent);
                     }
+                }
+                &__select-arrow {
+                    right: 10px;
                 }
             }
         }

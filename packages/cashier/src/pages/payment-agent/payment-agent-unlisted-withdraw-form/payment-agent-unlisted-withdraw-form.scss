@@ -1,0 +1,58 @@
+.payment-agent-withdraw-form {
+    &__page-return {
+        display: flex;
+        column-gap: 0.8rem;
+        margin: 2.4rem 0;
+        align-items: center;
+        @include mobile {
+            margin: 0 0 1.6rem;
+        }
+        .dc-icon {
+            cursor: pointer;
+        }
+        .dc-text {
+            padding-top: 1px;
+        }
+    }
+    &__form {
+        margin-bottom: 3.6rem;
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
+        &-account-number {
+            margin-bottom: 4.4rem;
+            @include mobile {
+                margin: 1.6rem 0 5.2rem;
+            }
+            .dc-icon {
+                cursor: pointer;
+            }
+        }
+        &-amount {
+            display: flex;
+            @include mobile {
+                flex-direction: column;
+            }
+            .dc-input {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-bottom: 0;
+                @include mobile {
+                    border: 1px solid var(--border-normal);
+                    border-top-right-radius: 0.4rem;
+                    border-bottom-right-radius: 0.4rem;
+                }
+            }
+            .dc-btn {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                @include mobile {
+                    margin-top: 4rem;
+                    border-top-left-radius: 0.4rem;
+                    border-bottom-left-radius: 0.4rem;
+                }
+            }
+        }
+    }
+}

@@ -108,7 +108,9 @@ describe('PaymentAgentStore', () => {
                         paymentagent_list: mocked_payment_agent_list,
                     })
                 ),
-                paymentAgentWithdraw: jest.fn(() => Promise.resolve({ paymentagent_withdraw: '2' })),
+                paymentAgentWithdraw: jest.fn(() =>
+                    Promise.resolve({ paymentagent_withdraw: '2', paymentagent_name: 'name' })
+                ),
             },
             wait: () => Promise.resolve(),
         };

@@ -4,7 +4,6 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
-import { connect } from 'Stores/connect';
 import PaymentAgentDetail from '../payment-agent-detail';
 
 const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
@@ -52,6 +51,4 @@ PaymentAgentCardDescription.propTypes = {
     payment_agent: PropTypes.object,
 };
 
-export default connect(({ ui }) => ({
-    is_dark_mode_on: ui.is_dark_mode_on,
-}))(PaymentAgentCardDescription);
+export default PaymentAgentCardDescription;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
+import { fireEvent, screen, render } from '@testing-library/react';
+import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
 
 jest.mock('Stores/connect.js', () => ({
@@ -19,13 +19,19 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
+jest.mock('Pages/payment-agent/payment-agent-unlisted-withdraw-form', () => () => (
+    <div>PaymentAgentUnlistedWithdrawForm</div>
+));
+jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () => () => <div>PaymentAgentWithdrawConfirm</div>);
+jest.mock('Pages/payment-agent/payment-agent-receipt', () => () => <div>PaymentAgentReceipt</div>);
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
 
-describe('<PaymentAgentDepositWithdrawContainer />', () => {
+describe('<PaymentAgentContainer />', () => {
     const props = {
-        has_payment_agent_search_warning: false,
+        app_contents_scroll_ref: {
+            current: {},
+        },
         is_deposit: true,
-        is_search_loading: false,
         is_try_withdraw_successful: false,
         is_withdraw_successful: false,
         onChangePaymentMethod: jest.fn(),
@@ -70,8 +76,8 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
         verification_code: 'ABCdef',
     };
 
-    it('should show proper messages, inputs and icons', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} />);
+    it('should show proper messages and icons', () => {
+        render(<PaymentAgentContainer {...props} />);
 
         expect(
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
@@ -82,24 +88,55 @@ describe('<PaymentAgentDepositWithdrawContainer />', () => {
         expect(screen.getByText('Payment Agent of CR90000002')).toBeInTheDocument();
         expect(screen.getByText('Further information CR90000002')).toBeInTheDocument();
         expect(screen.getAllByTestId('dt_payment_method_icon').length).toBe(2);
-        expect(screen.getByPlaceholderText('Search payment agent name')).toBeInTheDocument();
+    });
+
+    it('should show proper header when is_deposit is equal to false', () => {
+        render(<PaymentAgentContainer {...props} is_deposit={false} />);
+
+        expect(
+            screen.getByText(
+                /choose your preferred payment agent and enter your withdrawal amount. If your payment agent is not listed/i
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByText('search for them using their account number')).toBeInTheDocument();
+    });
+
+    it('should show PaymentAgentUnlistedWithdrawForm when the user clicks on "search for them using their account number" link', () => {
+        render(<PaymentAgentContainer {...props} is_deposit={false} />);
+
+        const el_withdrawal_link = screen.getByTestId('dt_withdrawal_link');
+        fireEvent.click(el_withdrawal_link);
+
+        expect(screen.getByText('PaymentAgentUnlistedWithdrawForm')).toBeInTheDocument();
+    });
+
+    it('should show PaymentAgentWithdrawConfirm component when is_try_withdraw_successful is equal to true', () => {
+        render(<PaymentAgentContainer {...props} is_try_withdraw_successful />);
+
+        expect(screen.getByText('PaymentAgentWithdrawConfirm')).toBeInTheDocument();
+    });
+
+    it('should show PaymentAgentReceipt component when is_withdraw_successful is equal to true', () => {
+        render(<PaymentAgentContainer {...props} is_withdraw_successful />);
+
+        expect(screen.getByText('PaymentAgentReceipt')).toBeInTheDocument();
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(<PaymentAgentDepositWithdrawContainer {...props} />);
+        render(<PaymentAgentContainer {...props} />);
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 
     it('should show search loader when is_search_loading equal to true', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} is_search_loading />);
+        render(<PaymentAgentContainer {...props} is_search_loading />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should show proper warning messages if there are no matches in search results', () => {
-        render(<PaymentAgentDepositWithdrawContainer {...props} has_payment_agent_search_warning />);
+        render(<PaymentAgentContainer {...props} has_payment_agent_search_warning />);
 
         expect(screen.getByText('No payment agents found for your search')).toBeInTheDocument();
         expect(screen.getByText('Try changing your search criteria.')).toBeInTheDocument();

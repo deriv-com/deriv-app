@@ -170,9 +170,15 @@ const CloseMxMltAccountModal = ({
 };
 
 CloseMxMltAccountModal.propTypes = {
+    country_standpoint: PropTypes.object,
+    can_have_mlt_account: PropTypes.bool,
+    has_malta_account: PropTypes.bool,
+
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_close_mx_mlt_account_modal_visible: PropTypes.bool,
+    removeNotificationMessageByKey: PropTypes.func,
+    showCloseMxMltAccountPopup: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({

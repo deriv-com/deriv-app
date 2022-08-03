@@ -80,6 +80,7 @@ const OrderTableContent = () => {
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,
+    server_time: PropTypes.object,
     showDetails: PropTypes.func,
 };
 

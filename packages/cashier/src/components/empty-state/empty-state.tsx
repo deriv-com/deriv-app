@@ -8,7 +8,7 @@ export type TEmptyStateProps = {
     description: string | React.ReactNode;
 };
 
-const EmptyState: React.FC<TEmptyStateProps> = ({ icon, title, description }) => (
+const EmptyState = ({ icon, title, description }: TEmptyStateProps) => (
     <div className='cashier-empty-state'>
         <Icon icon={icon} className='cashier-empty-state__icon' />
         <Text as='h2' weight='bold' align='center' className='cashier-empty-state__title'>

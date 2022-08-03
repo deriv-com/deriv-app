@@ -29,13 +29,7 @@ const BlockUserTable = () => {
 
     if (my_profile_store.search_term && my_profile_store.rendered_blocked_advertisers_list.length === 0) {
         return (
-            <Text
-                align='center'
-                className='block-user__text'
-                line_height='m'
-                size='s'
-                weight={isMobile() ? 'normal' : 'bold'}
-            >
+            <Text align='center' className='block-user__text' line_height='m' size='s' weight='normal'>
                 {localize('There are no matching name.')}
             </Text>
         );

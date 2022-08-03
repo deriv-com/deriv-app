@@ -8,6 +8,7 @@
     &__content {
         display: flex;
         flex-direction: column;
+        flex: 1;
 
         @include tablet-up {
             max-width: 100%;

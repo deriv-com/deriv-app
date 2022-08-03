@@ -23,12 +23,6 @@ import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
-// const getFieldNames = Object.freeze({
-//     0: 'quick-strategy__size',
-//     1: 'alembert-unit',
-//     2: 'oscar-unit',
-// });
-
 const InputSize = ({
     onChangeInputValue,
     handleChange,

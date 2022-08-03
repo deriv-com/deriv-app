@@ -3,10 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Text } from '@deriv/components';
-import { useIsMounted, WS, convertTimeFormat } from '@deriv/shared';
+import { useIsMounted, WS, convertTimeFormat, isMarketClosed } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
 
 // check market in coming 7 days
 const days_to_check_before_exit = 7;
@@ -199,6 +198,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
 };
 
 MarketCountdownTimer.propTypes = {
+    active_symbols: PropTypes.array,
     is_main_page: PropTypes.bool,
     setIsTimerLoading: PropTypes.func,
     onMarketOpen: PropTypes.func,

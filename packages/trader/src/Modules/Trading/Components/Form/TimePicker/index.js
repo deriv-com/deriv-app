@@ -1,1 +1,3 @@
-export default from './trading-time-picker.jsx';
+import TradingTimePicker from './trading-time-picker.jsx';
+
+export default TradingTimePicker;

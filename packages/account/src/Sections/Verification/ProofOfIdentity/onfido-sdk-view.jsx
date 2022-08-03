@@ -7,7 +7,7 @@ import { isMobile, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
-import MissingPersonalDetails from 'Components/poi-missing-personal-details';
+import MissingPersonalDetails from 'Components/poi/missing-personal-details';
 
 const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, height, is_from_external }) => {
     const [api_error, setAPIError] = React.useState();
@@ -67,6 +67,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                 },
                 token: onfido_service_token,
                 useModal: false,
+                useMemoryHistory: true,
                 onComplete,
                 steps: [
                     {

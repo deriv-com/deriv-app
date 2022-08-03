@@ -257,6 +257,12 @@ const BinarySocketBase = (() => {
             ...payload,
         });
 
+    const tradingPlatformAvailableAccounts = platform =>
+        deriv_api.send({
+            trading_platform_available_accounts: 1,
+            platform,
+        });
+
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
 
@@ -375,6 +381,13 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
+    const getServiceToken = (platform, server) =>
+        deriv_api.send({
+            service_token: 1,
+            service: platform,
+            server,
+        });
+
     const changeEmail = api_request => deriv_api.send(api_request);
 
     return {
@@ -435,6 +448,7 @@ const BinarySocketBase = (() => {
         verifyEmail,
         tradingPlatformPasswordChange,
         tradingPlatformPasswordReset,
+        tradingPlatformAvailableAccounts,
         tradingPlatformInvestorPasswordChange,
         tradingPlatformInvestorPasswordReset,
         activeSymbols,
@@ -464,6 +478,7 @@ const BinarySocketBase = (() => {
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,
         triggerMt5DryRun,
+        getServiceToken,
         changeEmail,
     };
 })();

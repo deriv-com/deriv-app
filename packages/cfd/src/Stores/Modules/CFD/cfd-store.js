@@ -340,7 +340,7 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    async creatMT5Password(values, actions) {
+    async createMT5Password(values, actions) {
         const response = await WS.tradingPlatformPasswordChange({
             new_password: values.password,
             platform: CFD_PLATFORMS.MT5,
@@ -358,7 +358,7 @@ export default class CFDStore extends BaseStore {
     @action.bound
     async submitMt5Password(values, actions) {
         if (this.root_store.client.is_mt5_password_not_set) {
-            const has_error = await this.creatMT5Password(values, actions);
+            const has_error = await this.createMT5Password(values, actions);
             if (has_error) return;
         }
 

@@ -11,20 +11,15 @@ jest.mock('Stores/connect', () => ({
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
-    ProofOfIdentityContainer: () => <div>ProofOfIdentityContainer</div>,
-}));
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
+    ProofOfIdentityContainerforMt5: () => <div>ProofOfIdentityContainerforMt5</div>,
 }));
 
 describe('<CFDPOI />', () => {
     let props;
 
-    beforeEach(() => {
-        isMobile.mockReturnValue(false);
+    const ProofOfIdentityContainerforMt5 = 'ProofOfIdentityContainerforMt5';
 
+    beforeEach(() => {
         props = {
             account_status: {
                 authentication: {
@@ -97,9 +92,9 @@ describe('<CFDPOI />', () => {
         };
     });
 
-    it('should render with Next button disabled before submitting POI for the first time', () => {
+    it('should render ProofOfIdentityContainerforMt5', () => {
         render(<CFDPOI {...props} />);
-
+        expect(screen.getByText(ProofOfIdentityContainerforMt5)).toBeInTheDocument();
         expect(screen.getByTestId('dt_cfd_proof_of_identity')).toBeInTheDocument();
         expect(screen.getByText('ProofOfIdentityContainer')).toBeInTheDocument();
         expect(screen.getByTestId('dt_modal_footer')).toBeInTheDocument();

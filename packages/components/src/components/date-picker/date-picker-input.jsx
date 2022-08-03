@@ -97,7 +97,14 @@ DatePickerInput.propTypes = {
     show_leading_icon: PropTypes.bool,
     onClick: PropTypes.func,
     onClickClear: PropTypes.func,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    value: PropTypes.string,
+    disabled: PropTypes.bool,
+    error: PropTypes.string,
+    is_placeholder_visible: PropTypes.bool,
+    onChangeInput: PropTypes.func,
+    onBlur: PropTypes.func,
+    readOnly: PropTypes.bool,
+    required: PropTypes.bool,
 };
 
 export default DatePickerInput;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import UserAvatar from '../user-avatar';
+import UserAvatar from '../user-avatar.jsx';
 
 describe('<UserAvatar/>', () => {
     const props = {

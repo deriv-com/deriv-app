@@ -93,6 +93,8 @@ StepInput.propTypes = {
     onChange: PropTypes.func,
     render: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    pip_size: PropTypes.number,
+    currency: PropTypes.string,
 };
 
 export default StepInput;

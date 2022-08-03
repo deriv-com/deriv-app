@@ -6,10 +6,11 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
+import { generateEffectiveRate } from 'Utils/format-value';
 import './advertiser-page.scss';
 
 const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
-    const { advertiser_page_store, buy_sell_store, general_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
     const { currency } = general_store.client;
     const {
         local_currency,
@@ -17,10 +18,20 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
         min_order_amount_limit_display,
         payment_method_names,
         price_display,
+        rate_type,
+        rate,
     } = advert;
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+
+    const { display_effective_rate } = generateEffectiveRate({
+        price: price_display,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
 
     const showAdForm = () => {
         buy_sell_store.setSelectedAdState(advert);
@@ -42,7 +53,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
 
                     <div className='advertiser-page__adverts-price'>
                         <Text color='profit-success' size='s' weight='bold' line_height='m'>
-                            {price_display} {local_currency}
+                            {display_effective_rate} {local_currency}
                         </Text>
                     </div>
                     <div className='advertiser-page__cell-limit'>
@@ -89,7 +100,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
             <Table.Cell>{`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}</Table.Cell>
             <Table.Cell className='advertiser-page__adverts-price'>
                 <Text color='profit-success' line-height='m' size='xs' weight='bold'>
-                    {price_display} {local_currency}
+                    {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
             <Table.Cell>
@@ -124,6 +135,7 @@ AdvertiserPageRow.displayName = 'AdvertiserPageRow';
 
 AdvertiserPageRow.propTypes = {
     advert: PropTypes.object,
+    row: PropTypes.object,
     showAdPopup: PropTypes.func,
 };
 

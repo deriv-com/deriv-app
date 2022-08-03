@@ -89,6 +89,8 @@ CloseUKAccountModal.propTypes = {
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_close_uk_account_modal_visible: PropTypes.bool,
+    removeNotificationMessageByKey: PropTypes.func,
+    showCloseUKAccountPopup: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui }) => ({

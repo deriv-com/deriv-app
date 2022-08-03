@@ -210,6 +210,12 @@ AddOrManageAccounts.propTypes = {
     is_add_crypto: PropTypes.bool,
     setLoading: PropTypes.func,
     setShouldShowCancel: PropTypes.func,
+    is_add_fiat: PropTypes.bool,
+    is_add_currency: PropTypes.bool,
+    deposit_target: PropTypes.string,
+    resetRealAccountSignupTarget: PropTypes.func,
+    setIsDeposit: PropTypes.func,
+    manage_real_account_tab_index: PropTypes.number,
 };
 
 export default connect(({ client, modules, ui }) => ({

@@ -72,7 +72,7 @@ StarRating.propTypes = {
     full_star_color: PropTypes.string,
     full_star_className: PropTypes.string,
     full_star_icon: PropTypes.string,
-    initial_value: PropTypes.string,
+    initial_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_readonly: PropTypes.bool,
     number_of_stars: PropTypes.number,
     onClick: PropTypes.func,

@@ -3,9 +3,27 @@ import PropTypes from 'prop-types';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
-const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRecommended }) => {
+const RecommendUser = ({
+    is_advertiser_rated_previously,
+    is_buy_order_for_user,
+    onClickNotRecommended,
+    onClickRecommended,
+    previous_recommendation,
+}) => {
     const [is_no_selected, setIsNoSelected] = React.useState(false);
     const [is_yes_selected, setIsYesSelected] = React.useState(false);
+
+    React.useEffect(() => {
+        if (is_advertiser_rated_previously) {
+            if (previous_recommendation) {
+                setIsYesSelected(true);
+            } else {
+                setIsNoSelected(true);
+            }
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleSelectNo = () => {
         if (is_yes_selected) {
@@ -61,9 +79,11 @@ const RecommendUser = ({ is_buy_order_for_user, onClickNotRecommended, onClickRe
 };
 
 RecommendUser.propTypes = {
+    is_advertiser_rated_previously: PropTypes.bool,
     is_buy_order_for_user: PropTypes.bool,
     onClickNotRecommended: PropTypes.func,
     onClickRecommended: PropTypes.func,
+    previous_recommendation: PropTypes.number,
 };
 
 export default RecommendUser;

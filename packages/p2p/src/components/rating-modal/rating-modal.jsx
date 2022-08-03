@@ -7,6 +7,7 @@ import StarRating from 'Components/star-rating';
 import RecommendUser from '../recommend-user';
 
 const RatingModal = ({
+    is_advertiser_rated_previously,
     is_buy_order_for_user,
     is_rating_modal_open,
     onClickDone,
@@ -14,6 +15,7 @@ const RatingModal = ({
     onClickRecommended,
     onClickSkip,
     onClickStar,
+    previous_recommendation,
     rating_value,
 }) => {
     return (
@@ -37,9 +39,11 @@ const RatingModal = ({
                 />
                 {rating_value > 0 && (
                     <RecommendUser
+                        is_advertiser_rated_previously={is_advertiser_rated_previously}
                         is_buy_order_for_user={is_buy_order_for_user}
                         onClickNotRecommended={onClickNotRecommended}
                         onClickRecommended={onClickRecommended}
+                        previous_recommendation={previous_recommendation}
                     />
                 )}
             </Modal.Body>
@@ -59,6 +63,7 @@ const RatingModal = ({
 };
 
 RatingModal.propTypes = {
+    is_advertiser_rated_previously: PropTypes.bool,
     is_buy_order_for_user: PropTypes.bool,
     is_rating_modal_open: PropTypes.bool,
     onClickDone: PropTypes.func,
@@ -66,6 +71,7 @@ RatingModal.propTypes = {
     onClickRecommended: PropTypes.func,
     onClickSkip: PropTypes.func,
     onClickStar: PropTypes.func,
+    previous_recommendation: PropTypes.number,
     rating_value: PropTypes.number,
 };
 

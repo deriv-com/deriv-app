@@ -31,12 +31,10 @@ const TradingAssessmentForm = ({
             current_question: assessment_questions[prevState.current_question_index],
         }));
         setFormData(form_value);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         if (should_move_to_next) displayNextPage();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_move_to_next]);
 
     const displayNextPage = () => {

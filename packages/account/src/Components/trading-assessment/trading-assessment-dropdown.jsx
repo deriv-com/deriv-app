@@ -6,7 +6,6 @@ import { localize } from '@deriv/translations';
 const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
     const checkIfAllFieldsFilled = () => {

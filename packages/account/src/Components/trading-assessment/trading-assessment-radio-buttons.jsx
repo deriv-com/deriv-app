@@ -5,7 +5,6 @@ import { Text, RadioGroup } from '@deriv/components';
 const TradingAssessmentRadioButton = ({ text, list, onChange, values, form_control, setEnableNextSection }) => {
     React.useEffect(() => {
         setEnableNextSection(!!values[form_control]);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form_control]);
 
     return (

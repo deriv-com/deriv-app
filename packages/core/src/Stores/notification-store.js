@@ -204,7 +204,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             const {
-                authentication: { document, identity, needs_verification },
+                authentication: { document, identity, needs_verification, ownership },
                 status,
                 cashier_validation,
             } = account_status;
@@ -276,6 +276,7 @@ export default class NotificationStore extends BaseStore {
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
+                const poo_required = needs_verification?.includes('ownership') && ownership?.status !== 'rejected';
 
                 this.addVerificationNotifications(identity, document);
 
@@ -380,6 +381,9 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(
                         this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                     );
+                }
+                if (poo_required) {
+                    this.addNotificationMessage(this.client_notifications.poo_is_required);
                 }
             }
         }
@@ -1037,6 +1041,16 @@ export default class NotificationStore extends BaseStore {
                     route: routes.personal_details,
                     text: localize('Personal details'),
                 },
+            },
+            poo_is_required: {
+                key: 'poo_required',
+                header: localize('Proof Of Ownership Is Required'),
+                message: localize('Proof Of Ownership is required to unlock your account'),
+                action: {
+                    route: routes.proof_of_ownership,
+                    text: localize('Proof of ownership'),
+                },
+                type: 'warning',
             },
         };
         this.client_notifications = notifications;

@@ -11,6 +11,13 @@
         }
     }
 
+    &__list {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        height: 100%;
+    }
+
     &__modal {
         @include mobile {
             display: flex;
@@ -31,7 +38,6 @@
         display: flex;
         flex: 1;
         flex-direction: column;
-        height: 30rem;
 
         @include mobile {
             height: 100%;

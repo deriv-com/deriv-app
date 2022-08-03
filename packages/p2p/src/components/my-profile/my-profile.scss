@@ -1,10 +1,20 @@
 .my-profile {
+    display: flex;
+
+    @include mobile {
+        display: block;
+    }
+
     &__content {
+        display: flex;
+        flex-direction: column;
+
         @include tablet-up {
             max-width: 100%;
             min-width: 672px;
         }
         @include mobile {
+            display: block;
             padding: 1.6rem;
             width: 100vw;
 

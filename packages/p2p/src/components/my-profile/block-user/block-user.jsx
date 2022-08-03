@@ -31,12 +31,12 @@ const BlockUserList = () => {
     };
 
     return (
-        <React.Fragment>
+        <div className='block-user__list'>
             {my_profile_store.blocked_advertisers_list.length > 0 && (
                 <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search')} />
             )}
             <BlockUserTable />
-        </React.Fragment>
+        </div>
     );
 };
 

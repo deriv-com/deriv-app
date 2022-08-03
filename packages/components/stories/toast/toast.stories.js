@@ -29,7 +29,10 @@ stories
                     onClick={action('clicked')}
                     is_open={boolean('is open?', true)}
                     timeout={number('Timeout', 3000)}
-                    onClose={console.log('Closed')}
+                    onClose={() => {
+                        /* eslint-disable no-console */
+                        console.log('Closed');
+                    }}
                 >
                     Message
                 </Toast>

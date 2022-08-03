@@ -20,6 +20,7 @@ const P2pEmpty = ({ className, children, has_tabs, icon, title }) => {
 
 P2pEmpty.propTypes = {
     children: PropTypes.any,
+    className: PropTypes.string,
     has_tabs: PropTypes.bool,
     icon: PropTypes.string,
     title: PropTypes.string,

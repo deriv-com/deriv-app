@@ -329,7 +329,6 @@ Autocomplete.propTypes = {
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,
     autoComplete: PropTypes.string,
-    className: PropTypes.string,
     dropdown_offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     error: PropTypes.string,
     has_updating_list: PropTypes.bool,

@@ -1044,11 +1044,11 @@ export default class NotificationStore extends BaseStore {
             },
             poo_is_required: {
                 key: 'poo_required',
-                header: localize('Proof Of Ownership Is Required'),
-                message: localize('Proof Of Ownership is required to unlock your account'),
+                header: localize('Your proof of ownership is required'),
+                message: localize('Your proof of ownership is required to unlock your account'),
                 action: {
                     route: routes.proof_of_ownership,
-                    text: localize('Proof of ownership'),
+                    text: localize('Unlock my account'),
                 },
                 type: 'warning',
             },

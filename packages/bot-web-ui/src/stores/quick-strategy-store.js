@@ -50,7 +50,7 @@ export default class QuickStrategyStore {
     @computed
     get initial_errors() {
         // Persist errors through tab switch + remount.
-        return this.validateQuickStrategy(this.initial_values, true);
+        return this.validateQuickStrategy(this.initial_values, null, true);
     }
 
     @action.bound
@@ -426,18 +426,23 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    validateQuickStrategy(values, should_ignore_empty = false) {
+    validateQuickStrategy(current_form_values, should_ignore_empty = false) {
+        const values = { ...current_form_values };
+        if (this.getFieldNames())
+            Object.keys(this.getFieldNames())
+                .filter(key => +key !== this.active_index)
+                .map(key => delete values[this.getFieldNames()[key]]);
+
         const errors = {};
         const number_fields = [
             'quick-strategy__duration-value',
             'quick-strategy__stake',
-            'quick-strategy__size',
-            'alembert-unit',
-            'oscar-unit',
+            ...(values['quick-strategy__size'] ? ['quick-strategy__size'] : []),
+            ...(values['alembert-unit'] ? ['alembert-unit'] : []),
+            ...(values['oscar-unit'] ? ['oscar-unit'] : []),
             'quick-strategy__profit',
             'quick-strategy__loss',
         ];
-
         Object.keys(values).forEach(key => {
             const value = values[key];
 
@@ -460,7 +465,7 @@ export default class QuickStrategyStore {
             }
         });
 
-        if (values['quick-strategy__size'] < 2) {
+        if (this.active_index === 0 && values['quick-strategy__size'] < 2) {
             errors['quick-strategy__size'] = localize('Value must be higher than 2');
         }
 
@@ -541,5 +546,13 @@ export default class QuickStrategyStore {
         );
 
         return list_obj?.text || '';
+    };
+
+    getFieldNames = () => {
+        return Object.freeze({
+            0: 'quick-strategy__size',
+            1: 'alembert-unit',
+            2: 'oscar-unit',
+        });
     };
 }

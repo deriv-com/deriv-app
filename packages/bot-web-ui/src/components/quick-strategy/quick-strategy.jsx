@@ -23,6 +23,12 @@ import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
+// const getFieldNames = Object.freeze({
+//     0: 'quick-strategy__size',
+//     1: 'alembert-unit',
+//     2: 'oscar-unit',
+// });
+
 const InputSize = ({
     onChangeInputValue,
     handleChange,
@@ -34,19 +40,16 @@ const InputSize = ({
     setCurrentFocus,
     touched,
     is_mobile,
+    getFieldNames,
 }) => {
-    const field_name = Object.freeze({
-        0: 'quick-strategy__size',
-        1: 'alembert-unit',
-        2: 'oscar-unit',
-    });
     const input_name = Object.freeze({
         0: 'input_size',
         1: 'input_alembert_unit',
         2: 'input_oscar_unit',
     });
+
     return (
-        <Field name={field_name[active_index]}>
+        <Field name={getFieldNames()[active_index]}>
             {({ field }) => (
                 <Input
                     {...field}
@@ -100,6 +103,7 @@ const QuickStrategyForm = ({
     selected_duration_unit,
     description,
     setCurrentFocus,
+    getFieldNames,
 }) => (
     <Formik
         initialValues={initial_values}
@@ -111,6 +115,7 @@ const QuickStrategyForm = ({
             // Check values in favour of isValid, this is a hack to persist validation through tab switching.
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
+
             const is_submit_enabled = !isSubmitting && is_valid;
 
             return (
@@ -388,6 +393,7 @@ const QuickStrategyForm = ({
                                     setCurrentFocus={setCurrentFocus}
                                     touched={touched}
                                     is_mobile={is_mobile}
+                                    getFieldNames={getFieldNames}
                                 />
 
                                 <Field name='quick-strategy__profit'>
@@ -506,6 +512,7 @@ const ContentRenderer = props => {
         onHideDropdownList,
         onScrollStopDropdownList,
         validateQuickStrategy,
+        getFieldNames,
         selected_symbol,
         selected_trade_type,
         setCurrentFocus,
@@ -543,6 +550,7 @@ const ContentRenderer = props => {
                             onHideDropdownList={onHideDropdownList}
                             onScrollStopDropdownList={onScrollStopDropdownList}
                             validateQuickStrategy={validateQuickStrategy}
+                            getFieldNames={getFieldNames}
                             symbol_dropdown={symbol_dropdown_options}
                             trade_type_dropdown={trade_type_dropdown_options}
                             is_mobile={is_mobile}
@@ -617,6 +625,7 @@ QuickStrategy.propTypes = {
     toggleStrategyModal: PropTypes.func,
     trade_type_dropdown: PropTypes.array,
     validateQuickStrategy: PropTypes.func,
+    getFieldNames: PropTypes.object,
 };
 
 export default connect(({ run_panel, quick_strategy, ui }) => ({
@@ -644,5 +653,6 @@ export default connect(({ run_panel, quick_strategy, ui }) => ({
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     validateQuickStrategy: quick_strategy.validateQuickStrategy,
+    getFieldNames: quick_strategy.getFieldNames,
     setCurrentFocus: ui.setCurrentFocus,
 }))(QuickStrategy);

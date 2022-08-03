@@ -20,7 +20,6 @@ const SetCurrency = ({
     is_loading,
     ...props
 }) => {
-    // debugger;
     const form_error = React.useState('');
     const form_value = React.useState({ currency: '' });
 

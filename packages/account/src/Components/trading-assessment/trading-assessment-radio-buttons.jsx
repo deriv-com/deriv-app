@@ -2,13 +2,10 @@ import React from 'react';
 import { Field } from 'formik';
 import { Text, RadioGroup } from '@deriv/components';
 
-const TradingAssessmentRadioOption = ({ text, list, onChange, values, form_control, setEnableNextSection }) => {
+const TradingAssessmentRadioButton = ({ text, list, onChange, values, form_control, setEnableNextSection }) => {
     React.useEffect(() => {
-        if (values[form_control]) {
-            setEnableNextSection(true);
-        } else {
-            setEnableNextSection(false);
-        }
+        setEnableNextSection(!!values[form_control]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form_control]);
 
     return (
@@ -44,4 +41,4 @@ const TradingAssessmentRadioOption = ({ text, list, onChange, values, form_contr
     );
 };
 
-export default TradingAssessmentRadioOption;
+export default TradingAssessmentRadioButton;

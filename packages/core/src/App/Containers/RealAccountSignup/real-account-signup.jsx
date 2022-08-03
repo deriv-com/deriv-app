@@ -319,6 +319,7 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
         return () => setIsTradingAssessmentForNewUserEnabled(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // setCurrentAction callback useEffect to set error details

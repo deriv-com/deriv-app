@@ -1119,8 +1119,6 @@ export default class ClientStore extends BaseStore {
                     : {}),
             });
         }
-        // const response = { error: { code: 'AppropriatenessTestFailed' } };
-
         return Promise.reject(response.error);
     }
 
@@ -2338,7 +2336,6 @@ export default class ClientStore extends BaseStore {
     async setFinancialAndTradingAssessment(payload) {
         const response = await WS.setFinancialAndTradingAssessment(payload);
         return response;
-        // return set_financial_assessment;
     }
 
     @action.bound

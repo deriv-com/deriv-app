@@ -4,8 +4,8 @@ import { Formik, Form } from 'formik';
 import { Button, Modal, FormSubmitButton, Text, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import TradingAssessmentRadioOption from './trading-assessment-radio-buttons';
-import TradingAssessmentDropdownOption from './trading-assessment-dropdown';
+import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
+import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 
 const TradingAssessmentForm = ({
     assessment_questions,
@@ -31,10 +31,12 @@ const TradingAssessmentForm = ({
             current_question: assessment_questions[prevState.current_question_index],
         }));
         setFormData(form_value);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         if (should_move_to_next) displayNextPage();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_move_to_next]);
 
     const displayNextPage = () => {
@@ -130,7 +132,7 @@ const TradingAssessmentForm = ({
                             <Form className='trading-assessment__form--layout'>
                                 <div className='trading-assessment__form--fields'>
                                     {questions && questions.length ? (
-                                        <TradingAssessmentDropdownOption
+                                        <TradingAssessmentDropdown
                                             item_list={questions}
                                             onChange={handleValueSelection}
                                             values={values}
@@ -138,7 +140,7 @@ const TradingAssessmentForm = ({
                                             setEnableNextSection={setIsNextButtonEnabled}
                                         />
                                     ) : (
-                                        <TradingAssessmentRadioOption
+                                        <TradingAssessmentRadioButton
                                             text={question_text}
                                             list={answer_options ?? []}
                                             onChange={e => handleValueSelection(e, form_control, setFieldValue, values)}

@@ -3,9 +3,10 @@ import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
+const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
     const checkIfAllFieldsFilled = () => {
@@ -64,4 +65,4 @@ const TradingAssessmentDropdownOption = ({ item_list, onChange, values, setField
     );
 };
 
-export default TradingAssessmentDropdownOption;
+export default TradingAssessmentDropdown;

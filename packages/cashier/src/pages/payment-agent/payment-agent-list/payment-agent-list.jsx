@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, Tabs } from '@deriv/components';
@@ -5,9 +6,10 @@ import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import VerificationEmail from 'Components/verification-email';
-import PaymentAgentDepositWithdrawContainer from '../payment-agent-deposit-withdraw-container';
+import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import SideNote from 'Components/side-note';
 import './payment-agent-list.scss';
 
 const PaymentAgentList = ({
@@ -32,13 +34,27 @@ const PaymentAgentList = ({
 
     React.useEffect(() => {
         if (typeof setSideNotes === 'function' && !is_loading) {
-            setSideNotes(!is_try_withdraw_successful ? [<PaymentAgentDisclaimer key={0} />] : []);
+            const side_notes = [];
+
+            if (!is_try_withdraw_successful) {
+                side_notes.push(
+                    <SideNote has_title={false} key={0}>
+                        <PaymentAgentDisclaimer />
+                    </SideNote>
+                );
+            }
+
+            setSideNotes(side_notes);
         }
     }, [is_loading, is_try_withdraw_successful]);
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>
-            <div className='payment-agent-list__instructions'>
+            <div
+                className={classNames('payment-agent-list__instructions', {
+                    'payment-agent-list__instructions-hide-tabs': is_try_withdraw_successful,
+                })}
+            >
                 <Tabs
                     active_index={payment_agent_active_tab_index}
                     className='tabs--desktop'
@@ -47,11 +63,7 @@ const PaymentAgentList = ({
                     header_fit_content={isDesktop()}
                 >
                     <div label={localize('Deposit')}>
-                        {is_loading ? (
-                            <Loading is_fullscreen={false} />
-                        ) : (
-                            <PaymentAgentDepositWithdrawContainer is_deposit />
-                        )}
+                        {is_loading ? <Loading is_fullscreen={false} /> : <PaymentAgentContainer is_deposit />}
                     </div>
                     <div label={localize('Withdrawal')}>
                         {error?.code ? (
@@ -70,7 +82,7 @@ const PaymentAgentList = ({
                                     </div>
                                 ) : (
                                     (verification_code || is_payment_agent_withdraw) && (
-                                        <PaymentAgentDepositWithdrawContainer verification_code={verification_code} />
+                                        <PaymentAgentContainer verification_code={verification_code} />
                                     )
                                 )}
                             </div>

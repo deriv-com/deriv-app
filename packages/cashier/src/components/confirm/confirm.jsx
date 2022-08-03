@@ -1,15 +1,16 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
 import { Button, Checkbox, Icon, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
 import './confirm.scss';
 
 const Row = ({ item_key, label, value }) => (
     <div className='confirm__row'>
         {Array.isArray(label) ? (
-            <div>
+            <div className='confirm__row-label'>
                 {label.map((label_text, idx) => (
                     <Text as='div' key={idx} size='xs' align='left'>
                         {label_text}
@@ -20,7 +21,7 @@ const Row = ({ item_key, label, value }) => (
             <Text size='xs'>{label}</Text>
         )}
         {Array.isArray(value) ? (
-            <div>
+            <div className='confirm__row-value'>
                 {value.map((v, idx) => (
                     <Text as='div' key={idx} size='xs' weight='bold' align='right'>
                         {v}
@@ -49,29 +50,41 @@ const WarningBullet = ({ children }) => (
     </div>
 );
 
-const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, onClickConfirm, warning_messages }) => {
+const Confirm = ({ data, error, is_payment_agent_withdraw, onClickBack, onClickConfirm }) => {
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
+
+    const warning_messages = [
+        <Localize
+            i18n_default_text='Please ensure <0>all details</0> are <0>correct</0> before making your transfer.'
+            components={[<strong key={0} />]}
+            key={0}
+        />,
+        <Localize
+            i18n_default_text='We <0>do not</0> guarantee a refund if you make a wrong transfer.'
+            components={[<strong key={0} />]}
+            key={1}
+        />,
+    ];
 
     return (
         <div
-            className={classNames('cashier__wrapper--confirm', {
-                cashier__wrapper: !is_payment_agent_transfer,
+            className={classNames('cashier__wrapper--align-center', {
+                confirm: !is_payment_agent_withdraw,
             })}
         >
-            {!is_payment_agent_transfer && (
-                <Icon data_testid='dti_confirm_details_icon' icon='IcConfirmDetails' width='128' height='128' />
-            )}
-            {header && (
-                <Text
-                    as='h2'
-                    color='prominent'
-                    align='center'
-                    weight='bold'
-                    className='cashier__header confirm__header'
-                >
-                    {header}
-                </Text>
-            )}
+            <Icon icon='IcCashierRedWarning' className='confirm__warning-icon' data_testid='dt_red_warning_icon' />
+            <Text
+                as='h2'
+                color='loss-danger'
+                weight='bold'
+                align='center'
+                className='confirm__warning-icon__description'
+                size={isMobile() ? 'xs' : 's'}
+            >
+                {is_payment_agent_withdraw
+                    ? localize('Funds transfer information')
+                    : localize('Check transfer information')}
+            </Text>
             <div className='confirm__column-wrapper'>
                 <div className='confirm__column'>
                     {data.map((d, key) => (
@@ -79,34 +92,36 @@ const Confirm = ({ data, error, header, is_payment_agent_transfer, onClickBack, 
                     ))}
                 </div>
             </div>
-            {warning_messages && (
-                <div className='confirm__warnings'>
-                    {warning_messages.map((warning, idx) => (
-                        <WarningBullet key={idx}>
-                            <Text as='p' size='xxs' color='loss-danger' align='left'>
-                                {warning}
-                            </Text>
-                        </WarningBullet>
-                    ))}
-                </div>
-            )}
-            {is_payment_agent_transfer && (
+            <div className='confirm__warnings'>
+                {warning_messages.map((warning, idx) => (
+                    <WarningBullet key={idx}>
+                        <Text as='p' size='xxs' line_height='m' color='loss-danger' align='left'>
+                            {warning}
+                        </Text>
+                    </WarningBullet>
+                ))}
+            </div>
+            <div className='confirm__checkbox'>
                 <Checkbox
                     name='transfer_consent'
                     value={is_transfer_consent_checked}
                     onChange={() => setIsTransferConsentChecked(!is_transfer_consent_checked)}
-                    label={localize('I confirm that I have verified the client’s transfer information.')}
+                    label={
+                        is_payment_agent_withdraw
+                            ? localize('I confirm that I have verified the payment agent’s transfer information.')
+                            : localize('I confirm that I have verified the client’s transfer information.')
+                    }
                     classNameLabel='confirm__checkbox-label'
                 />
-            )}
+            </div>
             <div className='confirm__submit'>
                 <Button large text={localize('Back')} onClick={onClickBack} secondary />
                 <Button
                     large
-                    text={is_payment_agent_transfer ? localize('Transfer now') : localize('Confirm')}
+                    text={localize('Transfer now')}
                     onClick={onClickConfirm}
                     primary
-                    disabled={is_payment_agent_transfer && !is_transfer_consent_checked}
+                    disabled={!is_transfer_consent_checked}
                 />
             </div>
             <ErrorDialog error={error} />
@@ -122,11 +137,9 @@ Confirm.propTypes = {
         })
     ),
     error: PropTypes.object,
-    header: PropTypes.string,
-    is_payment_agent_transfer: PropTypes.bool,
+    is_payment_agent_withdraw: PropTypes.bool,
     onClickBack: PropTypes.func,
     onClickConfirm: PropTypes.func,
-    warning_messages: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Confirm;

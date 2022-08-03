@@ -4,13 +4,14 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
+import './payment-agent-deposit-details.scss';
 
-const PaymentAgentCardDetails = ({ payment_agent }) => {
+const PaymentAgentDepositDetails = ({ payment_agent }) => {
     const payment_agent_phones = toJS(payment_agent.phones);
 
     const PaymentAgentPhonesDetails = () => {
         return (
-            <PaymentAgentDetail action='tel' icon='Phone' title={localize('Phone number')}>
+            <PaymentAgentDetail action='tel' icon='IcPhone' title={localize('Phone number')}>
                 {payment_agent.phones.map(phone => phone.phone_number)}
             </PaymentAgentDetail>
         );
@@ -20,7 +21,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
         return (
             <PaymentAgentDetail
                 action='mailto'
-                icon='Email'
+                icon='IcEmailOutlineNew'
                 rel='noopener noreferrer'
                 target='_blank'
                 has_red_color
@@ -33,7 +34,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
 
     const PaymentAgentMinimumWithdrawalDetails = () => {
         return (
-            <PaymentAgentDetail icon='MinimumWithdrawal' title={localize('Minimum withdrawal')}>
+            <PaymentAgentDetail icon='IcCashierMinimumWithdrawal' title={localize('Minimum withdrawal')}>
                 <Money amount={payment_agent.min_withdrawal} currency={payment_agent.currency} show_currency />
             </PaymentAgentDetail>
         );
@@ -41,7 +42,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
 
     const PaymentAgentMaximumWithdrawalDetails = () => {
         return (
-            <PaymentAgentDetail icon='MaximumWithdrawal' title={localize('Maximum withdrawal')}>
+            <PaymentAgentDetail icon='IcCashierMaximumWithdrawal' title={localize('Maximum withdrawal')}>
                 <Money amount={payment_agent.max_withdrawal} currency={payment_agent.currency} show_currency />
             </PaymentAgentDetail>
         );
@@ -50,7 +51,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     const PaymentAgentDepositComissionDetails = () => {
         return (
             <PaymentAgentDetail
-                icon='CommissionDeposit'
+                icon='IcCashierCommissionDeposit'
                 className='deposit-commission'
                 title={localize('Commission on deposits')}
             >
@@ -62,7 +63,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     const PaymentAgentWithdrawalComissionDetails = () => {
         return (
             <PaymentAgentDetail
-                icon='CommissionWithdrawal'
+                icon='IcCashierCommissionWithdrawal'
                 className='withdrawal_commission'
                 title={localize('Commission on withdrawal')}
             >
@@ -72,7 +73,7 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     };
 
     return (
-        <div className='payment-agent-card__deposit-details-container'>
+        <div className='payment-agent-deposit-details'>
             {payment_agent_phones && <PaymentAgentPhonesDetails />}
             {payment_agent.email && <PaymentAgentEmailDetails />}
             {payment_agent.min_withdrawal && <PaymentAgentMinimumWithdrawalDetails />}
@@ -83,8 +84,8 @@ const PaymentAgentCardDetails = ({ payment_agent }) => {
     );
 };
 
-PaymentAgentCardDetails.propTypes = {
+PaymentAgentDepositDetails.propTypes = {
     payment_agent: PropTypes.object,
 };
 
-export default PaymentAgentCardDetails;
+export default PaymentAgentDepositDetails;

@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
-const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
+const ErrorDialog = ({ className, disableApp, enableApp, error = {} }) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState({
@@ -108,6 +108,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
             title={details.title}
             confirm_button_text={details.confirm_button_text}
             cancel_button_text={details.cancel_button_text}
+            className={className}
             onConfirm={() => {
                 if (typeof details.onConfirm === 'function') {
                     details.onConfirm();
@@ -131,6 +132,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }) => {
 };
 
 ErrorDialog.propTypes = {
+    className: PropTypes.string,
     error: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,

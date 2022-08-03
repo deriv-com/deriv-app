@@ -1,11 +1,14 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { Button, Text } from '@deriv/components';
+import { isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import PaymentAgentDetails from '../payment-agent-details';
+import PaymentAgentDetail from '../payment-agent-detail';
+import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import SideNote from 'Components/side-note';
 import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
@@ -13,93 +16,90 @@ const openStatement = (history, resetPaymentAgent) => {
     resetPaymentAgent();
 };
 
-const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, loginid, receipt, resetPaymentAgent }) => {
+const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, payment_agent_urls }) => {
+    return (
+        <div className='payment-agent-receipt__transferred-contact'>
+            {payment_agent_phones && (
+                <PaymentAgentDetail action='tel' icon='IcPhone'>
+                    {payment_agent_phones.map(phone => phone.phone_number)}
+                </PaymentAgentDetail>
+            )}
+            {payment_agent_email && (
+                <PaymentAgentDetail action='mailto' icon='IcEmailOutlineNew' rel='noopener noreferrer' target='_blank'>
+                    {payment_agent_email}
+                </PaymentAgentDetail>
+            )}
+            {payment_agent_urls && (
+                <PaymentAgentDetail icon='IcWebsite' is_link rel='noopener noreferrer' target='_blank'>
+                    {payment_agent_urls.map(url => url.url)}
+                </PaymentAgentDetail>
+            )}
+        </div>
+    );
+};
+
+const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, resetPaymentAgent }) => {
     React.useEffect(() => {
         return () => resetPaymentAgent();
     }, [resetPaymentAgent]);
 
-    const currency_display_code = getCurrencyDisplayCode(currency);
-
     return (
-        <div className='cashier__wrapper--align-left payment-agent-receipt'>
-            <div className='cashier__success'>
-                <Text
-                    as='h1'
-                    align='center'
-                    color='prominent'
-                    line_height='m'
-                    size={isMobile() ? 'xs' : 's'}
-                    weight='bold'
-                >
-                    <Localize i18n_default_text='Your funds have been transferred' />
-                </Text>
-                <Text
-                    as='p'
-                    size='l'
-                    weight='bold'
-                    lh='xs'
-                    color='profit-success'
-                    align='center'
-                    className='cashier__transferred-amount'
-                >
-                    {formatMoney(currency, receipt.amount_transferred, true)} {currency_display_code}
-                </Text>
-                <div className='cashier__transferred-details-wrapper'>
-                    <span className='cashier__transferred-details'>
-                        <Text as='span' size='xs' weight='bold' className='payment-agent-receipt__text--end'>
-                            {currency_display_code}
-                        </Text>
-                        <Text as='span' size='xs' color='less-prominent'>
-                            {loginid}
-                        </Text>
-                    </span>
-                    <Icon size={32} icon={`IcCurrency-${currency.toLowerCase()}`} />
-                    <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
-                    <Icon size={32} icon='IcPA' />
-                    <span className='cashier__transferred-details'>
-                        {receipt.payment_agent_name && (
-                            <Text as='span' size='xs' weight='bold'>
-                                {receipt.payment_agent_name}
-                            </Text>
-                        )}
-                        <Text as='span' color='less-prominent' size='xs'>
-                            {receipt.payment_agent_id}
-                        </Text>
-                    </span>
-                </div>
-            </div>
-            <Text as='h1' color='prominent' line_height='m' size='s' weight='bold'>
-                <Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' />
+        <div className='cashier__wrapper--align-center payment-agent-receipt'>
+            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
+                <PaymentAgentDisclaimer />
+            </SideNote>
+            <Text
+                as='h1'
+                align='center'
+                color='prominent'
+                line_height='m'
+                size={isMobile() ? 'xsm' : 'sm'}
+                weight='bold'
+                className={classNames('payment-agent-receipt__header', {
+                    'payment-agent-receipt__header-listed': receipt.payment_agent_name,
+                    'payment-agent-receipt__header-unlisted': !receipt.payment_agent_name,
+                })}
+            >
+                <Localize
+                    i18n_default_text='You’ve transferred {{amount}} {{currency}}'
+                    values={{ amount: receipt.amount_transferred, currency }}
+                />
+            </Text>
+            <Text as='p' align='center' color='prominent' line_height='m' size='xs' weight='bold'>
+                <Localize i18n_default_text='Important notice to receive your funds' />
             </Text>
             <Text
                 as='p'
+                align='center'
                 color='prominent'
-                size={isMobile() ? 'xxs' : 'xs'}
+                size='xxs'
                 line_height='m'
-                className='payment-agent-receipt__explanation cashier__paragraph'
+                className={classNames('payment-agent-receipt__explanation', {
+                    'payment-agent-receipt__explanation-unlisted': !receipt.payment_agent_name,
+                })}
             >
                 <Localize
-                    i18n_default_text={
-                        "You're not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records."
-                    }
+                    i18n_default_text='{{ text }}. <0></0>You can view the summary of this transaction in your email.'
+                    components={!isMobile() ? [<br key={0} />] : []}
+                    values={{
+                        text: receipt.payment_agent_name
+                            ? localize('To receive your funds, contact the payment agent with the details below')
+                            : localize('To receive your funds, contact the payment agent'),
+                    }}
+                    key={0}
                 />
             </Text>
             {receipt.payment_agent_name && (
                 <div className='payment-agent-receipt__transferred-contact-wrapper'>
-                    <Text
-                        as='p'
-                        size={isMobile() ? 'xxs' : 'xs'}
-                        line_height='m'
-                        className='cashier__paragraph payment-agent-receipt__paragraph'
-                    >
+                    <Text align='center' as='p' size='xxs' line_height='m' weight='bold'>
                         <Localize
-                            i18n_default_text='{{payment_agent}} agent contact details:'
+                            i18n_default_text="<0>{{payment_agent}}</0><1>'s</1> contact details"
+                            components={[<span key={0} />, <span key={1} />]}
                             values={{ payment_agent: receipt.payment_agent_name }}
                             options={{ interpolation: { escapeValue: false } }}
                         />
                     </Text>
                     <PaymentAgentDetails
-                        className='payment-agent-receipt__transferred-contact'
                         payment_agent_email={receipt.payment_agent_email}
                         payment_agent_phones={receipt.payment_agent_phone}
                         payment_agent_urls={receipt.payment_agent_url}
@@ -111,7 +111,7 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, loginid, rece
                     <Button
                         className='cashier__form-submit-button'
                         has_effect
-                        text={localize('View in statement')}
+                        text={localize('View transaction')}
                         onClick={() => openStatement(history, resetPaymentAgent)}
                         secondary
                         large
@@ -120,7 +120,7 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, loginid, rece
                 <Button
                     className='cashier__form-submit-button cashier__done-button'
                     has_effect
-                    text={localize('Make a new transfer')}
+                    text={localize('Make a new withdrawal')}
                     onClick={resetPaymentAgent}
                     primary
                     large
@@ -134,7 +134,6 @@ PaymentAgentReceipt.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
     is_from_derivgo: PropTypes.bool,
-    loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetPaymentAgent: PropTypes.func,
 };
@@ -143,7 +142,6 @@ export default withRouter(
     connect(({ client, common, modules }) => ({
         currency: client.currency,
         is_from_derivgo: common.is_from_derivgo,
-        loginid: client.loginid,
         receipt: modules.cashier.payment_agent.receipt,
         resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
     }))(PaymentAgentReceipt)

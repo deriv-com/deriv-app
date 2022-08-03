@@ -75,6 +75,9 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
 
 SwipeableWrapper.propTypes = {
     className: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.object]),
+    onChange: PropTypes.func,
+    is_disabled: PropTypes.bool,
 };
 
 export default SwipeableWrapper;

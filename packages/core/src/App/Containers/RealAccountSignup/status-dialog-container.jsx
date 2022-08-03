@@ -110,12 +110,18 @@ StatusDialogContainer.defaultProps = {
 };
 
 StatusDialogContainer.propTypes = {
-    currency: PropTypes.string,
     closeModal: PropTypes.func,
+    country_standpoint: PropTypes.object,
+    currency: PropTypes.string,
+    history: PropTypes.object,
     icon: PropTypes.object,
     icon_size: PropTypes.string,
-    is_isle_of_man_residence: PropTypes.bool,
+    is_age_verified: PropTypes.bool,
     is_belgium_residence: PropTypes.bool,
+    is_fully_authenticated: PropTypes.bool,
+    is_isle_of_man_residence: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
+    switchToVirtual: PropTypes.func,
 };
 
 export default connect(({ client }) => ({

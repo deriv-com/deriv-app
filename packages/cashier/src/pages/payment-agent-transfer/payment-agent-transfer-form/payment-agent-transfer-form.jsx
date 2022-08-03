@@ -105,7 +105,7 @@ const PaymentAgentTransferForm = ({
                                     }}
                                     className='payment-agent-transfer-form__input'
                                     type='text'
-                                    label={localize('Client login ID')}
+                                    label={localize('Client account number')}
                                     error={touched.loginid && errors.loginid}
                                     required
                                     autoComplete='off'

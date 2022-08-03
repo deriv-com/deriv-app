@@ -9,7 +9,7 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 
-const BlockUserList = () => {
+const BlockUserList = observer(() => {
     const { my_profile_store } = useStores();
 
     const loadBlockedAdvertisers = debounce(search => {
@@ -38,7 +38,7 @@ const BlockUserList = () => {
             <BlockUserTable />
         </div>
     );
-};
+});
 
 const BlockUser = () => {
     const { general_store, my_profile_store } = useStores();

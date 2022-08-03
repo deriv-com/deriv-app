@@ -242,9 +242,12 @@ AccountSignupModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     is_visible: PropTypes.bool,
+    logout: PropTypes.func,
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
+    toggleAccountSignupModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({

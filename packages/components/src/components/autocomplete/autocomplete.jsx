@@ -68,7 +68,7 @@ const Autocomplete = React.memo(props => {
             setActiveIndex(null);
             setInputValue('');
         }
-    }, [list_items]);
+    }, [list_items, has_updating_list]);
 
     React.useEffect(() => {
         if (should_show_list && list_item_ref.current) {
@@ -329,4 +329,13 @@ Autocomplete.propTypes = {
     list_portal_id: PropTypes.string,
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,
+    autoComplete: PropTypes.string,
+    className: PropTypes.string,
+    dropdown_offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    error: PropTypes.string,
+    has_updating_list: PropTypes.bool,
+    input_id: PropTypes.string,
+    onScrollStop: PropTypes.func,
+    value: PropTypes.string,
+    onBlur: PropTypes.func,
 };

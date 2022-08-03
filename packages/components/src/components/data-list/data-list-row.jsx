@@ -71,6 +71,7 @@ DataListRow.propTypes = {
     row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rowRenderer: PropTypes.func,
     measure: PropTypes.func,
+    is_dynamic_height: PropTypes.bool,
 };
 
 export default React.memo(DataListRow);

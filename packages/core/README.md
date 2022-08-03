@@ -1,28 +1,49 @@
-# Deriv App
+# `@deriv/core`
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://app.deriv.com) website.
+`core/dist` is the place where we build the main bundle at
 
-**In this documents**
+**In this document**
 
 -   [Other documents](#other-documents)
--   [Use a custom domain](#use-a-custom-domain)
--   [How to work with this project](#how-to-work-with-this-project)
+-   [Description](#description)
+-   [How to work with this workspace](#how-to-work-with-this-workspace)
+    -   [Adding domain to your machine hosts config](#adding-domain-to-your-machine-hosts-config)
+    -   [Run this workspace](#run-this-workspace)
     -   [Deploy to your gh-pages for the first time](#deploy-to-your-gh-pages-for-the-first-time)
-    -   [Deploy to root of gh-pages](#deploy-to-root-of-gh-pages)
+    -   [Deploy to the root of gh-pages](#deploy-to-the-root-of-gh-pages)
     -   [Clean root and deploy to it](#clean-root-and-deploy-to-it)
     -   [Deploy to test folder](#deploy-to-test-folder)
--   [Preview on your local machine](#preview-on-your-local-machine)
+-   [Folder Structure](#folder-structure)
+-   [Troubleshooting](#troubleshooting)
 -   [Miscellaneous](#miscellaneous)
 
 ## Other documents
 
 -   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding help, etc.)
 
-## Use a custom domain
+## Description
 
-To use your custom domain, please put it in a file named `CNAME` inside the `scripts` folder of your local clone of deriv-app.
+This workspace is the "app instance". It contains singleton services (such as the WS, and base/common stores), as well as singleton UI components.
 
-## How to work with this project
+## How to work with this workspace
+
+### Adding domain to your machine hosts config
+
+-   Edit your `/etc/hosts` file to include this domain:
+
+```
+127.0.0.1   localhost.binary.sx
+```
+
+-   To preview your changes locally for the first time, run `sudo npm start`:
+    -   It will run all tests, compile all CSS, and JS/JSX as well as watch for further `js/jsx/css` changes and rebuild on every change you make.
+-   To preview your changes locally without any tests, run `npm run serve`
+    -   It will watch for js/jsx/css changes and rebuild on every change you make.
+-   To run all tests, run `npm run test`
+
+### Run this workspace
+
+To run and work on this workspace you need to use `npm run serve core` command.
 
 ### Deploy to your gh-pages for the first time
 
@@ -61,19 +82,45 @@ Please ensure it is prefixed with `br_`.
 npm run deploy:folder "br_my_test_folder"
 ```
 
-## Preview on your local machine
-
--   Edit your `/etc/hosts` file to include this domain:
+## Folder Structure
 
 ```
-127.0.0.1   localhost.binary.sx
+build
+    ├── ...
+    ├── webpack-config-test.js
+docs
+    ├── Modules
+    |   |── README.md
+src
+    ├── _common
+    ├── App
+    |   |── Components
+    |   |── Constants
+    |   |── Containers
+    ├── Assets
+    ├── Constants
+    ├── Modules
+    ├── public
+    ├── root_files
+    ├── sass
+    ├── Services
+    ├── Stores
+    ├── templates
+    ├── Utils
+    |   |── Language
+    |   |── pwa
+    |   |── Validator
+    |   |   |──...
+    |   |   |── validator.js
 ```
 
--   To preview your changes locally for the first time, run `sudo npm start`:
-    -   It will run all tests, compile all CSS, and JS/JSX as well as watch for further `js/jsx/css` changes and rebuild on every change you make.
--   To preview your changes locally without any tests, run `npm run serve`
-    -   It will watch for js/jsx/css changes and rebuild on every change you make.
--   To run all tests, run `npm run test`
+## Troubleshooting
+
+-   **Icon missing:** If the icons are missing, you only need to build this workspace. You can do this by running the build command from the root directory (`/deriv-app`):
+
+```
+npm run build
+```
 
 ## Miscellaneous
 

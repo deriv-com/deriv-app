@@ -263,7 +263,6 @@ const AccountWizard = props => {
                     const country_code = props.account_settings.citizen || props.residence;
                     submitIDVData(document_type, document_number, country_code);
                 }
-
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {
@@ -341,6 +340,7 @@ const AccountWizard = props => {
 };
 
 AccountWizard.propTypes = {
+    account_settings: PropTypes.object,
     fetchResidenceList: PropTypes.func,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
@@ -351,6 +351,16 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
+
+    fetchStatesList: PropTypes.func,
+    fetchFinancialAssessment: PropTypes.func,
+    onClose: PropTypes.func,
+    setLoading: PropTypes.func,
+    setIsRiskWarningVisible: PropTypes.func,
+    real_account_signup_target: PropTypes.string,
+    is_loading: PropTypes.bool,
+    closeRealAccountSignup: PropTypes.func,
+    is_virtual: PropTypes.bool,
 };
 
 export default connect(({ client, notifications, ui }) => ({

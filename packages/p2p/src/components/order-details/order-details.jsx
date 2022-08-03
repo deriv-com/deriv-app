@@ -234,10 +234,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         value={payment_info || '-'}
                                     />
                                 )}
-                            </React.Fragment>
-                        )}
-                        {is_active_order && (
-                            <React.Fragment>
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
@@ -254,88 +250,86 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     weight='bold'
                                     value={advert_details.description.trim() || '-'}
                                 />
-                                {is_completed_order && !review_details && (
-                                    <React.Fragment>
-                                        <RatingModal
-                                            is_buy_order_for_user={is_buy_order_for_user}
-                                            is_rating_modal_open={order_store.is_rating_modal_open}
-                                            onClickaaDone={() => order_store.setOrderRating(id)}
-                                            onClickNotRecommended={() => order_store.setIsRecommended(0)}
-                                            onClickRecommended={() => order_store.setIsRecommended(1)}
-                                            onClickSkip={() => order_store.setIsRatingModalOpen(false)}
-                                            onClickStar={order_store.handleRating}
-                                            rating_value={order_store.rating_value}
-                                        />
-                                        <div className='order-details-card--rating'>
-                                            <UserRatingButton
-                                                button_text={
-                                                    is_reviewable
-                                                        ? localize('Rate this transaction')
-                                                        : localize('Not rated')
-                                                }
-                                                is_disabled={!is_reviewable}
-                                                large
-                                                onClick={() => order_store.setIsRatingModalOpen(true)}
-                                            />
-                                        </div>
-                                        <Text color='less-prominent' size='xxxs'>
-                                            {!is_reviewable && (
-                                                <Localize i18n_default_text='You can no longer rate this transaction.' />
-                                            )}
-                                        </Text>
-                                    </React.Fragment>
-                                )}
-                                {review_details && (
-                                    <div className='order-details-card__ratings'>
-                                        <Text color='prominent' size='s' weight='bold'>
-                                            <Localize i18n_default_text='Your transaction experience' />
-                                        </Text>
-                                        <div className='order-details-card__ratings--row'>
-                                            <StarRating
-                                                empty_star_className='order-details-card__star'
-                                                empty_star_icon='IcEmptyStar'
-                                                full_star_className='order-details-card__star'
-                                                full_star_icon='IcFullStar'
-                                                initial_value={rating_average_decimal}
-                                                is_readonly
-                                                number_of_stars={5}
-                                                should_allow_hover_effect={false}
-                                                star_size={isMobile() ? 17 : 20}
-                                            />
-                                            <div className='order-details-card__ratings--row'>
-                                                {review_details.recommended === 1 ? (
-                                                    <React.Fragment>
-                                                        <Icon
-                                                            className='order-details-card__ratings--icon'
-                                                            custom_color='var(--status-success)'
-                                                            icon='IcThumbsUp'
-                                                            size={14}
-                                                        />
-                                                        <Text color='prominent' size='xxs'>
-                                                            <Localize i18n_default_text='Recommended' />
-                                                        </Text>
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <React.Fragment>
-                                                        <Icon
-                                                            className='order-details-card__ratings--icon'
-                                                            custom_color='var(--status-danger)'
-                                                            icon='IcThumbsDown'
-                                                            size={14}
-                                                        />
-                                                        <Text color='prominent' size='xxs'>
-                                                            <Localize i18n_default_text='Not Recommended' />
-                                                        </Text>
-                                                    </React.Fragment>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                                {should_show_order_footer && isDesktop() && (
-                                    <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                                )}
                             </React.Fragment>
+                        )}
+                        {is_completed_order && !review_details && (
+                            <React.Fragment>
+                                <RatingModal
+                                    is_buy_order_for_user={is_buy_order_for_user}
+                                    is_rating_modal_open={order_store.is_rating_modal_open}
+                                    onClickDone={() => order_store.setOrderRating(id)}
+                                    onClickNotRecommended={() => order_store.setIsRecommended(0)}
+                                    onClickRecommended={() => order_store.setIsRecommended(1)}
+                                    onClickSkip={() => order_store.setIsRatingModalOpen(false)}
+                                    onClickStar={order_store.handleRating}
+                                    rating_value={order_store.rating_value}
+                                />
+                                <div className='order-details-card--rating'>
+                                    <UserRatingButton
+                                        button_text={
+                                            is_reviewable ? localize('Rate this transaction') : localize('Not rated')
+                                        }
+                                        is_disabled={!is_reviewable}
+                                        large
+                                        onClick={() => order_store.setIsRatingModalOpen(true)}
+                                    />
+                                </div>
+                                <Text color='less-prominent' size='xxxs'>
+                                    {!is_reviewable && (
+                                        <Localize i18n_default_text='You can no longer rate this transaction.' />
+                                    )}
+                                </Text>
+                            </React.Fragment>
+                        )}
+                        {review_details && (
+                            <div className='order-details-card__ratings'>
+                                <Text color='prominent' size='s' weight='bold'>
+                                    <Localize i18n_default_text='Your transaction experience' />
+                                </Text>
+                                <div className='order-details-card__ratings--row'>
+                                    <StarRating
+                                        empty_star_className='order-details-card__star'
+                                        empty_star_icon='IcEmptyStar'
+                                        full_star_className='order-details-card__star'
+                                        full_star_icon='IcFullStar'
+                                        initial_value={rating_average_decimal}
+                                        is_readonly
+                                        number_of_stars={5}
+                                        should_allow_hover_effect={false}
+                                        star_size={isMobile() ? 17 : 20}
+                                    />
+                                    <div className='order-details-card__ratings--row'>
+                                        {review_details.recommended === 1 ? (
+                                            <React.Fragment>
+                                                <Icon
+                                                    className='order-details-card__ratings--icon'
+                                                    custom_color='var(--status-success)'
+                                                    icon='IcThumbsUp'
+                                                    size={14}
+                                                />
+                                                <Text color='prominent' size='xxs'>
+                                                    <Localize i18n_default_text='Recommended' />
+                                                </Text>
+                                            </React.Fragment>
+                                        ) : (
+                                            <React.Fragment>
+                                                <Icon
+                                                    className='order-details-card__ratings--icon'
+                                                    custom_color='var(--status-danger)'
+                                                    icon='IcThumbsDown'
+                                                    size={14}
+                                                />
+                                                <Text color='prominent' size='xxs'>
+                                                    <Localize i18n_default_text='Not Recommended' />
+                                                </Text>
+                                            </React.Fragment>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {should_show_order_footer && isDesktop() && (
+                            <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                         )}
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (

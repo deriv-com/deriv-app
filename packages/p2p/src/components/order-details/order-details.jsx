@@ -299,31 +299,32 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         star_size={isMobile() ? 17 : 20}
                                     />
                                     <div className='order-details-card__ratings--row'>
-                                        {review_details.recommended === 1 ? (
-                                            <React.Fragment>
-                                                <Icon
-                                                    className='order-details-card__ratings--icon'
-                                                    custom_color='var(--status-success)'
-                                                    icon='IcThumbsUp'
-                                                    size={14}
-                                                />
-                                                <Text color='prominent' size='xxs'>
-                                                    <Localize i18n_default_text='Recommended' />
-                                                </Text>
-                                            </React.Fragment>
-                                        ) : (
-                                            <React.Fragment>
-                                                <Icon
-                                                    className='order-details-card__ratings--icon'
-                                                    custom_color='var(--status-danger)'
-                                                    icon='IcThumbsDown'
-                                                    size={14}
-                                                />
-                                                <Text color='prominent' size='xxs'>
-                                                    <Localize i18n_default_text='Not Recommended' />
-                                                </Text>
-                                            </React.Fragment>
-                                        )}
+                                        {review_details.recommended !== null &&
+                                            (review_details.recommended ? (
+                                                <React.Fragment>
+                                                    <Icon
+                                                        className='order-details-card__ratings--icon'
+                                                        custom_color='var(--status-success)'
+                                                        icon='IcThumbsUp'
+                                                        size={14}
+                                                    />
+                                                    <Text color='prominent' size='xxs'>
+                                                        <Localize i18n_default_text='Recommended' />
+                                                    </Text>
+                                                </React.Fragment>
+                                            ) : (
+                                                <React.Fragment>
+                                                    <Icon
+                                                        className='order-details-card__ratings--icon'
+                                                        custom_color='var(--status-danger)'
+                                                        icon='IcThumbsDown'
+                                                        size={14}
+                                                    />
+                                                    <Text color='prominent' size='xxs'>
+                                                        <Localize i18n_default_text='Not Recommended' />
+                                                    </Text>
+                                                </React.Fragment>
+                                            ))}
                                     </div>
                                 </div>
                             </div>

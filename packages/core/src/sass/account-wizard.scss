@@ -4,14 +4,14 @@
         flex-direction: column;
         transition: all 0.3s ease-in-out;
         @include tablet {
-            max-height: calc(100vh - 102px) !important; // Header and footer
+            max-height: calc(100vh - 10.2rem) !important; // Header and footer
         }
         background-color: var(--general-main-1);
 
         &--success {
             border-radius: $BORDER_RADIUS;
             overflow: hidden;
-            max-width: 478px;
+            max-width: 47.8rem;
             min-width: initial !important;
             max-height: initial !important;
         }
@@ -30,8 +30,8 @@
                 padding-top: 10rem;
             }
             & > svg {
-                width: 128px;
-                height: 128px;
+                width: 12.8rem;
+                height: 12.8rem;
                 align-self: center;
                 margin: 2rem 0 0;
             }
@@ -70,8 +70,8 @@
             }
         }
         &--loading {
-            width: 300px;
-            max-height: 300px;
+            width: 30rem;
+            max-height: 30rem;
 
             .dc-modal-header__title {
                 height: 0;
@@ -83,7 +83,7 @@
     }
     &--risk-message {
         height: auto !important;
-        width: 440px !important;
+        width: 44rem !important;
         .dc-themed-scrollbars {
             max-height: none !important;
         }
@@ -92,7 +92,7 @@
             padding: 2.4rem;
         }
         @include mobile {
-            width: 300px !important;
+            width: 30rem !important;
         }
     }
 }
@@ -120,7 +120,7 @@
 .account-wizard {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
-    height: calc(100% - 57px);
+    height: calc(100% - 5.7rem);
     position: relative;
     width: 100%;
     @include desktop {
@@ -145,7 +145,7 @@
         overflow: hidden;
 
         &--set-currency {
-            grid-template-rows: 1fr 70px;
+            grid-template-rows: 1fr 7rem;
         }
     }
 
@@ -230,7 +230,7 @@
             @include mobile {
                 &--deriv-account {
                     border-top: 2px solid var(--general-section-1);
-                    padding-top: 10px;
+                    padding-top: 1rem;
 
                     .dc-btn:last-child {
                         width: 90%;
@@ -279,7 +279,7 @@
         }
         &__box--active:after {
             font-size: 1.3rem;
-            line-height: 20px;
+            line-height: 2rem;
         }
         &__label {
             @include typeface(--paragraph-left-normal-black);
@@ -340,7 +340,7 @@
             }
             .dc-ion {
                 width: 100%;
-                max-width: 96px;
+                max-width: 9.6rem;
                 margin-top: 2rem;
                 height: auto;
             }
@@ -451,7 +451,7 @@
     flex-direction: column;
 
     @include mobile() {
-        height: calc(100vh - 160px);
+        height: calc(100vh - 16rem);
         overflow: auto;
     }
 
@@ -461,7 +461,7 @@
         }
 
         @include mobile() {
-            height: calc(100vh - 40px);
+            height: calc(100vh - 4rem);
             .trading-assessment__side-note {
                 padding: 2.2rem 1.6rem;
             }

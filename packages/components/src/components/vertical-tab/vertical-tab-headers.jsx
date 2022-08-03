@@ -74,7 +74,7 @@ const VerticalTabHeaders = ({
                           group={group}
                           key={group.label}
                       >
-                          {group.subitems?.map((item_idx, header_idx) => (
+                          {group.subitems?.map(item_idx => (
                               <VerticalTabHeader
                                   item={items[item_idx]}
                                   onChange={onChange}

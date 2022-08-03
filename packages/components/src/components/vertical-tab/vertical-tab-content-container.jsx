@@ -51,7 +51,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
         <React.Fragment>
             {is_routed ? (
                 <Switch>
-                    {items.map(({ value, component, path, icon }, idx) => {
+                    {items.map(({ value, component, path, icon }) => {
                         const Component = value || component;
                         return (
                             <Route
@@ -99,7 +99,7 @@ const VerticalTabContentContainer = ({
                         [action_bar_classname]: !!action_bar_classname,
                     })}
                 >
-                    {action_bar.map(({ component, icon, onClick }, idx) => {
+                    {action_bar.map(({ component, icon, onClick }) => {
                         const Component = component;
                         return component ? (
                             <Component key={icon} />

@@ -36,6 +36,7 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

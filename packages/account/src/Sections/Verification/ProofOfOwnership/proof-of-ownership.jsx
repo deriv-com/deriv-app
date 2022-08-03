@@ -9,7 +9,7 @@ import POOVerified from 'Components/poo-verified';
 import POORejetced from 'Components/poo-rejected';
 import { VERIFIED, PENDING, NONE, REJECTED, OWNERSHIP } from './constants/constants';
 
-export const ProofOfOwnership = ({ account_status, updateAccountStatus }) => {
+export const ProofOfOwnership = ({ account_status, updateAccountStatus, refreshNotifications }) => {
     const cards = account_status?.authentication?.ownership?.requests;
     const needs_verification = account_status?.authentication?.needs_verification?.includes(OWNERSHIP);
     const [status, setStatus] = useState(NONE);
@@ -20,7 +20,13 @@ export const ProofOfOwnership = ({ account_status, updateAccountStatus }) => {
         setStatus(NONE);
     };
     if (needs_verification && status !== REJECTED) {
-        return <ProofOfOwnershipForm cards={cards} updateAccountStatus={updateAccountStatus} />; // Proof of ownership is required.
+        return (
+            <ProofOfOwnershipForm
+                cards={cards}
+                updateAccountStatus={updateAccountStatus}
+                refreshNotifications={refreshNotifications}
+            />
+        ); // Proof of ownership is required.
     }
     if (status === VERIFIED) {
         return <POOVerified />; // Proof of ownership verified
@@ -37,7 +43,8 @@ export const ProofOfOwnership = ({ account_status, updateAccountStatus }) => {
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, notifications }) => ({
     account_status: client.account_status,
     updateAccountStatus: client.updateAccountStatus,
+    refreshNotifications: notifications.refreshNotifications,
 }))(withRouter(ProofOfOwnership));

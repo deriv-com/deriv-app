@@ -17,7 +17,7 @@ const getScrollOffset = (items_count = 0) => {
     if (items_count <= 2) return '0px';
     return '80px';
 };
-const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
+const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications }) => {
     const initial_values = {};
     const [is_disabled, setIsDisabled] = React.useState(true);
     initial_values.data = cards?.map(item => {
@@ -140,6 +140,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus }) => {
                             }
                         } else {
                             updateAccountStatus();
+                            refreshNotifications();
                         }
                     });
                 }

@@ -15,7 +15,7 @@ import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
-import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value.js';
+import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {

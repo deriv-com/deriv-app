@@ -60,6 +60,10 @@ $card-width: 456px;
         @include mobile {
             margin: 1.6rem;
         }
+
+        &__text {
+            margin: 0em 2.4rem;
+        }
     }
 
     &__title {

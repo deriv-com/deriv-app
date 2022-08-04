@@ -20,16 +20,18 @@ import PaymentMethodAccordionContent from './payment-method-accordion-content.js
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
+import { getDateAfterHours } from 'Utils/date-time';
 
 const OrderDetails = observer(({ onPageReturn }) => {
-    const [should_expand_all, setShouldExpandAll] = React.useState(false);
-    const { order_store, sendbird_store } = useStores();
+    const { general_store, order_store, sendbird_store } = useStores();
+
     const {
         account_currency,
         advert_details,
         advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
+        completion_time,
         contact_info,
         has_timer_expired,
         id,
@@ -56,6 +58,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     const { chat_channel_url } = sendbird_store;
 
+    const [should_expand_all, setShouldExpandAll] = React.useState(false);
+    const remaining_review_time = React.useRef();
+
     const page_title = is_buy_order_for_user
         ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
         : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
@@ -68,6 +73,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
+
+        if (is_reviewable) {
+            remaining_review_time.current = getDateAfterHours(completion_time, general_store.review_period);
+        }
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
@@ -279,8 +288,13 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                         onClick={() => order_store.setIsRatingModalOpen(true)}
                                     />
                                 </div>
-                                <Text color='less-prominent' size='xxxs'>
-                                    {!is_reviewable && (
+                                <Text className='order-details-card--rating__text' color='less-prominent' size='xxxs'>
+                                    {is_reviewable ? (
+                                        <Localize
+                                            i18n_default_text='You have until {{remaining_review_time}} GMT to rate this transaction.'
+                                            values={{ remaining_review_time: remaining_review_time?.current }}
+                                        />
+                                    ) : (
                                         <Localize i18n_default_text='You can no longer rate this transaction.' />
                                     )}
                                 </Text>

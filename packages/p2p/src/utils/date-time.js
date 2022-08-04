@@ -27,6 +27,14 @@ export const convertToMillis = epoch => {
     return milliseconds;
 };
 
+export const getDateAfterHours = (initial_epoch, hours) => {
+    const milliseconds = hours * 60 * 60 * 1000;
+    const initial_day_milliseconds = convertToMillis(initial_epoch);
+    const total_milliseconds = initial_day_milliseconds + milliseconds;
+
+    return getFormattedDateString(new Date(total_milliseconds));
+};
+
 // add 0 and slice(-2) to get a 0 in front if it's a single digit so we can maintain double digits
 // otherwise it will slice off the 0 and still result in double digits
 const toDoubleDigits = number => `0${number}`.slice(-2);

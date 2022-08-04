@@ -119,6 +119,14 @@ AppContents.propTypes = {
     is_cfd_page: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
+    is_dark_mode: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
+    identifyEvent: PropTypes.func,
+    pageView: PropTypes.func,
+    pushDataLayer: PropTypes.func,
+    notifyAppInstall: PropTypes.func,
+    platform: PropTypes.string,
 };
 
 export default withRouter(

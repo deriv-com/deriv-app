@@ -6,7 +6,7 @@ import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value.js';
+import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import './floating-rate.scss';
 
 const FloatingRate = ({
@@ -132,11 +132,15 @@ const FloatingRate = ({
 FloatingRate.propTypes = {
     change_handler: PropTypes.func,
     className: PropTypes.string,
+    data_testid: PropTypes.string,
     error_messages: PropTypes.string,
     fiat_currency: PropTypes.string,
     local_currency: PropTypes.string,
+    name: PropTypes.string,
     onChange: PropTypes.func,
     offset: PropTypes.object,
+    required: PropTypes.bool,
+    value: PropTypes.string,
 };
 
 export default observer(FloatingRate);

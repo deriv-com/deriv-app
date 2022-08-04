@@ -161,16 +161,19 @@ const Redirect = ({
 };
 
 Redirect.propTypes = {
+    currency: PropTypes.string,
     getServerTime: PropTypes.object,
+    hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
+    openRealAccountSignup: PropTypes.func,
     setResetTradingPasswordModalOpen: PropTypes.func,
     setVerificationCode: PropTypes.func,
-    verification_code: PropTypes.object,
+    setNewEmail: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
-    setNewEmail: PropTypes.func,
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
+    verification_code: PropTypes.object,
 };
 
 export default withRouter(

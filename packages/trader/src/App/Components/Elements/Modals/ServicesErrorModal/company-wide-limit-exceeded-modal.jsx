@@ -15,7 +15,7 @@ const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }) => {
         >
             <Modal.Body>
                 <Localize
-                    i18n_default_text='No further trading is allowed on this contract type for the current trading session. For more info, refer to our <0>terms and conditions</0>'
+                    i18n_default_text='No further trading is allowed on this contract type for the current trading session. For more info, refer to our <0>terms and conditions</0>.'
                     components={[<StaticUrl key={0} className='link' href='tnc/trading-terms.pdf' is_document />]}
                 />
             </Modal.Body>

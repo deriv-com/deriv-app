@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
-import MarkerLine from '../../Components/markers/marker-line';
-import MarkerSpotLabel from '../../Components/markers/marker-spot-label';
-import MarkerSpot from '../../Components/markers/marker-spot';
+import MarkerLine from '../../Components/markers/marker-line.jsx';
+import MarkerSpotLabel from '../../Components/markers/marker-spot-label.jsx';
+import MarkerSpot from '../../Components/markers/marker-spot.jsx';
 
 export const MARKER_TYPES_CONFIG = {
     LINE_END: {

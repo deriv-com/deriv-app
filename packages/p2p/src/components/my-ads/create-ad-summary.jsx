@@ -7,7 +7,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value.js';
+import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 
 const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
     const { floating_rate_store, general_store } = useStores();

@@ -516,8 +516,11 @@ const CFDAccountCardComponent = ({
                                             <Button
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data => data.landing_company_short === acc.landing_company_short
+                                                        data =>
+                                                            data.landing_company_short === acc.landing_company_short &&
+                                                            data.login === acc.login
                                                     );
+
                                                     onClickFund(selected_account_data as DetailsOfEachMT5Loginid);
                                                 }}
                                                 type='button'
@@ -532,8 +535,11 @@ const CFDAccountCardComponent = ({
                                                 type='button'
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data => data.landing_company_short === acc.landing_company_short
+                                                        data =>
+                                                            data.landing_company_short === acc.landing_company_short &&
+                                                            data.login === acc.login
                                                     );
+
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(selected_account_data);
                                                 }}

@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list';
-import SellAdPaymentMethodsList from './sell-ad-payment-methods-list';
+import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 
-const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods }) => {
+const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
     const onClickPaymentMethodCard = payment_method => {
@@ -21,6 +21,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
             );
             setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
+        touched(true);
     };
 
     React.useEffect(() => {
@@ -53,7 +54,13 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
         );
     }
 
-    return <BuyAdPaymentMethodsList selected_methods={selected_methods} setSelectedMethods={setSelectedMethods} />;
+    return (
+        <BuyAdPaymentMethodsList
+            selected_methods={selected_methods}
+            setSelectedMethods={setSelectedMethods}
+            touched={touched}
+        />
+    );
 };
 
 export default observer(EditAdFormPaymentMethods);

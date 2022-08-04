@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
 
-const address_details_config = ({ account_settings, is_svg }) => {
+const getAddressDetailsValidationConfig = ({ account_settings, is_svg }) => {
     const is_gb = account_settings.country_code === 'gb';
     if (!account_settings) {
         return {};
@@ -132,15 +132,14 @@ const address_details_config = ({ account_settings, is_svg }) => {
 
 const addressDetailsConfig = (
     { upgrade_info, real_account_signup_target, residence, account_settings },
-    AddressDetails,
-    is_appstore = false
+    AddressDetails
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
-    const config = address_details_config({ account_settings, is_svg });
+    const config = getAddressDetailsValidationConfig({ account_settings, is_svg });
     return {
         header: {
-            active_title: is_appstore ? localize('Where do you live?') : localize('Complete your address details'),
-            title: is_appstore ? localize('ADDRESS') : localize('Address'),
+            active_title: localize('Complete your address details'),
+            title: localize('Address'),
         },
         body: AddressDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -152,7 +151,6 @@ const addressDetailsConfig = (
             is_svg,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
-        icon: 'IcDashboardAddress',
     };
 };
 

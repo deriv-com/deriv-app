@@ -1,7 +1,7 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
+const getPersonalDetailsValidationConfig = ({ residence_list, account_settings }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -141,32 +141,21 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         },
     };
 
-    const getConfig = () => {
-        if (is_appstore) {
-            const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
-            return Object.keys(config).reduce((new_config, key) => {
-                if (allowed_fields.includes(key)) {
-                    new_config[key] = config[key];
-                }
-                return new_config;
-            }, {});
-        }
-        return config;
-    };
-
-    return [getConfig(), disabled_items];
+    return [config, disabled_items];
 };
 
 const personalDetailsConfig = (
     { upgrade_info, real_account_signup_target, residence_list, account_settings },
-    PersonalDetails,
-    is_appstore = false
+    PersonalDetails
 ) => {
-    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
+    const [config, disabled_items] = getPersonalDetailsValidationConfig({
+        residence_list,
+        account_settings,
+    });
     return {
         header: {
-            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
-            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
+            active_title: localize('Complete your personal details'),
+            title: localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -204,7 +193,6 @@ const personalDetailsConfig = (
             disabled_items,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
-        icon: 'IcDashboardPersonalDetails',
     };
 };
 

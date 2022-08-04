@@ -677,7 +677,7 @@ const AccountSwitcher = props => {
                                 onClick={() => {
                                     if (props.real_account_creation_unlock_date) {
                                         closeAccountsDialog();
-                                        props.setShouldShowCooldownWarningModal(true);
+                                        props.setShouldShowCooldownModal(true);
                                     } else {
                                         props.openRealAccountSignup(account);
                                     }
@@ -994,7 +994,7 @@ AccountSwitcher.propTypes = {
     upgradeable_landing_companies: PropTypes.array,
     updateMt5LoginList: PropTypes.func,
     real_account_creation_unlock_date: PropTypes.number,
-    setShouldShowCooldownWarningModal: PropTypes.fn,
+    setShouldShowCooldownModal: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -1053,7 +1053,7 @@ const account_switcher = withRouter(
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
-        setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
+        setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
     }))(AccountSwitcher)
 );

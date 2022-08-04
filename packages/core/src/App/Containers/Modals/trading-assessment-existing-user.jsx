@@ -16,10 +16,10 @@ const TradingAssessmentExistingUser = ({
     should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm,
     setFinancialAndTradingAssessment,
-    should_show_risk_tolerance_warning_modal,
-    setShouldShowRiskToleranceWarningModal,
-    should_show_appropriateness_test_warning_modal,
-    setShouldShowAppropriatenessTestWarningModal,
+    should_show_risk_warning_modal,
+    setShouldShowRiskWarningModal,
+    should_show_appropriateness_warning_modal,
+    setShouldShowAppropriatenessWarningModal,
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
 }) => {
@@ -43,7 +43,7 @@ const TradingAssessmentExistingUser = ({
     const handleSubmit = async values => {
         if (values.risk_tolerance === 'No') {
             setShouldShowTradeAssessmentForm(false);
-            setShouldShowRiskToleranceWarningModal(true);
+            setShouldShowRiskWarningModal(true);
         } else {
             const form_payload = {
                 trading_experience_regulated: { ...values },
@@ -53,7 +53,7 @@ const TradingAssessmentExistingUser = ({
             await updateAccountStatus();
             setShouldShowTradeAssessmentForm(false);
             if (trading_score === 0) {
-                setShouldShowAppropriatenessTestWarningModal(true);
+                setShouldShowAppropriatenessWarningModal(true);
             } else {
                 setShouldShowAssessmentCompleteModal(true);
             }
@@ -61,21 +61,21 @@ const TradingAssessmentExistingUser = ({
     };
 
     const handleAcceptAppropriatenessTestWarning = () => {
-        setShouldShowAppropriatenessTestWarningModal(false);
+        setShouldShowAppropriatenessWarningModal(false);
         setShouldShowAssessmentCompleteModal(true);
     };
 
     const handleAcceptRisk = () => {
         setFormValue(prev_state => ({ ...prev_state, risk_tolerance: 'Yes' }));
         setShouldMoveToNext(true);
-        setShouldShowRiskToleranceWarningModal(false);
+        setShouldShowRiskWarningModal(false);
         setShouldShowTradeAssessmentForm(true);
     };
 
-    if (should_show_risk_tolerance_warning_modal) {
+    if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
-                show_risk_modal={should_show_risk_tolerance_warning_modal}
+                show_risk_modal={should_show_risk_warning_modal}
                 title={localize('Risk Tolerance Warning')}
                 button_text={localize('Yes, I understand the risk.')}
                 onClick={handleAcceptRisk}
@@ -87,10 +87,10 @@ const TradingAssessmentExistingUser = ({
                 }
             />
         );
-    } else if (should_show_appropriateness_test_warning_modal) {
+    } else if (should_show_appropriateness_warning_modal) {
         return (
             <TestWarningModal
-                show_risk_modal={should_show_appropriateness_test_warning_modal}
+                show_risk_modal={should_show_appropriateness_warning_modal}
                 body_content={
                     <Text as='p' size='xs'>
                         <Localize
@@ -161,10 +161,10 @@ const TradingAssessmentExistingUser = ({
 
 export default connect(({ client, ui }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
-    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
-    should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
-    setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
+    should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
     setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,

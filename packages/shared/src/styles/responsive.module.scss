@@ -1,0 +1,103 @@
+/* -------------------------------------------------------------------------- */
+/* RESPONSIVE MIXINS                                                          */
+/* -------------------------------------------------------------------------- */
+
+// Variables ----------------------------------------------------------------
+$unit: 1px;
+$breakpoints: (
+    'mobile': 926,
+    'tablet': 1081,
+    'desktop': 1800,
+);
+
+// Functions ----------------------------------------------------------------
+@function unit($number) {
+    @return $number * $unit;
+}
+
+@function get-breakpoint($breakpoint, $type, $breakpoints: $breakpoints) {
+    $breakpoints-list: map-keys($breakpoints);
+    $new-breakpoint-index: '';
+    $new-breakpoint-value: '';
+    @if $type == 'prev' {
+        $new-breakpoint-index: (index($breakpoints-list, $breakpoint)) - 1;
+    } @else if $type == 'next' {
+        $new-breakpoint-index: (index($breakpoints-list, $breakpoint)) + 1;
+    }
+
+    @if $new-breakpoint-index != 0 {
+        $new-breakpoint-value: nth($breakpoints-list, $new-breakpoint-index);
+    }
+
+    @return $new-breakpoint-value;
+}
+
+// Mixins -------------------------------------------------------------------
+@mixin bp($breakpoint, $extend: '') {
+    $breakpoints-keys: map-keys($breakpoints);
+    $has-breakpoint: index($breakpoints-keys, $breakpoint);
+    $current-bp: $breakpoint;
+    $prev-bp: get-breakpoint($breakpoint, 'prev');
+    $next-bp: get-breakpoint($breakpoint, 'next');
+
+    @if $has-breakpoint {
+        @if $prev-bp != '' and $next-bp != '' {
+            @if $extend == 'down' {
+                @media (max-width: #{unit(map-get($breakpoints, $current-bp))}) {
+                    @content;
+                }
+            } @else if $extend == 'up' {
+                @media (min-width: #{unit(map-get($breakpoints, $prev-bp))}) {
+                    @content;
+                }
+            } @else {
+                @media (min-width: #{unit(map-get($breakpoints, $prev-bp)) + 1}) and (max-width: #{unit(map-get($breakpoints, $current-bp))}) {
+                    @content;
+                }
+            }
+        } @else if $prev-bp != '' and $next-bp == '' {
+            @media (min-width: #{unit(map-get($breakpoints, $prev-bp)) + 1}) {
+                @content;
+            }
+        } @else if $prev-bp == '' and $next-bp != '' {
+            @if $extend == 'up' {
+                @media (min-width: #{unit(map-get($breakpoints, $current-bp))}) {
+                    @content;
+                }
+            } @else {
+                @media (max-width: #{unit(map-get($breakpoints, $current-bp))}) {
+                    @content;
+                }
+            }
+        }
+    } @else {
+        @error "Sorry but #{$breakpoint} is not a breakpoint in the project";
+    }
+}
+
+// Alias --------------------------------------------------------------------
+// TODO: uncomment these aliases when it is safe and they won't be overwritten the mixins in file: `devices.scss`
+// @mixin mobile {
+//     @include bp("mobile") {
+//         @content;
+//     }
+// }
+
+// @mixin tablet {
+//     @include bp("tablet") {
+//         @content;
+//     }
+// }
+
+// @mixin desktop {
+//     @include bp("desktop") {
+//         @content;
+//     }
+// }
+
+// Export -------------------------------------------------------------------
+:export {
+    mobileWidth: map-get($breakpoints, 'mobile');
+    TabletWidth: map-get($breakpoints, 'tablet');
+    DesktopWidth: map-get($breakpoints, 'desktop');
+}

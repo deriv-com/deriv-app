@@ -277,6 +277,7 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
                 const poo_required = needs_verification?.includes('ownership') && ownership?.status !== 'rejected';
+                const poo_rejected = needs_verification?.includes('ownership') && ownership?.status === 'rejected';
 
                 this.addVerificationNotifications(identity, document);
 
@@ -383,7 +384,10 @@ export default class NotificationStore extends BaseStore {
                     );
                 }
                 if (poo_required) {
-                    this.addNotificationMessage(this.client_notifications.poo_is_required);
+                    this.addNotificationMessage(this.client_notifications.poo_required);
+                }
+                if (poo_rejected) {
+                    this.addNotificationMessage(this.client_notifications.poo_rejected);
                 }
             }
         }
@@ -1042,13 +1046,23 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
-            poo_is_required: {
+            poo_required: {
                 key: 'poo_required',
                 header: localize('Your proof of ownership is required'),
                 message: localize('Your proof of ownership is required to unlock your account'),
                 action: {
                     route: routes.proof_of_ownership,
                     text: localize('Unlock my account'),
+                },
+                type: 'warning',
+            },
+            poo_rejected: {
+                key: 'poo_rejected',
+                header: localize('Proof of ownership verification failed'),
+                message: localize('We were unable to verify your proof of ownership.'),
+                action: {
+                    route: routes.proof_of_ownership,
+                    text: localize('Try again'),
                 },
                 type: 'warning',
             },

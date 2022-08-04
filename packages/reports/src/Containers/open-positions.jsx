@@ -328,6 +328,7 @@ const OpenPositions = ({
     currency,
     error,
     getPositionById,
+    is_accumulator,
     is_loading,
     is_multiplier,
     NotificationMessages,
@@ -337,7 +338,7 @@ const OpenPositions = ({
     server_time,
     ...props
 }) => {
-    const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
+    const [active_index, setActiveIndex] = React.useState(is_multiplier || is_accumulator ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier or accumulator contract
     const [has_accumulator_contract, setAccumulatorContract] = React.useState(false);
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
@@ -451,6 +452,46 @@ const OpenPositions = ({
         totals: active_positions_filtered_totals,
     };
 
+    const getTabs = () => {
+        const tabs = [];
+        tabs.push(
+            <div label={localize('Options')}>
+                <OpenPositionsTable
+                    className='open-positions'
+                    columns={columns}
+                    {...shared_props}
+                    row_size={isMobile() ? 5 : 63}
+                />
+            </div>
+        );
+        if (has_multiplier_contract) {
+            tabs.push(
+                <div label={localize('Multipliers')}>
+                    <OpenPositionsTable
+                        className='open-positions-multiplier open-positions'
+                        is_multiplier_tab
+                        columns={columns}
+                        row_size={isMobile() ? 3 : 68}
+                        {...shared_props}
+                    />
+                </div>
+            );
+        }
+        if (has_accumulator_contract) {
+            tabs.push(
+                <div label={localize('Accumulators')}>
+                    <OpenPositionsTable
+                        className='open-positions-accumulator open-positions'
+                        columns={columns}
+                        row_size={isMobile() ? 3 : 68}
+                        {...shared_props}
+                    />
+                </div>
+            );
+        }
+        return tabs;
+    };
+
     return (
         <React.Fragment>
             <NotificationMessages />
@@ -462,36 +503,7 @@ const OpenPositions = ({
                     top
                     header_fit_content={!isMobile()}
                 >
-                    <div label={localize('Options')}>
-                        <OpenPositionsTable
-                            className='open-positions'
-                            columns={columns}
-                            {...shared_props}
-                            row_size={isMobile() ? 5 : 63}
-                        />
-                    </div>
-                    {has_multiplier_contract && (
-                        <div label={localize('Multipliers')}>
-                            <OpenPositionsTable
-                                className='open-positions-multiplier open-positions'
-                                is_multiplier_tab
-                                columns={columns}
-                                row_size={isMobile() ? 3 : 68}
-                                {...shared_props}
-                            />
-                        </div>
-                    )}
-                    {has_accumulator_contract && (
-                        <div label={localize('Accumulators')}>
-                            <OpenPositionsTable
-                                className='open-positions-multiplier open-positions'
-                                is_multiplier_tab
-                                columns={columns}
-                                row_size={isMobile() ? 3 : 68}
-                                {...shared_props}
-                            />
-                        </div>
-                    )}
+                    {getTabs()}
                 </Tabs>
             ) : (
                 <OpenPositionsTable
@@ -511,6 +523,7 @@ OpenPositions.propTypes = {
     currency: PropTypes.string,
     error: PropTypes.string,
     getPositionById: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     NotificationMessages: PropTypes.func,
@@ -535,6 +548,7 @@ export default connect(({ client, common, ui, portfolio, contract_trade }) => ({
     currency: client.currency,
     error: portfolio.error,
     getPositionById: portfolio.getPositionById,
+    is_accumulator: portfolio.is_accumulator,
     is_loading: portfolio.is_loading,
     is_multiplier: portfolio.is_multiplier,
     NotificationMessages: ui.notification_messages_ui,

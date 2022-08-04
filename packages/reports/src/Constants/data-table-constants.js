@@ -429,7 +429,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     },
     {
         title: localize('Accumulator'),
-        col_index: 'growth_rate',
+        col_index: 'accumulator',
         renderCellContent: ({ row_obj }) =>
             row_obj.contract_info && row_obj.contract_info.growth_rate
                 ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`
@@ -455,7 +455,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     },
     {
         title: localize('Take profit'),
-        col_index: 'take_profit',
+        col_index: 'limit_order',
         renderCellContent: ({ row_obj }) => {
             const { take_profit } = row_obj.contract_info?.limit_order || {};
             return (
@@ -472,11 +472,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
         },
     },
     {
-        title: isMobile() ? (
-            <Localize i18n_default_text='Total profit/loss' />
-        ) : (
-            <Localize i18n_default_text='Total<0 />profit/loss' components={[<br key={0} />]} />
-        ),
+        title: localize('Total profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
             if (!row_obj.contract_info || !row_obj.contract_info.profit) return null;
@@ -499,22 +495,8 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     },
     {
         title: localize('Current price'),
-        col_index: 'bid_price',
-        renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
-
-            const total_profit = getTotalProfit(row_obj.contract_info);
-            return (
-                <div
-                    className={classNames('open-positions__bid_price', {
-                        'open-positions__bid_price--negative': total_profit < 0,
-                        'open-positions__bid_price--positive': total_profit > 0,
-                    })}
-                >
-                    <Money amount={row_obj.contract_info.bid_price} currency={currency} />
-                </div>
-            );
-        },
+        col_index: 'current_price',
+        renderCellContent: ({ row_obj }) => <Money amount={row_obj.contract_info.bid_price} currency={currency} />,
     },
     {
         title: localize('Action'),

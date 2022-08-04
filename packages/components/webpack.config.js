@@ -18,6 +18,7 @@ module.exports = function () {
             alias: {
                 Components: path.resolve(__dirname, 'src', 'components'),
             },
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             minimize: true,
@@ -91,6 +92,7 @@ module.exports = function () {
                 'react-window': 'react-window',
             },
             /^@deriv\/shared\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
     };
 };

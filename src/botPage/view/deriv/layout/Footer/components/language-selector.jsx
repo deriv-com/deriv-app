@@ -36,7 +36,11 @@ const LanguageItem = ({ lang }) => {
                 if (current_language === lang) return;
                 $(".language-menu-item__active").toggleClass("language-menu-item__active");
                 self.current.classList.add("language-menu-item__active");
-                document.location.search = `l=${lang}`;
+                    if (lang === 'en') {
+                        document.location.assign(document.location.origin);
+                    }else{
+                        document.location.search = `l=${lang}`;
+                    }
             }}
         >
             <img src={`image/deriv/flag/ic-flag-${lang}.svg`} />

@@ -13,8 +13,11 @@ const OrderInfoBlock = ({ className, label, value, size = 'xxs', weight = 'norma
 );
 
 OrderInfoBlock.propTypes = {
+    className: PropTypes.string,
     label: PropTypes.string,
+    size: PropTypes.string,
     value: PropTypes.any,
+    weight: PropTypes.string,
 };
 
 export default OrderInfoBlock;

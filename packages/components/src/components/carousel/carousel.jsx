@@ -172,6 +172,9 @@ Carousel.propTypes = {
     show_bullet: PropTypes.bool,
     autoplay_time: PropTypes.number,
     width: PropTypes.number,
+    initial_index: PropTypes.number,
+    is_mt5: PropTypes.bool,
+    item_per_window: PropTypes.number,
 };
 
 export default Carousel;

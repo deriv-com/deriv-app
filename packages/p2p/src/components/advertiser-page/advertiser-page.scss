@@ -310,6 +310,10 @@
             padding: 2.4rem;
             border: 1px solid var(--general-hover);
             border-radius: 0.8rem;
+
+            @include mobile {
+                border-radius: unset;
+            }
         }
     }
 

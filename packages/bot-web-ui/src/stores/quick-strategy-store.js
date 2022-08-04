@@ -50,7 +50,7 @@ export default class QuickStrategyStore {
     @computed
     get initial_errors() {
         // Persist errors through tab switch + remount.
-        return this.validateQuickStrategy(this.initial_values, null, true);
+        return this.validateQuickStrategy(this.initial_values, true);
     }
 
     @action.bound

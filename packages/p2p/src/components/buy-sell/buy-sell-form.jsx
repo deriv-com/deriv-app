@@ -7,12 +7,12 @@ import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shar
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import { ad_type } from 'Constants/floating-rate.js';
+import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
-import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value.js';
+import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -91,6 +91,7 @@ const BuySellForm = props => {
     React.useEffect(() => {
         const receive_amount = input_amount * calculated_rate;
         buy_sell_store.setReceiveAmount(receive_amount);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input_amount, effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {

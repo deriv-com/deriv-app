@@ -1,20 +1,19 @@
-import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import CreateWallet from './create-wallet';
 import './create-wallet.scss';
 
 type TProps = {
-    is_dark_mode_on: boolean;
+    dark: boolean;
     should_show_fiat: boolean;
     setShouldShowFiat: (show: boolean) => void;
     setSeletedWallet: (wallet: string) => void;
     selected_wallet?: string;
-    wallets: { getTitle: () => string; content: string[]; popover_text: () => string; has_information: boolean }[];
 };
 
 const CreateWalletWrapper = ({
-    is_dark_mode_on,
+    dark,
     should_show_fiat,
     setShouldShowFiat,
     setSeletedWallet,
@@ -30,7 +29,7 @@ const CreateWalletWrapper = ({
 
     return (
         <CreateWallet
-            dark={is_dark_mode_on}
+            dark={dark}
             should_show_fiat={should_show_fiat}
             setShouldShowFiat={setShouldShowFiat}
             setSeletedWallet={setSeletedWallet}

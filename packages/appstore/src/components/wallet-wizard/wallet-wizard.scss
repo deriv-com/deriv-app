@@ -1,0 +1,20 @@
+.wallet-wizard {
+    .details-form {
+        &__elements {
+            width: 100% !important;
+            margin: 0px !important;
+        }
+    }
+    &-create-wallet {
+        &-right-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    &__right-panel {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+}

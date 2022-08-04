@@ -11,8 +11,8 @@ import {
 } from 'Constants/wallet-types';
 
 type TWalletProvider = {
-    fiat_wallets: { getTitle: () => string; content: string[]; popover_text: () => string }[];
-    wallets: { getTitle: () => string; content: string[]; popover_text: () => string }[];
+    fiat_wallets: { getTitle: () => string; content: string[]; popover_text: () => string; has_information: boolean }[];
+    wallets: { getTitle: () => string; content: string[]; popover_text: () => string; has_information: boolean }[];
 };
 export default class WalletStore extends BaseStore {
     @observable
@@ -36,9 +36,19 @@ export default class WalletStore extends BaseStore {
     @computed
     get wallet_provider(): TWalletProvider {
         const fiat_wallets = [
-            { getTitle: () => localize('E-wallets'), content: e_wallets, popover_text: () => '' },
-            { getTitle: () => localize('Bankwire'), content: bankwire, popover_text: () => '' },
-            { getTitle: () => localize('Credit/Debit card'), content: credit_debit_card, popover_text: () => '' },
+            {
+                getTitle: () => localize('E-wallets'),
+                content: e_wallets,
+                popover_text: () => '',
+                has_information: false,
+            },
+            { getTitle: () => localize('Bankwire'), content: bankwire, popover_text: () => '', has_information: false },
+            {
+                getTitle: () => localize('Credit/Debit card'),
+                content: credit_debit_card,
+                popover_text: () => '',
+                has_information: false,
+            },
         ];
 
         const wallets = [

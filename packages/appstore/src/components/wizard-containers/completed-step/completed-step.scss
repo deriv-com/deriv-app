@@ -1,0 +1,15 @@
+.completed-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__title {
+        margin-top: 6.75rem;
+    }
+    &__desc {
+        margin-top: 1rem;
+    }
+    &__wallet {
+        margin-top: 3.2rem;
+    }
+}

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Formik, FormikHelpers } from 'formik';
 import RootStore from 'Stores/index';
 import React from 'react';
@@ -21,7 +22,10 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
-        reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
+        reset_password_intent &&
+        /(real|demo)\.(financial_stp|financial|synthetic|synthetic_svg|synthetic_bvi|financial_svg|financial_bvi|financial_fx|financial_v)/.test(
+            reset_password_intent
+        );
 
     let group, type, login, title, server;
     if (has_intent && current_list) {
@@ -274,6 +278,17 @@ const CFDResetPasswordModal = ({
             )}
         </Modal>
     );
+};
+
+CFDResetPasswordModal.propTypes = {
+    current_list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    email: PropTypes.string,
+    is_cfd_reset_password_modal_enabled: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    platform: PropTypes.string,
+    setCFDPasswordResetModal: PropTypes.func,
+    history: PropTypes.object,
 };
 
 export default React.memo(

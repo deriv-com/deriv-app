@@ -9,9 +9,14 @@ import {
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
 import { TCFDDashboardContainer } from './props.types';
+import classNames from 'classnames';
 
-const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFDDashboardContainer) => (
-    <div className='cfd-dashboard__download-center'>
+const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on, dxtrade_tokens }: TCFDDashboardContainer) => (
+    <div
+        className={classNames('cfd-dashboard__download-center', {
+            'cfd-dashboard__download-center--mt5': platform === CFD_PLATFORMS.MT5,
+        })}
+    >
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'
@@ -48,7 +53,10 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                             <div className='cfd-dashboard__download-center-options--desktop-download'>
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
-                                    href={getDXTradeWebTerminalLink(active_index === 0 ? 'real' : 'demo')}
+                                    href={getDXTradeWebTerminalLink(
+                                        active_index === 0 ? 'real' : 'demo',
+                                        dxtrade_tokens[active_index === 0 ? 'real' : 'demo']
+                                    )}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
@@ -140,6 +148,16 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }: TCFD
                     >
                         <Icon icon='IcInstallationApple' width={120} height={40} />
                     </a>
+                    {platform === CFD_PLATFORMS.MT5 && (
+                        <a
+                            className='cfd-dashboard__download-center-options--mobile-link'
+                            href={getPlatformMt5DownloadLink('huawei')}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <Icon icon='IcInstallationHuawei' width={120} height={40} />
+                        </a>
+                    )}
                 </div>
             </div>
         </div>

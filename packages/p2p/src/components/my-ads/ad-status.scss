@@ -1,25 +1,46 @@
 .ad-status {
     &--active {
-        background: rgba(75, 180, 179, 0.16);
-        border-radius: 1.6rem;
-        padding: 0.2rem 1.6rem;
+        &:before {
+            content: '';
+            height: 100%;
+            width: 100%;
+            background-color: var(--status-success);
+            opacity: 0.16;
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 1.6rem;
+        }
+        padding: 0.1rem 1.2rem;
         text-align: center;
-        width: 8.8rem;
+        display: flex;
+        position: relative;
+        width: 6.7rem;
 
         @include mobile {
             margin-bottom: 0.8rem;
+            padding: 0.2rem 1rem;
         }
     }
 
     &--inactive {
-        border: 1px solid var(--status-danger);
-        border-radius: 0.2rem;
+        &:before {
+            content: '';
+            height: 100%;
+            width: 100%;
+            background-color: var(--status-danger);
+            opacity: 0.16;
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 1.6rem;
+        }
         padding: 0.1rem 1.2rem;
         text-align: center;
-        width: 8.8rem;
-
-        @include mobile {
-            margin-bottom: 0.8rem;
-        }
+        display: flex;
+        position: relative;
+        width: 8rem;
     }
 }

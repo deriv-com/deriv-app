@@ -134,6 +134,7 @@ PageError.propTypes = {
     redirect_urls: PropTypes.array,
     setError: PropTypes.func,
     should_clear_error_on_click: PropTypes.bool,
+    has_malta_account: PropTypes.bool,
 };
 
 export default PageError;

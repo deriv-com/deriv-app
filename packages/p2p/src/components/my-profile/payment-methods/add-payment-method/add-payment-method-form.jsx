@@ -174,10 +174,10 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
             </DesktopWrapper>
             <MobileWrapper>
                 <MobileFullPageModal
-                    body_className='p2p-my-ads__modal-body'
+                    body_className='payment-methods-list__modal'
                     height_offset='80px'
                     is_flex
-                    is_modal_open={my_profile_store.should_show_add_payment_method_form}
+                    is_modal_open
                     page_header_className='buy-sell__modal-header'
                     page_header_text={localize('Add payment method')}
                     // pageHeaderReturnFn={onCancel}

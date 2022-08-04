@@ -10,38 +10,40 @@ const AdvertiserPageDropdownMenu = ({ is_my_advert }) => {
     const { advertiser_page_store } = useStores();
 
     return (
-        <div className='advertiser-page__menu-dots-toggle'>
-            <Icon
-                className='advertiser-page__menu-dots-icon'
-                icon='IcMenuDots'
-                onClick={() =>
-                    advertiser_page_store.setIsDropdownMenuVisible(!advertiser_page_store.is_dropdown_menu_visible)
-                }
-                size={16}
-            />
-            {advertiser_page_store.is_dropdown_menu_visible && (
-                <div className='advertiser-page__dropdown' onClick={advertiser_page_store.showBlockUserModal}>
-                    <Dropdown
-                        className={`advertiser-page__dropdown-container${is_my_advert ? '--disabled' : ''}`}
-                        is_align_text_right
-                        list={['Block']}
-                        name='block_user_dropdown'
-                        placeholder={
-                            <Text
-                                color={
-                                    advertiser_page_store.is_counterparty_advertiser_blocked
-                                        ? 'less-prominent'
-                                        : 'prominent'
-                                }
-                                size='xs'
-                            >
-                                <Localize i18n_default_text='Block' />
-                            </Text>
-                        }
-                    />
-                </div>
-            )}
-        </div>
+        !advertiser_page_store.is_counterparty_advertiser_blocked && (
+            <div className='advertiser-page__menu-dots-toggle'>
+                <Icon
+                    className='advertiser-page__menu-dots-icon'
+                    icon='IcMenuDots'
+                    onClick={() =>
+                        advertiser_page_store.setIsDropdownMenuVisible(!advertiser_page_store.is_dropdown_menu_visible)
+                    }
+                    size={16}
+                />
+                {advertiser_page_store.is_dropdown_menu_visible && (
+                    <div className='advertiser-page__dropdown' onClick={advertiser_page_store.showBlockUserModal}>
+                        <Dropdown
+                            className={`advertiser-page__dropdown-container${is_my_advert ? '--disabled' : ''}`}
+                            is_align_text_right
+                            list={['Block']}
+                            name='block_user_dropdown'
+                            placeholder={
+                                <Text
+                                    color={
+                                        advertiser_page_store.is_counterparty_advertiser_blocked
+                                            ? 'less-prominent'
+                                            : 'prominent'
+                                    }
+                                    size='xs'
+                                >
+                                    <Localize i18n_default_text='Block' />
+                                </Text>
+                            }
+                        />
+                    </div>
+                )}
+            </div>
+        )
     );
 };
 

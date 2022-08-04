@@ -11,8 +11,17 @@
         right: 0;
         z-index: 2;
 
-        .dc-dropdown__display-placeholder {
-            top: auto;
+        .dc-dropdown__display {
+            background-color: var(--general-main-2);
+            border: 1px solid var(--general-active);
+
+            span {
+                background-color: var(--general-main-2);
+            }
+
+            &-placeholder {
+                top: auto;
+            }
         }
 
         &-container {
@@ -23,6 +32,17 @@
 
                 span {
                     color: var(--text-disabled) !important;
+                }
+            }
+        }
+
+        &:hover {
+            .dc-dropdown__display {
+                background-color: var(--border-hover);
+                border: 1px solid var(--border-hover);
+
+                span {
+                    background-color: var(--border-hover);
                 }
             }
         }

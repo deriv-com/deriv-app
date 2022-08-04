@@ -398,10 +398,6 @@ $side-padding: 1.2em;
         .table__cell {
             align-items: flex-start;
         }
-        .action_type,
-        .transaction_id {
-            justify-content: center;
-        }
     }
 
     @include desktop {
@@ -543,13 +539,6 @@ $side-padding: 1.2em;
             &__background {
                 background: $color-purple;
             }
-        }
-    }
-
-    .table__body {
-        .transaction_id,
-        .market-symbol-icon {
-            justify-content: center;
         }
     }
 }

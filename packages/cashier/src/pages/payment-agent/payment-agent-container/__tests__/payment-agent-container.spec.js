@@ -25,6 +25,7 @@ jest.mock('Pages/payment-agent/payment-agent-unlisted-withdraw-form', () => () =
 jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () => () => <div>PaymentAgentWithdrawConfirm</div>);
 jest.mock('Pages/payment-agent/payment-agent-receipt', () => () => <div>PaymentAgentReceipt</div>);
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
+jest.mock('Pages/payment-agent/payment-agent-search-box', () => () => <div>PaymentAgentSearchBox</div>);
 
 describe('<PaymentAgentContainer />', () => {
     const props = {
@@ -82,6 +83,7 @@ describe('<PaymentAgentContainer />', () => {
         expect(
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
         ).toBeInTheDocument();
+        expect(screen.getByText('PaymentAgentSearchBox')).toBeInTheDocument();
         expect(screen.getByText('All payment methods')).toBeInTheDocument();
         expect(screen.getByText('Payment Agent of CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Further information CR90000000')).toBeInTheDocument();

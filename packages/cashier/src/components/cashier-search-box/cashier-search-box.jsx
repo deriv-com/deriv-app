@@ -6,6 +6,11 @@ import { Icon, Input } from '@deriv/components';
 import './cashier-search-box.scss';
 
 const CashierSearchBox = ({ className, onClear, onSearch, placeholder, setIsSearchLoading }) => {
+    React.useEffect(() => {
+        return onClear;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const onSearchClear = setFieldValue => {
         setFieldValue('search', '');
         onClear();

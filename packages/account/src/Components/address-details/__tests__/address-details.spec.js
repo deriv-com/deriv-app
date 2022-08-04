@@ -29,8 +29,6 @@ describe('<AddressDetails/>', () => {
     const address_town = 'Town/City';
     const address_town_marked = 'Town/City*';
     const use_address_info = /only use an address for which you have proof of residence/i;
-    const verification_info =
-        'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.';
 
     let modal_root_el;
 
@@ -97,7 +95,6 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             svgCommonRenderCheck();
         });
-        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);
@@ -111,7 +108,6 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             svgCommonRenderCheck();
         });
-        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);
@@ -190,7 +186,6 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(address_line_2_marked)).not.toBeInTheDocument();
         expect(screen.queryByText(address_postcode_marked)).not.toBeInTheDocument();
         expect(screen.queryByText(address_town_marked)).not.toBeInTheDocument();
-        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
     });
 
     it('should render AddressDetails component for appstore', async () => {
@@ -201,9 +196,6 @@ describe('<AddressDetails/>', () => {
         );
 
         expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
-        await waitFor(() => {
-            expect(screen.getByText(verification_info)).toBeInTheDocument();
-        });
         expect(screen.queryByText(use_address_info)).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole('textbox');
@@ -217,7 +209,6 @@ describe('<AddressDetails/>', () => {
         expect(screen.getByLabelText(address_postcode_marked)).toBeInTheDocument();
         expect(screen.getByLabelText(address_state)).toBeInTheDocument();
         expect(screen.getByLabelText(address_town_marked)).toBeInTheDocument();
-        expect(screen.getByText(verification_info)).toBeInTheDocument();
 
         expect(screen.queryByText(address_line_1)).not.toBeInTheDocument();
         expect(screen.queryByText(address_line_2)).not.toBeInTheDocument();

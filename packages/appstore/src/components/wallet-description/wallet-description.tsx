@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
 import wallet_descriptions from 'Constants/wallet-description';
 
-type TWalletDescriptionProps = {
-    wallet_name: string;
+export type WalletDescriptionProps = {
+    selected_wallet?: string;
 };
 
-type TWalletDescription = {
-    title: string;
-    description: string;
-    deposit_information: string;
-    withdrawal_information: string;
-};
-
-const WalletDescription = ({ wallet_name }: TWalletDescriptionProps) => {
-    const [wallet_description, setWalletDescription] = useState<TWalletDescription>();
-
-    useEffect(() => {
-        setWalletDescription(wallet_descriptions[`${wallet_name}`]);
-    }, [wallet_name]);
+const WalletDescription = ({ selected_wallet }: WalletDescriptionProps) => {
+    const wallet_description = selected_wallet && wallet_descriptions[selected_wallet];
 
     return (
         <>

@@ -1,7 +1,10 @@
 .wallet-details {
     max-width: 26.4rem;
-    margin: 2.4rem;
+    margin-top: 2.4rem;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 
     &__title {
         margin-bottom: 0.8rem;
@@ -13,6 +16,8 @@
         height: 12rem;
         overflow-y: scroll;
         color: #999999;
+        flex: 1;
+
         @include mobile {
             height: auto;
             margin-bottom: 2.4rem;

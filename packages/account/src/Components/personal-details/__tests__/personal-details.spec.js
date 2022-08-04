@@ -335,7 +335,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(true);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is true ', () => {
@@ -353,7 +353,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests(true);
+        runCommonFormfieldsTests(false);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is false ', () => {
@@ -372,7 +372,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('Phone number')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Phone number')).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(false);
     });
 
     it('should not show disabled fields', () => {

@@ -46,16 +46,19 @@ export default class WalletStore extends BaseStore {
                 getTitle: () => localize('Fiat currency wallets'),
                 content: this.fiat_currencies,
                 popover_text: () => localize('***'),
+                has_information: true,
             },
             {
                 getTitle: () => localize('Cryptocurrency wallets'),
                 content: this.crypto_wallets,
                 popover_text: () => '',
+                has_information: false,
             },
             {
                 getTitle: () => localize('Deriv P2P and Payment agents wallets'),
                 content: built_in_wallets,
                 popover_text: () => '',
+                has_information: false,
             },
         ];
 

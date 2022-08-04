@@ -10,16 +10,19 @@ const wallets = [
         getTitle: () => localize('Fiat currency wallets'),
         content: ['aud', 'eur', 'gbp', 'usd'],
         popover_text: () => localize('***'),
+        has_information: true,
     },
     {
         getTitle: () => localize('Cryptocurrency wallets'),
         content: ['bitcoin', 'ethereum', 'litecoin', 'tether', 'usd_coin'],
         popover_text: () => '',
+        has_information: false,
     },
     {
         getTitle: () => localize('Deriv P2P and Payment agents wallets'),
         content: ['deriv_p2p', 'payment_agent'],
         popover_text: () => '',
+        has_information: false,
     },
 ];
 

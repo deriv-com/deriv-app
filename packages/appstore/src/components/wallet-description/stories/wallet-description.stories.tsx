@@ -1,14 +1,13 @@
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 import WalletDescription from '../index';
-
-type WalletDescriptionProps = Parameters<typeof WalletDescription>[0];
+import { WalletDescriptionProps } from '../wallet-description';
 
 export default {
     title: 'WalletDescription',
     parameters: { controls: { sort: 'alpha' } },
     argTypes: {
-        wallet_name: {
+        selected_wallet: {
             description: 'Optional. Controls the description of wallet.',
             control: {
                 type: 'select',
@@ -37,6 +36,4 @@ export default {
 const Template: Story<WalletDescriptionProps> = args => <WalletDescription {...args} />;
 
 export const DefaultWalletDescription = Template.bind({});
-DefaultWalletDescription.args = {
-    wallet_name: 'eur',
-};
+DefaultWalletDescription.args = {};

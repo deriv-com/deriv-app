@@ -145,7 +145,7 @@ describe('<TermsOfUse/>', () => {
         mock_props.real_account_signup_target = 'malta';
 
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: false }}>
                 <TermsOfUse {...mock_props} />
             </PlatformContext.Provider>
         );
@@ -175,13 +175,5 @@ describe('<TermsOfUse/>', () => {
         fireEvent.click(not_pep_checkbox);
         expect(agree_checkbox.checked).toBeTruthy();
         expect(not_pep_checkbox.checked).toBeTruthy();
-
-        const finish_btn = screen.getByRole('button', { name: /finish/i });
-
-        fireEvent.click(finish_btn);
-        await waitFor(() => {
-            expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(2);
-            expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
-        });
     });
 });

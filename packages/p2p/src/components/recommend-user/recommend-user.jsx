@@ -45,9 +45,9 @@ const RecommendUser = ({
         <div className='recommend-user'>
             <Text className='recommend-user--text' color='prominent' size='xs'>
                 {is_buy_order_for_user ? (
-                    <Localize i18n_default_text='Would you recommend this buyer?' />
-                ) : (
                     <Localize i18n_default_text='Would you recommend this seller?' />
+                ) : (
+                    <Localize i18n_default_text='Would you recommend this buyer?' />
                 )}
             </Text>
             <div className='recommend-user--row'>

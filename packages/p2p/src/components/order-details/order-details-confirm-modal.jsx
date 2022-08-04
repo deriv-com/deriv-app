@@ -13,7 +13,8 @@ const OrderDetailsConfirmModal = ({
     hideConfirmOrderModal,
     should_show_confirm_modal,
 }) => {
-    const { account_currency, amount, amount_display, local_currency, other_user_details, rate } = order_information;
+    const { account_currency, amount, amount_display, id, local_currency, other_user_details, rate } =
+        order_information;
 
     const { order_details_store, order_store } = useStores();
 
@@ -90,11 +91,15 @@ const OrderDetailsConfirmModal = ({
                             large
                             onClick={() => {
                                 hideConfirmOrderModal();
-                                clearTimeout(wait);
+                                if (is_buy_order_for_user) {
+                                    order_store.confirmOrderRequest(id);
+                                } else {
+                                    clearTimeout(wait);
 
-                                const wait = setTimeout(() => {
-                                    order_store.setIsRatingModalOpen(true);
-                                }, 250);
+                                    const wait = setTimeout(() => {
+                                        order_store.setIsRatingModalOpen(true);
+                                    }, 250);
+                                }
                             }}
                         >
                             {is_buy_order_for_user ? (

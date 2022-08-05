@@ -17,8 +17,10 @@ const RecommendUser = ({
         if (is_advertiser_rated_previously) {
             if (previous_recommendation) {
                 setIsYesSelected(true);
+                onClickRecommended();
             } else {
                 setIsNoSelected(true);
+                onClickNotRecommended();
             }
         }
 

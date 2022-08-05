@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, HintBox, Icon, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -299,52 +299,57 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             </React.Fragment>
                         )}
                         {review_details && (
-                            <div className='order-details-card__ratings'>
-                                <Text color='prominent' size='s' weight='bold'>
-                                    <Localize i18n_default_text='Your transaction experience' />
-                                </Text>
-                                <div className='order-details-card__ratings--row'>
-                                    <StarRating
-                                        empty_star_className='order-details-card__star'
-                                        empty_star_icon='IcEmptyStar'
-                                        full_star_className='order-details-card__star'
-                                        full_star_icon='IcFullStar'
-                                        initial_value={rating_average_decimal}
-                                        is_readonly
-                                        number_of_stars={5}
-                                        should_allow_hover_effect={false}
-                                        star_size={isMobile() ? 17 : 20}
-                                    />
+                            <React.Fragment>
+                                <MobileWrapper>
+                                    <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                </MobileWrapper>
+                                <div className='order-details-card__ratings'>
+                                    <Text color='prominent' size='s' weight='bold'>
+                                        <Localize i18n_default_text='Your transaction experience' />
+                                    </Text>
                                     <div className='order-details-card__ratings--row'>
-                                        {review_details.recommended !== null &&
-                                            (review_details.recommended ? (
-                                                <React.Fragment>
-                                                    <Icon
-                                                        className='order-details-card__ratings--icon'
-                                                        custom_color='var(--status-success)'
-                                                        icon='IcThumbsUp'
-                                                        size={14}
-                                                    />
-                                                    <Text color='prominent' size='xxs'>
-                                                        <Localize i18n_default_text='Recommended' />
-                                                    </Text>
-                                                </React.Fragment>
-                                            ) : (
-                                                <React.Fragment>
-                                                    <Icon
-                                                        className='order-details-card__ratings--icon'
-                                                        custom_color='var(--status-danger)'
-                                                        icon='IcThumbsDown'
-                                                        size={14}
-                                                    />
-                                                    <Text color='prominent' size='xxs'>
-                                                        <Localize i18n_default_text='Not Recommended' />
-                                                    </Text>
-                                                </React.Fragment>
-                                            ))}
+                                        <StarRating
+                                            empty_star_className='order-details-card__star'
+                                            empty_star_icon='IcEmptyStar'
+                                            full_star_className='order-details-card__star'
+                                            full_star_icon='IcFullStar'
+                                            initial_value={rating_average_decimal}
+                                            is_readonly
+                                            number_of_stars={5}
+                                            should_allow_hover_effect={false}
+                                            star_size={isMobile() ? 17 : 20}
+                                        />
+                                        <div className='order-details-card__ratings--row'>
+                                            {review_details.recommended !== null &&
+                                                (review_details.recommended ? (
+                                                    <React.Fragment>
+                                                        <Icon
+                                                            className='order-details-card__ratings--icon'
+                                                            custom_color='var(--status-success)'
+                                                            icon='IcThumbsUp'
+                                                            size={14}
+                                                        />
+                                                        <Text color='prominent' size='xxs'>
+                                                            <Localize i18n_default_text='Recommended' />
+                                                        </Text>
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <React.Fragment>
+                                                        <Icon
+                                                            className='order-details-card__ratings--icon'
+                                                            custom_color='var(--status-danger)'
+                                                            icon='IcThumbsDown'
+                                                            size={14}
+                                                        />
+                                                        <Text color='prominent' size='xxs'>
+                                                            <Localize i18n_default_text='Not Recommended' />
+                                                        </Text>
+                                                    </React.Fragment>
+                                                ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </React.Fragment>
                         )}
                         {should_show_order_footer && isDesktop() && (
                             <MyProfileSeparatorContainer.Line className='order-details-card--line' />

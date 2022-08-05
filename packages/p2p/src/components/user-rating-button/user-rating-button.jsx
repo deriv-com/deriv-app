@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 
 const UserRatingButton = ({ button_text, is_disabled, large, onClick }) => {
     return (
@@ -13,7 +13,9 @@ const UserRatingButton = ({ button_text, is_disabled, large, onClick }) => {
             onClick={is_disabled ? () => {} : onClick}
         >
             <Icon icon='IcFullStar' className='user-rating-button--icon' color={is_disabled && 'disabled'} size={12} />
-            {button_text}
+            <Text color='prominent' size='xxs' weight={large ? 'normal' : 'bold'}>
+                {button_text}
+            </Text>
         </Button>
     );
 };

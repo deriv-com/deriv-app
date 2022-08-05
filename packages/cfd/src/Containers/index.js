@@ -1,5 +1,7 @@
 import CFDDashboard from './cfd-dashboard';
+import CFDPasswordModal from './cfd-password-modal';
+import CFDServerErrorDialog from './cfd-server-error-dialog';
 
-export CFDPasswordModal from './cfd-password-modal';
-export CFDServerErrorDialog from './cfd-server-error-dialog';
+export { CFDPasswordModal };
+export { CFDServerErrorDialog };
 export default CFDDashboard;

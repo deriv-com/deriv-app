@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { localize, Localize } from '@deriv/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
-import { CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
+import { getPlatformSettings, CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
 
 const getNoEmailContentStrings = () => {
     return [
@@ -47,8 +47,9 @@ const SentEmailModal = ({
             case CFD_PLATFORMS.DXTRADE:
                 subtitle = (
                     <Localize
-                        i18n_default_text='Please click on the link in the email to change your <0>Deriv X</0> password.'
+                        i18n_default_text='Please click on the link in the email to change your <0>{{platform_name_dxtrade}}</0> password.'
                         components={[<span className='send-email-template__subtitle-platform' key={0} />]}
+                        values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}
                     />
                 );
                 break;

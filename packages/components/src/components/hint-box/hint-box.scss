@@ -13,6 +13,9 @@
     &--warn {
         background-color: var(--status-warning-transparent);
     }
+    &--danger {
+        background-color: var(--transparent-danger);
+    }
     &__icon {
         margin-right: 8px;
     }

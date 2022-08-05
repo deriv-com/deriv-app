@@ -1,10 +1,9 @@
 import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
-import { isEmptyObject, addComma } from '@deriv/shared';
+import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 import { connect } from 'Stores/connect';
-import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
 const submit_label = localize('OK');
 

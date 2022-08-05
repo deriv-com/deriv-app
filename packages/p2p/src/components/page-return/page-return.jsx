@@ -6,7 +6,7 @@ import './page-return.scss';
 
 const PageReturn = ({ className, onClick, page_title }) => {
     return (
-        <div className={classNames('page-return', className)}>
+        <div className={classNames('page-return', className)} data-testid='order-details-wrapper-desktop'>
             <div onClick={onClick} className='page-return__button'>
                 <Icon icon='IcArrowLeftBold' size={16} />
             </div>
@@ -18,6 +18,7 @@ const PageReturn = ({ className, onClick, page_title }) => {
 };
 
 PageReturn.propTypes = {
+    className: PropTypes.string,
     onClick: PropTypes.func,
     page_title: PropTypes.string,
 };

@@ -1,8 +1,8 @@
 const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
-module.exports = function (env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
         context: path.resolve(__dirname, '../src'),
@@ -31,21 +31,20 @@ module.exports = function (env, argv) {
             'icon-message-content': 'Components/icon-message-content',
             'leave-confirm': 'Components/leave-confirm',
             'load-error-message': 'Components/load-error-message',
-            'poa-expired': 'Components/poa-expired',
-            'poa-needs-review': 'Components/poa-needs-review',
-            'poa-status-codes': 'Components/poa-status-codes',
-            'poa-submitted': 'Components/poa-submitted',
-            'poa-unverified': 'Components/poa-unverified',
-            'poa-verified': 'Components/poa-verified',
+            'poa-expired': 'Components/poa/status/expired',
+            'poa-needs-review': 'Components/poa/status/needs-review',
+            'poa-status-codes': 'Components/poa/status/status-codes',
+            'poa-submitted': 'Components/poa/status/submitted',
+            'poa-unverified': 'Components/poa/status/unverified',
+            'poa-verified': 'Components/poa/status/verified',
             'personal-details': 'Components/personal-details',
             'personal-details-config': 'Configs/personal-details-config',
-            'poi-expired': 'Components/poi-expired',
-            'poi-missing-personal-details': 'Components/poi-missing-personal-details',
-            'poi-onfido-failed': 'Components/poi-onfido-failed',
-            'poi-unsupported': 'Components/poi-unsupported',
-            'poi-unverified': 'Components/poi-unverified',
-            'poi-upload-complete': 'Components/poi-upload-complete',
-            'poi-verified': 'Components/poi-verified',
+            'poi-expired': 'Components/poi/status/expired',
+            'poi-missing-personal-details': 'Components/poi/missing-personal-details',
+            'poi-unsupported': 'Components/poi/status/unsupported',
+            'poi-unverified': 'Components/poi/status/unverified',
+            'poi-upload-complete': 'Components/poi/status/upload-complete',
+            'poi-verified': 'Components/poi/status/verified',
             'proof-of-identity': 'Sections/Verification/ProofOfIdentity/proof-of-identity.jsx',
             'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
             'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container.jsx',
@@ -56,6 +55,11 @@ module.exports = function (env, argv) {
             'text-container': 'Components/text-container',
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
+            'proof-of-identity-config': 'Configs/proof-of-identity-config',
+            'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
+            'proof-of-identity-containerfor-mt5':
+                'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
+            'poi-poa-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -63,7 +67,7 @@ module.exports = function (env, argv) {
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             chunkIds: 'named',

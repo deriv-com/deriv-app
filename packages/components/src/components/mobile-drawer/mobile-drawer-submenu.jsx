@@ -60,6 +60,8 @@ SubMenu.propTypes = {
     submenu_suffix_icon: PropTypes.string,
     submenu_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     submenu_toggle_class: PropTypes.string,
+    onToggle: PropTypes.func,
+    route_config_path: PropTypes.string,
 };
 
 const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => (

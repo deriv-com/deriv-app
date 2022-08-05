@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, HintBox, Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText, isDesktop } from '@deriv/shared';
+import { Button, HintBox, Text, ThemedScrollbars } from '@deriv/components';
+import { formatMoney, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -10,13 +10,16 @@ import OrderDetailsFooter from 'Components/order-details/order-details-footer.js
 import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx';
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
+import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
+import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
+    const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const { order_store, sendbird_store } = useStores();
     const {
         account_currency,
@@ -70,9 +73,14 @@ const OrderDetails = observer(({ onPageReturn }) => {
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
+
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;
     }
+
+    const display_payment_amount = removeTrailingZeros(
+        formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
+    );
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
@@ -82,7 +90,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         icon='IcAlertWarning'
                         message={
                             <Text size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text='To avoid loss of funds, please do not use cash transactions. We recommend using e-wallets or bank transfers.' />
+                                <Localize i18n_default_text="Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead." />
                             </Text>
                         }
                         is_warn
@@ -111,7 +119,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details-card__header-amount'>
-                                    {getFormattedText(amount_display * rate, local_currency)}
+                                    {display_payment_amount} {local_currency}
                                 </div>
                             )}
                             <div className='order-details-card__header-id'>
@@ -127,11 +135,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.counterparty_nickname_label}
-                                    value={
-                                        <Text size='xs' line_height='m'>
-                                            {other_user_details.name}
-                                        </Text>
-                                    }
+                                    value={<Text size='xs'>{other_user_details.name}</Text>}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -145,11 +149,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             <div className='order-details-card__info--left'>
                                 <OrderInfoBlock
                                     label={labels.left_send_or_receive}
-                                    value={getFormattedText(amount_display * rate, local_currency)}
+                                    value={`${display_payment_amount} ${local_currency}`}
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={getFormattedText(rate, local_currency)}
+                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -160,55 +164,79 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        {is_active_order &&
-                            (order_store?.has_order_payment_method_details ? (
-                                <div className='order-details-card--padding'>
-                                    <Text size='xs' weight='bold'>
-                                        {labels.payment_details}
-                                    </Text>
-                                    <Accordion
-                                        className='order-details-card__accordion'
-                                        icon_close='IcChevronRight'
-                                        icon_open='IcChevronDown'
-                                        list={order_store?.order_payment_method_details?.map(payment_method => ({
-                                            header: <PaymentMethodAccordionHeader payment_method={payment_method} />,
-                                            content: <PaymentMethodAccordionContent payment_method={payment_method} />,
-                                        }))}
+                        {is_active_order && (
+                            <React.Fragment>
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                {order_store?.has_order_payment_method_details ? (
+                                    <div className='order-details-card--padding'>
+                                        <section className='order-details-card__title'>
+                                            <Text size='xs' weight='bold'>
+                                                {labels.payment_details}
+                                            </Text>
+                                            <Button
+                                                className='p2p-my-ads__expand-button'
+                                                onClick={() => setShouldExpandAll(prev_state => !prev_state)}
+                                                transparent
+                                            >
+                                                <Text size='xss' weight='bold' color='red'>
+                                                    {localize('{{accordion_state}}', {
+                                                        accordion_state: should_expand_all
+                                                            ? 'Collapse all'
+                                                            : 'Expand all',
+                                                    })}
+                                                </Text>
+                                            </Button>
+                                        </section>
+                                        <P2PAccordion
+                                            className='order-details-card__accordion'
+                                            icon_close='IcChevronRight'
+                                            icon_open='IcChevronDown'
+                                            list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                                header: (
+                                                    <PaymentMethodAccordionHeader payment_method={payment_method} />
+                                                ),
+                                                content: (
+                                                    <PaymentMethodAccordionContent payment_method={payment_method} />
+                                                ),
+                                            }))}
+                                            is_expand_all={should_expand_all}
+                                            onChange={setShouldExpandAll}
+                                        />
+                                    </div>
+                                ) : (
+                                    <OrderInfoBlock
+                                        className='order-details-card--padding'
+                                        label={labels.payment_details}
+                                        size='xs'
+                                        weight='bold'
+                                        value={payment_info || '-'}
                                     />
-                                </div>
-                            ) : (
+                                )}
+                            </React.Fragment>
+                        )}
+                        {is_active_order && (
+                            <React.Fragment>
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding'
-                                    label={
-                                        <Text size='xs' weight='bold'>
-                                            {labels.payment_details}
-                                        </Text>
-                                    }
-                                    value={payment_info || '-'}
+                                    label={labels.contact_details}
+                                    size='xs'
+                                    weight='bold'
+                                    value={contact_info || '-'}
                                 />
-                            ))}
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        <OrderInfoBlock
-                            className='order-details-card--padding'
-                            label={
-                                <Text size='xs' weight='bold'>
-                                    {labels.contact_details}
-                                </Text>
-                            }
-                            value={contact_info || '-'}
-                        />
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                        <OrderInfoBlock
-                            className='order-details-card--padding'
-                            label={
-                                <Text size='xs' weight='bold'>
-                                    {labels.instructions}
-                                </Text>
-                            }
-                            value={advert_details.description.trim() || '-'}
-                        />
-                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <OrderInfoBlock
+                                    className='order-details-card--padding'
+                                    label={labels.instructions}
+                                    size='xs'
+                                    weight='bold'
+                                    value={advert_details.description.trim() || '-'}
+                                />
+                                {should_show_order_footer && isDesktop() && (
+                                    <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                )}
+                            </React.Fragment>
+                        )}
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { CFD_PLATFORMS, WS } from '@deriv/shared';
+import { CFD_PLATFORMS, WS, getPlatformSettings } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
@@ -10,12 +10,14 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
     const [identifier, setIdenifier] = React.useState('');
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
+    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+
     const getPlatformTitle = () => {
         let title = '';
         if (has_mt5_accounts) {
             title = localize('DMT5 Password');
         } else if (has_dxtrade_accounts) {
-            title = localize('Deriv X Password');
+            title = localize('{{platform_name_dxtrade}} Password', { platform_name_dxtrade });
         }
         return title;
     };
@@ -68,17 +70,21 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                 {has_dxtrade_accounts && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize i18n_default_text='Your Deriv X password is for logging in to your Deriv X accounts on the web and mobile apps.' />
+                            <Localize
+                                i18n_default_text='Your {{platform_name_dxtrade}} password is for logging in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.'
+                                values={{ platform_name_dxtrade }}
+                            />
                         </Text>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize
-                                i18n_default_text='Click the <0>Change password</0> button to change your Deriv X password.'
+                                i18n_default_text='Click the <0>Change password</0> button to change your {{platform_name_dxtrade}} password.'
                                 components={[<strong key={0} />]}
+                                values={{ platform_name_dxtrade }}
                             />
                         </Text>
                         <div className='passwords-platform__content'>
-                            <Popover alignment='bottom' message='Deriv X'>
-                                <Icon icon='IcBrandDxtrade' size={32} />
+                            <Popover alignment='bottom' message={platform_name_dxtrade}>
+                                <Icon icon={getPlatformSettings('dxtrade').icon} size={32} />
                             </Popover>
                             <Button
                                 className='account__passwords-footer-btn'

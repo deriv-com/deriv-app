@@ -5,6 +5,7 @@ import { Swipeable } from 'react-swipeable';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
 import Icon from '../icon';
+import Button from '../button/button.jsx';
 import { useInterval } from '../../hooks';
 
 const Carousel = ({
@@ -82,15 +83,16 @@ const Carousel = ({
                 )}
                 <div className='dc-carousel__container'>
                     {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
-                        <span
+                        <Button
                             className={classNames('dc-carousel__icon', { 'dc-carousel__icon--mt5': is_mt5 })}
                             onClick={handlePrevClick}
-                        >
-                            <Icon
-                                icon={is_mt5 ? 'IcChevronLeftBoldMt5' : 'IcChevronLeft'}
-                                size={is_mt5 ? '28' : '24'}
-                            />
-                        </span>
+                            icon={
+                                <Icon
+                                    icon={is_mt5 ? 'IcChevronLeftBoldMt5' : 'IcChevronLeft'}
+                                    size={is_mt5 ? '28' : '24'}
+                                />
+                            }
+                        />
                     )}
 
                     <div
@@ -114,15 +116,16 @@ const Carousel = ({
                     </div>
 
                     {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
-                        <span
+                        <Button
                             className={classNames('dc-carousel__icon', { 'dc-carousel__icon--mt5': is_mt5 })}
                             onClick={handleNextClick}
-                        >
-                            <Icon
-                                icon={is_mt5 ? 'IcChevronRightBoldMt5' : 'IcChevronRight'}
-                                size={is_mt5 ? '28' : '24'}
-                            />
-                        </span>
+                            icon={
+                                <Icon
+                                    icon={is_mt5 ? 'IcChevronRightBoldMt5' : 'IcChevronRight'}
+                                    size={is_mt5 ? '28' : '24'}
+                                />
+                            }
+                        />
                     )}
                 </div>
                 {sliced_list_length > 1 && (
@@ -169,6 +172,9 @@ Carousel.propTypes = {
     show_bullet: PropTypes.bool,
     autoplay_time: PropTypes.number,
     width: PropTypes.number,
+    initial_index: PropTypes.number,
+    is_mt5: PropTypes.bool,
+    item_per_window: PropTypes.number,
 };
 
 export default Carousel;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Loading, MobileFullPageModal, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -10,26 +10,47 @@ import PaymentMethods from './payment-methods';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
+    const formik_ref = React.useRef();
 
-    if (my_profile_store.is_loading) {
-        return <Loading is_fullscreen={false} />;
-    } else if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
+    const generatePageHeaderText = () => {
+        if (my_profile_store.should_show_add_payment_method_form) {
+            return localize('Add payment method');
+        } else if (my_profile_store.should_show_edit_payment_method_form) {
+            return localize('Edit payment method');
+        }
+        return localize('Payment methods');
+    };
+
+    if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
-                    <PaymentMethods />
+                    <PaymentMethods formik_ref={formik_ref} />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
                         body_className='payment-methods-list__modal'
                         height_offset='80px'
-                        is_modal_open={true}
-                        page_header_text={localize('Payment methods')}
-                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                        is_modal_open
+                        is_flex
+                        page_header_className='buy-sell__modal-header'
+                        page_header_text={generatePageHeaderText()}
+                        pageHeaderReturnFn={() => {
+                            if (
+                                (formik_ref.current && formik_ref.current.dirty) ||
+                                my_profile_store.selected_payment_method.length > 0
+                            ) {
+                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                            } else {
+                                my_profile_store.hideAddPaymentMethodForm();
+                                my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                            }
+                        }}
                     >
-                        <PaymentMethods />
+                        <PaymentMethods formik_ref={formik_ref} />
                     </MobileFullPageModal>
                 </MobileWrapper>
             </React.Fragment>

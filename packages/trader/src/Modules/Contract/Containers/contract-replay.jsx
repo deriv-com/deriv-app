@@ -10,7 +10,16 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect, urlFor } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    isMultiplierContract,
+    isEmptyObject,
+    getPlatformRedirect,
+    urlFor,
+    getDurationPeriod,
+    getDurationUnitText,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -159,34 +168,45 @@ const ContractReplay = ({
 ContractReplay.propTypes = {
     contract_id: PropTypes.number,
     contract_info: PropTypes.object,
+    contract_update: PropTypes.object,
+    contract_update_history: PropTypes.array,
     indicative_status: PropTypes.string,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
+    is_forward_starting: PropTypes.bool,
+    is_market_closed: PropTypes.bool,
+    is_sell_requested: PropTypes.bool,
+    is_valid_to_cancel: PropTypes.bool,
+    NotificationMessages: PropTypes.func,
+    onClickCancel: PropTypes.func,
+    onClickSell: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
+    toggleHistoryTab: PropTypes.func,
 };
 
-export default connect(({ common, modules, ui }) => {
-    const contract_replay = modules.contract_replay;
-    const contract_store = contract_replay.contract_store;
+export default connect(({ common, contract_replay, ui }) => {
+    const local_contract_replay = contract_replay;
+    const contract_store = local_contract_replay.contract_store;
     return {
         routeBackInApp: common.routeBackInApp,
         contract_info: contract_store.contract_info,
         contract_update: contract_store.contract_update,
         contract_update_history: contract_store.contract_update_history,
         is_digit_contract: contract_store.is_digit_contract,
-        is_market_closed: contract_replay.is_market_closed,
-        is_sell_requested: contract_replay.is_sell_requested,
-        is_valid_to_cancel: contract_replay.is_valid_to_cancel,
-        onClickCancel: contract_replay.onClickCancel,
-        onClickSell: contract_replay.onClickSell,
-        onMount: contract_replay.onMount,
-        onUnmount: contract_replay.onUnmount,
-        indicative_status: contract_replay.indicative_status,
-        is_chart_loading: contract_replay.is_chart_loading,
-        is_forward_starting: contract_replay.is_forward_starting,
+        is_market_closed: local_contract_replay.is_market_closed,
+        is_sell_requested: local_contract_replay.is_sell_requested,
+        is_valid_to_cancel: local_contract_replay.is_valid_to_cancel,
+        onClickCancel: local_contract_replay.onClickCancel,
+        onClickSell: local_contract_replay.onClickSell,
+        onMount: local_contract_replay.onMount,
+        onUnmount: local_contract_replay.onUnmount,
+        indicative_status: local_contract_replay.indicative_status,
+        is_chart_loading: local_contract_replay.is_chart_loading,
+        is_forward_starting: local_contract_replay.is_forward_starting,
         is_dark_theme: ui.is_dark_mode_on,
         NotificationMessages: ui.notification_messages_ui,
         toggleHistoryTab: ui.toggleHistoryTab,
@@ -236,12 +256,15 @@ const Chart = props => {
             scrollToEpoch={props.scroll_to_epoch}
             stateChangeListener={props.chartStateChange}
             symbol={props.symbol}
+            allTicks={props.all_ticks}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
             isStaticChart={false}
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
+            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
+            contractInfo={props.contract_info}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker
@@ -258,10 +281,12 @@ const Chart = props => {
 Chart.propTypes = {
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
+    chartStateChange: PropTypes.func,
     chart_type: PropTypes.string,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     InfoBox: PropTypes.node,
+    is_digit_contract: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     is_static_chart: PropTypes.bool,
@@ -272,15 +297,17 @@ Chart.propTypes = {
     settings: PropTypes.object,
     start_epoch: PropTypes.number,
     symbol: PropTypes.string,
+    contract_info: PropTypes.object,
+    all_ticks: PropTypes.array,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
     wsSubscribe: PropTypes.func,
+    shouldFetchTickHistory: PropTypes.bool,
 };
 
-const ReplayChart = connect(({ modules, ui, common }) => {
+const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     const trade = modules.trade;
-    const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
     const allow_scroll_to_epoch =
@@ -319,6 +346,10 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         barriers_array: contract_store.barriers_array,
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
+        contract_info: contract_store.contract_info,
+        all_ticks: contract_store.contract_info.audit_details
+            ? contract_store.contract_info.audit_details.all_ticks
+            : [],
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,

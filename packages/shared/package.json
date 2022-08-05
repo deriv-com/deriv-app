@@ -1,46 +1,54 @@
 {
-  "name": "@deriv/shared",
-  "version": "1.0.0",
-  "description": "deriv shared",
-  "author": "Deriv",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/binary-com/deriv-app#readme",
-  "main": "src/index.js",
-  "private": true,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/binary-com/deriv-app.git"
-  },
-  "engines": {
-    "node": "^14.17.1"
-  },
-  "scripts": {
-    "start": "echo \"No start specified\"",
-    "serve": "echo \"No serve specified\"",
-    "build": "echo \"No build specified\"",
-    "build:travis": "echo \"No build:travis specified\"",
-    "deploy": "echo \"No deploy specified\"",
-    "deploy:clean": "echo \"No deploy:clean specified\"",
-    "deploy:folder": "echo \"No deploy:folder specified\"",
-    "deploy:staging": "echo \"No deploy:staging specified\"",
-    "deploy:production": "echo \"No deploy:production specified\"",
-    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\""
-  },
-  "bugs": {
-    "url": "https://github.com/binary-com/deriv-app/issues"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "jsdom": "^16.2.1",
-    "moment": "^2.24.0"
-  },
-  "dependencies": {
-    "canvas-toBlob": "^1.0.0",
-    "extend": "^3.0.2",
-    "js-cookie": "^2.2.1",
-    "object.fromentries": "^2.0.0",
-    "react": "^16.14.0",
-    "moment": "^2.24.0",
-    "react-loadable": "^5.5.0"
-  }
+    "name": "@deriv/shared",
+    "version": "1.0.0",
+    "description": "deriv shared",
+    "author": "Deriv",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/binary-com/deriv-app#readme",
+    "main": "src/index.js",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/binary-com/deriv-app.git"
+    },
+    "engines": {
+        "node": "^14.17.1"
+    },
+    "scripts": {
+        "start": "echo \"No start specified\"",
+        "serve": "echo \"No serve specified\"",
+        "build": "echo \"No build specified\"",
+        "build:travis": "echo \"No build:travis specified\"",
+        "deploy": "echo \"No deploy specified\"",
+        "deploy:clean": "echo \"No deploy:clean specified\"",
+        "deploy:folder": "echo \"No deploy:folder specified\"",
+        "deploy:staging": "echo \"No deploy:staging specified\"",
+        "deploy:production": "echo \"No deploy:production specified\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
+    },
+    "bugs": {
+        "url": "https://github.com/binary-com/deriv-app/issues"
+    },
+    "devDependencies": {
+        "@babel/eslint-parser": "^7.17.0",
+        "@babel/preset-react": "^7.16.7",
+        "chai": "^4.2.0",
+        "jsdom": "^16.2.1",
+        "moment": "^2.29.2"
+    },
+    "dependencies": {
+        "@deriv/translations": "^1.0.0",
+        "@types/js-cookie": "^3.0.1",
+        "@types/moment": "^2.13.0",
+        "@types/react-loadable": "^5.5.6",
+        "canvas-toBlob": "^1.0.0",
+        "extend": "^3.0.2",
+        "i18next": "^20.3.2",
+        "js-cookie": "^2.2.1",
+        "mobx": "^5.15.7",
+        "moment": "^2.29.2",
+        "object.fromentries": "^2.0.0",
+        "react": "^16.14.0",
+        "react-loadable": "^5.5.0"
+    }
 }

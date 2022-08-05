@@ -41,6 +41,7 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
+    @observable trading_platform_available_accounts = [];
     @observable pre_switch_broadcast = false;
     @observable switched = '';
     @observable is_switching = false;
@@ -49,6 +50,7 @@ export default class ClientStore extends BaseStore {
     @observable currencies_list = {};
     @observable residence_list = [];
     @observable states_list = [];
+    @observable citizen = '';
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
@@ -65,6 +67,7 @@ export default class ClientStore extends BaseStore {
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
     @observable is_account_setting_loaded = false;
+    @observable has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -160,6 +163,14 @@ export default class ClientStore extends BaseStore {
         if (isEmptyObject(this.accounts)) return undefined;
         return this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]
             ? this.accounts[this.loginid].balance.toString()
+            : undefined;
+    }
+
+    @computed
+    get account_open_date() {
+        if (isEmptyObject(this.accounts)) return undefined;
+        return Object.keys(this.accounts[this.loginid]).includes('created_at')
+            ? this.accounts[this.loginid].created_at
             : undefined;
     }
 
@@ -380,20 +391,6 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_account_error_in_dxtrade_demo_list() {
         return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'demo');
-    }
-
-    @computed
-    get can_have_more_real_synthetic_mt5() {
-        const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included =
-                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
-            return is_included ? acc + 1 : acc;
-        }, 0);
-        const number_of_available_synthetic = this.mt5_trading_servers.reduce(
-            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
-            0
-        );
-        return number_of_current_added_synthetics > 0 && number_of_available_synthetic > 0;
     }
 
     @computed
@@ -727,6 +724,39 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    getIsMarketTypeMatching = (account, market_type) =>
+        market_type === 'synthetic'
+            ? account.market_type === market_type || account.market_type === 'gaming'
+            : account.market_type === 'financial';
+
+    @action.bound
+    isEligibleForMoreDemoMt5Svg(market_type) {
+        const existing_demo_accounts = this.mt5_login_list.filter(
+            account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)
+        );
+        return (
+            this.trading_platform_available_accounts.some(
+                account =>
+                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
+                    account.shortcode === 'svg'
+            ) && existing_demo_accounts.every(account => !(account.landing_company_short === 'svg'))
+        );
+    }
+
+    @action.bound
+    isEligibleForMoreRealMt5(market_type) {
+        const existing_real_accounts = this.mt5_login_list.filter(
+            account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
+        );
+        const available_real_accounts_shortcodes = this.trading_platform_available_accounts
+            .filter(account => (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type)
+            .map(account => account.shortcode);
+
+        return !!available_real_accounts_shortcodes.filter(shortcode =>
+            existing_real_accounts.every(account => account.landing_company_short !== shortcode)
+        ).length;
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
@@ -1029,26 +1059,25 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+
         if (is_maltainvest_account) {
             currency = form_values.currency;
             form_values.accept_risk = form_values.accept_risk || 0;
-            delete form_values.currency;
         }
+        const { document_number, document_type, ...required_form_values } = form_values;
+        required_form_values.citizen = this.account_settings.citizen || this.residence;
         const response = is_maltainvest_account
-            ? await WS.newAccountRealMaltaInvest(form_values)
-            : await WS.newAccountReal(form_values);
+            ? await WS.newAccountRealMaltaInvest(required_form_values)
+            : await WS.newAccountReal(required_form_values);
+
         if (!response.error) {
             await this.accountRealReaction(response);
-            // Set currency after account is created
-            // Maltainvest only
-            if (is_maltainvest_account) {
-                await this.setAccountCurrency(currency);
-            }
             if (is_samoa_account) {
                 await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
             }
             localStorage.removeItem('real_account_signup_wizard');
             await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
+
             return Promise.resolve({
                 ...response,
                 ...(is_maltainvest_account
@@ -1229,9 +1258,23 @@ export default class ClientStore extends BaseStore {
         const search = window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
+        const code_param = search_params?.get('code');
+        const action_param = search_params?.get('action');
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
+
+        if (search) {
+            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                }, 0);
+            });
+        }
+
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1273,7 +1316,7 @@ export default class ClientStore extends BaseStore {
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
                 const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    search_params?.get('action')
+                    action_param
                 );
 
                 if (has_action) {
@@ -1295,6 +1338,7 @@ export default class ClientStore extends BaseStore {
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
+            if (this.citizen) this.onSetCitizen(this.citizen);
         }
 
         this.selectCurrency('');
@@ -1304,6 +1348,7 @@ export default class ClientStore extends BaseStore {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
@@ -1315,7 +1360,7 @@ export default class ClientStore extends BaseStore {
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
-
+            await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -1606,7 +1651,7 @@ export default class ClientStore extends BaseStore {
             });
         }
 
-        if (obj_balance.total) {
+        if (obj_balance?.total) {
             const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
             const total_mt5 = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.MT5]);
             const total_dxtrade = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.DXTRADE]);
@@ -1630,6 +1675,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setResidence(residence) {
         this.accounts[this.loginid].residence = residence;
+    }
+
+    @action.bound
+    setCitizen(citizen) {
+        this.citizen = citizen;
     }
 
     @action.bound
@@ -1672,6 +1722,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         this.mt5_login_list = [];
+        this.dxtrade_accounts_list = [];
         this.landing_companies = {};
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
@@ -1930,8 +1981,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
-        if (!this.verification_code.signup || !password || !residence) return;
+    onSetCitizen(citizen) {
+        if (!citizen) return;
+        WS.setSettings({
+            set_settings: 1,
+            citizen,
+        });
+    }
+
+    @action.bound
+    onSignup({ citizenship, password, residence }, cb) {
+        if (!this.verification_code.signup || !password || !residence || !citizenship) return;
         WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
             async response => {
                 if (response.error) {
@@ -1940,8 +2000,8 @@ export default class ClientStore extends BaseStore {
                     cb();
                     // Initialize client store with new user login
                     const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    await this.setCitizen(citizenship);
                     await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
-
                     // GTM Signup event
                     this.root_store.gtm.pushDataLayer({
                         event: 'virtual_signup',
@@ -2100,6 +2160,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    responseTradingPlatformAvailableAccounts(response) {
+        if (!response.error) {
+            this.trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
+    @action.bound
     responseTradingPlatformAccountsList(response) {
         const { platform } = response.echo_req || {};
 
@@ -2241,6 +2308,26 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
+        });
+    }
+
+    @action.bound
+    setTwoFAStatus(status) {
+        this.has_enabled_two_fa = status;
+    }
+
+    @action.bound
+    getTwoFAStatus() {
+        return new Promise(resolve => {
+            WS.authorized.accountSecurity({ account_security: 1, totp_action: 'status' }).then(response => {
+                if (response.error) {
+                    resolve(response.error);
+                } else {
+                    const is_enabled = !!getPropertyValue(response, ['account_security', 'totp', 'is_enabled']);
+                    this.setTwoFAStatus(is_enabled);
+                    resolve(is_enabled);
+                }
+            });
         });
     }
 }

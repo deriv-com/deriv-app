@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Loading } from '@deriv/components';
 import {
+    getBrandWebsiteName,
     getPropertyValue,
     toMoment,
     getDecimalPlaces,
@@ -56,7 +57,9 @@ const SelfExclusion = ({
         max_30day_losses: localize('Max. total loss over 30 days'),
         session_duration_limit: localize('Time limit per session'),
         timeout_until: localize('Time out until'),
-        exclude_until: localize('Excluded from Deriv.com until'),
+        exclude_until: localize('Excluded from {{brand_website_name}} until', {
+            brand_website_name: getBrandWebsiteName(),
+        }),
         max_balance: localize('Max. account balance'),
         max_open_bets: localize('Max. open positions'),
     };
@@ -420,6 +423,7 @@ const SelfExclusion = ({
 SelfExclusion.propTypes = {
     currency: PropTypes.string.isRequired,
     footer_ref: PropTypes.shape({ current: PropTypes.any }),
+    is_appstore: PropTypes.bool,
     is_app_settings: PropTypes.bool,
     is_cr: PropTypes.bool.isRequired,
     is_eu: PropTypes.bool.isRequired,

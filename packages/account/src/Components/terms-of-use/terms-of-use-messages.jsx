@@ -1,5 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { getLegalEntityName } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
 export const Hr = () => <div className='terms-of-use__hr' />;
@@ -22,8 +23,11 @@ export const SVGDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.'
+                    'Your account will be opened with {{legal_entity_name}}, and will be subject to the laws of Saint Vincent and the Grenadines.'
                 }
+                values={{
+                    legal_entity_name: getLegalEntityName('svg'),
+                }}
             />
         </p>
         <Hr />
@@ -48,8 +52,11 @@ export const IOMDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC), and will be subject to the laws of the Isle of Man.'
+                    'Your account will be opened with {{legal_entity_name}}, regulated by the UK Gaming Commission (UKGC), and will be subject to the laws of the Isle of Man.'
                 }
+                values={{
+                    legal_entity_name: getLegalEntityName('mx'),
+                }}
             />
         </p>
     </React.Fragment>
@@ -63,8 +70,11 @@ export const MaltaDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (Europe) Limited, regulated by the Malta Gaming Authority, and will be subject to the laws of Malta.'
+                    'Your account will be opened with {{legal_entity_name}}, regulated by the Malta Gaming Authority, and will be subject to the laws of Malta.'
                 }
+                values={{
+                    legal_entity_name: getLegalEntityName('malta'),
+                }}
             />
         </p>
     </React.Fragment>
@@ -78,8 +88,11 @@ export const MaltaInvestDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA), and will be subject to the laws of Malta.'
+                    'Your account will be opened with {{legal_entity_name}}, regulated by the Malta Financial Services Authority (MFSA), and will be subject to the laws of Malta.'
                 }
+                values={{
+                    legal_entity_name: getLegalEntityName('maltainvest'),
+                }}
             />
         </p>
         <Hr />
@@ -104,8 +117,11 @@ export const SamoaDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv Capital International Ltd and will be subject to the laws of Samoa.'
+                    'Your account will be opened with {{legal_entity_name}} and will be subject to the laws of Samoa.'
                 }
+                values={{
+                    legal_entity_name: getLegalEntityName('samoa'),
+                }}
             />
         </p>
         <Hr />

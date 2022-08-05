@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
@@ -8,7 +7,6 @@ import debounce from 'lodash.debounce';
 import { withTranslation } from 'react-i18next';
 import { DesktopWrapper } from '@deriv/components';
 import {
-    checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
     isTablet,
@@ -16,8 +14,9 @@ import {
     initFormErrorMessages,
     mobileOSDetect,
     setSharedCFDText,
+    useOnLoadTranslation,
 } from '@deriv/shared';
-import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
+import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -29,10 +28,8 @@ import AppContents from './Containers/Layout/app-contents.jsx';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header';
-import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
-import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
 
@@ -112,7 +109,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                             <DesktopWrapper>
                                 <Footer />
                             </DesktopWrapper>
-                            <AppModals />
+                            <ErrorBoundary>
+                                <AppModals />
+                            </ErrorBoundary>
                             <SmartTraderIFrame />
                             <BinaryBotIFrame />
                             <AppToastMessages />
@@ -132,14 +131,3 @@ AppWithoutTranslation.propTypes = {
 const App = withTranslation()(AppWithoutTranslation);
 
 export default App;
-
-const has_endpoint_url = checkAndSetEndpointFromUrl();
-
-// if has endpoint url, APP will be redirected
-if (!has_endpoint_url) {
-    const root_store = initStore(AppNotificationMessages);
-
-    const wrapper = document.getElementById('deriv_app');
-    // eslint-disable-next-line no-unused-expressions
-    wrapper ? ReactDOM.render(<App useSuspense={false} root_store={root_store} />, wrapper) : false;
-}

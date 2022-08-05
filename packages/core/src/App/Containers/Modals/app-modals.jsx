@@ -2,28 +2,31 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
+import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import { connect } from 'Stores/connect';
+import { moduleLoader } from '@deriv/shared';
 
 const AccountSignupModal = React.lazy(() =>
-    import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
 );
 const CloseMxMltAccountModal = React.lazy(() =>
-    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal')
+    moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
-    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
+    moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
 const RedirectToLoginModal = React.lazy(() =>
-    import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal')
+    moduleLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
 );
 const SetResidenceModal = React.lazy(() =>
-    import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
+    moduleLoader(() => import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal'))
 );
 const RealityCheckModal = React.lazy(() =>
-    import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal')
+    moduleLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
 );
-const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
-
+const WelcomeModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
+);
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
@@ -31,6 +34,7 @@ const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-em
 const CloseUKAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
 );
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_welcome_modal_visible,
@@ -40,6 +44,7 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
+    is_deriv_account_needed_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -86,6 +91,10 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     }
 
+    if (is_deriv_account_needed_modal_visible) {
+        ComponentToLoad = <DerivRealAccountRequiredModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
@@ -104,4 +113,5 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
 }))(AppModals);

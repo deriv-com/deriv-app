@@ -71,6 +71,7 @@
         --general-section-2: #{$color-grey-2};
         --general-section-3: #{$color-grey-11};
         --general-section-4: #{$color-grey-12};
+        --general-section-5: #{$color-grey-2};
         --general-disabled: #{$color-grey-3};
         --general-hover: #{$color-grey-4};
         --general-active: #{$color-grey-5};
@@ -84,10 +85,13 @@
         --text-warning: #{$color-yellow};
         --text-red: #{$color-red};
         --text-blue: #{$color-blue-3};
+        --text-info-blue: #{$color-blue};
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-grey-2};
+        --text-status-info-blue: #{$color-blue};
+        --text-hint: #{$color-black-1};
         // Purchase
         --purchase-main-1: #{$color-green-1};
         --purchase-section-1: #{$color-green-2};
@@ -161,6 +165,8 @@
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
         --transparent-info: #{$alpha-color-blue-1};
+        --transparent-hint: #{$alpha-color-blue-3};
+        --transparent-danger: #{$alpha-color-red-2};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
@@ -185,6 +191,7 @@
         --general-section-3: #{$color-black-5};
         // @TODO: get color from design
         --general-section-4: #{$color-black-5};
+        --general-section-5: #{$color-black-5};
         --general-disabled: #{$color-black-4};
         --general-hover: #{$color-black-5};
         --general-active: #{$color-black-8};
@@ -197,6 +204,8 @@
         --text-loss-danger: #{$color-red-2};
         --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
+        --text-status-info-blue: #{$color-blue};
+        --text-hint: #{$color-grey};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-black-1};
@@ -229,6 +238,7 @@
         --state-hover: #{$color-black-5};
         --state-active: #{$color-black-8};
         --state-disabled: #{$color-black-4};
+        --checkbox-disabled-grey: #{$color-grey-6};
         // Border
         --border-normal: #{$color-black-8};
         --border-normal-1: #{$color-grey-5};
@@ -246,7 +256,7 @@
         --status-adjustment: #{$color-grey-1};
         --status-danger: #{$color-red-2};
         --status-warning: #{$color-yellow};
-        --status-warning-2: #{$alpha-color-yellow-1};
+        --status-warning-transparent: #{$alpha-color-yellow-1};
         --status-success: #{$color-green-3};
         --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};
@@ -254,6 +264,8 @@
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};
+        --transparent-hint: #{$alpha-color-blue-1};
+        --transparent-danger: #{$alpha-color-red-2};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-2};

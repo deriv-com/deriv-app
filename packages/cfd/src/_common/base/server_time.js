@@ -1,4 +1,4 @@
-const PromiseClass = require('../utility').PromiseClass;
+import { PromiseClass } from '../utility';
 
 const ServerTime = (() => {
     let clock_started = false;
@@ -22,4 +22,4 @@ const ServerTime = (() => {
     };
 })();
 
-module.exports = ServerTime;
+export default ServerTime;

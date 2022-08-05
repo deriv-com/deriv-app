@@ -145,10 +145,10 @@ const Duration = ({
                     is_alignment_left
                     is_nativepicker={false}
                     list={duration_units_list}
-                    name='advanced_duration_unit'
+                    name='simple_duration_unit'
                     no_border={true}
                     onChange={changeDurationUnit}
-                    value={advanced_duration_unit}
+                    value={simple_duration_unit}
                 />
             )}
             {!has_toggle && <RangeSlider name='duration' value={duration_t} {...props.shared_input} />}
@@ -213,9 +213,12 @@ Duration.propTypes = {
     market_open_times: PropTypes.array,
     max_value: PropTypes.number,
     min_value: PropTypes.number,
+    number_input: PropTypes.object,
     onChange: PropTypes.func,
+    onChangeMultiple: PropTypes.func,
     onChangeUiStore: PropTypes.func,
     server_time: PropTypes.object,
+    shared_input: PropTypes.object,
     simple_duration_unit: PropTypes.string,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors: PropTypes.object,

@@ -8,11 +8,12 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
+import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 import TradeBadge from '../trade-badge';
 
 const BuySellRow = ({ row: advert }) => {
-    const { buy_sell_store, general_store } = useStores();
+    const { buy_sell_store, floating_rate_store, general_store } = useStores();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -41,18 +42,31 @@ const BuySellRow = ({ row: advert }) => {
         min_order_amount_limit_display,
         payment_method_names,
         price_display,
+        rate_type,
+        rate,
     } = advert;
 
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
+    const { display_effective_rate } = generateEffectiveRate({
+        price: price_display,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
 
     if (isMobile()) {
         return (
             <div className='buy-sell-row'>
                 <div
                     className='buy-sell-row__advertiser'
-                    onClick={() => (general_store.is_barred ? null : buy_sell_store.showAdvertiserPage(advert))}
+                    onClick={() =>
+                        general_store.is_barred || !general_store.is_advertiser
+                            ? undefined
+                            : buy_sell_store.showAdvertiserPage(advert)
+                    }
                 >
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
@@ -88,7 +102,7 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
-                            {price_display} {local_currency}
+                            {display_effective_rate} {local_currency}
                         </Text>
                         <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
@@ -139,7 +153,11 @@ const BuySellRow = ({ row: advert }) => {
             <Table.Cell>
                 <div
                     className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
-                    onClick={() => (general_store.is_barred ? undefined : buy_sell_store.showAdvertiserPage(advert))}
+                    onClick={() =>
+                        general_store.is_barred || !general_store.is_advertiser
+                            ? undefined
+                            : buy_sell_store.showAdvertiserPage(advert)
+                    }
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
                     <div className='buy-sell__cell--container'>
@@ -169,7 +187,7 @@ const BuySellRow = ({ row: advert }) => {
             </Table.Cell>
             <Table.Cell>
                 <Text color='profit-success' size='xs' line-height='m' weight='bold'>
-                    {price_display} {local_currency}
+                    {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
             <Table.Cell>
@@ -216,6 +234,7 @@ const BuySellRow = ({ row: advert }) => {
 BuySellRow.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
+    row: PropTypes.object,
     setSelectedAdvert: PropTypes.func,
     style: PropTypes.object,
 };

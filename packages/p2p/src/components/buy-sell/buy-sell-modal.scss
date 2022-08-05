@@ -2,14 +2,30 @@
     opacity: 1 !important;
 
     &-body {
-        padding: 1.6rem;
         position: relative;
+        display: block;
+        padding-top: 2.4rem;
+    }
+
+    &-danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
     }
 
     &-field {
         margin-bottom: 0 !important;
         margin-right: 0.7rem;
         flex: 1;
+
+        &--disable {
+            opacity: 0.32;
+        }
+
+        &--textarea {
+            border-top: 1px solid var(--general-section-5);
+            padding: 1.8rem 2.4rem 0;
+        }
 
         @include mobile {
             margin: 0.8rem 0;
@@ -19,6 +35,8 @@
             $gap: 2.4rem;
             display: flex;
             margin: -#{$gap} 0 1.6rem -#{$gap};
+            padding: 0 2.4rem;
+            word-break: break-word;
 
             & > * {
                 margin: $gap 0 0 $gap;
@@ -39,18 +57,52 @@
         }
     }
 
+    &--input {
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        padding: 0 2.4rem 1.4rem;
+        .dc-input__wrapper {
+            margin-bottom: unset;
+        }
+
+        &-field {
+            @include desktop() {
+                display: flex;
+                gap: 2rem;
+            }
+        }
+    }
+
+    &-hintbox {
+        margin: -0.5rem 0 2.4rem;
+        padding: 0 2.4rem;
+
+        .dc-hint-box {
+            &__icon {
+                align-self: flex-start;
+            }
+        }
+    }
+
+    &-icon {
+        margin-right: 0.8rem;
+    }
+
     &-line {
-        border-top: 1px solid var(--general-section-1);
+        border-top: 1px solid var(--general-section-5);
         margin: 1.6rem 0;
         width: 100%;
     }
 
     &-payment-method {
+        padding: 0 2.4rem;
         &--container {
             align-self: center;
             display: flex;
             flex-direction: column;
             margin-bottom: 1.6rem;
+            padding: 0 2.4rem;
         }
 
         &--icon {
@@ -101,11 +153,33 @@
                 }
             }
         }
+
+        &--disable {
+            opacity: 0.32;
+        }
+    }
+
+    &--layout {
+        padding: unset;
+    }
+
+    &--error-message {
+        padding: 0 2.4rem;
     }
 }
 
 .buy-sell__modal-content {
     .dc-input {
         margin-bottom: unset;
+    }
+}
+.dc-modal__container_buy-sell__modal {
+    .dc-modal-header--buy-sell__modal {
+        border-bottom: 2px solid var(--general-section-5);
+    }
+
+    .dc-modal-footer--separator {
+        margin-top: 1rem;
+        border-top: 2px solid var(--general-section-5);
     }
 }

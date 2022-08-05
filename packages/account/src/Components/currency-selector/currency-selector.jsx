@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
+import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
@@ -110,12 +110,13 @@ const CurrencySelector = ({
 
     const description = React.useMemo(() => {
         const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
+        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         if (is_dxtrade_allowed && is_mt5_allowed) {
             return (
                 <Localize
-                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or Deriv X account.'
-                    values={{ dmt5_label }}
+                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
+                    values={{ dmt5_label, platform_name_dxtrade }}
                 />
             );
         } else if (!is_dxtrade_allowed && is_mt5_allowed) {
@@ -144,7 +145,12 @@ const CurrencySelector = ({
             {({ handleSubmit, values, errors, touched }) => (
                 <AutoHeightWrapper default_height={450}>
                     {({ setRef, height }) => (
-                        <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
+                        <form
+                            ref={setRef}
+                            onSubmit={handleSubmit}
+                            className='currency-selector'
+                            data-testid='currency_selector_form'
+                        >
                             <Div100vhContainer
                                 className={classNames('currency-selector__container', {
                                     'currency-selector__container--no-top-margin':
@@ -242,16 +248,33 @@ const CurrencySelector = ({
 };
 
 CurrencySelector.propTypes = {
+    accounts: PropTypes.object,
+    available_crypto_currencies: PropTypes.array,
     controls: PropTypes.object,
+    getCurrentStep: PropTypes.func,
+    goToNextStep: PropTypes.func,
+    goToPreviousStep: PropTypes.func,
+    has_cancel: PropTypes.bool,
     has_currency: PropTypes.bool,
+    has_fiat: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    onSubmit: PropTypes.func,
-    value: PropTypes.any,
+    has_wallet_account: PropTypes.bool,
     is_appstore: PropTypes.bool,
-    real_account_signup_target: PropTypes.string,
     is_dxtrade_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,
-    has_fiat: PropTypes.bool,
+    is_mt5_allowed: PropTypes.bool,
+    legal_allowed_currencies: PropTypes.array,
+    onCancel: PropTypes.func,
+    onSave: PropTypes.func,
+    onSubmit: PropTypes.func,
+    onSubmitEnabledChange: PropTypes.func,
+    real_account_signup: PropTypes.string,
+    real_account_signup_target: PropTypes.string,
+    resetRealAccountSignupParams: PropTypes.func,
+    selected_step_ref: PropTypes.shape({ current: PropTypes.any }),
+    set_currency: PropTypes.bool,
+    validate: PropTypes.func,
+    value: PropTypes.any,
 };
 
 export default CurrencySelector;

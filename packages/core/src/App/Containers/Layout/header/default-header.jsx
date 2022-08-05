@@ -129,6 +129,7 @@ const DefaultHeader = ({
                             disableApp={disableApp}
                             location={location}
                             logoutClient={logoutClient}
+                            is_cra={is_cra}
                             is_dark_mode={is_dark_mode}
                             is_logged_in={is_logged_in}
                             is_p2p_enabled={is_p2p_enabled}

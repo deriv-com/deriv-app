@@ -84,6 +84,7 @@ const ToggleMenuDrawer = React.forwardRef(
             account_status,
             disableApp,
             enableApp,
+            is_cra,
             is_dark_mode,
             is_logged_in,
             is_onramp_tab_visible,
@@ -111,7 +112,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup);
+                const routes_config = getRoutesConfig({ is_appstore }, is_cra, is_social_signup);
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -317,7 +318,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                 <React.Fragment>
                                     <MobileDrawer.SubHeader
                                         className={classNames({
-                                            'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
+                                            'dc-mobile-drawer__subheader--hidden': is_submenu_expanded || is_cra,
                                         })}
                                     >
                                         {platform_switcher}
@@ -327,15 +328,17 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.trade}
-                                                icon='IcTrade'
-                                                text={localize('Trade')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
+                                        {!is_cra && (
+                                            <MobileDrawer.Item>
+                                                <MenuLink
+                                                    link_to={routes.trade}
+                                                    icon='IcTrade'
+                                                    text={localize('Trade')}
+                                                    onClickLink={toggleDrawer}
+                                                    changeCurrentLanguage={changeCurrentLanguage}
+                                                />
+                                            </MobileDrawer.Item>
+                                        )}
                                         {primary_routes_config.map((route_config, idx) =>
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}

@@ -56,7 +56,7 @@ const AppStore = React.lazy(() =>
     })
 );
 
-const getModules = ({ is_appstore }, is_social_signup) => {
+const getModules = ({ is_appstore }, is_cra, is_social_signup) => {
     const modules = [
         {
             path: routes.bot,
@@ -77,18 +77,21 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                     getTitle: () => localize('Open positions'),
                     icon_component: 'IcOpenPositions',
                     default: true,
+                    is_affiliate: false,
                 },
                 {
                     path: routes.profit,
                     component: Reports,
                     getTitle: () => localize('Profit table'),
                     icon_component: 'IcProfitTable',
+                    is_affiliate: false,
                 },
                 {
                     path: routes.statement,
                     component: Reports,
                     getTitle: () => localize('Statement'),
                     icon_component: 'IcStatement',
+                    is_affiliate: true,
                 },
             ],
         },
@@ -118,80 +121,95 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                 {
                     getTitle: () => localize('Profile'),
                     icon: 'IcUserOutline',
+                    is_affiliate: true,
                     subroutes: [
                         {
                             path: routes.personal_details,
                             component: Account,
                             getTitle: () => localize('Personal details'),
                             default: true,
+                            is_affiliate: true,
                         },
                         {
                             path: routes.financial_assessment,
                             component: Account,
                             getTitle: () => localize('Financial assessment'),
+                            is_affiliate: false,
                         },
                     ],
                 },
                 {
                     getTitle: () => localize('Verification'),
                     icon: 'IcVerification',
+                    is_affiliate: true,
                     subroutes: [
                         {
                             path: routes.proof_of_identity,
                             component: Account,
                             getTitle: () => localize('Proof of identity'),
+                            is_affiliate: true,
                         },
                         {
                             path: routes.proof_of_address,
                             component: Account,
                             getTitle: () => localize('Proof of address'),
+                            is_affiliate: true,
                         },
                     ],
                 },
                 {
                     getTitle: () => localize('Security and safety'),
                     icon: 'IcSecurity',
+                    is_affiliate: true,
                     subroutes: [
                         {
                             path: routes.passwords,
                             component: Account,
                             getTitle: () =>
                                 is_social_signup ? localize('Passwords') : localize('Email and passwords'),
+                            is_affiliate: true,
                         },
                         {
                             path: routes.self_exclusion,
                             component: Account,
                             getTitle: () => localize('Self exclusion'),
+                            is_affiliate: false,
                         },
                         {
                             path: routes.account_limits,
                             component: Account,
                             getTitle: () => localize('Account limits'),
+                            is_affiliate: false,
                         },
                         {
                             path: routes.login_history,
                             component: Account,
                             getTitle: () => localize('Login history'),
+                            is_affiliate: true,
                         },
                         {
                             path: routes.api_token,
                             component: Account,
                             getTitle: () => localize('API token'),
+                            is_affiliate: false,
                         },
                         {
                             path: routes.connected_apps,
                             component: Account,
                             getTitle: () => localize('Connected apps'),
+                            is_affiliate: false,
                         },
                         {
                             path: routes.two_factor_authentication,
                             component: Account,
                             getTitle: () => localize('Two-factor authentication'),
+                            is_affiliate: true,
                         },
                         {
                             path: routes.closing_account,
                             component: Account,
                             getTitle: () => localize('Close your account'),
+                            is_affiliate: true,
                         },
                     ],
                 },
@@ -211,36 +229,42 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                     getTitle: () => localize('Deposit'),
                     icon_component: 'IcCashierAdd',
                     default: true,
+                    is_affiliate: false,
                 },
                 {
                     path: routes.cashier_withdrawal,
                     component: Cashier,
                     getTitle: () => localize('Withdrawal'),
                     icon_component: 'IcCashierMinus',
+                    is_affiliate: true,
                 },
                 {
                     path: routes.cashier_pa,
                     component: Cashier,
                     getTitle: () => localize('Payment agents'),
                     icon_component: 'IcPaymentAgent',
+                    is_affiliate: false,
                 },
                 {
                     path: routes.cashier_acc_transfer,
                     component: Cashier,
                     getTitle: () => localize('Transfer'),
                     icon_component: 'IcAccountTransfer',
+                    is_affiliate: true,
                 },
                 {
                     path: routes.cashier_pa_transfer,
                     component: Cashier,
                     getTitle: () => localize('Transfer to client'),
                     icon_component: 'IcAccountTransfer',
+                    is_affiliate: false,
                 },
                 {
                     path: routes.cashier_p2p,
                     component: Cashier,
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
+                    is_affiliate: false,
                 },
                 {
                     path: routes.cashier_p2p_verification,
@@ -248,6 +272,7 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
                     is_invisible: true,
+                    is_affiliate: false,
                 },
                 {
                     id: 'gtm-onramp-tab',
@@ -255,11 +280,13 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                     component: Cashier,
                     getTitle: () => localize('Fiat onramp'),
                     icon_component: 'IcCashierOnRamp',
+                    is_affiliate: false,
                 },
                 {
                     path: routes.cashier_crypto_transactions,
                     component: Cashier,
                     is_invisible: true,
+                    is_affiliate: false,
                 },
             ],
         },
@@ -287,6 +314,20 @@ const getModules = ({ is_appstore }, is_social_signup) => {
         });
     }
 
+    if (is_cra) {
+        modules.forEach(menu_item => {
+            if (menu_item.routes) {
+                menu_item.routes = menu_item.routes.filter(route => route.is_affiliate);
+
+                menu_item.routes.forEach(submenu_item => {
+                    if (submenu_item.subroutes) {
+                        submenu_item.subroutes = submenu_item.subroutes.filter(route => route.is_affiliate);
+                    }
+                });
+            }
+        });
+    }
+
     return modules;
 };
 
@@ -297,7 +338,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
+const initRoutesConfig = ({ is_appstore }, is_cra, is_social_signup) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -308,7 +349,7 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_appstore }, is_social_signup),
+    ...getModules({ is_appstore }, is_cra, is_social_signup),
 ];
 
 let routesConfig;
@@ -317,8 +358,8 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_appstore = true }, is_social_signup) => {
-    routesConfig = initRoutesConfig({ is_appstore }, is_social_signup);
+const getRoutesConfig = ({ is_appstore = true }, is_cra, is_social_signup) => {
+    routesConfig = initRoutesConfig({ is_appstore }, is_cra, is_social_signup);
     routesConfig.push(route_default);
     return routesConfig;
 };

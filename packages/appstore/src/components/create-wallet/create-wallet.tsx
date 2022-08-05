@@ -1,5 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 import { localize, Localize } from '@deriv/translations';
 import { Icon, Text, ThemedScrollbars } from '@deriv/components';
 import WalletCard from 'Components/wallet';
@@ -11,7 +13,6 @@ type TCreateWallet = {
     setShouldShowFiat: (show: boolean) => void;
     setSeletedWallet: (wallet: string) => void;
     selected_wallet?: string;
-    wallets: { getTitle: () => string; content: string[]; popover_text: () => string; has_information: boolean }[];
 };
 
 const CreateWallet = ({
@@ -20,8 +21,15 @@ const CreateWallet = ({
     setShouldShowFiat,
     setSeletedWallet,
     selected_wallet,
-    wallets,
 }: TCreateWallet) => {
+    const { wallet_store } = useStores();
+
+    React.useEffect(() => {
+        wallet_store.onMount();
+    }, []);
+
+    const wallets = should_show_fiat ? wallet_store.wallet_provider.fiat_wallets : wallet_store.wallet_provider.wallets;
+
     const header_title = should_show_fiat ? localize('Fiat currency wallets') : localize('Create a wallet');
     const header_content = should_show_fiat
         ? localize('These are all the options you get when choosing fiat wallet.')
@@ -57,7 +65,6 @@ const CreateWallet = ({
             </div>
             <ThemedScrollbars className='create-wallet-scroll'>
                 {wallets?.map((wallet, index) => {
-                    // TODO: Shouuld replaced with get_account_type result once the BE method get ready
                     return (
                         <div key={`${wallet.getTitle()}${index}`} className='create-wallet-detail'>
                             <div className='create-wallet-detail-title'>
@@ -118,4 +125,4 @@ const CreateWallet = ({
     );
 };
 
-export default CreateWallet;
+export default observer(CreateWallet);

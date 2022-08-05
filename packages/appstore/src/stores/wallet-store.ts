@@ -1,4 +1,4 @@
-import { action, observable, computed } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import { WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
@@ -25,12 +25,14 @@ export default class WalletStore extends BaseStore {
 
     @computed
     get fiat_currencies() {
-        return this.wallet_names?.fiat?.currencies.map((currency: string) => currency.toLowerCase());
+        return toJS(this.wallet_names)?.fiat?.currencies_available.map((currency: string) => currency.toLowerCase());
     }
 
     @computed
     get crypto_wallets() {
-        return this.wallet_names?.crypto?.currencies.map((currency: string) => crypto_wallets_mapping[currency]);
+        return toJS(this.wallet_names)?.crypto?.currencies_available.map(
+            (currency: string) => crypto_wallets_mapping[currency]
+        );
     }
 
     @computed

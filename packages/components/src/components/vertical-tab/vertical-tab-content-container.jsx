@@ -55,7 +55,7 @@ const Content = ({ is_routed, items, selected, side_note_class_name }) => {
                         const Component = value || component;
                         return (
                             <Route
-                                key={icon}
+                                key={`${icon}${path}`}
                                 path={path}
                                 render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
                             />

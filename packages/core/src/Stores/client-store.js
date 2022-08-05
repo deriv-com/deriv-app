@@ -799,8 +799,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_wallet_account() {
-        return this.active_accounts.some(acc => acc.account_type === 'wallet');
+    get wallet_accounts() {
+        return this.active_accounts.filter(acc => acc.account_type === 'wallet');
     }
 
     /**

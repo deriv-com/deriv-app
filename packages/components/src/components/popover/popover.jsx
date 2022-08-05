@@ -224,6 +224,7 @@ Popover.propTypes = {
     should_disable_pointer_events: PropTypes.bool,
     should_show_cursor: PropTypes.bool,
     zIndex: PropTypes.number,
+    window_border: PropTypes.number,
 };
 
 export default Popover;

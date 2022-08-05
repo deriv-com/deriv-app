@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import notes from './README.md';
 import notMultiplierCompleted from './stories/notMultiplier-completed';

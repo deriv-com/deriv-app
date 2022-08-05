@@ -14,12 +14,18 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: () => <div>Loading</div>,
+}));
+
 jest.mock('Pages/payment-agent/payment-agent-unlisted-withdraw-form', () => () => (
     <div>PaymentAgentUnlistedWithdrawForm</div>
 ));
 jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () => () => <div>PaymentAgentWithdrawConfirm</div>);
 jest.mock('Pages/payment-agent/payment-agent-receipt', () => () => <div>PaymentAgentReceipt</div>);
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
+jest.mock('Pages/payment-agent/payment-agent-search-box', () => () => <div>PaymentAgentSearchBox</div>);
 
 describe('<PaymentAgentContainer />', () => {
     const props = {
@@ -77,6 +83,7 @@ describe('<PaymentAgentContainer />', () => {
         expect(
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
         ).toBeInTheDocument();
+        expect(screen.getByText('PaymentAgentSearchBox')).toBeInTheDocument();
         expect(screen.getByText('All payment methods')).toBeInTheDocument();
         expect(screen.getByText('Payment Agent of CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Further information CR90000000')).toBeInTheDocument();
@@ -122,5 +129,18 @@ describe('<PaymentAgentContainer />', () => {
         render(<PaymentAgentContainer {...props} />);
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
+    });
+
+    it('should show search loader when is_search_loading equal to true', () => {
+        render(<PaymentAgentContainer {...props} is_search_loading />);
+
+        expect(screen.getByText('Loading')).toBeInTheDocument();
+    });
+
+    it('should show proper warning messages if there are no matches in search results', () => {
+        render(<PaymentAgentContainer {...props} has_payment_agent_search_warning />);
+
+        expect(screen.getByText('No payment agents found for your search')).toBeInTheDocument();
+        expect(screen.getByText('Try changing your search criteria.')).toBeInTheDocument();
     });
 });

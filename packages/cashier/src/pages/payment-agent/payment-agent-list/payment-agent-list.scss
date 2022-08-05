@@ -62,12 +62,15 @@
                 }
                 &-container {
                     margin-top: 0;
+                    min-width: unset;
+                    width: unset;
                 }
                 &__display {
                     justify-content: flex-start;
                     &-text {
                         padding-left: 0.8rem;
                         padding-right: 3.2rem;
+                        color: var(--text-less-prominent);
                     }
                 }
                 &__select-arrow {
@@ -82,8 +85,10 @@
             }
             &-selector {
                 margin-bottom: 1.6rem;
+                flex-direction: column;
                 /* postcss-bem-linter: ignore */
                 & .dc-select-native {
+                    margin-top: 1.6rem;
                     &__arrow {
                         top: unset;
                         --fill-color1: var(--text-general);
@@ -111,6 +116,10 @@
             }
         }
     }
+    &__search-warning {
+        row-gap: 1.6rem;
+        margin-top: 6.4rem;
+    }
     &__error-dialog {
         .dc-dialog {
             &__content {
@@ -131,6 +140,11 @@
                     font-size: var(--text-size-xs);
                 }
             }
+        }
+    }
+    &__search-loader {
+        @include mobile {
+            height: unset;
         }
     }
 }

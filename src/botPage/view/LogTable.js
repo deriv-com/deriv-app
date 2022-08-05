@@ -16,8 +16,11 @@ const Logtable = () => {
 
     const total_width = 1150;
     const min_height = 550;
+    const cell_height = 35;
     const cache = new CellMeasurerCache({
         defaultHeight: 35,
+        minHeight: cell_height,
+        fixedHeight: true,
     });
 
     const columns = [
@@ -89,7 +92,7 @@ const Logtable = () => {
     };
 
     const rowRenderer = ({ rowData, columns: cols, className, key }) => (
-        <div className={`${className} ${rowData.type}`} key={key}>
+        <div className={`${className} ${rowData.type}`} key={key} style={{ height: cell_height }}>
             {cols?.map(({ props, key: inner_key }) => (
                 <div style={props.style} className={props.className} role={props.role} key={inner_key}>
                     {props.title}

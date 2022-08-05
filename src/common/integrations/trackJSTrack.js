@@ -14,8 +14,8 @@ export const default_errors_to_ignore = [
 export function trackJSTrack(error) {
   let message;
   let code;
+
   if (typeof error === "string") {
-    code = "Unknown";
     message = error;
   } else if (error?.error && typeof error.error === 'object') {
     if (error?.error?.error && typeof error.error.error === 'object') {
@@ -38,7 +38,7 @@ export function trackJSTrack(error) {
 
   if (isProduction() && code) {
     if (!default_errors_to_ignore.includes(code)) {
-      TrackJS.track(code);
+      TrackJS.track(code || "Unknown");
     }
   }
   return { code, message };

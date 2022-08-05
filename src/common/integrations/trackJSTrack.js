@@ -36,7 +36,7 @@ export function trackJSTrack(error) {
     return undefined;
   }
 
-  if (isProduction() && code) {
+  if (isProduction()) {
     if (!default_errors_to_ignore.includes(code)) {
       TrackJS.track(code || "Unknown");
     }

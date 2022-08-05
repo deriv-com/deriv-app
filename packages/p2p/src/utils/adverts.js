@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize, Localize } from 'Components/i18next';
-import { api_error_codes } from 'Constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 
 export const generateErrorDialogTitle = error_code => {
     if (error_code === api_error_codes.ADVERT_SAME_LIMITS) {

@@ -6,7 +6,7 @@ import { Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
 import { requestWS } from 'Utils/websocket';
-import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value.js';
+import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value';
 
 const OrderDetailsConfirmModal = ({
     order_information,

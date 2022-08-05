@@ -59,6 +59,7 @@ const App = props => {
 
     React.useEffect(() => {
         general_store.setAccountBalance(balance);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [balance]);
 
     React.useEffect(() => {
@@ -73,6 +74,7 @@ const App = props => {
 };
 
 App.propTypes = {
+    className: PropTypes.string,
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,
         is_virtual: PropTypes.bool.isRequired,
@@ -83,13 +85,15 @@ App.propTypes = {
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
+    history: PropTypes.object,
     balance: PropTypes.string,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
+    server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
-    websocket_api: PropTypes.object.isRequired,
     setOnRemount: PropTypes.func,
+    websocket_api: PropTypes.object.isRequired,
 };
 
 export default observer(App);

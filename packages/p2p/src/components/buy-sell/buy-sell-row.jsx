@@ -8,7 +8,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
-import { generateEffectiveRate } from 'Utils/format-value.js';
+import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 import TradeBadge from '../trade-badge';
 
@@ -234,6 +234,7 @@ const BuySellRow = ({ row: advert }) => {
 BuySellRow.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
+    row: PropTypes.object,
     setSelectedAdvert: PropTypes.func,
     style: PropTypes.object,
 };

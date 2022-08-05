@@ -75,7 +75,7 @@ const PurchaseFieldset = ({
                         'trade-container__fieldset-wrapper--disabled': is_proposal_error || is_disabled,
                     })}
                 >
-                    {(has_cancellation || !is_multiplier) && (
+                    {(has_cancellation || !is_multiplier) && !is_accumulator && (
                         <ContractInfo
                             basis={basis}
                             currency={currency}

@@ -168,8 +168,12 @@ export const getUnsupportedContracts = () => ({
 
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
-        name: localize('Buy'),
+        name: localize('Stay in'),
         position: 'top',
+    },
+    DECCU: {
+        name: localize('Break out'),
+        position: 'bottom',
     },
     CALL: {
         name: is_high_low ? localize('Higher') : localize('Rise'),

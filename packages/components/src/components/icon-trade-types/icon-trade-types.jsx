@@ -6,6 +6,8 @@ const IconTradeTypes = ({ type, className, ...props }) => {
     switch (type.toLowerCase()) {
         case 'accu':
             return <Icon icon='IcTradetypeCall' className={className} color='brand' {...props} />;
+        case 'deccu':
+            return <Icon icon='IcTradetypePut' className={className} color='brand' {...props} />;
         case 'asiand':
             return <Icon icon='IcTradetypeAsiand' className={className} color='brand' {...props} />;
         case 'asianu':

@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
-    accumulator: localize('Accumulator'),
+    accumulator: localize('Accumulators'),
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -106,8 +106,8 @@ export const getContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulate'),
-        trade_types: ['ACCU'],
+        title: localize('Accumulators'),
+        trade_types: ['ACCU', 'DECCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'stats_chart_display'],
         barrier_count: 2,
@@ -358,8 +358,12 @@ export const getUnsupportedContracts = () => ({
 
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
-        name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Stay in' />,
         position: 'top',
+    },
+    DECCU: {
+        name: <Localize i18n_default_text='Break out' />,
+        position: 'bottom',
     },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,

@@ -24,6 +24,8 @@ const profit_loss = +0.15;
 const profit_percentage = +1.5;
 const tick_size_barrier = 0.000409;
 const stake = '10.00';
+const contract_type = 'ACCU'; // 'ACCU' or 'DECCU'
+const shortcode = 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'; // 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620' or 'DECCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'
 
 export const getDummyPOCResponseForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
@@ -44,7 +46,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             bid_price: 9.85,
             buy_price: 10,
             contract_id: 19459,
-            contract_type: 'ACCU',
+            contract_type,
             currency: 'USD',
             current_spot,
             current_spot_display_value: `${current_spot}`,
@@ -74,7 +76,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             profit: profit_loss,
             profit_percentage,
             purchase_time: dummy_start_time,
-            shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
+            shortcode,
             status: contract_status,
             tick_count: 10,
             tick_size_barrier,
@@ -121,14 +123,14 @@ export const getDummyPortfolioContractsForACCU = time_now => {
             app_id: 17044,
             buy_price: 10,
             contract_id: 19459,
-            contract_type: 'ACCU',
+            contract_type,
             currency: 'USD',
             date_start: dummy_start_time,
             expiry_time: dummy_end_time,
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             payout: 27.45,
             purchase_time: dummy_start_time,
-            shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
+            shortcode,
             symbol: 'frxAUDJPY',
             transaction_id: 45479,
         },
@@ -205,7 +207,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 bid_price: 9.85,
                 buy_price: 10,
                 contract_id: 19459,
-                contract_type: 'ACCU',
+                contract_type,
                 currency: 'USD',
                 current_spot,
                 current_spot_display_value: `${current_spot}`,
@@ -237,7 +239,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 profit: profit_loss,
                 profit_percentage,
                 purchase_time: dummy_start_time,
-                shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
+                shortcode,
                 status: contract_status,
                 tick_count: 10,
                 tick_size_barrier,
@@ -274,7 +276,7 @@ export const getDummyAllPositionsForACCU = time_now => {
             payout: 27.45,
             purchase: 10,
             reference: 45479,
-            type: 'ACCU',
+            type: contract_type,
             is_unsupported: false,
             profit_loss,
             is_valid_to_sell: true,
@@ -318,13 +320,13 @@ export const getDummyProposalInfoForACCU = (growth_rate, response) => {
     };
 };
 
-export const dummy_accumulator_in_contracts_for_available = {
+export const dummy_accu_in_contracts_for_available = {
     accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
     barrier_category: 'american',
     barriers: 2,
     contract_category: 'accumulator',
-    contract_category_display: 'Accumulate',
-    contract_display: 'Accumulators',
+    contract_category_display: 'Stay in/Break out',
+    contract_display: 'Stay in',
     contract_type: 'ACCU',
     exchange_name: 'FOREX',
     expiry_type: 'daily',
@@ -337,23 +339,42 @@ export const dummy_accumulator_in_contracts_for_available = {
     underlying_symbol: 'frxAUDJPY',
 };
 
-export const dummy_multupliers_proposal = {
-    MULTUP: {
+export const dummy_deccu_in_contracts_for_available = {
+    accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
+    barrier_category: 'american',
+    barriers: 2,
+    contract_category: 'accumulator',
+    contract_category_display: 'Stay in/Break out',
+    contract_display: 'Break out',
+    contract_type: 'DECCU',
+    exchange_name: 'FOREX',
+    expiry_type: 'daily',
+    market: 'forex',
+    max_contract_duration: '1d',
+    min_contract_duration: '1m',
+    sentiment: 'inside',
+    start_type: 'spot',
+    submarket: 'major_pairs',
+    underlying_symbol: 'frxAUDJPY',
+};
+
+export const dummy_accumulators_proposals = {
+    ACCU: {
         proposal: 1,
         subscribe: 1,
         amount: 10,
         basis: 'stake',
-        contract_type: 'MULTUP',
+        contract_type: 'ACCU',
         currency: 'USD',
         symbol: 'frxAUDJPY',
         multiplier: 30,
     },
-    MULTDOWN: {
+    DECCU: {
         proposal: 1,
         subscribe: 1,
         amount: 10,
         basis: 'stake',
-        contract_type: 'MULTDOWN',
+        contract_type: 'DECCU',
         currency: 'USD',
         symbol: 'frxAUDJPY',
         multiplier: 30,
@@ -368,7 +389,7 @@ export const getDummyProposalResponseForACCU = time_now => {
         echo_req: {
             amount: 10,
             basis: 'stake',
-            contract_type: 'ACCU',
+            contract_type: undefined, // making it applicable for both ACCU and DECCU
             currency: 'USD',
             duration_unit: 's',
             limit_order: {
@@ -415,7 +436,7 @@ export const dummy_purchase_response_for_accu = {
         longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
         payout: 0,
         purchase_time: 1656351535,
-        shortcode: 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620',
+        shortcode,
         start_time: 1656351535,
         transaction_id: 45479,
     },

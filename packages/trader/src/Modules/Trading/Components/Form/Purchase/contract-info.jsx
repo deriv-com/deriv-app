@@ -113,7 +113,7 @@ const ContractInfo = ({
                     )
                 )}
             </div>
-            {!is_multiplier && (
+            {!is_multiplier && !is_accumulator && (
                 <DesktopWrapper>
                     <Popover
                         alignment='left'

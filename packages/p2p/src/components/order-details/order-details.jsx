@@ -74,9 +74,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
 
-        if (is_reviewable) {
-            remaining_review_time.current = getDateAfterHours(completion_time, general_store.review_period);
-        }
+        remaining_review_time.current = getDateAfterHours(completion_time, general_store.review_period);
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);

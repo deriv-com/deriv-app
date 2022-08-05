@@ -6,14 +6,18 @@ const MenuLinks = () => (
         {config.reports.visible && <a className="url-reports-positions header__menu-links-item" href={config.reports.url}>
             <span>
                 <img className="header__icon-text reports-icon" src="image/deriv/ic-reports.svg" />
-                {config.reports.label}
             </span>
+            <p>
+                {config.reports.label}
+            </p>
         </a>}
         {config.reports.visible && <a className="url-cashier-deposit header__menu-links-item" href={config.cashier.url}>
             <span>
                 <img id="cashier_icon" className="header__icon-text" src="image/deriv/ic-cashier.svg" />
-                {config.cashier.label}
             </span>
+            <p>
+                {config.cashier.label}
+            </p>
         </a>}
     </div>
 );

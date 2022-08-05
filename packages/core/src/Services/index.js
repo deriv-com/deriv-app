@@ -1,3 +1,5 @@
+import BinarySocketGeneral from './socket-general';
+import WS from './ws-methods';
+
+export { BinarySocketGeneral, WS };
 export * from './logout';
-export BinarySocketGeneral from './socket-general';
-export WS from './ws-methods';

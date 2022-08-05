@@ -403,12 +403,12 @@ $side-padding: 1.2em;
             align-items: flex-start;
         }
     }
-    .table__body {
-        .table__cell,
-        .currency {
-            display: flex;
-            justify-self: center;
-        }
+
+    .table__cell.action_type,
+    .table__cell.currency,
+    .table__cell.transaction_id {
+        display: flex;
+        justify-self: flex-start;
     }
 
     @include desktop {

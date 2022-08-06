@@ -7,6 +7,8 @@ import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import { TExistingData } from 'Components/props.types';
+import { getMT5LicenceNotes } from '../Helpers/constants';
+import CfdCheckBoxForAccounts from '../Components/cfd-checkbox-for-accounts';
 
 type TAvailableAccountAPI = [
     {
@@ -430,10 +432,7 @@ const JurisdictionModalContent = ({
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
-                                values={{ account_type: account_type_name }}
-                            />
+                            {localize(getMT5LicenceNotes(account_type_name, 'svg'))}
                         </Text>
                     </div>
                 )}
@@ -441,40 +440,28 @@ const JurisdictionModalContent = ({
                 {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'bvi' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
-                                values={{ account_type: account_type_name, line_break: '\n' }}
-                            />
+                            {localize(getMT5LicenceNotes(account_type_name, 'bvi'))}
                         </Text>
                     </div>
                 )}
                 {poi_verified_for_vanuatu && poa_verified && jurisdiction_selected_shortcode === 'vanuatu' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add Your DMT5 {{account_type}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
-                                values={{ account_type: account_type_name }}
-                            />
+                            {localize(getMT5LicenceNotes(account_type_name, 'vanuatu'))}
                         </Text>
                     </div>
                 )}
                 {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'labuan' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
-                                values={{ account_type: account_type_name }}
-                            />
+                            {localize(getMT5LicenceNotes(account_type_name, 'labuan'))}
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'maltainvest' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
-                                values={{ account_type: account_type_name }}
-                            />
+                            {localize(getMT5LicenceNotes(account_type_name, 'maltainvest'))}
                         </Text>
                     </div>
                 )}
@@ -614,61 +601,61 @@ const JurisdictionModalContent = ({
         );
     };
 
-    const dbvi_company_names: { [key: string]: { [key: string]: string } } = {
-        bvi: { name: 'Deriv (BVI) Ltd', tnc_url: 'tnc/deriv-(bvi)-ltd.pdf' },
-        labuan: { name: 'Deriv (FX) Ltd', tnc_url: 'tnc/deriv-(fx)-ltd.pdf' },
-        maltainvest: {
-            name: 'Deriv Investments (Europe) Limited',
-            tnc_url: 'tnc/deriv-investments-(europe)-limited.pdf',
-        },
-        vanuatu: { name: 'Deriv (V) Ltd', tnc_url: 'tnc/general-terms.pdf' },
-    };
+    // const dbvi_company_names: { [key: string]: { [key: string]: string } } = {
+    //     bvi: { name: 'Deriv (BVI) Ltd', tnc_url: 'tnc/deriv-(bvi)-ltd.pdf' },
+    //     labuan: { name: 'Deriv (FX) Ltd', tnc_url: 'tnc/deriv-(fx)-ltd.pdf' },
+    //     maltainvest: {
+    //         name: 'Deriv Investments (Europe) Limited',
+    //         tnc_url: 'tnc/deriv-investments-(europe)-limited.pdf',
+    //     },
+    //     vanuatu: { name: 'Deriv (V) Ltd', tnc_url: 'tnc/general-terms.pdf' },
+    // };
 
-    const getCheckboxLabel = () => (
-        <Text as='p' align={!isMobile() ? 'center' : ''} size='xs' line_height='xs'>
-            <Localize
-                i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
-                values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}
-                components={[
-                    <StaticUrl
-                        key={0}
-                        className='link'
-                        href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
-                    />,
-                ]}
-            />
-        </Text>
-    );
+    // const getCheckboxLabel = () => (
+    //     <Text as='p' align={!isMobile() ? 'center' : ''} size='xs' line_height='xs'>
+    //         <Localize
+    //             i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
+    //             values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}
+    //             components={[
+    //                 <StaticUrl
+    //                     key={0}
+    //                     className='link'
+    //                     href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
+    //                 />,
+    //             ]}
+    //         />
+    //     </Text>
+    // );
 
-    const ModalCheckbox = ({
-        onCheck,
-        is_checked,
-    }: {
-        onCheck: React.Dispatch<React.SetStateAction<boolean>>;
-        is_checked: boolean;
-    }) => (
-        <div className={`${card_classname}__jurisdiction-checkbox`}>
-            <Checkbox onChange={() => onCheck(!checked)} value={is_checked} label={getCheckboxLabel()} />
-        </div>
-    );
+    // const ModalCheckbox = ({
+    //     onCheck,
+    //     is_checked,
+    // }: {
+    //     onCheck: React.Dispatch<React.SetStateAction<boolean>>;
+    //     is_checked: boolean;
+    // }) => (
+    //     <div className={`${card_classname}__jurisdiction-checkbox`}>
+    //         <Checkbox onChange={() => onCheck(!checked)} value={is_checked} label={getCheckboxLabel()} />
+    //     </div>
+    // // );
 
-    const showCheckBox = () => {
-        if (jurisdiction_selected_shortcode) {
-            if (jurisdiction_selected_shortcode === 'svg') {
-                return false;
-            } else if (jurisdiction_selected_shortcode === 'vanuatu' && poa_verified && poi_verified_for_vanuatu) {
-                return true;
-            } else if (
-                (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') &&
-                poa_verified &&
-                poi_verified_for_labuan_bvi
-            ) {
-                return true;
-            } else if (is_fully_authenticated && poi_poa_verified) return true;
-            return false;
-        }
-        return false;
-    };
+    // const showCheckBox = () => {
+    //     if (jurisdiction_selected_shortcode) {
+    //         if (jurisdiction_selected_shortcode === 'svg') {
+    //             return false;
+    //         } else if (jurisdiction_selected_shortcode === 'vanuatu' && poa_verified && poi_verified_for_vanuatu) {
+    //             return true;
+    //         } else if (
+    //             (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') &&
+    //             poa_verified &&
+    //             poi_verified_for_labuan_bvi
+    //         ) {
+    //             return true;
+    //         } else if (is_fully_authenticated && poi_poa_verified) return true;
+    //         return false;
+    //     }
+    //     return false;
+    // };
 
     return (
         <>
@@ -813,7 +800,12 @@ const JurisdictionModalContent = ({
                 )}
             </div>
             <ModalFootNote />
-            {showCheckBox() && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
+            <CfdCheckBoxForAccounts
+                is_checked={checked}
+                onCheck={setChecked}
+                className={`${card_classname}__jurisdiction-checkbox`}
+            />
+            {/* {showCheckBox() && <ModalCheckbox is_checked={checked} onCheck={setChecked} />} */}
         </>
     );
 };

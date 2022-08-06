@@ -31,6 +31,7 @@ export default class CFDStore extends BaseStore {
     @observable error_type = undefined;
 
     @observable is_cfd_verification_modal_visible = false;
+    @observable is_cfd_tnc_modal_visible = false;
     @observable dxtrade_tokens = {
         demo: '',
         real: '',
@@ -597,5 +598,10 @@ export default class CFDStore extends BaseStore {
     @action.bound
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
+    }
+
+    @action.bound
+    toggleCFDTncModal() {
+        this.is_cfd_tnc_modal_visible = !this.is_cfd_tnc_modal_visible;
     }
 }

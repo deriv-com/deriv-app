@@ -2215,4 +2215,27 @@
     }
 }
 
+.cfd-tnc-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 32px;
+    /* gap: 24px; */
+    position: relative;
+    width: 464px;
+    height: 168px;
+
+    &-content {
+        // display: flex;
+        // flex-direction: column;
+        // align-items: flex-start;
+        // padding: 0px;
+        // gap: 8px;
+        // width: 400px;
+        // height: 96px;
+        // &__checkbox-text{
+        //     width:37.8rem;
+        // }
+    }
+}
 /* stylelint-enable */

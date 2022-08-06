@@ -141,3 +141,7 @@ export type TTradingPlatformAccounts = {
      */
     platform?: 'dxtrade';
 };
+export type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};

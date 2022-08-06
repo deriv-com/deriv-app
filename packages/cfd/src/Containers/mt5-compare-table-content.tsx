@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { isDesktop, WS, getIdentityStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { TTradingPlatformAvailableAccount } from '../Components/props.types';
+import { TTradingPlatformAvailableAccount, TOpenAccountTransferMeta } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse, GetAccountStatus } from '@deriv/api-types';
 
 type TRowItem = {
@@ -27,11 +27,6 @@ type TModalContentProps = {
 };
 
 type TFooterButtonData = { label: string; action: string };
-
-type TOpenAccountTransferMeta = {
-    category: string;
-    type?: string;
-};
 
 type TDMT5CompareModalContentProps = {
     account_settings: GetSettings;
@@ -61,6 +56,7 @@ type TDMT5CompareModalContentProps = {
     show_eu_related: boolean;
     account_status: GetAccountStatus;
     upgradeable_landing_companies: unknown[];
+    toggleCFDTncModal: () => void;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -226,6 +222,7 @@ const DMT5CompareModalContent = ({
     setJurisdictionSelectedShortcode,
     account_status,
     upgradeable_landing_companies,
+    toggleCFDTncModal,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -325,14 +322,14 @@ const DMT5CompareModalContent = ({
         switch (item.action) {
             case 'synthetic_svg':
                 setJurisdictionSelectedShortcode('svg');
-                openPasswordModal(type_of_account);
+                toggleCFDTncModal();
                 break;
             case 'financial_svg':
                 setJurisdictionSelectedShortcode('svg');
                 if (poi_poa_verified && !has_submitted_personal_details) {
                     toggleCFDPersonalDetailsModal();
                 } else {
-                    openPasswordModal(type_of_account);
+                    toggleCFDTncModal();
                 }
                 break;
             case 'synthetic_bvi':
@@ -342,7 +339,7 @@ const DMT5CompareModalContent = ({
                     if (!has_submitted_personal_details) {
                         toggleCFDPersonalDetailsModal();
                     } else {
-                        openPasswordModal(type_of_account);
+                        toggleCFDTncModal();
                     }
                 } else {
                     toggleCFDVerificationModal();
@@ -351,7 +348,7 @@ const DMT5CompareModalContent = ({
             case 'financial_maltainvest':
                 setJurisdictionSelectedShortcode('maltainvest');
                 if (poi_poa_verified) {
-                    openPasswordModal(type_of_account);
+                    toggleCFDTncModal();
                 } else {
                     toggleCFDVerificationModal();
                 }
@@ -363,7 +360,7 @@ const DMT5CompareModalContent = ({
                     if (!has_submitted_personal_details) {
                         toggleCFDPersonalDetailsModal();
                     } else {
-                        openPasswordModal(type_of_account);
+                        toggleCFDTncModal();
                     }
                 } else {
                     toggleCFDVerificationModal();
@@ -378,7 +375,7 @@ const DMT5CompareModalContent = ({
                     if (!has_submitted_personal_details) {
                         toggleCFDPersonalDetailsModal();
                     } else {
-                        openPasswordModal(type_of_account);
+                        toggleCFDTncModal();
                     }
                 } else {
                     toggleCFDVerificationModal();
@@ -614,4 +611,5 @@ export default connect(({ modules, client }: RootStore) => ({
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     account_status: client.account_status,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
+    toggleCFDTncModal: modules.cfd.toggleCFDTncModal,
 }))(DMT5CompareModalContent);

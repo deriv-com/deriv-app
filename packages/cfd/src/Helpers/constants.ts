@@ -67,6 +67,23 @@ const getMT5WebTerminalLink = ({
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
+const getMT5LicenceNotes = (account_type: string, card_type: string) => {
+    switch (card_type) {
+        case 'svg':
+            return `Add your DMT5 ${account_type} account under Deriv (SVG) LLC (company no. 273 LLC 2020)`;
+        case 'bvi':
+            return `Add your DMT5 ${account_type} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).`;
+        case 'vanuatu':
+            return `Add Your DMT5 ${account_type} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.`;
+        case 'labuan':
+            return `Add your DMT5 ${account_type} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).`;
+        case 'maltainvest':
+            return `Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).`;
+        default:
+            return null;
+    }
+};
+
 export {
     getBrokerName,
     getPlatformDXTradeDownloadLink,
@@ -74,4 +91,5 @@ export {
     getDXTradeWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
+    getMT5LicenceNotes,
 };

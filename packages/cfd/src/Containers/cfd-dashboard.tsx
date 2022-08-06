@@ -27,6 +27,7 @@ import CFDPasswordModal from './cfd-password-modal';
 import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
+import CFDTncModal from './cfd-tnc-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
@@ -662,6 +663,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             <>
                                 <CFDDbViOnBoarding />
                                 <CFDPersonalDetailsModal />
+                                <CFDTncModal openPasswordModal={openRealPasswordModal} />
                             </>
                         )}
                         <CFDResetPasswordModal platform={platform} />

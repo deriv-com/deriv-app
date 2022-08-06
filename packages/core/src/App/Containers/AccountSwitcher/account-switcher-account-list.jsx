@@ -76,7 +76,7 @@ const AccountList = ({
                             {loginid}
                         </div>
                     </span>
-                    {has_reset_balance && balance < 10000 ? (
+                    {has_reset_balance ? (
                         <Button
                             is_disabled={is_disabled}
                             onClick={e => {

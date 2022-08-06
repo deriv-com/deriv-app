@@ -25,7 +25,7 @@ const DataListRow = ({
         });
     }, [show_desc, isMounted, is_dynamic_height, measure]);
     return (
-        <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
+        <div className='data-list__row data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
             {destination_link ? (
                 <NavLink
                     className='data-list__item--wrapper'

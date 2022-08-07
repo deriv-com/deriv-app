@@ -65,7 +65,7 @@ const CfdCheckBoxForAccounts = ({
                 components={[
                     <StaticUrl
                         key={0}
-                        className='link'
+                        className='jurisdiction_licence_link'
                         href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
                     />,
                 ]}

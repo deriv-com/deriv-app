@@ -2214,28 +2214,28 @@
         border-radius: 4px;
     }
 }
-
-.cfd-tnc-modal {
-    display: flex;
-    flex-direction: column;
+.jurisdiction_licence_link {
+    color: var(--brand-red-coral);
+    text-decoration: none;
+}
+.dc-modal__container_cfd-tnc-modal {
     align-items: flex-end;
-    padding: 32px;
-    /* gap: 24px; */
+    padding: 3.2rem;
     position: relative;
-    width: 464px;
-    height: 168px;
-
-    &-content {
-        // display: flex;
-        // flex-direction: column;
-        // align-items: flex-start;
-        // padding: 0px;
-        // gap: 8px;
-        // width: 400px;
-        // height: 96px;
-        // &__checkbox-text{
-        //     width:37.8rem;
-        // }
+    @include mobile {
+        margin: 1.6rem;
+    }
+    .cfd-tnc-modal-content {
+        .jurisdiction-checkbox {
+            padding-top: 1.6rem;
+            .dc-checkbox__box {
+                margin: 0 0.4rem 0 0;
+            }
+        }
+    }
+    .dc-modal-footer {
+        padding: unset;
     }
 }
+
 /* stylelint-enable */

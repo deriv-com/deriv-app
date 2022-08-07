@@ -45,6 +45,33 @@ const CFDTncModal = ({
         openPasswordModal(account_type);
     };
     const account_type_name = account_type && account_type.type;
+
+    const ModalContentForTncModal = () => (
+        <>
+            <div className='cfd-tnc-modal-content'>
+                <Text as='p' align='left' size='xs' line_height='m'>
+                    {localize(getMT5LicenceNotes(account_type_name, jurisdiction_selected_shortcode))}
+                </Text>
+                <div>
+                    <CfdCheckBoxForAccounts
+                        is_checked={is_checked}
+                        onCheck={() => setIsChecked(!is_checked)}
+                        className={`jurisdiction-checkbox`}
+                    />
+                </div>
+            </div>
+            <Modal.Footer>
+                <Button text={localize('Back')} onClick={handleCancel} large secondary />
+                <Button
+                    text={localize('Next')}
+                    onClick={handleNext}
+                    disabled={jurisdiction_selected_shortcode !== 'svg' && !is_checked}
+                    large
+                    primary
+                />
+            </Modal.Footer>
+        </>
+    );
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -54,32 +81,11 @@ const CFDTncModal = ({
                     enableApp={enableApp}
                     is_open={is_cfd_tnc_modal_visible}
                     toggleModal={toggleCFDTncModal}
-                    height='224px'
+                    height={jurisdiction_selected_shortcode === 'svg' ? '168px' : '224px'}
                     width='464px'
                     exit_classname='cfd-modal--custom-exit'
                 >
-                    <div className='cfd-tnc-modal-content'>
-                        <Text as='p' align='left' size='xs' line_height='m'>
-                            {localize(getMT5LicenceNotes(account_type_name, jurisdiction_selected_shortcode))}
-                        </Text>
-                        <div>
-                            <CfdCheckBoxForAccounts
-                                is_checked={is_checked}
-                                onCheck={() => setIsChecked(!is_checked)}
-                                className={`jurisdiction-checkbox`}
-                            />
-                        </div>
-                    </div>
-                    <Modal.Footer>
-                        <Button text={localize('Back')} onClick={handleCancel} large secondary />
-                        <Button
-                            text={localize('Next')}
-                            onClick={handleNext}
-                            disabled={jurisdiction_selected_shortcode !== 'svg' && !is_checked}
-                            large
-                            primary
-                        />
-                    </Modal.Footer>
+                    <ModalContentForTncModal />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -89,7 +95,7 @@ const CFDTncModal = ({
                     visible={is_cfd_tnc_modal_visible}
                     onClose={toggleCFDTncModal}
                 >
-                    <div>test</div>
+                    <ModalContentForTncModal />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>

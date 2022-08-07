@@ -7,7 +7,7 @@ describe('<MissingRealAccount />', () => {
         onClickSignup: jest.fn(),
         platform: 'mt5',
     };
-    it('should show "You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account." when portfolio="mt5"', () => {
+    it('should show "You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account." when platform="mt5"', () => {
         render(<MissingRealAccount {...props} />);
         expect(
             screen.getByText(
@@ -16,7 +16,7 @@ describe('<MissingRealAccount />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show "To create a Deriv X real account, create a Deriv real account first." when portfolio="dxtrade', () => {
+    it('should show "To create a Deriv X real account, create a Deriv real account first." when platform="dxtrade', () => {
         render(<MissingRealAccount {...props} platform='dxtrade' />);
         expect(
             screen.getByText(/To create a Deriv X real account, create a Deriv real account first./i)

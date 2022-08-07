@@ -2218,23 +2218,43 @@
     color: var(--brand-red-coral);
     text-decoration: none;
 }
-.dc-modal__container_cfd-tnc-modal {
-    align-items: flex-end;
-    padding: 3.2rem;
-    position: relative;
-    @include mobile {
-        margin: 1.6rem;
+
+.cfd-tnc-modal {
+    &--svg {
+        .dc-dialog__dialog {
+            height: 128px !important;
+        }
     }
-    .cfd-tnc-modal-content {
+    .dc-dialog__dialog {
+        width: 464px;
+        height: 224px;
+        @include mobile {
+            width: calc(100vw - 4.8rem);
+            height: initial;
+        }
+    }
+    .cfd-tnc-dialog-content {
+        padding-top: 3.2rem;
         .jurisdiction-checkbox {
             padding-top: 1.6rem;
+            width: 40rem;
+            @include mobile {
+                width: 100%;
+                .dc-text {
+                    text-align: left;
+                }
+            }
             .dc-checkbox__box {
                 margin: 0 0.4rem 0 0;
             }
         }
-    }
-    .dc-modal-footer {
-        padding: unset;
+        &--footer {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 2.4rem;
+            margin-top: auto;
+            gap: 0.8rem;
+        }
     }
 }
 

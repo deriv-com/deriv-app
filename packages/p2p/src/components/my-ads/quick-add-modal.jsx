@@ -9,6 +9,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
+import PageReturn from 'Components/page-return/page-return.jsx';
 import './quick-add-modal.scss';
 
 const QuickAddModal = ({ advert }) => {
@@ -309,7 +310,7 @@ const QuickAddModal = ({ advert }) => {
     if (is_buy_advert) {
         return (
             <Modal
-                className='p2p-my-ads__modal-error'
+                className='quick-add-modal'
                 has_close_icon
                 height='452px'
                 is_open={my_ads_store.is_quick_add_modal_open}
@@ -320,7 +321,7 @@ const QuickAddModal = ({ advert }) => {
             >
                 <Modal.Body>
                     <div className='p2p-my-ads__info'>
-                        <Text color='prominent' size='xxs'>
+                        <Text color='prominent' size='xs'>
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
                     </div>
@@ -465,15 +466,24 @@ const QuickAddModal = ({ advert }) => {
 
     return (
         <Modal
-            className='p2p-my-ads__modal-error'
+            className='quick-add-modal'
             has_close_icon
             height={my_ads_store.should_show_add_payment_method ? '660px' : 'auto'}
             is_open={my_ads_store.is_quick_add_modal_open}
-            title={localize('Add payment method')}
-            width='440px'
+            renderTitle={() => {
+                return my_ads_store.should_show_add_payment_method ? (
+                    <PageReturn
+                        onClick={() => my_ads_store.setShouldShowAddPaymentMethod(false)}
+                        page_title={localize('Add payment method')}
+                    />
+                ) : (
+                    localize('Add payment method')
+                );
+            }}
             toggleModal={e => {
                 if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
             }}
+            width='440px'
         >
             {my_ads_store.should_show_add_payment_method ? (
                 <Modal.Body
@@ -486,7 +496,7 @@ const QuickAddModal = ({ advert }) => {
             ) : (
                 <Modal.Body className='p2p-my-ads__modal-body--horizontal'>
                     <Text color='prominent' size='xs'>
-                        <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                        <Localize i18n_default_text='You may add up to 3 payment methods.' />
                     </Text>
                     <SellAdPaymentMethodsList
                         is_only_horizontal

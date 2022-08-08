@@ -47,6 +47,8 @@
     }
 
     &__info {
+        margin-bottom: 1rem;
+
         @include mobile {
             padding: 1rem 0;
         }

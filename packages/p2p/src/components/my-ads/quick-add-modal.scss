@@ -9,8 +9,17 @@
         margin-left: 0.5rem;
     }
 
+    &--page-return {
+        height: 0;
+    }
+
+    h3.dc-text {
+        padding: 0 2.5rem;
+    }
+
     &--input {
-        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+
         & .dc-input__field {
             padding-left: 3rem;
         }
@@ -31,4 +40,13 @@
     &--message {
         margin-top: 1rem;
     }
+}
+
+h3.dc-text.dc-modal-header__title.dc-modal-header__title--quick-add-modal {
+    padding: 0 2.5rem;
+}
+
+div.dc-modal-header.dc-modal-header--quick-add-modal {
+    border-bottom: 2px solid var(--general-section-1);
+    height: 6rem;
 }

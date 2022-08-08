@@ -135,6 +135,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             setIsCitizenshipModal={setIsCitizenshipModal}
                                             setIsPasswordModal={setIsPasswordModal}
                                             setIsSameCitizenshipModal={setIsSameCitizenshipModal}
+                                            selectedCountry={selected_residence}
                                         />
                                     ) : (
                                         <>

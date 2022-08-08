@@ -127,7 +127,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
                                     ? form_errors[index].files
                                     : [];
                                 form_errors[index].files[sub_index] = {
-                                    file: localize(response.message),
+                                    file: localize(response.message), // Document already uploaded
                                 };
                                 setDocumentUploadErrors(form_errors);
                                 form_ref.current.setErrors(form_errors);
@@ -216,6 +216,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
 ProofOfOwnershipForm.propTypes = {
     cards: PropTypes.array,
     updateAccountStatus: PropTypes.func,
+    refreshNotifications: PropTypes.func,
 };
 
 export default ProofOfOwnershipForm;

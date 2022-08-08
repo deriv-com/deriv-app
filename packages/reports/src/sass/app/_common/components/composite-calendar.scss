@@ -1,0 +1,183 @@
+/* @define .composite-calendar; weak; */
+.composite-calendar {
+    display: grid;
+    grid-template-columns: 128px minmax(min-content, 280px) minmax(min-content, 280px);
+    position: absolute;
+    top: 36px;
+    right: 0;
+    z-index: 99;
+    border-radius: $BORDER_RADIUS;
+    background-color: var(--general-main-2);
+    box-shadow: 0 2px 16px 8px var(--shadow-menu);
+
+    .composite-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: var(--general-main-1);
+        z-index: 98;
+    }
+    &__input-fields {
+        display: flex;
+        border-radius: $BORDER_RADIUS;
+        width: 100%;
+
+        &--fill {
+            width: 100%;
+
+            & > .dc-input-field {
+                width: 100%;
+            }
+        }
+        & > .dc-input-field {
+            margin: 0;
+            width: 100%;
+
+            @include desktop {
+                max-width: 17.6rem;
+            }
+
+            @include mobile {
+                .inline-icon {
+                    top: 1.2rem;
+                }
+            }
+
+            @include colorIcon(var(--text-prominent));
+
+            & .input {
+                height: 3.2rem;
+                background-color: var(--fill-normal);
+                border: 1px solid var(--border-normal);
+                appearance: none;
+
+                @include mobile {
+                    height: 4rem;
+                    text-align: left;
+                    padding-left: 3rem;
+                }
+
+                &:hover {
+                    border-color: var(--border-hover);
+                }
+                &:focus,
+                &:active {
+                    border-color: var(--border-active);
+                }
+                &::placeholder {
+                    color: var(--text-general);
+                }
+            }
+        }
+        & > .dc-input-field:not(:first-child) {
+            margin-left: 8px;
+        }
+    }
+    & > .first-month,
+    & > .second-month {
+        .dc-calendar__body {
+            border-bottom: none;
+        }
+    }
+    &__prepopulated-list {
+        padding-top: 50px;
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+        background: var(--state-normal);
+
+        &--is-active {
+            color: var(--text-prominent);
+            background-color: var(--state-active);
+            font-weight: bold;
+        }
+        & li {
+            cursor: pointer;
+            padding: 6px 6px 6px 16px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+
+            &:hover:not(.composite-calendar__prepopulated-list--is-active) {
+                background: var(--state-hover);
+            }
+        }
+    }
+}
+
+/* @define composite-calendar-modal; weak; */
+.composite-calendar-modal {
+    @include mobile {
+        &__actions {
+            display: flex;
+            padding: 16px;
+            border-top: 2px solid var(--border-disabled);
+
+            > * {
+                flex: 1;
+                margin: 8px;
+            }
+            &-today {
+                width: 100%;
+            }
+        }
+        &__radio-group {
+            padding: 16px 16px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 2px solid var(--border-disabled);
+        }
+        &__radio {
+            display: flex;
+            align-items: center;
+            padding: 7px 8px;
+            border: 1px solid;
+            border-color: var(--border-normal);
+            border-radius: 4px;
+            margin: 8px;
+            font-size: 1.4rem;
+
+            &-input {
+                display: none;
+            }
+            &-circle {
+                border: 2px solid var(--text-general);
+                border-radius: 50%;
+                box-shadow: 0 0 1px 0 var(--shadow-menu);
+                width: 16px;
+                height: 16px;
+                transition: all 0.3s ease-in-out;
+                margin-right: 8px;
+                align-self: center;
+
+                &--selected {
+                    border-width: 4px;
+                    border-color: var(--brand-red-coral);
+                    background: $color-white;
+                }
+            }
+            &--selected {
+                border-color: var(--brand-secondary);
+                font-weight: bold;
+            }
+        }
+        &__custom {
+            padding: 16px;
+
+            &-radio {
+                display: inline-flex;
+            }
+            &-date-range {
+                margin: 8px;
+                display: flex;
+                flex-direction: column;
+
+                &-start-date {
+                    margin: 16px 0px;
+                }
+                &-end-date {
+                    margin-bottom: 8px;
+                }
+            }
+        }
+    }
+}

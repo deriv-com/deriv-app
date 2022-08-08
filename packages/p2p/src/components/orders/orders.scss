@@ -152,9 +152,6 @@
         &-status {
             width: auto;
             padding: 0.2rem 1.6rem;
-            font-weight: bold;
-            text-align: center;
-            font-size: var(--text-size-xs);
             border-radius: 1.6rem;
         }
     }
@@ -196,14 +193,14 @@
         }
         &-grid {
             // Sizes are different for inactive due to timeout being full time string.
-            grid-template-columns: 1.5fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 2fr;
+            grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;
 
             &--active {
-                grid-template-columns: 1.5fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 1.5fr;
+                grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 1.5fr;
+                margin-right: 0.5rem;
             }
         }
         &-status {
-            font-weight: bold;
             border-radius: 16px;
             padding: 0.2rem 1.6rem;
             white-space: nowrap;

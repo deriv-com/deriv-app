@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import * as React from 'react';
 import { Text } from '@deriv/components';
 
 const ApiTokenTableRowCell = ({ className, children, should_bypass_text }) => {
@@ -19,6 +19,7 @@ const ApiTokenTableRowCell = ({ className, children, should_bypass_text }) => {
 
 ApiTokenTableRowCell.propTypes = {
     children: PropTypes.any.isRequired,
+    className: PropTypes.string,
     should_bypass_text: PropTypes.bool,
 };
 

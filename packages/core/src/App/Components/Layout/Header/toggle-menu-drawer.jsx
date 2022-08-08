@@ -3,7 +3,7 @@ import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { getPlatformSettings, routes, PlatformContext } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
-import { NetworkStatus } from 'App/Components/Layout/Footer';
+import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
@@ -355,14 +355,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     </span>
                                                     <ToggleSwitch
                                                         id='dt_mobile_drawer_theme_toggler'
-                                                        classNameLabel='header__menu-mobile-link-toggler-label'
-                                                        classNameButton={classNames(
-                                                            'header__menu-mobile-link-toggler-button',
-                                                            {
-                                                                'header__menu-mobile-link-toggler-button--active':
-                                                                    is_dark_mode,
-                                                            }
-                                                        )}
                                                         handleToggle={() => toggleTheme(!is_dark_mode)}
                                                         is_enabled={is_dark_mode}
                                                     />

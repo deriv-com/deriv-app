@@ -1,9 +1,9 @@
 /* @define account-signup; weak */
 .account-signup {
-    margin: 1.6rem 1.6rem 0;
+    padding: 1.2rem 1.2rem 0;
     form {
         @include mobile {
-            height: 365px;
+            max-height: 36.5rem;
         }
     }
     & .dc-select-native {
@@ -37,8 +37,6 @@
         align-items: center;
         flex-flow: nowrap column;
         background-color: var(--general-main-2);
-        width: calc(100% + 8rem);
-        padding: 2rem 4rem;
         border-radius: 1rem;
         position: relative;
         left: 50%;
@@ -46,9 +44,17 @@
 
         @include mobile {
             width: calc(95vw - 20px);
-            height: 100%;
+            height: 36.5rem !important;
             padding: 6rem 4rem;
             background-color: var(--general-main-2);
+        }
+    }
+    &__same-citizenship {
+        display: flex;
+        justify-content: space-between;
+        &-buttons {
+            display: flex;
+            gap: 1rem;
         }
     }
     .dc-password-input {
@@ -99,17 +105,19 @@
     }
     &__heading {
         margin-bottom: 0.8rem;
+        &-citizen {
+            margin-bottom: 1.6rem;
+        }
         @include mobile {
-            margin-bottom: 0;
             margin-top: -7rem;
         }
     }
     &__text {
         text-align: center;
-        margin-bottom: 3.3rem;
+        margin-bottom: 1.6rem;
     }
     &__subtext {
-        margin: 1rem 0 2.4rem;
+        margin: 1rem 0 0.8rem;
         @include mobile {
             margin-bottom: 3.4rem;
         }
@@ -146,7 +154,7 @@
         }
     }
     &__residence-field {
-        margin-bottom: 2.7rem;
+        margin-bottom: 4.4rem;
 
         @include desktop {
             min-width: 30rem;
@@ -158,7 +166,6 @@
     @include mobile {
         width: calc(95vw - 20px);
         border-radius: 1rem;
-        padding: 0;
         position: relative;
         left: 50%;
         transform: translate(-50%);

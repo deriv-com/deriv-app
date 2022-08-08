@@ -28,6 +28,13 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
 Text.propTypes = {
     line_height: PropTypes.string,
     size: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.object]),
+    color: PropTypes.string,
+    align: PropTypes.string,
+    weight: PropTypes.string,
+    as: PropTypes.string,
+    className: PropTypes.string,
+    styles: PropTypes.object,
 };
 
 export default Text;

@@ -22,6 +22,7 @@ const FlexWrapper = ({ children, justifyContent = 'center' }) => (
 
 const demo_slides = [
     <div
+        key={1}
         className='slide1'
         style={{
             border: '1px solid var(--text-prominent)',
@@ -52,6 +53,7 @@ const demo_slides = [
         </Button>
     </div>,
     <div
+        key={2}
         className='slide2'
         style={{
             border: '1px solid var(--text-prominent)',
@@ -82,6 +84,7 @@ const demo_slides = [
         </Button>
     </div>,
     <div
+        key={3}
         className='slide3'
         style={{
             border: '1px solid var(--text-prominent)',

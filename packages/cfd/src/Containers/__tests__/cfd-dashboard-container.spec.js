@@ -24,7 +24,6 @@ describe('CFDDashboardContainer', () => {
     it('should render <CFDDashboardContainer /> correctly', () => {
         render(<CFDDashboardContainer {...mock_props} />);
         expect(screen.getByTestId(/dt_cfd_dashboard_download_center_container/i)).toBeInTheDocument();
-        screen.debug();
     });
     it('should render correct text according to the MT5 platform', () => {
         render(<CFDDashboardContainer {...mock_props} />);

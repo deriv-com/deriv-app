@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list';
-import SellAdPaymentMethodsList from './sell-ad-payment-methods-list';
+import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -42,7 +42,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected_buy_methods, selected_sell_methods]);
+    }, [is_sell_advert, selected_buy_methods, selected_sell_methods]);
 
     if (is_sell_advert) {
         if (my_profile_store.advertiser_has_payment_methods) {

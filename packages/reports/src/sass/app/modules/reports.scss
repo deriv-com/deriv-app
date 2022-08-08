@@ -481,6 +481,14 @@ $side-padding: 1.2em;
                 flex: 50%;
             }
         }
+        .amount {
+            &--profit {
+                color: var(--text-profit-success);
+            }
+            &--loss {
+                color: var(--text-loss-danger);
+            }
+        }
     }
     .market-symbol-icon {
         @include mobile {

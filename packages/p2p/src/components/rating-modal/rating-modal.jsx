@@ -77,4 +77,4 @@ RatingModal.propTypes = {
     rating_value: PropTypes.number,
 };
 
-export default RatingModal;
+export default React.memo(RatingModal);

@@ -21,7 +21,7 @@ const UserRatingButton = ({ button_text, is_disabled, large, onClick }) => {
 };
 
 UserRatingButton.propTypes = {
-    button_text: PropTypes.object,
+    button_text: PropTypes.string,
     is_disabled: PropTypes.bool,
     large: PropTypes.bool,
     onClick: PropTypes.func,

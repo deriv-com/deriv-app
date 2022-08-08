@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import { Dialog, Text, Button } from '@deriv/components';
 import { TOpenAccountTransferMeta } from '../Components/props.types';
 import { localize } from '@deriv/translations';
-import { getMT5LicenceNotes } from '../Helpers/constants';
+import { general_messages } from '../Constants/cfd-shared-strings';
 import CfdCheckBoxForAccounts from '../Components/cfd-checkbox-for-accounts';
 
 type TCFDTncModalProps = {
@@ -46,12 +46,11 @@ const CFDTncModal = ({
         openPasswordModal(account_type);
     };
     const account_type_name = account_type && account_type.type;
-
     const ModalContentForTncModal = () => (
         <>
             <div className='cfd-tnc-dialog-content'>
                 <Text as='p' align='left' size='xs' line_height='m'>
-                    {getMT5LicenceNotes(account_type_name, jurisdiction_selected_shortcode)}
+                    {general_messages.getMT5LicenceNotes(account_type_name, jurisdiction_selected_shortcode)}
                 </Text>
                 <div>
                     <CfdCheckBoxForAccounts

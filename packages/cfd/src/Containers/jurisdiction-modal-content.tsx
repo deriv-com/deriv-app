@@ -6,8 +6,8 @@ import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import { TExistingData } from 'Components/props.types';
-import { getMT5LicenceNotes } from '../Helpers/constants';
 import CfdCheckBoxForAccounts from '../Components/cfd-checkbox-for-accounts';
+import { general_messages } from '../Constants/cfd-shared-strings';
 
 type TAvailableAccountAPI = [
     {
@@ -431,7 +431,7 @@ const JurisdictionModalContent = ({
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {getMT5LicenceNotes(account_type_name, 'svg')}
+                            {general_messages.getMT5LicenceNotes(account_type_name, 'svg')}
                         </Text>
                     </div>
                 )}
@@ -439,28 +439,28 @@ const JurisdictionModalContent = ({
                 {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'bvi' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {getMT5LicenceNotes(account_type_name, 'bvi')}
+                            {general_messages.getMT5LicenceNotes(account_type_name, 'bvi')}
                         </Text>
                     </div>
                 )}
                 {poi_verified_for_vanuatu && poa_verified && jurisdiction_selected_shortcode === 'vanuatu' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {getMT5LicenceNotes(account_type_name, 'vanuatu')}
+                            {general_messages.getMT5LicenceNotes(account_type_name, 'vanuatu')}
                         </Text>
                     </div>
                 )}
                 {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'labuan' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {getMT5LicenceNotes(account_type_name, 'labuan')}
+                            {general_messages.getMT5LicenceNotes(account_type_name, 'labuan')}
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'maltainvest' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {getMT5LicenceNotes(account_type_name, 'maltainvest')}
+                            {general_messages.getMT5LicenceNotes(account_type_name, 'maltainvest')}
                         </Text>
                     </div>
                 )}

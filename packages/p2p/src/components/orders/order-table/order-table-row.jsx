@@ -73,15 +73,11 @@ const OrderRow = ({ style, row: order }) => {
     };
 
     const onRowClick = () => {
-        clearTimeout(wait);
+        if (should_show_order_details.current) {
+            return order_store.setQueryDetails(order);
+        }
 
-        const wait = setTimeout(() => {
-            if (should_show_order_details.current) {
-                return order_store.setQueryDetails(order);
-            }
-
-            return () => {};
-        }, 200);
+        return () => {};
     };
 
     React.useEffect(() => {

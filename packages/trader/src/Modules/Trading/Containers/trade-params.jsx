@@ -10,8 +10,8 @@ import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
+import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
 import { connect } from 'Stores/connect';
-import StatsChartDisplay from '../Components/Form/TradeParams/Accumulator/stats-chart-display.jsx';
 
 const TradeParams = ({ form_components, is_minimized }) => {
     const isVisible = component_key => {
@@ -28,7 +28,7 @@ const TradeParams = ({ form_components, is_minimized }) => {
             {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
             {isVisible('cancellation') && <CancelDeal key={'cancellation'} />}
             {isVisible('expiration') && <Expiration key={'expiration'} />}
-            {isVisible('stats_chart_display') && <StatsChartDisplay key={'stats_chart_display'} />}
+            {isVisible('accu_info_display') && <AccumulatorsInfoDisplay key={'accu_info_display'} />}
         </React.Fragment>
     );
 };

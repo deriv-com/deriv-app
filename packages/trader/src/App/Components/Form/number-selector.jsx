@@ -22,7 +22,7 @@ const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number, shou
                             key={i}
                             className={classNames('number-selector__selection', {
                                 'number-selector__selection--selected': selected_number === i,
-                                'number-selector__selection--large': should_show_in_percents,
+                                'number-selector__selection--percentage': should_show_in_percents,
                             })}
                             data-value={i}
                             onClick={handleSelect}

@@ -7,7 +7,6 @@ import { connect } from 'Stores/connect';
 
 const INFO_TYPES = {
     MULTIP: 'multipliers',
-    MAX_PAYOUT: 'max-payout',
 };
 
 const commission_tooltip_margin = 30;
@@ -22,8 +21,6 @@ const Info = ({
     has_stop_loss,
     info_type,
     is_tooltip_relative,
-    max_payout,
-    max_payout_text_size,
     multiplier = 0,
     should_show_tooltip,
     stop_out = 0,
@@ -76,28 +73,7 @@ const Info = ({
                     is_hidden: has_stop_loss,
                 },
             ];
-        } else if (info_type === INFO_TYPES.MAX_PAYOUT) {
-            info_content = [
-                {
-                    info_text: (
-                        <Localize
-                            i18n_default_text={'Maximum payout:<0>{{max_payout}} {{currency}}</0>'}
-                            values={{ max_payout: max_payout?.toFixed(2), currency }}
-                            components={[
-                                <Text
-                                    key={0}
-                                    styles={{ marginLeft: '4px', borderBottom: 'none' }}
-                                    size={max_payout_text_size || 'xxxs'}
-                                />,
-                            ]}
-                        />
-                    ),
-                    margin: commission_tooltip_margin,
-                    text_size: max_payout_text_size,
-                },
-            ];
         }
-
         return info_content.filter(_item => !_item.is_hidden);
     };
 
@@ -151,8 +127,6 @@ Info.propTypes = {
     has_stop_loss: PropTypes.bool,
     info_type: PropTypes.string,
     is_tooltip_relative: PropTypes.bool,
-    max_payout: PropTypes.number,
-    max_payout_text_size: PropTypes.string,
     multiplier: PropTypes.number,
     should_show_tooltip: PropTypes.bool,
     stop_out: PropTypes.number,
@@ -167,10 +141,4 @@ export const MultipliersInfo = connect(({ modules }, props) => ({
     multiplier: modules.trade.multiplier,
     stop_out: props.stop_out ?? modules.trade.stop_out,
     info_type: INFO_TYPES.MULTIP,
-}))(Info);
-
-export const MaxPayoutInfo = connect(({ modules }) => ({
-    currency: modules.trade.currency,
-    max_payout: modules.trade.max_payout,
-    info_type: INFO_TYPES.MAX_PAYOUT,
 }))(Info);

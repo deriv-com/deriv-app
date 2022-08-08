@@ -296,7 +296,7 @@ export const getDummyAllPositionsForACCU = time_now => {
 export const getDummyProposalInfoForACCU = (growth_rate, response) => {
     return {
         tick_size_barrier: response.proposal.tick_size_barrier,
-        ticks_count_since_loss_condition: response.proposal.ticks_count_since_loss_condition,
+        maximum_ticks: response.proposal.maximum_ticks,
         max_payout: response.proposal.max_payout,
         high_barrier: response.proposal.high_barrier,
         low_barrier: response.proposal.low_barrier,
@@ -389,7 +389,7 @@ export const getDummyProposalResponseForACCU = time_now => {
         echo_req: {
             amount: 10,
             basis: 'stake',
-            contract_type: undefined, // making it applicable for both ACCU and DECCU
+            contract_type,
             currency: 'USD',
             duration_unit: 's',
             limit_order: {
@@ -405,7 +405,7 @@ export const getDummyProposalResponseForACCU = time_now => {
         msg_type: 'proposal',
         proposal: {
             tick_size_barrier,
-            ticks_count_since_loss_condition: 13,
+            maximum_ticks: 1000,
             max_payout: 20000,
             high_barrier,
             low_barrier,

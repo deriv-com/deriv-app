@@ -102,7 +102,7 @@
                 }
             }
         }
-        &--stats-chart-display {
+        &--accu-info-display {
             height: 8.4rem;
             display: flex;
             flex-direction: column;
@@ -119,6 +119,11 @@
                 &__field {
                     height: 3.2rem;
                 }
+            }
+        }
+        &.accumulator {
+            .number-selector__row {
+                margin-bottom: 0;
             }
         }
     }

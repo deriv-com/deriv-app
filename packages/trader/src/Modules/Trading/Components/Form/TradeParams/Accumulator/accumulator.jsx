@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { MaxPayoutInfo } from '../info.jsx';
 import { getGrowthRatePercentage, getRoundedTickSizeBarrier } from '@deriv/shared';
 
 const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_barrier }) => {
@@ -19,7 +18,7 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_
 
     return (
         <Fieldset
-            className='trade-container__fieldset'
+            className='trade-container__fieldset accumulator'
             header={localize('Accumulators')}
             is_center
             header_tooltip={localize(
@@ -37,7 +36,6 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_
                 selected_number={growth_rate}
                 should_show_in_percents
             />
-            <MaxPayoutInfo className='trade-container__max-payout-trade-info' />
         </Fieldset>
     );
 };

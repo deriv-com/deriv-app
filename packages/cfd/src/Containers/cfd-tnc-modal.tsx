@@ -51,7 +51,7 @@ const CFDTncModal = ({
         <>
             <div className='cfd-tnc-dialog-content'>
                 <Text as='p' align='left' size='xs' line_height='m'>
-                    {localize(getMT5LicenceNotes(account_type_name, jurisdiction_selected_shortcode))}
+                    {getMT5LicenceNotes(account_type_name, jurisdiction_selected_shortcode)}
                 </Text>
                 <div>
                     <CfdCheckBoxForAccounts

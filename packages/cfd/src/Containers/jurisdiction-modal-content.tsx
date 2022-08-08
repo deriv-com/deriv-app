@@ -431,7 +431,7 @@ const JurisdictionModalContent = ({
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {localize(getMT5LicenceNotes(account_type_name, 'svg'))}
+                            {getMT5LicenceNotes(account_type_name, 'svg')}
                         </Text>
                     </div>
                 )}
@@ -439,28 +439,28 @@ const JurisdictionModalContent = ({
                 {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'bvi' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {localize(getMT5LicenceNotes(account_type_name, 'bvi'))}
+                            {getMT5LicenceNotes(account_type_name, 'bvi')}
                         </Text>
                     </div>
                 )}
                 {poi_verified_for_vanuatu && poa_verified && jurisdiction_selected_shortcode === 'vanuatu' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {localize(getMT5LicenceNotes(account_type_name, 'vanuatu'))}
+                            {getMT5LicenceNotes(account_type_name, 'vanuatu')}
                         </Text>
                     </div>
                 )}
                 {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'labuan' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {localize(getMT5LicenceNotes(account_type_name, 'labuan'))}
+                            {getMT5LicenceNotes(account_type_name, 'labuan')}
                         </Text>
                     </div>
                 )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'maltainvest' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            {localize(getMT5LicenceNotes(account_type_name, 'maltainvest'))}
+                            {getMT5LicenceNotes(account_type_name, 'maltainvest')}
                         </Text>
                     </div>
                 )}

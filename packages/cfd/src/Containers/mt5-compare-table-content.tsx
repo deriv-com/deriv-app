@@ -43,7 +43,6 @@ type TDMT5CompareModalContentProps = {
     is_demo_tab: boolean;
     is_real_enabled: boolean;
     openDerivRealAccountNeededModal: () => void;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
@@ -213,7 +212,6 @@ const DMT5CompareModalContent = ({
     is_demo_tab,
     is_real_enabled,
     openDerivRealAccountNeededModal,
-    openPasswordModal,
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
     toggleCompareAccounts,

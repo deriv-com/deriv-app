@@ -157,7 +157,6 @@ const CompareAccountsModal = ({
                                 <DMT5CompareModalContent
                                     is_logged_in={is_logged_in}
                                     openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
-                                    openPasswordModal={openPasswordModal}
                                     is_demo_tab={is_demo_tab}
                                     show_eu_related={show_eu_related}
                                     is_real_enabled={is_real_enabled}

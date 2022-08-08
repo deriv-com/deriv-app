@@ -2,9 +2,11 @@
     &--body {
         padding: 0.8rem 2.4rem;
 
-        &__star {
-            display: flex;
-            justify-content: center;
+        @include mobile {
+            &__star {
+                display: flex;
+                justify-content: center;
+            }
         }
     }
 

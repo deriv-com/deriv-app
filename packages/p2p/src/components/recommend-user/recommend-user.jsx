@@ -4,8 +4,8 @@ import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 const RecommendUser = ({
-    is_advertiser_rated_previously,
     is_buy_order_for_user,
+    is_user_rated_previously,
     onClickNotRecommended,
     onClickRecommended,
     previous_recommendation,
@@ -14,7 +14,7 @@ const RecommendUser = ({
     const [is_yes_selected, setIsYesSelected] = React.useState(false);
 
     React.useEffect(() => {
-        if (is_advertiser_rated_previously) {
+        if (is_user_rated_previously) {
             if (previous_recommendation) {
                 setIsYesSelected(true);
                 onClickRecommended();
@@ -81,8 +81,8 @@ const RecommendUser = ({
 };
 
 RecommendUser.propTypes = {
-    is_advertiser_rated_previously: PropTypes.bool,
     is_buy_order_for_user: PropTypes.bool,
+    is_user_rated_previously: PropTypes.bool,
     onClickNotRecommended: PropTypes.func,
     onClickRecommended: PropTypes.func,
     previous_recommendation: PropTypes.number,

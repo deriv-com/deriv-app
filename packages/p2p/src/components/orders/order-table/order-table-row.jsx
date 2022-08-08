@@ -43,6 +43,7 @@ const OrderRow = ({ style, row: order }) => {
         account_currency,
         advertiser_details,
         amount_display,
+        client_details,
         id,
         is_buy_order_for_user,
         is_reviewable,
@@ -103,9 +104,11 @@ const OrderRow = ({ style, row: order }) => {
     return (
         <React.Fragment>
             <RatingModal
-                is_advertiser_rated_previously={!!advertiser_details.is_recommended}
                 is_buy_order_for_user={is_buy_order_for_user}
                 is_rating_modal_open={should_show_rating_modal}
+                is_user_rated_previously={
+                    is_buy_order_for_user ? !!advertiser_details.is_recommended : !!client_details.is_recommended
+                }
                 onClickDone={() => {
                     order_store.setOrderRating(id);
                     setShouldShowRatingModal(false);
@@ -118,7 +121,9 @@ const OrderRow = ({ style, row: order }) => {
                     should_show_order_details.current = true;
                 }}
                 onClickStar={order_store.handleRating}
-                previous_recommendation={advertiser_details.is_recommended}
+                previous_recommendation={
+                    is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
+                }
                 rating_value={order_store.rating_value}
             />
             <div onClick={onRowClick}>

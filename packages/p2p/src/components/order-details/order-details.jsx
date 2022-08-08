@@ -31,6 +31,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
         advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
+        client_details,
         completion_time,
         contact_info,
         has_timer_expired,
@@ -103,15 +104,19 @@ const OrderDetails = observer(({ onPageReturn }) => {
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
             {is_active_order && (
                 <RatingModal
-                    is_advertiser_rated_previously={!!advertiser_details.is_recommended}
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
+                    is_user_rated_previously={
+                        is_buy_order_for_user ? !!advertiser_details.is_recommended : !!client_details.is_recommended
+                    }
                     onClickDone={() => order_store.setOrderRating(id)}
                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                     onClickRecommended={() => order_store.setIsRecommended(1)}
                     onClickSkip={() => order_store.setIsRatingModalOpen(false)}
                     onClickStar={order_store.handleRating}
-                    previous_recommendation={advertiser_details.is_recommended}
+                    previous_recommendation={
+                        is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
+                    }
                     rating_value={order_store.rating_value}
                 />
             )}
@@ -264,15 +269,23 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         {is_completed_order && !review_details && (
                             <React.Fragment>
                                 <RatingModal
-                                    is_advertiser_rated_previously={!!advertiser_details.is_recommended}
                                     is_buy_order_for_user={is_buy_order_for_user}
                                     is_rating_modal_open={order_store.is_rating_modal_open}
+                                    is_user_rated_previously={
+                                        is_buy_order_for_user
+                                            ? !!advertiser_details.is_recommended
+                                            : !!client_details.is_recommended
+                                    }
                                     onClickDone={() => order_store.setOrderRating(id)}
                                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                                     onClickRecommended={() => order_store.setIsRecommended(1)}
                                     onClickSkip={() => order_store.setIsRatingModalOpen(false)}
                                     onClickStar={order_store.handleRating}
-                                    previous_recommendation={advertiser_details.is_recommended}
+                                    previous_recommendation={
+                                        is_buy_order_for_user
+                                            ? advertiser_details.is_recommended
+                                            : client_details.is_recommended
+                                    }
                                     rating_value={order_store.rating_value}
                                 />
                                 <div className='order-details-card--rating'>

@@ -23,7 +23,7 @@ type WalletCardProps = {
     demo?: boolean;
     disabled?: boolean;
     faded?: boolean;
-    size?: 'small' | 'medium' | 'large';
+    size?: 'small' | 'sm' | 'medium' | 'large';
     wallet_name: string;
 };
 
@@ -132,15 +132,18 @@ const CardText = ({ balance, currency, demo, wallet_name }: CardText) => {
 };
 
 const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, size, wallet_name }: WalletCardProps) => {
+    const isDemo = () => demo || wallet_name === 'demo';
+
     const style = {
         '--primary-color': wallet_card_data[wallet_name]?.colors.primary || '#CFCFCF',
         '--secondary-color': wallet_card_data[wallet_name]?.colors.secondary || '#D6DADB',
-        '--base-color': dark ? '#151717' : '#fff',
         '--stroke-theme-color-1': dark ? '#fff' : '#0E0E0E',
+        ...(isDemo() ? { '--base-color': dark ? '#fff' : '#151717' } : { '--base-color': dark ? '#151717' : '#fff' }),
     };
+
     const getBackgroundIcon = () => {
-        if (size === 'small') return 'IcAppstoreWalletSmall';
-        return demo || wallet_name === 'demo' ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
+        if (['small', 'sm'].includes(size || '')) return 'IcAppstoreWalletSmall';
+        return isDemo() ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
     };
 
     const name = snakeToPascal(wallet_name || '');
@@ -181,7 +184,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
                 ) : (
                     <div className={classNames('wallet-card__logo', 'wallet-card__logo--placeholder')} />
                 )}
-                {size !== 'small' && (
+                {!['small', 'sm'].includes(size || '') && (
                     <CardText balance={balance} currency={currency} demo={demo} wallet_name={wallet_name} />
                 )}
             </div>

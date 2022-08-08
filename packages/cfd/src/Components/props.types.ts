@@ -1,13 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-export type TCFDFinancialStpPendingDialog = {
-    enableApp: () => void;
-    disableApp: () => void;
-    toggleModal: () => void;
-    is_cfd_pending_dialog_open: boolean;
-    is_fully_authenticated: boolean;
-};
-
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
@@ -45,16 +37,39 @@ export type TCFDAccountCardActionProps = {
     title: string;
 };
 
-export type TExistingData = DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
+export type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
+};
+
+export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
 
 export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
     is_hovered?: boolean;
-    existing_data?: TExistingData;
+    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
+    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
+    existing_accounts_data?: TExistingData;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
-    has_cfd_account: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;
     is_accounts_switcher_on?: boolean;
@@ -69,7 +84,7 @@ export type TCFDAccountCard = {
     title: string;
     type: TType;
     onSelectAccount: () => void;
-    onClickFund: (arg: TExistingData) => void;
+    onClickFund: (arg: DetailsOfEachMT5Loginid) => void;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
@@ -77,9 +92,10 @@ export type TCFDAccountCard = {
         arg4: string,
         arg5: string | undefined
     ) => void;
-    should_show_trade_servers?: boolean;
     toggleAccountsDialog?: (arg?: boolean) => void;
+    toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
+    setMT5TradeAccount: (arg: any) => void;
 };
 
 export type TTradingPlatformAccounts = {

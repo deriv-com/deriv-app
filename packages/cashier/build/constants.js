@@ -19,34 +19,33 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const ALIASES = {
     _common: path.resolve(__dirname, '../src/_common'),
-    Components: path.resolve(__dirname, '../src/Components'),
-    Config: path.resolve(__dirname, '../src/Config'),
-    Containers: path.resolve(__dirname, '../src/Containers'),
-    Constants: path.resolve(__dirname, '../src/Constants'),
+    Components: path.resolve(__dirname, '../src/components'),
+    Config: path.resolve(__dirname, '../src/config'),
+    Containers: path.resolve(__dirname, '../src/containers'),
+    Constants: path.resolve(__dirname, '../src/constants'),
     Images: path.resolve(__dirname, '../src/public/images'),
-    Routes: path.resolve(__dirname, '../src/Routes'),
+    Pages: path.resolve(__dirname, '../src/pages'),
     Sass: path.resolve(__dirname, '../src/Sass'),
-    Services: path.resolve(__dirname, '../src/Services'),
-    Stores: path.resolve(__dirname, '../src/Stores'),
-    Utils: path.resolve(__dirname, '../src/Utils'),
+    Stores: path.resolve(__dirname, '../src/stores'),
+    Utils: path.resolve(__dirname, '../src/utils'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
-            {
-                test: /\.(js|jsx|ts|tsx)$/,
-                exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
-                include: /src/,
-                loader: 'eslint-loader',
-                enforce: 'pre',
-                options: {
-                    formatter: require('eslint-formatter-pretty'),
-                    configFile: path.resolve(__dirname, '../.eslintrc.js'),
-                    ignorePath: path.resolve(__dirname, '../.eslintignore'),
-                },
-            },
-        ]
+              {
+                  test: /\.(js|jsx|ts|tsx)$/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  include: /src/,
+                  loader: 'eslint-loader',
+                  enforce: 'pre',
+                  options: {
+                      formatter: require('eslint-formatter-pretty'),
+                      configFile: path.resolve(__dirname, '../.eslintrc.js'),
+                      ignorePath: path.resolve(__dirname, '../.eslintignore'),
+                  },
+              },
+          ]
         : []),
     {
         test: /\.(js|jsx|ts|tsx)$/,
@@ -77,24 +76,24 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     },
     is_test_env
         ? {
-            test: /\.(sc|sa|c)ss$/,
-            loaders: 'null-loader',
-        }
+              test: /\.(sc|sa|c)ss$/,
+              loaders: 'null-loader',
+          }
         : {
-            test: /\.(sc|sa|c)ss$/,
-            use: css_loaders,
-        },
+              test: /\.(sc|sa|c)ss$/,
+              use: css_loaders,
+          },
 ];
 
 const MINIMIZERS = !IS_RELEASE
     ? []
     : [
-        new TerserPlugin({
-            test: /\.js$/,
-            parallel: 2,
-        }),
-        new CssMinimizerPlugin(),
-    ];
+          new TerserPlugin({
+              test: /\.js$/,
+              parallel: 2,
+          }),
+          new CssMinimizerPlugin(),
+      ];
 
 const plugins = () => [
     new CleanWebpackPlugin(),

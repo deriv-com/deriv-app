@@ -142,6 +142,8 @@ AccountInfo.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     country_standpoint: PropTypes.object,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     is_dialog_on: PropTypes.bool,
     is_disabled: PropTypes.bool,
     is_eu: PropTypes.bool,

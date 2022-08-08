@@ -1,7 +1,7 @@
 import { OSDetect } from '@deriv/shared';
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
-const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com/';
+const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -15,27 +15,25 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform: string | undefined = undefined) => {
-    switch (platform || OSDetect()) {
-        case 'ios':
-            return DXTRADE_IOS_APP_URL;
-        case 'android':
-            return DXTRADE_ANDROID_APP_URL;
-        default:
-            return getDXTradeWebTerminalLink(); // Web
+const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android') => {
+    if (platform === 'ios') {
+        return DXTRADE_IOS_APP_URL;
     }
+    return DXTRADE_ANDROID_APP_URL;
 };
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
-            return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
+            return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case 'macos':
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case 'ios':
             return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server';
+        case 'huawei':
+            return 'https://appgallery.huawei.com/#/app/C102015329';
         case 'android':
             return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server';
         default:
@@ -43,8 +41,14 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
     }
 };
 
-const getDXTradeWebTerminalLink = (category?: string) => {
-    return category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+const getDXTradeWebTerminalLink = (category: string, token?: string) => {
+    let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+    if (token) {
+        url += `?token=${token}`;
+    }
+
+    return url;
 };
 
 const getMT5WebTerminalLink = ({

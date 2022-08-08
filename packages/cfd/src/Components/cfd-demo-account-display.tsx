@@ -1,12 +1,12 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import specifications from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
+import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
-import { TSpecifications } from '../Constants/cfd-specifications';
 import { TTradingPlatformAccounts } from './props.types';
+import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -33,20 +33,17 @@ type TCFDDemoAccountDisplayProps = {
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     isFinancialCardVisible: () => boolean;
-    isFinancialStpCardVisible: () => boolean;
-    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: string;
-    current_list: Array<DetailsOfEachMT5Loginid> & {
-        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
-    };
-    has_cfd_account: boolean;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
     landing_companies?: LandingCompany;
+    toggleMT5TradeModal: () => void;
 };
 
 const CFDDemoAccountDisplay = ({
@@ -60,14 +57,13 @@ const CFDDemoAccountDisplay = ({
     is_logged_in,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    isFinancialStpCardVisible,
     onSelectAccount,
     openAccountTransfer,
     platform,
     current_list,
-    has_cfd_account,
     openPasswordManager,
     residence,
+    toggleMT5TradeModal,
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -78,8 +74,21 @@ const CFDDemoAccountDisplay = ({
             onSelectAccount({
                 category: 'demo',
                 type: 'financial',
+                platform,
             });
         }
+    };
+
+    const financial_accounts_data = () => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.financial`))
+            ? Object.keys(current_list)
+                  .filter(key => key.startsWith(`${platform}.demo.financial`))
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
+                  }, [] as DetailsOfEachMT5Loginid[])
+            : undefined;
+        return acc;
     };
 
     const financial_specs = React.useMemo(() => {
@@ -98,10 +107,9 @@ const CFDDemoAccountDisplay = ({
             <Loading />
         </div>
     ) : (
-        <div className='cfd-demo-accounts-display'>
+        <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
             {isSyntheticCardVisible('demo') && (
                 <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}
                     type={{
                         category: 'demo',
@@ -110,7 +118,7 @@ const CFDDemoAccountDisplay = ({
                     }}
                     is_disabled={has_cfd_account_error || standpoint.malta}
                     is_logged_in={is_logged_in}
-                    existing_data={
+                    existing_accounts_data={
                         current_list[
                             Object.keys(current_list).find((key: string) =>
                                 key.startsWith(`${platform}.demo.synthetic`)
@@ -122,6 +130,7 @@ const CFDDemoAccountDisplay = ({
                         onSelectAccount({
                             category: 'demo',
                             type: 'synthetic',
+                            platform,
                         })
                     }
                     onPasswordManager={openPasswordManager}
@@ -140,16 +149,16 @@ const CFDDemoAccountDisplay = ({
                     }
                     platform={platform}
                     descriptor={localize(
-                        'Trade CFDs on our synthetic indices that simulate real-world market movement.'
+                        'Trade CFDs on our synthetic indices that simulate real-world market movements.'
                     )}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
+                    toggleMT5TradeModal={toggleMT5TradeModal}
                 />
             )}
 
             {isFinancialCardVisible() && (
                 <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
                     title={is_eu_user ? localize('CFDs') : localize('Financial')}
                     is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
@@ -159,13 +168,7 @@ const CFDDemoAccountDisplay = ({
                         type: 'financial',
                         platform,
                     }}
-                    existing_data={
-                        current_list[
-                            Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.financial@`)
-                            ) || ''
-                        ]
-                    }
+                    existing_accounts_data={financial_accounts_data()}
                     commission_message={localize('No commission')}
                     onSelectAccount={openCFDAccount}
                     onPasswordManager={openPasswordManager}
@@ -173,7 +176,7 @@ const CFDDemoAccountDisplay = ({
                         openAccountTransfer(
                             current_list[
                                 Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial@`)
+                                    key.startsWith(`${platform}.demo.financial`)
                                 ) || ''
                             ],
                             {
@@ -186,55 +189,7 @@ const CFDDemoAccountDisplay = ({
                     descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
                     specs={financial_specs}
                     has_banner
-                />
-            )}
-            {isFinancialStpCardVisible() && (
-                <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
-                    title={localize('Financial STP')}
-                    type={{
-                        category: 'demo',
-                        type: 'financial_stp',
-                        platform,
-                    }}
-                    is_disabled={has_cfd_account_error}
-                    is_logged_in={is_logged_in}
-                    existing_data={
-                        current_list[
-                            Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.financial_stp@`)
-                            ) || ''
-                        ]
-                    }
-                    commission_message={localize('No commission')}
-                    onSelectAccount={() =>
-                        onSelectAccount({
-                            category: 'demo',
-                            type: 'financial_stp',
-                        })
-                    }
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(
-                            current_list[
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial_stp@`)
-                                ) || ''
-                            ],
-                            {
-                                category: 'demo',
-                                type: 'financial_stp',
-                            }
-                        )
-                    }
-                    descriptor={localize(
-                        'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-                    )}
-                    specs={
-                        (specifications as TSpecifications)[platform as keyof TSpecifications].demo_financial_stp_specs
-                    }
-                    platform={platform}
-                    has_banner
+                    toggleMT5TradeModal={toggleMT5TradeModal}
                 />
             )}
         </div>

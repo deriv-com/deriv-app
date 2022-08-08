@@ -19,7 +19,7 @@
         "build": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1;}; f",
         "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
         "test": "echo \"No test specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",

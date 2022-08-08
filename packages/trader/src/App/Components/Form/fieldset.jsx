@@ -44,6 +44,7 @@ Fieldset.propTypes = {
     className: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    is_center: PropTypes.bool,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
 };

@@ -33,6 +33,7 @@ Digit.propTypes = {
     is_selected: PropTypes.bool,
     is_trade_page: PropTypes.bool,
     is_won: PropTypes.bool,
+    percentage: PropTypes.number,
     value: PropTypes.number,
 };
 

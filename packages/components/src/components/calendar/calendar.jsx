@@ -207,6 +207,14 @@ Calendar.propTypes = {
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     disable_days: PropTypes.arrayOf(PropTypes.number),
+    calendar_view: PropTypes.string,
+    calendar_el_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
+    disabled_days: PropTypes.array,
+    events: PropTypes.array,
+    has_range_selection: PropTypes.bool,
+    keep_open: PropTypes.bool,
+    onHover: PropTypes.func,
+    should_show_today: PropTypes.bool,
 };
 
 export default Calendar;

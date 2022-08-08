@@ -1,15 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
-import specifications from '../Constants/cfd-specifications';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deriv/shared';
+import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { DetailsOfEachMT5Loginid, ResidenceList, LandingCompany, GetSettings } from '@deriv/api-types';
-import { TSpecifications } from '../Constants/cfd-specifications';
-import { TExistingData } from './props.types.js';
-import { TTradingPlatformAccounts } from './props.types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TExistingData, TTradingPlatformAccounts } from './props.types';
+import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -30,56 +29,33 @@ type TCFDRealAccountDisplayProps = {
     is_accounts_switcher_on: boolean;
     is_eu: boolean;
     is_eu_country: boolean;
-    has_malta_account: boolean;
-    has_maltainvest_account: boolean;
     has_cfd_account_error: boolean;
-    is_fully_authenticated: boolean;
-    account_settings: GetSettings;
-    openAccountNeededModal: (target: string, target_label: string, target_dmt5_label: string) => void;
     standpoint: TStandPoint;
     is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
-    is_pending_authentication: boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
-    isFinancialStpCardVisible: () => boolean;
-    landing_companies: LandingCompany;
-    onSelectAccount: (objCFDAccount: { category: string; type: string; set_password?: number }) => void;
+    onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
+    realSyntheticAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
+    realFinancialAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
         account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
     ) => boolean;
-    current_list: Array<DetailsOfEachMT5Loginid> & {
-        [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts;
-    };
-    has_cfd_account: boolean;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
+    toggleMT5TradeModal: (is_accounts_switcher_on?: boolean) => void;
     toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
-    can_have_more_real_synthetic_mt5: boolean;
     residence: string;
-    residence_list: ResidenceList;
     account_status?: object;
-};
-
-const getRealFinancialStpBtnLbl = (
-    is_fully_authenticated: boolean,
-    is_pending_authentication: boolean,
-    has_required_credentials: boolean
-) => {
-    if (is_fully_authenticated && has_required_credentials) {
-        return <Localize i18n_default_text='Set your password' />;
-    } else if (is_pending_authentication) {
-        return <Localize i18n_default_text='Pending verification' />;
-    }
-
-    return <Localize i18n_default_text='Add real account' />;
+    openDerivRealAccountNeededModal: () => void;
+    should_enable_add_button?: boolean;
 };
 
 const CFDRealAccountDisplay = ({
@@ -87,67 +63,28 @@ const CFDRealAccountDisplay = ({
     is_accounts_switcher_on,
     is_eu,
     is_eu_country,
-    has_malta_account,
-    has_maltainvest_account,
     has_cfd_account_error,
-    is_fully_authenticated,
-    is_pending_authentication,
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
-    isFinancialStpCardVisible,
-    landing_companies,
     onSelectAccount,
+    realSyntheticAccountsExistingData,
+    realFinancialAccountsExistingData,
     openAccountTransfer,
-    openPasswordModal,
     isAccountOfTypeDisabled,
     current_list,
-    has_cfd_account,
     openPasswordManager,
-    account_settings,
-    openAccountNeededModal,
     platform,
     standpoint,
     is_logged_in,
     toggleAccountsDialog,
+    toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
-    can_have_more_real_synthetic_mt5,
     residence,
-    residence_list,
+    openDerivRealAccountNeededModal,
+    should_enable_add_button,
 }: TCFDRealAccountDisplayProps) => {
-    const should_show_trade_servers =
-        is_logged_in &&
-        !is_eu &&
-        has_real_account &&
-        can_have_more_real_synthetic_mt5 &&
-        platform === CFD_PLATFORMS.MT5;
-    const [active_hover, setActiveHover] = React.useState(0);
-
-    const has_required_credentials = React.useMemo(() => {
-        const { citizen, tax_identification_number, tax_residence } = account_settings;
-
-        if (citizen && tax_identification_number && tax_residence) return true;
-
-        if (citizen && tax_residence) {
-            const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
-            return (
-                is_tin_required ||
-                !(residence_list as ResidenceList).filter(v => v.value === tax_residence && v.tin_format).length
-            );
-        }
-
-        return false;
-    }, [account_settings, residence_list, landing_companies]) as boolean;
-
-    const button_label = getRealFinancialStpBtnLbl(
-        is_fully_authenticated,
-        is_pending_authentication,
-        has_required_credentials
-    );
-
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-
-    const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
@@ -161,51 +98,33 @@ const CFDRealAccountDisplay = ({
         return specifications[platform as keyof TSpecifications].real_financial_specs;
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
-    const onSelectRealSynthetic = () => {
-        if (is_eu && standpoint.malta && !has_malta_account) {
-            openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
+    const onSelectRealAccount = (type: string) => {
+        if (should_enable_add_button) {
+            openDerivRealAccountNeededModal();
         } else {
-            onSelectAccount({ type: 'synthetic', category: 'real' });
-        }
-    };
-    const onSelectRealFinancial = () => {
-        if (is_eu && !has_maltainvest_account) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('real CFDs'));
-        } else {
-            onSelectAccount({ type: 'financial', category: 'real' });
-        }
-    };
-    const onSelectRealFinancialStp = () => {
-        const account_type = {
-            category: 'real',
-            type: 'financial_stp',
-        };
-        if (is_fully_authenticated && has_required_credentials) {
-            openPasswordModal(account_type);
-        } else if ((!is_fully_authenticated && !is_real_financial_stp_disabled) || !has_required_credentials) {
-            onSelectAccount(account_type);
+            onSelectAccount({ type, category: 'real', platform });
         }
     };
 
-    const onClickFundReal = (account: TExistingData) =>
-        openAccountTransfer(current_list[getAccountListKey(account, platform)], {
+    const onClickFundReal = (account: TExistingData) => {
+        if (platform === 'dxtrade') {
+            return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
+                category: account.account_type as keyof TOpenAccountTransferMeta,
+                type: getCFDAccountKey({
+                    market_type: account.market_type,
+                    sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+                    platform,
+                }),
+            });
+        }
+        return openAccountTransfer(account, {
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
                 market_type: account.market_type,
                 sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
-                platform,
+                platform: 'mt5',
             }),
         });
-
-    const handleHoverCard = (name: string | undefined) => {
-        const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
-            key.startsWith(`${platform}.real.synthetic`)
-        );
-        setActiveHover(
-            (real_synthetic_accounts_list as Array<string>).findIndex(
-                t => (current_list[t] as DetailsOfEachMT5Loginid).group === name
-            )
-        );
     };
 
     const isMT5AccountCardDisabled = (sub_account_type: string) => {
@@ -221,125 +140,60 @@ const CFDRealAccountDisplay = ({
         switch (sub_account_type) {
             case 'synthetic':
             case 'financial':
-                return !has_real_account;
-            case 'financial_stp':
-                return is_real_financial_stp_disabled;
+                return should_enable_add_button ? false : !has_real_account;
             default:
                 return false;
         }
     };
 
-    const synthetic_account_items =
-        isSyntheticCardVisible('real') &&
-        (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.real.synthetic`))
-                  .reduce((acc, cur) => {
-                      acc.push(current_list[cur]);
-                      return acc;
+                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
                   }, [] as DetailsOfEachMT5Loginid[])
-                  .map((acc, index) => {
-                      return (
-                          <CFDAccountCard
-                              key={index}
-                              has_cfd_account={has_cfd_account}
-                              has_cfd_account_error={has_cfd_account_error}
-                              title={localize('Synthetic')}
-                              is_hovered={index === active_hover}
-                              is_disabled={isMT5AccountCardDisabled('synthetic')}
-                              type={{
-                                  category: 'real',
-                                  type: 'synthetic',
-                                  platform,
-                              }}
-                              is_logged_in={is_logged_in}
-                              should_show_trade_servers={should_show_trade_servers}
-                              existing_data={acc}
-                              commission_message={localize('No commission')}
-                              onSelectAccount={onSelectRealSynthetic}
-                              onPasswordManager={openPasswordManager}
-                              onClickFund={onClickFundReal}
-                              platform={platform}
-                              descriptor={localize(
-                                  'Trade CFDs on our synthetic indices that simulate real-world market movement.'
-                              )}
-                              specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
-                              onHover={handleHoverCard}
-                          />
-                      );
-                  })
-            : [
-                  <CFDAccountCard
-                      key='real.synthetic'
-                      has_cfd_account={has_cfd_account}
-                      title={localize('Synthetic')}
-                      is_disabled={isMT5AccountCardDisabled('synthetic')}
-                      type={{
-                          category: 'real',
-                          type: 'synthetic',
-                          platform,
-                      }}
-                      is_logged_in={is_logged_in}
-                      should_show_trade_servers={should_show_trade_servers}
-                      existing_data={undefined}
-                      commission_message={localize('No commission')}
-                      onSelectAccount={onSelectRealSynthetic}
-                      onPasswordManager={openPasswordManager}
-                      onClickFund={onClickFundReal}
-                      platform={platform}
-                      descriptor={localize(
-                          'Trade CFDs on our synthetic indices that simulate real-world market movement.'
-                      )}
-                      specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
-                      onHover={handleHoverCard}
-                      is_virtual={is_virtual}
-                      toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                      toggleAccountsDialog={toggleAccountsDialog}
-                  />,
-              ]);
+            : undefined;
+        return acc;
+    };
 
-    const financial_stp_account = isFinancialStpCardVisible() && (
+    realSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
+    realFinancialAccountsExistingData(existing_accounts_data('financial'));
+
+    const synthetic_account_items = isSyntheticCardVisible('real') && (
         <CFDAccountCard
-            key='real.financial_stp'
-            has_cfd_account={has_cfd_account}
-            title={localize('Financial STP')}
+            key='real.synthetic'
+            has_cfd_account_error={has_cfd_account_error}
+            title={localize('Synthetic')}
+            has_real_account={has_real_account}
+            is_accounts_switcher_on={is_accounts_switcher_on}
+            is_disabled={isMT5AccountCardDisabled('synthetic')}
+            is_logged_in={is_logged_in}
             type={{
                 category: 'real',
-                type: 'financial_stp',
+                type: 'synthetic',
                 platform,
             }}
-            is_logged_in={is_logged_in}
-            existing_data={
-                current_list[
-                    Object.keys(current_list).find((key: string) =>
-                        key.startsWith(`${platform}.real.financial_stp@`)
-                    ) || ''
-                ]
-            }
+            existing_accounts_data={existing_accounts_data('synthetic')}
             commission_message={localize('No commission')}
-            onSelectAccount={onSelectRealFinancialStp}
-            button_label={button_label}
-            is_button_primary={is_pending_authentication}
+            onSelectAccount={() => onSelectRealAccount('synthetic')}
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={localize(
-                'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-            )}
-            specs={(specifications as TSpecifications)[platform as keyof TSpecifications].real_financial_stp_specs}
-            is_disabled={isMT5AccountCardDisabled('financial_stp')}
+            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
+            specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             is_virtual={is_virtual}
-            has_real_account={has_real_account}
-            toggleAccountsDialog={toggleAccountsDialog}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-            is_accounts_switcher_on={is_accounts_switcher_on}
+            toggleAccountsDialog={toggleAccountsDialog}
+            toggleMT5TradeModal={toggleMT5TradeModal}
         />
     );
 
     const financial_account = isFinancialCardVisible() && (
         <CFDAccountCard
             key='real.financial'
-            has_cfd_account={has_cfd_account}
+            has_real_account={has_real_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
             title={is_eu_user ? localize('CFDs') : localize('Financial')}
             type={{
@@ -347,49 +201,39 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_data={
-                current_list[
-                    Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.real.financial@`)) || ''
-                ]
-            }
+            existing_accounts_data={existing_accounts_data('financial')}
             commission_message={localize('No commission')}
-            onSelectAccount={onSelectRealFinancial}
+            onSelectAccount={() => onSelectRealAccount('financial')}
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
             descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
             specs={financial_specs}
+            is_accounts_switcher_on={is_accounts_switcher_on}
             is_eu={is_eu_user}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
+            toggleMT5TradeModal={toggleMT5TradeModal}
         />
     );
 
-    const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
+    const items = [synthetic_account_items, financial_account].filter(Boolean);
 
     return (
-        <div
-            className={classNames('cfd-real-accounts-display', {
-                'cfd-real-accounts-display--has-trade-servers': should_show_trade_servers,
-            })}
-        >
+        <div data-testid='dt_cfd_real_accounts_display' className={classNames('cfd-real-accounts-display')}>
             <DesktopWrapper>
                 <Carousel
                     list={items}
                     width={328}
                     nav_position='middle'
                     show_bullet={false}
-                    item_per_window={3}
+                    item_per_window={2}
                     is_mt5={true}
                 />
             </DesktopWrapper>
-            <MobileWrapper>
-                {items.map(item => {
-                    return item;
-                })}
-            </MobileWrapper>
+            <MobileWrapper>{items}</MobileWrapper>
         </div>
     );
 };

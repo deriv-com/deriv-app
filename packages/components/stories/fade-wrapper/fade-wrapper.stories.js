@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
 import FadeWrapper from 'Components/fade-wrapper';
 import Button from 'Components/button';
@@ -17,8 +16,8 @@ storiesOf('FadeWrapper', module)
         () => {
             const [visibility, setVisibility] = React.useState(false);
             const [type, setType] = React.useState('');
-            const toggleVisibility = type => {
-                setType(type);
+            const toggleVisibility = t => {
+                setType(t);
                 setTimeout(() => {
                     setVisibility(!visibility);
                 }, 100);

@@ -4,10 +4,18 @@ import PropTypes from 'prop-types';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { useOnClickOutside } from '../../../../components/src/hooks';
 import './advertiser-page.scss';
 
 const AdvertiserPageDropdownMenu = ({ is_my_advert }) => {
+    const dropdown_menu_ref = React.useRef();
     const { advertiser_page_store } = useStores();
+
+    const onClickOutside = () => {
+        advertiser_page_store.setIsDropdownMenuVisible(false);
+    };
+
+    useOnClickOutside(dropdown_menu_ref, onClickOutside, () => advertiser_page_store.is_dropdown_menu_visible);
 
     return (
         !advertiser_page_store.is_counterparty_advertiser_blocked && (
@@ -21,7 +29,11 @@ const AdvertiserPageDropdownMenu = ({ is_my_advert }) => {
                     size={16}
                 />
                 {advertiser_page_store.is_dropdown_menu_visible && (
-                    <div className='advertiser-page__dropdown' onClick={advertiser_page_store.showBlockUserModal}>
+                    <div
+                        ref={dropdown_menu_ref}
+                        className='advertiser-page__dropdown'
+                        onClick={advertiser_page_store.showBlockUserModal}
+                    >
                         <Dropdown
                             className={`advertiser-page__dropdown-container${is_my_advert ? '--disabled' : ''}`}
                             is_align_text_right

@@ -38,11 +38,11 @@
 
         &:hover {
             .dc-dropdown__display {
-                background-color: var(--border-hover);
-                border: 1px solid var(--border-hover);
+                background-color: var(--border-normal);
+                border: 1px solid var(--border-normal);
 
                 span {
-                    background-color: var(--border-hover);
+                    background-color: var(--border-normal);
                 }
             }
         }

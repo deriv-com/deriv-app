@@ -28,6 +28,10 @@ export const convertToMillis = epoch => {
 };
 
 export const getDateAfterHours = (initial_epoch, hours) => {
+    if (typeof initial_epoch !== 'number') {
+        throw Error('getLocalEpoch argument needs a number');
+    }
+
     const milliseconds = hours * 60 * 60 * 1000;
     const initial_day_milliseconds = convertToMillis(initial_epoch);
     const total_milliseconds = initial_day_milliseconds + milliseconds;

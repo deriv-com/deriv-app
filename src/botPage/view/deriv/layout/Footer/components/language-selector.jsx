@@ -2,6 +2,8 @@ import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import { getLanguage } from "../../../../../../common/lang";
 import config from "../../../../../../app.config";
+import { set as setStorage } from '../../../../../../common/utils/storageManager';
+import { setCookieLanguage } from '../../../../../../common/utils/cookieManager';
 
 const current_language = getLanguage();
 const toggleModal = () => $("#language-menu-modal").toggleClass("invisible");
@@ -38,6 +40,8 @@ const LanguageItem = ({ lang }) => {
                 self.current.classList.add("language-menu-item__active");
                     if (lang === 'en') {
                         document.location.assign(document.location.origin);
+                        setStorage('lang', lang);
+                        setCookieLanguage(lang);
                     }else{
                         document.location.search = `l=${lang}`;
                     }

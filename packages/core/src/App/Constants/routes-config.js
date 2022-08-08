@@ -3,7 +3,7 @@ import { Redirect as RouterRedirect } from 'react-router-dom';
 import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { Redirect } from 'App/Containers/Redirect';
+import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
@@ -15,6 +15,11 @@ const Trader = React.lazy(() =>
         return import(/* webpackChunkName: "trader" */ '@deriv/trader');
     })
 );
+
+const Reports = React.lazy(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "reports" */ '@deriv/reports');
+});
 
 const CFD = React.lazy(() =>
     moduleLoader(() => {
@@ -58,6 +63,34 @@ const getModules = ({ is_appstore }, is_social_signup) => {
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
+        },
+        {
+            path: routes.reports,
+            component: Reports,
+            getTitle: () => localize('Reports'),
+            icon_component: 'IcReports',
+            is_authenticated: true,
+            routes: [
+                {
+                    path: routes.positions,
+                    component: Reports,
+                    getTitle: () => localize('Open positions'),
+                    icon_component: 'IcOpenPositions',
+                    default: true,
+                },
+                {
+                    path: routes.profit,
+                    component: Reports,
+                    getTitle: () => localize('Profit table'),
+                    icon_component: 'IcProfitTable',
+                },
+                {
+                    path: routes.statement,
+                    component: Reports,
+                    getTitle: () => localize('Statement'),
+                    icon_component: 'IcStatement',
+                },
+            ],
         },
         {
             path: routes.dxtrade,
@@ -235,34 +268,6 @@ const getModules = ({ is_appstore }, is_social_signup) => {
             component: Trader,
             getTitle: () => localize('Trader'),
             routes: [
-                {
-                    path: routes.reports,
-                    component: Trader,
-                    getTitle: () => localize('Reports'),
-                    icon_component: 'IcReports',
-                    is_authenticated: true,
-                    routes: [
-                        {
-                            path: routes.positions,
-                            component: Trader,
-                            getTitle: () => localize('Open positions'),
-                            icon_component: 'IcOpenPositions',
-                            default: true,
-                        },
-                        {
-                            path: routes.profit,
-                            component: Trader,
-                            getTitle: () => localize('Profit table'),
-                            icon_component: 'IcProfitTable',
-                        },
-                        {
-                            path: routes.statement,
-                            component: Trader,
-                            getTitle: () => localize('Statement'),
-                            icon_component: 'IcStatement',
-                        },
-                    ],
-                },
                 {
                     path: routes.contract,
                     component: Trader,

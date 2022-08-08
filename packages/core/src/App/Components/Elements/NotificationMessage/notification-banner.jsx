@@ -41,6 +41,8 @@ const NotificationBanner = ({ className, header, message, primary_btn, secondary
 );
 
 NotificationBanner.propTypes = {
+    className: PropTypes.string,
+    secondary_btn: PropTypes.object,
     header: PropTypes.string,
     img_alt: PropTypes.string,
     img_src: PropTypes.string,

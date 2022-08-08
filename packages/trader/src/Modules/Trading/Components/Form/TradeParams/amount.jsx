@@ -8,8 +8,8 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
+import MultipliersInfo from './Multiplier/info.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
-import { MultipliersInfo } from './info.jsx';
 
 const Input = ({
     amount,

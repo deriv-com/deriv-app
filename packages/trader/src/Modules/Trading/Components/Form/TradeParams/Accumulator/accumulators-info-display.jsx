@@ -1,32 +1,37 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { Text } from '@deriv/components';
+import { Money, Text } from '@deriv/components';
 import classNames from 'classnames';
 
 const AccumulatorsInfoDisplay = ({ currency, max_payout, maximum_ticks }) => {
+    const labels = [localize('Maximum payout'), localize('Maximum ticks')].map((label, index) => (
+        <Text key={index} size='xxs' weight='bold'>
+            {label}
+        </Text>
+    ));
+
+    const values = [
+        <Money key={0} amount={max_payout} show_currency currency={currency} />,
+        localize('{{maximum_ticks}} {{ticks}}', {
+            maximum_ticks,
+            ticks: maximum_ticks === 1 ? 'tick' : 'ticks',
+        }),
+    ].map((value_component, index) => (
+        <Text key={index} size='xxs' align='right'>
+            {value_component}
+        </Text>
+    ));
+
     return (
-        <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--accu-info-display')}>
-            <Text size='xs' weight='bold'>
-                {
-                    <Localize
-                        i18n_default_text={'Maximum payout <0>{{max_payout}} {{currency}}</0>'}
-                        values={{ max_payout: max_payout?.toFixed(2), currency }}
-                        components={[<Text key={0} styles={{ marginLeft: '4px', borderBottom: 'none' }} size='xxxs' />]}
-                    />
-                }
-            </Text>
-            <Text size='xs' weight='bold'>
-                {
-                    <Localize
-                        i18n_default_text={'Maximum ticks <0>{{maximum_ticks}} {{ticks}}</0>'}
-                        values={{ maximum_ticks, ticks: maximum_ticks === 1 ? 'tick' : 'ticks' }}
-                        components={[<Text key={0} styles={{ marginLeft: '4px', borderBottom: 'none' }} size='xxxs' />]}
-                    />
-                }
-            </Text>
+        <Fieldset className={classNames('trade-container__fieldset', 'accu-info-display')}>
+            {[labels, values].map((text, index) => (
+                <div key={index} className='accu-info-display__column'>
+                    {text}
+                </div>
+            ))}
         </Fieldset>
     );
 };

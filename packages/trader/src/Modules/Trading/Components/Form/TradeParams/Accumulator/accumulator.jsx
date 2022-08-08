@@ -6,6 +6,7 @@ import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage, getRoundedTickSizeBarrier } from '@deriv/shared';
+import classNames from 'classnames';
 
 const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_barrier }) => {
     // splitting accumulator_rates_list into rows containing 5 values each:
@@ -18,7 +19,7 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_
 
     return (
         <Fieldset
-            className='trade-container__fieldset accumulator'
+            className={classNames('trade-container__fieldset', 'accumulator')}
             header={localize('Accumulators')}
             is_center
             header_tooltip={localize(

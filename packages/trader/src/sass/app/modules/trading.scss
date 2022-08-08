@@ -102,13 +102,17 @@
                 }
             }
         }
-        &--accu-info-display {
-            height: 8.4rem;
+        &.accu-info-display {
+            height: 7rem;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 0.8rem;
+            justify-content: space-between;
+            padding: 1.5rem 1.6rem;
+
+            .accu-info-display__column {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
         }
         .dc-datepicker {
             .dc-input {

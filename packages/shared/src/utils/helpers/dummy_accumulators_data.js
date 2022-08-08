@@ -18,7 +18,7 @@ const limit_order = {
         value: `${take_profit_price}`,
     },
 };
-const contract_status = 'open';
+const contract_status = 'open'; // 'lost', 'won' or 'open'
 const position_status = 'profit'; // 'profit' or 'loss'
 const profit_loss = +0.15;
 const profit_percentage = +1.5;

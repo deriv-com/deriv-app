@@ -9,10 +9,9 @@ import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/a
 
 const CreateAdAddPaymentMethodModal = () => {
     const { my_ads_store, my_profile_store } = useStores();
-    const formik_ref = React.useRef();
 
     const onCancel = () => {
-        if (my_profile_store.selected_payment_method.length > 0 || (formik_ref.current && formik_ref.current.dirty)) {
+        if (my_profile_store.selected_payment_method.length > 0 || my_profile_store.form_state.dirty) {
             my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
         } else {
             my_ads_store.setShouldShowAddPaymentMethodModal(false);
@@ -60,11 +59,7 @@ const CreateAdAddPaymentMethodModal = () => {
                 page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={onCancel}
             >
-                <AddPaymentMethod
-                    formik_ref={formik_ref}
-                    should_show_page_return={false}
-                    should_show_separated_footer={true}
-                />
+                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
             </MobileFullPageModal>
         );
     }
@@ -86,11 +81,7 @@ const CreateAdAddPaymentMethodModal = () => {
             <Modal.Body
                 className={classNames({ 'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method })}
             >
-                <AddPaymentMethod
-                    formik_ref={formik_ref}
-                    should_show_page_return={false}
-                    should_show_separated_footer={true}
-                />
+                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
             </Modal.Body>
             {!my_profile_store.selected_payment_method && (
                 <Modal.Footer has_separator>

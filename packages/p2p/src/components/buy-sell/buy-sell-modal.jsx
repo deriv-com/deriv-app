@@ -42,7 +42,7 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_ad) => {
+const generateModalTitle = (my_profile_store, table_type, selected_ad) => {
     if (my_profile_store.should_show_add_payment_method_form) {
         if (!isMobile()) {
             return (
@@ -50,10 +50,10 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
                     <Icon
                         icon='IcArrowLeftBold'
                         onClick={() => {
-                            if (formik_ref.current.dirty) {
-                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            if (my_profile_store.form_state && my_profile_store.form_state.dirty) {
+                                my_profile_store.showCancelAddPaymentMethodModal();
                             } else {
-                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                                my_profile_store.hideAddPaymentMethodForm();
                             }
                         }}
                         className='buy-sell__modal-icon'
@@ -82,7 +82,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             receive_amount={buy_sell_store.receive_amount}
         />
     );
-    const formik_ref = React.useRef();
 
     const BuySellFormError = () => {
         return buy_sell_store.form_error_code === 'OrderCreateFailClientBalance' ? (
@@ -112,8 +111,11 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
-            if (formik_ref.current.dirty) {
-                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+            if (my_profile_store.formik_ref && my_profile_store.formik_ref.dirty) {
+                // hide the entire buy sell modal -> show cancel add payment method confirmation modal
+                buy_sell_store.setShouldShowPopup(false);
+                my_profile_store.hideAddPaymentMethodForm();
+                my_profile_store.showCancelAddPaymentMethodModal();
             } else {
                 my_profile_store.hideAddPaymentMethodForm();
             }
@@ -131,12 +133,18 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
+        my_profile_store.setOnCancelAddPaymentMethodHandler(() => {
+            buy_sell_store.setShouldShowPopup(false);
+        });
+    }, []);
+
+    React.useEffect(() => {
         if (!should_show_popup) {
             setErrorMessage(null);
         }
 
-        my_profile_store.setSelectedPaymentMethod('');
-        my_profile_store.setSelectedPaymentMethodDisplayName('');
+        // my_profile_store.setSelectedPaymentMethod('');
+        // my_profile_store.setSelectedPaymentMethodDisplayName('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_popup]);
@@ -152,7 +160,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 is_flex
                 is_modal_open={should_show_popup}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
+                page_header_text={generateModalTitle(my_profile_store, table_type, selected_ad)}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
                 renderPageFooterChildren={() =>
@@ -173,7 +181,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             >
                 {error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
+                    <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={selected_ad}
@@ -195,7 +203,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             height={table_type === buy_sell.BUY ? 'auto' : '649px'}
             width='456px'
             is_open={should_show_popup}
-            title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
+            title={generateModalTitle(my_profile_store, table_type, selected_ad)}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
         >
@@ -204,7 +212,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 <Modal.Body>
                     {error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
+                        <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
                         <Form
                             advert={selected_ad}

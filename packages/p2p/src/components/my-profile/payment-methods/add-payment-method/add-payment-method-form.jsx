@@ -2,15 +2,36 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, useFormikContext } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { usePaymentMethodValidator } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
-const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
+const RestoreFormHistory = () => {
+    const { setValues } = useFormikContext();
+    const { my_profile_store } = useStores();
+
+    React.useEffect(() => {
+        if (my_profile_store.formik_history) {
+            // we have to explicitly call setValues if there is form history already saved
+            // passing in the form history to Formik's initialValues will not suffice since Formik will not treat it as 'dirty'
+            // thus this will cause bugs such as Add button being disabled even though user has already typed something previously
+            setValues(my_profile_store.formik_history.values);
+        }
+    }, []);
+    return null;
+};
+
+const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const validateFields = usePaymentMethodValidator();
+
+    const formikRef = node => {
+        if (node !== null) {
+            my_profile_store.setFormikRef(node);
+        }
+    };
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -19,9 +40,8 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
 
         return () => {
-            my_profile_store.setSelectedPaymentMethod('');
+            my_profile_store.saveFormState();
         };
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -33,7 +53,7 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
         <React.Fragment>
             <Formik
                 enableReinitialize
-                innerRef={formik_ref}
+                innerRef={formikRef}
                 initialValues={{}}
                 onSubmit={my_profile_store.createPaymentMethod}
                 validate={validateFields}
@@ -41,6 +61,7 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                 {({ dirty, handleChange, isSubmitting, errors }) => {
                     return (
                         <Form className='add-payment-method-form__form'>
+                            <RestoreFormHistory />
                             <div className='add-payment-method-form__form-wrapper'>
                                 <Field name='choose_payment_method'>
                                     {({ field }) => (
@@ -109,7 +130,11 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                                     large
                                     onClick={() => {
                                         if (dirty || my_profile_store.selected_payment_method.length > 0) {
-                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                            // my_profile_store.showCancelAddPaymentMethodModal(() => {
+                                            //     my_profile_store.hideAddPaymentMethodForm();
+                                            //     my_ads_store.hideQuickAddModal();
+                                            // });
+                                            my_profile_store.showCancelAddPaymentMethodModal();
                                         } else {
                                             my_profile_store.hideAddPaymentMethodForm();
                                             my_ads_store.setShouldShowAddPaymentMethodModal(false);

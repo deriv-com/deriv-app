@@ -18,6 +18,8 @@ export default class MyProfileStore extends BaseStore {
     @observable delete_error_message = '';
     @observable error_message = '';
     @observable form_error = '';
+    @observable formik_ref = null; // used to keep track of formik's ref when updated
+    @observable formik_history = null; // used to store formik's ref when unmounting
     @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_cancel_add_payment_method_modal_open = false;
@@ -26,6 +28,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_delete_payment_method_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
+    @observable on_cancel_add_payment_method_handler = null;
     @observable payment_info = '';
     @observable payment_method_value = undefined;
     @observable payment_methods_list = [];
@@ -65,6 +68,14 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
+    get form_state() {
+        if (this.formik_ref) {
+            return this.formik_ref;
+        }
+        return null;
+    }
+
+    @computed
     get payment_method_field_set() {
         // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
         return this.selected_payment_method_fields.reduce((dict, field_data) => {
@@ -89,6 +100,14 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return object;
+    }
+
+    @computed
+    get form_history() {
+        if (this.formik_history) {
+            return this.formik_history.values;
+        }
+        return {};
     }
 
     @computed
@@ -134,6 +153,14 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    clearFormState() {
+        this.setFormikRef(null);
+        this.setFormikHistory(null);
+        this.setSelectedPaymentMethodDisplayName('');
+        this.setSelectedPaymentMethod('');
+    }
+
+    @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
         requestWS({
@@ -172,6 +199,11 @@ export default class MyProfileStore extends BaseStore {
                 setSubmitting(false);
             }
         });
+    }
+
+    @action.bound
+    setFormikRef(formik_ref) {
+        this.formik_ref = formik_ref;
     }
 
     @action.bound
@@ -341,9 +373,15 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    showCancelAddPaymentMethodModal(hideHandler) {
-        hideHandler();
-        this.setIsrevertCancelAddingPaymentMethod(true);
+    saveFormState() {
+        if (this.formik_ref) {
+            this.setFormikHistory(this.formik_ref);
+        }
+    }
+
+    @action.bound
+    showCancelAddPaymentMethodModal() {
+        this.on_cancel_add_payment_method_handler();
         setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), 200);
     }
 
@@ -498,6 +536,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setFormikHistory(formik_history) {
+        this.formik_history = formik_history;
+    }
+
+    @action.bound
     setFullName(full_name) {
         this.full_name = full_name;
     }
@@ -530,6 +573,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
+    }
+
+    @action.bound
+    setOnCancelAddPaymentMethodHandler(on_cancel_add_payment_method_handler) {
+        this.on_cancel_add_payment_method_handler = on_cancel_add_payment_method_handler;
     }
 
     @action.bound

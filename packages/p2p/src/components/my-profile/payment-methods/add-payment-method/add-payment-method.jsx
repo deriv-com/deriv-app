@@ -21,7 +21,22 @@ const AddPaymentMethod = ({ formik_ref, should_show_page_return = true, should_s
 
     return (
         <React.Fragment>
-            <CancelAddPaymentMethodModal is_floating />
+            <CancelAddPaymentMethodModal
+                is_floating
+                onCancel={() => {
+                    // my_profile_store.hideAddPaymentMethodForm();
+                    // my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                    my_ads_store.setShouldShowAddPaymentMethod(false);
+                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                    // my_ads_store.setIsQuickAddModalOpen(false);
+                    my_profile_store.setFormikHistory(null);
+                }}
+                onGoBack={() => {
+                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                    my_ads_store.setIsQuickAddModalOpen(true);
+                    my_ads_store.setShouldShowAddPaymentMethodModal(true);
+                }}
+            />
             <DesktopWrapper>
                 {should_show_page_return && (
                     <PageReturn

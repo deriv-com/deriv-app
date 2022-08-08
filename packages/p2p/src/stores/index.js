@@ -36,6 +36,7 @@ export const useStores = () => {
             my_profile_store: root_store.my_profile_store,
             order_store: root_store.order_store,
             order_details_store: root_store.order_details_store,
+            router_store: root_store.router_store,
             sendbird_store: root_store.sendbird_store,
         });
     }

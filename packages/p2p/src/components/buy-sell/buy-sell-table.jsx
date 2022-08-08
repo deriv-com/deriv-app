@@ -60,7 +60,20 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <CancelAddPaymentMethodModal is_floating />
+                <CancelAddPaymentMethodModal
+                    is_floating
+                    onCancel={() => {
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                        buy_sell_store.setShouldShowPopup(true);
+                        my_profile_store.clearFormState();
+                    }}
+                    onGoBack={() => {
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        buy_sell_store.setShouldShowPopup(true);
+                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
+                    }}
+                />
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'

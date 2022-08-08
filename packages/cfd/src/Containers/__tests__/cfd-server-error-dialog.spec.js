@@ -55,9 +55,4 @@ describe('<CFDServerErrorDialog /> ', () => {
         fireEvent.click(ok_btn);
         expect(mock_props.clearCFDError).toHaveBeenCalled();
     });
-
-    it('should render the correct error message', () => {
-        render(<CFDServerErrorDialog {...mock_props} />);
-        expect(mock_props.error_message).toBe('Sorry, an error occured while processing your request.');
-    });
 });

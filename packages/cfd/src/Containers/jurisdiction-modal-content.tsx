@@ -746,7 +746,7 @@ const JurisdictionModalContent = ({
             <CfdCheckBoxForAccounts
                 is_checked={checked}
                 onCheck={setChecked}
-                className={`${card_classname}__jurisdiction-checkbox`}
+                class_name={`${card_classname}__jurisdiction-checkbox`}
             />
         </>
     );

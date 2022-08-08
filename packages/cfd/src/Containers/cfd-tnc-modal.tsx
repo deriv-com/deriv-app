@@ -57,7 +57,7 @@ const CFDTncModal = ({
                     <CfdCheckBoxForAccounts
                         is_checked={is_checked}
                         onCheck={() => setIsChecked(!is_checked)}
-                        className={`jurisdiction-checkbox`}
+                        class_name={`jurisdiction-checkbox`}
                     />
                 </div>
             </div>

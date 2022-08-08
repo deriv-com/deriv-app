@@ -13,7 +13,7 @@ type TCfdCheckBoxForAccountsProps = {
     is_checked: boolean;
     account_status: GetAccountStatus;
     is_fully_authenticated: boolean;
-    className: string;
+    class_name: string;
 };
 
 const CfdCheckBoxForAccounts = ({
@@ -22,7 +22,7 @@ const CfdCheckBoxForAccounts = ({
     jurisdiction_selected_shortcode,
     account_status,
     is_fully_authenticated,
-    className,
+    class_name,
 }: TCfdCheckBoxForAccountsProps) => {
     const { poa_verified, poi_verified_for_labuan_bvi, poi_verified_for_vanuatu, poi_poa_verified } =
         getIdentityStatusInfo(account_status);
@@ -75,7 +75,7 @@ const CfdCheckBoxForAccounts = ({
     return (
         <>
             {showCheckBox() && (
-                <div className={className}>
+                <div className={class_name}>
                     <Checkbox onChange={onCheck} value={is_checked} label={getCheckboxLabel()} />
                 </div>
             )}

@@ -10,7 +10,7 @@ import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
-import { generateEffectiveRate } from 'Utils/format-value.js';
+import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
@@ -258,6 +258,7 @@ const BuySellRow = ({ row: advert }) => {
 BuySellRow.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
+    row: PropTypes.object,
     setSelectedAdvert: PropTypes.func,
     style: PropTypes.object,
 };

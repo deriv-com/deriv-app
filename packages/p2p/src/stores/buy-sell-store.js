@@ -5,7 +5,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
-import { removeTrailingZeros } from 'Utils/format-value.js';
+import { removeTrailingZeros } from 'Utils/format-value';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
@@ -47,14 +47,6 @@ export default class BuySellStore extends BaseStore {
     };
     filter_payment_methods = [];
     payment_method_ids = [];
-
-    // eslint-disable-next-line class-methods-use-this
-    get sort_list() {
-        return [
-            { text: localize('Exchange rate (Default)'), value: 'rate' },
-            { text: localize('Completion rate'), value: 'completion' },
-        ];
-    }
 
     @computed
     get account_currency() {
@@ -123,6 +115,14 @@ export default class BuySellStore extends BaseStore {
     get should_filter_by_payment_method() {
         const { my_profile_store } = this.root_store;
         return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate'), value: 'rate' },
+            { text: localize('User rating'), value: 'rating' },
+        ];
     }
 
     @action.bound

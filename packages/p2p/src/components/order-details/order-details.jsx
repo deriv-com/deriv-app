@@ -277,6 +277,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     rating_value={order_store.rating_value}
                                 />
                                 <div className='order-details-card--rating'>
+                                    <MobileWrapper>
+                                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                    </MobileWrapper>
                                     <UserRatingButton
                                         button_text={
                                             is_reviewable ? localize('Rate this transaction') : localize('Not rated')

@@ -171,7 +171,7 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(screen.getByRole('button', { name: /Change Deriv X password/i })).toBeInTheDocument();
     });
 
-    it('should render change password confirmation if change Deriv X button is clicked', () => {
+    it('should render ChangePasswordConfirmationModal if change Deriv X button is clicked', () => {
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} platform='dxtrade' />);
         fireEvent.click(screen.getByRole('button', { name: /Change Deriv X password/i }));
         expect(screen.getByText(/Confirm to change your Deriv X password/i)).toBeInTheDocument();
@@ -193,7 +193,7 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(await screen.findByText(/Didn't receive the email?/i)).toBeInTheDocument();
     });
 
-    it('should render the resend email button if the user clicks Didnt receive the email', async () => {
+    it("should render the resend email button if a user clicks Didn't receive the email", async () => {
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} platform='dxtrade' />);
         fireEvent.click(screen.getByRole('button', { name: /Change Deriv X password/i }));
         fireEvent.click(screen.getByRole('button', { name: /Confirm/i }));
@@ -229,7 +229,7 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(await screen.findByText(/Resend email in 59/i)).toBeInTheDocument();
     });
 
-    it('should disable the button for 60 seconds after clickng resend email', async () => {
+    it('should disable the button for 60 seconds after clicking resend email', async () => {
         jest.useFakeTimers();
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} platform='dxtrade' />);
         fireEvent.click(screen.getByRole('button', { name: /Change Deriv X password/i }));
@@ -326,7 +326,7 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(screen.getByText(/IcEmailSent/i)).toBeInTheDocument();
     });
 
-    it('should go back to the previous investor password modal if the user clicks back in the sentemailmodal', async () => {
+    it('should go back to the previous investor password modal if the user clicks back in the SentEmailModal', async () => {
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
         fireEvent.click(screen.getByText(/Investor password/i));
         fireEvent.click(screen.getByText(/Create or reset investor password/i));

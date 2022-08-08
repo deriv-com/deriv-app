@@ -24,6 +24,7 @@ describe('CFDDashboardContainer', () => {
     it('should render <CFDDashboardContainer /> correctly', () => {
         render(<CFDDashboardContainer {...mock_props} />);
         expect(screen.getByTestId(/dt_cfd_dashboard_download_center_container/i)).toBeInTheDocument();
+        screen.debug();
     });
     it('should render correct text according to the MT5 platform', () => {
         render(<CFDDashboardContainer {...mock_props} />);
@@ -45,13 +46,14 @@ describe('CFDDashboardContainer', () => {
         expect(screen.getByText(/IcMt5DevicePhone/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationApple/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcInstallationHuawei/i)).toBeInTheDocument();
     });
 
     it('should download/redirect the correct file for MT5 platform', () => {
         render(<CFDDashboardContainer {...mock_props} />);
         expect(screen.getByText(/IcInstallationWindows/i).closest('a')).toHaveAttribute(
             'href',
-            'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe'
+            'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe'
         );
         expect(screen.getByText(/IcInstallationMacos/i).closest('a')).toHaveAttribute(
             'href',
@@ -69,7 +71,10 @@ describe('CFDDashboardContainer', () => {
             'href',
             'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server'
         );
-        screen.debug();
+        expect(screen.getByText(/IcInstallationHuawei/i).closest('a')).toHaveAttribute(
+            'href',
+            'https://appgallery.huawei.com/#/app/C102015329'
+        );
     });
 
     it('should render the correct icons and text for the Deriv X platform', () => {

@@ -103,7 +103,11 @@ const OrderRow = ({ style, row: order }) => {
                             'orders__table-grid--active': general_store.is_active_tab,
                         })}
                     >
-                        <div
+                        <Text
+                            as='div'
+                            align='center'
+                            size='xxs' // TODO: Change the font-size once design is ready
+                            weight='bold'
                             className={classNames('orders__mobile-status', {
                                 'orders__table-status--danger': should_highlight_danger,
                                 'orders__table-status--alert': should_highlight_alert,
@@ -112,7 +116,7 @@ const OrderRow = ({ style, row: order }) => {
                             })}
                         >
                             {status_string}
-                        </div>
+                        </Text>
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-header-right'>
                         {is_timer_visible && (
@@ -162,7 +166,10 @@ const OrderRow = ({ style, row: order }) => {
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{other_user_details.name}</Table.Cell>
                 <Table.Cell>
-                    <div
+                    <Text
+                        as='div'
+                        size='xxs' // TODO: Change the font-size once design is ready
+                        weight='bold'
                         className={classNames('orders__table-status', {
                             'orders__table-status--danger': should_highlight_danger,
                             'orders__table-status--alert': should_highlight_alert,
@@ -171,7 +178,7 @@ const OrderRow = ({ style, row: order }) => {
                         })}
                     >
                         {status_string}
-                    </div>
+                    </Text>
                 </Table.Cell>
                 <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
                 <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
@@ -189,6 +196,9 @@ const OrderRow = ({ style, row: order }) => {
 
 OrderRow.propTypes = {
     order: PropTypes.object,
+    style: PropTypes.object,
+    row: PropTypes.object,
+    server_time: PropTypes.object,
 };
 
 export default observer(OrderRow);

@@ -52,7 +52,7 @@ beforeEach(() => {
 
 describe('PaymentAgentTransferStore', () => {
     it('should return correct value', () => {
-        expect(payment_agent_transfer_store.is_payment_agent_transfer_visible).toBeFalse();
+        expect(payment_agent_transfer_store.is_payment_agent_transfer_visible).toBeFalsy();
     });
 
     it('should check and set is_payment_agent as true value', async () => {
@@ -61,7 +61,7 @@ describe('PaymentAgentTransferStore', () => {
         });
         await payment_agent_transfer_store.checkIsPaymentAgent();
 
-        expect(payment_agent_transfer_store.is_payment_agent).toBeTrue();
+        expect(payment_agent_transfer_store.is_payment_agent).toBeTruthy();
     });
 
     it('should check and set is_payment_agent as false value', async () => {
@@ -70,13 +70,13 @@ describe('PaymentAgentTransferStore', () => {
         });
         await payment_agent_transfer_store.checkIsPaymentAgent();
 
-        expect(payment_agent_transfer_store.is_payment_agent).toBeFalse();
+        expect(payment_agent_transfer_store.is_payment_agent).toBeFalsy();
     });
 
     it('should set correct is_payment_agent value', () => {
         payment_agent_transfer_store.setIsPaymentAgent(true);
 
-        expect(payment_agent_transfer_store.is_payment_agent).toBeTrue();
+        expect(payment_agent_transfer_store.is_payment_agent).toBeTruthy();
     });
 
     it('should route to /cashier/deposit if there is no payment agent and window.location.pathname ends with /cashier/payment-agent-transfer', () => {
@@ -100,13 +100,13 @@ describe('PaymentAgentTransferStore', () => {
         payment_agent_transfer_store.setIsTryTransferSuccessful(true);
 
         expect(spySetErrorMessage).toHaveBeenCalledWith('');
-        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTrue();
+        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
     });
 
     it('shoud set correct is_transfer_successful value', () => {
         payment_agent_transfer_store.setIsTransferSuccessful(true);
 
-        expect(payment_agent_transfer_store.is_transfer_successful).toBeTrue();
+        expect(payment_agent_transfer_store.is_transfer_successful).toBeTruthy();
     });
 
     it('shoud set correct confirmation transfer value', () => {
@@ -152,7 +152,7 @@ describe('PaymentAgentTransferStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
         payment_agent_transfer_store.resetPaymentAgentTransfer();
 
-        expect(payment_agent_transfer_store.is_transfer_successful).toBeFalse();
+        expect(payment_agent_transfer_store.is_transfer_successful).toBeFalsy();
         expect(spySetErrorMessage).toHaveBeenCalledWith('');
     });
 
@@ -215,7 +215,7 @@ describe('PaymentAgentTransferStore', () => {
             description: transfer_data.description,
         });
 
-        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTrue();
+        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
     });
 
     it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestTryPaymentAgentTransfer', async () => {
@@ -248,8 +248,8 @@ describe('PaymentAgentTransferStore', () => {
             client_id: transfer_data.transfer_to,
             client_name: 'George',
         });
-        expect(payment_agent_transfer_store.is_transfer_successful).toBeTrue();
-        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeFalse();
+        expect(payment_agent_transfer_store.is_transfer_successful).toBeTruthy();
+        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeFalsy();
         expect(payment_agent_transfer_store.confirm).toEqual({});
     });
 

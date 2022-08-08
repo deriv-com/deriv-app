@@ -1,25 +1,10 @@
-import React, { useState } from 'react';
-import DeactivateAccountSteps from './deactivate-account-steps.jsx';
-import DeactivateAccountReason from './deactivate-account-reason.jsx';
+// TODO: Remove once mobile team has changed this link
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { routes } from '@deriv/shared';
 
 const DeactivateAccount = () => {
-    const [render_deactivate_account_reason, setRenderDeactivateAccountReason] = useState(false);
-    const redirectToReasons = () => {
-        setRenderDeactivateAccountReason(true);
-    };
-    const redirectToSteps = () => {
-        setRenderDeactivateAccountReason(false);
-    };
-
-    return (
-        <div className='deactivate-account'>
-            {render_deactivate_account_reason ? (
-                <DeactivateAccountReason onBackClick={() => redirectToSteps()} />
-            ) : (
-                <DeactivateAccountSteps redirectToReasons={() => redirectToReasons()} />
-            )}
-        </div>
-    );
+    return <Redirect to={routes.closing_account} />;
 };
 
 export default DeactivateAccount;

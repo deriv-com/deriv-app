@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import Article from './article';
+import Article from './article.jsx';
 
 describe('<Article/>', () => {
     const props = {

@@ -9,11 +9,10 @@ const SameCitizenshipModal = ({
     setIsCitizenshipModal,
     setIsPasswordModal,
     setIsSameCitizenshipModal,
-    selectedCountry,
 }) => (
     <div>
         <Text as='p' className='account-signup__text'>
-            {localize('Are you a citizen of ')} {selectedCountry}?
+            {localize('Are you a citizen of {{residence}}?', { residence })}
         </Text>
         <div className='account-signup__same-citizenship'>
             <Button

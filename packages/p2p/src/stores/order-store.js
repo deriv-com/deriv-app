@@ -66,8 +66,6 @@ export default class OrderStore {
             if (response) {
                 if (response.error) {
                     order_details_store.setErrorMessage(response.error.message);
-                } else {
-                    this.setOrderRating(id);
                 }
             }
         });

@@ -106,13 +106,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
                     is_advertiser_rated_previously={!!advertiser_details.is_recommended}
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
-                    onClickDone={() => order_store.confirmOrderRequest(id)}
+                    onClickDone={() => order_store.setOrderRating(id)}
                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                     onClickRecommended={() => order_store.setIsRecommended(1)}
-                    onClickSkip={() => {
-                        order_store.confirmOrderRequest(id);
-                        order_store.setIsRatingModalOpen(false);
-                    }}
+                    onClickSkip={() => order_store.setIsRatingModalOpen(false)}
                     onClickStar={order_store.handleRating}
                     previous_recommendation={advertiser_details.is_recommended}
                     rating_value={order_store.rating_value}

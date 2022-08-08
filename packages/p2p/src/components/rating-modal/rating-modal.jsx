@@ -25,18 +25,20 @@ const RatingModal = ({
             title={localize('How would you rate this transaction?')}
         >
             <Modal.Body className='rating-modal--body'>
-                <StarRating
-                    empty_star_className='rating-modal--star'
-                    empty_star_icon='IcEmptyStar'
-                    full_star_className='rating-modal--star'
-                    full_star_icon='IcFullStar'
-                    initial_value={0}
-                    number_of_stars={5}
-                    onClick={onClickStar}
-                    rating_value={rating_value}
-                    should_allow_half_icon={false}
-                    star_size={isMobile() ? 17 : 20}
-                />
+                <div className='rating-modal--body__star'>
+                    <StarRating
+                        empty_star_className='rating-modal--star'
+                        empty_star_icon='IcEmptyStar'
+                        full_star_className='rating-modal--star'
+                        full_star_icon='IcFullStar'
+                        initial_value={0}
+                        number_of_stars={5}
+                        onClick={onClickStar}
+                        rating_value={rating_value}
+                        should_allow_half_icon={false}
+                        star_size={isMobile() ? 17 : 20}
+                    />
+                </div>
                 {rating_value > 0 && (
                     <RecommendUser
                         is_advertiser_rated_previously={is_advertiser_rated_previously}

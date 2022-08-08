@@ -51,7 +51,7 @@ describe('CFDDashboardContainer', () => {
         render(<CFDDashboardContainer {...mock_props} />);
         expect(screen.getByText(/IcInstallationWindows/i).closest('a')).toHaveAttribute(
             'href',
-            'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe'
+            'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe'
         );
         expect(screen.getByText(/IcInstallationMacos/i).closest('a')).toHaveAttribute(
             'href',

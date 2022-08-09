@@ -6,7 +6,7 @@
                 width: 100%;
 
                 .sc-navigation-widget,
-                .cq-top-ui-widgets > *:not(.tick-counter),
+                .cq-top-ui-widgets,
                 .sc-toolbar-widget,
                 .stx-panel-control {
                     transform: translate3d(248px, 0, 0);
@@ -568,28 +568,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             display: none;
                         }
                     }
-                }
-            }
-            .tick-counter {
-                position: absolute;
-                top: 3rem;
-                right: 11.2rem;
-                width: 3.2rem;
-                height: 5rem;
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                justify-content: space-between;
-
-                &__count {
-                    font-weight: 500;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 3.2rem;
-                    height: 3.2rem;
-                    border: 0.4rem solid var(--border-normal);
-                    border-radius: 50%;
                 }
             }
         }

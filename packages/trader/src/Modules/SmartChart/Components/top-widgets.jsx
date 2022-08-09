@@ -3,21 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isEnded, isDigitContract, isAccumulatorContract } from '@deriv/shared';
+import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
-
-const TickCounter = React.memo(({ current_tick }) => (
-    <div className='tick-counter'>
-        <Text className='tick-counter__name' size='xxxs'>
-            {localize('Tick')}
-        </Text>
-        <Text as='span' weight='bold' className='tick-counter__count' size='xs'>
-            {current_tick}
-        </Text>
-    </div>
-));
-TickCounter.displayName = 'TickCounter';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -27,12 +15,8 @@ const TradeInfo = ({ markers_array, granularity }) => {
     if (is_ended || granularity !== 0) return null;
 
     const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
-    const is_accumulator = isAccumulatorContract(contract_type);
-    const current_tick =
-        isDigitContract(contract_type) || is_accumulator ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
-    return is_accumulator ? (
-        <TickCounter current_tick={current_tick} />
-    ) : (
+    const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
+    return (
         <Text weight='bold' className='recent-trade-info'>
             {localize('Tick')} {current_tick}/{tick_count}
         </Text>
@@ -54,7 +38,6 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
-    show_accumulator_tick_counter,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
@@ -87,10 +70,7 @@ const TopWidgets = ({
         <React.Fragment>
             {InfoBox}
             <MobileWrapper>{portal}</MobileWrapper>
-            <DesktopWrapper>
-                {ChartTitleLocal}
-                {show_accumulator_tick_counter && <RecentTradeInfo />}
-            </DesktopWrapper>
+            <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
         </React.Fragment>
     );
 };
@@ -103,7 +83,6 @@ TopWidgets.propTypes = {
     onSymbolChange: PropTypes.func,
     open: PropTypes.bool,
     open_market: PropTypes.object,
-    show_accumulator_tick_counter: PropTypes.bool,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
 };

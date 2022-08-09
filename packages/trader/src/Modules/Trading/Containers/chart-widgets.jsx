@@ -52,34 +52,23 @@ export const DigitsWidget = connect(({ modules, contract_trade }) => ({
 export const ChartTopWidgets = connect(({ modules, ui }) => ({
     onSymbolChange: modules.trade.onChange,
     theme: ui.is_dark_mode_on ? 'dark' : 'light',
-}))(
-    ({
-        onSymbolChange,
-        charts_ref,
-        theme,
-        is_digits_widget_active,
-        open_market,
-        open,
-        show_accumulator_tick_counter,
-    }) => {
-        let yAxiswidth;
-        if (charts_ref && charts_ref.chart) {
-            yAxiswidth = charts_ref.chart.yAxiswidth;
-        }
-        return (
-            <TopWidgets
-                open_market={open_market}
-                open={open}
-                is_mobile={isMobile()}
-                is_digits_widget_active={is_digits_widget_active}
-                onSymbolChange={symbolChange(onSymbolChange)}
-                theme={theme}
-                show_accumulator_tick_counter={show_accumulator_tick_counter}
-                y_axis_width={yAxiswidth}
-            />
-        );
+}))(({ onSymbolChange, charts_ref, theme, is_digits_widget_active, open_market, open }) => {
+    let yAxiswidth;
+    if (charts_ref && charts_ref.chart) {
+        yAxiswidth = charts_ref.chart.yAxiswidth;
     }
-);
+    return (
+        <TopWidgets
+            open_market={open_market}
+            open={open}
+            is_mobile={isMobile()}
+            is_digits_widget_active={is_digits_widget_active}
+            onSymbolChange={symbolChange(onSymbolChange)}
+            theme={theme}
+            y_axis_width={yAxiswidth}
+        />
+    );
+});
 
 export const ChartBottomWidgets = ({ digits, tick }) => (
     <BottomWidgets Digits={<DigitsWidget digits={digits} tick={tick} />} />

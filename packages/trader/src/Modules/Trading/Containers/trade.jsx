@@ -306,13 +306,7 @@ const Chart = props => {
     const topWidgets = React.useCallback(({ ...params }) => {
         // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
         // so, using props_ref to get current props value
-        const {
-            is_digits_widget_active,
-            try_synthetic_indices,
-            try_open_markets,
-            open_market,
-            show_accumulator_tick_counter,
-        } = props_ref.current;
+        const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = props_ref.current;
 
         return (
             <ChartTopWidgets
@@ -320,7 +314,6 @@ const Chart = props => {
                 open={try_synthetic_indices || try_open_markets}
                 charts_ref={charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
-                show_accumulator_tick_counter={show_accumulator_tick_counter}
                 {...params}
             />
         );
@@ -450,7 +443,6 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,
-    show_accumulator_tick_counter: modules.trade.show_accumulator_tick_counter,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,
     symbol: modules.trade.symbol,

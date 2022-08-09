@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment/moment.js';
 
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed

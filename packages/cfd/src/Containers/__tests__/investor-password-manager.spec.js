@@ -41,12 +41,6 @@ describe('<InvestorPasswordManager> ', () => {
         validatePassword: jest.fn(),
     };
 
-    it('should render investor password manager', async () => {
-        render(<InvestorPasswordManager {...mock_props} />);
-
-        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
-    });
-
     it('should render the correct texts ', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
         expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();

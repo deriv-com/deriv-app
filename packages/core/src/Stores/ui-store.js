@@ -142,6 +142,8 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    is_deriv_account_needed_modal_visible = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -240,6 +242,7 @@ export default class UIStore extends BaseStore {
             should_show_multipliers_onboarding: observable,
             choose_crypto_currency_target: observable,
             should_show_cancel: observable,
+            is_deriv_account_needed_modal_visible: observable,
             init: action.bound,
             populateFooterExtensions: action.bound,
             populateHeaderExtensions: action.bound,
@@ -312,6 +315,7 @@ export default class UIStore extends BaseStore {
             toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             continueRouteAfterChooseCrypto: action.bound,
+            openDerivRealAccountNeededModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -740,5 +744,9 @@ export default class UIStore extends BaseStore {
         if (this.choose_crypto_currency_target === routes.cashier_deposit) {
             this.root_store.modules.cashier.general_store.setIsDeposit(true);
         }
+    }
+
+    openDerivRealAccountNeededModal() {
+        this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 }

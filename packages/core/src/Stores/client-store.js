@@ -130,7 +130,7 @@ export default class ClientStore extends BaseStore {
 
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
-    @observable cfd_score = null;
+    @observable is_cfd_poi_completed = false;
 
     is_mt5_account_list_updated = false;
 
@@ -1477,6 +1477,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setSwitched(switched) {
         this.switched = switched;
+    }
+
+    @action.bound
+    setIsCfdPoiCompleted(is_completed) {
+        this.is_cfd_poi_completed = is_completed;
     }
 
     /**

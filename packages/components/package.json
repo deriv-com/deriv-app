@@ -15,7 +15,7 @@
         "build:icons-manifest": "node -e 'require(\"./utils/build-icons-manifest\").buildIconsManifest()'",
         "build:travis": "rimraf lib && webpack --mode=production",
         "test": "node \"./src/components/icon/__tests__/icons.js\"",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",

@@ -397,8 +397,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    onHoverPosition(is_over, position) {
-        const { symbol: underlying } = this.root_store.active_symbols;
+    onHoverPosition(is_over, position, underlying) {
         if (
             position.contract_info.underlying !== underlying ||
             isEnded(position.contract_info) ||

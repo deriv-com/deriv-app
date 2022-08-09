@@ -4,6 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }) => {
@@ -13,7 +14,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
         return (
             <IconMessageContent
                 message={message}
-                text={localize('We’ll review your document and notify you of its status within 1 to 2 hours.')}
+                text={localize('We’ll review your document and notify you of its status within 1-3 days.')}
                 icon={
                     is_appstore ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
@@ -23,7 +24,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
                 }
                 className={is_appstore && 'account-management-dashboard'}
             >
-                {!is_from_external && redirect_button}
+                {!is_from_external && (redirect_button || <ContinueTradingButton />)}
             </IconMessageContent>
         );
     }

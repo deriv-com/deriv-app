@@ -28,10 +28,10 @@ describe('CFDDashboardContainer', () => {
     it('should render correct text according to the MT5 platform', () => {
         render(<CFDDashboardContainer {...mock_props} />);
         expect(
-            screen.getByText(/Run MT5 from your browser or download the MT5 app for your devices/i)
+            screen.getByText(/run MT5 from your browser or download the MT5 app for your devices/i)
         ).toBeInTheDocument();
         expect(
-            screen.getByText(/The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista/i)
+            screen.getByText(/the mt5 desktop app is not supported by windows XP, windows 2003, and windows vista/i)
         ).toBeInTheDocument();
     });
     it('should show the proper icons for the MT5 platform ', () => {
@@ -85,8 +85,8 @@ describe('CFDDashboardContainer', () => {
         expect(screen.getByText(/IcDxtradeDevicePhone/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationApple/i)).toBeInTheDocument();
-        expect(screen.getByText(/Run Deriv X on your browser or download the mobile app/i)).toBeInTheDocument();
-        expect(screen.getByText(/Web terminal/i)).toBeInTheDocument();
+        expect(screen.getByText(/Run deriv x on your browser or download the mobile app/i)).toBeInTheDocument();
+        expect(screen.getByText(/web terminal/i)).toBeInTheDocument();
     });
     it('should render the correct icons if dark mode is on for DerivX', () => {
         render(<CFDDashboardContainer {...mock_props} platform='dxtrade' is_dark_mode_on='true' />);

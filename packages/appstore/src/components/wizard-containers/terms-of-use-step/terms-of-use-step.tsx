@@ -17,7 +17,11 @@ const TermsOfUseStep = ({ onUpdateState }: TermsOfUseStepProps) => {
 
     React.useEffect(() => {
         if (is_submit_enabled) {
-            onUpdateState(formik_ref.current?.values);
+            const mapped_values = {
+                non_pep_declaration: Number(formik_ref.current?.values.agreed_tos),
+                // agreed_tnc: formik_ref.current?.values.agreed_tnc,
+            };
+            onUpdateState(mapped_values);
         }
     }, [is_submit_enabled]);
 

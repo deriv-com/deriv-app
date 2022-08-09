@@ -86,16 +86,29 @@ const TermsOfUse = ({
                                             name='agreed_tnc'
                                             id='agreed_tnc'
                                             label={
-                                                <Localize
-                                                    i18n_default_text='I agree to the <0>terms and conditions</0>.'
-                                                    components={[
-                                                        <StaticUrl
-                                                            key={0}
-                                                            className='link'
-                                                            href='/terms-and-conditions'
-                                                        />,
-                                                    ]}
-                                                />
+                                                is_appstore ? (
+                                                    <Localize
+                                                        i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                                        components={[
+                                                            <StaticUrl
+                                                                key={0}
+                                                                className='link'
+                                                                href='/terms-and-conditions'
+                                                            />,
+                                                        ]}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='I agree to the <0>terms and conditions</0>.'
+                                                        components={[
+                                                            <StaticUrl
+                                                                key={0}
+                                                                className='link'
+                                                                href='/terms-and-conditions'
+                                                            />,
+                                                        ]}
+                                                    />
+                                                )
                                             }
                                         />
                                     </div>

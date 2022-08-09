@@ -17,6 +17,7 @@ type TWalletProvider = {
 export default class WalletStore extends BaseStore {
     @observable
     account_types: any;
+    @observable real_wallet_account: any;
 
     @computed
     get wallet_names() {
@@ -103,5 +104,22 @@ export default class WalletStore extends BaseStore {
     @action
     onUnmount() {
         this.account_types = null;
+    }
+
+    @action.bound
+    setRealWalletAcount(real_wallet_account: any) {
+        this.real_wallet_account = real_wallet_account;
+    }
+
+    @action.bound
+    async createRealWalletAccount(create_wallet_data: any) {
+        if (!create_wallet_data) return;
+
+        const response = await WS.authorized.send({
+            new_account_wallet: 1,
+            ...create_wallet_data,
+        });
+
+        if (response) this.setRealWalletAcount(response);
     }
 }

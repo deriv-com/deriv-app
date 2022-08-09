@@ -8,6 +8,7 @@ export const crypto_wallets_mapping: CryptoWalletMapping = {
     LTC: 'litecoin',
     USDT: 'tether',
     USDC: 'usd_coin',
+    eUSDT: 'tether',
 };
 
 export const built_in_wallets = ['deriv_p2p', 'payment_agent'];

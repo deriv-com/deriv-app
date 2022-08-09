@@ -392,6 +392,9 @@ export const icons =
         'IcWip',
         'IcZoomIn',
         'IcZoomOut',
+        'Statement',
+        'Transfer',
+        'Withdrawal',
     ],
     'contract': [
         'IcContractBarrier',

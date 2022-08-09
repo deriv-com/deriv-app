@@ -283,6 +283,7 @@ import './common/ic-lookbacks.svg';
 import './common/ic-loss.svg';
 import './common/ic-macos-logo.svg';
 import './common/ic-macos.svg';
+import './common/ic-menu-dots.svg';
 import './common/ic-message-delivered.svg';
 import './common/ic-message-errored.svg';
 import './common/ic-message-pending.svg';

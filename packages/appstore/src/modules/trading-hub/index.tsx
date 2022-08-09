@@ -12,7 +12,7 @@ const TradingHub = () => {
     return (
         <div className='trading-hub'>
             {wallet_accounts.map(account => {
-                return <WalletAccount key={account.loginid} account={account} />;
+                return <WalletAccount key={client.loginid} account={account} />;
             })}
         </div>
     );

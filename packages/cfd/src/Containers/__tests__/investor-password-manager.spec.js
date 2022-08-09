@@ -30,7 +30,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', 
     }),
 }));
 
-describe('should render <InvestorPasswordManager> ', () => {
+describe('<InvestorPasswordManager> ', () => {
     const mock_props = {
         error_message_investor: 'Forgot your password? Please reset your password.',
         is_submit_success_investor: false,
@@ -47,7 +47,7 @@ describe('should render <InvestorPasswordManager> ', () => {
         expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
     });
 
-    it('should render the corrext texts ', async () => {
+    it('should render the correct texts ', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
         expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
         expect(

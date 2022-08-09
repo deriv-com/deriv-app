@@ -6,6 +6,8 @@ import { Text, Badge } from '@deriv/ui';
 import { ArrayElement } from 'Types';
 import WalletCard from 'Components/wallet';
 
+window.React = React;
+
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
 };

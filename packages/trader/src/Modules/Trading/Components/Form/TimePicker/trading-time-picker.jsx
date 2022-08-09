@@ -53,7 +53,9 @@ const TradingTimePicker = ({
 TradingTimePicker.propTypes = {
     expiry_date: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     expiry_time: PropTypes.string,
+    is_market_closed: PropTypes.bool,
     market_close_times: PropTypes.array,
+    market_open_times: PropTypes.array,
     name: PropTypes.string,
     onChange: PropTypes.func,
     server_time: PropTypes.object,

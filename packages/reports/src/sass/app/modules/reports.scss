@@ -1,0 +1,991 @@
+@import '../_common/components/composite-calendar';
+
+$side-padding: 1.2em;
+
+/** @define reports; weak */
+.reports {
+    height: 100%;
+
+    &__meta {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 2.4rem 1.6rem 0;
+
+        @include mobile {
+            padding: 0 1.6rem 1.6rem;
+        }
+
+        flex-direction: column-reverse;
+        padding-bottom: 0;
+
+        &-filter {
+            position: relative;
+            display: flex;
+            width: 100%;
+            @include desktop {
+                max-width: 36rem;
+                margin-left: auto;
+            }
+            &--statement {
+                @include desktop {
+                    max-width: 50rem;
+                }
+            }
+        }
+
+        @include desktop {
+            align-items: center;
+        }
+
+        @include mobile {
+            flex-direction: column;
+            padding-bottom: 0;
+
+            &-filter {
+                padding: 0 0 1.6rem;
+            }
+            #dt_calendar_input {
+                text-align: left;
+                padding-left: 3rem;
+            }
+        }
+    }
+    &__mobile-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    &__route-selection {
+        padding: 1.6rem;
+    }
+    &__content {
+        width: 100%;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        @media only screen and (min-width: 1280px) {
+            overflow: visible;
+        }
+    }
+    .unknown-icon {
+        margin-left: 8px;
+        fill: var(--text-general);
+        border-radius: $BORDER_RADIUS;
+    }
+    /* postcss-bem-linter: ignore */
+    .dc-tabs--open-positions {
+        flex: 1;
+        grid-template-rows: 36px calc(100% - 36px);
+        grid-template-columns: 100%;
+
+        .dc-tabs__content {
+            display: flex;
+            height: 100%;
+        }
+    }
+    /* postcss-bem-linter: ignore */
+    .statement__row--detail {
+        overflow: hidden;
+        min-height: 63px;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        justify-content: center;
+        background-color: var(--general-section-1);
+
+        /* postcss-bem-linter: ignore */
+        &-text {
+            padding: 1.12em;
+            word-break: break-all;
+
+            .dc-popover__wrapper {
+                display: inline-block;
+                margin-left: 1rem;
+            }
+        }
+    }
+    .dc-vertical-tab__content--floating {
+        margin-right: 0;
+    }
+    .table__head {
+        height: auto;
+        .table__cell {
+            @include tablet-up {
+                white-space: break-spaces;
+            }
+        }
+    }
+}
+
+/** @define reports-page-wrapper; weak */
+.reports-page-wrapper {
+    height: 100%;
+}
+
+/** @define statement; weak */
+.statement {
+    .table__head {
+        font-weight: bold;
+        align-items: flex-start;
+        height: auto;
+
+        .table__cell {
+            height: auto;
+        }
+        @include desktop {
+            white-space: normal;
+        }
+    }
+
+    @include desktop {
+        height: 100%;
+    }
+    @include mobile {
+        flex: 1;
+
+        &__data-list-body {
+            height: 100%;
+
+            .action_type {
+                display: flex;
+                flex: none;
+                align-items: center;
+
+                &__row-title {
+                    display: none;
+                }
+            }
+            .balance {
+                display: flex;
+
+                &__row-title {
+                    flex: 50%;
+                }
+            }
+        }
+    }
+
+    &__content {
+        width: 100%;
+        max-height: 100%;
+    }
+    /*
+        TABLE STYLES
+    */
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+        min-width: 85rem;
+    }
+    &__row {
+        /* icon refId currency tr_time transaction cred/debt balance */
+        /* stylelint-disable-next-line declaration-colon-space-after */
+        grid-template-columns:
+            minmax(120px, 0.8fr) minmax(85px, 1.4fr) minmax(110px, 1.2fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
+            minmax(85px, 1.2fr) minmax(85px, 1fr);
+
+        .date {
+            text-align: left;
+        }
+    }
+    .amount,
+    .balance {
+        justify-content: flex-end;
+    }
+    .amount {
+        font-weight: bold;
+
+        &--profit {
+            color: var(--text-profit-success);
+        }
+        &--loss {
+            color: var(--text-loss-danger);
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
+    }
+    /*
+        MOBILE CARDS
+    */
+    &--card-view {
+        background: var(--general-main-2);
+        overflow: hidden;
+
+        .statement__filter {
+            padding: 0 $side-padding;
+            border-bottom: 1px solid var(--general-section-1);
+
+            &-content {
+                padding: 0;
+                margin: 0 auto;
+                max-width: 450px;
+                display: grid;
+                grid-template-columns: 1fr 3em 1fr;
+                text-align: center;
+
+                .datepicker__input-field {
+                    width: 100%;
+                }
+            }
+            &-label {
+                display: none;
+            }
+        }
+        .statement__content {
+            padding: 0;
+        }
+        .statement__card-list {
+            padding: 0 $side-padding;
+            height: 100%;
+        }
+    }
+    &__statement-header {
+        justify-content: flex-end;
+    }
+    &__account-statistics {
+        background-color: var(--general-section-1);
+        @include desktop {
+            margin: 1.6rem 0;
+            width: 100%;
+        }
+        @include mobile {
+            margin: 0.8rem 0 1.6rem;
+            order: 1;
+        }
+        height: 4.8rem;
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+
+        &-item {
+            flex: 1;
+            display: flex;
+
+            &:last-child {
+                border-right: unset;
+            }
+            &:first-child {
+                .statement__account-statistics--is-rectangle {
+                    padding-left: 0;
+                }
+            }
+            &:not(:first-child) {
+                justify-content: center;
+            }
+        }
+        &-total-withdrawal {
+            @include desktop {
+                min-width: 19rem;
+            }
+            @include mobile {
+                min-width: 12.3rem;
+            }
+        }
+        &--is-rectangle {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            margin: auto;
+
+            @include desktop {
+                padding: 0.4rem 1.6rem;
+            }
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+        &-title {
+            margin: auto;
+
+            @include mobile {
+                font-size: 1rem;
+                margin-bottom: 0;
+            }
+        }
+        &-amount {
+            margin: auto;
+
+            @include desktop {
+                margin-left: 1rem;
+            }
+            @include mobile {
+                font-size: 1.4rem;
+                margin-top: 1rem;
+            }
+        }
+    }
+}
+
+/** @define statement-card */
+.statement-card {
+    &__header {
+        font-size: 1em;
+        padding: 0.5em;
+        border-bottom: 1px solid var(--general-section-1);
+        display: flex;
+        justify-content: space-between;
+    }
+    /* postcss-bem-linter: ignore */
+    &__refid a {
+        color: $COLOR_SKY_BLUE;
+        text-decoration: none;
+    }
+    &__body {
+        padding: 0.5em;
+        font-size: 1.2em;
+    }
+    &__desc {
+        margin-bottom: 0.7em;
+    }
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        font-weight: bold;
+    }
+    &__cell-text {
+        vertical-align: middle;
+    }
+    &__amount {
+        &--sell,
+        &--deposit {
+            color: var(--text-profit-success);
+        }
+        &--buy,
+        &--withdrawal {
+            color: var(--text-loss-danger);
+        }
+    }
+    &__icon {
+        display: inline-block;
+        height: 1.6em;
+        width: 1.6em;
+        background-size: 1.6em 1.6em;
+        vertical-align: middle;
+        margin-right: 0.5em;
+    }
+}
+
+/** @define statement-empty */
+.statement-empty {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__icon {
+        height: 6.4em;
+        width: 6.4em;
+        margin-bottom: 1.4em;
+    }
+    &__text {
+        font-size: 1.4em;
+    }
+}
+
+/** @define profit-table; weak */
+.profit-table {
+    .table__head,
+    .table__foot {
+        font-weight: bold;
+    }
+    .table__head {
+        white-space: normal;
+        .table__cell {
+            align-items: flex-start;
+        }
+    }
+
+    @include desktop {
+        height: 100%;
+    }
+
+    @include mobile {
+        flex: 1;
+
+        &__data-list-body {
+            height: calc(100% - 50px);
+
+            .sell_time__row-title {
+                display: flex;
+                align-items: center;
+
+                .dc-icon {
+                    margin-left: 4px;
+                }
+            }
+        }
+        &__data-list-footer {
+            height: 50px;
+            min-height: 50px;
+            font-weight: bold;
+
+            .data-list__row__content {
+                font-size: 1.2rem;
+                color: var(--text-prominent);
+            }
+            .data-list__row {
+                padding: 0;
+            }
+        }
+    }
+
+    &__content {
+        width: 100%;
+        max-height: 100%;
+    }
+    /*
+        TABLE STYLES
+    */
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+        min-width: 90rem;
+    }
+    &__row {
+        /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
+        /* stylelint-disable-next-line declaration-colon-space-after */
+        grid-template-columns:
+            minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
+            minmax(85px, 1.2fr) minmax(95px, 1fr) minmax(130px, 1fr);
+    }
+    .buy_price,
+    .sell_price,
+    .profit_loss {
+        @include desktop {
+            justify-content: flex-end;
+            text-align: right;
+        }
+        @include mobile {
+            justify-content: center;
+        }
+    }
+    .sell_time,
+    .purchase_time {
+        text-align: left;
+        min-width: 120px;
+    }
+    .profit_loss {
+        font-weight: bold;
+        @include tablet-up {
+            word-break: break-word;
+        }
+        @include mobile {
+            display: flex;
+
+            &__row-title {
+                flex: 50%;
+            }
+        }
+        .amount {
+            &--profit {
+                color: var(--text-profit-success);
+            }
+            &--loss {
+                color: var(--text-loss-danger);
+            }
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
+    }
+    .duration-type {
+        flex: none;
+        position: relative;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 16px;
+        font-size: 1.4rem;
+        font-weight: bold;
+
+        &__background {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            opacity: 0.16;
+            border-radius: 16px;
+        }
+        &__ticks {
+            color: $color-yellow;
+
+            &__background {
+                background: $color-yellow;
+            }
+        }
+        &__seconds {
+            color: $color-green-1;
+
+            &__background {
+                background: $color-green-1;
+            }
+        }
+        &__minutes {
+            color: $color-blue-1;
+
+            &__background {
+                background: $color-blue-1;
+            }
+        }
+        &__hours {
+            color: $COLOR_BLUE;
+
+            &__background {
+                background: $COLOR_BLUE;
+            }
+        }
+        &__days {
+            color: $color-purple;
+
+            &__background {
+                background: $color-purple;
+            }
+        }
+    }
+}
+
+/** @define open-positions; weak */
+.open-positions {
+    height: 100%;
+
+    @include mobile {
+        flex: 1;
+        padding-top: 0.8rem;
+
+        &-multiplier {
+            /* postcss-bem-linter: ignore */
+            & .data-list__item {
+                background-color: var(--general-section-1);
+                border-radius: $BORDER_RADIUS;
+                border: 1px solid var(--border-disabled);
+                padding: 0;
+
+                /* postcss-bem-linter: ignore */
+                & .dc-progress-slider--completed {
+                    display: none;
+                }
+                /* postcss-bem-linter: ignore */
+                & .dc-contract-card {
+                    background-color: var(--general-main-2);
+                    /* postcss-bem-linter: ignore */
+                    &__wrapper {
+                        background-color: var(--general-main-2);
+                        max-width: unset;
+                        margin: 0;
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &-item__footer {
+                        background-color: var(--general-main-2);
+                        border-radius: $BORDER_RADIUS;
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &__grid-underlying-trade {
+                        border-bottom: 1px solid var(--border-disabled);
+                        margin-bottom: 5px;
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &__grid-items {
+                        grid-template-columns: 1fr 1fr 1fr;
+                        margin-top: 0.4rem;
+                        margin-bottom: 0.4rem;
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &__sell-button {
+                        border-top: 1px solid var(--border-disabled);
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &-item {
+                        /* postcss-bem-linter: ignore */
+                        &__total-profit-loss {
+                            border-color: var(--border-disabled);
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &:nth-child(1) {
+                            order: 0;
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &:nth-child(3),
+                        &:nth-child(5) {
+                            order: 2;
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &:nth-child(6) {
+                            order: 6;
+                        }
+                    }
+                }
+                /* postcss-bem-linter: ignore */
+                & .dc-contract-card-dialog-toggle {
+                    border-color: var(--border-disabled);
+                }
+            }
+            /* postcss-bem-linter: ignore */
+            & .open-positions__data-list-body {
+                padding: 0;
+                height: calc(100% - 48px);
+            }
+            /* postcss-bem-linter: ignore */
+            & .open-positions__data-list-footer {
+                height: 48px;
+                min-height: 48px;
+                font-weight: bold;
+                align-items: center;
+                padding: 0;
+
+                /* postcss-bem-linter: ignore */
+                &--content {
+                    padding: 0 1.6rem;
+                    display: grid;
+                    grid-template-columns: 0.7fr 1fr;
+
+                    /* postcss-bem-linter: ignore */
+                    .profit {
+                        align-items: flex-start;
+                    }
+                }
+            }
+        }
+        &__data-list {
+            margin-top: 0.8rem;
+        }
+        &__data-list-body {
+            height: calc(100% - 95px);
+
+            .dc-progress-bar__container {
+                max-width: 120px;
+                align-self: center;
+            }
+        }
+        &__data-list-footer {
+            height: 95px;
+            min-height: 95px;
+            font-weight: bold;
+            align-items: flex-start;
+            padding: 0.8rem 4rem 0 1rem;
+
+            &--title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+            &--content {
+                flex: 1;
+                padding: 0.8rem 1.6rem 0;
+                display: flex;
+                justify-content: space-between;
+
+                .purchase,
+                .indicative {
+                    padding-bottom: 8px;
+                }
+            }
+            .data-list__row-title {
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
+            .data-list__row-content {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                color: var(--text-prominent);
+            }
+        }
+        .dc-contract-card__no-resale-msg {
+            display: flex;
+            font-size: 1.4rem;
+            color: var(--text-general);
+            justify-content: center;
+            padding: 0.8rem 0rem;
+        }
+    }
+
+    &__content {
+        width: fit-content;
+        max-height: 100%;
+    }
+    &__indicative {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+
+        &--amount {
+            display: flex;
+            align-items: center;
+            @include desktop {
+                line-height: 2;
+            }
+        }
+        .dc-btn--sell {
+            height: 2.4rem;
+        }
+        &-no-resale-msg {
+            clear: both;
+            text-align: center;
+            font-size: smaller;
+        }
+    }
+    &__profit-loss {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+
+        &--movement {
+            width: 16px;
+            height: 16px;
+
+            &-complete,
+            &-complete:after {
+                display: none;
+            }
+            &:after {
+                content: '';
+                width: 16px;
+            }
+        }
+        &--negative {
+            color: var(--text-loss-danger);
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: var(--text-profit-success);
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
+    /*
+        TABLE STYLES
+    */
+    &__table {
+        height: calc(100% - 24px);
+        flex: 1;
+        margin-top: 20px;
+
+        .table__head {
+            height: auto;
+            white-space: normal;
+            @include tablet-up {
+                .profit,
+                .indicative {
+                    white-space: break-spaces;
+                }
+            }
+
+            .table__cell {
+                font-weight: bold;
+                align-items: flex-start;
+            }
+        }
+        .table__body {
+            .open-positions__row_wrapper {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
+        .table__foot {
+            font-weight: bold;
+            white-space: normal;
+        }
+    }
+    &__row {
+        /* type refId currency buy_price payout_limit indicative_profit/loss indicative_price rem_time */
+        /* stylelint-disable-next-line declaration-colon-space-after */
+        grid-template-columns:
+            minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)
+            minmax(120px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
+        width: 100%;
+        grid-auto-rows: 100%;
+
+        &_wrapper {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+        }
+    }
+    &__reports-meta {
+        @include mobile {
+            padding-bottom: 0px;
+        }
+    }
+    .buy_price,
+    .payout,
+    .indicative,
+    .purchase,
+    .multiplier,
+    .currency,
+    .profit {
+        @include desktop {
+            justify-content: center;
+        }
+    }
+    .type {
+        padding-right: 0;
+    }
+    .dc-progress-slider {
+        border: none;
+        margin: 0;
+
+        &__ticks {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            &-step {
+                background: var(--state-hover);
+            }
+            &-wrapper {
+                margin-top: 6px;
+            }
+            &-caption {
+                padding: 0;
+                margin-right: 8px;
+                white-space: nowrap;
+            }
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
+    }
+}
+
+/** @define open-positions-multiplier; weak */
+.open-positions-multiplier {
+    .open-positions {
+        &__row {
+            /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
+            /* stylelint-disable-next-line declaration-colon-space-after */
+            grid-template-columns:
+                minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(100px, 1fr)
+                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr) minmax(125px, 1fr) minmax(90px, 1fr);
+
+            &-action {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+
+                .dc-remaining-time {
+                    margin-left: 0.4rem;
+                    font-size: inherit;
+                }
+                .dc-btn {
+                    height: 2.4rem;
+                    padding: 0 0.8rem;
+                    min-width: 93px;
+
+                    .dc-btn__text {
+                        font-size: 1.2rem;
+                    }
+                    &:first-child {
+                        margin-bottom: 0.4rem;
+                    }
+                }
+            }
+            .limit_order,
+            .cancellation,
+            .bid_price {
+                @include desktop {
+                    justify-content: center;
+                    text-align: center;
+                    width: 100%;
+                    white-space: break-spaces;
+                }
+            }
+            .limit_order {
+                flex-direction: column;
+                align-items: flex-end;
+                text-align: right;
+                justify-content: flex-start;
+            }
+            .action {
+                padding-bottom: 0;
+                justify-content: center;
+            }
+        }
+        &__bid_price {
+            font-weight: bold;
+
+            &--negative {
+                color: var(--text-loss-danger);
+            }
+            &--positive {
+                color: var(--text-profit-success);
+            }
+        }
+    }
+}
+
+.open-positions,
+.statement,
+.profit-table {
+    /* postcss-bem-linter: ignore */
+    .data-list__body,
+    .data-list__footer {
+        padding: 0 1.6rem;
+    }
+    /* postcss-bem-linter: ignore */
+    .data-list__item {
+        background-color: var(--general-section-1);
+    }
+    .currency {
+        &__wrapper {
+            background: var(--border-active);
+            border-radius: $BORDER_RADIUS;
+            padding: 0 0.4rem;
+        }
+    }
+}
+
+/** @define empty-trade-history; weak*/
+.empty-trade-history {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 50%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+
+    @media only screen and (max-width: 769px) {
+        position: static;
+        width: 50%;
+    }
+
+    &__icon {
+        width: 96px;
+        height: 96px;
+        margin-bottom: 16px;
+        @include colorIcon(var(--text-disabled));
+    }
+    &__text {
+        line-height: 20px;
+    }
+    .dc-btn {
+        width: 100%;
+        height: 40px;
+        border: 1px solid var(--button-secondary-default);
+        color: var(--text-general);
+        background: transparent;
+
+        &:hover {
+            background: var(--button-secondary-hover);
+        }
+    }
+}

@@ -7,7 +7,7 @@ import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
 import './buy-ad-payment-methods-list.scss';
 
-const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
+const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
@@ -18,6 +18,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
         setPaymentMethodsList(
             my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_methods]);
 
     const onClickDeletePaymentMethodItem = value => {
@@ -33,6 +34,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                     text: my_profile_store.getPaymentMethodDisplayName(value),
                 },
             ]);
+            if (typeof touched === 'function') touched(true);
         }
     };
 
@@ -46,6 +48,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                 ...payment_methods_list.filter(payment_method => payment_method.value !== value),
                 selected_edit_method,
             ]);
+            if (typeof touched === 'function') touched(true);
         }
     };
 
@@ -56,6 +59,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
                 setSelectedMethods([...selected_methods, value]);
                 setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
             }
+            if (typeof touched === 'function') touched(true);
         }
     };
 
@@ -200,6 +204,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods }) => {
 BuyAdPaymentMethodsList.propTypes = {
     selected_methods: PropTypes.array,
     setSelectedMethods: PropTypes.func,
+    touched: PropTypes.func,
 };
 
 export default observer(BuyAdPaymentMethodsList);

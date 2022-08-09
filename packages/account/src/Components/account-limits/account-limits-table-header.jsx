@@ -33,6 +33,7 @@ const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }) => {
 AccountLimitsTableHeader.propTypes = {
     align: PropTypes.oneOf(['right', 'left']),
     children: PropTypes.any,
+    renderExtraInfo: PropTypes.func,
 };
 
 export default AccountLimitsTableHeader;

@@ -327,6 +327,8 @@ export default class GeneralStore extends BaseStore {
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();
         }
+
+        this.props.refreshNotifications();
     }
 
     @action.bound

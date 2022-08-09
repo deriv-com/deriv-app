@@ -23,6 +23,7 @@ const P2PCashier = ({
     loginid,
     Notifications,
     platform,
+    refreshNotifications,
     residence,
     setNotificationCount,
     setCurrentFocus,
@@ -91,6 +92,7 @@ const P2PCashier = ({
             platform={platform}
             Notifications={Notifications}
             poi_url={routes.proof_of_identity}
+            refreshNotifications={refreshNotifications}
             server_time={server_time}
             setNotificationCount={setNotificationCount}
             setOnRemount={setOnRemount}
@@ -117,6 +119,7 @@ P2PCashier.propTypes = {
     location: PropTypes.object,
     loginid: PropTypes.string,
     platform: PropTypes.any,
+    refreshNotifications: PropTypes.func,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
     setCurrentFocus: PropTypes.func,
@@ -134,6 +137,7 @@ export default withRouter(
         is_virtual: client.is_virtual,
         Notifications: ui.notification_messages_ui,
         platform: common.platform,
+        refreshNotifications: notifications.refreshNotifications,
         residence: client.residence,
         setNotificationCount: modules.cashier.general_store.setNotificationCount,
         setOnRemount: modules.cashier.general_store.setOnRemount,

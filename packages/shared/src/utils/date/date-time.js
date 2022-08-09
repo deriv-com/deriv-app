@@ -12,7 +12,7 @@ export const initMoment = lang => moment.locale(lang);
 /**
  * Convert epoch to moment object
  * @param  {Number} epoch
- * @return {moment.Moment} the moment object of provided epoch
+ * @return {moment} the moment object of provided epoch
  */
 export const epochToMoment = epoch => moment.unix(epoch).utc();
 
@@ -20,7 +20,7 @@ export const epochToMoment = epoch => moment.unix(epoch).utc();
  * Convert date string or epoch to moment object
  * @param  {Number} value   the date in epoch format
  * @param  {String} value   the date in string format
- * @return {moment.Moment} the moment object of 'now' or the provided date epoch or string
+ * @return {moment} the moment object of 'now' or the provided date epoch or string
  */
 export const toMoment = value => {
     if (!value) return moment().utc(); // returns 'now' moment object
@@ -39,9 +39,9 @@ export const toMoment = value => {
 export const toLocalFormat = time => moment.utc(time).local().format('YYYY-MM-DD HH:mm:ss Z');
 /**
  * Set specified time on moment object
- * @param  {moment.Moment} moment_obj  the moment to set the time on
+ * @param  {moment} moment_obj  the moment to set the time on
  * @param  {String} time        24 hours format, may or may not include seconds
- * @return {moment.Moment} a new moment object of result
+ * @return {moment} a new moment object of result
  */
 export const setTime = (moment_obj, time) => {
     const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
@@ -56,7 +56,7 @@ export const setTime = (moment_obj, time) => {
  * return the unix value of provided epoch and time
  * @param  {Number} epoch  the date to update with provided time
  * @param  {String} time   the time to set on the date
- * @return {number} unix value of the result
+ * @return {Number} unix value of the result
  */
 export const convertToUnix = (epoch, time) => setTime(toMoment(epoch), time).unix();
 
@@ -97,7 +97,7 @@ export const diffInMonths = (now, then) => then.diff(now, 'month');
  * return moment duration between two dates
  * @param  {Number} epoch start time
  * @param  {Number} epoch end time
- * @return {moment.Duration} moment duration between start time and end time
+ * @return {moment.duration} moment duration between start time and end time
  */
 export const getDiffDuration = (start_time, end_time) =>
     moment.duration(moment.unix(end_time).diff(moment.unix(start_time)));

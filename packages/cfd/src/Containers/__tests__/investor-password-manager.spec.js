@@ -30,7 +30,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', 
     }),
 }));
 
-describe('should render investor ', () => {
+describe('should render <InvestorPasswordManager> ', () => {
     const mock_props = {
         error_message_investor: 'Forgot your password? Please reset your password.',
         is_submit_success_investor: false,
@@ -44,91 +44,86 @@ describe('should render investor ', () => {
     it('should render investor password manager', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
 
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
     });
 
     it('should render the corrext texts ', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
         expect(
             screen.getByText(
-                /Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions/i
+                /use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions/i
             )
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                /If this is the first time you try to create a password, or you have forgotten your password, please reset it/i
+                /if this is the first time you try to create a password, or you have forgotten your password, please reset it/i
             )
         ).toBeInTheDocument();
-        expect(screen.getByText(/Current investor password/i)).toBeInTheDocument();
-        expect(screen.getByText(/New investor password/i)).toBeInTheDocument();
+        expect(screen.getByText(/current investor password/i)).toBeInTheDocument();
+        expect(screen.getByText(/new investor password/i)).toBeInTheDocument();
     });
 
-    it('should fill the password fields and trigger the appropriate error message for weak password', async () => {
+    it('should fill the password field and trigger the appropriate error message for repeated password pattern', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
-        const new_investor = screen.getByLabelText(/New investor password/i);
-        screen.getByText(/Change investor password/i).classList.contains('disabled');
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
+        const new_investor = screen.getByLabelText(/new investor password/i);
         await waitFor(() => {
             fireEvent.change(new_investor, { target: { value: 'abcabcabc' } });
         });
         expect(
-            await screen.findByText(/Repeats like "abcabcabc" are only slightly harder to guess than "abc"/i)
+            await screen.findByText(/repeats like "abcabcabc" are only slightly harder to guess than "abc"/i)
         ).toBeInTheDocument();
     });
 
-    it('should fill the password fields and trigger the appropriate error message for weak password', async () => {
+    it('should fill the password field and trigger the appropriate error message for repeated characters', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
-        const new_investor = screen.getByLabelText(/New investor password/i);
-        screen.getByText(/Change investor password/i).classList.contains('disabled');
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
+        const new_investor = screen.getByLabelText(/new investor password/i);
         await waitFor(() => {
             fireEvent.change(new_investor, { target: { value: 'aaaaa' } });
         });
-        expect(await screen.findByText(/Repeats like "aaa" are easy to guess/i)).toBeInTheDocument();
+        expect(await screen.findByText(/repeats like "aaa" are easy to guess/i)).toBeInTheDocument();
     });
 
-    it('should fill the password fields and trigger the appropriate error message for weak password', async () => {
+    it('should fill the password field and trigger the appropriate error message for using recent years', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
-        const new_investor = screen.getByLabelText(/New investor password/i);
-        screen.getByText(/Change investor password/i).classList.contains('disabled');
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
+        const new_investor = screen.getByLabelText(/new investor password/i);
         await waitFor(() => {
             fireEvent.change(new_investor, { target: { value: '1996' } });
         });
 
-        expect(await screen.findByText(/Recent years are easy to guess/i)).toBeInTheDocument();
+        expect(await screen.findByText(/recent years are easy to guess/i)).toBeInTheDocument();
     });
 
-    it('should fill the password fields and trigger the appropriate error message for strong password', async () => {
+    it('should fill the password field and trigger the appropriate message for strong and valid password', async () => {
         render(<InvestorPasswordManager {...mock_props} />);
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
-        const new_investor = screen.getByLabelText(/New investor password/i);
-        screen.getByText(/Change investor password/i).classList.contains('disabled');
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
+        const new_investor = screen.getByLabelText(/new investor password/i);
         await waitFor(() => {
             fireEvent.change(new_investor, { target: { value: 'Qzzxcc!lopi1' } });
             expect(
                 screen.getAllByText(
-                    /Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers/i
+                    /strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers/i
                 )[0]
             ).toBeInTheDocument();
         });
     });
 
-    it('should fill the password fields and trigger the appropriate error message for strong password', async () => {
+    it('should fill the password fields and trigger the appropriate message and enable the change password button', async () => {
         const mockOnClick = jest.fn();
         render(<InvestorPasswordManager {...mock_props} onClick={mockOnClick()} />);
-        expect(await screen.findByText(/New investor password/i)).toBeInTheDocument();
-        const current_investor = screen.getByLabelText(/Current investor password/i);
-        const new_investor = screen.getByLabelText(/New investor password/i);
-        const change_investor_password_btn = screen.getByText(/Change investor password/i);
-        screen.getByText(/Change investor password/i).classList.contains('disabled');
+        expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
+        const current_investor = screen.getByLabelText(/current investor password/i);
+        const new_investor = screen.getByLabelText(/new investor password/i);
+        const change_investor_password_btn = screen.getByText(/change investor password/i);
         await waitFor(() => {
             fireEvent.change(current_investor, { target: { value: 'Testing1234' } });
             fireEvent.change(new_investor, { target: { value: 'Qzzxcc!lopi1' } });
             expect(
                 screen.getAllByText(
-                    /Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers/i
+                    /strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers/i
                 )[0]
             ).toBeInTheDocument();
             expect(change_investor_password_btn).not.toBeDisabled();
@@ -140,7 +135,7 @@ describe('should render investor ', () => {
 
     it('should render success message if the user clicks on create or reset investor passwords', async () => {
         render(<InvestorPasswordManager {...mock_props} is_submit_success_investor={true} />);
-        expect(screen.getByText(/Your investor password has been changed/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /OK/i })).toBeInTheDocument();
+        expect(screen.getByText(/your investor password has been changed/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /ok/i })).toBeInTheDocument();
     });
 });

@@ -217,7 +217,6 @@ export default class ClientStore extends BaseStore {
             has_account_error_in_mt5_demo_list: computed,
             has_account_error_in_dxtrade_real_list: computed,
             has_account_error_in_dxtrade_demo_list: computed,
-            can_have_more_real_synthetic_mt5: computed,
             active_accounts: computed,
             all_loginids: computed,
             account_title: computed,
@@ -349,7 +348,6 @@ export default class ClientStore extends BaseStore {
             setRealityCheckDuration: action.bound,
             cleanupRealityCheck: action.bound,
             fetchFinancialAssessment: action.bound,
-            is_poi_dob_mismatch: computed,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
         });

@@ -98,6 +98,12 @@
             }
         }
     }
+
+    & .notification:not(.notification--order-successful),
+    .notification-banner,
+    .notification-promo {
+        display: none;
+    }
 }
 
 .sendbird-fileviewer__header-delete {

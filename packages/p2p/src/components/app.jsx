@@ -12,7 +12,8 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { balance, className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
+    const { balance, className, history, lang, Notifications, order_id, server_time, websocket_api, setOnRemount } =
+        props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -68,6 +69,7 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
+            <Notifications />
             <AppContent />
         </main>
     );

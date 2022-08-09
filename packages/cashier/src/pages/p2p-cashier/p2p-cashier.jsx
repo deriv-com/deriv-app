@@ -10,6 +10,7 @@ import { get, init, timePromise } from '_common/server_time';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
+    addNotificationMessage,
     currency,
     current_focus,
     history,
@@ -20,6 +21,7 @@ const P2PCashier = ({
     local_currency_config,
     location,
     loginid,
+    Notifications,
     platform,
     residence,
     setNotificationCount,
@@ -77,6 +79,7 @@ const P2PCashier = ({
 
     return (
         <P2P
+            addNotificationMessage={addNotificationMessage}
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
             balance={balance}
             history={history}
@@ -86,6 +89,7 @@ const P2PCashier = ({
             modal_root_id='modal_root'
             order_id={order_id}
             platform={platform}
+            Notifications={Notifications}
             poi_url={routes.proof_of_identity}
             server_time={server_time}
             setNotificationCount={setNotificationCount}
@@ -100,6 +104,7 @@ const P2PCashier = ({
 };
 
 P2PCashier.propTypes = {
+    addNotificationMessage: PropTypes.func,
     balance: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
@@ -118,7 +123,8 @@ P2PCashier.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
+    connect(({ client, common, modules, notifications, ui }) => ({
+        addNotificationMessage: notifications.addNotificationMessage,
         balance: client.balance,
         currency: client.currency,
         local_currency_config: client.local_currency_config,
@@ -126,6 +132,7 @@ export default withRouter(
         is_dark_mode_on: ui.is_dark_mode_on,
         is_logging_in: client.is_logging_in,
         is_virtual: client.is_virtual,
+        Notifications: ui.notification_messages_ui,
         platform: common.platform,
         residence: client.residence,
         setNotificationCount: modules.cashier.general_store.setNotificationCount,

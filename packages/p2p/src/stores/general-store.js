@@ -144,6 +144,21 @@ export default class GeneralStore extends BaseStore {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
                         notification.is_active = order_info.is_active_order;
+
+                        // Push notification for successful order completion
+                        const { advertiser_details, client_details, id, status, type } = new_order;
+
+                        if (type === 'buy' && status === 'completed' && client_details.loginid === client.loginid) {
+                            this.showCompletedOrderNotification(advertiser_details.name, id);
+                        }
+
+                        if (
+                            type === 'sell' &&
+                            status === 'completed' &&
+                            advertiser_details.loginid === client.loginid
+                        ) {
+                            this.showCompletedOrderNotification(client_details.name, id);
+                        }
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);
@@ -169,6 +184,30 @@ export default class GeneralStore extends BaseStore {
         });
 
         this.updateP2pNotifications(notifications);
+    }
+
+    showCompletedOrderNotification(advertiser_name, order_id) {
+        const notification_key = `order-${order_id}`;
+
+        this.props.addNotificationMessage({
+            action: {
+                onClick: () => {
+                    this.redirectTo('orders');
+                    this.setOrderTableType(order_list.INACTIVE);
+                    this.root_store.order_store.setOrderId(order_id);
+                },
+                text: localize('Give feedback'),
+            },
+            header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
+            key: notification_key,
+            message: (
+                <Localize
+                    i18n_default_text='{{name}} has released your funds. <br/> Would you like to give your feedback?'
+                    values={{ name: advertiser_name }}
+                />
+            ),
+            type: 'p2p_completed_order',
+        });
     }
 
     @action.bound

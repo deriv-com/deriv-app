@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmptyObject } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import AccumulatorsPurchaseOverlay from 'Modules/Trading/Components/Form/Purchase/accumulators-purchase-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
-import classNames from 'classnames';
 
 const Purchase = ({
     basis,
@@ -39,64 +38,59 @@ const Purchase = ({
     const is_proposal_empty = isEmptyObject(proposal_info);
     const components = [];
     if (is_accumulator && last_contract_status === 'open') {
-        components.push(
-            <div className={classNames('trade-container__fieldset')}>
-                {localize('You can only purchase one contract at a time')}
-            </div>
-        );
-    } else {
-        Object.keys(trade_types).map((type, index) => {
-            const getSortedIndex = () => {
-                if (getContractTypePosition(type) === 'top') return 0;
-                if (getContractTypePosition(type) === 'bottom') return 1;
-                return index;
-            };
-            const info = proposal_info[type] || {};
-            const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
-            const is_proposal_error =
-                is_multiplier || is_accumulator ? info.has_error && !info.has_error_details : info.has_error;
-            const purchase_fieldset = (
-                <PurchaseFieldset
-                    basis={basis}
-                    buy_info={purchase_info}
-                    currency={currency}
-                    info={info}
-                    key={index}
-                    index={getSortedIndex(index, type)}
-                    has_cancellation={has_cancellation}
-                    is_accumulator={is_accumulator}
-                    is_disabled={is_disabled}
-                    is_high_low={is_high_low}
-                    is_loading={isLoading(info)}
-                    is_market_closed={is_market_closed}
-                    is_mobile={is_mobile}
-                    is_multiplier={is_multiplier}
-                    // is_purchase_confirm_on={is_purchase_confirm_on}
-                    is_proposal_empty={is_proposal_empty}
-                    is_proposal_error={is_proposal_error}
-                    purchased_states_arr={purchased_states_arr}
-                    // is_purchase_locked={is_purchase_locked}
-                    // togglePurchaseLock={togglePurchaseLock}
-                    onHoverPurchase={onHoverPurchase}
-                    onClickPurchase={onClickPurchase}
-                    setPurchaseState={setPurchaseState}
-                    type={type}
-                />
-            );
-
-            switch (getContractTypePosition(type)) {
-                case 'top':
-                    components.unshift(purchase_fieldset);
-                    break;
-                case 'bottom':
-                    components.push(purchase_fieldset);
-                    break;
-                default:
-                    components.push(purchase_fieldset);
-                    break;
-            }
-        });
+        components.push(<AccumulatorsPurchaseOverlay />);
     }
+    Object.keys(trade_types).map((type, index) => {
+        const getSortedIndex = () => {
+            if (getContractTypePosition(type) === 'top') return 0;
+            if (getContractTypePosition(type) === 'bottom') return 1;
+            return index;
+        };
+        const info = proposal_info[type] || {};
+        const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
+        const is_proposal_error =
+            is_multiplier || is_accumulator ? info.has_error && !info.has_error_details : info.has_error;
+        const purchase_fieldset = (
+            <PurchaseFieldset
+                basis={basis}
+                buy_info={purchase_info}
+                currency={currency}
+                info={info}
+                key={index}
+                index={getSortedIndex(index, type)}
+                has_cancellation={has_cancellation}
+                is_accumulator={is_accumulator}
+                is_disabled={is_disabled}
+                is_high_low={is_high_low}
+                is_loading={isLoading(info)}
+                is_market_closed={is_market_closed}
+                is_mobile={is_mobile}
+                is_multiplier={is_multiplier}
+                // is_purchase_confirm_on={is_purchase_confirm_on}
+                is_proposal_empty={is_proposal_empty}
+                is_proposal_error={is_proposal_error}
+                purchased_states_arr={purchased_states_arr}
+                // is_purchase_locked={is_purchase_locked}
+                // togglePurchaseLock={togglePurchaseLock}
+                onHoverPurchase={onHoverPurchase}
+                onClickPurchase={onClickPurchase}
+                setPurchaseState={setPurchaseState}
+                type={type}
+            />
+        );
+
+        switch (getContractTypePosition(type)) {
+            case 'top':
+                components.unshift(purchase_fieldset);
+                break;
+            case 'bottom':
+                components.push(purchase_fieldset);
+                break;
+            default:
+                components.push(purchase_fieldset);
+                break;
+        }
+    });
     return components;
 };
 

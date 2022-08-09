@@ -63,7 +63,7 @@ const PositionsDrawerCard = ({
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_mobile && has_progress_slider}
             is_mobile={is_mobile}
-            is_positions={true}
+            is_positions
             is_sell_requested={is_sell_requested}
             onClickSell={onClickSell}
             server_time={server_time}
@@ -85,6 +85,7 @@ const PositionsDrawerCard = ({
             is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            is_positions
             is_sold={has_ended}
             has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
@@ -101,7 +102,7 @@ const PositionsDrawerCard = ({
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             is_multiplier={is_multiplier}
-            is_positions={true}
+            is_positions
             is_sell_requested={is_sell_requested}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
@@ -159,7 +160,7 @@ const PositionsDrawerCard = ({
             getCardLabels={getCardLabels}
             getContractPath={getContractPath}
             is_multiplier={is_multiplier}
-            is_positions={true}
+            is_positions
             is_unsupported={is_unsupported}
             onClickRemove={onClickRemove}
             profit_loss={profit_loss}

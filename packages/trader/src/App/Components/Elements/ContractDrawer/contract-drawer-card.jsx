@@ -71,7 +71,6 @@ const ContractDrawerCard = ({
             current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
-            is_in_contract_details
             is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}

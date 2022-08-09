@@ -164,7 +164,7 @@ const AccumulatorCardBody = ({
     removeToast,
     setCurrentFocus,
     status,
-    is_in_contract_details,
+    is_positions,
 }) => {
     const { buy_price, bid_price, profit, limit_order, tick_count, tick_stream } = contract_info;
 
@@ -185,7 +185,7 @@ const AccumulatorCardBody = ({
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 <ContractCardItem
-                    header={is_in_contract_details ? getCardLabels().SELL_PRICE : getCardLabels().CURRENT_PRICE}
+                    header={is_positions ? getCardLabels().CURRENT_PRICE : getCardLabels().SELL_PRICE}
                     className='dc-contract-card__current-stake'
                 >
                     <div
@@ -261,9 +261,9 @@ const ContractCardBody = ({
     getContractById,
     has_progress_slider,
     is_accumulator,
-    is_in_contract_details,
     is_mobile,
     is_multiplier,
+    is_positions,
     is_sold,
     onMouseLeave,
     removeToast,
@@ -334,7 +334,7 @@ const ContractCardBody = ({
                 status={status}
                 removeToast={removeToast}
                 setCurrentFocus={setCurrentFocus}
-                is_in_contract_details={is_in_contract_details}
+                is_positions={is_positions}
             />
         );
     } else {
@@ -422,9 +422,9 @@ ContractCardBody.propTypes = {
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_accumulator: PropTypes.bool,
-    is_in_contract_details: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_positions: PropTypes.bool,
     is_sold: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,

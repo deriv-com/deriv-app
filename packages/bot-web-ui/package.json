@@ -24,7 +24,7 @@
         "build:skeleton": "lerna exec --scope @deriv/bot-skeleton -- npm run build",
         "build:travis": "echo \"No build:travis specified\"",
         "test": "npm run test:mocha",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test:mocha": "echo \"No test:mocha specified\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",

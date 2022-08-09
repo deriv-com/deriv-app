@@ -102,6 +102,12 @@ export const diffInMonths = (now, then) => then.diff(now, 'month');
 export const getDiffDuration = (start_time, end_time) =>
     moment.duration(moment.unix(end_time).diff(moment.unix(start_time)));
 
+/** returns the DD MM YYYY format */
+export const getDateFromNow = (days, unit, format) => {
+    const date = moment(new Date());
+    return date.add(days, unit).format(format);
+};
+
 /**
  * return formatted duration `2 days 01:23:59`
  * @param  {moment.duration} moment duration object

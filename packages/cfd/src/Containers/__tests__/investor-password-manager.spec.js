@@ -11,15 +11,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     },
 }));
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => ({
-    getErrorMessages: jest.fn(() => ({
-        password_warnings: mock_errors,
-    })),
-    validLength: jest.fn(() => {
-        validLengthMock;
-    }),
-}));
-
 const validLengthMock = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 
@@ -29,6 +20,15 @@ const mock_errors = {
     repeated_patterns_are_easy: () => localize('Repeats like "abcabcabc" are only slightly harder to guess than "abc"'),
     recent_years_are_easy: () => localize('Recent years are easy to guess'),
 };
+
+jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => ({
+    getErrorMessages: jest.fn(() => ({
+        password_warnings: mock_errors,
+    })),
+    validLength: jest.fn(() => {
+        validLengthMock;
+    }),
+}));
 
 describe('should render investor ', () => {
     const mock_props = {

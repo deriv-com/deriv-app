@@ -14,6 +14,15 @@ jest.mock('../../Components/success-dialog.jsx', () => () => <div>Success Dialog
 describe('CFDTopUpDemoModal', () => {
     let modal_root_el;
 
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
+
     const synthetic_config = {
         account_type: 'synthetic',
         leverage: 500,
@@ -24,12 +33,6 @@ describe('CFDTopUpDemoModal', () => {
         account_type: 'financial',
         leverage: 1000,
         short_title: 'Financial',
-    };
-
-    const financial_stp_config = {
-        account_type: 'financial_stp',
-        leverage: 100,
-        short_title: 'Financial STP',
     };
 
     const mock_props = {
@@ -48,12 +51,6 @@ describe('CFDTopUpDemoModal', () => {
                     title: 'Demo Financial',
                     short_title: financial_config.short_title,
                 },
-                financial_stp: {
-                    mt5_account_type: financial_stp_config.account_type,
-                    leverage: financial_stp_config.leverage,
-                    title: 'Demo Financial STP',
-                    short_title: financial_stp_config.short_title,
-                },
             },
             real: {
                 synthetic: {
@@ -68,12 +65,6 @@ describe('CFDTopUpDemoModal', () => {
                     title: 'CFDs',
                     short_title: financial_config.short_title,
                 },
-                financial_stp: {
-                    mt5_account_type: financial_stp_config.account_type,
-                    leverage: financial_stp_config.leverage,
-                    title: 'Financial STP',
-                    short_title: financial_stp_config.short_title,
-                },
             },
         },
         current_account: { category: 'demo', type: 'financial', balance: '700', display_balance: '700' },
@@ -85,16 +76,6 @@ describe('CFDTopUpDemoModal', () => {
         platform: 'test platform',
         topUpVirtual: jest.fn(),
     };
-
-    beforeAll(() => {
-        modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
-    });
-    afterAll(() => {
-        document.body.removeChild(modal_root_el);
-    });
-
     it('should render the button texts correctly', () => {
         render(<CFDTopUpDemoModal {...mock_props} />);
         expect(screen.getByText('Fund top up')).toBeInTheDocument();

@@ -29,6 +29,16 @@
     &__logo {
         margin-right: 2.4rem;
     }
+    &__info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    &__actions {
+        display: flex;
+        flex: 1;
+        margin-top: 1rem;
+    }
     &__balance {
         display: flex;
         flex-direction: column;

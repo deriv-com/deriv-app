@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize, Localize } from '@deriv/translations';
-import { Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import WalletCard from 'Components/wallet';
 import WalletIcon from 'Assets/svgs/wallet';
 
@@ -47,6 +47,10 @@ const CreateWallet = ({
             .map(substr => substr.charAt(0).toUpperCase() + substr.slice(1))
             .join('');
     };
+
+    if (wallet_store.is_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
 
     return (
         <div className='create-wallet'>

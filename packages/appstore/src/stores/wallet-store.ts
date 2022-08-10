@@ -15,9 +15,9 @@ type TWalletProvider = {
     wallets: { getTitle: () => string; content: string[]; popover_text: () => string; has_information: boolean }[];
 };
 export default class WalletStore extends BaseStore {
-    @observable
-    account_types: any;
+    @observable account_types: any;
     @observable real_wallet_account: any;
+    @observable is_loading: any;
 
     @computed
     get wallet_names() {
@@ -94,11 +94,15 @@ export default class WalletStore extends BaseStore {
     @action.bound
     async getWalletNames() {
         if (this.wallet_names) return;
+        this.setIsLoading(true);
         const response = await WS.authorized.storage.send({
             get_account_types: 1,
         });
 
-        if (response) this.setAccountTypes(response.get_account_types);
+        if (response) {
+            this.setAccountTypes(response.get_account_types);
+            this.setIsLoading(false);
+        }
     }
 
     @action
@@ -121,5 +125,10 @@ export default class WalletStore extends BaseStore {
         });
 
         if (response) this.setRealWalletAcount(response);
+    }
+
+    @action.bound
+    setIsLoading(is_loading: boolean) {
+        this.is_loading = is_loading;
     }
 }

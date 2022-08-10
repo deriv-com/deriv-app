@@ -155,7 +155,7 @@ const TradeTable = ({ account_id, api }) => {
             });
             setAccountState({ [account_id]: { rows: updated_rows } });
         } catch (e) {
-            globalObserver.emit('Error', 'e');
+            globalObserver.emit('Error', e);
         }
 
     };

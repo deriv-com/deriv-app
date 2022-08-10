@@ -409,6 +409,7 @@ const QuickAddModal = ({ advert }) => {
                                                 has_updating_list={false}
                                                 leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                 list_items={my_profile_store.payment_methods_list}
+                                                not_found_text='Other'
                                                 onItemSelection={({ value }) => {
                                                     onClickPaymentMethodItem(value);
                                                 }}

@@ -12,12 +12,8 @@
 
         &--footer {
             bottom: 0;
-            position: fixed;
-        }
-
-        &-wrapper {
-            display: flex;
-            word-break: break-all;
+            width: 100%;
+            background-color: var(--general-main-1);
         }
     }
     &__button {

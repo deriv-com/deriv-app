@@ -4,9 +4,9 @@ import { Icon, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 const EmailLinkBlockedModal = ({
-    blocked_for_minutes = 30,
-    is_email_link_blocked_modal_open = true,
-    setIsEmailLinkBlockedModalOpen = () => {},
+    blocked_for_minutes,
+    is_email_link_blocked_modal_open,
+    setIsEmailLinkBlockedModalOpen,
 }) => {
     return (
         <Modal

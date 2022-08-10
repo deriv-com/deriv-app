@@ -63,10 +63,8 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            if (response) {
-                if (response.error) {
-                    order_details_store.setErrorMessage(response.error.message);
-                }
+            if (response && response.error) {
+                order_details_store.setErrorMessage(response.error.message);
             }
         });
     }

@@ -121,7 +121,7 @@ export default connect(({ contract_trade, modules, ui }) => ({
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
-    last_contract_status: contract_trade.last_contract.contract_info.status,
+    last_contract_status: contract_trade.last_contract.contract_info?.status,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_accumulator: modules.trade.is_accumulator,

@@ -1,6 +1,7 @@
 import React from "react";
+import { observer as globalObserver } from "../../../../../../common/utils/observer";
 import api from "../../../api";
-import  Popover from '../../../components/popover';
+import Popover from '../../../components/popover';
 
 const ServerTime = () => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);
@@ -29,6 +30,8 @@ const ServerTime = () => {
             const newDate = new Date(response.time * 1000);
             setDate(newDate);
             setHasApiResponse(true);
+        }).catch(e => {
+            globalObserver.emit('Error', e);
         });
     };
 

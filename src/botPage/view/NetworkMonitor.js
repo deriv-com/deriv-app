@@ -19,7 +19,7 @@ export default class NetworkMonitor {
             this.parentElement.html('<span class=\'connecting\'></span>');
             this.api.send({ ping: '1' }).then(() => {
                 this.parentElement.html('<span class=\'online\'></span>');
-            });
+            }).catch(() => this.parentElement.html('<span class=\'offline\'></span>'));
         } else {
             this.parentElement.html('<span class=\'offline\'></span>');
         }

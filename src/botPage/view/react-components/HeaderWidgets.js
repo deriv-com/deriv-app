@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const ServerTime = ({ api }) => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);
@@ -25,6 +26,8 @@ const ServerTime = ({ api }) => {
             const newDate = new Date(response.time * 1000);
             setDate(newDate);
             setHasApiResponse(true);
+        }).catch(e => {
+            globalObserver.emit('Error', e);
         });
     };
 

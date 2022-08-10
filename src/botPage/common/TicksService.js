@@ -285,7 +285,10 @@ export default class TicksService {
             resolve(candles);
           }
         })
-        .catch(reject);
+        .catch((e) => {
+          reject(e);
+          globalObserver.emit('Error', e);
+        });
     });
   }
 }

@@ -101,7 +101,7 @@ const JurisdictionModal = ({
     const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
 
     const selectSVGJurisdiction = () => {
-        if (account_type.type && account_type.category && !is_eu) {
+        if (account_type.type && !is_eu) {
             const created_svg_accounts = mt5_login_list.filter(
                 data =>
                     data.market_type === account_type.type &&

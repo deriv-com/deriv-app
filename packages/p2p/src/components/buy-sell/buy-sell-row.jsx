@@ -15,13 +15,6 @@ import TradeBadge from '../trade-badge';
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, floating_rate_store, general_store } = useStores();
 
-    if (advert.id === 'WATCH_THIS_SPACE') {
-        // This allows for the sliding animation on the Buy/Sell toggle as it pushes
-        // an empty item with an item that holds the same height of the toggle container.
-        // Also see: buy-sell-table.jsx
-        return <div style={{ height: '140px' }} />;
-    }
-
     if (advert.id === 'NO_MATCH_ROW') {
         // Empty row when there is a search_term but no search_results
         return (

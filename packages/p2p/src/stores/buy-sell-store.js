@@ -100,14 +100,14 @@ export default class BuySellStore extends BaseStore {
         if (isMobile()) {
             if (this.search_term) {
                 if (this.search_results.length) {
-                    return [{ id: 'WATCH_THIS_SPACE' }, ...this.search_results];
+                    return [...this.search_results];
                 }
-                return [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
+                return [{ id: 'NO_MATCH_ROW' }];
             }
             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
             // an empty item with an item that holds the same height of the toggle container.
             // Also see: buy-sell-row.jsx
-            return [{ id: 'WATCH_THIS_SPACE' }, ...this.items];
+            return [...this.items];
         }
 
         if (this.search_term) {

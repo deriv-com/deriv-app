@@ -142,9 +142,9 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
-    @observable should_show_risk_tolerance_warning_modal = false;
-    @observable should_show_appropriateness_test_warning_modal = false;
-    @observable should_show_cooldown_warning_modal = false;
+    @observable should_show_risk_warning_modal = false;
+    @observable should_show_appropriateness_warning_modal = false;
+    @observable should_show_cooldown_modal = false;
     @observable should_show_trading_assessment_modal = false;
     @observable should_show_trade_assessment_form = false;
     @observable is_trading_assessment_for_existing_user_enabled = false;
@@ -408,8 +408,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowRiskToleranceWarningModal(value) {
-        this.should_show_risk_tolerance_warning_modal = value;
+    setShouldShowRiskWarningModal(value) {
+        this.should_show_risk_warning_modal = value;
     }
 
     @action.bound
@@ -423,8 +423,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowAppropriatenessTestWarningModal(value) {
-        this.should_show_appropriateness_test_warning_modal = value;
+    setShouldShowAppropriatenessWarningModal(value) {
+        this.should_show_appropriateness_warning_modal = value;
     }
 
     @action.bound
@@ -433,8 +433,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowCooldownWarningModal(value) {
-        this.should_show_cooldown_warning_modal = value;
+    setShouldShowCooldownModal(value) {
+        this.should_show_cooldown_modal = value;
     }
 
     @action.bound

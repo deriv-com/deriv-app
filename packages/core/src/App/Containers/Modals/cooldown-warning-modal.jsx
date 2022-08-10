@@ -5,8 +5,8 @@ import { Localize, localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 
 const CooldownWarningModal = ({
-    should_show_cooldown_warning_modal,
-    setShouldShowCooldownWarningModal,
+    should_show_cooldown_modal,
+    setShouldShowCooldownModal,
     real_account_creation_unlock_date,
 }) => {
     const real_account_unblock_date = formatDate(real_account_creation_unlock_date, 'DD MMMM [at] hh:mm a');
@@ -15,7 +15,7 @@ const CooldownWarningModal = ({
         <Modal
             width='44rem'
             title={localize('24-hour Cool Down Warning')}
-            is_open={should_show_cooldown_warning_modal}
+            is_open={should_show_cooldown_modal}
             className='center-risk-modal'
             has_close_icon={false}
         >
@@ -35,7 +35,7 @@ const CooldownWarningModal = ({
                     text={localize('OK')}
                     primary
                     onClick={() => {
-                        setShouldShowCooldownWarningModal(false);
+                        setShouldShowCooldownModal(false);
                     }}
                 />
             </Modal.Footer>
@@ -45,6 +45,6 @@ const CooldownWarningModal = ({
 
 export default connect(({ client, ui }) => ({
     real_account_creation_unlock_date: client.real_account_creation_unlock_date,
-    should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
-    setShouldShowCooldownWarningModal: ui.setShouldShowCooldownWarningModal,
+    should_show_cooldown_modal: ui.should_show_cooldown_modal,
+    setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
 }))(CooldownWarningModal);

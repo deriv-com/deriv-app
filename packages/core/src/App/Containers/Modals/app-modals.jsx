@@ -47,7 +47,7 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
-    should_show_cooldown_warning_modal,
+    should_show_cooldown_modal,
     should_show_assessment_complete_modal,
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
@@ -122,7 +122,7 @@ const AppModals = ({
         ComponentToLoad = <TradingAssessmentExistingUser />;
     }
 
-    if (should_show_cooldown_warning_modal) {
+    if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
     }
 
@@ -157,7 +157,7 @@ export default connect(({ client, ui }) => ({
     setCFDScore: client.setCFDScore,
     cfd_score: client.cfd_score,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
-    should_show_cooldown_warning_modal: ui.should_show_cooldown_warning_modal,
+    should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
     active_account_landing_company: client.active_account_landing_company,

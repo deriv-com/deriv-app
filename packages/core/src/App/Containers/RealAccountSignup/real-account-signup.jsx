@@ -105,10 +105,10 @@ const RealAccountSignup = ({
     state_value,
     deposit_real_account_signup_target,
     realAccountSignup,
-    should_show_risk_tolerance_warning_modal,
-    setShouldShowRiskToleranceWarningModal,
-    should_show_appropriateness_test_warning_modal,
-    setShouldShowAppropriatenessTestWarningModal,
+    should_show_risk_warning_modal,
+    setShouldShowRiskWarningModal,
+    should_show_appropriateness_warning_modal,
+    setShouldShowAppropriatenessWarningModal,
     fetchAccountSettings,
     setIsTradingAssessmentForNewUserEnabled,
 }) => {
@@ -417,7 +417,7 @@ const RealAccountSignup = ({
     const handleOnAccept = async () => {
         setLoading(true);
         try {
-            setShouldShowAppropriatenessTestWarningModal(false);
+            setShouldShowAppropriatenessWarningModal(false);
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
             if (real_account_signup_target === 'maltainvest') {
                 showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
@@ -437,8 +437,8 @@ const RealAccountSignup = ({
         } catch (sign_up_error) {
             setRiskWarningTitle(localize('24-hour Cool Down Warning'));
             if (sign_up_error.code === 'AppropriatenessTestFailed') {
-                setShouldShowAppropriatenessTestWarningModal(false);
-                setShouldShowRiskToleranceWarningModal(true);
+                setShouldShowAppropriatenessWarningModal(false);
+                setShouldShowRiskWarningModal(true);
             }
             // TODO: Handle Error case
         } finally {
@@ -449,14 +449,14 @@ const RealAccountSignup = ({
 
     const handleRiskAcceptance = () => {
         closeRealAccountSignup();
-        setShouldShowRiskToleranceWarningModal(false);
+        setShouldShowRiskWarningModal(false);
     };
 
-    if (should_show_risk_tolerance_warning_modal) {
+    if (should_show_risk_warning_modal) {
         //TODO: handle other modals
         return (
             <RiskToleranceWarningModal
-                show_risk_modal={should_show_risk_tolerance_warning_modal}
+                show_risk_modal={should_show_risk_warning_modal}
                 onClick={handleRiskAcceptance}
                 title={risk_warning_title}
                 body_content={
@@ -467,10 +467,10 @@ const RealAccountSignup = ({
                 }
             />
         );
-    } else if (should_show_appropriateness_test_warning_modal) {
+    } else if (should_show_appropriateness_warning_modal) {
         return (
             <TestWarningModal
-                show_risk_modal={should_show_appropriateness_test_warning_modal}
+                show_risk_modal={should_show_appropriateness_warning_modal}
                 body_content={
                     <Text as='p' size='xs'>
                         <Localize
@@ -608,10 +608,10 @@ export default connect(({ ui, client, common, modules }) => ({
     routing_history: common.app_routing_history,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
-    should_show_risk_tolerance_warning_modal: ui.should_show_risk_tolerance_warning_modal,
-    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
-    should_show_appropriateness_test_warning_modal: ui.should_show_appropriateness_test_warning_modal,
-    setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
+    should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,

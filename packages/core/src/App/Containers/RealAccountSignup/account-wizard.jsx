@@ -273,9 +273,9 @@ const AccountWizard = props => {
                 } else if (error.code === 'AppropriatenessTestFailed') {
                     if (form_data?.risk_tolerance === 'No') {
                         props.fetchAccountSettings();
-                        props.setShouldShowRiskToleranceWarningModal(true);
+                        props.setShouldShowRiskWarningModal(true);
                     } else {
-                        props.setShouldShowAppropriatenessTestWarningModal(true);
+                        props.setShouldShowAppropriatenessWarningModal(true);
                     }
                 } else {
                     props.onError(error, state_items);
@@ -394,8 +394,8 @@ export default connect(({ client, notifications, ui }) => ({
     refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
-    setShouldShowRiskToleranceWarningModal: ui.setShouldShowRiskToleranceWarningModal,
-    setShouldShowAppropriatenessTestWarningModal: ui.setShouldShowAppropriatenessTestWarningModal,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
     fetchAccountSettings: client.fetchAccountSettings,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,

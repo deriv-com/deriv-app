@@ -107,7 +107,6 @@ export default class SendbirdStore extends BaseStore {
     }
 
     initialiseChatWsConnection() {
-        this.terminateChatWsConnection();
         this.setHasChatError(false);
         this.setIsChatLoading(true);
 

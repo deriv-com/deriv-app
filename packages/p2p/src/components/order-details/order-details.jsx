@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, HintBox, Icon, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -288,10 +288,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     }
                                     rating_value={order_store.rating_value}
                                 />
+                                <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
                                 <div className='order-details-card--rating'>
-                                    <MobileWrapper>
-                                        <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                                    </MobileWrapper>
                                     <UserRatingButton
                                         button_text={
                                             is_reviewable ? localize('Rate this transaction') : localize('Not rated')
@@ -315,9 +313,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         )}
                         {review_details && (
                             <React.Fragment>
-                                <MobileWrapper>
-                                    <MyProfileSeparatorContainer.Line className='order-details-card--line' />
-                                </MobileWrapper>
+                                <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
                                 <div className='order-details-card__ratings'>
                                     <Text color='prominent' size='s' weight='bold'>
                                         <Localize i18n_default_text='Your transaction experience' />

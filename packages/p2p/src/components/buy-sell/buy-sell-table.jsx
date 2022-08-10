@@ -112,6 +112,7 @@ const BuySellTable = ({ onScroll }) => {
                             items={buy_sell_store.rendered_items}
                             rowRenderer={props => <BuySellRowRenderer {...props} />}
                             loadMoreRowsFn={buy_sell_store.loadMoreItems}
+                            has_filler
                             has_more_items_to_load={buy_sell_store.has_more_items_to_load}
                             keyMapperFn={item => item.id}
                             onScroll={onScroll}

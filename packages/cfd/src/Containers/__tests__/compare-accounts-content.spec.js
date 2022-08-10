@@ -38,10 +38,6 @@ describe('should render the CompareAccountsContent component properly', () => {
         };
     });
 
-    it('should render the component', () => {
-        render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} />);
-    });
-
     it('should render the proper column headers properly', () => {
         render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} />);
         expect(screen.getByText('Synthetic')).toBeInTheDocument();
@@ -185,7 +181,7 @@ describe('should render the CompareAccountsContent component properly', () => {
         expect(screen.queryByText('Financial STP')).not.toBeInTheDocument();
     });
 
-    it('should render even if the user is not logged in', () => {
+    it('should render Account currency even if the user is not logged in', () => {
         render(
             <CompareAccountsContent landing_companies={all_landing_companies} {...mock_props} is_logged_in={false} />
         );

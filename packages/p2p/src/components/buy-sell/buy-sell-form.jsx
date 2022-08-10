@@ -192,7 +192,10 @@ const BuySellForm = props => {
 
                                             if (method === 'BankTransfer' || method === 'Other') {
                                                 return (
-                                                    <div className='buy-sell__modal-payment-method--row' key={key}>
+                                                    <div
+                                                        className='buy-sell__modal-payment-method--row'
+                                                        key={`${payment_method}${key}`}
+                                                    >
                                                         <Icon
                                                             className='buy-sell__modal-payment-method--icon'
                                                             icon={`IcCashier${method}`}
@@ -206,7 +209,10 @@ const BuySellForm = props => {
                                             }
 
                                             return (
-                                                <div className='buy-sell__modal-payment-method--row' key={key}>
+                                                <div
+                                                    className='buy-sell__modal-payment-method--row'
+                                                    key={`${payment_method}-${key}`}
+                                                >
                                                     <Icon
                                                         className='buy-sell__modal-payment-method--icon'
                                                         icon='IcCashierEwallet'
@@ -233,7 +239,13 @@ const BuySellForm = props => {
                                             .replace(/([\r\n]){2,}/g, '\n\n')
                                             .split('\n')
                                             .map((text, idx) => (
-                                                <Text key={idx} as='p' color='general' line_height='m' size='xs'>
+                                                <Text
+                                                    key={`${text || '-'}${idx}`}
+                                                    as='p'
+                                                    color='general'
+                                                    line_height='m'
+                                                    size='xs'
+                                                >
                                                     {text || '-'}
                                                 </Text>
                                             ))}
@@ -268,7 +280,7 @@ const BuySellForm = props => {
                                                         })}
                                                     >
                                                         {payment_method_names
-                                                            ?.map((add_payment_method, key) => {
+                                                            ?.map(add_payment_method => {
                                                                 const {
                                                                     advertiser_payment_methods_list,
                                                                     setSelectedPaymentMethodDisplayName,
@@ -284,7 +296,7 @@ const BuySellForm = props => {
                                                                     matching_payment_methods.map(payment_method => (
                                                                         <PaymentMethodCard
                                                                             is_vertical_ellipsis_visible={false}
-                                                                            key={key}
+                                                                            key={`${payment_method.display_name}${payment_method.ID}`}
                                                                             medium
                                                                             onClick={() =>
                                                                                 onClickPaymentMethodCard(payment_method)
@@ -304,7 +316,7 @@ const BuySellForm = props => {
                                                                     <PaymentMethodCard
                                                                         add_payment_method={add_payment_method}
                                                                         is_add
-                                                                        key={key}
+                                                                        key={add_payment_method}
                                                                         medium
                                                                         onClickAdd={() => {
                                                                             if (!should_disable_field) {

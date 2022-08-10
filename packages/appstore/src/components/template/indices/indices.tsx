@@ -13,7 +13,7 @@ const Indices: React.FC<TIndicesProps> = ({ indice_data }) => {
                     <Text>{item.sub_title}</Text>
                     <div className='dw-indices__pair-wrapper'>
                         {item.data.map(pair => (
-                            <div key={pair.icon}>
+                            <div key={`${pair.icon}${pair.description}`}>
                                 <Indice icon={pair.icon} description={pair.description} />
                             </div>
                         ))}

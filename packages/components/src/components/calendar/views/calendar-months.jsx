@@ -10,14 +10,14 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
 
     return (
         <div className='dc-calendar__body dc-calendar__body--month'>
-            {Object.keys(month_headers).map((month, idx) => {
+            {Object.keys(month_headers).map(month => {
                 const is_active =
                     month === moment_selected_date.clone().format('MMM') &&
                     moment_selected_date.isSame(moment_date, 'year');
                 const is_disabled = isPeriodDisabled(moment_date.clone().month(month), 'month');
                 return (
                     <span
-                        key={`${month}${idx}`}
+                        key={month}
                         className={classNames('dc-calendar__cell', {
                             'dc-calendar__cell--active': is_active,
                             'dc-calendar__cell--disabled': is_disabled,

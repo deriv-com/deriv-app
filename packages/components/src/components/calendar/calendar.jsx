@@ -191,8 +191,13 @@ Calendar.defaultProps = {
 };
 
 Calendar.propTypes = {
+    calendar_view: PropTypes.string,
+    calendar_el_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
     date_format: PropTypes.string,
+    disabled_days: PropTypes.arrayOf(PropTypes.number),
+    events: PropTypes.array,
     footer: PropTypes.string,
+    has_range_selection: PropTypes.bool,
     has_today_btn: PropTypes.bool,
     holidays: PropTypes.arrayOf(
         PropTypes.shape({
@@ -200,21 +205,15 @@ Calendar.propTypes = {
             descrip: PropTypes.string,
         })
     ),
+    keep_open: PropTypes.bool,
     max_date: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     min_date: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     onChangeCalendarMonth: PropTypes.func,
     onSelect: PropTypes.func,
-    start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    disable_days: PropTypes.arrayOf(PropTypes.number),
-    calendar_view: PropTypes.string,
-    calendar_el_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
-    disabled_days: PropTypes.array,
-    events: PropTypes.array,
-    has_range_selection: PropTypes.bool,
-    keep_open: PropTypes.bool,
     onHover: PropTypes.func,
+    start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     should_show_today: PropTypes.bool,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Calendar;

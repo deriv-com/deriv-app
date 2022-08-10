@@ -11,7 +11,11 @@ const TradeModalBody: React.FC<TTradeModalBody> = ({ launch_apps, qrcode_data })
             </Text>
             <div className='dw-trade-modal__body--apps'>
                 {launch_apps.map(apps => (
-                    <div className='dw-trade-modal__body--apps-item' key={apps.icon} onClick={() => apps.click()}>
+                    <div
+                        className='dw-trade-modal__body--apps-item'
+                        key={`${apps.icon}${apps.app_title}`}
+                        onClick={() => apps.click()}
+                    >
                         <Icon icon={apps.icon} size={40} />
                         <Text size='xs'>{apps.app_title}</Text>
                     </div>

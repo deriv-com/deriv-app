@@ -13,8 +13,8 @@ const Loading = ({ className, is_invisible, theme, id }: LoadingProps) => (
         id={id}
         className={classNames('barspinner', `barspinner--${theme || 'dark'}`, { invisible: is_invisible }, className)}
     >
-        {Array.from(new Array(5)).map((_x, inx) => (
-            <div key={`${_x}${inx}`} className={`barspinner__rect barspinner__rect--${inx + 1} rect${inx + 1}`} />
+        {Array.from(new Array(5)).map((x, inx) => (
+            <div key={`${x}${inx}`} className={`barspinner__rect barspinner__rect--${inx + 1} rect${inx + 1}`} />
         ))}
     </div>
 );

@@ -3,7 +3,7 @@ import React from 'react';
 import Item from './contract-type-item.jsx';
 
 const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
-    list.map((contract_category, key) => {
+    list.map(contract_category => {
         const contract_types = contract_category.contract_types?.filter(contract_type => {
             const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
 
@@ -15,7 +15,7 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
         });
 
         return (
-            <div key={key} className='contract-type-list' data-testid='contract_list'>
+            <div key={contract_category.label} className='contract-type-list' data-testid='contract_list'>
                 <div className='contract-type-list__label'>
                     <span>{contract_category.label}</span>
                 </div>

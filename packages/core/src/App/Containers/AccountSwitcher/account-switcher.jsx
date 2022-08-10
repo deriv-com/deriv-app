@@ -663,7 +663,7 @@ const AccountSwitcher = props => {
                             })}
                     </div>
                     {getRemainingRealAccounts().map((account, index) => (
-                        <div key={index} className='acc-switcher__new-account'>
+                        <div key={`${account}${index}`} className='acc-switcher__new-account'>
                             <Icon icon='IcDeriv' size={24} />
                             <Text size='xs' color='general' className='acc-switcher__new-account-text'>
                                 {getAccountTitle(

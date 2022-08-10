@@ -16,7 +16,7 @@ const Instruments: React.FC<TInstrumentsProps> = ({ title, pair_data }) => {
                         </Text>
                         <div className='dw-instruments__pair-wrapper'>
                             {item.data.map(pair => (
-                                <div key={pair.icon}>
+                                <div key={`${pair.icon}${pair.description}`}>
                                     <Pair icon={pair.icon} description={pair.description} />
                                 </div>
                             ))}

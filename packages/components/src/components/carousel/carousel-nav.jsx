@@ -36,7 +36,7 @@ const Nav = ({
                     />
                     {list.slice(item_per_window - 1).map((item, idx) => (
                         <li
-                            key={`${item}${idx}`}
+                            key={item}
                             className='dc-carousel__nav-item'
                             style={{
                                 backgroundColor: bullet_color,

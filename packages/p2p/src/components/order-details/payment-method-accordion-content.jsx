@@ -5,9 +5,12 @@ import './payment-method-accordion-content.scss';
 const PaymentMethodAccordionContent = ({ payment_method }) => {
     return (
         <React.Fragment>
-            {Object.entries(payment_method?.fields).map((field, key) => {
+            {Object.entries(payment_method?.fields).map(field => {
                 return (
-                    <div key={key} className='payment-method-accordion-content--field'>
+                    <div
+                        key={`${field[1].display_name}${field[1].value}`}
+                        className='payment-method-accordion-content--field'
+                    >
                         <Text color='less-prominent' size='xxs'>
                             {field[1].display_name}
                         </Text>

@@ -6,8 +6,8 @@ import ApiTokenClipboard from './api-token-clipboard.jsx';
 
 const HiddenPasswordDots = () => (
     <div className='da-api-token__pass-dot-container'>
-        {[...Array(15)].map(el => (
-            <div key={el} className='da-api-token__pass-dot' />
+        {[...Array(15)].map((el, index) => (
+            <div key={`${el}${index}`} className='da-api-token__pass-dot' />
         ))}
     </div>
 );

@@ -129,12 +129,12 @@ const QuickAddModal = ({ advert }) => {
                     </div>
                     {selected_methods.length > 0 ? (
                         <React.Fragment>
-                            {selected_methods.map((payment_method, key) => {
+                            {selected_methods.map(payment_method => {
                                 const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
                                 const payment_method_icon = method.replace(' ', '');
 
                                 return (
-                                    <Formik key={key} enableReinitialize initialValues={{}}>
+                                    <Formik key={method} enableReinitialize initialValues={{}}>
                                         <Field name='payment_method'>
                                             {({ field }) => (
                                                 <Input
@@ -326,12 +326,12 @@ const QuickAddModal = ({ advert }) => {
                     </div>
                     {selected_methods.length > 0 ? (
                         <React.Fragment>
-                            {selected_methods.map((payment_method, key) => {
+                            {selected_methods.map(payment_method => {
                                 const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
                                 const payment_method_icon = method.replace(' ', '');
 
                                 return (
-                                    <Formik innerRef={formik_ref} key={key} enableReinitialize initialValues={{}}>
+                                    <Formik innerRef={formik_ref} key={method} enableReinitialize initialValues={{}}>
                                         <Field name='payment_method'>
                                             {({ field }) => (
                                                 <Input

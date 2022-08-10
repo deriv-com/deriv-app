@@ -158,13 +158,13 @@ const ToggleMenuDrawer = React.forwardRef(
                 .filter(route => route);
         };
 
-        const getRoutesWithSubMenu = (route_config, idx) => {
+        const getRoutesWithSubMenu = route_config => {
             const has_access = route_config.is_authenticated ? is_logged_in : true;
             if (!has_access) return null;
 
             if (!route_config.routes) {
                 return (
-                    <MobileDrawer.Item key={idx}>
+                    <MobileDrawer.Item key={`${route_config?.path}${route_config?.getTitle?.()}`}>
                         <MenuLink
                             link_to={route_config.path}
                             icon={route_config.icon_component}
@@ -180,7 +180,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
             return (
                 <MobileDrawer.SubMenu
-                    key={idx}
+                    key={`${route_config?.path}${route_config?.getTitle?.()}`}
                     has_subheader
                     submenu_icon={route_config.icon_component}
                     submenu_title={route_config.getTitle()}
@@ -189,7 +189,7 @@ const ToggleMenuDrawer = React.forwardRef(
                     route_config_path={route_config.path}
                 >
                     {!has_subroutes &&
-                        route_config.routes.map((route, index) => {
+                        route_config.routes.map(route => {
                             if (
                                 !route.is_invisible &&
                                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
@@ -199,7 +199,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                             ) {
                                 return (
-                                    <MobileDrawer.Item key={index}>
+                                    <MobileDrawer.Item key={`${route?.path}${route?.getTitle?.()}`}>
                                         <MenuLink
                                             link_to={route.path}
                                             icon={route.icon_component}
@@ -213,16 +213,16 @@ const ToggleMenuDrawer = React.forwardRef(
                             return undefined;
                         })}
                     {has_subroutes &&
-                        route_config.routes.map((route, index) => {
+                        route_config.routes.map(route => {
                             return route.subroutes ? (
                                 <MobileDrawer.SubMenuSection
-                                    key={index}
+                                    key={`${route?.getTitle?.()}${route?.icon}`}
                                     section_icon={route.icon}
                                     section_title={route.getTitle()}
                                 >
-                                    {route.subroutes.map((subroute, subindex) => (
+                                    {route.subroutes.map(subroute => (
                                         <MenuLink
-                                            key={subindex}
+                                            key={`${subroute?.path}${subroute?.getTitle?.()}`}
                                             is_disabled={
                                                 (!should_allow_authentication &&
                                                     /proof-of-address/.test(subroute.path)) ||
@@ -239,7 +239,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                     ))}
                                 </MobileDrawer.SubMenuSection>
                             ) : (
-                                <MobileDrawer.Item key={index}>
+                                <MobileDrawer.Item key={`${route?.path}${route?.getTitle?.()}`}>
                                     <MenuLink
                                         link_to={route.path}
                                         icon={route.icon_component}

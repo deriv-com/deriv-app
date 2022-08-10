@@ -20,7 +20,7 @@ const Years = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected 
                 const is_disabled = isPeriodDisabled(moment_date.clone().year(year), 'year', 'body');
                 return (
                     <span
-                        key={`${year}${idx}`}
+                        key={year}
                         className={classNames('dc-calendar__cell', {
                             'dc-calendar__cell--active': year === moment_selected.year(),
                             'dc-calendar__cell--other': is_other_decade,

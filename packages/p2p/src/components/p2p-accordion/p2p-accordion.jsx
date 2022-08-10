@@ -71,7 +71,7 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
                                 idx === 0 || idx === list.length - 1,
                         }
                     )}
-                    key={idx}
+                    key={item?.header}
                 >
                     <div className='dc-accordion__item-header' onClick={() => onClick(idx)}>
                         {item.header}

@@ -10,8 +10,8 @@ const SideNotes = ({ class_name, side_notes }) => {
             className={classNames('dc-vertical-tab__content-side-note', class_name)}
             data-testid='vertical_tab_side_note'
         >
-            {side_notes?.map((note, i) => (
-                <div className='dc-vertical-tab__content-side-note-item' key={`${note}${i}`}>
+            {side_notes?.map(note => (
+                <div className='dc-vertical-tab__content-side-note-item' key={note}>
                     {note}
                 </div>
             ))}

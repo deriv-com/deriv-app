@@ -53,10 +53,10 @@ const FilterModal = () => {
         if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
         else if (my_profile_store.search_term) {
             if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
-                return my_profile_store.search_results?.map((payment_method, key) => {
+                return my_profile_store.search_results?.map(payment_method => {
                     return (
                         <Checkbox
-                            key={key}
+                            key={`${payment_method?.text}${payment_method.value}`}
                             label={payment_method.text}
                             onChange={() => onChange(payment_method)}
                             value={selected_methods.includes(payment_method.value)}
@@ -66,11 +66,11 @@ const FilterModal = () => {
             }
             return <FilterModalNoResults text={my_profile_store.search_term} />;
         }
-        return my_profile_store.payment_methods_list_items.map((payment_method, key) => {
+        return my_profile_store.payment_methods_list_items.map(payment_method => {
             return (
                 <Checkbox
                     name='checkbox'
-                    key={key}
+                    key={`${payment_method?.text}${payment_method.value}`}
                     label={payment_method.text}
                     onChange={() => onChange(payment_method)}
                     value={selected_methods.includes(payment_method.value)}

@@ -20,7 +20,7 @@ const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_anima
                 return (
                     <Button
                         id={`dc_${val.value}_toggle_item`}
-                        key={val.value}
+                        key={`${val.value}${val.text}`}
                         onClick={() => changeValue(val.value)}
                         className={menuClassNames}
                         is_button_toggle

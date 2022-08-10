@@ -6,8 +6,8 @@ import Popover from '../popover';
 import Text from '../text';
 
 const Items = ({ items, ...props }) =>
-    items.map((item, idx) => {
-        return <Item key={`${item?.text}${idx}`} item={item} {...props} />;
+    items.map(item => {
+        return <Item key={`${item?.text}${item?.value}`} item={item} {...props} />;
     });
 
 const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_align_text_left, className }) => {

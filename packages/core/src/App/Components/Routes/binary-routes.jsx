@@ -20,7 +20,7 @@ const BinaryRoutes = props => {
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
                 {getRoutesConfig({ is_appstore }, is_social_signup).map(route => (
-                    <RouteWithSubRoutes key={route?.getTitle?.() || route?.path} {...route} {...props} />
+                    <RouteWithSubRoutes key={`${route?.getTitle?.()}${route?.path}`} {...route} {...props} />
                 ))}
             </Switch>
         </React.Suspense>

@@ -34,7 +34,7 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_descript
                 })}
             >
                 {benefit_data.map(data => (
-                    <div key={data.icon}>
+                    <div key={`${data.icon}${data.description}`}>
                         <AppToTradeBenefit icon={data.icon} description={data.description} />
                     </div>
                 ))}

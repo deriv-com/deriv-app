@@ -42,7 +42,7 @@ const SellAdPaymentMethodsList = ({
             {sortPaymentMethods([...my_profile_store.advertiser_payment_methods_list]).map((payment_method, key) => (
                 <PaymentMethodCard
                     is_vertical_ellipsis_visible={false}
-                    key={key}
+                    key={`${payment_method?.ID}${key}`}
                     medium
                     onClick={() => onClickPaymentMethodCard(payment_method)}
                     payment_method={payment_method}

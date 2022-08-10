@@ -52,12 +52,12 @@ const DisplayText = ({ className, has_symbol, list, is_align_text_left, placehol
 DisplayText.propTypes = {
     className: PropTypes.string,
     has_symbol: PropTypes.bool,
+    is_align_text_left: PropTypes.bool,
     is_title: PropTypes.bool,
     list: listPropType(),
     name: PropTypes.string,
     placeholder: PropTypes.string,
-    value: PropTypes.string,
-    is_align_text_left: PropTypes.bool,
+    value: PropTypes.number,
 };
 
 export default DisplayText;

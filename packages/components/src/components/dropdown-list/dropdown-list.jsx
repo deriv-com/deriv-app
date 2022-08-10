@@ -143,9 +143,9 @@ const DropdownList = React.forwardRef((props, ref) => {
             <div style={style} className='dc-dropdown-list' ref={list_wrapper_ref}>
                 <ThemedScrollbars height={list_height || '220px'} refSetter={dropdown_ref} onScroll={onScrollStop}>
                     {is_object ? (
-                        Object.keys(list_items).map(items => (
+                        Object.keys(list_items).map((items, idx) => (
                             <ListItems
-                                key={`list-item{idx}`}
+                                key={`list-item${idx}`}
                                 not_found_text={not_found_text}
                                 active_index={active_index}
                                 list_items={list_items[items]}

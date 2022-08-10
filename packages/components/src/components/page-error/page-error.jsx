@@ -75,14 +75,14 @@ const PageError = ({
                             'dc-page-error__message--left': !!image_url,
                         })}
                     >
-                        {messages.map((message, index) =>
+                        {messages.map(message =>
                             message.has_html ? (
                                 <Text
                                     as='p'
                                     size='s'
                                     align={isMobile() ? 'center' : 'left'}
                                     line_height='x'
-                                    key={`message${index}`}
+                                    key={message.message}
                                     className='dc-page-error__message-paragraph'
                                     dangerouslySetInnerHTML={{ __html: message.message }}
                                 />
@@ -92,7 +92,7 @@ const PageError = ({
                                     size='s'
                                     align={isMobile() ? 'center' : 'left'}
                                     line_height='x'
-                                    key={`${message}${index}`}
+                                    key={message}
                                     className='dc-page-error__message-paragraph'
                                 >
                                     {message}

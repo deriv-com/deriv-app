@@ -7,13 +7,13 @@ const MenuLinks = ({ is_logged_in, items }) => (
     <React.Fragment>
         {!!items.length && (
             <div className='header__menu-links'>
-                {items.map((item, idx) => {
+                {items.map(item => {
                     const item_text = item.text();
 
                     return item.login_only && item.login_only !== is_logged_in ? null : (
                         <BinaryLink
                             id={item.id}
-                            key={idx}
+                            key={item.id}
                             to={item.link_to || undefined}
                             onClick={item.onClick || undefined}
                             href={item.href || undefined}

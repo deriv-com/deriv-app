@@ -45,7 +45,7 @@ const NotificationsContent = ({
                 {notifications.map(notification => (
                     <CSSTransition
                         appear={!is_notification_loaded}
-                        key={notification.header}
+                        key={notification?.header}
                         in={!!notification.header}
                         timeout={150}
                         classNames={{

@@ -15,8 +15,8 @@ const Basic = () => (
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {sample_data.data.map((item, index) => (
-                    <Table.Row className='table-storybook-row' key={`${item.users.phone}${index}`}>
+                {sample_data.data.map(item => (
+                    <Table.Row className='table-storybook-row' key={item.users.phone}>
                         {sample_data.fields.map((field, key) => (
                             <React.Fragment key={`${field?.name || item?.users[field.name]}${key}`}>
                                 {field.name === 'site' ? (

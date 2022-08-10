@@ -81,7 +81,7 @@ const VerticalTabHeaders = ({
                                   is_floating={is_floating}
                                   is_routed={is_routed}
                                   selected={selected}
-                                  key={items[item_idx]?.path}
+                                  key={`${items[item_idx]?.path}${items[item_idx].icon}`}
                                   selectedKey={selectedKey}
                               />
                           ))}
@@ -94,7 +94,7 @@ const VerticalTabHeaders = ({
                           is_floating={is_floating}
                           is_routed={is_routed}
                           selected={selected}
-                          key={item?.path}
+                          key={`${item?.path}${item.icon}`}
                           selectedKey={selectedKey}
                       />
                   ))}

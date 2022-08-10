@@ -131,6 +131,7 @@ Input.propTypes = {
     is_hj_whitelisted: PropTypes.bool,
     is_incrementable: PropTypes.bool,
     is_read_only: PropTypes.bool,
+    inputmode: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,
     onBlur: PropTypes.func,
@@ -141,7 +142,6 @@ Input.propTypes = {
     setCurrentFocus: PropTypes.func,
     type: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    inputmode: PropTypes.string,
 };
 
 export default Input;

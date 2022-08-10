@@ -7,7 +7,7 @@ const BinaryRoutes = props => (
     <React.Suspense fallback={<div />}>
         <Switch>
             {getRoutesConfig().map(route => (
-                <RouteWithSubRoutes key={route?.getTitle?.() || route?.path} {...route} {...props} />
+                <RouteWithSubRoutes key={`${route?.getTitle?.()}${route?.path}`} {...route} {...props} />
             ))}
         </Switch>
     </React.Suspense>

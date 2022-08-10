@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Authorize } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Money } from '@deriv/components';
-import { Text, Badge } from '@deriv/ui';
+import { Text } from '@deriv/ui';
 import { ArrayElement } from 'Types';
 import WalletCard from 'Components/wallet';
+import WalletActionButton from 'Components/wallet-action-button';
 
 window.React = React;
 
@@ -31,10 +32,26 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                             />
                         </Text>
                         <div className='wallet-account__actions'>
-                            <Badge label='regular' size='small' spacing='loose' visiblity='label-only'>
-                                Badge
-                            </Badge>
-                            <span>btn2</span>
+                            <WalletActionButton
+                                size='small'
+                                label='Reports'
+                                visiblity='label-and-icon'
+                                icon='icAppstoreTransfer'
+                            />
+                            <WalletActionButton
+                                size='small'
+                                label='Transaction'
+                                visiblity='label-and-icon'
+                                icon='icAppstoreTransaction'
+                            />
+                            <WalletActionButton
+                                size='small'
+                                label='Reset Balance
+                                '
+                                visiblity='label-and-icon
+                                '
+                                icon='icAppstoreResetBalance'
+                            />
                         </div>
                     </div>
                 </div>

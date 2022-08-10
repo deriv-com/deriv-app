@@ -1,0 +1,22 @@
+.wallet-action-button {
+    background-color: #fff;
+    border-radius: 16px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    border: 1px solid #999999;
+    gap: 8px;
+    padding: 0 1.5rem;
+
+    &__small {
+        height: 3rem;
+    }
+
+    &__medium {
+        height: 4rem;
+    }
+
+    &__large {
+        height: 5rem;
+    }
+}

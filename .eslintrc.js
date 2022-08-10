@@ -75,7 +75,7 @@ module.exports = {
         ],
         'spaced-comment': 'off',
         'import/prefer-default-export': 0,
-        'import/extensions': ['warn', 'never', { jsx: 'always', json: 'always' }],
+        'import/extensions': [0, { jsx: 'always', json: 'always' }],
         'no-sequences': ['warn'],
         'import/no-unresolved': [2, { ignore: ['@deriv/components', '@deriv/shared'] }],
 

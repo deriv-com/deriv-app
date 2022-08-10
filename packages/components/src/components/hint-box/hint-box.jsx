@@ -29,6 +29,11 @@ const HintBox = ({ className, icon, is_info, is_warn, is_danger, message }) => {
 
 HintBox.propTypes = {
     className: PropTypes.string,
+    icon: PropTypes.string,
+    is_info: PropTypes.bool,
+    is_warn: PropTypes.bool,
+    is_danger: PropTypes.bool,
+    message: PropTypes.string,
 };
 
 export default HintBox;

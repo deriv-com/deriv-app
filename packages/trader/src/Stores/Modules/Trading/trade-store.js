@@ -498,7 +498,7 @@ export default class TradeStore extends BaseStore {
 
         this.hovered_contract_type = is_over ? contract_type : null;
         setLimitOrderBarriers({
-            barriers: this.barriers,
+            barriers: this.root_store.portfolio.barriers,
             is_over,
             contract_type,
             contract_info: this.proposal_info[contract_type],
@@ -509,11 +509,11 @@ export default class TradeStore extends BaseStore {
     setPurchaseSpotBarrier(is_over, position) {
         const key = 'PURCHASE_SPOT_BARRIER';
         if (!is_over) {
-            removeBarrier(this.barriers, key);
+            removeBarrier(this.root_store.portfolio.barriers, key);
             return;
         }
 
-        let purchase_spot_barrier = this.barriers.find(b => b.key === key);
+        let purchase_spot_barrier = this.root_store.portfolio.barriers.find(b => b.key === key);
         if (purchase_spot_barrier) {
             if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
                 purchase_spot_barrier.onChange({
@@ -528,6 +528,7 @@ export default class TradeStore extends BaseStore {
             purchase_spot_barrier.isSingleBarrier = true;
             purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
+            this.root_store.portfolio.barriers.push(purchase_spot_barrier);
         }
     }
 
@@ -566,7 +567,7 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get barriers_flattened() {
-        return this.barriers && toJS(this.barriers);
+        return this.root_store.portfolio.barriers && toJS(this.root_store.portfolio.barriers);
     }
 
     setMainBarrier = proposal_info => {
@@ -953,7 +954,7 @@ export default class TradeStore extends BaseStore {
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);
             setLimitOrderBarriers({
-                barriers: this.barriers,
+                barriers: this.root_store.portfolio.barriers,
                 contract_info: this.proposal_info[this.hovered_contract_type],
                 contract_type,
                 is_over: true,

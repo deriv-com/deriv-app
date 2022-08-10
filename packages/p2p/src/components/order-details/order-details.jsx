@@ -75,10 +75,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
 
-        if (is_completed_order) {
-            remaining_review_time.current = getDateAfterHours(completion_time, general_store.review_period);
-        }
-
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
         } else {
@@ -91,6 +87,14 @@ const OrderDetails = observer(({ onPageReturn }) => {
             order_store.setOrderPaymentMethodDetails(undefined);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (completion_time) {
+            remaining_review_time.current = getDateAfterHours(completion_time, general_store.review_period);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [completion_time]);
 
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;

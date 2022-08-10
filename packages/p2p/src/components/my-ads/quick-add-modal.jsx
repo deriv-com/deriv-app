@@ -373,20 +373,17 @@ const QuickAddModal = ({ advert }) => {
                                                     <Autocomplete
                                                         {...field}
                                                         autoComplete='off' // prevent chrome autocomplete
+                                                        className='quick-add-modal--input'
                                                         data-lpignore='true'
                                                         has_updating_list={false}
-                                                        label={
-                                                            <React.Fragment>
-                                                                <Icon icon='IcAddCircle' size={14} />
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Add' />
-                                                                </Text>
-                                                            </React.Fragment>
-                                                        }
-                                                        list_items={my_profile_store.payment_methods_list}
+                                                        leading_icon={<Icon icon='IcAddOutline' size={14} />}
+                                                        list_items={my_profile_store.payment_methods_list.filter(
+                                                            ({ value }) => !selected_methods.includes(value)
+                                                        )}
                                                         onItemSelection={({ value }) => {
                                                             onClickPaymentMethodItem(value);
                                                         }}
+                                                        placeholder={localize('Add')}
                                                         required
                                                         trailing_icon={<></>}
                                                         type='text'
@@ -407,20 +404,15 @@ const QuickAddModal = ({ advert }) => {
                                             <Autocomplete
                                                 {...field}
                                                 autoComplete='off' // prevent chrome autocomplete
+                                                className='quick-add-modal--input'
                                                 data-lpignore='true'
                                                 has_updating_list={false}
-                                                label={
-                                                    <React.Fragment>
-                                                        <Icon icon='IcAddCircle' size={14} />
-                                                        <Text color='less-prominent' size='xs'>
-                                                            <Localize i18n_default_text='Add' />
-                                                        </Text>
-                                                    </React.Fragment>
-                                                }
+                                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                 list_items={my_profile_store.payment_methods_list}
                                                 onItemSelection={({ value }) => {
                                                     onClickPaymentMethodItem(value);
                                                 }}
+                                                placeholder={localize('Add')}
                                                 required
                                                 trailing_icon={<></>}
                                                 type='text'

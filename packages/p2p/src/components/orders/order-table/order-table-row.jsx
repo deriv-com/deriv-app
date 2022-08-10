@@ -107,8 +107,9 @@ const OrderRow = ({ style, row: order }) => {
                 is_buy_order_for_user={is_buy_order_for_user}
                 is_rating_modal_open={should_show_rating_modal}
                 is_user_rated_previously={
-                    is_buy_order_for_user ? !!advertiser_details.is_recommended : !!client_details.is_recommended
+                    is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
                 }
+                onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                 onClickDone={() => {
                     order_store.setOrderRating(id);
                     setShouldShowRatingModal(false);

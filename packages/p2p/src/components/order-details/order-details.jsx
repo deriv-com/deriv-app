@@ -111,8 +111,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
                     is_user_rated_previously={
-                        is_buy_order_for_user ? !!advertiser_details.is_recommended : !!client_details.is_recommended
+                        is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
                     }
+                    onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                     onClickDone={() => order_store.setOrderRating(id)}
                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                     onClickRecommended={() => order_store.setIsRecommended(1)}
@@ -277,9 +278,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     is_rating_modal_open={order_store.is_rating_modal_open}
                                     is_user_rated_previously={
                                         is_buy_order_for_user
-                                            ? !!advertiser_details.is_recommended
-                                            : !!client_details.is_recommended
+                                            ? advertiser_details?.is_recommended
+                                            : client_details?.is_recommended
                                     }
+                                    onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                                     onClickDone={() => order_store.setOrderRating(id)}
                                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                                     onClickRecommended={() => order_store.setIsRecommended(1)}

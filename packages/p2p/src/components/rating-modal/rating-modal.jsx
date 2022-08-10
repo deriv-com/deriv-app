@@ -10,6 +10,7 @@ const RatingModal = ({
     is_buy_order_for_user,
     is_rating_modal_open,
     is_user_rated_previously,
+    onClickClearRecommendation,
     onClickDone,
     onClickNotRecommended,
     onClickRecommended,
@@ -43,6 +44,7 @@ const RatingModal = ({
                     <RecommendUser
                         is_buy_order_for_user={is_buy_order_for_user}
                         is_user_rated_previously={is_user_rated_previously}
+                        onClickClearRecommendation={onClickClearRecommendation}
                         onClickNotRecommended={onClickNotRecommended}
                         onClickRecommended={onClickRecommended}
                         previous_recommendation={previous_recommendation}
@@ -67,7 +69,8 @@ const RatingModal = ({
 RatingModal.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
     is_rating_modal_open: PropTypes.bool,
-    is_user_rated_previously: PropTypes.bool,
+    is_user_rated_previously: PropTypes.number,
+    onClickClearRecommendation: PropTypes.func,
     onClickDone: PropTypes.func,
     onClickNotRecommended: PropTypes.func,
     onClickRecommended: PropTypes.func,

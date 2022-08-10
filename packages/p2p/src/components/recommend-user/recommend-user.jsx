@@ -6,6 +6,7 @@ import { Localize } from 'Components/i18next';
 const RecommendUser = ({
     is_buy_order_for_user,
     is_user_rated_previously,
+    onClickClearRecommendation,
     onClickNotRecommended,
     onClickRecommended,
     previous_recommendation,
@@ -14,7 +15,7 @@ const RecommendUser = ({
     const [is_yes_selected, setIsYesSelected] = React.useState(false);
 
     React.useEffect(() => {
-        if (is_user_rated_previously) {
+        if (is_user_rated_previously === 0 || is_user_rated_previously === 1) {
             if (previous_recommendation) {
                 setIsYesSelected(true);
                 onClickRecommended();
@@ -28,6 +29,11 @@ const RecommendUser = ({
     }, []);
 
     const handleSelectNo = () => {
+        if (is_no_selected) {
+            setIsNoSelected(false);
+            onClickClearRecommendation();
+            return;
+        }
         if (is_yes_selected) {
             setIsYesSelected(false);
         }
@@ -36,6 +42,11 @@ const RecommendUser = ({
     };
 
     const handleSelectYes = () => {
+        if (is_yes_selected) {
+            setIsYesSelected(false);
+            onClickClearRecommendation();
+            return;
+        }
         if (is_no_selected) {
             setIsNoSelected(false);
         }
@@ -82,7 +93,8 @@ const RecommendUser = ({
 
 RecommendUser.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
-    is_user_rated_previously: PropTypes.bool,
+    is_user_rated_previously: PropTypes.number,
+    onClickClearRecommendation: PropTypes.func,
     onClickNotRecommended: PropTypes.func,
     onClickRecommended: PropTypes.func,
     previous_recommendation: PropTypes.number,

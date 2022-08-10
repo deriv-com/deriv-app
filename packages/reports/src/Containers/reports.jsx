@@ -16,6 +16,7 @@ import { getSelectedRoute, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
+import NewAffiliateAccountModal from 'Components/new-affiliate-account-modal';
 
 const Reports = ({
     history,
@@ -121,6 +122,7 @@ const Reports = ({
                     </MobileWrapper>
                 </PageOverlay>
             </div>
+            <NewAffiliateAccountModal />
         </FadeWrapper>
     );
 };

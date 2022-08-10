@@ -1,0 +1,18 @@
+.new-affiliate-account-modal {
+    &__body {
+        display: flex;
+        justify-content: space-between;
+        padding: 2.4rem 2.4rem 0;
+        text-align: center;
+    }
+    &__footer {
+        padding: 0 2.4rem 2.4rem;
+    }
+    &__button {
+        height: 4rem;
+        width: 5.2rem;
+    }
+    &__option {
+        max-width: 33%;
+    }
+}

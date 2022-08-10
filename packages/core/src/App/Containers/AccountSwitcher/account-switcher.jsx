@@ -653,6 +653,12 @@ const AccountSwitcher = props => {
                             is_eu={props.is_eu}
                             redirectAccount={() => {
                                 // TODO add the redirect here
+                                const has_logged_in_before = localStorage.getItem('new_partner_logged_in');
+                                if (!has_logged_in_before) {
+                                    closeAccountsDialog();
+                                    localStorage.setItem('new_partner_logged_in', true);
+                                    props.toggleNewAffiliateAccountModal();
+                                }
                             }}
                             selected_loginid={props.account_loginid}
                         />
@@ -1005,6 +1011,7 @@ AccountSwitcher.propTypes = {
     switchAccount: PropTypes.func,
     resetVirtualBalance: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
+    toggleNewAffiliateAccountModal: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
     trading_platform_available_accounts: PropTypes.array,
@@ -1069,6 +1076,7 @@ const account_switcher = withRouter(
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
+        toggleNewAffiliateAccountModal: client.toggleNewAffiliateAccountModal,
     }))(AccountSwitcher)
 );
 

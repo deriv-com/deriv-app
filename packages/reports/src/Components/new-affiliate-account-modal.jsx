@@ -1,14 +1,14 @@
 import React from 'react';
 import { Icon, Modal, Text, Button } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PropTypes from 'prop-types';
 import '../sass/app/_common/components/new-affiliate-account-modal.scss';
 
 const affiliateAccountOptions = [
-    { icon: 'withdrawal', title: 'Withdrawals' },
-    { icon: 'transfer', title: 'Inter-account<0></0>transfers' },
-    { icon: 'statement', title: 'View statement' },
+    { icon: 'withdrawal', title: localize('Withdrawals') },
+    { icon: 'transfer', title: localize(`Inter-account transfers`) },
+    { icon: 'statement', title: localize('View statement') },
 ];
 
 const NewAffiliateAccountModal = ({ is_new_affiliate_account_modal_visible, toggleNewAffiliateAccountModal }) => {
@@ -25,10 +25,10 @@ const NewAffiliateAccountModal = ({ is_new_affiliate_account_modal_visible, togg
 
                 <div className='new-affiliate-account-modal__body'>
                     {affiliateAccountOptions.map(({ icon, title }, idx) => (
-                        <div key={idx}>
+                        <div key={idx} className='new-affiliate-account-modal__option'>
                             <Icon icon={icon} size={48} />
                             <Text as='p' size='xs' align='center'>
-                                <Localize i18n_default_text={title} components={[<br key={0} />]} />
+                                {title}
                             </Text>
                         </div>
                     ))}

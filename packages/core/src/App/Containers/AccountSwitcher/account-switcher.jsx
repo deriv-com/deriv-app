@@ -29,7 +29,6 @@ import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Prel
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './helpers';
-import Cookies from 'js-cookie';
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
@@ -654,9 +653,10 @@ const AccountSwitcher = props => {
                             is_eu={props.is_eu}
                             redirectAccount={() => {
                                 // TODO add the redirect here
-                                const has_logged_in_before = Cookies.get('new_partner_logged_in');
+                                const has_logged_in_before = localStorage.getItem('new_partner_logged_in');
                                 if (!has_logged_in_before) {
-                                    Cookies.set('new_partner_logged_in', true);
+                                    closeAccountsDialog();
+                                    localStorage.setItem('new_partner_logged_in', true);
                                     props.toggleNewAffiliateAccountModal();
                                 }
                             }}

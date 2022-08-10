@@ -6,7 +6,8 @@ import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from '../constants/order-list';
+import { order_list } from 'Constants/order-list';
+import { buy_sell } from 'Constants/buy-sell';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
@@ -148,17 +149,19 @@ export default class GeneralStore extends BaseStore {
                         // Push notification for successful order completion
                         const { advertiser_details, client_details, id, status, type } = new_order;
 
-                        if (type === 'buy' && status === 'completed' && client_details.loginid === client.loginid) {
+                        if (
+                            type === buy_sell.BUY &&
+                            status === 'completed' &&
+                            client_details.loginid === client.loginid
+                        )
                             this.showCompletedOrderNotification(advertiser_details.name, id);
-                        }
 
                         if (
-                            type === 'sell' &&
+                            type === buy_sell.SELL &&
                             status === 'completed' &&
                             advertiser_details.loginid === client.loginid
-                        ) {
+                        )
                             this.showCompletedOrderNotification(client_details.name, id);
-                        }
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);

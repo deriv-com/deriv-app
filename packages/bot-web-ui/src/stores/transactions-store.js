@@ -203,6 +203,8 @@ export default class TransactionsStore {
         /* eslint-disable no-console */
         console.log('00 this.root_store', this.root_store);
 
+        console.log('this.is_called_proposal_open_contract', this.is_called_proposal_open_contract);
+
         ws.authorized.subscribeProposalOpenContract(contract_id, response => {
             /* eslint-disable no-console */
             console.log('1 response', response);

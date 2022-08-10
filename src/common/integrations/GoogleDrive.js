@@ -49,7 +49,7 @@ class GoogleDriveUtil {
     init = () => {
         gapi.load(this.auth_scope, {
             callback: () => {
-                gapi.auth2
+                gapi.client
                     .init({
                         apiKey: this.api_key,
                         clientId: this.client_id,

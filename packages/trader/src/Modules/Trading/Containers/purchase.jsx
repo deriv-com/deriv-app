@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmptyObject } from '@deriv/shared';
-import AccumulatorsPurchaseOverlay from 'Modules/Trading/Components/Form/Purchase/accumulators-purchase-overlay.jsx';
+import OneContractLimitOverlay from 'Modules/Trading/Components/Form/Purchase/one-contract-limit-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -37,9 +37,6 @@ const Purchase = ({
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
     const components = [];
-    if (is_accumulator && last_contract_status === 'open') {
-        components.push(<AccumulatorsPurchaseOverlay />);
-    }
     Object.keys(trade_types).map((type, index) => {
         const getSortedIndex = () => {
             if (getContractTypePosition(type) === 'top') return 0;
@@ -91,6 +88,9 @@ const Purchase = ({
                 break;
         }
     });
+    if (is_accumulator && last_contract_status === 'open') {
+        components.unshift(<OneContractLimitOverlay />);
+    }
     return components;
 };
 

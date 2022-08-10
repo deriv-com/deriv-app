@@ -8,21 +8,21 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-let modal_root_el;
-
-beforeAll(() => {
-    modal_root_el = document.createElement('div');
-    modal_root_el.setAttribute('id', 'modal_root');
-    document.body.appendChild(modal_root_el);
-});
-
-afterAll(() => {
-    document.body.removeChild(modal_root_el);
-});
-
 jest.mock('../mt5-compare-table-content', () => jest.fn(() => 'MockedMt5CompareTableContent'));
 
 describe('CompareAccountsModal', () => {
+    let modal_root_el;
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
+
     let mock_props;
     beforeEach(() => {
         mock_props = {
@@ -54,7 +54,7 @@ describe('CompareAccountsModal', () => {
         await waitFor(() => {
             expect(screen.getByText(/compare available accounts/i)).toBeInTheDocument();
         });
-        expect(screen.getByText(/mockedMmt5comparetablecontent/i)).toBeInTheDocument();
+        expect(screen.getByText(/MockedMt5CompareTableContent/i)).toBeInTheDocument();
     });
     it('should render the CompareAccountsModal if the platform is dxtrade', async () => {
         render(<CompareAccountsModal {...mock_props} platform='dxtrade' />);
@@ -68,7 +68,7 @@ describe('CompareAccountsModal', () => {
         await waitFor(() => {
             expect(screen.getByText(/compare available accounts/i)).toBeInTheDocument();
         });
-        expect(screen.getByText(/mockedMmt5comparetablecontent/i)).toBeInTheDocument();
+        expect(screen.getByText(/MockedMt5CompareTableContent/i)).toBeInTheDocument();
     });
     it('should call toggleCompareAccountsModal if the compare accounts button is clicked', async () => {
         render(

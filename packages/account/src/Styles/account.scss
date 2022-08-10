@@ -440,7 +440,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 font-size: var(--text-size-xxs);
                 line-height: 1.5;
                 text-align: right;
-                width: 27.6rem;
+                min-width: 27.6rem;
+                max-width: 36.6rem;
+                height: 3.6rem;
                 @include mobile {
                     width: auto;
                     text-align: center;

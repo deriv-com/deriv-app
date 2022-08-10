@@ -13,6 +13,7 @@ const InvalidVerificationLinkModal = ({
         <Modal
             has_close_icon
             is_open={is_invalid_verification_link_modal_open}
+            title=''
             toggleModal={() => setIsInvalidVerificationLinkModalOpen(false)}
             width='440px'
         >

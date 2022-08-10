@@ -27,6 +27,7 @@ const EmailVerificationModal = ({
         <Modal
             has_close_icon
             is_open={is_email_verification_modal_open}
+            title=''
             toggleModal={() => setIsEmailVerificationModalOpen(false)}
             width='440px'
         >

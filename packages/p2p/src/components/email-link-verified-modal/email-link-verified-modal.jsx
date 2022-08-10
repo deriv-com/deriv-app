@@ -14,6 +14,7 @@ const EmailLinkVerifiedModal = ({
         <Modal
             has_close_icon
             is_open={is_email_verified_modal_open}
+            title=''
             toggleModal={() => setIsEmailLinkVerifiedModalOpen(false)}
             width='440px'
         >

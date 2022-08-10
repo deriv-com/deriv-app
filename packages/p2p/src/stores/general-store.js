@@ -125,7 +125,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     getWebsiteStatus() {
         requestWS({ website_status: 1 }).then(response => {
-            if (!response.error) {
+            if (response && !response.error) {
                 const { p2p_config } = response.website_status;
 
                 this.setReviewPeriod(p2p_config.review_period);

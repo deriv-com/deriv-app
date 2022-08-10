@@ -109,6 +109,10 @@
             &:last-child {
                 border-right: unset;
             }
+
+            &-overflow {
+                padding-left: unset;
+            }
         }
 
         &--star {

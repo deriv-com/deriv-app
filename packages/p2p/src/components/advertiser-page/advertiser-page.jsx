@@ -16,6 +16,7 @@ import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import './advertiser-page.scss';
+import classNames from 'classnames';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store } = useStores();
@@ -138,7 +139,12 @@ const AdvertiserPage = () => {
                                     </Text>
                                 )}
                             </div>
-                            <div className='advertiser-page__rating--row'>
+                            <div
+                                className={classNames('advertiser-page__rating--row', {
+                                    'advertiser-page__rating--row-overflow':
+                                        isMobile() && rating_average && recommended_average,
+                                })}
+                            >
                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                     {joined_since > 0 ? (
                                         <Localize

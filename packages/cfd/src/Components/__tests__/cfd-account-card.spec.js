@@ -176,7 +176,6 @@ describe('CFDAccountCard', () => {
         // expect(screen.getByText(/IcEdit/i)).toBeInTheDocument();
         // expect(screen.getByText(/Fund top up/i)).toBeInTheDocument();
         // expect(screen.getByRole('link', { name: /Trade on web terminal/i })).toBeInTheDocument();
-        screen.debug();
     });
 
     it('should render the component for Real MT5 Synthetic account ', () => {

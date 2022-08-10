@@ -16,7 +16,9 @@ const NotificationOrder = ({ action, header, message, onClose }) => (
             <Text as='h4' weight='bold' className='notification__header'>
                 {header}
             </Text>
-            <p className='notification__text-body'>{message}</p>
+            <Text as='p' className='notification__text-body'>
+                {message}
+            </Text>
             <div className='notification__action'>
                 <Button
                     className='notification__cta-button'

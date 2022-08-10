@@ -1479,6 +1479,11 @@ export default class ClientStore extends BaseStore {
         this.switched = switched;
     }
 
+    @action.bound
+    setIsCfdPoiCompleted(is_completed) {
+        this.is_cfd_poi_completed = is_completed;
+    }
+
     /**
      * Check if account is disabled or not
      *

@@ -1,4 +1,4 @@
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
 
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed

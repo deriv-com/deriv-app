@@ -48,7 +48,7 @@ describe('<RadioButtonGroup/>', () => {
 
     it('if is_fiat is false it should not show description on clicking the child component', () => {
         render(
-            <RadioButtonGroup {...props}  is_fiat={false}>
+            <RadioButtonGroup {...props} is_fiat={false}>
                 <button>Currency</button>
             </RadioButtonGroup>
         );

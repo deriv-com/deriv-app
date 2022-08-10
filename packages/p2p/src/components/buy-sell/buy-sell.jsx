@@ -1,5 +1,5 @@
 import React from 'react';
-import { Div100vhContainer, useSafeState } from '@deriv/components';
+import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -60,7 +60,7 @@ const BuySell = () => {
     }
 
     return (
-        <Div100vhContainer height_offset='auto' className='buy-sell'>
+        <div className='buy-sell'>
             <FilterModal />
             <BuySellHeader
                 is_visible={is_toggle_visible}
@@ -81,7 +81,7 @@ const BuySell = () => {
                 table_type={buy_sell_store.table_type}
             />
             <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
-        </Div100vhContainer>
+        </div>
     );
 };
 

@@ -1,5 +1,5 @@
-const high_barrier = 96.5;
-const low_barrier = 94.5;
+const high_barrier = 94;
+const low_barrier = 93.5;
 const tick_1_price = 92.444;
 const tick_2_price = 92.317;
 const tick_3_price = 92.431;

@@ -336,7 +336,12 @@ const AccountSwitcher = props => {
             .filter(account => (is_demo ? isDemo(account) : !isDemo(account)))
             .reduce(
                 (total, account) => {
-                    total.balance += account.balance;
+                    const real_account_loginid = props.account_list.find(acc => !acc.is_virtual).loginid;
+                    if (!is_demo && props.accounts[real_account_loginid].currency !== account.currency) {
+                        total.balance += account.balance * exchanged_rate;
+                    } else {
+                        total.balance += account.balance;
+                    }
                     return total;
                 },
                 { balance: 0 }

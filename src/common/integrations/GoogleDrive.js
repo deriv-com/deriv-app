@@ -49,7 +49,7 @@ class GoogleDriveUtil {
     init = () => {
         gapi.load(this.auth_scope, {
             callback: () => {
-                gapi.client
+                gapi.auth2
                     .init({
                         apiKey: this.api_key,
                         clientId: this.client_id,
@@ -150,7 +150,7 @@ class GoogleDriveUtil {
                 if (data.action === google.picker.Action.PICKED) {
                     const file_id = data.docs[0].id;
 
-                    gapi.client.drive.files
+                    gapi.auth2.drive.files
                         .get({
                             alt: 'media',
                             fileId: file_id,
@@ -186,7 +186,7 @@ class GoogleDriveUtil {
 
             this.createFilePickerView({
                 title: translate('Select a Binary Bot strategy'),
-                afterAuthCallback: gapi.client.drive.files.list,
+                afterAuthCallback: gapi.auth2.drive.files.list,
                 mime_type: ['text/xml', 'application/xml'],
                 pickerCallback: userPickedFile,
                 generalCallback: resolve,
@@ -212,14 +212,14 @@ class GoogleDriveUtil {
             Promise.all(!this.is_authorized ? this.authorise : [])
                 .then(() => {
                     // eslint-disable-next-line
-                    gapi.client.drive.files.list({ q: 'trashed=false' }).then(response => {
+                    gapi.auth2.drive.files.list({ q: 'trashed=false' }).then(response => {
                         const folder = response.result.files.find(
                             file => file.mimeType === 'application/vnd.google-apps.folder'
                         );
 
                         if (folder) return resolve();
 
-                        gapi.client.drive.files
+                        gapi.auth2.drive.files
                             .create({
                                 resource: {
                                     name: this.bot_folder,
@@ -267,7 +267,7 @@ class GoogleDriveUtil {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = 'json';
                     xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart');
-                    xhr.setRequestHeader('Authorization', `Bearer ${gapi.auth.getToken().access_token}`);
+                    xhr.setRequestHeader('Authorization', `Bearer ${gapi.auth2.getToken().access_token}`);
                     xhr.onload = () => {
                         if (xhr.status === 200) {
                             resolve();

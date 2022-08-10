@@ -67,6 +67,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                 },
                 token: onfido_service_token,
                 useModal: false,
+                //simti : remove next line ?
                 useMemoryHistory: true,
                 onComplete,
                 steps: [

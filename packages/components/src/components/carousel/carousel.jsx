@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { Swipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
 import Icon from '../icon';
@@ -57,6 +57,11 @@ const Carousel = ({
         }
     };
 
+    const swipe_handlers = useSwipeable({
+        onSwipedLeft: handleNextClick,
+        onSwipedRight: handlePrevClick,
+    });
+
     useInterval(handleNextClick, autoplay_time);
 
     React.useEffect(() => {
@@ -64,7 +69,7 @@ const Carousel = ({
     }, [active_index, list, onItemSelect]);
 
     return (
-        <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
+        <div {...swipe_handlers} className={className}>
             <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
                 {sliced_list_length > 1 && (
                     <Nav
@@ -144,7 +149,7 @@ const Carousel = ({
                     />
                 )}
             </div>
-        </Swipeable>
+        </div>
     );
 };
 

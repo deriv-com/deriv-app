@@ -206,7 +206,7 @@ const SessionAndLoginLimitsInputs = () => {
                                 min_date={toMoment().add(1, 'days').format('YYYY-MM-DD')}
                                 max_date={toMoment().add(6, 'weeks').format('YYYY-MM-DD')}
                                 {...field}
-                                should_show_today={false}
+                                should_show_today="false"
                                 className='da-self-exclusion__input'
                                 label={localize('Date')}
                                 value={values.timeout_until && epochToMoment(values.timeout_until)}

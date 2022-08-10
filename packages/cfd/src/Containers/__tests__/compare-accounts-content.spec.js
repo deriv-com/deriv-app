@@ -1,15 +1,20 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import CompareAccountsContent from '../compare-accounts-content';
-import { notDeepEqual } from 'assert';
-
-beforeAll(() => {
-    const modal_root_el = document.createElement('div');
-    modal_root_el.setAttribute('id', 'modal_root');
-    document.body.appendChild(modal_root_el);
-});
 
 describe('should render the CompareAccountsContent component properly', () => {
+    let modal_root_el;
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
+
     const all_landing_companies = {
         mt_gaming_company: {
             financial: 'USD',
@@ -20,14 +25,18 @@ describe('should render the CompareAccountsContent component properly', () => {
         },
     };
 
-    const mock_props = {
-        is_logged_in: true,
-        platform: 'mt5',
-        show_eu_related: 'false',
-        residence: 'idn',
-        is_eu: 'false',
-        is_uk: 'false',
-    };
+    let mock_props;
+
+    beforeEach(() => {
+        mock_props = {
+            is_logged_in: true,
+            platform: 'mt5',
+            show_eu_related: 'false',
+            residence: 'idn',
+            is_eu: 'false',
+            is_uk: 'false',
+        };
+    });
 
     it('should render the component', () => {
         render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} />);

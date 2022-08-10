@@ -12,10 +12,14 @@ const BlockUserCount = () => {
 
     const [is_block_user_count_modal_open, setIsBlockUserCountModalOpen] = React.useState(false);
 
-    const message =
-        blocked_by_count === 0
-            ? localize('Nobody has blocked you. Yay!')
-            : localize('{{blocked_by_count}} people have blocked you.', { blocked_by_count });
+    const getMessage = () => {
+        if (blocked_by_count === 0) {
+            return localize('Nobody has blocked you. Yay!');
+        } else if (blocked_by_count === 1) {
+            return localize('{{blocked_by_count}} person has blocked you', { blocked_by_count });
+        }
+        return localize('{{blocked_by_count}} people have blocked you', { blocked_by_count });
+    };
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserInfo();
@@ -29,7 +33,7 @@ const BlockUserCount = () => {
                 <Modal has_close_icon={false} is_open={is_block_user_count_modal_open} width='440px'>
                     <Modal.Body>
                         <Text color='prominent' size='xs'>
-                            {message}
+                            {getMessage()}
                         </Text>
                     </Modal.Body>
                     <Modal.Footer>
@@ -50,7 +54,7 @@ const BlockUserCount = () => {
                     alignment='top'
                     className='block-user-count'
                     classNameTarget='block-user-count__container'
-                    message={message}
+                    message={getMessage()}
                 >
                     <Icon className='block-user-count__container--icon' icon='IcUserBlockedOutline' size={16} />
                     <Text color='less-prominent' line_height='m' size={isDesktop() ? 'xs' : 14}>

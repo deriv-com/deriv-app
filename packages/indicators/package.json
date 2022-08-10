@@ -20,7 +20,7 @@
         "build:travis": "echo \"No build:travis specified\"",
         "precommit": "lint-staged",
         "test": "jest --all",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test:stylelint": "echo \"No test:stylelint specified\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",

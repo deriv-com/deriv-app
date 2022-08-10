@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, Text } from '@deriv/components';
+import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +13,7 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
+import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
 import BlockUserModal from 'Components/block-user/block-user-modal';
@@ -28,13 +29,17 @@ const AdvertiserPage = () => {
         created_time,
         first_name,
         full_verification,
+        id,
         last_name,
+        name,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
     const joined_since = daysSince(created_time);
+    const is_my_advert = id === general_store.advertiser_id;
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
+        advertiser_page_store.setIsDropdownMenuVisible(false);
 
         return reaction(
             () => advertiser_page_store.active_index,
@@ -61,15 +66,11 @@ const AdvertiserPage = () => {
         >
             <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
             <BlockUserModal
+                advertiser_name={name}
                 is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked}
                 is_block_user_modal_open={general_store.is_block_user_modal_open}
-                onCancel={() => general_store.setIsBlockUserModalOpen(false)}
-                onSubmit={() =>
-                    general_store.blockUnblockUser(
-                        !advertiser_page_store.is_counterparty_advertiser_blocked,
-                        advertiser_page_store.advertiser_details_id
-                    )
-                }
+                onCancel={advertiser_page_store.onCancel}
+                onSubmit={advertiser_page_store.onSubmit}
             />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
@@ -77,11 +78,16 @@ const AdvertiserPage = () => {
                 setShouldShowPopup={advertiser_page_store.setShowAdPopup}
                 table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
             />
-            <PageReturn
-                className='buy-sell__advertiser-page-return'
-                onClick={buy_sell_store.hideAdvertiserPage}
-                page_title={localize("Advertiser's page")}
-            />
+            <div className='advertiser-page__page-return-header'>
+                <PageReturn
+                    className='buy-sell__advertiser-page-return'
+                    onClick={buy_sell_store.hideAdvertiserPage}
+                    page_title={localize("Advertiser's page")}
+                />
+                <MobileWrapper>
+                    <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />
+                </MobileWrapper>
+            </div>
             <BlockUserOverlay
                 is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked}
                 onClickUnblock={() => general_store.setIsBlockUserModalOpen(true)}
@@ -125,6 +131,9 @@ const AdvertiserPage = () => {
                                 />
                             </div>
                         </div>
+                        <DesktopWrapper>
+                            <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />
+                        </DesktopWrapper>
                     </div>
                     <AdvertiserPageStats />
                 </div>

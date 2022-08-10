@@ -7,11 +7,10 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
-import BlockUserModal from 'Components/block-user/block-user-modal';
-import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
+import BlockUser from './block-user';
 
 const MyProfileContent = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { my_profile_store } = useStores();
     const formik_ref = React.useRef();
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
@@ -49,33 +48,7 @@ const MyProfileContent = () => {
             </React.Fragment>
         );
     } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
-        return (
-            <React.Fragment>
-                <BlockUserModal
-                    advertiser_name={my_profile_store.selected_blocked_user.name}
-                    is_advertiser_blocked
-                    is_block_user_modal_open={general_store.is_block_user_modal_open}
-                    onCancel={() => general_store.setIsBlockUserModalOpen(false)}
-                    onSubmit={my_profile_store.onSubmit}
-                />
-                <DesktopWrapper>
-                    <BlockUserTable />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <MobileFullPageModal
-                        body_className='block-user__modal'
-                        height_offset='80px'
-                        is_flex
-                        is_modal_open
-                        page_header_className='buy-sell__modal-header'
-                        page_header_text={localize('Blocked advertisers')}
-                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                    >
-                        <BlockUserTable />
-                    </MobileFullPageModal>
-                </MobileWrapper>
-            </React.Fragment>
-        );
+        return <BlockUser />;
     }
     return <MyProfileStats />;
 };

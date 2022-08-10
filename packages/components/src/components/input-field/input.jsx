@@ -119,6 +119,7 @@ Input.propTypes = {
     classNameInlinePrefix: PropTypes.string,
     classNameDynamicSuffix: PropTypes.string,
     current_focus: PropTypes.string,
+    data_testid: PropTypes.string,
     data_tip: PropTypes.string,
     data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -140,6 +141,7 @@ Input.propTypes = {
     setCurrentFocus: PropTypes.func,
     type: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    inputmode: PropTypes.string,
 };
 
 export default Input;

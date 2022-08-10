@@ -30,7 +30,7 @@ const MyProfile = () => {
     return (
         <AutoSizer>
             {({ height, width }) => (
-                <div className='my-profile' height={height} style={{ width }}>
+                <div className='my-profile' style={{ height, width }}>
                     <div className='my-profile__content'>
                         <MyProfileDetailsContainer />
                         <DesktopWrapper>

@@ -16,6 +16,7 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable form_error_message = '';
     @observable has_more_adverts_to_load = false;
     @observable is_counterparty_advertiser_blocked = false;
+    @observable is_dropdown_menu_visible = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
@@ -112,6 +113,12 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    onCancel() {
+        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        this.setIsDropdownMenuVisible(false);
+    }
+
+    @action.bound
     onCancelClick() {
         this.setShowAdPopup(false);
     }
@@ -125,6 +132,15 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     onMount() {
         this.getAdvertiserInfo();
+    }
+
+    @action.bound
+    onSubmit() {
+        this.root_store.general_store.blockUnblockUser(
+            !this.is_counterparty_advertiser_blocked,
+            this.advertiser_details_id
+        );
+        this.setIsDropdownMenuVisible(false);
     }
 
     onTabChange() {
@@ -188,6 +204,11 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    setIsDropdownMenuVisible(is_dropdown_menu_visible) {
+        this.is_dropdown_menu_visible = is_dropdown_menu_visible;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
@@ -218,6 +239,16 @@ export default class AdvertiserPageStore extends BaseStore {
             this.root_store.buy_sell_store.showVerification();
         } else {
             this.setShowAdPopup(true);
+        }
+    }
+
+    @action.bound
+    showBlockUserModal() {
+        if (
+            !this.is_counterparty_advertiser_blocked &&
+            this.advertiser_info.id !== this.root_store.general_store.advertiser_id
+        ) {
+            this.root_store.general_store.setIsBlockUserModalOpen(true);
         }
     }
 }

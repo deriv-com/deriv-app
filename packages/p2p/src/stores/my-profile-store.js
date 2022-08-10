@@ -135,6 +135,23 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    /**
+     * Evaluates a new blocked_advertiser_list based on if the user has searched a blocked advertiser
+     * By default it returns the blocked_advertisers_list when there are no searches
+     *
+     * @returns {Array} Either the entire blocked advertisers list or filtered advertisers list by search term
+     */
+    @computed
+    get rendered_blocked_advertisers_list() {
+        if (this.search_term) {
+            if (this.search_results.length) {
+                return this.search_results;
+            }
+            return [];
+        }
+        return this.blocked_advertisers_list;
+    }
+
     @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
@@ -351,6 +368,22 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     hideAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(false);
+    }
+
+    /**
+     * This function loads more blocked advertisers as necessary if the user is searching for a blocked advertiser
+     * It updates the search_results based on the searched advertiser
+     */
+    @action.bound
+    loadMoreBlockedAdvertisers() {
+        if (this.search_term) {
+            const search_results = this.blocked_advertisers_list.filter(blocked_advertiser =>
+                blocked_advertiser.name.toLowerCase().includes(this.search_term.toLowerCase().trim())
+            );
+
+            this.setSearchResults(search_results);
+        }
+        this.setIsLoading(false);
     }
 
     @action.bound

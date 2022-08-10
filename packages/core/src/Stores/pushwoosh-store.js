@@ -59,7 +59,8 @@ export default class PushwooshStore extends BaseStore {
     sendTags = api => {
         api.getTags()
             .then(result => {
-                if (!result.result['Login ID'] || !result.result['Site Language'] || !result.result.Residence) {
+                // Add Optional chaining to resolve console error Cannot read properties of null (reading 'result')
+                if (!result?.result['Login ID'] || !result?.result['Site Language'] || !result?.result.Residence) {
                     return api.setTags({
                         'Login ID': this.root_store.client.loginid,
                         'Site Language': getLanguage().toLowerCase(),

@@ -724,6 +724,18 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    wait = ms => new Promise(res => setTimeout(res, ms));
+
+    callWithRetry = async (fn, depth = 0) => {
+        try {
+            return await fn();
+        } catch (e) {
+            await this.wait(2 ** depth * 10);
+
+            return this.callWithRetry(fn, depth + 1);
+        }
+    };
+
     getIsMarketTypeMatching = (account, market_type) =>
         market_type === 'synthetic'
             ? account.market_type === market_type || account.market_type === 'gaming'
@@ -2086,7 +2098,7 @@ export default class ClientStore extends BaseStore {
     async updateMt5LoginList() {
         if (this.is_logged_in && !this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
-            this.responseMt5LoginList(response);
+            callWithRetry(this.responseMt5LoginList(response));
         }
     }
 

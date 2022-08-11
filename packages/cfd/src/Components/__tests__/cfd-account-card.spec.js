@@ -23,94 +23,97 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-const synthetic_descriptor = 'Trade CFDs on our synthetic indices that simulate real-world market movement.';
-const financial_descriptor =
-    'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.';
-
-const mt5_acc = {
-    account_type: 'demo',
-    descriptor: '',
-    balance: 10000,
-    platform: 'mt5',
-    display_balance: '10000.00',
-    display_login: '20103240',
-    email: 'name@domain.com',
-    group: 'demo\\p01_ts02\\financial\\svg_std_usd',
-    landing_company_short: 'svg',
-    leverage: 1000,
-    login: 'MTD20103240',
-    market_type: 'financial',
-};
-
-const derivx_acc = {
-    account_type: 'demo',
-    descriptor: '',
-    balance: 10000,
-    platform: 'dxtrade',
-    display_balance: '10000.00',
-    display_login: '20103240',
-    email: 'name@domain.com',
-    group: 'demo\\p01_ts02\\financial\\svg_std_usd',
-    landing_company_short: 'svg',
-    leverage: 1000,
-    login: 'MTD20103240',
-    market_type: 'financial',
-};
-
-const mt5_labuan_acc = {
-    account_type: 'real',
-    descriptor: '',
-    balance: 10000,
-    platform: 'mt5',
-    display_balance: '10000.00',
-    display_login: '20103240',
-    email: 'name@domain.com',
-    group: 'demo\\p01_ts02\\financial\\labuan',
-    landing_company_short: 'labuan',
-    leverage: 1000,
-    login: 'MTD20103240',
-    market_type: 'financial',
-};
-
 describe('CFDAccountCard', () => {
-    const props = {
-        button_label: 'Top up',
-        commission_message: 'No commission',
+    let props;
+
+    const synthetic_descriptor = 'Trade CFDs on our synthetic indices that simulate real-world market movement.';
+    const financial_descriptor =
+        'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.';
+
+    const mt5_acc = {
+        account_type: 'demo',
         descriptor: '',
-        dxtrade_tokens: {
-            demo: '',
-            real: '',
-        },
-        is_hovered: false,
-        existing_accounts_data: [],
-        has_banner: true,
-        has_cfd_account: false,
-        has_cfd_account_error: false,
-        is_eu: true,
-        has_real_account: true,
-        is_accounts_switcher_on: false,
-        is_button_primary: true,
-        is_disabled: false,
-        is_loading: false,
-        is_logged_in: true,
-        is_virtual: true,
-        onHover: jest.fn(),
-        specs: '',
-        type: {},
-        title: {},
+        balance: 10000,
         platform: 'mt5',
-        onSelectAccount: jest.fn(),
-        onClickFund: jest.fn(),
-        onPasswordManager: jest.fn(),
-        should_show_trade_servers: true,
-        toggleAccountsDialog: jest.fn(),
-        toggleShouldShowRealAccountsList: jest.fn(),
-        isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
-        isEligibleForMoreRealMt5: jest.fn(() => true),
-        toggleMT5TradeModal: jest.fn(),
-        setMT5TradeAccount: jest.fn(),
-        existing_data: {},
+        display_balance: '10000.00',
+        display_login: '20103240',
+        email: 'name@domain.com',
+        group: 'demo\\p01_ts02\\financial\\svg_std_usd',
+        landing_company_short: 'svg',
+        leverage: 1000,
+        login: 'MTD20103240',
+        market_type: 'financial',
     };
+
+    const derivx_acc = {
+        account_type: 'demo',
+        descriptor: '',
+        balance: 10000,
+        platform: 'dxtrade',
+        display_balance: '10000.00',
+        display_login: '20103240',
+        email: 'name@domain.com',
+        group: 'demo\\p01_ts02\\financial\\svg_std_usd',
+        landing_company_short: 'svg',
+        leverage: 1000,
+        login: 'MTD20103240',
+        market_type: 'financial',
+    };
+
+    const mt5_labuan_acc = {
+        account_type: 'real',
+        descriptor: '',
+        balance: 10000,
+        platform: 'mt5',
+        display_balance: '10000.00',
+        display_login: '20103240',
+        email: 'name@domain.com',
+        group: 'demo\\p01_ts02\\financial\\labuan',
+        landing_company_short: 'labuan',
+        leverage: 1000,
+        login: 'MTD20103240',
+        market_type: 'financial',
+    };
+
+    beforeEach(() => {
+        props = {
+            button_label: 'Top up',
+            commission_message: 'No commission',
+            descriptor: '',
+            dxtrade_tokens: {
+                demo: '',
+                real: '',
+            },
+            is_hovered: false,
+            existing_accounts_data: [],
+            has_banner: true,
+            has_cfd_account: false,
+            has_cfd_account_error: false,
+            is_eu: true,
+            has_real_account: true,
+            is_accounts_switcher_on: false,
+            is_button_primary: true,
+            is_disabled: false,
+            is_loading: false,
+            is_logged_in: true,
+            is_virtual: true,
+            onHover: jest.fn(),
+            specs: '',
+            type: {},
+            title: {},
+            platform: 'mt5',
+            onSelectAccount: jest.fn(),
+            onClickFund: jest.fn(),
+            onPasswordManager: jest.fn(),
+            should_show_trade_servers: true,
+            toggleAccountsDialog: jest.fn(),
+            toggleShouldShowRealAccountsList: jest.fn(),
+            isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
+            isEligibleForMoreRealMt5: jest.fn(() => true),
+            toggleMT5TradeModal: jest.fn(),
+            setMT5TradeAccount: jest.fn(),
+        };
+    });
 
     it('should render the component for Demo MT5 Synthetic account ', () => {
         const type = {

@@ -77,7 +77,7 @@ const JurisdictionModal = ({
         poa_status,
         poi_status,
         need_poi_for_vanuatu,
-        need_poi_for_bvi_labuan,
+        need_poi_for_bvi_labuan_maltainvest,
         need_poa_submission,
         poi_verified_for_vanuatu,
         poi_verified_for_bvi_labuan_maltainvest,
@@ -154,7 +154,7 @@ const JurisdictionModal = ({
             }
             return (
                 (poi_poa_not_submitted ||
-                    need_poi_for_bvi_labuan ||
+                    need_poi_for_bvi_labuan_maltainvest ||
                     need_poa_submission ||
                     (poi_poa_verified && checked)) &&
                 !poi_poa_pending
@@ -194,7 +194,7 @@ const JurisdictionModal = ({
             } else {
                 toggleCFDVerificationModal();
             }
-        } else if (need_poi_for_bvi_labuan) {
+        } else if (need_poi_for_bvi_labuan_maltainvest) {
             toggleCFDVerificationModal();
         } else if (poi_poa_verified) {
             if (!has_submitted_personal_details) {
@@ -249,7 +249,6 @@ const JurisdictionModal = ({
                                 authentication_status={authentication_status}
                                 poa_status={poa_status}
                                 poi_status={poi_status}
-                                is_eu={is_eu}
                                 is_fully_authenticated={is_fully_authenticated}
                                 poi_poa_pending={poi_poa_pending}
                                 checked={checked}
@@ -264,7 +263,7 @@ const JurisdictionModal = ({
                                 }
                                 poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                                 need_poi_for_vanuatu={need_poi_for_vanuatu}
-                                need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+                                need_poi_for_bvi_labuan_maltainvest={need_poi_for_bvi_labuan_maltainvest}
                             />
                             <Modal.Footer has_separator>
                                 <Button
@@ -296,7 +295,6 @@ const JurisdictionModal = ({
                                 authentication_status={authentication_status}
                                 poa_status={poa_status}
                                 poi_status={poi_status}
-                                is_eu={is_eu}
                                 is_fully_authenticated={is_fully_authenticated}
                                 poi_poa_pending={poi_poa_pending}
                                 checked={checked}
@@ -311,7 +309,7 @@ const JurisdictionModal = ({
                                 }
                                 poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                                 need_poi_for_vanuatu={need_poi_for_vanuatu}
-                                need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+                                need_poi_for_bvi_labuan_maltainvest={need_poi_for_bvi_labuan_maltainvest}
                             />
                             <Modal.Footer has_separator>
                                 <Button

@@ -154,3 +154,14 @@ export type TAvailableAccountAPI = [
         sub_account_type: string;
     }
 ];
+
+export type TJurisdictionCard = {
+    jurisdiction_selected_shortcode: string;
+    synthetic_available_accounts: TAvailableAccountAPI;
+    financial_available_accounts: TAvailableAccountAPI;
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    account_type: string;
+    type_of_card: string;
+    disabled: boolean;
+    banner: React.ReactNode;
+};

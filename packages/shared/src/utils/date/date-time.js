@@ -1,10 +1,13 @@
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed
 moment.createFromInputFallback = function (config) {
     config._d = new Date(NaN); // eslint-disable-line no-underscore-dangle
 };
+
+// Localize moment instance with specific object
+export const initMoment = lang => moment.locale(lang);
 
 /**
  * Convert epoch to moment object
@@ -98,6 +101,12 @@ export const diffInMonths = (now, then) => then.diff(now, 'month');
  */
 export const getDiffDuration = (start_time, end_time) =>
     moment.duration(moment.unix(end_time).diff(moment.unix(start_time)));
+
+/** returns the DD MM YYYY format */
+export const getDateFromNow = (days, unit, format) => {
+    const date = moment(new Date());
+    return date.add(days, unit).format(format);
+};
 
 /**
  * return formatted duration `2 days 01:23:59`

@@ -1,15 +1,21 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, computed, observable, reaction, runInAction } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
+    @observable is_cfd_personal_details_modal_visible = false;
+    @observable is_jurisdiction_modal_visible = false;
+    @observable is_mt5_trade_modal_visible = false;
+    @observable jurisdiction_selected_shortcode = '';
+
     @observable account_type = {
         category: undefined,
         type: undefined,
     };
 
+    @observable mt5_trade_account = {};
     @observable new_account_response = {};
     @observable map_type = {};
     @observable has_cfd_error = false;
@@ -20,19 +26,30 @@ export default class CFDStore extends BaseStore {
     @observable is_cfd_password_modal_enabled = false;
     @observable is_cfd_reset_password_modal_enabled = false;
 
-    @observable is_cfd_pending_dialog_open = false;
-
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
     @observable error_type = undefined;
 
+    @observable is_cfd_verification_modal_visible = false;
+    @observable dxtrade_tokens = {
+        demo: '',
+        real: '',
+    };
+
+    real_synthetic_accounts_existing_data = [];
+    real_financial_accounts_existing_data = [];
+
     constructor({ root_store }) {
         super({ root_store });
-    }
 
-    @computed
-    get has_cfd_account() {
-        return this.current_list.length > 0;
+        reaction(
+            () => [this.root_store.client.dxtrade_accounts_list],
+            () => {
+                if (this.root_store.client.dxtrade_accounts_list.length > 0) {
+                    this.loadDxtradeTokens();
+                }
+            }
+        );
     }
 
     @computed
@@ -44,11 +61,11 @@ export default class CFDStore extends BaseStore {
 
     @computed
     get current_list() {
-        const list = [];
+        const list = {};
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp
-            list[getAccountListKey(account, CFD_PLATFORMS.MT5)] = {
+            list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
                 ...account,
             };
         });
@@ -92,8 +109,8 @@ export default class CFDStore extends BaseStore {
     checkShouldOpenAccount() {
         const account_type = sessionStorage.getItem('open_cfd_account_type');
         if (account_type) {
-            const [category, type, set_password] = account_type.split('.');
-            this.createCFDAccount({ category, type, set_password });
+            const [category, platform, type, set_password] = account_type.split('.');
+            this.createCFDAccount({ category, platform, type, set_password });
             sessionStorage.removeItem('open_cfd_account_type');
         }
     }
@@ -122,17 +139,27 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    createCFDAccount({ category, type, set_password }) {
+    createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
             category,
             type,
         });
-
-        if (category === 'real') {
-            this.realCFDSignup(set_password);
-        } else {
-            this.demoCFDSignup();
+        if (platform === CFD_PLATFORMS.DXTRADE) {
+            if (category === 'real') {
+                this.realCFDSignup(set_password);
+            } else {
+                this.demoCFDSignup();
+            }
+        } else if (platform === CFD_PLATFORMS.MT5) {
+            if (category === 'real') {
+                this.toggleJurisdictionModal();
+            } else {
+                if (this.root_store.client.is_eu) {
+                    this.setJurisdictionSelectedShortcode('maltainvest');
+                } else this.setJurisdictionSelectedShortcode('svg');
+                this.demoCFDSignup();
+            }
         }
     }
 
@@ -164,14 +191,28 @@ export default class CFDStore extends BaseStore {
         const name = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
         const type_request = getAccountTypeFields(this.account_type);
+        const { address_line_1, address_line_2, address_postcode, address_city, address_state, country_code, phone } =
+            this.root_store.client.account_settings;
 
         return WS.mt5NewAccount({
             mainPassword: values.password,
             email: this.root_store.client.email_address,
             leverage,
             name,
+            address: address_line_1 || address_line_2,
+            city: address_city,
+            country: country_code,
+            phone,
+            state: address_state,
+            zipCode: address_postcode,
             ...(values.server ? { server: values.server } : {}),
-            ...type_request,
+            ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
+            ...(this.jurisdiction_selected_shortcode !== 'labuan'
+                ? type_request
+                : {
+                      account_type: 'financial',
+                      mt5_account_type: 'financial_stp',
+                  }),
         });
     }
 
@@ -213,9 +254,7 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     enableMt5FinancialStpModal() {
-        if (this.account_type.category === 'real' && this.account_type.type === 'financial_stp') {
-            this.is_mt5_financial_stp_modal_open = true;
-        }
+        this.is_mt5_financial_stp_modal_open = true;
     }
 
     @action.bound
@@ -229,6 +268,11 @@ export default class CFDStore extends BaseStore {
             ...meta,
             ...data,
         };
+    }
+
+    @action.bound
+    setMT5TradeAccount(mt5_trade_account) {
+        this.mt5_trade_account = mt5_trade_account;
     }
 
     @action.bound
@@ -394,6 +438,26 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
+    getRealSyntheticAccountsExistingData(real_synthetic_accounts_existing_data) {
+        this.real_synthetic_accounts_existing_data = real_synthetic_accounts_existing_data;
+    }
+
+    @action.bound
+    getRealFinancialAccountsExistingData(real_financial_accounts_existing_data) {
+        this.real_financial_accounts_existing_data = real_financial_accounts_existing_data;
+    }
+
+    @action.bound
+    toggleJurisdictionModal() {
+        this.is_jurisdiction_modal_visible = !this.is_jurisdiction_modal_visible;
+    }
+
+    @action.bound
+    toggleMT5TradeModal() {
+        this.is_mt5_trade_modal_visible = !this.is_mt5_trade_modal_visible;
+    }
+
+    @action.bound
     disableMt5FinancialStpModal() {
         this.is_mt5_financial_stp_modal_open = false;
     }
@@ -466,21 +530,6 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    closeCFDPendingDialog() {
-        this.is_cfd_pending_dialog_open = false;
-    }
-
-    @action.bound
-    openPendingDialog() {
-        setTimeout(
-            runInAction(() => {
-                this.is_cfd_pending_dialog_open = true;
-            }),
-            300
-        );
-    }
-
-    @action.bound
     sendVerifyEmail() {
         return WS.verifyEmail(this.root_store.client.email, 'trading_platform_investor_password_reset');
     }
@@ -488,6 +537,34 @@ export default class CFDStore extends BaseStore {
     @action.bound
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
+    }
+
+    @action.bound
+    setDxtradeToken(response, server) {
+        if (!response.error) {
+            const { dxtrade } = response.service_token;
+            this.dxtrade_tokens[server] = dxtrade.token;
+        }
+    }
+
+    @action.bound
+    loadDxtradeTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
+                account => account.account_type === account_type
+            );
+
+            if (!this.dxtrade_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
+                    this.setDxtradeToken(response, account_type)
+                );
+            }
+        });
+    }
+
+    @action.bound
+    toggleCFDPersonalDetailsModal() {
+        this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {
@@ -510,5 +587,15 @@ export default class CFDStore extends BaseStore {
         }
 
         return response?.error?.message;
+    }
+
+    @action.bound
+    setJurisdictionSelectedShortcode(shortcode) {
+        this.jurisdiction_selected_shortcode = shortcode;
+    }
+
+    @action.bound
+    toggleCFDVerificationModal() {
+        this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
     }
 }

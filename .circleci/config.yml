@@ -69,6 +69,7 @@ commands:
             - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
+            - "packages/reports/node_modules"
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
@@ -163,14 +164,22 @@ commands:
     steps:
       - run:
           name: "Publish to cloudflare pages (staging)"
-          command: cd packages/core && npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
+          command: |
+            npm i wrangler@2.0.19
+            cd packages/core 
+            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
+            echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
 
   publish_to_pages_production:
     description: "Publish to cloudflare pages"
     steps:
       - run:
           name: "Publish to cloudflare pages (production)"
-          command: cd packages/core && npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
+          command: | 
+            npm i wrangler@2.0.19
+            cd packages/core 
+            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
+            echo "New website - http://cf-pages-deriv-app.deriv.com"
 
 jobs:
   build:
@@ -292,6 +301,7 @@ workflows:
             branches:
               only: /^master$/
       - publish_cloudflare_staging:
+          context: binary-frontend-artifact-upload
           requires:
             - release_staging
           filters:
@@ -308,6 +318,7 @@ workflows:
             tags:
               only: /^production.*/
       - publish_cloudflare_production:
+          context: binary-frontend-artifact-upload
           requires:
             - release_production
           filters:

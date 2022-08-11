@@ -30,26 +30,9 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                             />
                         </Text>
                         <div className='wallet-account__actions'>
-                            <WalletActionButton
-                                size='small'
-                                label='Reports'
-                                visiblity='label-and-icon'
-                                icon='icAppstoreTransfer'
-                            />
-                            <WalletActionButton
-                                size='small'
-                                label='Transaction'
-                                visiblity='label-and-icon'
-                                icon='icAppstoreTransaction'
-                            />
-                            <WalletActionButton
-                                size='small'
-                                label='Reset Balance
-                                '
-                                visiblity='label-and-icon
-                                '
-                                icon='icAppstoreResetBalance'
-                            />
+                            <WalletActionButton size='small' label='Reports' icon='icAppstoreTransfer' />
+                            <WalletActionButton size='small' label='Transaction' icon='icAppstoreTransaction' />
+                            <WalletActionButton size='small' label='Reset Balance' icon='icAppstoreResetBalance' />
                         </div>
                     </div>
                 </div>

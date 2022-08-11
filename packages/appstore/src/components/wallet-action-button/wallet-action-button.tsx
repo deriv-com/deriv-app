@@ -3,18 +3,17 @@ import { localize } from '@deriv/translations';
 import { Text } from '@deriv/ui';
 import { Icon } from '@deriv/components';
 
-interface TProps {
+type TWalletActionButtonProps = {
     size: 'small' | 'medium' | 'large';
     icon: string;
     label?: string;
     onClick?: () => void;
-    visiblity: string;
-}
+};
 
-const WalletActionButton = ({ icon, label, onClick, visiblity, size }: TProps) => {
+const WalletActionButton = ({ icon, label, onClick, size }: TWalletActionButtonProps) => {
     return (
         <button className={`wallet-action-button wallet-action-button__${size}`} onClick={onClick}>
-            {icon && visiblity && <Icon className='wallet-action-button__icon' icon={icon} />}
+            {icon && <Icon className='wallet-action-button__icon' icon={icon} />}
             {label && (
                 <span>
                     <Text bold={true} type='small' align='center'>

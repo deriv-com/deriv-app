@@ -268,7 +268,7 @@ describe('CFDAccountCard', () => {
         expect(props.setMT5TradeAccount).toHaveBeenCalledWith(mt5_acc);
     });
 
-    it('should show add account if the user doesnt have an existing account', () => {
+    it("should show add account if the user doesn't have an existing account", () => {
         const type = {
             type: 'synthetic',
             category: 'demo',
@@ -288,7 +288,7 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/add account/i)).toBeInTheDocument();
     });
 
-    it('should show add account button if the user doesnt have an existing account for real account', () => {
+    it("should show add account button if the user doesn't have an existing account for real account", () => {
         const type = {
             type: 'synthetic',
             category: 'real',

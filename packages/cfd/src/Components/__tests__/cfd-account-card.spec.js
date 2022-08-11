@@ -57,6 +57,21 @@ const derivx_acc = {
     market_type: 'financial',
 };
 
+const mt5_labuan_acc = {
+    account_type: 'real',
+    descriptor: '',
+    balance: 10000,
+    platform: 'mt5',
+    display_balance: '10000.00',
+    display_login: '20103240',
+    email: 'name@domain.com',
+    group: 'demo\\p01_ts02\\financial\\labuan',
+    landing_company_short: 'labuan',
+    leverage: 1000,
+    login: 'MTD20103240',
+    market_type: 'financial',
+};
+
 describe('CFDAccountCard', () => {
     const props = {
         button_label: 'Top up',
@@ -72,7 +87,7 @@ describe('CFDAccountCard', () => {
         has_cfd_account: false,
         has_cfd_account_error: false,
         is_eu: true,
-        has_real_account: false,
+        has_real_account: true,
         is_accounts_switcher_on: false,
         is_button_primary: true,
         is_disabled: false,
@@ -90,7 +105,7 @@ describe('CFDAccountCard', () => {
         should_show_trade_servers: true,
         toggleAccountsDialog: jest.fn(),
         toggleShouldShowRealAccountsList: jest.fn(),
-        isEligibleForMoreDemoMt5Svg: {},
+        isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
         isEligibleForMoreRealMt5: jest.fn(() => true),
         toggleMT5TradeModal: jest.fn(),
         setMT5TradeAccount: jest.fn(),
@@ -120,7 +135,7 @@ describe('CFDAccountCard', () => {
             screen.getByText(/trade cfds on our synthetic indices that simulate real-world market movement./i)
         ).toBeInTheDocument();
         expect(screen.getByText(/20103240/i)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(screen.getByText(/usd/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /top up/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /trade/i })).toBeInTheDocument();
     });
@@ -149,7 +164,7 @@ describe('CFDAccountCard', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getByText(/20103240/i)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(screen.getByText(/usd/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /top up/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /trade/i })).toBeInTheDocument();
     });
@@ -177,7 +192,7 @@ describe('CFDAccountCard', () => {
         ).toBeInTheDocument();
         expect(screen.getByText(/mfsa/i)).toBeInTheDocument();
         expect(screen.getByText(/20103240/i)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(screen.getByText(/usd/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /top up/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /trade/i })).toBeInTheDocument();
     });
@@ -206,7 +221,7 @@ describe('CFDAccountCard', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getByText(/20103240/i)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(screen.getByText(/usd/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /top up/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /trade/i })).toBeInTheDocument();
     });
@@ -227,7 +242,7 @@ describe('CFDAccountCard', () => {
             />
         );
         fireEvent.click(screen.getByRole('button', { name: /top up/i }));
-        expect(props.onClickFund).toHaveBeenCalled();
+        expect(props.onClickFund).toHaveBeenCalledWith(mt5_acc);
     });
 
     it('should call toggleMT5TradeModal when trade button is clicked', () => {
@@ -247,6 +262,169 @@ describe('CFDAccountCard', () => {
         );
         fireEvent.click(screen.getByRole('button', { name: /trade/i }));
         expect(props.toggleMT5TradeModal).toHaveBeenCalled();
+        expect(props.setMT5TradeAccount).toHaveBeenCalledWith(mt5_acc);
+    });
+
+    it('should show add account if the user doesnt have an existing account', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                existing_accounts_data={[]}
+                platform='mt5'
+                is_eu={false}
+            />
+        );
+        expect(screen.getByText(/add account/i)).toBeInTheDocument();
+    });
+
+    it('should show add account button if the user doesnt have an existing account for real account', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                existing_accounts_data={[]}
+                platform='mt5'
+                is_eu={false}
+            />
+        );
+        expect(screen.getByText(/add account/i)).toBeInTheDocument();
+    });
+
+    it('should call onSelectAccount when the add account button is clicked', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                existing_accounts_data={[]}
+                platform='mt5'
+                is_eu={false}
+            />
+        );
+        fireEvent.click(screen.getByText(/add account/i));
+        expect(props.onSelectAccount).toHaveBeenCalled();
+    });
+
+    it('should show add real acount button and call onSelectAccount if the button is clicked', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                platform='mt5'
+                button_label='Add real account'
+                existing_accounts_data={null}
+            />
+        );
+        fireEvent.click(screen.getByText(/add real account/i));
+        expect(props.onSelectAccount).toHaveBeenCalled();
+    });
+
+    it('should show add demo account button and call onSelectAccount if the button is clicked', () => {
+        const type = {
+            type: 'financial',
+            category: 'real',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                platform='mt5'
+                button_label='Add demo account'
+                existing_accounts_data={null}
+            />
+        );
+        fireEvent.click(screen.getByText(/add demo account/i));
+        expect(props.onSelectAccount).toHaveBeenCalled();
+    });
+
+    it('should show labuan banner', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'mt5',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                platform='mt5'
+                existing_accounts_data={[mt5_labuan_acc]}
+            />
+        );
+        expect(screen.getByText(/labuan/i)).toBeInTheDocument();
+    });
+
+    it('should show fund transfer button and call onClickFund when the button is clicked', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'real',
+            platform: 'dxtrade',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                platform='dxtrade'
+            />
+        );
+        fireEvent.click(screen.getByText(/fund transfer/i));
+        expect(props.onClickFund).toHaveBeenCalled();
+    });
+
+    it('should call onPasswordManager when the password change button icon is clicked', () => {
+        const type = {
+            type: 'synthetic',
+            category: 'demo',
+            platform: 'dxtrade',
+        };
+        render(
+            <CFDAccountCard
+                {...props}
+                type={type}
+                descriptor={synthetic_descriptor}
+                title='Synthetic'
+                existing_accounts_data={[derivx_acc]}
+                platform='dxtrade'
+            />
+        );
+        expect(screen.getByText(/icedit/i)).toBeInTheDocument();
+        fireEvent.click(screen.getByText(/icedit/i));
+        expect(props.onPasswordManager).toHaveBeenCalled();
     });
 
     it('should render the account card for Demo DerivX Synthetic account ', () => {
@@ -278,7 +456,7 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/trade on web terminal/i)).toBeInTheDocument();
     });
 
-    it('should call onPasswordManager when the password change button icon is clicked', () => {
+    it('should show descriptor and commission message when the user has no existing data and not logged in', () => {
         const type = {
             type: 'synthetic',
             category: 'demo',
@@ -290,12 +468,16 @@ describe('CFDAccountCard', () => {
                 type={type}
                 descriptor={synthetic_descriptor}
                 title='Synthetic'
-                existing_accounts_data={[derivx_acc]}
+                existing_accounts_data={null}
                 platform='dxtrade'
+                is_eu={false}
+                is_logged_in={false}
             />
         );
-        expect(screen.getByText(/icedit/i)).toBeInTheDocument();
-        fireEvent.click(screen.getByText(/icedit/i));
-        expect(props.onPasswordManager).toHaveBeenCalled();
+        expect(screen.getByText(/most popular/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/Trade CFDs on our synthetic indices that simulate real-world market movement/i)
+        ).toBeInTheDocument();
+        expect(screen.getByText(/no commission/i)).toBeInTheDocument();
     });
 });

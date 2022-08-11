@@ -1,6 +1,18 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
+import { TCFDAccountCard } from '../props.types';
+
+type TMockPlatformAccounts = {
+    account_type: string;
+    balance: number;
+    platform: string;
+    display_balance: string;
+    display_login: string;
+    landing_company_short: string;
+    login: string;
+    market_type: string;
+};
 
 const mock_connect_props = {
     dxtrade_tokens: {
@@ -24,53 +36,41 @@ jest.mock('@deriv/components', () => {
 });
 
 describe('CFDAccountCard', () => {
-    let props;
+    let props: TCFDAccountCard;
 
     const synthetic_descriptor = 'Trade CFDs on our synthetic indices that simulate real-world market movement.';
     const financial_descriptor =
         'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.';
 
-    const mt5_acc = {
+    const mt5_acc: TMockPlatformAccounts = {
         account_type: 'demo',
-        descriptor: '',
         balance: 10000,
         platform: 'mt5',
         display_balance: '10000.00',
         display_login: '20103240',
-        email: 'name@domain.com',
-        group: 'demo\\p01_ts02\\financial\\svg_std_usd',
         landing_company_short: 'svg',
-        leverage: 1000,
         login: 'MTD20103240',
         market_type: 'financial',
     };
 
-    const derivx_acc = {
+    const derivx_acc: TMockPlatformAccounts = {
         account_type: 'demo',
-        descriptor: '',
         balance: 10000,
         platform: 'dxtrade',
         display_balance: '10000.00',
         display_login: '20103240',
-        email: 'name@domain.com',
-        group: 'demo\\p01_ts02\\financial\\svg_std_usd',
         landing_company_short: 'svg',
-        leverage: 1000,
         login: 'MTD20103240',
         market_type: 'financial',
     };
 
-    const mt5_labuan_acc = {
+    const mt5_labuan_acc: TMockPlatformAccounts = {
         account_type: 'real',
-        descriptor: '',
         balance: 10000,
         platform: 'mt5',
         display_balance: '10000.00',
         display_login: '20103240',
-        email: 'name@domain.com',
-        group: 'demo\\p01_ts02\\financial\\labuan',
         landing_company_short: 'labuan',
-        leverage: 1000,
         login: 'MTD20103240',
         market_type: 'financial',
     };
@@ -87,31 +87,29 @@ describe('CFDAccountCard', () => {
             is_hovered: false,
             existing_accounts_data: [],
             has_banner: true,
-            has_cfd_account: false,
             has_cfd_account_error: false,
             is_eu: true,
             has_real_account: true,
             is_accounts_switcher_on: false,
             is_button_primary: true,
             is_disabled: false,
-            is_loading: false,
             is_logged_in: true,
             is_virtual: true,
             onHover: jest.fn(),
-            specs: '',
-            type: {},
-            title: {},
+            specs: {},
+            type: { category: '', type: '', platform: '' },
+            title: '',
             platform: 'mt5',
             onSelectAccount: jest.fn(),
             onClickFund: jest.fn(),
             onPasswordManager: jest.fn(),
-            should_show_trade_servers: true,
             toggleAccountsDialog: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
             isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
             isEligibleForMoreRealMt5: jest.fn(() => true),
             toggleMT5TradeModal: jest.fn(),
             setMT5TradeAccount: jest.fn(),
+            trading_platform_available_accounts: [],
         };
     });
 

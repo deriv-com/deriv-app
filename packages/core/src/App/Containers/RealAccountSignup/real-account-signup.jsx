@@ -191,13 +191,13 @@ const RealAccountSignup = ({
         },
         {
             body: local_props => {
-                let client_error_message = null;
-                if (local_props.state_value.error_code.message_to_client) {
+                let client_error_message = local_props.state_value.error_message;
+                if (!client_error_message && local_props.state_value.error_code.message_to_client) {
                     client_error_message = local_props.state_value.error_code.message_to_client;
                 }
                 return (
                     <SignupErrorContent
-                        message={local_props.state_value.error_message || client_error_message}
+                        message={client_error_message}
                         code={local_props.state_value.error_code}
                         onConfirm={onErrorConfirm}
                     />

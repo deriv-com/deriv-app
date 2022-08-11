@@ -34,11 +34,7 @@ const AppContent = () => {
     }
 
     if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return (
-            <React.Fragment>
-                <AdvertiserPage />
-            </React.Fragment>
-        );
+        return <AdvertiserPage />;
     }
 
     return (

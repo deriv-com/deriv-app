@@ -33,12 +33,8 @@ const AppContent = () => {
         return <Verification should_wrap />;
     }
 
-    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return (
-            <React.Fragment>
-                <AdvertiserPage />
-            </React.Fragment>
-        );
+    if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
+        return <AdvertiserPage />;
     }
 
     return (

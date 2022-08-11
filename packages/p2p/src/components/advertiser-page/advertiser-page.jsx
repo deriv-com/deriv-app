@@ -15,6 +15,7 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
+import classNames from 'classnames';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
@@ -92,7 +93,12 @@ const AdvertiserPage = () => {
                                 </div>
                             )}
                         </div>
-                        <div className='advertiser-page__rating'>
+                        <div
+                            className={classNames('advertiser-page__rating', {
+                                'advertiser-page__rating--overflow':
+                                    isMobile() && rating_average && recommended_average,
+                            })}
+                        >
                             {rating_average && recommended_average ? (
                                 <React.Fragment>
                                     <div className='advertiser-page__rating--row'>

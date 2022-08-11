@@ -18,6 +18,7 @@ const SameCitizenshipModal = ({
             <Button
                 type='button'
                 onClick={() => {
+                    setFieldValue('residence', null, false);
                     setIsSameCitizenshipModal(false);
                 }}
                 tertiary

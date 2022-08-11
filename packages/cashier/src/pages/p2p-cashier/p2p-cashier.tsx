@@ -1,15 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { getLanguage } from '@deriv/translations';
-import { routes, WS } from '@deriv/shared';
-import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
-import { connect } from 'Stores/connect';
+import { Loading } from '@deriv/components';
+import { routes, WS } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import { get, init, timePromise } from '_common/server_time';
+import { connect } from 'Stores/connect';
+import { RootStore } from 'Types';
+
+type TLocalCurrencyConfig = {
+    currency: string;
+    decimal_places: number;
+};
+
+type TP2PCashierProps = RouteComponentProps & {
+    balance: string;
+    currency: string;
+    current_focus: string;
+    is_dark_mode_on: boolean;
+    is_logging_in: boolean;
+    is_mobile: boolean;
+    is_virtual: boolean;
+    local_currency_config: TLocalCurrencyConfig;
+    loginid: string;
+    platform: string;
+    residence: string;
+    setCurrentFocus: (value: string) => void;
+    setNotificationCount: (value: number) => void;
+    setOnRemount: (func: () => void) => void;
+};
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
+    balance,
     currency,
     current_focus,
     history,
@@ -24,29 +48,17 @@ const P2PCashier = ({
     residence,
     setNotificationCount,
     setCurrentFocus,
-    balance,
     setOnRemount,
-}) => {
-    const [order_id, setOrderId] = React.useState(null);
+}: TP2PCashierProps) => {
+    const [order_id, setOrderId] = React.useState<string | null>(null);
     const server_time = {
         get,
         init,
         timePromise,
     };
 
-    React.useEffect(() => {
-        const url_params = new URLSearchParams(location.search);
-        const passed_order_id = url_params.get('order');
-
-        if (passed_order_id) {
-            setQueryOrder(passed_order_id);
-        }
-
-        return () => setQueryOrder(null);
-    }, [location.search, setQueryOrder]);
-
     const setQueryOrder = React.useCallback(
-        input_order_id => {
+        (input_order_id: string | null) => {
             const current_query_params = new URLSearchParams(location.search);
 
             if (current_query_params.has('order')) {
@@ -70,6 +82,17 @@ const P2PCashier = ({
         },
         [history, location.hash, location.search, order_id]
     );
+
+    React.useEffect(() => {
+        const url_params = new URLSearchParams(location.search);
+        const passed_order_id = url_params.get('order');
+
+        if (passed_order_id) {
+            setQueryOrder(passed_order_id);
+        }
+
+        return () => setQueryOrder(null);
+    }, [location.search, setQueryOrder]);
 
     if (is_logging_in) {
         return <Loading is_fullscreen />;
@@ -99,39 +122,21 @@ const P2PCashier = ({
     );
 };
 
-P2PCashier.propTypes = {
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    history: PropTypes.object,
-    is_dark_mode_on: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    local_currency_config: PropTypes.object,
-    location: PropTypes.object,
-    loginid: PropTypes.string,
-    platform: PropTypes.any,
-    residence: PropTypes.string,
-    setNotificationCount: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-};
-
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
+    connect(({ client, common, modules, ui }: RootStore) => ({
         balance: client.balance,
         currency: client.currency,
-        local_currency_config: client.local_currency_config,
-        loginid: client.loginid,
+        current_focus: ui.current_focus,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_logging_in: client.is_logging_in,
+        is_mobile: ui.is_mobile,
         is_virtual: client.is_virtual,
+        local_currency_config: client.local_currency_config,
+        loginid: client.loginid,
         platform: common.platform,
         residence: client.residence,
         setNotificationCount: modules.cashier.general_store.setNotificationCount,
         setOnRemount: modules.cashier.general_store.setOnRemount,
-        is_mobile: ui.is_mobile,
         setCurrentFocus: ui.setCurrentFocus,
-        current_focus: ui.current_focus,
     }))(P2PCashier)
 );

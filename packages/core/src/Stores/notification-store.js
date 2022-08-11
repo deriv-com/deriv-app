@@ -722,8 +722,8 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Verify identity'),
                 },
                 key: 'needs_poi',
-                header: localize('Please verify your proof of identity'),
-                message: localize('To continue trading with us, please confirm who you are.'),
+                header: localize('Proof of identity verification failed'),
+                message: localize('Please resubmit your proof of identity.'),
                 type: 'danger',
             },
             needs_poa_virtual: {

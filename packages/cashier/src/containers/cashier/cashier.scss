@@ -62,6 +62,7 @@
             }
 
             @include mobile {
+                overflow: hidden;
                 width: 100vw;
                 margin-top: 4rem;
                 .dc-collapsible {

@@ -17,7 +17,7 @@ export default class RootStore {
     constructor() {
         this.client = new ClientStore(this);
         this.common = new CommonStore(this);
-        this.modules = new ModulesStore(this);
+        this.modules = new ModulesStore();
         this.ui = new UIStore(this);
         this.gtm = new GTMStore(this);
         this.rudderstack = new RudderStackStore(this);

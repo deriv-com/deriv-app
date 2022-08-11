@@ -190,19 +190,15 @@ const RealAccountSignup = ({
             title: WizardHeading,
         },
         {
-            body: local_props => {
-                let client_error_message = local_props.state_value.error_message;
-                if (!client_error_message && local_props.state_value.error_code.message_to_client) {
-                    client_error_message = local_props.state_value.error_code.message_to_client;
-                }
-                return (
-                    <SignupErrorContent
-                        message={client_error_message}
-                        code={local_props.state_value.error_code}
-                        onConfirm={onErrorConfirm}
-                    />
-                );
-            },
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={onErrorConfirm}
+                />
+            ),
             title: () => localize('Add a real account'),
         },
         {

@@ -429,6 +429,7 @@ import './currency/ic-currency-idk.svg';
 import './currency/ic-currency-ltc.svg';
 import './currency/ic-currency-pax.svg';
 import './currency/ic-currency-tusd.svg';
+import './currency/ic-currency-tusdt.svg';
 import './currency/ic-currency-unknown.svg';
 import './currency/ic-currency-usd.svg';
 import './currency/ic-currency-usdc.svg';

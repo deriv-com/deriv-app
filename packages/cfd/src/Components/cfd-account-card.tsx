@@ -466,18 +466,16 @@ const CFDAccountCardComponent = ({
                             type.category === 'real' &&
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
-                                    {existing_data?.display_balance && is_logged_in && (
+                                    {existing_data?.display_balance && is_logged_in && !is_eu && (
                                         <div className='cfd-account-card__item--banner'>
                                             <Localize
                                                 i18n_default_text={
                                                     acc.landing_company_short &&
-                                                    (is_eu
-                                                        ? 'MFSA'
-                                                        : acc.landing_company_short !== 'svg' &&
-                                                          acc.landing_company_short !== 'bvi'
+                                                    acc.landing_company_short !== 'svg' &&
+                                                    acc.landing_company_short !== 'bvi'
                                                         ? acc.landing_company_short?.charAt(0).toUpperCase() +
                                                           acc.landing_company_short.slice(1)
-                                                        : acc.landing_company_short?.toUpperCase())
+                                                        : acc.landing_company_short?.toUpperCase()
                                                 }
                                             />
                                         </div>

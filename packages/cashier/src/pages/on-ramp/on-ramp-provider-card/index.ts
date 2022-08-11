@@ -1,3 +1,3 @@
-import OnRampProviderCard from './on-ramp-provider-card.jsx';
+import OnRampProviderCard from './on-ramp-provider-card';
 
 export default OnRampProviderCard;

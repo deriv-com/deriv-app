@@ -1,9 +1,5 @@
 /** @define cashier; weak */
 .cashier {
-    @include mobile {
-        overflow: hidden;
-    }
-
     &__counter {
         position: absolute;
         top: 0.4rem;
@@ -67,6 +63,7 @@
             }
 
             @include mobile {
+                overflow: hidden;
                 width: 100vw;
                 margin-top: 4rem;
                 .dc-collapsible {

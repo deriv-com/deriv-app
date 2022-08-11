@@ -21,7 +21,7 @@ const AppLauncher = ({
     app_name,
     jurisdiction,
     is_app_installed,
-    balance,
+    balance = 0,
     currency,
     description,
     handleClick,
@@ -38,7 +38,7 @@ const AppLauncher = ({
                 </Text>
                 {is_app_installed && !show_active_balance && (
                     <Text type='paragraph-2' bold={true}>
-                        {balance} {currency}
+                        {balance.toFixed(2)} {currency}
                     </Text>
                 )}
                 {(!is_app_installed || show_active_balance) && (
@@ -62,7 +62,7 @@ const AppLauncher = ({
                         {localize('Currency')}
                     </Text>
                     <Text type='subtitle-2' bold={true}>
-                        {balance} {currency}
+                        {balance.toFixed(2)} {currency}
                     </Text>
                 </div>
             )}

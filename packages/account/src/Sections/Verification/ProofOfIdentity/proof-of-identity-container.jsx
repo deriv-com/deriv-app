@@ -77,7 +77,6 @@ const ProofOfIdentityContainer = ({
     const {
         idv,
         allow_poi_resubmission,
-        has_attempted_idv,
         identity_last_attempt,
         identity_status,
         is_age_verified,
@@ -101,7 +100,6 @@ const ProofOfIdentityContainer = ({
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
-                has_attempted_idv={has_attempted_idv}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
                 identity_last_attempt={identity_last_attempt}

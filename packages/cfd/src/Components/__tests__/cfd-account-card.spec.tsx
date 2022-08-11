@@ -183,15 +183,16 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Synthetic'
                 existing_accounts_data={[mt5_acc]}
+                is_eu={false}
             />
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5SyntheticPlatform/i)).toBeInTheDocument();
         expect(screen.getAllByText(/synthetic/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(/trade cfds on our synthetic indices that simulate real-world market movement./i)
         ).toBeInTheDocument();
-        expect(screen.getByText(/mfsa/i)).toBeInTheDocument();
+        expect(screen.getByText(/svg/i)).toBeInTheDocument();
         expect(screen.getByText(/20103240/i)).toBeInTheDocument();
         expect(screen.getByText(/usd/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /top up/i })).toBeInTheDocument();
@@ -211,10 +212,11 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
+                is_eu={false}
             />
         );
-        expect(screen.getByText(/mfsa/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/svg/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
         expect(screen.getAllByText(/financial/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -266,7 +268,7 @@ describe('CFDAccountCard', () => {
         expect(props.setMT5TradeAccount).toHaveBeenCalledWith(mt5_acc);
     });
 
-    it("should show add account if the user doesn't have an existing account", () => {
+    it("should show add account button if the user doesn't have an existing account", () => {
         const type = {
             type: 'synthetic',
             category: 'demo',

@@ -80,9 +80,9 @@ const JurisdictionModal = ({
         need_poi_for_bvi_labuan,
         need_poa_submission,
         poi_verified_for_vanuatu,
-        poi_verified_for_labuan_bvi,
+        poi_verified_for_bvi_labuan_maltainvest,
         poa_verified,
-        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_acknowledged_for_vanuatu,
     } = getIdentityStatusInfo(account_status);
 
@@ -257,9 +257,11 @@ const JurisdictionModal = ({
                                 poi_failed={poi_failed}
                                 poa_failed={poa_failed}
                                 poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                                poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
+                                poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
                                 poa_verified={poa_verified}
-                                poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
+                                poi_acknowledged_for_bvi_labuan_maltainvest={
+                                    poi_acknowledged_for_bvi_labuan_maltainvest
+                                }
                                 poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                                 need_poi_for_vanuatu={need_poi_for_vanuatu}
                                 need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
@@ -302,9 +304,11 @@ const JurisdictionModal = ({
                                 poi_failed={poi_failed}
                                 poa_failed={poa_failed}
                                 poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                                poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
+                                poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
                                 poa_verified={poa_verified}
-                                poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
+                                poi_acknowledged_for_bvi_labuan_maltainvest={
+                                    poi_acknowledged_for_bvi_labuan_maltainvest
+                                }
                                 poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                                 need_poi_for_vanuatu={need_poi_for_vanuatu}
                                 need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}

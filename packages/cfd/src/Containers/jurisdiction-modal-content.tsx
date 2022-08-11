@@ -1,25 +1,12 @@
 import React from 'react';
-import { Icon, Text, Checkbox, Popover, StaticUrl } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
-import classNames from 'classnames';
-import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import { TExistingData } from 'Components/props.types';
-
-type TAvailableAccountAPI = [
-    {
-        market_type: string;
-        name: string;
-        requirements: {
-            signup: Array<string>;
-            withdrawal: Array<string>;
-        };
-        shortcode: string;
-        sub_account_type: string;
-    }
-];
+import { Icon, Text, Popover } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
+import CfdCheckBoxForAccounts from './jurisdiction-modal-content/cfd-checkbox-for-accounts';
+import { TExistingData, TAvailableAccountAPI } from 'Components/props.types';
 
 type TJurisdictionModalContent = {
     account_type: string;
@@ -40,9 +27,9 @@ type TJurisdictionModalContent = {
     poi_failed: boolean;
     is_virtual: boolean;
     poi_verified_for_vanuatu: boolean;
-    poi_verified_for_labuan_bvi: boolean;
+    poi_verified_for_bvi_labuan_maltainvest: boolean;
     poa_verified: boolean;
-    poi_acknowledged_for_bvi_labuan: boolean;
+    poi_acknowledged_for_bvi_labuan_maltainvest: boolean;
     need_poi_for_vanuatu: boolean;
     need_poi_for_bvi_labuan: boolean;
     poi_acknowledged_for_vanuatu: boolean;
@@ -66,9 +53,9 @@ type TJurisdictionCard = {
     is_fully_authenticated: boolean;
     is_virtual: boolean;
     poi_verified_for_vanuatu: boolean;
-    poi_verified_for_labuan_bvi: boolean;
+    poi_verified_for_bvi_labuan_maltainvest: boolean;
     poa_verified: boolean;
-    poi_acknowledged_for_bvi_labuan: boolean;
+    poi_acknowledged_for_bvi_labuan_maltainvest: boolean;
     need_poi_for_vanuatu: boolean;
     need_poi_for_bvi_labuan: boolean;
     poi_acknowledged_for_vanuatu: boolean;
@@ -97,9 +84,9 @@ const JurisdictionCard = ({
     is_fully_authenticated,
     is_virtual,
     poi_verified_for_vanuatu,
-    poi_verified_for_labuan_bvi,
+    poi_verified_for_bvi_labuan_maltainvest,
     poa_verified,
-    poi_acknowledged_for_bvi_labuan,
+    poi_acknowledged_for_bvi_labuan_maltainvest,
     need_poi_for_vanuatu,
     need_poi_for_bvi_labuan,
     poi_acknowledged_for_vanuatu,
@@ -173,7 +160,7 @@ const JurisdictionCard = ({
                 if (!is_fully_authenticated)
                     return (
                         <div className={`${card_classname}__footer`}>
-                            <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
+                            <Text size={'xxxxs'} color={'less-prominent'}>
                                 <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                             </Text>
                         </div>
@@ -196,7 +183,7 @@ const JurisdictionCard = ({
             } else if (
                 (type_of_card === 'bvi' || type_of_card === 'labuan' || type_of_card === 'maltainvest') &&
                 poa_verified &&
-                poi_verified_for_labuan_bvi
+                poi_verified_for_bvi_labuan_maltainvest
             ) {
                 //if both verified for bvi and labuan
                 return null;
@@ -242,7 +229,7 @@ const JurisdictionCard = ({
                     );
                 }
             } else if (type_of_card === 'bvi' || type_of_card === 'labuan' || type_of_card === 'maltainvest') {
-                if (poi_acknowledged_for_bvi_labuan && poa_acknowledged) {
+                if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged) {
                     return (
                         <div className={`${card_classname}__verification-status`}>
                             <div className={`${card_classname}__verification-status--pending`}>
@@ -382,9 +369,9 @@ const JurisdictionModalContent = ({
     poi_failed,
     is_virtual,
     poi_verified_for_vanuatu,
-    poi_verified_for_labuan_bvi,
+    poi_verified_for_bvi_labuan_maltainvest,
     poa_verified,
-    poi_acknowledged_for_bvi_labuan,
+    poi_acknowledged_for_bvi_labuan_maltainvest,
     need_poi_for_vanuatu,
     need_poi_for_bvi_labuan,
     poi_acknowledged_for_vanuatu,
@@ -438,7 +425,7 @@ const JurisdictionModalContent = ({
                     </div>
                 )}
 
-                {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'bvi' && (
+                {poi_verified_for_bvi_labuan_maltainvest && poa_verified && jurisdiction_selected_shortcode === 'bvi' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
@@ -458,16 +445,18 @@ const JurisdictionModalContent = ({
                         </Text>
                     </div>
                 )}
-                {poi_verified_for_labuan_bvi && poa_verified && jurisdiction_selected_shortcode === 'labuan' && (
-                    <div className={`${card_classname}__footnote`}>
-                        <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
-                            <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
-                                values={{ account_type: account_type_name }}
-                            />
-                        </Text>
-                    </div>
-                )}
+                {poi_verified_for_bvi_labuan_maltainvest &&
+                    poa_verified &&
+                    jurisdiction_selected_shortcode === 'labuan' && (
+                        <div className={`${card_classname}__footnote`}>
+                            <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
+                                <Localize
+                                    i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
+                                    values={{ account_type: account_type_name }}
+                                />
+                            </Text>
+                        </div>
+                    )}
                 {is_fully_authenticated && jurisdiction_selected_shortcode === 'maltainvest' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
@@ -598,7 +587,7 @@ const JurisdictionModalContent = ({
                     )}
 
                 {poa_acknowledged &&
-                    poi_acknowledged_for_bvi_labuan &&
+                    poi_acknowledged_for_bvi_labuan_maltainvest &&
                     !poi_poa_verified &&
                     jurisdiction_selected_shortcode &&
                     (jurisdiction_selected_shortcode === 'bvi' ||
@@ -613,210 +602,163 @@ const JurisdictionModalContent = ({
             </>
         );
     };
-
-    const dbvi_company_names: { [key: string]: { [key: string]: string } } = {
-        bvi: { name: 'Deriv (BVI) Ltd', tnc_url: 'tnc/deriv-(bvi)-ltd.pdf' },
-        labuan: { name: 'Deriv (FX) Ltd', tnc_url: 'tnc/deriv-(fx)-ltd.pdf' },
-        maltainvest: {
-            name: 'Deriv Investments (Europe) Limited',
-            tnc_url: 'tnc/deriv-investments-(europe)-limited.pdf',
-        },
-        vanuatu: { name: 'Deriv (V) Ltd', tnc_url: 'tnc/general-terms.pdf' },
-    };
-
-    const getCheckboxLabel = () => (
-        <Text as='p' align={!isMobile() ? 'center' : ''} size='xs' line_height='xs'>
-            <Localize
-                i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
-                values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}
-                components={[
-                    <StaticUrl
-                        key={0}
-                        className='link'
-                        href={dbvi_company_names[jurisdiction_selected_shortcode].tnc_url}
-                    />,
-                ]}
-            />
-        </Text>
-    );
-
-    const ModalCheckbox = ({
-        onCheck,
-        is_checked,
-    }: {
-        onCheck: React.Dispatch<React.SetStateAction<boolean>>;
-        is_checked: boolean;
-    }) => (
-        <div className={`${card_classname}__jurisdiction-checkbox`}>
-            <Checkbox onChange={() => onCheck(!checked)} value={is_checked} label={getCheckboxLabel()} />
-        </div>
-    );
-
-    const showCheckBox = () => {
-        if (jurisdiction_selected_shortcode) {
-            if (jurisdiction_selected_shortcode === 'svg') {
-                return false;
-            } else if (jurisdiction_selected_shortcode === 'vanuatu' && poa_verified && poi_verified_for_vanuatu) {
-                return true;
-            } else if (
-                (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') &&
-                poa_verified &&
-                poi_verified_for_labuan_bvi
-            ) {
-                return true;
-            } else if (is_fully_authenticated && poi_poa_verified) return true;
-            return false;
-        }
-        return false;
-    };
-
+    const jurisdiction_cards_array = ['bvi', 'maltainvest', 'vanuatu', 'labuan', 'svg'];
     return (
         <>
             <div className={`${card_classname}__wrapper`}>
-                {cardsToBeShown('bvi') && (
-                    <JurisdictionCard
-                        type_of_card='bvi'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('bvi')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
-                )}
-
-                {cardsToBeShown('maltainvest') && is_eu && (
-                    <JurisdictionCard
-                        type_of_card='maltainvest'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('maltainvest')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
-                )}
-
-                {cardsToBeShown('vanuatu') && (
-                    <JurisdictionCard
-                        type_of_card='vanuatu'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('vanuatu')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
-                )}
-                {cardsToBeShown('labuan') && (
-                    <JurisdictionCard
-                        type_of_card='labuan'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('labuan')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
-                )}
-
-                {cardsToBeShown('svg') && (
-                    <JurisdictionCard
-                        type_of_card='svg'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('svg')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
+                {jurisdiction_cards_array.map(
+                    card =>
+                        cardsToBeShown(card) && (
+                            <JurisdictionCard
+                                type_of_card={card}
+                                disabled={disableCard(card)}
+                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                                synthetic_available_accounts={synthetic_available_accounts}
+                                financial_available_accounts={financial_available_accounts}
+                                account_type={account_type}
+                                poa_status={poa_status}
+                                poi_status={poi_status}
+                                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                                poa_failed={poa_failed}
+                                poi_failed={poi_failed}
+                                poi_poa_none={poi_poa_none}
+                                poa_acknowledged={poa_acknowledged}
+                                poi_acknowledged={poi_acknowledged}
+                                is_fully_authenticated={is_fully_authenticated}
+                                is_virtual={is_virtual}
+                                poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+                                poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
+                                poa_verified={poa_verified}
+                                poi_acknowledged_for_bvi_labuan_maltainvest={
+                                    poi_acknowledged_for_bvi_labuan_maltainvest
+                                }
+                                need_poi_for_vanuatu={need_poi_for_vanuatu}
+                                need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+                                poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+                            />
+                        )
                 )}
             </div>
             <ModalFootNote />
-            {showCheckBox() && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
+            <CfdCheckBoxForAccounts
+                is_checked={checked}
+                onCheck={() => setChecked(!checked)}
+                class_name={`${card_classname}__jurisdiction-checkbox`}
+            />
         </>
     );
 };
+
+// {cardsToBeShown('maltainvest') && is_eu && (
+//     <JurisdictionCard
+//         type_of_card='maltainvest'
+//         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+//         synthetic_available_accounts={synthetic_available_accounts}
+//         financial_available_accounts={financial_available_accounts}
+//         account_type={account_type}
+//         poa_status={poa_status}
+//         poi_status={poi_status}
+//         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+//         disabled={disableCard('maltainvest')}
+//         poa_failed={poa_failed}
+//         poi_failed={poi_failed}
+//         poi_poa_none={poi_poa_none}
+//         poa_acknowledged={poa_acknowledged}
+//         poi_acknowledged={poi_acknowledged}
+//         is_fully_authenticated={is_fully_authenticated}
+//         is_virtual={is_virtual}
+//         poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+//         poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
+//         poa_verified={poa_verified}
+//         poi_acknowledged_for_bvi_labuan_maltainvest={poi_acknowledged_for_bvi_labuan_maltainvest}
+//         need_poi_for_vanuatu={need_poi_for_vanuatu}
+//         need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+//         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+//     />
+// )}
+
+// {cardsToBeShown('vanuatu') && (
+//     <JurisdictionCard
+//         type_of_card='vanuatu'
+//         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+//         synthetic_available_accounts={synthetic_available_accounts}
+//         financial_available_accounts={financial_available_accounts}
+//         account_type={account_type}
+//         poa_status={poa_status}
+//         poi_status={poi_status}
+//         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+//         disabled={disableCard('vanuatu')}
+//         poa_failed={poa_failed}
+//         poi_failed={poi_failed}
+//         poi_poa_none={poi_poa_none}
+//         poa_acknowledged={poa_acknowledged}
+//         poi_acknowledged={poi_acknowledged}
+//         is_fully_authenticated={is_fully_authenticated}
+//         is_virtual={is_virtual}
+//         poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+//         poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
+//         poa_verified={poa_verified}
+//         poi_acknowledged_for_bvi_labuan_maltainvest={poi_acknowledged_for_bvi_labuan_maltainvest}
+//         need_poi_for_vanuatu={need_poi_for_vanuatu}
+//         need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+//         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+//     />
+// )}
+// {cardsToBeShown('labuan') && (
+//     <JurisdictionCard
+//         type_of_card='labuan'
+//         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+//         synthetic_available_accounts={synthetic_available_accounts}
+//         financial_available_accounts={financial_available_accounts}
+//         account_type={account_type}
+//         poa_status={poa_status}
+//         poi_status={poi_status}
+//         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+//         disabled={disableCard('labuan')}
+//         poa_failed={poa_failed}
+//         poi_failed={poi_failed}
+//         poi_poa_none={poi_poa_none}
+//         poa_acknowledged={poa_acknowledged}
+//         poi_acknowledged={poi_acknowledged}
+//         is_fully_authenticated={is_fully_authenticated}
+//         is_virtual={is_virtual}
+//         poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+//         poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
+//         poa_verified={poa_verified}
+//         poi_acknowledged_for_bvi_labuan_maltainvest={poi_acknowledged_for_bvi_labuan_maltainvest}
+//         need_poi_for_vanuatu={need_poi_for_vanuatu}
+//         need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+//         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+//     />
+// )}
+
+// {cardsToBeShown('svg') && (
+//     <JurisdictionCard
+//         type_of_card='svg'
+//         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+//         synthetic_available_accounts={synthetic_available_accounts}
+//         financial_available_accounts={financial_available_accounts}
+//         account_type={account_type}
+//         poa_status={poa_status}
+//         poi_status={poi_status}
+//         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+//         disabled={disableCard('svg')}
+//         poa_failed={poa_failed}
+//         poi_failed={poi_failed}
+//         poi_poa_none={poi_poa_none}
+//         poa_acknowledged={poa_acknowledged}
+//         poi_acknowledged={poi_acknowledged}
+//         is_fully_authenticated={is_fully_authenticated}
+//         is_virtual={is_virtual}
+//         poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+//         poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
+//         poa_verified={poa_verified}
+//         poi_acknowledged_for_bvi_labuan_maltainvest={poi_acknowledged_for_bvi_labuan_maltainvest}
+//         need_poi_for_vanuatu={need_poi_for_vanuatu}
+//         need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+//         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+//     />
+// )}
 
 export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,

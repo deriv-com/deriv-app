@@ -141,3 +141,16 @@ export type TTradingPlatformAccounts = {
      */
     platform?: 'dxtrade';
 };
+
+export type TAvailableAccountAPI = [
+    {
+        market_type: string;
+        name: string;
+        requirements: {
+            signup: Array<string>;
+            withdrawal: Array<string>;
+        };
+        shortcode: string;
+        sub_account_type: string;
+    }
+];

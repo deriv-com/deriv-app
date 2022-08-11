@@ -324,16 +324,9 @@ const DMT5CompareModalContent = ({
 
         switch (item.action) {
             case 'synthetic_svg':
-                setJurisdictionSelectedShortcode('svg');
-                openPasswordModal(type_of_account);
-                break;
             case 'financial_svg':
                 setJurisdictionSelectedShortcode('svg');
-                if (poi_poa_verified && !has_submitted_personal_details) {
-                    toggleCFDPersonalDetailsModal();
-                } else {
-                    openPasswordModal(type_of_account);
-                }
+                openPasswordModal(type_of_account);
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':

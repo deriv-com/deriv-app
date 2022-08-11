@@ -3,17 +3,19 @@ import { Loading, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
-import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
+import classNames from 'classnames';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
@@ -28,6 +30,8 @@ const AdvertiserPage = () => {
         last_name,
         rating_average,
         rating_count,
+        recommended_average,
+        recommended_count,
         sell_orders_count,
     } = advertiser_page_store.advertiser_info;
 
@@ -89,10 +93,15 @@ const AdvertiserPage = () => {
                                 </div>
                             )}
                         </div>
-                        <div className='advertiser-page__rating'>
-                            <div className='advertiser-page__rating--row'>
-                                {!!rating_count && !!rating_average ? (
-                                    <React.Fragment>
+                        <div
+                            className={classNames('advertiser-page__rating', {
+                                'advertiser-page__rating--overflow':
+                                    isMobile() && rating_average && recommended_average,
+                            })}
+                        >
+                            {rating_average && recommended_average ? (
+                                <React.Fragment>
+                                    <div className='advertiser-page__rating--row'>
                                         <StarRating
                                             empty_star_className='advertiser-page__rating--star'
                                             empty_star_icon='IcEmptyStar'
@@ -122,13 +131,21 @@ const AdvertiserPage = () => {
                                                 )}
                                             </Text>
                                         </div>
-                                    </React.Fragment>
-                                ) : (
+                                    </div>
+                                    <div className='advertiser-page__rating--row'>
+                                        <RecommendedBy
+                                            recommended_average={recommended_average}
+                                            recommended_count={recommended_count}
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            ) : (
+                                <div className='advertiser-page__rating--row'>
                                     <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                         <Localize i18n_default_text='Not rated yet' />
                                     </Text>
-                                )}
-                            </div>
+                                </div>
+                            )}
                             <div className='advertiser-page__rating--row'>
                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                     {joined_since > 0 ? (

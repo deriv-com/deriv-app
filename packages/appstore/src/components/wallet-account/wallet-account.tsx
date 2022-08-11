@@ -7,8 +7,6 @@ import { ArrayElement } from 'Types';
 import WalletCard from 'Components/wallet';
 import WalletActionButton from 'Components/wallet-action-button';
 
-window.React = React;
-
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
 };

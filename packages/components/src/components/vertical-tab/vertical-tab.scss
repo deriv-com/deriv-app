@@ -172,7 +172,8 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__counter {
-            margin-left: 10rem;
+            position: absolute;
+            right: 2rem;
         }
         &--active &__link {
             color: var(--text-prominent);

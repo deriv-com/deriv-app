@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
-import { RootStore, TMenuOption, TProvider } from 'Types';
+import { RootStore, TMenuOption, TProvider, TReactFormEvent } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
@@ -118,7 +118,7 @@ const OnRamp = ({
                             list_items={getActivePaths()}
                             value={selected_cashier_path}
                             should_show_empty_option={false}
-                            onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                            onChange={(e: TReactFormEvent) => {
                                 if (e.currentTarget.value !== selected_cashier_path) {
                                     setSelectedCashierPath(e.currentTarget.value);
                                 }

@@ -60,7 +60,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
     const { chat_channel_url } = sendbird_store;
 
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
-    const remaining_review_time = React.useRef();
+    const [remaining_review_time, setRemainingReviewTime] = React.useState(null);
 
     const page_title = is_buy_order_for_user
         ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
@@ -90,7 +90,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
     React.useEffect(() => {
         if (completion_time) {
-            remaining_review_time.current = getDateAfterHours(completion_time, general_store.review_period);
+            setRemainingReviewTime(getDateAfterHours(completion_time, general_store.review_period));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -307,10 +307,12 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                 </div>
                                 <Text className='order-details-card--rating__text' color='less-prominent' size='xxxs'>
                                     {is_reviewable ? (
-                                        <Localize
-                                            i18n_default_text='You have until {{remaining_review_time}} GMT to rate this transaction.'
-                                            values={{ remaining_review_time: remaining_review_time?.current }}
-                                        />
+                                        remaining_review_time && (
+                                            <Localize
+                                                i18n_default_text='You have until {{remaining_review_time}} GMT to rate this transaction.'
+                                                values={{ remaining_review_time }}
+                                            />
+                                        )
                                     ) : (
                                         <Localize i18n_default_text='You can no longer rate this transaction.' />
                                     )}

@@ -21,9 +21,10 @@ const RatingModal = ({
 }) => {
     return (
         <Modal
-            has_close_icon={false}
+            has_close_icon={rating_value > 0}
             is_open={is_rating_modal_open}
             title={localize('How would you rate this transaction?')}
+            toggleModal={onClickSkip}
         >
             <Modal.Body className='rating-modal--body'>
                 <div className='rating-modal--body__star'>

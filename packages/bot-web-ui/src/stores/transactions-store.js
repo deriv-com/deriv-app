@@ -195,6 +195,15 @@ export default class TransactionsStore {
         }
     }
 
+    sortOutPositionsBeforeAction(positions, element_id = false) {
+        positions.forEach(position => {
+            if (!element_id || (element_id && position.id === element_id)) {
+                const contract_details = position.contract_info;
+                this.updateResultsCompletedContract(contract_details);
+            }
+        });
+    }
+
     recoverPendingContractsById(contract_id) {
         const { ws, core } = this.root_store;
         const positions = core.portfolio.positions;
@@ -208,10 +217,13 @@ export default class TransactionsStore {
         });
 
         if (!this.is_called_proposal_open_contract) {
-            positions.forEach(position => {
-                const contract_details = position.contract_info;
-                this.updateResultsCompletedContract(contract_details);
-            });
+            if (!this.elements.length) {
+                this.sortOutPositionsBeforeAction(positions);
+            }
+            if (this.elements.length && !this.elements[0].data.profit) {
+                const element_id = this.elements[0].data.contract_id;
+                this.sortOutPositionsBeforeAction(positions, element_id);
+            }
         }
     }
 }

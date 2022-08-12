@@ -247,8 +247,6 @@ describe('<CFDDashboard />', () => {
 
         fireEvent.click(real_account_tab);
 
-        expect(real_account_tab).toHaveClass('dc-tabs__active');
-        expect(demo_account_tab).not.toHaveClass('dc-tabs__active');
         expect(
             screen.getByRole('button', {
                 name: /compare accounts/i,

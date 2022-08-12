@@ -4,11 +4,10 @@ import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
+import SideNote from 'Components/side-note';
 import { RootStore, TProvider } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
-import SideNote from 'Components/side-note';
-
 import './on-ramp.scss';
 
 type TOnRampProps = {

@@ -42,73 +42,57 @@ describe('should render the CompareAccountsContent component properly', () => {
         render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} />);
         expect(screen.getByText('Synthetic')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
-        expect(screen.getByText('Financial STP')).toBeInTheDocument();
     });
 
-    it('should render the proper data', () => {
+    it('should render the proper data for synthetic', () => {
         render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} />);
         expect(screen.getByText(/Account Currency/i)).toBeInTheDocument();
         expect(screen.getByText('EUR')).toBeInTheDocument();
         expect(screen.getByText('EUR/GBP/USD')).toBeInTheDocument();
         expect(screen.getByText('USD')).toBeInTheDocument();
 
-        expect(screen.getAllByText(/Maximum leverage/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/1/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Maximum leverage/i)).toHaveLength(2);
         expect(screen.getByText(/Up to 1:1000/i)).toBeInTheDocument();
-        expect(screen.getByText(/Up to 1:30/i)).toBeInTheDocument();
-        expect(screen.getAllByText(/Up to 1:100/i)[0]).toBeInTheDocument();
 
-        expect(screen.getAllByText(/Order execution/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/2/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Order execution/i)).toHaveLength(2);
         expect(screen.getAllByText(/Market/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/Market/i)[1]).toBeInTheDocument();
-        expect(screen.getAllByText(/Market/i)[2]).toBeInTheDocument();
 
-        expect(screen.getAllByText(/Spread/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Spread/i)).toHaveLength(4);
         expect(screen.getAllByText('Fixed/Variable')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('Fixed/Variable')[1]).toBeInTheDocument();
-        expect(screen.getAllByText('Variable')[0]).toBeInTheDocument();
 
-        expect(screen.getAllByText(/Commission/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/4/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/No/i)[1]).toBeInTheDocument();
-        expect(screen.getAllByText(/No/i)[2]).toBeInTheDocument();
-        expect(screen.getAllByText(/No/i)[3]).toBeInTheDocument();
+        expect(screen.getAllByText(/Commission/i)).toHaveLength(3);
+        expect(screen.getAllByText(/No/i).length).toBe(12);
 
-        expect(screen.getAllByText(/Minimum deposit/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/No/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/No/i)[1]).toBeInTheDocument();
-        expect(screen.getAllByText(/No/i)[2]).toBeInTheDocument();
+        expect(screen.getAllByText(/Minimum deposit/i)).toHaveLength(1);
 
-        expect(screen.getAllByText(/Margin call/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/5/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/100%/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/100%/i)[1]).toBeInTheDocument();
-        expect(screen.getAllByText(/100%/i)[2]).toBeInTheDocument();
+        expect(screen.getAllByText(/Margin call/i)).toHaveLength(4);
+        expect(screen.getAllByText('100%').length).toBe(3);
 
-        expect(screen.getAllByText(/Stop out level/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/6/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/50%/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/50%/i)[1]).toBeInTheDocument();
-        expect(screen.getAllByText(/50%/i)[2]).toBeInTheDocument();
+        expect(screen.getAllByText(/Stop out level/i)).toHaveLength(5);
+        expect(screen.getAllByText('50%').length).toBe(3);
 
-        expect(screen.getAllByText(/Number of assets/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/20+/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/50+/i)[1]).toBeInTheDocument();
-        expect(screen.getAllByText(/70+/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Number of assets/i)).toHaveLength(1);
+        expect(screen.getAllByText('20+').length).toBe(1);
+        expect(screen.getAllByText('50+').length).toBe(1);
+        expect(screen.getAllByText('70+').length).toBe(1);
 
-        expect(screen.getAllByText(/Cryptocurrency trading/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/7/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText('N/A')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('24/7')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('24/7')[1]).toBeInTheDocument();
+        expect(screen.getAllByText(/Cryptocurrency trading/i)).toHaveLength(4);
+        expect(screen.getAllByText('N/A').length).toBe(1);
+        expect(screen.getAllByText('24/7').length).toBe(2);
 
-        expect(screen.getAllByText(/Trading instruments/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText(/Synthetics/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Trading instruments/i)).toHaveLength(1);
+        expect(screen.getAllByText(/Synthetics/i).length).toBe(1);
         expect(
-            screen.getAllByText(/Forex, stocks, stock indices, cryptocurrencies, synthetic indices/i)[0]
+            screen.getByText(/Forex, stocks, stock indices, cryptocurrencies, synthetic indices/i)
         ).toBeInTheDocument();
-        expect(screen.getAllByText(/FX-majors, FX-minors, FX-exotics, and cryptocurrencies/i)[0]).toBeInTheDocument();
+
+        expect(screen.getByText(/FX-majors, FX-minors, FX-exotics, and cryptocurrencies/i)).toBeInTheDocument();
+    });
+
+    it('should render the correct footer text', () => {
+        render(
+            <CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} show_eu_related={true} />
+        );
 
         expect(
             screen.getByText(
@@ -168,9 +152,9 @@ describe('should render the CompareAccountsContent component properly', () => {
         );
 
         expect(screen.getAllByText(/Account currency/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText('EUR/GBP')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('EUR/GBP')).toHaveLength(1);
         expect(screen.getByText(/Number of assets/i)).toBeInTheDocument();
-        expect(screen.getByText(/90+/i)).toBeInTheDocument();
+        expect(screen.getByText('90+')).toBeInTheDocument();
         expect(
             screen.getByText('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)')
         ).toBeInTheDocument();
@@ -189,14 +173,7 @@ describe('should render the CompareAccountsContent component properly', () => {
     });
 
     it('should render the column head from CFDs to Financial if is_eu is enabled', () => {
-        render(
-            <CompareAccountsContent
-                {...mock_props}
-                landing_companies={all_landing_companies}
-                is_eu={false}
-                platform='mt5'
-            />
-        );
-        expect(screen.getAllByText(/Financial/i)[0]).toBeInTheDocument();
+        render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} is_eu={false} />);
+        expect(screen.getAllByText(/Financial/i)).toHaveLength(3);
     });
 });

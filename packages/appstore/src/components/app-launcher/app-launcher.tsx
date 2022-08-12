@@ -33,7 +33,7 @@ const AppLauncher = ({
                 <Icon icon={icon_name} width={isMobile() ? 48 : 64} height={isMobile() ? 48 : 64} />
             </div>
             <div>
-                <Text type='paragraph-2' bold={!is_app_installed}>
+                <Text type='paragraph-2' bold={!is_app_installed || show_active_balance}>
                     {app_name} {jurisdiction}
                 </Text>
                 {is_app_installed && !show_active_balance && (
@@ -53,7 +53,7 @@ const AppLauncher = ({
                     color={is_app_installed ? 'primary' : 'primary-light'}
                     onClick={handleClick}
                 >
-                    {localize(is_app_installed ? 'Trade' : 'Get')}
+                    {is_app_installed ? localize('Trade') : localize('Get')}
                 </Button>
             )}
             {show_active_balance && isMobile() && (

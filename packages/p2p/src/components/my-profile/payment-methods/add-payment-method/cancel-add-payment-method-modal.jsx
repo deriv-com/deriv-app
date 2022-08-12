@@ -1,54 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
-import { reaction } from 'mobx';
+import { isMobile } from '@deriv/shared';
 
-const CancelAddPaymentMethodModal = ({ is_floating, onCancel, onGoBack }) => {
+const CancelAddPaymentMethodModal = ({ onCancel, onGoBack }) => {
     const { my_ads_store, my_profile_store } = useStores();
 
-    const onClickCancel = onCancel || (() => {
-              my_ads_store.hideQuickAddModal();
-              my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-              my_profile_store.hideAddPaymentMethodForm();
-              my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
-              my_ads_store.setShouldShowAddPaymentMethodModal(false);
-          });
+    const onClickCancel =
+        onCancel ||
+        (() => {
+            my_ads_store.hideQuickAddModal();
+            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+            my_profile_store.hideAddPaymentMethodForm();
+            my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
+            my_ads_store.setShouldShowAddPaymentMethodModal(false);
+        });
 
-    const onClickGoBack = onGoBack || (() => {
-              my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-          });
-
-    // TODO: Refactor this code to avoid manual DOM updates
-    // mounts the modal in a seperate modal-root container to show/float the modal over another modal if is_floating is true
-    React.useLayoutEffect(() => {
-        const disposeFloatingWrapper = reaction(
-            () => my_profile_store.is_cancel_add_payment_method_modal_open,
-            is_open => {
-                let wrapper = document.getElementById('cancel_modal_root');
-                if (is_open) {
-                    if (!wrapper) {
-                        wrapper = document.createElement('div');
-                        wrapper.setAttribute('id', 'cancel_modal_root');
-                    }
-                    if (is_floating) {
-                        wrapper.classList.add('modal-root');
-                        document.body.appendChild(wrapper);
-                    }
-                } else if (wrapper) {
-                    document.body.removeChild(wrapper);
-                }
-            }
-        );
-
-        return () => {
-            disposeFloatingWrapper();
-            my_profile_store.setSelectedPaymentMethod('');
-            my_profile_store.setSelectedPaymentMethodDisplayName('');
-        };
-    }, []);
+    const onClickGoBack =
+        onGoBack ||
+        (() => {
+            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+        });
 
     return (
         <Modal
@@ -60,7 +34,6 @@ const CancelAddPaymentMethodModal = ({ is_floating, onCancel, onGoBack }) => {
                     <Localize i18n_default_text='Cancel adding this payment method?' />
                 </Text>
             }
-            portalId={is_floating ? 'cancel_modal_root' : undefined}
         >
             <Modal.Body>
                 <Text color='prominent' size='xs'>
@@ -68,19 +41,35 @@ const CancelAddPaymentMethodModal = ({ is_floating, onCancel, onGoBack }) => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button large onClick={onClickCancel} secondary>
+                <Button
+                    large
+                    onClick={() => {
+                        if (isMobile()) {
+                            onClickCancel();
+                        } else {
+                            setTimeout(onClickCancel, 250);
+                        }
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                        my_profile_store.clearFormState();
+                    }}
+                    secondary
+                >
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button large onClick={onClickGoBack} primary>
+                <Button
+                    large
+                    onClick={() => {
+                        onClickGoBack();
+                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                    }}
+                    primary
+                >
                     <Localize i18n_default_text='Go back' />
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 };
-
-CancelAddPaymentMethodModal.propTypes = {
-    is_floating: PropTypes.bool,
-};
-
 export default observer(CancelAddPaymentMethodModal);

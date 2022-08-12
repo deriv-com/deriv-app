@@ -50,7 +50,7 @@ const generateModalTitle = (my_profile_store, table_type, selected_ad) => {
                     <Icon
                         icon='IcArrowLeftBold'
                         onClick={() => {
-                            if (my_profile_store.form_state && my_profile_store.form_state.dirty) {
+                            if (my_profile_store.formik_ref && my_profile_store.formik_ref.dirty) {
                                 my_profile_store.showCancelAddPaymentMethodModal();
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
@@ -113,8 +113,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         if (my_profile_store.should_show_add_payment_method_form) {
             if (my_profile_store.formik_ref && my_profile_store.formik_ref.dirty) {
                 // hide the entire buy sell modal -> show cancel add payment method confirmation modal
-                buy_sell_store.setShouldShowPopup(false);
-                my_profile_store.hideAddPaymentMethodForm();
                 my_profile_store.showCancelAddPaymentMethodModal();
             } else {
                 my_profile_store.hideAddPaymentMethodForm();
@@ -133,7 +131,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
-        my_profile_store.setOnCancelAddPaymentMethodHandler(() => {
+        my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
             buy_sell_store.setShouldShowPopup(false);
         });
     }, []);

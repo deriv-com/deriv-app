@@ -676,12 +676,10 @@
 
 .p2p-my-ads__modal-icon {
     margin-right: 0.8rem;
-}
 
-.p2p-my-ads__modal-hide {
-    display: none;
-    .modal-root .dc-modal & {
-        visibility: hidden;
-        background-color: red;
+    &--pointer-events {
+        & > svg {
+            pointer-events: none;
+        }
     }
 }

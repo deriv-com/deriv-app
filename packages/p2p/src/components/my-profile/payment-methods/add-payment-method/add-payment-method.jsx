@@ -4,7 +4,6 @@ import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
-import CancelAddPaymentMethodModal from './cancel-add-payment-method-modal';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
@@ -14,29 +13,12 @@ const AddPaymentMethod = ({ formik_ref, should_show_page_return = true, should_s
 
     React.useEffect(() => {
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-        my_profile_store.setSelectedPaymentMethod('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <React.Fragment>
-            <CancelAddPaymentMethodModal
-                is_floating
-                onCancel={() => {
-                    // my_profile_store.hideAddPaymentMethodForm();
-                    // my_ads_store.setShouldShowAddPaymentMethodModal(false);
-                    my_ads_store.setShouldShowAddPaymentMethod(false);
-                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                    // my_ads_store.setIsQuickAddModalOpen(false);
-                    my_profile_store.setFormikHistory(null);
-                }}
-                onGoBack={() => {
-                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                    my_ads_store.setIsQuickAddModalOpen(true);
-                    my_ads_store.setShouldShowAddPaymentMethodModal(true);
-                }}
-            />
             <DesktopWrapper>
                 {should_show_page_return && (
                     <PageReturn

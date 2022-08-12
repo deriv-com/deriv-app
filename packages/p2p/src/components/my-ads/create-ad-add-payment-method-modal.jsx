@@ -9,10 +9,9 @@ import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/a
 
 const CreateAdAddPaymentMethodModal = () => {
     const { my_ads_store, my_profile_store } = useStores();
-
     const onCancel = () => {
-        if (my_profile_store.selected_payment_method.length > 0 || my_profile_store.form_state.dirty) {
-            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+        if (my_profile_store.selected_payment_method.length > 0 || my_profile_store.formik_ref?.dirty) {
+            my_profile_store.showCancelAddPaymentMethodModal();
         } else {
             my_ads_store.setShouldShowAddPaymentMethodModal(false);
         }
@@ -66,6 +65,7 @@ const CreateAdAddPaymentMethodModal = () => {
 
     return (
         <Modal
+            id='create_ad_add_payment_method_modal'
             className='p2p-my-ads__modal-error'
             has_close_icon
             height='560px'
@@ -76,14 +76,26 @@ const CreateAdAddPaymentMethodModal = () => {
                     {localize('Add payment method')}
                 </React.Fragment>
             }
-            toggleModal={onCancel}
+            toggleModal={e => {
+                if (
+                    !e.target ||
+                    ['svg', 'use'].includes(e.target.tagName) || // sometimes the svg has not loaded yet
+                    ['dc-dropdown-list__item', 'dc-btn', 'dc-icon'].every(
+                        className => !e.target.className.includes(className)
+                    )
+                ) {
+                    onCancel();
+                }
+            }}
         >
             <Modal.Body
-                className={classNames({ 'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method })}
+                className={classNames({
+                    'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
+                })}
             >
                 <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
             </Modal.Body>
-            {!my_profile_store.selected_payment_method && (
+            {!my_profile_store.selected_payment_method && !my_profile_store.should_show_add_payment_method_form && (
                 <Modal.Footer has_separator>
                     <Button large onClick={onCancel} secondary>
                         <Localize i18n_default_text='Cancel' />

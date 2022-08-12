@@ -61,17 +61,15 @@ const BuySellTable = ({ onScroll }) => {
         return (
             <>
                 <CancelAddPaymentMethodModal
-                    is_floating
                     onCancel={() => {
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                        my_profile_store.setShouldShowAddPaymentMethodForm(false);
                         buy_sell_store.setShouldShowPopup(true);
-                        my_profile_store.clearFormState();
                     }}
                     onGoBack={() => {
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                        buy_sell_store.setShouldShowPopup(true);
-                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
+                        if (isDesktop()) {
+                            setTimeout(() => buy_sell_store.setShouldShowPopup(true), 230);
+                        } else {
+                            buy_sell_store.setShouldShowPopup(true);
+                        }
                     }}
                 />
                 <Table className='buy-sell__table'>

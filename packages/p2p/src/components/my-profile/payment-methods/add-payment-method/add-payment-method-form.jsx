@@ -34,14 +34,11 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     };
 
     React.useEffect(() => {
+        my_profile_store.setShouldShowAddPaymentMethodForm(true);
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getSelectedPaymentMethodDetails();
         my_profile_store.setAddPaymentMethodErrorMessage('');
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-
-        return () => {
-            my_profile_store.saveFormState();
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -130,10 +127,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     large
                                     onClick={() => {
                                         if (dirty || my_profile_store.selected_payment_method.length > 0) {
-                                            // my_profile_store.showCancelAddPaymentMethodModal(() => {
-                                            //     my_profile_store.hideAddPaymentMethodForm();
-                                            //     my_ads_store.hideQuickAddModal();
-                                            // });
                                             my_profile_store.showCancelAddPaymentMethodModal();
                                         } else {
                                             my_profile_store.hideAddPaymentMethodForm();

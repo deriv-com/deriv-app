@@ -22,6 +22,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
+import CancelAddPaymentMethodModal from 'Components/my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -65,6 +66,9 @@ const CreateAdForm = () => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
+        my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
+            my_ads_store.setShouldShowAddPaymentMethodModal(false);
+        });
 
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
@@ -365,6 +369,22 @@ const CreateAdForm = () => {
                 }}
             </Formik>
             <CreateAdErrorModal />
+            <CancelAddPaymentMethodModal
+                onCancel={() => {
+                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                    my_ads_store.setShouldShowAddPaymentMethod(false);
+                    my_profile_store.clearFormState();
+                }}
+                onGoBack={() => {
+                    if (isMobile()) {
+                        my_ads_store.setShouldShowAddPaymentMethodModal(true);
+                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
+                    } else {
+                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
+                        setTimeout(() => my_ads_store.setShouldShowAddPaymentMethodModal(true), 250);
+                    }
+                }}
+            />
             <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__ad-created'

@@ -4,6 +4,7 @@ import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
 import BaseStore from 'Stores/base_store';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { isMobile } from '@deriv/shared';
 
 export default class MyProfileStore extends BaseStore {
     @observable active_tab = my_profile_tabs.MY_STATS;
@@ -28,7 +29,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_delete_payment_method_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
-    @observable on_cancel_add_payment_method_handler = null;
+    @observable on_cancel_add_payment_method_form_handler = null;
     @observable payment_info = '';
     @observable payment_method_value = undefined;
     @observable payment_methods_list = [];
@@ -194,8 +195,8 @@ export default class MyProfileStore extends BaseStore {
                 } else {
                     this.setShouldShowAddPaymentMethodForm(false);
                     this.getAdvertiserPaymentMethods();
+                    this.clearFormState();
                 }
-
                 setSubmitting(false);
             }
         });
@@ -379,10 +380,21 @@ export default class MyProfileStore extends BaseStore {
         }
     }
 
+    /**
+     * Shows the cancel add payment method confirmation modal based on:
+     * Desktop - Save form values, hide the current modal using the handler (on_cancel_add_payment_method_handler)
+     *           and show the cancel add payment method confirmation modal
+     * Responsive - Only show the cancel add payment method confirmation modal
+     */
     @action.bound
     showCancelAddPaymentMethodModal() {
-        this.on_cancel_add_payment_method_handler();
-        setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), 200);
+        if (isMobile()) {
+            this.setIsCancelAddPaymentMethodModalOpen(true);
+        } else {
+            this.saveFormState();
+            setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), 250);
+            this.on_cancel_add_payment_method_form_handler();
+        }
     }
 
     @action.bound
@@ -576,8 +588,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setOnCancelAddPaymentMethodHandler(on_cancel_add_payment_method_handler) {
-        this.on_cancel_add_payment_method_handler = on_cancel_add_payment_method_handler;
+    setOnCancelAddPaymentMethodFormHandler(on_cancel_add_payment_method_form_handler) {
+        this.on_cancel_add_payment_method_form_handler = on_cancel_add_payment_method_form_handler;
     }
 
     @action.bound

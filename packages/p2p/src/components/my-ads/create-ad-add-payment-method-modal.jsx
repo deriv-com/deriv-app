@@ -10,7 +10,7 @@ import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/a
 const CreateAdAddPaymentMethodModal = () => {
     const { my_ads_store, my_profile_store } = useStores();
     const onCancel = () => {
-        if (my_profile_store.selected_payment_method.length > 0 || my_profile_store.formik_ref?.dirty) {
+        if (my_profile_store.is_payment_method_form_modified) {
             my_profile_store.showCancelAddPaymentMethodModal();
         } else {
             my_ads_store.setShouldShowAddPaymentMethodModal(false);

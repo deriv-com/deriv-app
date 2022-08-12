@@ -54,29 +54,11 @@ const QuickAddModal = ({ advert }) => {
     //         closeHandler();
     //     }
     // };
-    const isPaymentMethodsSelected =
-        (formik_ref.current && formik_ref.current.dirty) ||
-        my_profile_store.selected_payment_method.length > 0 ||
-        selected_methods.length > 0;
+    const isPaymentMethodsSelected = my_profile_store.is_payment_method_form_modified || selected_methods.length > 0;
 
     const closeModals = () => {
-        // if (!should_close_all_modals) {
-        //     if (my_ads_store.should_show_add_payment_method) {
-        //         checkIsModified(() => my_ads_store.setShouldShowAddPaymentMethod(false));
-        //     } else {
-        //         checkIsModified(my_ads_store.hideQuickAddModal);
-        //     }
-        // } else {
-        //     checkIsModified(() => {
-        //         my_ads_store.setShouldShowAddPaymentMethod(false);
-        //         my_ads_store.hideQuickAddModal();
-        //     });
-        // }
         if (isPaymentMethodsSelected) {
-            my_profile_store.showCancelAddPaymentMethodModal(() => {
-                my_ads_store.setShouldShowAddPaymentMethod(false);
-                my_ads_store.hideQuickAddModal();
-            });
+            my_profile_store.showCancelAddPaymentMethodModal();
         } else {
             clearSelectedPaymentMethods();
             my_ads_store.hideQuickAddModal();
@@ -86,9 +68,10 @@ const QuickAddModal = ({ advert }) => {
     const toggleModal = e => {
         if (
             !e.target ||
+            ['svg', 'use'].includes(e.target.tagName) ||
             ['dc-dropdown-list__item', 'dc-btn'].every(className => !e.target.className.includes(className))
         ) {
-            closeModals(false);
+            closeModals();
         }
     };
 
@@ -99,7 +82,11 @@ const QuickAddModal = ({ advert }) => {
     };
 
     React.useEffect(() => {
-        my_ads_store.setShouldShowAddPaymentMethod(false);
+        // my_ads_store.setShouldShowAddPaymentMethod(false);
+        my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
+            // my_ads_store.setShouldShowAddPaymentMethod(false);
+            my_ads_store.setIsQuickAddModalOpen(false);
+        });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -107,146 +94,131 @@ const QuickAddModal = ({ advert }) => {
     if (isMobile()) {
         if (is_buy_advert) {
             return (
+                <React.Fragment>
+                    <CancelAddPaymentMethodModal
+                        onCancel={() => {
+                            my_ads_store.setIsQuickAddModalOpen(false);
+                            clearSelectedPaymentMethods();
+                        }}
+                    />
+
+                    <MobileFullPageModal
+                        body_className='quick-add-modal--body'
+                        height_offset='80px'
+                        is_flex
+                        is_modal_open={my_ads_store.is_quick_add_modal_open}
+                        page_header_text={localize('Add payment method')}
+                        pageHeaderReturnFn={toggleModal}
+                        secondary
+                        text={localize('Cancel')}
+                        renderPageFooterChildren={() => (
+                            <>
+                                <Button has_effect large onClick={toggleModal} secondary text={localize('Cancel')} />
+                                <Button
+                                    className='quick-add-modal--button'
+                                    has_effect
+                                    is_disabled={
+                                        selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
+                                    }
+                                    large
+                                    onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
+                                    primary
+                                    text={localize('Add')}
+                                />
+                            </>
+                        )}
+                    >
+                        <div className='quick-add-modal--info'>
+                            <Text color='prominent' size='xxs'>
+                                <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                            </Text>
+                        </div>
+                        <BuyAdPaymentMethodsList
+                            should_show_hint
+                            selected_methods={selected_methods}
+                            setSelectedMethods={setSelectedMethods}
+                            should_clear_payment_method_selections={false}
+                        />
+                    </MobileFullPageModal>
+                </React.Fragment>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                <CancelAddPaymentMethodModal
+                    onCancel={() => {
+                        my_ads_store.setShouldShowAddPaymentMethod(false);
+                        my_ads_store.setIsQuickAddModalOpen(true);
+                    }}
+                    onGoBack={() => {
+                        setTimeout(() => {
+                            my_ads_store.setIsQuickAddModalOpen(true);
+                            my_ads_store.shouldShowAddPaymentMethod(true);
+                        }, 250);
+                    }}
+                />
                 <MobileFullPageModal
                     body_className='quick-add-modal--body'
                     height_offset='80px'
                     is_flex
                     is_modal_open={my_ads_store.is_quick_add_modal_open}
                     page_header_text={localize('Add payment method')}
-                    pageHeaderReturnFn={() => {
-                        if (isPaymentMethodsSelected) {
-                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                        } else {
-                            my_ads_store.setIsQuickAddModalOpen(false);
-                        }
-                    }}
+                    pageHeaderReturnFn={() => closeModals(false)}
                     secondary
                     text={localize('Cancel')}
-                    renderPageFooterChildren={() => (
-                        <>
-                            <CancelAddPaymentMethodModal
-                                is_floating
-                                onCancel={() => {
-                                    clearSelectedPaymentMethods();
-                                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                                    my_ads_store.setIsQuickAddModalOpen(false);
-                                }}
-                                onGoBack={() => {
-                                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                                    // if (my_profile_store.selected_payment_method) {
-                                    //     // in quick add modal, if user has already selected a PM for a sell ad, navigate back to list of PM cards instead of closing the quick add modal
-                                    //     my_ads_store.setShouldShowAddPaymentMethod(false);
-                                    // } else {
-                                    //     my_ads_store.hideQuickAddModal();
-                                    // }
-
-                                    // need to add routing logic here for sell ad
-                                    setTimeout(() => my_ads_store.setIsQuickAddModalOpen(true), 50);
-                                }}
-                            />
-                            <Button
-                                has_effect
-                                large
-                                onClick={() => {
-                                    if (isPaymentMethodsSelected) {
-                                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                                    } else {
-                                        my_ads_store.setIsQuickAddModalOpen(false);
+                    renderPageFooterChildren={() =>
+                        !my_ads_store.should_show_add_payment_method && (
+                            <>
+                                <Button has_effect large onClick={closeModals} secondary text={localize('Cancel')} />
+                                <Button
+                                    className='quick-add-modal--button'
+                                    has_effect
+                                    is_disabled={
+                                        selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0
                                     }
-                                }}
-                                secondary
-                                text={localize('Cancel')}
-                            />
-                            <Button
-                                className='quick-add-modal--button'
-                                has_effect
-                                is_disabled={
-                                    selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
-                                }
-                                large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
-                                primary
-                                text={localize('Add')}
+                                    large
+                                    onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
+                                    primary
+                                    text={localize('Add')}
+                                />
+                            </>
+                        )
+                    }
+                >
+                    {my_ads_store.should_show_add_payment_method ? (
+                        <AddPaymentMethod
+                            formik_ref={formik_ref}
+                            should_show_page_return={false}
+                            should_show_separated_footer
+                        />
+                    ) : (
+                        <>
+                            <Text color='prominent' size='xxs'>
+                                <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                            </Text>
+                            {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
+                                <div key={key}>
+                                    <PaymentMethodCard
+                                        is_vertical_ellipsis_visible={false}
+                                        key={key}
+                                        small
+                                        onClick={() => onClickPaymentMethodCard(payment_method)}
+                                        payment_method={payment_method}
+                                        style={selected_methods.includes(payment_method.ID) ? style : {}}
+                                    />
+                                </div>
+                            ))}
+                            <PaymentMethodCard
+                                is_add
+                                label={localize('Payment method')}
+                                small
+                                onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                             />
                         </>
                     )}
-                >
-                    <div className='quick-add-modal--info'>
-                        <Text color='prominent' size='xxs'>
-                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
-                        </Text>
-                    </div>
-                    <BuyAdPaymentMethodsList
-                        should_show_hint
-                        selected_methods={selected_methods}
-                        setSelectedMethods={setSelectedMethods}
-                        should_clear_payment_method_selections={false}
-                    />
                 </MobileFullPageModal>
-            );
-        }
-
-        return (
-            <MobileFullPageModal
-                body_className='quick-add-modal--body'
-                height_offset='80px'
-                is_flex
-                is_modal_open={my_ads_store.is_quick_add_modal_open}
-                page_header_text={localize('Add payment method')}
-                pageHeaderReturnFn={() => closeModals(false)}
-                secondary
-                text={localize('Cancel')}
-                renderPageFooterChildren={() =>
-                    !my_ads_store.should_show_add_payment_method && (
-                        <>
-                            <Button has_effect large onClick={closeModals} secondary text={localize('Cancel')} />
-                            <Button
-                                className='quick-add-modal--button'
-                                has_effect
-                                is_disabled={
-                                    selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0
-                                }
-                                large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
-                                primary
-                                text={localize('Add')}
-                            />
-                        </>
-                    )
-                }
-            >
-                {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod
-                        formik_ref={formik_ref}
-                        should_show_page_return={false}
-                        should_show_separated_footer
-                    />
-                ) : (
-                    <>
-                        <Text color='prominent' size='xxs'>
-                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
-                        </Text>
-                        {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
-                            <div key={key}>
-                                <PaymentMethodCard
-                                    is_vertical_ellipsis_visible={false}
-                                    key={key}
-                                    small
-                                    onClick={() => onClickPaymentMethodCard(payment_method)}
-                                    payment_method={payment_method}
-                                    style={selected_methods.includes(payment_method.ID) ? style : {}}
-                                />
-                            </div>
-                        ))}
-                        <PaymentMethodCard
-                            is_add
-                            label={localize('Payment method')}
-                            small
-                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
-                        />
-                    </>
-                )}
-            </MobileFullPageModal>
+            </React.Fragment>
         );
     }
 
@@ -254,22 +226,9 @@ const QuickAddModal = ({ advert }) => {
         return (
             <React.Fragment>
                 <CancelAddPaymentMethodModal
-                    is_floating
-                    onCancel={() => {
-                        clearSelectedPaymentMethods();
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                    }}
+                    onCancel={clearSelectedPaymentMethods} // just close the cancel add payment method modal since quick add modal is already hidden
                     onGoBack={() => {
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                        // if (my_profile_store.selected_payment_method) {
-                        //     // in quick add modal, if user has already selected a PM for a sell ad, navigate back to list of PM cards instead of closing the quick add modal
-                        //     my_ads_store.setShouldShowAddPaymentMethod(false);
-                        // } else {
-                        //     my_ads_store.hideQuickAddModal();
-                        // }
-
-                        // need to add routing logic here for sell ad
-                        setTimeout(() => my_ads_store.setIsQuickAddModalOpen(true), 200);
+                        setTimeout(() => my_ads_store.setIsQuickAddModalOpen(true), 250);
                     }}
                 />
                 <Modal
@@ -319,84 +278,98 @@ const QuickAddModal = ({ advert }) => {
     }
 
     return (
-        <Modal
-            className='p2p-my-ads__modal-error quick-add-modal--pointer-events'
-            has_close_icon
-            height='660px'
-            is_open={my_ads_store.is_quick_add_modal_open}
-            title={
-                <React.Fragment>
-                    {my_ads_store.should_show_add_payment_method && (
-                        <Icon
-                            className='p2p-my-ads__modal-icon'
-                            icon='icArrowLeftBold'
-                            onClick={() => closeModals(false)}
-                        />
-                    )}
-                    {my_ads_store.should_show_add_payment_method
-                        ? localize('Add payment method')
-                        : localize('Add payment methods')}
-                </React.Fragment>
-            }
-            toggleModal={toggleModal}
-        >
-            {my_ads_store.should_show_add_payment_method ? (
-                <Modal.Body
-                    className={classNames({
-                        'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
-                    })}
-                >
-                    <AddPaymentMethod
-                        formik_ref={formik_ref}
-                        should_show_page_return={false}
-                        should_show_separated_footer
-                    />
-                </Modal.Body>
-            ) : (
-                <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
-                    <Modal.Body>
-                        <Text color='prominent' size='xs'>
-                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
-                        </Text>
-                        {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
-                            <PaymentMethodCard
-                                is_vertical_ellipsis_visible={false}
-                                key={key}
-                                medium
-                                onClick={() => onClickPaymentMethodCard(payment_method)}
-                                payment_method={payment_method}
-                                style={selected_methods.includes(payment_method.ID) ? style : {}}
+        <React.Fragment>
+            <CancelAddPaymentMethodModal
+                onCancel={() => {
+                    my_ads_store.setShouldShowAddPaymentMethod(false);
+                    my_ads_store.setIsQuickAddModalOpen(true);
+                }}
+                onGoBack={() => {
+                    setTimeout(() => {
+                        my_ads_store.setIsQuickAddModalOpen(true);
+                        my_ads_store.shouldShowAddPaymentMethod(true);
+                    }, 250);
+                }}
+            />
+            <Modal
+                className='p2p-my-ads__modal-error quick-add-modal--pointer-events'
+                has_close_icon
+                height='660px'
+                is_open={my_ads_store.is_quick_add_modal_open}
+                title={
+                    <React.Fragment>
+                        {my_ads_store.should_show_add_payment_method && (
+                            <Icon
+                                className='p2p-my-ads__modal-icon'
+                                icon='icArrowLeftBold'
+                                onClick={() => closeModals(false)}
                             />
-                        ))}
-                        <PaymentMethodCard
-                            is_add
-                            label={localize('Payment method')}
-                            medium
-                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
+                        )}
+                        {my_ads_store.should_show_add_payment_method
+                            ? localize('Add payment method')
+                            : localize('Add payment methods')}
+                    </React.Fragment>
+                }
+                toggleModal={toggleModal}
+            >
+                {my_ads_store.should_show_add_payment_method ? (
+                    <Modal.Body
+                        className={classNames({
+                            'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
+                        })}
+                    >
+                        <AddPaymentMethod
+                            formik_ref={formik_ref}
+                            should_show_page_return={false}
+                            should_show_separated_footer
                         />
                     </Modal.Body>
-                </ThemedScrollbars>
-            )}
-            {!my_ads_store.should_show_add_payment_method && (
-                <Modal.Footer has_separator>
-                    <Button has_effect large onClick={closeModals} secondary text={localize('Cancel')} />
+                ) : (
+                    <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
+                        <Modal.Body>
+                            <Text color='prominent' size='xs'>
+                                <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                            </Text>
+                            {my_profile_store.advertiser_payment_methods_list.map((payment_method, key) => (
+                                <PaymentMethodCard
+                                    is_vertical_ellipsis_visible={false}
+                                    key={key}
+                                    medium
+                                    onClick={() => onClickPaymentMethodCard(payment_method)}
+                                    payment_method={payment_method}
+                                    style={selected_methods.includes(payment_method.ID) ? style : {}}
+                                />
+                            ))}
+                            <PaymentMethodCard
+                                is_add
+                                label={localize('Payment method')}
+                                medium
+                                onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
+                            />
+                        </Modal.Body>
+                    </ThemedScrollbars>
+                )}
+                {!my_ads_store.should_show_add_payment_method && (
+                    <Modal.Footer has_separator>
+                        <Button has_effect large onClick={closeModals} secondary text={localize('Cancel')} />
 
-                    <Button
-                        has_effect
-                        is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0}
-                        large
-                        onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
-                        primary
-                        text={localize('Add')}
-                    />
-                </Modal.Footer>
-            )}
-            {!my_profile_store.selected_payment_method && my_ads_store.should_show_add_payment_method && (
-                <Modal.Footer>
-                    <Button has_effect large onClick={closeModals} secondary text={localize('Cancel')} />
-                </Modal.Footer>
-            )}
-        </Modal>
+                        <Button
+                            has_effect
+                            is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0}
+                            large
+                            onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
+                            primary
+                            text={localize('Add')}
+                        />
+                    </Modal.Footer>
+                )}
+                {!my_profile_store.selected_payment_method && my_ads_store.should_show_add_payment_method && (
+                    <Modal.Footer>
+                        <Button has_effect large onClick={closeModals} secondary text={localize('Cancel')} />
+                    </Modal.Footer>
+                )}
+            </Modal>
+        </React.Fragment>
     );
 };
 

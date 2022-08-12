@@ -104,6 +104,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
+    get is_payment_method_form_modified() {
+        return (this.formik_ref && this.formik_ref.dirty) || this.selected_payment_method.length > 0;
+    }
+
+    @computed
     get form_history() {
         if (this.formik_history) {
             return this.formik_history.values;

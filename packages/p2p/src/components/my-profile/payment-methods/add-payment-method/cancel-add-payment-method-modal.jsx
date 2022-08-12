@@ -6,23 +6,11 @@ import { Localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 
 const CancelAddPaymentMethodModal = ({ onCancel, onGoBack }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { my_profile_store } = useStores();
 
-    const onClickCancel =
-        onCancel ||
-        (() => {
-            my_ads_store.hideQuickAddModal();
-            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-            my_profile_store.hideAddPaymentMethodForm();
-            my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
-            my_ads_store.setShouldShowAddPaymentMethodModal(false);
-        });
+    const onClickCancel = onCancel;
 
-    const onClickGoBack =
-        onGoBack ||
-        (() => {
-            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-        });
+    const onClickGoBack = onGoBack;
 
     return (
         <Modal
@@ -60,7 +48,7 @@ const CancelAddPaymentMethodModal = ({ onCancel, onGoBack }) => {
                 <Button
                     large
                     onClick={() => {
-                        onClickGoBack();
+                        if (onClickGoBack) onClickGoBack();
                         my_profile_store.setShouldShowAddPaymentMethodForm(true);
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                     }}

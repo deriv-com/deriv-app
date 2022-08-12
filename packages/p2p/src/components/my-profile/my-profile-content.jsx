@@ -7,6 +7,7 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
+import CancelAddPaymentMethodModal from './payment-methods/add-payment-method/cancel-add-payment-method-modal';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
@@ -26,6 +27,12 @@ const MyProfileContent = () => {
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
         return (
             <React.Fragment>
+                <CancelAddPaymentMethodModal
+                    onCancel={() => {
+                        my_profile_store.clearFormState();
+                        my_profile_store.hideAddPaymentMethodForm();
+                    }}
+                />
                 <DesktopWrapper>
                     <PaymentMethods formik_ref={formik_ref} />
                 </DesktopWrapper>

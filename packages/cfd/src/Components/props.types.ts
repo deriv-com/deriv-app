@@ -141,27 +141,3 @@ export type TTradingPlatformAccounts = {
      */
     platform?: 'dxtrade';
 };
-
-export type TAvailableAccountAPI = [
-    {
-        market_type: string;
-        name: string;
-        requirements: {
-            signup: Array<string>;
-            withdrawal: Array<string>;
-        };
-        shortcode: string;
-        sub_account_type: string;
-    }
-];
-
-export type TJurisdictionCard = {
-    jurisdiction_selected_shortcode: string;
-    synthetic_available_accounts: TAvailableAccountAPI;
-    financial_available_accounts: TAvailableAccountAPI;
-    setJurisdictionSelectedShortcode: (card_type: string) => void;
-    account_type: string;
-    type_of_card: string;
-    disabled: boolean;
-    // banner: React.ReactNode;
-};

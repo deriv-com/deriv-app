@@ -1,6 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
+    GetAccountStatus,
     GetSettings,
     LandingCompany,
     ResidenceList,
@@ -8,6 +9,7 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 
 export type TCFDPersonalDetailsModalProps = {
     account_settings: GetSettings;
@@ -156,4 +158,53 @@ export type TCFDPasswordManagerModal = {
     selected_account_group: 'real' | 'demo';
     selected_server: string;
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
+};
+
+export type TAvailableAccountAPI = [
+    {
+        market_type: string;
+        name: string;
+        requirements: {
+            signup: Array<string>;
+            withdrawal: Array<string>;
+        };
+        shortcode: string;
+        sub_account_type: string;
+    }
+];
+
+export type TJurisdictionCard = {
+    jurisdiction_selected_shortcode: string;
+    synthetic_available_accounts: TAvailableAccountAPI;
+    financial_available_accounts: TAvailableAccountAPI;
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    account_type: string;
+    type_of_card: string;
+    disabled: boolean;
+    // banner: React.ReactNode;
+};
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
+export type TJurisdictionModalProps = {
+    account_type: {
+        type: string;
+        category: string;
+    };
+    account_settings: GetSettings;
+    account_status: GetAccountStatus;
+    disableApp: () => void;
+    enableApp: () => void;
+    is_eu: boolean;
+    is_jurisdiction_modal_visible: boolean;
+    jurisdiction_selected_shortcode: string;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    toggleCFDPersonalDetailsModal: () => void;
+    toggleJurisdictionModal: () => void;
+    toggleCFDVerificationModal: () => void;
 };

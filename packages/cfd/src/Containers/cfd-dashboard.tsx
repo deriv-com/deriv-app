@@ -135,7 +135,6 @@ type TCFDDashboardProps = RouteComponentProps & {
     toggleAccountsDialog: () => void;
     toggleMT5TradeModal: () => void;
     toggleShouldShowRealAccountsList: () => void;
-    toggleCFDPersonalDetailsModal: () => void;
     upgradeable_landing_companies: unknown[];
     is_reset_trading_password_modal_visible: boolean;
     toggleResetTradingPasswordModal: () => void;
@@ -370,7 +369,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         NotificationMessages,
         platform,
         openAccountNeededModal,
-        toggleCFDPersonalDetailsModal,
         residence,
         standpoint,
         toggleAccountsDialog,
@@ -558,11 +556,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 openPasswordModal={openRealPasswordModal}
                                 is_real_enabled={is_real_enabled}
                             />
-                            <JurisdictionModal
-                                platform={platform}
-                                openPasswordModal={openRealPasswordModal}
-                                toggleCFDPersonalDetailsModal={toggleCFDPersonalDetailsModal}
-                            />
+                            <JurisdictionModal openPasswordModal={openRealPasswordModal} />
                             <MT5TradeModal
                                 current_list={current_list}
                                 is_open={is_mt5_trade_modal_visible}
@@ -739,7 +733,6 @@ export default withRouter(
         is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
-        toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
         getRealSyntheticAccountsExistingData: modules.cfd.getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData: modules.cfd.getRealFinancialAccountsExistingData,
         is_loading: client.is_populating_mt5_account_list,

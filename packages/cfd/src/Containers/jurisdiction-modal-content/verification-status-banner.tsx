@@ -11,10 +11,7 @@ type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
     is_virtual: boolean;
     card_classname: string;
-    account_type: {
-        type: string;
-        category: string;
-    };
+    account_type: string;
     disabled: boolean;
     is_fully_authenticated: boolean;
 };
@@ -42,7 +39,7 @@ const VerificationStatusBanner = ({
     } = getIdentityStatusInfo(account_status);
 
     const getAccountTitle = () => {
-        switch (account_type.type) {
+        switch (account_type) {
             case 'synthetic':
                 return 'Synthetic';
             case 'financial':
@@ -85,7 +82,7 @@ const VerificationStatusBanner = ({
             if (!is_fully_authenticated)
                 return (
                     <div className={`${card_classname}__footer`}>
-                        <Text size={'xxxxs'} color={'less-prominent'}>
+                        <Text size={'xxxs'} color={'less-prominent'}>
                             <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                         </Text>
                     </div>
@@ -211,9 +208,8 @@ const VerificationStatusBanner = ({
     );
 };
 
-export default connect(({ modules: { cfd }, client }: RootStore) => ({
+export default connect(({ client }: RootStore) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
-    account_type: cfd.account_type,
     is_fully_authenticated: client.is_fully_authenticated,
 }))(VerificationStatusBanner);

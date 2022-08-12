@@ -9,10 +9,7 @@ import { Localize } from '@deriv/translations';
 type TModalFootNoteProps = {
     account_status: GetAccountStatus;
     card_classname: string;
-    account_type: {
-        type: string;
-        category: string;
-    };
+    account_type: string;
     jurisdiction_selected_shortcode: string;
 };
 
@@ -37,7 +34,7 @@ const ModalFootNote = ({
         poi_or_poa_not_submitted,
     } = getIdentityStatusInfo(account_status);
 
-    const account_type_name = account_type.type === 'synthetic' ? 'Synthetics' : 'Financial';
+    const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
 
     return (
         <>
@@ -244,6 +241,5 @@ const ModalFootNote = ({
 
 export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
-    account_type: cfd.account_type,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
 }))(ModalFootNote);

@@ -7,7 +7,7 @@ import { isMobile, getIdentityStatusInfo } from '@deriv/shared';
 
 import { GetAccountStatus } from '@deriv/api-types';
 
-type TCfdCheckBoxForAccountsProps = {
+type TJurisdictionCheckBoxProps = {
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
     is_checked: boolean;
@@ -16,13 +16,13 @@ type TCfdCheckBoxForAccountsProps = {
     class_name: string;
 };
 
-const CfdCheckBoxForAccounts = ({
+const JurisdictionCheckBox = ({
     onCheck,
     is_checked,
     jurisdiction_selected_shortcode,
     account_status,
     class_name,
-}: TCfdCheckBoxForAccountsProps) => {
+}: TJurisdictionCheckBoxProps) => {
     const { poa_verified, poi_verified_for_bvi_labuan_maltainvest, poi_verified_for_vanuatu } =
         getIdentityStatusInfo(account_status);
 
@@ -83,4 +83,4 @@ const CfdCheckBoxForAccounts = ({
 export default connect(({ modules, client }: RootStore) => ({
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     account_status: client.account_status,
-}))(CfdCheckBoxForAccounts);
+}))(JurisdictionCheckBox);

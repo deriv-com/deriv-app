@@ -1,10 +1,11 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import { TExistingData, TAvailableAccountAPI } from 'Components/props.types';
-import CfdCheckBoxForAccounts from './jurisdiction-modal-content/cfd-checkbox-for-accounts';
-import JurisdictionCard from './jurisdiction-modal-content/jurisdiction-card';
-import ModalFootNote from './jurisdiction-modal-content/jurisdiction-modal-footer';
+import { TExistingData } from 'Components/props.types';
+import { TAvailableAccountAPI } from '../props.types';
+import JurisdictionCheckBox from './jurisdiction-checkbox';
+import JurisdictionCard from './jurisdiction-card';
+import ModalFootNote from './jurisdiction-modal-footer';
 
 type TJurisdictionModalContent = {
     account_type: string;
@@ -75,8 +76,8 @@ const JurisdictionModalContent = ({
                         )
                 )}
             </div>
-            <ModalFootNote card_classname={card_classname} />
-            <CfdCheckBoxForAccounts
+            <ModalFootNote card_classname={card_classname} account_type={account_type} />
+            <JurisdictionCheckBox
                 is_checked={checked}
                 onCheck={() => setChecked(!checked)}
                 class_name={`${card_classname}__jurisdiction-checkbox`}

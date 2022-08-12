@@ -3,7 +3,7 @@ import { Icon, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
-import { TJurisdictionCard } from 'Components/props.types';
+import { TJurisdictionCard } from '../props.types';
 import VerificationStatusBanner from './verification-status-banner';
 
 const JurisdictionCard = ({
@@ -113,6 +113,7 @@ const JurisdictionCard = ({
                     type_of_card={type_of_card}
                     card_classname={card_classname}
                     disabled={disabled}
+                    account_type={account_type}
                 />
             </div>
         </>

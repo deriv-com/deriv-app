@@ -3,56 +3,14 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { GetAccountSettingsResponse, GetSettings, LandingCompany, GetAccountStatus } from '@deriv/api-types';
-import JurisdictionModalContent from './jurisdiction-modal-content';
-import { WS, getIdentityStatusInfo } from '@deriv/shared';
-import { TTradingPlatformAvailableAccount } from '../Components/props.types';
-
-type TCompareAccountsReusedProps = {
-    landing_companies: LandingCompany;
-    platform: string;
-    is_logged_in: boolean;
-    is_uk: boolean;
-};
-
-type TOpenAccountTransferMeta = {
-    category: string;
-    type?: string;
-};
-
-type TJurisdictionModalProps = TCompareAccountsReusedProps & {
-    account_settings: GetSettings;
-    account_type: {
-        type: string;
-        category: string;
-    };
-    authentication_status: {
-        document_status: string;
-        identity_status: string;
-    };
-    disableApp: () => void;
-    enableApp: () => void;
-    is_jurisdiction_modal_visible: boolean;
-    is_loading: boolean;
-    is_eu: boolean;
-    is_eu_country: boolean;
-    jurisdiction_selected_shortcode: string;
-    residence: string;
-    toggleCFDPersonalDetailsModal: () => void;
-    toggleJurisdictionModal: () => void;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    is_fully_authenticated: boolean;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    setAccountSettings: (get_settings_response: GetSettings) => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    toggleCFDVerificationModal: () => void;
-    account_status: GetAccountStatus;
-};
+import { GetAccountSettingsResponse, GetSettings } from '@deriv/api-types';
+import JurisdictionModalContent from './jurisdiction-modal-content/jurisdiction-modal-content';
+import { WS, getIdentityStatusInfo, isMobile } from '@deriv/shared';
+import { TJurisdictionModalProps } from './props.types';
 
 const JurisdictionModal = ({
     account_settings,
     account_type,
-    authentication_status,
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
@@ -61,7 +19,6 @@ const JurisdictionModal = ({
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     trading_platform_available_accounts,
-    is_fully_authenticated,
     openPasswordModal,
     setAccountSettings,
     setJurisdictionSelectedShortcode,
@@ -222,6 +179,33 @@ const JurisdictionModal = ({
         return <Localize i18n_default_text='Next' />;
     };
 
+    const ModalContent = () => (
+        <>
+            <JurisdictionModalContent
+                account_type={account_type.type}
+                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                synthetic_available_accounts={synthetic_available_accounts}
+                financial_available_accounts={financial_available_accounts}
+                checked={checked}
+                setChecked={setChecked}
+            />
+            <Modal.Footer has_separator>
+                <Button
+                    disabled={!isNextButtonEnabled()}
+                    primary
+                    style={{ width: isMobile() ? '100%' : 'unset' }}
+                    onClick={() => {
+                        toggleJurisdictionModal();
+                        onSelectRealAccount();
+                    }}
+                >
+                    {buttonText()}
+                </Button>
+            </Modal.Footer>
+        </>
+    );
+
     return (
         <>
             <div>
@@ -238,43 +222,7 @@ const JurisdictionModal = ({
                             width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
                             exit_classname='cfd-modal--custom-exit'
                         >
-                            <JurisdictionModalContent
-                                financial_available_accounts={financial_available_accounts}
-                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                                synthetic_available_accounts={synthetic_available_accounts}
-                                account_type={account_type.type}
-                                authentication_status={authentication_status}
-                                poa_status={poa_status}
-                                poi_status={poi_status}
-                                is_fully_authenticated={is_fully_authenticated}
-                                poi_poa_pending={poi_poa_pending}
-                                checked={checked}
-                                setChecked={setChecked}
-                                poi_failed={poi_failed}
-                                poa_failed={poa_failed}
-                                poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                                poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
-                                poa_verified={poa_verified}
-                                poi_acknowledged_for_bvi_labuan_maltainvest={
-                                    poi_acknowledged_for_bvi_labuan_maltainvest
-                                }
-                                poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                                need_poi_for_vanuatu={need_poi_for_vanuatu}
-                                need_poi_for_bvi_labuan_maltainvest={need_poi_for_bvi_labuan_maltainvest}
-                            />
-                            <Modal.Footer has_separator>
-                                <Button
-                                    disabled={!isNextButtonEnabled()}
-                                    primary
-                                    onClick={() => {
-                                        toggleJurisdictionModal();
-                                        onSelectRealAccount();
-                                    }}
-                                >
-                                    {buttonText()}
-                                </Button>
-                            </Modal.Footer>
+                            <ModalContent />
                         </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -284,44 +232,7 @@ const JurisdictionModal = ({
                             visible={is_jurisdiction_modal_visible}
                             onClose={toggleJurisdictionModal}
                         >
-                            <JurisdictionModalContent
-                                financial_available_accounts={financial_available_accounts}
-                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                                synthetic_available_accounts={synthetic_available_accounts}
-                                account_type={account_type.type}
-                                authentication_status={authentication_status}
-                                poa_status={poa_status}
-                                poi_status={poi_status}
-                                is_fully_authenticated={is_fully_authenticated}
-                                poi_poa_pending={poi_poa_pending}
-                                checked={checked}
-                                setChecked={setChecked}
-                                poi_failed={poi_failed}
-                                poa_failed={poa_failed}
-                                poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                                poi_verified_for_bvi_labuan_maltainvest={poi_verified_for_bvi_labuan_maltainvest}
-                                poa_verified={poa_verified}
-                                poi_acknowledged_for_bvi_labuan_maltainvest={
-                                    poi_acknowledged_for_bvi_labuan_maltainvest
-                                }
-                                poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                                need_poi_for_vanuatu={need_poi_for_vanuatu}
-                                need_poi_for_bvi_labuan_maltainvest={need_poi_for_bvi_labuan_maltainvest}
-                            />
-                            <Modal.Footer has_separator>
-                                <Button
-                                    style={{ width: '100%' }}
-                                    disabled={!isNextButtonEnabled()}
-                                    primary
-                                    onClick={() => {
-                                        toggleJurisdictionModal();
-                                        onSelectRealAccount();
-                                    }}
-                                >
-                                    {buttonText()}
-                                </Button>
-                            </Modal.Footer>
+                            <ModalContent />
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Suspense>
@@ -331,24 +242,18 @@ const JurisdictionModal = ({
 };
 
 export default connect(({ modules, ui, client }: RootStore) => ({
-    account_settings: client.account_settings,
     account_type: modules.cfd.account_type,
-    authentication_status: client.authentication_status,
+    account_settings: client.account_settings,
+    account_status: client.account_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
+    is_eu: client.is_eu,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
-    trading_platform_available_accounts: client.trading_platform_available_accounts,
-    is_loading: client.is_populating_mt5_account_list,
-    is_eu: client.is_eu,
-    is_logged_in: client.is_logged_in,
-    is_eu_country: client.is_eu_country,
-    landing_companies: client.landing_companies,
-    is_fully_authenticated: client.is_fully_authenticated,
     setAccountSettings: client.setAccountSettings,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
-    residence: client.residence,
-    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
-    account_status: client.account_status,
+    trading_platform_available_accounts: client.trading_platform_available_accounts,
+    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
+    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
+    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
 }))(JurisdictionModal);

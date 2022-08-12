@@ -106,7 +106,7 @@ const ProofOfIdentityContainer = ({
         identity_status === identity_status_codes.none ||
         has_require_submission ||
         allow_poi_resubmission ||
-        (should_ignore_idv && is_last_attempt_idv) ||
+        (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
         (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected')
     ) {
         return (

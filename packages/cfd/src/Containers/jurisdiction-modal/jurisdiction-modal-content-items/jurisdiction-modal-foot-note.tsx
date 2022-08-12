@@ -1,24 +1,15 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
-import { GetAccountStatus } from '@deriv/api-types';
+import { TJurisdictionModalFootNote } from '../../props.types';
 import { getIdentityStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-type TModalFootNoteProps = {
-    account_status: GetAccountStatus;
-    card_classname: string;
-    account_type: string;
-    jurisdiction_selected_shortcode: string;
-};
-
-const ModalFootNote = ({
+const JurisdictionModalFootNote = ({
     account_status,
     account_type,
     jurisdiction_selected_shortcode,
     card_classname,
-}: TModalFootNoteProps) => {
+}: TJurisdictionModalFootNote) => {
     const {
         need_poi_for_vanuatu,
         need_poi_for_bvi_labuan_maltainvest,
@@ -239,7 +230,4 @@ const ModalFootNote = ({
     );
 };
 
-export default connect(({ modules: { cfd }, client }: RootStore) => ({
-    account_status: client.account_status,
-    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
-}))(ModalFootNote);
+export default JurisdictionModalFootNote;

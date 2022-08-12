@@ -24,6 +24,7 @@ const JurisdictionModal = ({
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
     account_status,
+    is_virtual,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
@@ -182,13 +183,15 @@ const JurisdictionModal = ({
     const ModalContent = () => (
         <>
             <JurisdictionModalContent
+                account_status={account_status}
                 account_type={account_type.type}
+                checked={checked}
+                financial_available_accounts={financial_available_accounts}
+                is_virtual={is_virtual}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                setChecked={setChecked}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
-                financial_available_accounts={financial_available_accounts}
-                checked={checked}
-                setChecked={setChecked}
             />
             <Modal.Footer has_separator>
                 <Button
@@ -249,6 +252,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     enableApp: ui.enableApp,
     is_eu: client.is_eu,
     is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
+    is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     setAccountSettings: client.setAccountSettings,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,

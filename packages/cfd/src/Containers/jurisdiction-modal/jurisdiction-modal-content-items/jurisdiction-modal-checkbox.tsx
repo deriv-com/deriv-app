@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+
 import { Text, Checkbox, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile, getIdentityStatusInfo } from '@deriv/shared';
@@ -12,7 +11,6 @@ type TJurisdictionCheckBoxProps = {
     onCheck: () => void;
     is_checked: boolean;
     account_status: GetAccountStatus;
-    is_fully_authenticated: boolean;
     class_name: string;
 };
 
@@ -80,7 +78,5 @@ const JurisdictionCheckBox = ({
         </>
     );
 };
-export default connect(({ modules, client }: RootStore) => ({
-    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
-    account_status: client.account_status,
-}))(JurisdictionCheckBox);
+
+export default JurisdictionCheckBox;

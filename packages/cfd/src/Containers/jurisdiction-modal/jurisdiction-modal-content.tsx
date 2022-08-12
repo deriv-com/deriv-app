@@ -1,26 +1,13 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import { TExistingData } from 'Components/props.types';
-import { TAvailableAccountAPI } from '../props.types';
+import { TJurisdictionModalContent } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-content-items/jurisdiction-modal-checkbox';
 import JurisdictionCard from './jurisdiction-modal-content-items/jurisdiction-modal-card/jurisdiction-card';
-import ModalFootNote from './jurisdiction-modal-content-items/jurisdiction-modal-footer';
-
-type TJurisdictionModalContent = {
-    account_type: string;
-    jurisdiction_selected_shortcode: string;
-    setJurisdictionSelectedShortcode: (card_type: string) => void;
-    synthetic_available_accounts: TAvailableAccountAPI;
-    financial_available_accounts: TAvailableAccountAPI;
-    checked: boolean;
-    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
-    real_synthetic_accounts_existing_data: TExistingData;
-    real_financial_accounts_existing_data: TExistingData;
-    is_virtual: boolean;
-};
+import JurisdictionModalFootNote from './jurisdiction-modal-content-items/jurisdiction-modal-foot-note';
 
 const JurisdictionModalContent = ({
+    account_status,
     account_type,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
@@ -76,19 +63,24 @@ const JurisdictionModalContent = ({
                         )
                 )}
             </div>
-            <ModalFootNote card_classname={card_classname} account_type={account_type} />
+            <JurisdictionModalFootNote
+                account_status={account_status}
+                card_classname={card_classname}
+                account_type={account_type}
+                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+            />
             <JurisdictionCheckBox
+                account_status={account_status}
                 is_checked={checked}
                 onCheck={() => setChecked(!checked)}
                 class_name={`${card_classname}__jurisdiction-checkbox`}
+                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
             />
         </>
     );
 };
 
-export default connect(({ modules: { cfd }, client }: RootStore) => ({
-    account_status: client.account_status,
+export default connect(({ modules: { cfd } }: RootStore) => ({
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
-    is_virtual: client.is_virtual,
 }))(JurisdictionModalContent);

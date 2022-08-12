@@ -9,7 +9,7 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
-import { TTradingPlatformAvailableAccount } from '../Components/props.types';
+import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
 
 export type TCFDPersonalDetailsModalProps = {
     account_settings: GetSettings;
@@ -181,7 +181,6 @@ export type TJurisdictionCard = {
     account_type: string;
     type_of_card: string;
     disabled: boolean;
-    // banner: React.ReactNode;
 };
 type TOpenAccountTransferMeta = {
     category: string;
@@ -199,6 +198,7 @@ export type TJurisdictionModalProps = {
     enableApp: () => void;
     is_eu: boolean;
     is_jurisdiction_modal_visible: boolean;
+    is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setAccountSettings: (get_settings_response: GetSettings) => void;
@@ -207,4 +207,25 @@ export type TJurisdictionModalProps = {
     toggleCFDPersonalDetailsModal: () => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
+};
+
+export type TJurisdictionModalContent = {
+    account_status: GetAccountStatus;
+    account_type: string;
+    jurisdiction_selected_shortcode: string;
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    synthetic_available_accounts: TAvailableAccountAPI;
+    financial_available_accounts: TAvailableAccountAPI;
+    checked: boolean;
+    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+    real_synthetic_accounts_existing_data: TExistingData;
+    real_financial_accounts_existing_data: TExistingData;
+    is_virtual: boolean;
+};
+
+export type TJurisdictionModalFootNote = {
+    account_status: GetAccountStatus;
+    card_classname: string;
+    account_type: string;
+    jurisdiction_selected_shortcode: string;
 };

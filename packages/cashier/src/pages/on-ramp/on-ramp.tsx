@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
-import { RootStore, TProvider } from 'Types';
+import { RootStore, TMenuOption, TProvider } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
@@ -18,10 +18,7 @@ type TOnRampProps = {
     is_onramp_modal_open: boolean;
     is_switching: boolean;
     is_loading: boolean;
-    menu_options: {
-        label: string;
-        path: string;
-    }[];
+    menu_options: TMenuOption[];
     onMountOnramp: () => void;
     onUnmountOnramp: () => void;
     onramp_popup_modal_title: string;

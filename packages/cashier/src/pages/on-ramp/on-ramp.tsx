@@ -29,7 +29,7 @@ type TOnRampProps = {
     resetPopup: () => void;
     routeTo: (selected_cashier_path: string) => void;
     setIsOnRampModalOpen: (set_is_on_ramp_modal_open: boolean) => void;
-    setSideNotes: (ReactComponent: JSX.Element[]) => void;
+    setSideNotes: (ReactComponent: React.ReactElement[]) => void;
     should_show_dialog: boolean;
     tab_index: number;
 };

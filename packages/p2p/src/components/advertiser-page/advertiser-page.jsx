@@ -15,6 +15,7 @@ import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
+import classNames from 'classnames';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
@@ -92,10 +93,15 @@ const AdvertiserPage = () => {
                                 </div>
                             )}
                         </div>
-                        <div className='advertiser-page__rating'>
-                            <div className='advertiser-page__rating--row'>
-                                {rating_average && recommended_average ? (
-                                    <React.Fragment>
+                        <div
+                            className={classNames('advertiser-page__rating', {
+                                'advertiser-page__rating--overflow':
+                                    isMobile() && rating_average && recommended_average,
+                            })}
+                        >
+                            {rating_average && recommended_average ? (
+                                <React.Fragment>
+                                    <div className='advertiser-page__rating--row'>
                                         <StarRating
                                             empty_star_className='advertiser-page__rating--star'
                                             empty_star_icon='IcEmptyStar'
@@ -125,19 +131,21 @@ const AdvertiserPage = () => {
                                                 )}
                                             </Text>
                                         </div>
-                                        <div className='advertiser-page__rating--row'>
-                                            <RecommendedBy
-                                                recommended_average={recommended_average}
-                                                recommended_count={recommended_count}
-                                            />
-                                        </div>
-                                    </React.Fragment>
-                                ) : (
+                                    </div>
+                                    <div className='advertiser-page__rating--row'>
+                                        <RecommendedBy
+                                            recommended_average={recommended_average}
+                                            recommended_count={recommended_count}
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            ) : (
+                                <div className='advertiser-page__rating--row'>
                                     <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                         <Localize i18n_default_text='Not rated yet' />
                                     </Text>
-                                )}
-                            </div>
+                                </div>
+                            )}
                             <div className='advertiser-page__rating--row'>
                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                     {joined_since > 0 ? (

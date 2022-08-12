@@ -118,13 +118,16 @@ const RealityCheckModal = ({
 };
 
 RealityCheckModal.propTypes = {
+    country_standpoint: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     history: PropTypes.object,
     logoutClient: PropTypes.func,
+    is_mx: PropTypes.bool,
     is_visible: PropTypes.bool,
     reality_check_dismissed: PropTypes.bool,
     reality_check_duration: PropTypes.number,
+    server_time: PropTypes.number,
     setRealityCheckDuration: PropTypes.func,
     setReportsTabIndex: PropTypes.func,
     setVisibilityRealityCheck: PropTypes.func,

@@ -18,7 +18,6 @@ const PaymentAgentList = ({
     is_payment_agent_withdraw,
     onMount,
     payment_agent_active_tab_index,
-    resend_timeout,
     resendVerificationEmail,
     sendVerificationEmail,
     setActiveTabIndex,
@@ -74,7 +73,6 @@ const PaymentAgentList = ({
                                             <VerificationEmail
                                                 is_email_sent={is_email_sent}
                                                 is_resend_clicked={is_resend_clicked}
-                                                resend_timeout={resend_timeout}
                                                 resendVerificationEmail={resendVerificationEmail}
                                                 sendVerificationEmail={sendVerificationEmail}
                                                 setIsResendClicked={setIsResendClicked}
@@ -103,7 +101,6 @@ PaymentAgentList.propTypes = {
     is_payment_agent_withdraw: PropTypes.bool,
     onMount: PropTypes.func,
     payment_agent_active_tab_index: PropTypes.number,
-    resend_timeout: PropTypes.number,
     resendVerificationEmail: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
@@ -118,7 +115,6 @@ export default connect(({ modules }) => ({
     is_resend_clicked: modules.cashier.payment_agent.verification.is_resend_clicked,
     onMount: modules.cashier.payment_agent.onMountPaymentAgentList,
     payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
-    resend_timeout: modules.cashier.payment_agent.verification.resend_timeout,
     resendVerificationEmail: modules.cashier.payment_agent.verification.resendVerificationEmail,
     sendVerificationEmail: modules.cashier.payment_agent.verification.sendVerificationEmail,
     setActiveTabIndex: modules.cashier.payment_agent.setActiveTab,

@@ -162,32 +162,32 @@ jest.mock('@deriv/shared', () => ({
 
 describe('AccountTransferStore', () => {
     it('account transfer tab should be visible', () => {
-        expect(account_transfer_store.is_account_transfer_visible).toBeTrue();
+        expect(account_transfer_store.is_account_transfer_visible).toBeTruthy();
     });
 
     it('account transfer tab should not be visible for "iom" clients', () => {
         account_transfer_store.root_store.client.residence = 'im';
 
-        expect(account_transfer_store.is_account_transfer_visible).toBeFalse();
+        expect(account_transfer_store.is_account_transfer_visible).toBeFalsy();
     });
 
     it('account transfer tab should not be visible if landing_company_shortcode is equal to "malta" and the client has not maltainvest account ', () => {
         account_transfer_store.root_store.client.landing_company_shortcode = 'malta';
         account_transfer_store.root_store.client.has_maltainvest_account = false;
 
-        expect(account_transfer_store.is_account_transfer_visible).toBeFalse();
+        expect(account_transfer_store.is_account_transfer_visible).toBeFalsy();
     });
 
     it('should not lock the transfer if there is no any account statuses', () => {
         account_transfer_store.root_store.client.account_status.status = undefined;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalse;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
     });
 
     it('should not lock the transfer if it is not a financial account', () => {
         account_transfer_store.root_store.client.is_financial_account = false;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalse;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
     });
 
     it('should not lock the transfer if is_financial_information_incomplete and is_trading_experience_incomplete is equal to false', () => {
@@ -195,13 +195,13 @@ describe('AccountTransferStore', () => {
         account_transfer_store.root_store.client.is_financial_information_incomplete = false;
         account_transfer_store.root_store.client.is_trading_experience_incomplete = false;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalse;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
     });
 
     it('should lock the transfer if the financial assessment is needed and error.is_ask_financial_risk_approval is equal to true', () => {
         account_transfer_store.error.is_ask_financial_risk_approval = true;
 
-        expect(account_transfer_store.is_transfer_locked).toBeTrue;
+        expect(account_transfer_store.is_transfer_locked).toBeTruthy;
     });
 
     it('should set the balance by loginid', () => {
@@ -303,28 +303,28 @@ describe('AccountTransferStore', () => {
 
     it('the client cannot make a transfer if he does not have any account with balance greater then 0 ', () => {
         const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
-        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalse();
+        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalsy();
         expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(true);
     });
 
     it('the client cannot make a transfer if he does not have at least two real-money accounts', () => {
-        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '10000.00' }])).toBeFalse();
+        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '10000.00' }])).toBeFalsy();
     });
 
     it('the client must be able to make a transfer', () => {
-        expect(account_transfer_store.canDoAccountTransfer([CR_USD_account, CR_eUSDT_account])).toBeTrue();
+        expect(account_transfer_store.canDoAccountTransfer([CR_USD_account, CR_eUSDT_account])).toBeTruthy();
     });
 
     it('should change value of the variable has_no_accounts_balance', () => {
         account_transfer_store.setHasNoAccountsBalance(true);
 
-        expect(account_transfer_store.has_no_accounts_balance).toBeTrue();
+        expect(account_transfer_store.has_no_accounts_balance).toBeTruthy();
     });
 
     it('should change value of the variable has_no_account', () => {
         account_transfer_store.setHasNoAccount(true);
 
-        expect(account_transfer_store.has_no_account).toBeTrue();
+        expect(account_transfer_store.has_no_account).toBeTruthy();
     });
 
     it('should set transfer fee equal to 2', () => {
@@ -427,13 +427,13 @@ describe('AccountTransferStore', () => {
             accounts: [...accounts, MT_USD_account, DXR_USD_account],
         });
 
-        expect(account_transfer_store.accounts_list[0].text).toStartWith('Deriv X');
-        expect(account_transfer_store.accounts_list[1].text).toStartWith('Deriv X');
-        expect(account_transfer_store.accounts_list[2].text).toStartWith('Deriv X');
-        expect(account_transfer_store.accounts_list[3].text).toStartWith('DMT5');
-        expect(account_transfer_store.accounts_list[4].text).toStartWith('DMT5');
-        expect(account_transfer_store.accounts_list[5].text).toStartWith('DMT5');
-        expect(account_transfer_store.accounts_list[6].text).toStartWith('DMT5');
+        expect(account_transfer_store.accounts_list[0].text).toMatch(/^Deriv X(.)*$/);
+        expect(account_transfer_store.accounts_list[1].text).toMatch(/^Deriv X(.)*$/);
+        expect(account_transfer_store.accounts_list[2].text).toMatch(/^Deriv X(.)*$/);
+        expect(account_transfer_store.accounts_list[3].text).toMatch(/^DMT5(.)*$/);
+        expect(account_transfer_store.accounts_list[4].text).toMatch(/^DMT5(.)*$/);
+        expect(account_transfer_store.accounts_list[5].text).toMatch(/^DMT5(.)*$/);
+        expect(account_transfer_store.accounts_list[6].text).toMatch(/^DMT5(.)*$/);
         expect(account_transfer_store.accounts_list[7].text).toBe('USD');
         expect(account_transfer_store.accounts_list[8].text).toBe('eUSDT');
         expect(account_transfer_store.accounts_list.length).toBe(9);
@@ -487,7 +487,7 @@ describe('AccountTransferStore', () => {
     it('should change value of the variable is_transfer_confirm', () => {
         account_transfer_store.setIsTransferConfirm(true);
 
-        expect(account_transfer_store.is_transfer_confirm).toBeTrue();
+        expect(account_transfer_store.is_transfer_confirm).toBeTruthy();
     });
 
     it('should set account transfer amount', () => {
@@ -499,13 +499,13 @@ describe('AccountTransferStore', () => {
     it('should change value of the variable is_transfer_successful', () => {
         account_transfer_store.setIsTransferSuccessful(true);
 
-        expect(account_transfer_store.is_transfer_successful).toBeTrue();
+        expect(account_transfer_store.is_transfer_successful).toBeTruthy();
     });
 
     it('should change value of the variable is_mt5_transfer_in_progress', () => {
         account_transfer_store.setIsMT5TransferInProgress(true);
 
-        expect(account_transfer_store.is_mt5_transfer_in_progress).toBeTrue();
+        expect(account_transfer_store.is_mt5_transfer_in_progress).toBeTruthy();
     });
 
     it('should set transfered amount in receipt', () => {

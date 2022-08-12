@@ -118,6 +118,7 @@ const OrderRow = ({ style, row: order }) => {
                 onClickNotRecommended={() => order_store.setIsRecommended(0)}
                 onClickRecommended={() => order_store.setIsRecommended(1)}
                 onClickSkip={() => {
+                    order_store.setRatingValue(0);
                     setShouldShowRatingModal(false);
                     should_show_order_details.current = true;
                 }}

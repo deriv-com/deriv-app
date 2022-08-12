@@ -117,7 +117,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
                     onClickDone={() => order_store.setOrderRating(id)}
                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                     onClickRecommended={() => order_store.setIsRecommended(1)}
-                    onClickSkip={() => order_store.setIsRatingModalOpen(false)}
+                    onClickSkip={() => {
+                        order_store.setRatingValue(0);
+                        order_store.setIsRatingModalOpen(false);
+                    }}
                     onClickStar={order_store.handleRating}
                     previous_recommendation={
                         is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
@@ -285,7 +288,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                     onClickDone={() => order_store.setOrderRating(id)}
                                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                                     onClickRecommended={() => order_store.setIsRecommended(1)}
-                                    onClickSkip={() => order_store.setIsRatingModalOpen(false)}
+                                    onClickSkip={() => {
+                                        order_store.setRatingValue(0);
+                                        order_store.setIsRatingModalOpen(false);
+                                    }}
                                     onClickStar={order_store.handleRating}
                                     previous_recommendation={
                                         is_buy_order_for_user

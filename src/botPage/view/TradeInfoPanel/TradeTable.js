@@ -127,9 +127,11 @@ const TradeTable = ({ account_id, api }) => {
     };
 
     const refreshContract = async (_api, contract_id) => {
+        const contract_info = await _api.send({ proposal_open_contract: 1, contract_id }).catch(e => {
+            globalObserver.emit('Error', e);
+        });
 
-        try {
-            const contract_info = await _api.send({ proposal_open_contract: 1, contract_id });
+        if (contract_info) {
             const contract = contract_info.proposal_open_contract;
             const trade_obj = getTradeObject(contract);
             const trade = {
@@ -154,10 +156,7 @@ const TradeTable = ({ account_id, api }) => {
                 return row;
             });
             setAccountState({ [account_id]: { rows: updated_rows } });
-        } catch (e) {
-            globalObserver.emit('Error', e);
         }
-
     };
 
     React.useEffect(() => {

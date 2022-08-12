@@ -23,7 +23,7 @@ const EmailLinkVerifiedModal = ({
                 <Text className='email-verified-modal--text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text="We've verified your order" />
                 </Text>
-                <Text className='email-verified-modal--confirmation_text' color='prominent' size='s'>
+                <Text align='center' color='prominent' size='s'>
                     <Localize
                         i18n_default_text="Please ensure you've received {{amount}} {{currency}} in your account and hit Confirm to complete the transaction."
                         values={{ amount, currency }}

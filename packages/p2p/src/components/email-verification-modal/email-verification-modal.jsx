@@ -33,7 +33,13 @@ const EmailVerificationModal = ({
         >
             <Modal.Body className='email-verification-modal'>
                 <Icon icon='IcEmailSentP2p' size='128' />
-                <Text className='email-verification-modal--email_text' color='prominent' size='s' weight='bold'>
+                <Text
+                    align='center'
+                    className='email-verification-modal--email_text'
+                    color='prominent'
+                    size='s'
+                    weight='bold'
+                >
                     <Localize
                         i18n_default_text="We've sent you an email at {{email_address}}.<0 />Please click the verification link in the email to verify your order."
                         components={[<br key={0} />]}

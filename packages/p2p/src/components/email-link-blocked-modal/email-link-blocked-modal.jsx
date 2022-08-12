@@ -21,7 +21,7 @@ const EmailLinkBlockedModal = ({
                 <Text className='email-link-blocked-modal--text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text='Too many failed attempts' />
                 </Text>
-                <Text className='email-link-blocked-modal--blocked_text' color='prominent' size='s'>
+                <Text align='center' color='prominent' size='s'>
                     <Localize
                         i18n_default_text='We have temporarily blocked your request after too many failed attempts. Please try again after {{blocked_for_minutes}} minutes.'
                         values={{ blocked_for_minutes }}

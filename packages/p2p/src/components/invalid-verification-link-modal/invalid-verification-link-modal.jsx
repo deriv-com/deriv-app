@@ -22,7 +22,7 @@ const InvalidVerificationLinkModal = ({
                 <Text className='invalid-verification-link-modal--text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text='Invalid verification link' />
                 </Text>
-                <Text className='invalid-verification-link-modal--verification_text' color='prominent' size='s'>
+                <Text align='center' color='prominent' size='s'>
                     <Localize
                         i18n_default_text='The verification link becomes invalid after {{verification_link_expiry_time}} minutes. Hit the button below to request a new one.'
                         values={{ verification_link_expiry_time }}

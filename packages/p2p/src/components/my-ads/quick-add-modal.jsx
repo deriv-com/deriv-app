@@ -380,8 +380,9 @@ const QuickAddModal = ({ advert }) => {
                                                         list_items={my_profile_store.payment_methods_list.filter(
                                                             ({ value }) => !selected_methods.includes(value)
                                                         )}
+                                                        not_found_text='Other'
                                                         onItemSelection={({ value }) => {
-                                                            onClickPaymentMethodItem(value);
+                                                            onClickPaymentMethodItem(value !== '' ? value : 'other');
                                                         }}
                                                         placeholder={localize('Add')}
                                                         required
@@ -411,7 +412,7 @@ const QuickAddModal = ({ advert }) => {
                                                 list_items={my_profile_store.payment_methods_list}
                                                 not_found_text='Other'
                                                 onItemSelection={({ value }) => {
-                                                    onClickPaymentMethodItem(value);
+                                                    onClickPaymentMethodItem(value !== '' ? value : 'other');
                                                 }}
                                                 placeholder={localize('Add')}
                                                 required

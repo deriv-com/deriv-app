@@ -16,7 +16,7 @@ const UserRatingButton = ({ has_full_text, is_disabled }) => {
     );
 };
 
-UserRatingButton.PropTypes = {
+UserRatingButton.propTypes = {
     has_full_text: PropTypes.bool,
     is_disabled: PropTypes.bool,
 };

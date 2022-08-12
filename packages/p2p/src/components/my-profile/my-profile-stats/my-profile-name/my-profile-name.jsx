@@ -44,7 +44,7 @@ const MyProfileName = () => {
                             {general_store.nickname}
                         </Text>
                         <div className='my-profile-name--rating'>
-                            {rating_average && recommended_average ? (
+                            {rating_average ? (
                                 <React.Fragment>
                                     <div className='my-profile-name--rating__row'>
                                         <StarRating

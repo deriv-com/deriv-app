@@ -99,7 +99,7 @@ const AdvertiserPage = () => {
                                     isMobile() && rating_average && recommended_average,
                             })}
                         >
-                            {rating_average && recommended_average ? (
+                            {rating_average ? (
                                 <React.Fragment>
                                     <div className='advertiser-page__rating--row'>
                                         <StarRating

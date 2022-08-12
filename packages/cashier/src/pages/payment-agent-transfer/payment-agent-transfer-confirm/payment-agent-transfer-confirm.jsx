@@ -33,7 +33,6 @@ const PaymentAgentTransferConfirm = ({
                 { label: localize('Description'), value: description, key: 'description' },
             ]}
             error={error}
-            is_payment_agent_transfer
             onClickBack={() => {
                 setIsTryTransferSuccessful(false);
             }}

@@ -85,10 +85,18 @@ describe('<Confirm />', () => {
         const el_checkbox = screen.getByRole('checkbox');
         const [_, transfer_now_btn] = screen.getAllByRole('button');
         fireEvent.click(el_checkbox);
+
+        expect(transfer_now_btn).toBeEnabled();
     });
 
-    it('should show checkbox when is_payment_agent_transfer property is equal to true', () => {
-        render(<Confirm {...props} is_payment_agent_transfer />);
+    it('should show proper checkbox text when is_payment_agent_withdraw property is equal to true/false', () => {
+        const { rerender } = render(<Confirm {...props} is_payment_agent_withdraw />);
+
+        expect(
+            screen.getByLabelText('I confirm that I have verified the payment agent’s transfer information.')
+        ).toBeInTheDocument();
+
+        rerender(<Confirm {...props} />);
 
         expect(
             screen.getByLabelText('I confirm that I have verified the client’s transfer information.')

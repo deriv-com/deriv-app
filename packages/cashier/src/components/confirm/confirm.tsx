@@ -4,7 +4,7 @@ import { Button, Checkbox, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
-import './transfer-confirm.scss';
+import './confirm.scss';
 
 type TRowProps = {
     item_key?: string | number;
@@ -27,7 +27,7 @@ type TTransferConfirmProps = {
 };
 
 const Row = ({ item_key, label, value }: TRowProps) => (
-    <div className='transfer-confirm__row' data-testid={`dt_transfer_confirm_row_${item_key}`}>
+    <div className='confirm__row' data-testid={`dt_transfer_confirm_row_${item_key}`}>
         {Array.isArray(label) ? (
             <div className='confirm__row-label'>
                 {label.map((label_text, idx) => (
@@ -63,8 +63,8 @@ const Row = ({ item_key, label, value }: TRowProps) => (
 );
 
 const WarningBullet = ({ children }: WarningBulletProps) => (
-    <div className='transfer-confirm__warnings-bullet-wrapper'>
-        <div className='transfer-confirm__warnings-bullet' />
+    <div className='confirm__warnings-bullet-wrapper'>
+        <div className='confirm__warnings-bullet' />
         {children}
     </div>
 );

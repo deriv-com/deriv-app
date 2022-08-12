@@ -4,9 +4,9 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { GetAccountSettingsResponse, GetSettings } from '@deriv/api-types';
-import JurisdictionModalContent from './jurisdiction-modal-content/jurisdiction-modal-content';
+import JurisdictionModalContent from './jurisdiction-modal-content';
 import { WS, getIdentityStatusInfo, isMobile } from '@deriv/shared';
-import { TJurisdictionModalProps } from './props.types';
+import { TJurisdictionModalProps } from '../props.types';
 
 const JurisdictionModal = ({
     account_settings,

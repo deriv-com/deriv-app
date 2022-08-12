@@ -3,8 +3,8 @@ import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import { TExistingData } from 'Components/props.types';
 import { TAvailableAccountAPI } from '../props.types';
-import JurisdictionCheckBox from './jurisdiction-checkbox';
-import JurisdictionCard from './jurisdiction-card';
+import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
+import JurisdictionCard from './jurisdiction-modal-card/jurisdiction-card';
 import ModalFootNote from './jurisdiction-modal-footer';
 
 type TJurisdictionModalContent = {

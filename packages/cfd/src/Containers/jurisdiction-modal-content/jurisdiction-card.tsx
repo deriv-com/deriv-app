@@ -4,6 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
 import { TJurisdictionCard } from 'Components/props.types';
+import VerificationStatusBanner from './verification-status-banner';
 
 const JurisdictionCard = ({
     jurisdiction_selected_shortcode,
@@ -13,7 +14,6 @@ const JurisdictionCard = ({
     account_type,
     type_of_card,
     disabled,
-    banner,
 }: TJurisdictionCard) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
@@ -109,7 +109,11 @@ const JurisdictionCard = ({
                               </div>
                           ))}
                 </div>
-                {banner}
+                <VerificationStatusBanner
+                    type_of_card={type_of_card}
+                    card_classname={card_classname}
+                    disabled={disabled}
+                />
             </div>
         </>
     );

@@ -166,6 +166,11 @@ export const getIdentityStatusInfo = account_status => {
     const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
 
     const acknowledged_status = ['pending', 'verified'];
+    const failed_cases = ['rejected', 'expired', 'suspected'];
+
+    const poa_none = poa_status === 'none';
+    const poi_none = poi_status === 'none';
+    const poi_or_poa_not_submitted = poi_none || poa_none;
 
     const poi_acknowledged_for_vanuatu =
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
@@ -181,9 +186,9 @@ export const getIdentityStatusInfo = account_status => {
 
     const poa_acknowledged = acknowledged_status.includes(poa_status);
     const poi_acknowledged = acknowledged_status.includes(poi_status);
-    const poa_poi_verified = poa_status === 'verified' && poi_status === 'verified';
 
     const need_poa_submission = !poa_acknowledged;
+    const need_poa_resubmission = failed_cases.includes(poa_status);
 
     const idv_acknowledged = idv_status && acknowledged_status.includes(idv_status);
 
@@ -192,6 +197,9 @@ export const getIdentityStatusInfo = account_status => {
         idv_status === 'verified' || onfido_status === 'verified' || manual_status === 'verified';
     const poa_verified = poa_status === 'verified';
 
+    const poi_poa_verified_for_vanuatu = poi_verified_for_vanuatu && poa_verified;
+
+    const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poi_acknowledged;
     return {
         poa_status,
         poi_status,
@@ -200,9 +208,10 @@ export const getIdentityStatusInfo = account_status => {
         manual_status,
         acknowledged_status,
         poi_acknowledged_for_vanuatu,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
         poa_acknowledged,
         poi_acknowledged,
-        poa_poi_verified,
+        poi_poa_verified_for_vanuatu,
         idv_acknowledged,
         need_poi_for_vanuatu,
         need_poi_for_bvi_labuan_maltainvest,
@@ -211,5 +220,7 @@ export const getIdentityStatusInfo = account_status => {
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_verified_for_bvi_labuan_maltainvest,
         poa_verified,
+        poi_or_poa_not_submitted,
+        need_poa_resubmission,
     };
 };

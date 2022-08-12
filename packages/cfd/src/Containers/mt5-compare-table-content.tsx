@@ -248,8 +248,14 @@ const DMT5CompareModalContent = ({
     const poa_status = authentication_status?.document_status;
     const poi_status = authentication_status?.identity_status;
 
-    const { need_poi_for_vanuatu, idv_acknowledged, poa_acknowledged, poi_acknowledged, poa_poi_verified } =
-        getIdentityStatusInfo(account_status);
+    const {
+        need_poi_for_vanuatu,
+        idv_acknowledged,
+        poa_acknowledged,
+        poi_acknowledged,
+        poi_poa_verified_for_vanuatu,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
+    } = getIdentityStatusInfo(account_status);
 
     React.useEffect(() => {
         if (!has_submitted_personal_details) {
@@ -507,9 +513,11 @@ const DMT5CompareModalContent = ({
             if (need_poi_for_vanuatu) {
                 return false;
             }
-            return poa_acknowledged && poi_acknowledged && !poa_poi_verified;
+            return poa_acknowledged && poi_acknowledged && !poi_poa_verified_for_vanuatu;
         }
-        return poa_acknowledged && (idv_acknowledged || poi_acknowledged) && !poa_poi_verified;
+        return (
+            poa_acknowledged && (idv_acknowledged || poi_acknowledged) && !poi_poa_verified_for_bvi_labuan_maltainvest
+        );
     };
 
     return (

@@ -536,15 +536,12 @@
         margin-top: auto;
         text-align: center;
         &--none {
-            background-color: #f2f3f4;
+            background-color: var(--general-section-1);
+            color: #333333;
+            margin-top: auto;
+            padding: 0.3rem;
+            border-radius: 0.5rem;
         }
-    }
-
-    &__footer--none {
-        background-color: var(--general-section-1);
-        color: #333333;
-        margin-top: auto;
-        padding: 0.3rem;
     }
 
     &__footnote {

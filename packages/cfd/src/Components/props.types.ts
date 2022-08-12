@@ -163,5 +163,5 @@ export type TJurisdictionCard = {
     account_type: string;
     type_of_card: string;
     disabled: boolean;
-    banner: React.ReactNode;
+    // banner: React.ReactNode;
 };

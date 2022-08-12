@@ -28,7 +28,7 @@ type TConfirmProps = {
 };
 
 const Row = ({ item_key, label, value }: TRowProps) => (
-    <div className='transfer-confirm__row' data-testid={`dt_transfer_confirm_row_${item_key}`}>
+    <div className='confirm__row'>
         {Array.isArray(label) ? (
             <div className='confirm__row-label'>
                 {label.map((label_text, idx) => (

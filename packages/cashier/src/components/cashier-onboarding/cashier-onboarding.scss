@@ -41,7 +41,8 @@
         margin: 2.4rem;
         width: 62.4rem;
 
-        @include mobile {
+        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+        @media (max-width: 926px) {
             width: unset;
         }
 

@@ -4,71 +4,100 @@
 
 // Variables ----------------------------------------------------------------
 $unit: 1px;
+
+// These variables are the max-width of the breakpoints
 $breakpoints: (
     'mobile': 926,
     'tablet': 1081,
-    'desktop': 1800,
+    'desktop': 'infinity',
 );
 
 // Functions ----------------------------------------------------------------
+
+/// Add unit to the given number
+///
+/// @param {number} $number
+/// @return {string}
+///
 @function unit($number) {
     @return $number * $unit;
 }
 
-@function get-breakpoint($breakpoint, $type, $breakpoints: $breakpoints) {
+/// Get Breakpoints values
+/// Returns previous and next breakpoint of the given breakpoint
+///
+/// @param {string} $breakpoint
+/// @param {map} $breakpoints [$breakpoints]
+/// @return {map}
+///
+/// @example
+///    $bp: get-breakpoint('mobile')
+///
+@function get-breakpoint($breakpoint, $breakpoints: $breakpoints) {
     $breakpoints-list: map-keys($breakpoints);
-    $new-breakpoint-index: '';
-    $new-breakpoint-value: '';
-    @if $type == 'prev' {
-        $new-breakpoint-index: (index($breakpoints-list, $breakpoint)) - 1;
-    } @else if $type == 'next' {
-        $new-breakpoint-index: (index($breakpoints-list, $breakpoint)) + 1;
-    }
 
-    @if $new-breakpoint-index != 0 {
-        $new-breakpoint-value: nth($breakpoints-list, $new-breakpoint-index);
-    }
+    $bp-indexes: (
+        'prev': (
+            index($breakpoints-list, $breakpoint) - 1,
+        ),
+        'next': (
+            index($breakpoints-list, $breakpoint) + 1,
+        ),
+    );
 
-    @return $new-breakpoint-value;
+    $bp-values: (
+        'prev': if(map-get($bp-indexes, 'prev') == 0, '', nth($breakpoints-list, map-get($bp-indexes, 'prev'))),
+        'next': if(map-get($bp-indexes, 'next') == 0, '', nth($breakpoints-list, map-get($bp-indexes, 'next'))),
+    );
+
+    @return $bp-values;
 }
 
 // Mixins -------------------------------------------------------------------
-@mixin bp($breakpoint, $extend: '') {
-    $breakpoints-keys: map-keys($breakpoints);
-    $has-breakpoint: index($breakpoints-keys, $breakpoint);
-    $current-bp: $breakpoint;
-    $prev-bp: get-breakpoint($breakpoint, 'prev');
-    $next-bp: get-breakpoint($breakpoint, 'next');
 
-    @if $has-breakpoint {
-        @if $prev-bp != '' and $next-bp != '' {
-            @if $extend == 'down' {
-                @media (max-width: #{unit(map-get($breakpoints, $current-bp))}) {
-                    @content;
-                }
-            } @else if $extend == 'up' {
-                @media (min-width: #{unit(map-get($breakpoints, $prev-bp))}) {
-                    @content;
-                }
-            } @else {
-                @media (min-width: #{unit(map-get($breakpoints, $prev-bp)) + 1}) and (max-width: #{unit(map-get($breakpoints, $current-bp))}) {
-                    @content;
-                }
-            }
-        } @else if $prev-bp != '' and $next-bp == '' {
-            @media (min-width: #{unit(map-get($breakpoints, $prev-bp)) + 1}) {
-                @content;
-            }
-        } @else if $prev-bp == '' and $next-bp != '' {
-            @if $extend == 'up' {
-                @media (min-width: #{unit(map-get($breakpoints, $current-bp))}) {
-                    @content;
-                }
-            } @else {
-                @media (max-width: #{unit(map-get($breakpoints, $current-bp))}) {
-                    @content;
-                }
-            }
+/// Use media query in Breakpoints
+///
+/// @param {string} $breakpoint
+/// @param {string} $extend [""] | @accept "down" | "up"
+/// @param {map} $breakpoints [$breakpoints]
+///
+/// @example
+///     @include('mobile') {
+///         /* CSS STYLES */
+///     }
+///
+///     /* This mixin include tablet and all the breakpoints down the tablet */
+///     @include('tablet', 'down') {
+///         /* CSS STYLES */
+///     }
+///
+@mixin bp($breakpoint, $extend: '', $breakpoints: $breakpoints) {
+    $bp: get-breakpoint($breakpoint);
+
+    @if index($breakpoints, $breakpoint) != 'null' {
+        $min-query: '';
+        $max-query: '';
+        $query: '';
+
+        @if map-get($bp, 'prev') != '' {
+            $min-query: 'min-width: #{unit(map-get($breakpoints, map-get($bp, ' prev ')) + 1)}';
+        }
+
+        @if map-get($bp, 'next') != '' {
+            $max-query: 'max-width: #{unit(map-get($breakpoints, $breakpoint))}';
+        }
+
+        // Handle Extend
+        @if $extend == 'down' {
+            $min-query: '';
+        } @else if $extend == 'up' {
+            $max-query: '';
+        }
+
+        $query: "#{$min-query} #{if($min-query != '' and $max-query != '', ') and (', null)} #{$max-query}";
+
+        @media ($query) {
+            @content;
         }
     } @else {
         @error "Sorry but #{$breakpoint} is not a breakpoint in the project";

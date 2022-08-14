@@ -32,7 +32,7 @@ const DummyComponent = (props) => (
 | row_gap         | {number}    | null     | Margin between rows                                                                    |
 | rowRenderer     | {function}  | null     | A function to render each row                                                          |
 | setListRef      | {function}  | null     | A function to set ref to the list                                                      |
-| onRowsRendered  | {function}  | null     | A prop from `react-virtualized/dist/es/List` plugin                                    |
+| onRowsRendered  | {function}  | null     | A prop from `@enykeev/react-virtualized/dist/es/List` plugin                                    |
 
 
 ## Full example:

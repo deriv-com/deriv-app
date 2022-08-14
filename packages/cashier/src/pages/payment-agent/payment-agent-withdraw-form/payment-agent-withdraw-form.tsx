@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { RootStore } from 'Types';
+import { RootStore, TReactChangeEvent } from 'Types';
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
+import { Field, FieldProps, Formik, Form } from 'formik';
 import {
     Button,
     DesktopWrapper,
@@ -184,7 +184,7 @@ const RadioDropDown = ({ field, values, ...props }: TRadioDropDownProps) => (
                             classNameItems='cashier__drop-down-items'
                             list={props.payment_agent_list}
                             value={values.payment_agents}
-                            onChange={(e: { target: { value: string } }) => {
+                            onChange={(e: TReactChangeEvent) => {
                                 params.form.setFieldValue('payment_agents', e.target.value);
                                 params.form.setFieldValue('payment_method', props.id);
                             }}
@@ -199,7 +199,7 @@ const RadioDropDown = ({ field, values, ...props }: TRadioDropDownProps) => (
                             value={values.payment_agents}
                             label={localize('Choose agent')}
                             should_show_empty_option={false}
-                            onChange={(e: { target: { value: string } }) => {
+                            onChange={(e: TReactChangeEvent) => {
                                 params.form.setFieldValue('payment_agents', e.target.value);
                                 params.form.setFieldValue('payment_method', props.id);
                             }}
@@ -391,9 +391,9 @@ const PaymentAgentWithdrawForm = ({
                                 />
                             </div>
                             <Field name='amount'>
-                                {({ field }: { [k: string]: string | object }) => (
+                                {({ field }: FieldProps) => (
                                     <Input
-                                        {...(field as object)}
+                                        {...field}
                                         className='cashier__input dc-input--no-placeholder'
                                         type='text'
                                         label={localize('Amount')}

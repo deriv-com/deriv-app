@@ -31,12 +31,12 @@ const PaymentAgent = ({
 }: TPaymentAgentProps) => {
     const initial_active_index =
         verification_code || is_payment_agent_withdraw || payment_agent_active_tab_index ? 1 : 0;
-    if (setPaymentAgentActiveTabIndex) setPaymentAgentActiveTabIndex(initial_active_index);
+    setPaymentAgentActiveTabIndex?.(initial_active_index);
 
     React.useEffect(() => {
-        if (setActiveTab) setActiveTab(container);
+        setActiveTab?.(container);
         return () => {
-            if (setPaymentAgentActiveTabIndex) setPaymentAgentActiveTabIndex(0);
+            setPaymentAgentActiveTabIndex?.(0);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

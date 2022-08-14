@@ -1,6 +1,6 @@
 import React from 'react';
 import { toJS } from 'mobx';
-import { RootStore } from 'Types';
+import { RootStore, TReactChangeEvent } from 'Types';
 import { Accordion, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details';
 
 type TPaymentAgentDepositProps = {
-    onChangePaymentMethod: (e: { target: { name: string; value: string | number } }) => void;
+    onChangePaymentMethod: (e: { target: { name?: string; value?: string | number } }) => void;
     // TODO: use PaymentagentList['list'] if phone_numbers changed to phones
     payment_agent_list: Array<{ name: string; email: string; phones: string; urls: string }>;
     selected_bank: number;
@@ -25,6 +25,12 @@ const PaymentAgentDeposit = ({
         { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
         ...supported_banks,
     ];
+
+    React.useEffect(() => {
+        return () => {
+            onChangePaymentMethod({ target: { value: '0' } });
+        };
+    }, [onChangePaymentMethod]);
 
     return (
         <React.Fragment>
@@ -61,7 +67,7 @@ const PaymentAgentDeposit = ({
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}
                                 label={selected_bank === 0 ? localize('All payment agents') : localize('Type')}
-                                onChange={(e: { target: { value: string } }) =>
+                                onChange={(e: TReactChangeEvent) =>
                                     onChangePaymentMethod({
                                         target: {
                                             name: 'payment_methods',

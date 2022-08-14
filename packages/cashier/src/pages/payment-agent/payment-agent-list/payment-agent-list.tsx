@@ -120,7 +120,6 @@ export default connect(({ modules }: RootStore) => ({
     is_resend_clicked: modules.cashier.payment_agent.verification.is_resend_clicked,
     onMount: modules.cashier.payment_agent.onMountPaymentAgentList,
     payment_agent_active_tab_index: modules.cashier.payment_agent.active_tab_index,
-    resend_timeout: modules.cashier.payment_agent.verification.resend_timeout,
     resendVerificationEmail: modules.cashier.payment_agent.verification.resendVerificationEmail,
     sendVerificationEmail: modules.cashier.payment_agent.verification.sendVerificationEmail,
     setActiveTabIndex: modules.cashier.payment_agent.setActiveTab,

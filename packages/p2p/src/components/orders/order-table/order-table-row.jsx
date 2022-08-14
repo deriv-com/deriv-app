@@ -44,15 +44,17 @@ const OrderRow = ({ style, row: order }) => {
         advertiser_details,
         amount_display,
         client_details,
+        has_review_details,
         id,
         is_buy_order_for_user,
-        is_reviewable,
+        is_completed_order,
+        is_order_reviewable,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
         price_display,
-        review_details,
+        rating,
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_disabled,
@@ -159,11 +161,11 @@ const OrderRow = ({ style, row: order }) => {
                             {general_store.is_active_tab ? (
                                 <div className='orders__table-time'>{remaining_time}</div>
                             ) : (
-                                status_string === 'Completed' && (
+                                is_completed_order && (
                                     <RatingCellRenderer
-                                        is_reviewable={is_reviewable}
-                                        rating={review_details?.rating}
-                                        review_details={review_details}
+                                        has_review_details={has_review_details}
+                                        is_reviewable={is_order_reviewable}
+                                        rating={rating}
                                         onClickUserRatingButton={() => {
                                             should_show_order_details.current = false;
                                             setShouldShowRatingModal(true);
@@ -227,11 +229,11 @@ const OrderRow = ({ style, row: order }) => {
                                 </div>
                             ) : (
                                 <div className='orders__mobile-chat'>
-                                    {status_string === 'Completed' && (
+                                    {is_completed_order && (
                                         <RatingCellRenderer
-                                            is_reviewable={is_reviewable}
-                                            rating={review_details?.rating}
-                                            review_details={review_details}
+                                            has_review_details={has_review_details}
+                                            is_reviewable={is_order_reviewable}
+                                            rating={rating}
                                             onClickUserRatingButton={() => {
                                                 should_show_order_details.current = false;
                                                 setShouldShowRatingModal(true);

@@ -65,7 +65,6 @@ const OrderRow = ({ style, row: order }) => {
     const order_type = is_buy_order_for_user ? localize('Buy') : localize('Sell');
 
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
-
     const interval = React.useRef(null);
 
     const isOrderSeen = order_id => {
@@ -162,7 +161,7 @@ const OrderRow = ({ style, row: order }) => {
                             ) : (
                                 status_string === 'Completed' && (
                                     <RatingCellRenderer
-                                        is_reviewable={!is_reviewable}
+                                        is_reviewable={is_reviewable}
                                         rating={review_details?.rating}
                                         review_details={review_details}
                                         onClickUserRatingButton={() => {
@@ -230,7 +229,7 @@ const OrderRow = ({ style, row: order }) => {
                                 <div className='orders__mobile-chat'>
                                     {status_string === 'Completed' && (
                                         <RatingCellRenderer
-                                            is_reviewable={!is_reviewable}
+                                            is_reviewable={is_reviewable}
                                             rating={review_details?.rating}
                                             review_details={review_details}
                                             onClickUserRatingButton={() => {

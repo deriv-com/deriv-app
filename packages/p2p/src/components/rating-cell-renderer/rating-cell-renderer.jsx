@@ -22,7 +22,7 @@ const RatingCellRenderer = ({ is_reviewable, rating, review_details, onClickUser
     ) : (
         <UserRatingButton
             button_text={localize('Rate')}
-            is_disabled={is_reviewable}
+            is_disabled={!is_reviewable}
             onClick={onClickUserRatingButton}
         />
     );

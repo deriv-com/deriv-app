@@ -24,12 +24,12 @@ type TPaymentAgentListProps = {
     is_email_sent?: boolean;
     is_loading?: boolean;
     is_payment_agent_withdraw?: boolean;
-    is_resend_clicked?: boolean;
+    is_resend_clicked: boolean;
     onMount?: () => void;
     payment_agent_active_tab_index?: number;
-    resendVerificationEmail?: () => void;
+    resendVerificationEmail: () => void;
     setActiveTabIndex?: (index: number) => void;
-    setIsResendClicked?: (status: boolean) => void;
+    setIsResendClicked: (status: boolean) => void;
     verification_code?: string;
 };
 

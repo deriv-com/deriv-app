@@ -6,7 +6,7 @@ import './verification-email.scss';
 
 type TVerificationEmailProps = {
     is_resend_clicked: boolean;
-    is_withdrawal: boolean;
+    is_withdrawal?: boolean;
     resendVerificationEmail: () => void;
     setIsResendClicked: (is_resend_clicked: boolean) => void;
 };

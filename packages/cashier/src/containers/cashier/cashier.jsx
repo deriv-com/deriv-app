@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import {
     Button,
     DesktopWrapper,
-    Div100vhContainer,
     FadeWrapper,
     MobileWrapper,
     PageOverlay,
@@ -99,7 +98,7 @@ const Cashier = ({
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
-    if ((!is_logged_in && is_logging_in) || !is_account_setting_loaded) {
+    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded) {
         return <Loading is_fullscreen />;
     }
 
@@ -163,7 +162,7 @@ const Cashier = ({
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
+                        <div className='cashier__wrapper--is-mobile'>
                             {selected_route && (
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
@@ -171,7 +170,7 @@ const Cashier = ({
                                     menu_options={getMenuOptions()}
                                 />
                             )}
-                        </Div100vhContainer>
+                        </div>
                     </MobileWrapper>
                 </PageOverlay>
             </div>

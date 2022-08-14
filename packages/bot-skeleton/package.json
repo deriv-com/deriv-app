@@ -10,7 +10,7 @@
         "build:copy": "shx cp -r ../../node_modules/scratch-blocks/media/. ./dist/media/ &&  shx cp -r ./src/assets/images/. ./dist/media/ &&  shx cp -r ./src/scratch/sounds/. ./dist/media/",
         "build:travis": "echo \"No build:travis specified\"",
         "test": "npm run test:mocha",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test:mocha": "echo \"No test:mocha specified\"",
         "test:stylelint": "echo \"No test:stylelint specified\"",
         "deploy": "echo \"No deploy specified\"",

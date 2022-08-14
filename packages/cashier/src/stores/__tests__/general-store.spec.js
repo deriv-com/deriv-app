@@ -58,6 +58,7 @@ beforeEach(() => {
                     getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
                     setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
+                    filterPaymentAgentList: jest.fn(),
                 },
                 payment_agent_transfer: {
                     is_payment_agent: false,
@@ -403,6 +404,20 @@ describe('GeneralStore', () => {
         await general_store.onMountCommon(true);
 
         expect(spySetOnRemount).toHaveBeenCalledWith(general_store.onMountCommon);
+    });
+
+    it('should route to deposit page of payment agent tab  when is_payment_agent_visible is false and location.pahname = /cashier/payment-agent when onMountCommon was called', async () => {
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: routes.cashier_pa,
+            },
+        }));
+        general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList.mockResolvedValueOnce([]);
+        general_store.root_store.client.is_logged_in = true;
+        await general_store.onMountCommon(false);
+
+        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
+        jest.restoreAllMocks();
     });
 
     it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {

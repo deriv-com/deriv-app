@@ -7,7 +7,7 @@ import './transfer-confirm.scss';
 
 type TRowProps = {
     item_key?: string | number;
-    label: string;
+    label: string | Array<string>;
     value: string | Array<string> | JSX.Element;
     key: string | number;
 };
@@ -28,7 +28,17 @@ type TTransferConfirmProps = {
 
 const Row = ({ item_key, label, value }: TRowProps) => (
     <div className='transfer-confirm__row' data-testid={`dt_transfer_confirm_row_${item_key}`}>
-        <Text size='xs'>{label}</Text>
+        {Array.isArray(label) ? (
+            <div>
+                {label.map((label_text, idx) => (
+                    <Text as='div' key={idx} size='xs' align='left'>
+                        {label_text}
+                    </Text>
+                ))}
+            </div>
+        ) : (
+            <Text size='xs'>{label}</Text>
+        )}
         {Array.isArray(value) ? (
             <div>
                 {value.map((v, idx) => (
@@ -114,7 +124,7 @@ const TransferConfirm = ({
                     name='transfer_consent'
                     value={is_transfer_consent_checked}
                     onChange={() => setIsTransferConsentChecked(!is_transfer_consent_checked)}
-                    label={localize('I confirm that I have checked and verified the client’s transfer information')}
+                    label={localize('I confirm that I have verified the client’s transfer information.')}
                     classNameLabel='transfer-confirm__checkbox-label'
                 />
             )}

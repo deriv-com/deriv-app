@@ -12,7 +12,14 @@ import { connect } from 'Stores/connect';
 import { PositionsDrawerCard } from '@deriv/reports';
 import { filterByContractType } from './helpers';
 
-const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row, ...props }) => {
+const PositionsDrawerCardItem = ({
+    row: portfolio_position,
+    measure,
+    onHoverPosition,
+    symbol,
+    is_new_row,
+    ...props
+}) => {
     const { in_prop } = useNewRowTransition(is_new_row);
 
     React.useEffect(() => {
@@ -36,10 +43,10 @@ const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosi
                 <PositionsDrawerCard
                     {...portfolio_position}
                     onMouseEnter={() => {
-                        onHoverPosition(true, portfolio_position);
+                        onHoverPosition(true, portfolio_position, symbol);
                     }}
                     onMouseLeave={() => {
-                        onHoverPosition(false, portfolio_position);
+                        onHoverPosition(false, portfolio_position, symbol);
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
@@ -84,7 +91,9 @@ const PositionsDrawer = ({
     const body_content = (
         <DataList
             data_source={positions}
-            rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} {...props} />}
+            rowRenderer={args => (
+                <PositionsDrawerCardItem onHoverPosition={onHoverPosition} symbol={symbol} {...args} {...props} />
+            )}
             keyMapper={row => row.id}
             row_gap={8}
         />
@@ -136,12 +145,13 @@ const PositionsDrawer = ({
 
 PositionsDrawer.propTypes = {
     all_positions: MobxPropTypes.arrayOrObservableArray,
-    children: PropTypes.any,
+    children: PropTypes.node,
     error: PropTypes.string,
     is_mobile: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
+    onHoverPosition: PropTypes.func,
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
@@ -158,6 +168,7 @@ PositionsDrawer.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     toggleCancellationWarning: PropTypes.func,
     toggleUnsupportedContractModal: PropTypes.func,
+    trade_contract_type: PropTypes.string,
 };
 
 export default connect(({ modules, ui, client, common, portfolio, contract_trade }) => ({

@@ -12,7 +12,7 @@ const StarRating = ({
     full_star_color,
     full_star_className,
     full_star_icon,
-    initial_value,
+    initial_value = 0,
     is_readonly = false,
     number_of_stars,
     onClick,

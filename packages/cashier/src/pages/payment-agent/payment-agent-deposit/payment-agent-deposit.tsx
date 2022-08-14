@@ -62,7 +62,7 @@ const PaymentAgentDeposit = ({
                         </DesktopWrapper>
                         <MobileWrapper>
                             <SelectNative
-                                placeholder={localize('Please select')}
+                                placeholder={localize('All payment agents')}
                                 name='payment_methods'
                                 list_items={supported_banks}
                                 value={selected_bank === 0 ? '' : selected_bank.toString()}

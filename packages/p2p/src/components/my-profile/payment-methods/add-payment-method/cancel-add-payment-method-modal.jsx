@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
+import PropTypes from 'prop-types';
 
 const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} }) => {
     const { my_profile_store } = useStores();
@@ -56,4 +57,10 @@ const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} 
         </Modal>
     );
 };
+
+CancelAddPaymentMethodModal.propTypes = {
+    onCancel: PropTypes.func,
+    onGoBack: PropTypes.func,
+};
+
 export default observer(CancelAddPaymentMethodModal);

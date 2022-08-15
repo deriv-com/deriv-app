@@ -105,6 +105,11 @@ export default class MyProfileStore extends BaseStore {
         return (this.formik_ref && this.formik_ref.dirty) || this.selected_payment_method.length > 0;
     }
 
+    /**
+     * Returns the saved form values which are saved from calling saveFormState() action
+     *
+     * @returns {Object} The form values which were saved previously with saveFormState() action
+     */
     @computed
     get form_history() {
         if (this.formik_history) {
@@ -155,6 +160,9 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    /**
+     * Clears any form state such as selected payment method and field values by dereferencing the Formik ref and stored form history
+     */
     @action.bound
     clearFormState() {
         this.setFormikRef(null);
@@ -204,6 +212,12 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    /**
+     * Stores a Formik reference to be used for retrieving and storing a form's state such as if it has been modified or touched, or its field values.
+     * Use this when it is required to obtain and keep track of a form's state and values outside a Formik component.
+     *
+     * @param {Object} formik_ref - A ref object used to reference a Formik component to keep track of its state and values
+     */
     @action.bound
     setFormikRef(formik_ref) {
         this.formik_ref = formik_ref;
@@ -375,6 +389,9 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    /**
+     * Save the current form state (such as selected payment method) and field values if the form has already been initialized
+     */
     @action.bound
     saveFormState() {
         if (this.formik_ref) {
@@ -589,6 +606,15 @@ export default class MyProfileStore extends BaseStore {
         this.is_submit_success = is_submit_success;
     }
 
+    /**
+     * Sets the close handler for other necessary modals  when the Cancel button within the Add Payment Method Form is clicked.
+     * The close handler is usually called to close other modals (if required) in order to show the Cancel Add Payment Method Modal.
+     * The close handler will be called when the Cancel Add Payment Method Modal is explicitly shown using showCancelAddPaymentMethodModal() action.
+     *
+     * @callback on_cancel_add_payment_method_form_handler
+     *
+     * @params {on_cancel_add_payment_method_form_handler} on_cancel_add_payment_method_form_handler - A function which is called when the Cancel Add Payment Method Modal is visible, usually to hide other modals
+     */
     @action.bound
     setOnCancelAddPaymentMethodFormHandler(on_cancel_add_payment_method_form_handler) {
         this.on_cancel_add_payment_method_form_handler = on_cancel_add_payment_method_form_handler;

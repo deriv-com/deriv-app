@@ -10,7 +10,7 @@ import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/a
 const CreateAdAddPaymentMethodModal = () => {
     const { my_ads_store, my_profile_store } = useStores();
     const onCancel = () => {
-        if (my_profile_store.is_payment_method_form_modified) {
+        if (my_profile_store.is_add_payment_method_form_modified) {
             my_profile_store.showCancelAddPaymentMethodModal();
         } else {
             my_ads_store.setShouldShowAddPaymentMethodModal(false);
@@ -93,9 +93,9 @@ const CreateAdAddPaymentMethodModal = () => {
                     'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
                 })}
             >
-                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer />
             </Modal.Body>
-            {!my_profile_store.selected_payment_method && !my_profile_store.should_show_add_payment_method_form && (
+            {!my_profile_store.selected_payment_method && (
                 <Modal.Footer has_separator>
                     <Button large onClick={onCancel} secondary>
                         <Localize i18n_default_text='Cancel' />

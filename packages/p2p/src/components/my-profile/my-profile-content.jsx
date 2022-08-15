@@ -27,12 +27,7 @@ const MyProfileContent = () => {
     } else if (my_profile_store.active_tab === my_profile_tabs.PAYMENT_METHODS) {
         return (
             <React.Fragment>
-                <CancelAddPaymentMethodModal
-                    onCancel={() => {
-                        my_profile_store.clearFormState();
-                        my_profile_store.hideAddPaymentMethodForm();
-                    }}
-                />
+                <CancelAddPaymentMethodModal />
                 <DesktopWrapper>
                     <PaymentMethods formik_ref={formik_ref} />
                 </DesktopWrapper>

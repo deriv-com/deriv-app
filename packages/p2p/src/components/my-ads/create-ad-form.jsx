@@ -371,16 +371,12 @@ const CreateAdForm = () => {
             <CreateAdErrorModal />
             <CancelAddPaymentMethodModal
                 onCancel={() => {
-                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
                     my_ads_store.setShouldShowAddPaymentMethod(false);
-                    my_profile_store.clearFormState();
                 }}
                 onGoBack={() => {
                     if (isMobile()) {
                         my_ads_store.setShouldShowAddPaymentMethodModal(true);
-                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
                     } else {
-                        my_profile_store.setShouldShowAddPaymentMethodForm(true);
                         setTimeout(() => my_ads_store.setShouldShowAddPaymentMethodModal(true), 250);
                     }
                 }}

@@ -5,12 +5,8 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 
-const CancelAddPaymentMethodModal = ({ onCancel, onGoBack }) => {
+const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} }) => {
     const { my_profile_store } = useStores();
-
-    const onClickCancel = onCancel;
-
-    const onClickGoBack = onGoBack;
 
     return (
         <Modal
@@ -33,9 +29,9 @@ const CancelAddPaymentMethodModal = ({ onCancel, onGoBack }) => {
                     large
                     onClick={() => {
                         if (isMobile()) {
-                            onClickCancel();
+                            onCancel();
                         } else {
-                            setTimeout(onClickCancel, 250);
+                            setTimeout(onCancel, 250);
                         }
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         my_profile_store.setShouldShowAddPaymentMethodForm(false);
@@ -48,7 +44,7 @@ const CancelAddPaymentMethodModal = ({ onCancel, onGoBack }) => {
                 <Button
                     large
                     onClick={() => {
-                        if (onClickGoBack) onClickGoBack();
+                        onGoBack();
                         my_profile_store.setShouldShowAddPaymentMethodForm(true);
                         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                     }}

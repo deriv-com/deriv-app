@@ -676,10 +676,4 @@
 
 .p2p-my-ads__modal-icon {
     margin-right: 0.8rem;
-
-    &--pointer-events {
-        & > svg {
-            pointer-events: none;
-        }
-    }
 }

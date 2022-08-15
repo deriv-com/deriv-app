@@ -69,14 +69,6 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
-    get form_state() {
-        if (this.formik_ref) {
-            return this.formik_ref;
-        }
-        return null;
-    }
-
-    @computed
     get payment_method_field_set() {
         // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
         return this.selected_payment_method_fields.reduce((dict, field_data) => {
@@ -104,7 +96,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
-    get is_payment_method_form_modified() {
+    get is_add_payment_method_form_modified() {
         return (this.formik_ref && this.formik_ref.dirty) || this.selected_payment_method.length > 0;
     }
 

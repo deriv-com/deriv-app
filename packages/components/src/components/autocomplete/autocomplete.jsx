@@ -68,18 +68,15 @@ const Autocomplete = React.memo(props => {
             setFilteredItems(list_items);
             setActiveIndex(null);
             setInputValue('');
+            if (historyValue) {
+                const index = filtered_items.findIndex(object => {
+                    return object.text === historyValue;
+                });
+                setInputValue(historyValue);
+                setActiveIndex(index);
+            }
         }
-    }, [list_items, has_updating_list]);
-
-    React.useEffect(() => {
-        if (historyValue) {
-            const index = filtered_items.findIndex(object => {
-                return object.text === historyValue;
-            });
-            setInputValue(historyValue);
-            setActiveIndex(index);
-        }
-    }, [historyValue]);
+    }, [list_items, has_updating_list, historyValue]);
 
     React.useEffect(() => {
         if (should_show_list && list_item_ref.current) {

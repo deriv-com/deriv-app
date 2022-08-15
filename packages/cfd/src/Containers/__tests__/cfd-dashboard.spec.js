@@ -2,10 +2,17 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CFDDashboard from '../cfd-dashboard';
 import { BrowserRouter } from 'react-router-dom';
+import { CFD_PLATFORMS } from '@deriv/shared';
 
 const mock_connect_props = {
     current_list: {},
 };
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isLandingCompanyEnabled: jest.fn(() => true),
+    getCFDPlatformLabel: jest.fn(() => 'DMT5'),
+}));
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -33,6 +40,7 @@ jest.mock('../cfd-password-modal.tsx', () => props => (
 jest.mock('../cfd-top-up-demo-modal', () => props => (
     <div style={{ display: props.is_top_up_virtual_open ? 'block' : 'none' }}>CFDTopUpDemoModal</div>
 ));
+jest.mock('../cfd-personal-details-modal', () => () => <div>CFDPersonalDetailsModal</div>);
 jest.mock('../mt5-trade-modal', () => props => (
     <div style={{ display: props.is_open ? 'block' : 'none' }}>MT5TradeModal</div>
 ));
@@ -120,7 +128,7 @@ describe('<CFDDashboard />', () => {
             openDerivRealAccountNeededModal: jest.fn(),
             openPasswordModal: jest.fn(),
             openTopUpModal: jest.fn(),
-            platform: 'mt5',
+            platform: CFD_PLATFORMS.MT5,
             residence: 'id',
             residence_list: [
                 {
@@ -246,7 +254,6 @@ describe('<CFDDashboard />', () => {
         const demo_account_tab = screen.getByText(/demo account/i);
 
         fireEvent.click(real_account_tab);
-
         expect(
             screen.getByRole('button', {
                 name: /compare accounts/i,
@@ -254,10 +261,30 @@ describe('<CFDDashboard />', () => {
         ).toBeInTheDocument();
 
         fireEvent.click(demo_account_tab);
-
         expect(
             screen.queryByRole('button', {
                 name: /compare accounts/i,
+            })
+        ).not.toBeInTheDocument();
+    });
+    it('Should show error when is_logged_in & has_mt5_real_account_error in DMT5', () => {
+        renderwithRouter(<CFDDashboard {...props} is_logged_in has_mt5_real_account_error />);
+
+        fireEvent.click(screen.getByText(/real account/i));
+
+        expect(
+            screen.getByText(
+                /Due to an issue on our server, some of your DMT5 accounts are unavailable at the moment./i
+            )
+        ).toBeInTheDocument();
+    });
+    it('Should show Loading when is_loading in Deriv X', () => {
+        renderwithRouter(<CFDDashboard {...props} is_loading platform={CFD_PLATFORMS.DXTRADE} />);
+
+        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+        expect(
+            screen.queryByRole('heading', {
+                name: /welcome to deriv x/i,
             })
         ).not.toBeInTheDocument();
     });

@@ -507,7 +507,7 @@ describe('ChangePasswordConfirmation', () => {
         fireEvent.click(await screen.findByRole('button', { name: 'Add account' }));
 
         await waitFor(() => {
-            expect(mockSubmitCFDPasswordFn).toHaveBeenCalledWith();
+            expect(mockSubmitCFDPasswordFn).toHaveBeenCalled();
         });
     });
 });

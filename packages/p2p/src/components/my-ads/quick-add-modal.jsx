@@ -79,9 +79,7 @@ const QuickAddModal = ({ advert }) => {
     };
 
     React.useEffect(() => {
-        // my_ads_store.setShouldShowAddPaymentMethod(false);
         my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
-            // my_ads_store.setShouldShowAddPaymentMethod(false);
             my_ads_store.setIsQuickAddModalOpen(false);
         });
 
@@ -169,7 +167,6 @@ const QuickAddModal = ({ advert }) => {
                     page_header_text={localize('Add payment method')}
                     pageHeaderReturnFn={() => {
                         if (my_ads_store.should_show_add_payment_method && !my_profile_store.selected_payment_method) {
-                            // basically is_select_payment_method_form_open
                             my_ads_store.setShouldShowAddPaymentMethod(false);
                         } else {
                             closeModals(false);
@@ -254,7 +251,7 @@ const QuickAddModal = ({ advert }) => {
         return (
             <React.Fragment>
                 <CancelAddPaymentMethodModal
-                    onCancel={clearSelectedPaymentMethods} // just close the cancel add payment method modal since quick add modal is already hidden
+                    onCancel={clearSelectedPaymentMethods}
                     onGoBack={() => {
                         setTimeout(() => my_ads_store.setIsQuickAddModalOpen(true), 250);
                     }}

@@ -116,7 +116,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
-            if (my_profile_store.formik_ref && my_profile_store.formik_ref.dirty) {
+            if (my_profile_store.is_add_payment_method_form_modified) {
                 // hide the entire buy sell modal -> show cancel add payment method confirmation modal
                 my_profile_store.showCancelAddPaymentMethodModal();
             } else {

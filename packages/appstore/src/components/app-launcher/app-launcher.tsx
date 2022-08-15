@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
+import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Button, Text } from '@deriv/ui';
 
-type TAppLauncherProps = {
+export interface TAppLauncherProps extends HTMLAttributes<HTMLDivElement> {
     icon_name: string;
     app_name: string;
     jurisdiction: string;
@@ -14,7 +15,8 @@ type TAppLauncherProps = {
     description?: string;
     handleClick?: () => void;
     show_active_balance?: boolean;
-};
+    button_className?: string;
+}
 
 const AppLauncher = ({
     icon_name,
@@ -26,9 +28,11 @@ const AppLauncher = ({
     description,
     handleClick,
     show_active_balance,
+    button_className,
+    ...props
 }: TAppLauncherProps) => {
     return (
-        <div className='app-launcher'>
+        <div className='app-launcher' {...props}>
             <div>
                 <Icon icon={icon_name} width={isMobile() ? 48 : 64} height={isMobile() ? 48 : 64} />
             </div>
@@ -49,7 +53,7 @@ const AppLauncher = ({
             </div>
             {!show_active_balance && (
                 <Button
-                    className='app-launcher__button'
+                    className={classNames('app-launcher__button', button_className)}
                     color={is_app_installed ? 'primary' : 'primary-light'}
                     onClick={handleClick}
                 >

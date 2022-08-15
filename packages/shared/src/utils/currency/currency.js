@@ -4,6 +4,7 @@ let currencies_config = {};
 
 const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
 const crypto_currencies_display_order = [
+    'TUSDT',
     'BTC',
     'ETH',
     'LTC',
@@ -195,6 +196,14 @@ export const CryptoConfig = (() => {
                 pa_min_withdrawal: 0.002,
                 fractional_digits: 2,
             },
+            tUSDT: {
+                display_code: 'tUSDT',
+                name: 'Tether TRC20',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
             BCH: {
                 display_code: 'BCH',
                 name: 'Bitcoin Cash',
@@ -303,7 +312,7 @@ export const getPaWithdrawalLimit = (currency, limit) => {
 
 export const getCurrencyDisplayCode = (currency = '') => {
     // eslint-disable-next-line
-    if (currency !== 'eUSDT') currency = currency.toUpperCase();
+    if (currency !== 'eUSDT' && currency !== 'tUSDT') currency = currency.toUpperCase();
     return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
 };
 

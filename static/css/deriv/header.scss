@@ -66,6 +66,15 @@
             &.disabled {
                 cursor: not-allowed;
             }
+
+            &_label {
+                line-height: initial;
+
+                @include mobile {
+                    margin: 0 0 !important;
+                    padding-bottom: 0.2rem;
+                }
+            }
         }
         &-links {
             display: flex;
@@ -74,6 +83,7 @@
             @include mobile{
                 flex-direction: column;
                 height: 45px;
+                margin-top: 0.1rem;
             }
 
             a {
@@ -90,9 +100,10 @@
                 align-items: center;
                 @include mobile{
                     width:100%;
-                    justify-content: space-between;
                     max-width: unset;
-                    padding: 16px 0 16px 24px;
+                    padding: 10.5px 0 10.5px 24px;
+                    justify-content: flex-start;
+                    align-items: center;
                 }
             }
             &-item {
@@ -140,7 +151,7 @@
         }
     }
     &__hamburger {
-        width: 16px;
+        max-width: 16px;
         height: 16px;
         transform: scale(1.3);
         align-self: center;
@@ -187,8 +198,17 @@
         height: 16px;
         width: 16px;
 
+        &-container {
+                display: flex;
+                align-items: center;
+        }
+
         &-text {
             margin-right: 0.5rem;
+
+            @include desktop {
+                margin-top: 0.25rem;
+            }
         }
         &-button {
             height: 20px;

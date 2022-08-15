@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ContractCard } from '@deriv/components';
+import ContractCard from '../contract-card';
 import {
     getContractPath,
     isCryptoContract,

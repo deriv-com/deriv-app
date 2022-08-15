@@ -139,6 +139,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
             buy_sell_store.setShouldShowPopup(false);
         });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

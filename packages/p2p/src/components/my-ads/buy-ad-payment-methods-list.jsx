@@ -246,6 +246,7 @@ BuyAdPaymentMethodsList.propTypes = {
     should_show_hint: PropTypes.bool,
     selected_methods: PropTypes.array,
     setSelectedMethods: PropTypes.func,
+    should_clear_payment_method_selections: PropTypes.bool,
 };
 
 export default observer(BuyAdPaymentMethodsList);

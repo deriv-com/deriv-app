@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
-import { WS, getIdentityStatusInfo } from '@deriv/shared';
+import { WS, getAuthenticationStatusInfo } from '@deriv/shared';
 import { AccountStatusResponse, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
@@ -50,7 +50,7 @@ const CFDDbViOnBoarding = ({
             if (get_account_status?.authentication) {
                 const identity_status = get_account_status?.authentication?.identity?.status;
                 const document_status = get_account_status?.authentication?.document?.status;
-                const { need_poi_for_vanuatu } = getIdentityStatusInfo(get_account_status);
+                const { need_poi_for_vanuatu } = getAuthenticationStatusInfo(get_account_status);
                 if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
                     setShowSubmittedModal(false);
                 } else if (

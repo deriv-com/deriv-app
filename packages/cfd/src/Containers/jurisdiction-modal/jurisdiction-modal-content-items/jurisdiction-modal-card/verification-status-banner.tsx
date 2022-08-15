@@ -2,7 +2,7 @@ import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import { GetAccountStatus } from '@deriv/api-types';
-import { getIdentityStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
@@ -36,7 +36,7 @@ const VerificationStatusBanner = ({
         poi_acknowledged_for_vanuatu,
         poa_acknowledged,
         need_poa_submission,
-    } = getIdentityStatusInfo(account_status);
+    } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
         switch (account_type) {

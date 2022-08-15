@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text, Checkbox, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile, getIdentityStatusInfo } from '@deriv/shared';
+import { isMobile, getAuthenticationStatusInfo } from '@deriv/shared';
 
 import { GetAccountStatus } from '@deriv/api-types';
 
@@ -22,7 +22,7 @@ const JurisdictionCheckBox = ({
     class_name,
 }: TJurisdictionCheckBoxProps) => {
     const { poa_verified, poi_verified_for_bvi_labuan_maltainvest, poi_verified_for_vanuatu } =
-        getIdentityStatusInfo(account_status);
+        getAuthenticationStatusInfo(account_status);
 
     const showCheckBox = () => {
         if (jurisdiction_selected_shortcode) {

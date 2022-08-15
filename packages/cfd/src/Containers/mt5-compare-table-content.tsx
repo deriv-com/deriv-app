@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getIdentityStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
@@ -255,7 +255,7 @@ const DMT5CompareModalContent = ({
         poi_acknowledged,
         poi_poa_verified_for_vanuatu,
         poi_poa_verified_for_bvi_labuan_maltainvest,
-    } = getIdentityStatusInfo(account_status);
+    } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
         if (!has_submitted_personal_details) {

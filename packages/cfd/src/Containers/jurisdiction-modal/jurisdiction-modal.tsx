@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { GetAccountSettingsResponse, GetSettings } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { WS, getIdentityStatusInfo, isMobile } from '@deriv/shared';
+import { WS, getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 
 const JurisdictionModal = ({
@@ -45,7 +45,7 @@ const JurisdictionModal = ({
         poi_or_poa_not_submitted,
         poi_poa_verified_for_bvi_labuan_maltainvest,
         poi_poa_verified_for_vanuatu,
-    } = getIdentityStatusInfo(account_status);
+    } = getAuthenticationStatusInfo(account_status);
 
     const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';

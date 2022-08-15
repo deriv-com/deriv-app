@@ -1,6 +1,6 @@
 import React from 'react';
 import { TJurisdictionModalFootNote } from '../../props.types';
-import { getIdentityStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
@@ -23,7 +23,7 @@ const JurisdictionModalFootNote = ({
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_acknowledged_for_vanuatu,
         poi_or_poa_not_submitted,
-    } = getIdentityStatusInfo(account_status);
+    } = getAuthenticationStatusInfo(account_status);
 
     const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
 

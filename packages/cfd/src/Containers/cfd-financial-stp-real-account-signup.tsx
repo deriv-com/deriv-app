@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, getIdentityStatusInfo } from '@deriv/shared';
+import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
@@ -61,7 +61,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const state_index = step;
     const height = 'auto';
     let is_mounted = React.useRef(true).current;
-    const { need_poi_for_vanuatu } = getIdentityStatusInfo(props.account_status);
+    const { need_poi_for_vanuatu } = getAuthenticationStatusInfo(props.account_status);
     const poi_config: TItemsState = {
         header: {
             active_title: localize('Complete your proof of identity'),

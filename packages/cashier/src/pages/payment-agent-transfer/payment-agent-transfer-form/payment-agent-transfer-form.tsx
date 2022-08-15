@@ -6,7 +6,7 @@ import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/sh
 import { PaymentAgentTransferRequest } from '@deriv/api-types';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { RootStore, TReactChangeEvent } from 'Types';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-transfer-form.scss';
 
@@ -143,7 +143,7 @@ const PaymentAgentTransferForm = ({
                             {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
-                                    onChange={(e: object) => {
+                                    onChange={(e: TReactChangeEvent) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -162,7 +162,7 @@ const PaymentAgentTransferForm = ({
                             {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
-                                    onChange={(e: object) => {
+                                    onChange={(e: TReactChangeEvent) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -191,7 +191,7 @@ const PaymentAgentTransferForm = ({
                             {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
-                                    onChange={(e: object) => {
+                                    onChange={(e: TReactChangeEvent) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}

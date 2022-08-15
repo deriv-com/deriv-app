@@ -60,7 +60,7 @@ const PaymentAgentTransferReceipt = ({
                             {receipt.client_name}
                         </Text>
                         <Text size='xs' line_height='xs' color='less-prominent'>
-                            {receipt.client_id && receipt.client_id.toUpperCase()}
+                            {receipt.client_id?.toUpperCase()}
                         </Text>
                     </span>
                 </span>

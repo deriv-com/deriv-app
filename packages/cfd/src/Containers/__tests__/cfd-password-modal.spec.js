@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, validPassword, getErrorMessages } from '@deriv/shared';
+import { WS, validPassword } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 
@@ -156,6 +156,7 @@ describe('ChangePasswordConfirmation', () => {
             setCFDSuccessDialog: mockFn,
             setMt5Error: mockDisableCFDPasswordModalFn,
             disableCFDPasswordModal: mockFn,
+            account_type: { category: 'real', type: 'financial' },
         };
 
         render(
@@ -264,14 +265,12 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        screen.debug();
-
         expect(
             await screen.findByText(/We need proof of your identity and address before you can start trading./i)
         ).toBeInTheDocument();
     });
 
-    it('should close the dialog when you click on submit proof', async () => {
+    it('should close the dialog when you click on Submit proof', async () => {
         const mockDisableCFDPasswordModalFn = jest.fn();
         const props = {
             ...mock_props,
@@ -326,20 +325,189 @@ describe('ChangePasswordConfirmation', () => {
         expect(await screen.findByRole('button', { name: /Transfer now/i }));
     });
 
-    // it('should show Sent mail modal ', async ()=>{
-    //     const props = {
-    //         ...mock_props,
-    //         is_cfd_password_modal_enabled: true,
-    //         is_cfd_success_dialog_enabled: false,
-    //         account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-    //         getAccountStatus: mockFn,
-    //         platform: 'mt5',
-    //     };
+    it('should display IcMt5SyntheticPlatform icon in Success Dialog', async () => {
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: true,
+            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
+            getAccountStatus: mockFn,
+            platform: 'mt5',
+            error_type: 'PasswordError',
+            is_eu: true,
+            account_type: { category: 'real', type: 'synthetic' },
+        };
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />
+            </Router>
+        );
 
-    //     render(
-    //         <Router history={history}>
-    //             <CFDPasswordModal {...props} />
-    //         </Router>
-    //     );
-    // })
+        expect(await screen.findByTestId('IcMt5SyntheticPlatform')).toBeInTheDocument();
+    });
+
+    it('should display IcMt5FinancialPlatform icon in Success Dialog', async () => {
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: true,
+            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
+            getAccountStatus: mockFn,
+            platform: 'mt5',
+            error_type: 'PasswordError',
+            account_type: { category: 'real', type: 'financial' },
+        };
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />
+            </Router>
+        );
+
+        expect(await screen.findByTestId('IcMt5FinancialPlatform')).toBeInTheDocument();
+    });
+
+    it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: true,
+            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
+            getAccountStatus: mockFn,
+            platform: 'dxtrade',
+            error_type: 'PasswordError',
+            account_type: { category: 'real', type: 'synthetic' },
+        };
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />
+            </Router>
+        );
+
+        expect(await screen.findByTestId('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
+    });
+
+    it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: true,
+            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
+            getAccountStatus: mockFn,
+            platform: 'dxtrade',
+            error_type: 'PasswordError',
+            account_type: { category: 'real', type: 'financial' },
+        };
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />
+            </Router>
+        );
+
+        expect(await screen.findByTestId('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+    });
+
+    it('should display IcMt5CfdPlatform icon in Success Dialog', async () => {
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: true,
+            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
+            getAccountStatus: mockFn,
+            platform: 'mt5',
+            error_type: 'PasswordError',
+            account_type: { category: 'real', type: 'financial' },
+            is_eu: true,
+        };
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />
+            </Router>
+        );
+
+        expect(await screen.findByTestId('IcMt5CfdPlatform')).toBeInTheDocument();
+    });
+
+    it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {
+        const mockDisableCFDPasswordModalFn = jest.fn();
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: false,
+            account_status: { status: [], category: 'Real' },
+            getAccountStatus: mockFn,
+            platform: 'dxtrade',
+            error_type: 'PasswordReset',
+            setCFDSuccessDialog: mockFn,
+            setMt5Error: mockDisableCFDPasswordModalFn,
+            disableCFDPasswordModal: mockFn,
+            account_type: { category: 'demo', type: 'financial' },
+            email: 'demo@deriv.com',
+        };
+
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />
+            </Router>
+        );
+        const ele_cancel_btn = await screen.findByRole('button', { name: /Forgot password?/i });
+        fireEvent.click(ele_cancel_btn);
+        await waitFor(() => {
+            expect(WS.verifyEmail).toHaveBeenCalledWith('demo@deriv.com', 'trading_platform_dxtrade_password_reset', {
+                url_parameters: { redirect_to: 21 },
+            });
+        });
+    });
+
+    it('should create DMT5 password when clicked on Create DMT5 password', async () => {
+        const user_input = 'zo8lAet#2q01Ih';
+        validPassword.mockReturnValue(true);
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: false,
+            account_status: { status: ['mt5_password_not_set'], category: 'Real' },
+            getAccountStatus: mockFn,
+            platform: 'mt5',
+            account_type: { category: 'real', type: 'financial' },
+            submitMt5Password: mockFn,
+        };
+
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />;
+            </Router>
+        );
+        fireEvent.change(await screen.findByTestId('mt5_password'), { target: { value: user_input } });
+        fireEvent.click(await screen.findByRole('button', { name: 'Create DMT5 password' }));
+
+        expect(await screen.findByTestId('dt_initial_loader')).toBeInTheDocument();
+    });
+
+    it('should create CFD password when clicked on Add account', async () => {
+        const user_input = 'zo8lAet#2q01Ih';
+        const mockSubmitCFDPasswordFn = jest.fn();
+        validPassword.mockReturnValue(true);
+        const props = {
+            ...mock_props,
+            is_cfd_password_modal_enabled: true,
+            is_cfd_success_dialog_enabled: false,
+            account_status: { status: ['mt5_password_not_set'], category: 'Real' },
+            getAccountStatus: mockFn,
+            platform: 'dxtrader',
+            account_type: { category: 'real', type: 'financial' },
+            submitCFDPassword: mockSubmitCFDPasswordFn,
+        };
+
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...props} />;
+            </Router>
+        );
+        fireEvent.change(await screen.findByTestId('dxtrader_password'), { target: { value: user_input } });
+        fireEvent.click(await screen.findByRole('button', { name: 'Add account' }));
+
+        await waitFor(() => {
+            expect(mockSubmitCFDPasswordFn).toHaveBeenCalledWith();
+        });
+    });
 });

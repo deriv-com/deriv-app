@@ -193,22 +193,22 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         if (type === 'synthetic') {
-            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
+            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} data_testid='IcDxtradeSyntheticPlatform' />;
         } else if (type === 'financial') {
-            return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+            return <Icon icon='IcDxtradeFinancialPlatform' size={128} data_testid='IcDxtradeFinancialPlatform' />;
         }
     }
 
     switch (type) {
         case 'synthetic':
-            return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+            return <Icon icon='IcMt5SyntheticPlatform' size={128} data_testid='IcMt5SyntheticPlatform' />;
         case 'financial':
             if (is_eu) {
-                return <Icon icon='IcMt5CfdPlatform' size={128} />;
+                return <Icon icon='IcMt5CfdPlatform' size={128} data_testid='IcMt5CfdPlatform' />;
             }
-            return <Icon icon='IcMt5FinancialPlatform' size={128} />;
+            return <Icon icon='IcMt5FinancialPlatform' size={128} data_testid='IcMt5FinancialPlatform' />;
         default:
-            return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
+            return <Icon icon='IcMt5FinancialStpPlatform' size={128} data_testid='IcMt5FinancialStpPlatform' />;
     }
 });
 IconType.displayName = 'IconType';
@@ -309,6 +309,7 @@ const CreatePassword = ({
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                         }}
+                                        data_testId={`${platform}_password`}
                                     />
                                 )}
                             </PasswordMeter>
@@ -564,7 +565,6 @@ const CFDPasswordModal = ({
     submitCFDPassword,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
-
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
     const should_set_trading_password =
@@ -594,7 +594,6 @@ const CFDPasswordModal = ({
         if (values.password?.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');
         }
-
         return errors;
     };
 
@@ -670,6 +669,7 @@ const CFDPasswordModal = ({
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
+
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
             return should_set_trading_password ? true : isDesktop();

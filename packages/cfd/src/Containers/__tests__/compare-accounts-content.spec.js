@@ -172,8 +172,8 @@ describe('should render the CompareAccountsContent component properly', () => {
         expect(screen.queryByText(/Account currency/i)).toBeInTheDocument();
     });
 
-    it('should render the column head from CFDs to Financial if is_eu is enabled', () => {
-        render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} is_eu={false} />);
-        expect(screen.getAllByText(/Financial/i)).toHaveLength(3);
+    it('should render the column head from CFDs to Financial if is_eu is true', () => {
+        render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} is_eu={true} />);
+        expect(screen.getAllByText(/Financial/i)).toHaveLength(2);
     });
 });

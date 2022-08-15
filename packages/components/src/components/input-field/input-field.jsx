@@ -11,13 +11,16 @@ const InputField = ({
     ariaLabel,
     checked,
     className,
+    classNameDynamicSuffix,
     classNameInlinePrefix,
     classNameInput,
     classNamePrefix,
+    classNameWrapper,
     currency,
     current_focus,
     data_tip,
     data_value,
+    decimal_point_change,
     error_messages,
     error_message_alignment,
     fractional_digits,
@@ -37,12 +40,14 @@ const InputField = ({
     is_signed = false,
     is_unit_at_right = false,
     inputmode,
+    increment_button_type,
     label,
     max_length,
     max_value,
     min_value,
     name,
     format,
+    onBlur,
     onChange,
     onClick,
     onClickInputWrapper,
@@ -53,9 +58,9 @@ const InputField = ({
     type,
     unit,
     value,
+    data_testid,
 }) => {
     const [local_value, setLocalValue] = React.useState();
-
     const Icon = icon;
     const has_error = error_messages && !!error_messages.length;
     const max_is_disabled = max_value && (+value >= +max_value || +local_value >= +max_value);
@@ -127,7 +132,7 @@ const InputField = ({
         if (max_is_disabled) return;
         let increment_value;
 
-        const current_value = local_value || value;
+        const current_value = +(local_value || value);
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
         const is_crypto = !!currency && isCryptocurrency(currency);
@@ -135,22 +140,21 @@ const InputField = ({
         if (long_press_step) {
             const increase_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
             const increase = (value * increase_percentage) / 100;
-            const new_value = parseFloat(+(current_value || 0)) + Math.abs(increase);
+            const new_value = parseFloat(current_value || 0) + Math.abs(increase);
 
             increment_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
-            const new_value = parseFloat(+(current_value || 0)) + parseFloat(1 * 10 ** (0 - decimal_places));
-            increment_value = parseFloat(new_value).toFixed(decimal_places);
+            const new_value =
+                parseFloat(current_value || 0) + parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+            increment_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
-            increment_value = parseFloat(+(current_value || 0) + 1).toFixed(decimal_places);
+            increment_value = parseFloat((current_value || 0) + 1).toFixed(decimal_places);
         }
-
         updateValue(increment_value, !!long_press_step);
     };
 
     const calculateDecrementedValue = long_press_step => {
         let decrement_value;
-
         const current_value = local_value || value;
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
@@ -159,30 +163,38 @@ const InputField = ({
         if (long_press_step) {
             const decrease_percentage = Math.min(long_press_step, Math.max(long_press_step, 10)) / 10;
             const decrease = (value * decrease_percentage) / 100;
-            const new_value = parseFloat(+(current_value || 0)) - Math.abs(decrease);
+            const new_value = parseFloat(current_value || 0) - Math.abs(decrease);
 
             decrement_value = parseFloat(getClampedValue(new_value)).toFixed(decimal_places);
         } else if (is_crypto || (!currency && is_float)) {
-            const new_value = parseFloat(+(current_value || 0)) - parseFloat(1 * 10 ** (0 - decimal_places));
-            decrement_value = parseFloat(new_value).toFixed(decimal_places);
+            const new_value =
+                parseFloat(current_value || 0) - parseFloat(1 * 10 ** (0 - (decimal_point_change || decimal_places)));
+            decrement_value = parseFloat(new_value).toFixed(decimal_point_change || decimal_places);
         } else {
-            decrement_value = parseFloat(+(current_value || 0) - 1).toFixed(decimal_places);
+            decrement_value = parseFloat((current_value || 0) - 1).toFixed(decimal_places);
         }
         return decrement_value;
     };
 
     const decrementValue = (ev, long_press_step) => {
-        if (!value || min_is_disabled) return;
+        if (min_is_disabled) {
+            return;
+        }
         const decrement_value = calculateDecrementedValue(long_press_step);
-        if (is_negative_disabled && decrement_value < 0) return;
+        if (is_negative_disabled && decrement_value < 0) {
+            return;
+        }
         updateValue(decrement_value, !!long_press_step);
     };
 
     const updateValue = (new_value, is_long_press) => {
-        const formatted_value = format ? format(new_value) : new_value;
+        let formatted_value = format ? format(new_value) : new_value;
         if (is_long_press) {
             setLocalValue(formatted_value);
         } else {
+            if (is_signed && /^\d+/.test(formatted_value) && formatted_value > 0) {
+                formatted_value = `+${formatted_value}`;
+            }
             onChange({ target: { value: formatted_value, name } });
         }
     };
@@ -221,8 +233,10 @@ const InputField = ({
                 { 'input--error': has_error },
                 classNameInput
             )}
+            classNameDynamicSuffix={classNameDynamicSuffix}
             classNameInlinePrefix={classNameInlinePrefix}
             data_tip={data_tip}
+            data_testid={data_testid}
             data_value={data_value}
             display_value={display_value}
             fractional_digits={fractional_digits}
@@ -236,6 +250,7 @@ const InputField = ({
             is_read_only={is_read_only}
             max_length={max_length}
             name={name}
+            onBlur={onBlur}
             onClick={onClick}
             onKeyPressed={onKeyPressed}
             placeholder={placeholder}
@@ -257,6 +272,7 @@ const InputField = ({
             decrementValue={decrementValue}
             onLongPressEnd={onLongPressEnd}
             is_incrementable_on_long_press={is_incrementable_on_long_press}
+            type={increment_button_type}
         />
     );
 
@@ -279,9 +295,13 @@ const InputField = ({
             )}
             {is_increment_input ? (
                 <div
-                    className={classNames('dc-input-wrapper', {
-                        'dc-input-wrapper--disabled': !!is_disabled,
-                    })}
+                    className={classNames(
+                        'dc-input-wrapper',
+                        {
+                            'dc-input-wrapper--disabled': !!is_disabled,
+                        },
+                        classNameWrapper
+                    )}
                 >
                     {increment_buttons}
                     {input}
@@ -318,9 +338,12 @@ InputField.propTypes = {
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
     classNameInput: PropTypes.string,
+    classNameDynamicSuffix: PropTypes.string,
     classNamePrefix: PropTypes.string,
+    classNameWrapper: PropTypes.string, // CSS class for the component wrapper
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,
@@ -338,9 +361,11 @@ InputField.propTypes = {
     is_read_only: PropTypes.bool,
     is_signed: PropTypes.bool,
     is_unit_at_right: PropTypes.bool,
+    increment_button_type: PropTypes.string,
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
     onClickInputWrapper: PropTypes.func,
@@ -351,6 +376,14 @@ InputField.propTypes = {
     type: PropTypes.string,
     unit: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    data_testid: PropTypes.string,
+    data_tip: PropTypes.string,
+    data_value: PropTypes.string,
+    is_error_tooltip_hidden: PropTypes.bool,
+    inputmode: PropTypes.string,
+    max_value: PropTypes.number,
+    min_value: PropTypes.number,
+    format: PropTypes.func,
 };
 
 export default InputField;

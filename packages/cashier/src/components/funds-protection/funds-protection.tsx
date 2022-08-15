@@ -26,7 +26,7 @@ const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
                                 className='link link--orange'
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                href='http://www.gamblingcommission.gov.uk/for-the-public/Your-rights/Protection-of-customer-funds.aspx'
+                                href='https://www.gamblingcommission.gov.uk/for-the-public/Your-rights/Protection-of-customer-funds.aspx'
                             />,
                             <strong key={1} />,
                         ]}

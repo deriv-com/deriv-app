@@ -172,6 +172,13 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
+                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                    <Localize
+                                        i18n_default_text={
+                                            'Any information you provide is confidential and will be used for verification purposes only.'
+                                        }
+                                    />
+                                </Text>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>

@@ -150,7 +150,7 @@ const PaymentAgentTransferForm = ({
                                     className='payment-agent-transfer-form__input'
                                     data-testid='dt_payment_agent_transfer_form_input_loginid'
                                     type='text'
-                                    label={localize('Client login ID')}
+                                    label={localize('Client account number')}
                                     error={touched.loginid && errors.loginid}
                                     required
                                     autoComplete='off'
@@ -209,7 +209,7 @@ const PaymentAgentTransferForm = ({
                         </Field>
                         <div className='cashier__form-submit'>
                             <Button
-                                className='cashier__form-submit-button'
+                                className='cashier__form-submit-button payment-agent-transfer-form__submit-button'
                                 type='submit'
                                 is_disabled={!isValid || isSubmitting}
                                 primary

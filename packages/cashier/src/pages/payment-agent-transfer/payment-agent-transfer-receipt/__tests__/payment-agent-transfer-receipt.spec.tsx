@@ -43,7 +43,7 @@ describe('<PaymentAgentTransferReceipt />', () => {
             </Router>
         );
 
-        const btn = screen.getByText('View in statement');
+        const btn = screen.getByText('View transactions');
         fireEvent.click(btn);
 
         expect(history.location.pathname).toBe(routes.statement);

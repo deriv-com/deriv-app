@@ -11,7 +11,6 @@ import { identity_status_codes, submission_status_code, service_code } from './p
 
 const POISubmission = ({
     allow_poi_resubmission,
-    has_attempted_idv,
     has_require_submission,
     height,
     identity_last_attempt,
@@ -24,6 +23,7 @@ const POISubmission = ({
     redirect_button,
     refreshNotifications,
     residence_list,
+    setIsCfdPoiCompleted,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -34,7 +34,8 @@ const POISubmission = ({
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
-            const is_onfido_supported = selected_country.identity.services.onfido.is_country_supported;
+            const is_onfido_supported =
+                selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
 
             if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                 setSubmissionService(service_code.idv);
@@ -111,11 +112,9 @@ const POISubmission = ({
 
     switch (submission_status) {
         case submission_status_code.selecting: {
-            const show_helper_msg = has_attempted_idv && Number(idv.submissions_left) > 0;
             return (
                 <CountrySelector
                     handleSelectionNext={handleSelectionNext}
-                    show_helper_msg={show_helper_msg}
                     is_from_external={is_from_external}
                     residence_list={residence_list}
                     selected_country={selected_country}
@@ -146,11 +145,18 @@ const POISubmission = ({
                             height={height}
                             is_from_external={is_from_external}
                             refreshNotifications={refreshNotifications}
+                            OnfidoUpload
                         />
                     );
                 }
                 case service_code.manual:
-                    return <Unsupported />;
+                    return (
+                        <Unsupported
+                            country_code={selected_country.value}
+                            is_from_external={is_from_external}
+                            setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                        />
+                    );
                 default:
                     return null;
             }

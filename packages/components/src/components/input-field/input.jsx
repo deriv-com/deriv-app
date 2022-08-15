@@ -9,6 +9,7 @@ const Input = ({
     checked,
     className,
     classNameInlinePrefix,
+    classNameDynamicSuffix,
     current_focus,
     data_value,
     data_tip,
@@ -24,12 +25,14 @@ const Input = ({
     is_read_only,
     max_length,
     name,
+    onBlur,
     onClick,
     onKeyPressed,
     placeholder,
     required,
     setCurrentFocus,
     type,
+    data_testid,
 }) => {
     const ref = React.useRef();
     React.useEffect(() => {
@@ -38,7 +41,12 @@ const Input = ({
         }
     }, [current_focus, name]);
 
-    const onBlur = () => setCurrentFocus(null);
+    const onBlurHandler = e => {
+        setCurrentFocus(null);
+        if (onBlur) {
+            onBlur(e);
+        }
+    };
     const onFocus = () => setCurrentFocus(name);
 
     const onChange = e => {
@@ -59,7 +67,7 @@ const Input = ({
     };
 
     return (
-        <React.Fragment>
+        <div className={classNameDynamicSuffix}>
             {!!inline_prefix && (
                 <div className={classNameInlinePrefix}>
                     <span
@@ -78,12 +86,13 @@ const Input = ({
                 data-for={`error_tooltip_${name}`}
                 data-hj-whitelist={is_hj_whitelisted}
                 data-tip={data_tip}
+                data-testid={data_testid}
                 data-value={data_value}
                 disabled={is_disabled}
                 id={id}
                 maxLength={fractional_digits ? max_length + fractional_digits + 1 : max_length}
                 name={name}
-                onBlur={onBlur}
+                onBlur={onBlurHandler}
                 onChange={onChange}
                 onClick={onClick}
                 onFocus={onFocus}
@@ -94,10 +103,11 @@ const Input = ({
                 required={required || undefined}
                 inputMode={inputmode}
                 type={type === 'number' ? 'text' : type}
-                value={display_value || ''}
+                value={display_value ?? ''}
                 aria-label={ariaLabel}
+                data-lpignore={type !== 'password'}
             />
-        </React.Fragment>
+        </div>
     );
 };
 
@@ -107,7 +117,9 @@ Input.propTypes = {
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
+    classNameDynamicSuffix: PropTypes.string,
     current_focus: PropTypes.string,
+    data_testid: PropTypes.string,
     data_tip: PropTypes.string,
     data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -121,6 +133,7 @@ Input.propTypes = {
     is_read_only: PropTypes.bool,
     max_length: PropTypes.number,
     name: PropTypes.string,
+    onBlur: PropTypes.func,
     onClick: PropTypes.func,
     onKeyPressed: PropTypes.func,
     placeholder: PropTypes.string,
@@ -128,6 +141,7 @@ Input.propTypes = {
     setCurrentFocus: PropTypes.func,
     type: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    inputmode: PropTypes.string,
 };
 
 export default Input;

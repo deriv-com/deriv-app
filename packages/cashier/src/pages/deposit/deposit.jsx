@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Loading, MobileWrapper } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
@@ -12,6 +12,7 @@ import USDTSideNote from 'Components/usdt-side-note';
 import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
+import SideNote from 'Components/side-note';
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -70,10 +71,16 @@ const Deposit = ({
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
-                if (side_notes.length > 0) setSideNotes(side_notes);
+                if (side_notes.length > 0) {
+                    setSideNotes([<SideNote key={0}>{side_notes}</SideNote>]);
+                }
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
-                setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={false} />]);
+                setSideNotes([
+                    <SideNote key={0}>
+                        <CashierOnboardingSideNote is_crypto={false} />
+                    </SideNote>,
+                ]);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,9 +121,9 @@ const Deposit = ({
         return (
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
-                    <MobileWrapper>
+                    <SideNote is_mobile>
                         <CashierOnboardingSideNote is_crypto={false} />
-                    </MobileWrapper>
+                    </SideNote>
                 )}
                 <Real
                     iframe_height={iframe_height}

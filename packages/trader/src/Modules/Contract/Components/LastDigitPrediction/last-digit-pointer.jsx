@@ -26,6 +26,7 @@ const LastDigitPointer = ({ is_lost, is_trade_page, is_won, position }) => (
 
 LastDigitPointer.propTypes = {
     is_lost: PropTypes.bool,
+    is_trade_page: PropTypes.bool,
     is_won: PropTypes.bool,
     position: PropTypes.object,
 };

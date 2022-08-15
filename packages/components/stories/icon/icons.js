@@ -440,6 +440,7 @@ export const icons =
         'IcCurrencyLtc',
         'IcCurrencyPax',
         'IcCurrencyTusd',
+        'IcCurrencyTusdt',
         'IcCurrencyUnknown',
         'IcCurrencyUsd',
         'IcCurrencyUsdc',

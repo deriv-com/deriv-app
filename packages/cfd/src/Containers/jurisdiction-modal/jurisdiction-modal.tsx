@@ -37,18 +37,12 @@ const JurisdictionModal = ({
         need_poi_for_vanuatu,
         need_poi_for_bvi_labuan_maltainvest,
         need_poa_submission,
-        poi_verified_for_vanuatu,
-        poi_verified_for_bvi_labuan_maltainvest,
-        poa_verified,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
-        poi_acknowledged_for_vanuatu,
         poi_or_poa_not_submitted,
         poi_poa_verified_for_bvi_labuan_maltainvest,
         poi_poa_verified_for_vanuatu,
     } = getAuthenticationStatusInfo(account_status);
 
     const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
-    const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
     const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
 
@@ -123,6 +117,14 @@ const JurisdictionModal = ({
         return false;
     };
 
+    const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) => {
+        if (!has_submitted_personal_details) {
+            toggleCFDPersonalDetailsModal();
+        } else {
+            openPasswordModal(type_of_account);
+        }
+    };
+
     const onSelectRealAccount = () => {
         const type_of_account = {
             category: account_type.category,
@@ -130,7 +132,7 @@ const JurisdictionModal = ({
         };
 
         if (is_eu && jurisdiction_selected_shortcode === 'maltainvest') {
-            if (poi_poa_verified) {
+            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -138,28 +140,17 @@ const JurisdictionModal = ({
         } else if (jurisdiction_selected_shortcode === 'svg') {
             openPasswordModal(type_of_account);
         } else if (jurisdiction_selected_shortcode === 'vanuatu') {
-            if (need_poi_for_vanuatu) {
-                toggleCFDVerificationModal();
-            } else if (poi_poa_verified) {
-                // for bvi, labuan & vanuatu:
-                if (!has_submitted_personal_details) {
-                    toggleCFDPersonalDetailsModal();
-                } else {
-                    openPasswordModal(type_of_account);
-                }
+            if (poi_poa_verified_for_vanuatu) {
+                openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
-        } else if (need_poi_for_bvi_labuan_maltainvest) {
-            toggleCFDVerificationModal();
-        } else if (poi_poa_verified) {
-            if (!has_submitted_personal_details) {
-                toggleCFDPersonalDetailsModal();
+        } else if (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') {
+            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
-                openPasswordModal(type_of_account);
+                toggleCFDVerificationModal();
             }
-        } else {
-            toggleCFDVerificationModal();
         }
     };
 

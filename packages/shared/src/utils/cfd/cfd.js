@@ -168,38 +168,45 @@ export const getAuthenticationStatusInfo = account_status => {
     const acknowledged_status = ['pending', 'verified'];
     const failed_cases = ['rejected', 'expired', 'suspected'];
 
-    const poa_none = poa_status === 'none';
-    const poi_none = poi_status === 'none';
-    const poi_or_poa_not_submitted = poi_none || poa_none;
+    const poa_not_submitted = poa_status === 'none';
+    const poa_acknowledged = acknowledged_status.includes(poa_status);
+    const poa_pending = poa_status === 'pending';
+    const need_poa_submission = !poa_acknowledged;
+    const need_poa_resubmission = failed_cases.includes(poa_status);
+    const poa_verified = poa_status === 'verified';
 
+    const poi_not_submitted = poi_status === 'none';
+    const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
+
+    //vanuatu
     const poi_acknowledged_for_vanuatu =
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
-
     const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
 
+    const poi_verified_for_vanuatu = onfido_status === 'verified' || manual_status === 'verified';
+
+    const poi_pending_for_vanuatu =
+        (onfido_status === 'pending' || manual_status === 'pending') && !poi_verified_for_vanuatu;
+
+    const poi_poa_verified_for_vanuatu = poi_verified_for_vanuatu && poa_verified;
+
+    //bvi-labuan-maltainvest
     const poi_acknowledged_for_bvi_labuan_maltainvest =
         (idv_status && acknowledged_status.includes(idv_status)) ||
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
     const need_poi_for_bvi_labuan_maltainvest = !poi_acknowledged_for_bvi_labuan_maltainvest;
 
-    const poa_acknowledged = acknowledged_status.includes(poa_status);
-    const poi_acknowledged = acknowledged_status.includes(poi_status);
-
-    const need_poa_submission = !poa_acknowledged;
-    const need_poa_resubmission = failed_cases.includes(poa_status);
-
-    const idv_acknowledged = idv_status && acknowledged_status.includes(idv_status);
-
-    const poi_verified_for_vanuatu = onfido_status === 'verified' || manual_status === 'verified';
     const poi_verified_for_bvi_labuan_maltainvest =
         idv_status === 'verified' || onfido_status === 'verified' || manual_status === 'verified';
-    const poa_verified = poa_status === 'verified';
 
-    const poi_poa_verified_for_vanuatu = poi_verified_for_vanuatu && poa_verified;
+    const poi_pending_for_bvi_labuan_maltainvest =
+        (idv_status === 'pending' || onfido_status === 'pending' || manual_status === 'pending') &&
+        !poi_verified_for_bvi_labuan_maltainvest;
 
-    const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poi_acknowledged;
+    const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poa_verified;
+
     return {
         poa_status,
         poi_status,
@@ -210,9 +217,7 @@ export const getAuthenticationStatusInfo = account_status => {
         poi_acknowledged_for_vanuatu,
         poi_poa_verified_for_bvi_labuan_maltainvest,
         poa_acknowledged,
-        poi_acknowledged,
         poi_poa_verified_for_vanuatu,
-        idv_acknowledged,
         need_poi_for_vanuatu,
         need_poi_for_bvi_labuan_maltainvest,
         need_poa_submission,
@@ -222,8 +227,13 @@ export const getAuthenticationStatusInfo = account_status => {
         poa_verified,
         poi_or_poa_not_submitted,
         need_poa_resubmission,
+        poa_not_submitted,
+        poi_not_submitted,
+        poi_pending_for_vanuatu,
+        poa_pending,
+        poi_pending_for_bvi_labuan_maltainvest,
     };
 };
 
-export const isRegulatedExceptVanuatu = jurisdictionType =>
-    jurisdictionType === 'bvi' || jurisdictionType === 'labuan' || jurisdictionType === 'maltainvest';
+export const is_bvi_labuan_maltainvest = jurisdiction_type =>
+    jurisdiction_type === 'bvi' || jurisdiction_type === 'labuan' || jurisdiction_type === 'maltainvest';

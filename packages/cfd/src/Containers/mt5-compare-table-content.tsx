@@ -52,10 +52,6 @@ type TDMT5CompareModalContentProps = {
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    authentication_status: {
-        document_status: string;
-        identity_status: string;
-    };
     toggleCFDPersonalDetailsModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
@@ -207,7 +203,6 @@ const footer_buttons: TFooterButtonData[] = [
 const eu_footer_button: TFooterButtonData[] = [{ label: localize('Add'), action: 'financial_maltainvest' }];
 
 const DMT5CompareModalContent = ({
-    authentication_status,
     account_settings,
     setAccountSettings,
     setAccountType,
@@ -246,14 +241,10 @@ const DMT5CompareModalContent = ({
             ? 4
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
-    const poa_status = authentication_status?.document_status;
-    const poi_status = authentication_status?.identity_status;
-
     const {
-        need_poi_for_vanuatu,
-        idv_acknowledged,
         poa_acknowledged,
-        poi_acknowledged,
+        poi_acknowledged_for_vanuatu,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_poa_verified_for_vanuatu,
         poi_poa_verified_for_bvi_labuan_maltainvest,
     } = getAuthenticationStatusInfo(account_status);
@@ -317,9 +308,15 @@ const DMT5CompareModalContent = ({
     const getAvailableAccountsFooterButtons = (_footer_button_data: TFooterButtonData[]) => {
         return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
+    const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) => {
+        if (!has_submitted_personal_details) {
+            toggleCFDPersonalDetailsModal();
+        } else {
+            openPasswordModal(type_of_account);
+        }
+    };
 
     const onSelectRealAccount = (item: TFooterButtonData) => {
-        const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
 
         const type_of_account = {
@@ -338,48 +335,32 @@ const DMT5CompareModalContent = ({
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setJurisdictionSelectedShortcode('bvi');
-                if (poi_poa_verified) {
-                    if (!has_submitted_personal_details) {
-                        toggleCFDPersonalDetailsModal();
-                    } else {
-                        openPasswordModal(type_of_account);
-                    }
+                if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                    openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
+                break;
+            case 'financial_labuan':
+                setJurisdictionSelectedShortcode('labuan');
+                if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                    openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
+                break;
+            case 'financial_vanuatu':
+                setJurisdictionSelectedShortcode('vanuatu');
+                if (poi_poa_verified_for_vanuatu) {
+                    openPersonalDetailsFormOrPasswordForm(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
                 }
                 break;
             case 'financial_maltainvest':
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_poa_verified) {
+                if (poi_poa_verified_for_bvi_labuan_maltainvest) {
                     openPasswordModal(type_of_account);
-                } else {
-                    toggleCFDVerificationModal();
-                }
-                break;
-
-            case 'financial_labuan':
-                setJurisdictionSelectedShortcode('labuan');
-                if (poi_poa_verified) {
-                    if (!has_submitted_personal_details) {
-                        toggleCFDPersonalDetailsModal();
-                    } else {
-                        openPasswordModal(type_of_account);
-                    }
-                } else {
-                    toggleCFDVerificationModal();
-                }
-                break;
-
-            case 'financial_vanuatu':
-                setJurisdictionSelectedShortcode('vanuatu');
-                if (need_poi_for_vanuatu) {
-                    toggleCFDVerificationModal();
-                } else if (poi_poa_verified) {
-                    if (!has_submitted_personal_details) {
-                        toggleCFDPersonalDetailsModal();
-                    } else {
-                        openPasswordModal(type_of_account);
-                    }
                 } else {
                     toggleCFDVerificationModal();
                 }
@@ -504,13 +485,12 @@ const DMT5CompareModalContent = ({
         if (type === 'svg') {
             return false;
         } else if (type === 'vanuatu') {
-            if (need_poi_for_vanuatu) {
-                return false;
-            }
-            return poa_acknowledged && poi_acknowledged && !poi_poa_verified_for_vanuatu;
+            return poa_acknowledged && poi_acknowledged_for_vanuatu && !poi_poa_verified_for_vanuatu;
         }
         return (
-            poa_acknowledged && (idv_acknowledged || poi_acknowledged) && !poi_poa_verified_for_bvi_labuan_maltainvest
+            poa_acknowledged &&
+            poi_acknowledged_for_bvi_labuan_maltainvest &&
+            !poi_poa_verified_for_bvi_labuan_maltainvest
         );
     };
 
@@ -603,7 +583,6 @@ const DMT5CompareModalContent = ({
 export default connect(({ modules, client }: RootStore) => ({
     account_type: modules.cfd.account_type,
     account_settings: client.account_settings,
-    authentication_status: client.authentication_status,
     has_real_account: client.has_active_real_account,
     setAccountSettings: client.setAccountSettings,
     setAccountType: modules.cfd.setAccountType,

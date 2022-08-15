@@ -124,9 +124,9 @@ $breakpoints: (
 //     }
 // }
 
-// Export -------------------------------------------------------------------
+/// Export breakpoints variables to JS file.
 :export {
     mobileWidth: map-get($breakpoints, 'mobile');
-    TabletWidth: map-get($breakpoints, 'tablet');
-    DesktopWidth: map-get($breakpoints, 'desktop');
+    tabletWidth: map-get($breakpoints, 'tablet');
+    desktopWidth: map-get($breakpoints, 'desktop');
 }

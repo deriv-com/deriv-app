@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, DataList, Text } from '@deriv/components';
+import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
 import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { connect } from 'Stores/connect';
-import { PositionsDrawerCard } from '@deriv/reports';
 import { filterByContractType } from './helpers';
 
 const PositionsDrawerCardItem = ({
@@ -42,6 +41,7 @@ const PositionsDrawerCardItem = ({
             <div className='dc-contract-card__wrapper'>
                 <PositionsDrawerCard
                     {...portfolio_position}
+                    {...props}
                     onMouseEnter={() => {
                         onHoverPosition(true, portfolio_position, symbol);
                     }}
@@ -50,7 +50,6 @@ const PositionsDrawerCardItem = ({
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
-                    {...props}
                 />
             </div>
         </CSSTransition>

@@ -62,6 +62,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const height = 'auto';
     let is_mounted = React.useRef(true).current;
     const { need_poi_for_vanuatu } = getAuthenticationStatusInfo(props.account_status);
+
     const poi_config: TItemsState = {
         header: {
             active_title: localize('Complete your proof of identity'),

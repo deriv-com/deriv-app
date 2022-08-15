@@ -158,12 +158,12 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) =
 };
 
 export const getAuthenticationStatusInfo = account_status => {
-    const poi_status = account_status.authentication?.identity?.status;
-    const poa_status = account_status.authentication?.document?.status;
+    const poi_status = account_status?.authentication?.identity?.status;
+    const poa_status = account_status?.authentication?.document?.status;
 
-    const idv_status = account_status.authentication?.identity?.services?.idv?.status;
-    const onfido_status = account_status.authentication?.identity?.services?.onfido?.status;
-    const manual_status = account_status.authentication?.identity?.services?.manual?.status;
+    const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
+    const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
+    const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
 
     const acknowledged_status = ['pending', 'verified'];
     const failed_cases = ['rejected', 'expired', 'suspected'];
@@ -224,3 +224,6 @@ export const getAuthenticationStatusInfo = account_status => {
         need_poa_resubmission,
     };
 };
+
+export const isRegulatedExceptVanuatu = jurisdictionType =>
+    jurisdictionType === 'bvi' || jurisdictionType === 'labuan' || jurisdictionType === 'maltainvest';

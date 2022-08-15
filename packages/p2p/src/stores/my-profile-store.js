@@ -95,6 +95,11 @@ export default class MyProfileStore extends BaseStore {
         return object;
     }
 
+    /**
+     * Checks if the add payment method form fields has been modified or user has selected a payment method
+     *
+     * @returns {boolean} If the payment method form fields has been modified or a payment method has already been selected
+     */
     @computed
     get is_add_payment_method_form_modified() {
         return (this.formik_ref && this.formik_ref.dirty) || this.selected_payment_method.length > 0;

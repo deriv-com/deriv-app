@@ -5,6 +5,7 @@ import {
     AccountLimits,
     Passwords,
     PersonalDetails,
+    TradingExperience,
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
@@ -52,6 +53,17 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                         component: PersonalDetails,
                         getTitle: () => localize('Personal details'),
                         default: true,
+                    },
+                ],
+            },
+            {
+                getTitle: () => localize('Assessments'),
+                icon: 'IcAssessment',
+                subroutes: [
+                    {
+                        path: routes.trading_experience,
+                        component: TradingExperience,
+                        getTitle: () => localize('Trading assessment'),
                     },
                     {
                         path: routes.financial_assessment,

@@ -402,6 +402,7 @@ export const icons =
         'IcUtility',
         'IcVerificationSuccess',
         'IcVerification',
+        'IcAssessment',
         'IcWebTerminal',
         'IcWebsite',
         'IcWindowsLogo',

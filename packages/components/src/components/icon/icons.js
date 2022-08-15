@@ -171,6 +171,7 @@ import './common/ic-arrow-right-curly.svg';
 import './common/ic-arrow-right.svg';
 import './common/ic-arrow-up-bold.svg';
 import './common/ic-arrow-up.svg';
+import './common/ic-assessment.svg';
 import './common/ic-attachment.svg';
 import './common/ic-bank-dashboard.svg';
 import './common/ic-bank.svg';

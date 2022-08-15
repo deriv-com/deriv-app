@@ -115,6 +115,7 @@ const OrderRow = ({ style, row: order }) => {
                     order_store.setOrderRating(id);
                     setShouldShowRatingModal(false);
                     should_show_order_details.current = true;
+                    order_store.setRatingValue(0);
                 }}
                 onClickNotRecommended={() => order_store.setIsRecommended(0)}
                 onClickRecommended={() => order_store.setIsRecommended(1)}

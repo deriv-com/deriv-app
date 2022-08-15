@@ -33,6 +33,7 @@ const Autocomplete = React.memo(props => {
         autoComplete,
         className,
         dropdown_offset,
+        historyValue,
         error,
         has_updating_list = true,
         input_id,
@@ -69,6 +70,16 @@ const Autocomplete = React.memo(props => {
             setInputValue('');
         }
     }, [list_items, has_updating_list]);
+
+    React.useEffect(() => {
+        if (historyValue) {
+            const index = filtered_items.findIndex(object => {
+                return object.text === historyValue;
+            });
+            setInputValue(historyValue);
+            setActiveIndex(index);
+        }
+    }, [historyValue]);
 
     React.useEffect(() => {
         if (should_show_list && list_item_ref.current) {

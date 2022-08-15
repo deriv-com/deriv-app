@@ -28,7 +28,7 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from 'Components/success-dialog.jsx';
+import SuccessDialog from 'Components/success-dialog';
 import 'Sass/cfd.scss';
 import { connect } from 'Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
@@ -262,7 +262,10 @@ const CreatePassword = ({
                 validateForm,
             }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
+                    <div
+                        className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'
+                        data-testid='create-password'
+                    >
                         <Icon
                             icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
                             width='122'
@@ -390,7 +393,6 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
 
     const has_cancel_button =
         (isDesktop() ? !props.should_set_trading_password : true) || props.error_type === 'PasswordReset';
-
     const cancel_button_label = getCancelButtonLabel(props);
 
     const handleCancel = () => {
@@ -493,6 +495,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                 }}
+                                data_testId={`${props.platform}_password`}
                             />
                         </div>
 
@@ -575,7 +578,6 @@ const CFDPasswordModal = ({
 
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
-
         if (
             !validLength(values.password, {
                 min: 8,
@@ -635,7 +637,6 @@ const CFDPasswordModal = ({
             platform === CFD_PLATFORMS.MT5
                 ? 'trading_platform_mt5_password_reset'
                 : 'trading_platform_dxtrade_password_reset';
-
         WS.verifyEmail(email, password_reset_code, {
             url_parameters: {
                 redirect_to,
@@ -669,7 +670,6 @@ const CFDPasswordModal = ({
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
-
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
             return should_set_trading_password ? true : isDesktop();

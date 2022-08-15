@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
@@ -7,6 +6,8 @@ import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Utils/multiplier';
+import RootStore from 'Stores/index';
+import { TSummaryCardProps } from './summary-card.types';
 
 const SummaryCard = ({
     addToast,
@@ -23,7 +24,7 @@ const SummaryCard = ({
     removeToast,
     server_time,
     setCurrentFocus,
-}) => {
+}: TSummaryCardProps) => {
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
@@ -111,24 +112,7 @@ const SummaryCard = ({
     );
 };
 
-SummaryCard.propTypes = {
-    addToast: PropTypes.func,
-    contract_info: PropTypes.object,
-    contract_store: PropTypes.object,
-    current_focus: PropTypes.object,
-    is_contract_completed: PropTypes.bool,
-    is_contract_inactive: PropTypes.bool,
-    is_contract_loading: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    onClickSell: PropTypes.func,
-    is_sell_requested: PropTypes.bool,
-    removeToast: PropTypes.func,
-    server_time: PropTypes.object,
-    setCurrentFocus: PropTypes.func,
-};
-
-export default connect(({ summary_card, common, run_panel, ui }) => ({
+export default connect(({ summary_card, common, run_panel, ui }: RootStore) => ({
     addToast: ui.addToast,
     contract_info: summary_card.contract_info,
     contract_store: summary_card,

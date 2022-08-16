@@ -19,6 +19,8 @@ const RestoreFormHistory = () => {
             // thus this will cause bugs such as Add button being disabled even though user has already typed something previously
             setValues(my_profile_store.formik_history.values);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return null;
 };

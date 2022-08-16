@@ -393,7 +393,7 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     hideCancelAddPaymentMethodModal(close_all_modals_on_cancel) {
-        if (!close_all_modals_on_cancel) {
+        if (this.on_cancel_add_payment_method_form_handler && !close_all_modals_on_cancel) {
             if (isMobile()) {
                 this.on_cancel_add_payment_method_form_handler(true);
             } else {
@@ -426,7 +426,7 @@ export default class MyProfileStore extends BaseStore {
         } else {
             this.saveFormState();
             setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), this.MODAL_TRANSITION_DURATION);
-            this.on_cancel_add_payment_method_form_handler(false);
+            this.on_cancel_add_payment_method_form_handler?.(false);
         }
     }
 

@@ -174,7 +174,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
 };
 
 AddPaymentMethodForm.propTypes = {
-    formik_ref: PropTypes.shape({ current: PropTypes.any }),
     should_show_separated_footer: PropTypes.bool,
 };
 

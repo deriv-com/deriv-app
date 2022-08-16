@@ -21,8 +21,6 @@ const QuickAddModal = ({ advert }) => {
 
     const is_buy_advert = type === buy_sell.BUY;
 
-    const formik_ref = React.useRef();
-
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -205,11 +203,7 @@ const QuickAddModal = ({ advert }) => {
                     }
                 >
                     {my_ads_store.should_show_add_payment_method ? (
-                        <AddPaymentMethod
-                            formik_ref={formik_ref}
-                            should_show_page_return={false}
-                            should_show_separated_footer
-                        />
+                        <AddPaymentMethod should_show_page_return={false} should_show_separated_footer />
                     ) : (
                         <>
                             <Text color='prominent' size='xxs'>
@@ -331,11 +325,7 @@ const QuickAddModal = ({ advert }) => {
                             'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
                         })}
                     >
-                        <AddPaymentMethod
-                            formik_ref={formik_ref}
-                            should_show_page_return={false}
-                            should_show_separated_footer
-                        />
+                        <AddPaymentMethod should_show_page_return={false} should_show_separated_footer />
                     </Modal.Body>
                 ) : (
                     <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>

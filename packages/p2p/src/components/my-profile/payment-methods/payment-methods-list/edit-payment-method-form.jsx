@@ -7,10 +7,9 @@ import { usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
 import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const EditPaymentMethodForm = ({ formik_ref }) => {
+const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
     const validateFields = usePaymentMethodValidator();
 
@@ -22,6 +21,10 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const formikRef = node => {
+        if (node) my_profile_store.setFormikRef(node);
+    };
+
     if (!my_profile_store.payment_method_info) {
         return <Loading is_fullscreen={false} />;
     }
@@ -31,7 +34,7 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
             <CancelEditPaymentMethodModal />
             <Formik
                 enableReinitialize
-                innerRef={formik_ref}
+                innerRef={formikRef}
                 initialValues={my_profile_store.initial_values}
                 onSubmit={my_profile_store.updatePaymentMethod}
                 validate={validateFields}
@@ -155,10 +158,6 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
             </Modal>
         </React.Fragment>
     );
-};
-
-EditPaymentMethodForm.propTypes = {
-    formik_ref: PropTypes.shape({ current: PropTypes.any }),
 };
 
 export default observer(EditPaymentMethodForm);

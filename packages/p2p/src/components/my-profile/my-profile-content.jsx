@@ -11,7 +11,6 @@ import CancelAddPaymentMethodModal from './payment-methods/add-payment-method/ca
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
-    const formik_ref = React.useRef();
 
     const generatePageHeaderText = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
@@ -29,7 +28,7 @@ const MyProfileContent = () => {
             <React.Fragment>
                 <CancelAddPaymentMethodModal />
                 <DesktopWrapper>
-                    <PaymentMethods formik_ref={formik_ref} />
+                    <PaymentMethods />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
@@ -40,10 +39,7 @@ const MyProfileContent = () => {
                         page_header_className='buy-sell__modal-header'
                         page_header_text={generatePageHeaderText()}
                         pageHeaderReturnFn={() => {
-                            if (
-                                (formik_ref.current && formik_ref.current.dirty) ||
-                                my_profile_store.selected_payment_method.length > 0
-                            ) {
+                            if (my_profile_store.is_add_payment_method_form_modified) {
                                 my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                 my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
                             } else {
@@ -52,7 +48,7 @@ const MyProfileContent = () => {
                             }
                         }}
                     >
-                        <PaymentMethods formik_ref={formik_ref} />
+                        <PaymentMethods />
                     </MobileFullPageModal>
                 </MobileWrapper>
             </React.Fragment>

@@ -87,7 +87,7 @@ const CFDDxtraderAccountDisplay = ({
         <CFDAccountCard
             key='cfd'
             has_cfd_account_error={has_cfd_account_error}
-            title={localize('CFDs')}
+            title={localize('Deriv X')}
             has_real_account={has_real_account}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_logged_in={is_logged_in}

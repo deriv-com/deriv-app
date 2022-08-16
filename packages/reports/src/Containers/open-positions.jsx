@@ -11,6 +11,7 @@ import {
     DataTable,
     ContractCard,
     usePrevious,
+    PositionsDrawerCard,
 } from '@deriv/components';
 import {
     urlFor,
@@ -31,7 +32,6 @@ import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
-import PositionsDrawerCard from '../Components/Elements/PositionsDrawerCard';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { connect } from 'Stores/connect';
 

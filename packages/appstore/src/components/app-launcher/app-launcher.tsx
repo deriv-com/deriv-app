@@ -31,10 +31,22 @@ const AppLauncher = ({
     button_className,
     ...props
 }: TAppLauncherProps) => {
+    const getHeightWidthOfIcon = () => {
+        return isMobile()
+            ? {
+                  width: 48,
+                  height: 48,
+              }
+            : {
+                  width: 64,
+                  height: 64,
+              };
+    };
+
     return (
         <div className='app-launcher' {...props}>
             <div>
-                <Icon icon={icon_name} width={isMobile() ? 48 : 64} height={isMobile() ? 48 : 64} />
+                <Icon icon={icon_name} width={getHeightWidthOfIcon().width} height={getHeightWidthOfIcon().height} />
             </div>
             <div>
                 <Text type='paragraph-2' bold={!is_app_installed || show_active_balance}>

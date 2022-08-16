@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import '../sass/app/_common/components/new-affiliate-account-modal.scss';
 
 const affiliateAccountOptions = [
-    { icon: 'withdrawal', title: localize('Withdrawals') },
-    { icon: 'transfer', title: localize(`Inter-account transfers`) },
-    { icon: 'statement', title: localize('View statement') },
+    { icon: 'ic-withdrawal', title: localize('Withdrawals') },
+    { icon: 'ic-transfer', title: localize(`Inter-account transfers`) },
+    { icon: 'ic-affiliate-statement', title: localize('View statement') },
 ];
 
 const NewAffiliateAccountModal = ({ is_new_affiliate_account_modal_visible, toggleNewAffiliateAccountModal }) => {
@@ -17,23 +17,26 @@ const NewAffiliateAccountModal = ({ is_new_affiliate_account_modal_visible, togg
             is_open={is_new_affiliate_account_modal_visible}
             toggleModal={toggleNewAffiliateAccountModal}
             width='44rem'
+            has_close_icon
         >
-            <Modal.Body>
+            <div className='new-affiliate-account-modal__body'>
                 <Text as='h2' weight='bold'>
                     {localize('Here’s what you can do with your new Affiliate account')}
                 </Text>
 
-                <div className='new-affiliate-account-modal__body'>
-                    {affiliateAccountOptions.map(({ icon, title }, idx) => (
-                        <div key={idx} className='new-affiliate-account-modal__option'>
-                            <Icon icon={icon} size={48} />
-                            <Text as='p' size='xs' align='center'>
+                <div className='new-affiliate-account-modal__content'>
+                    {affiliateAccountOptions.map(({ icon, title }) => (
+                        <div key={icon} className='new-affiliate-account-modal__option'>
+                            <div className='new-affiliate-account-modal__icon'>
+                                <Icon icon={icon} size={48} />
+                            </div>
+                            <Text as='span' size='xs' align='center'>
                                 {title}
                             </Text>
                         </div>
                     ))}
                 </div>
-            </Modal.Body>
+            </div>
 
             <Modal.Footer className='new-affiliate-account-modal__footer'>
                 <Button

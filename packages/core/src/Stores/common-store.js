@@ -13,6 +13,7 @@ export default class CommonStore extends BaseStore {
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     @observable current_language = currentLanguage;
+    @observable is_language_changing = false;
     @observable allowed_languages = Object.keys(getAllowedLanguages());
     @observable has_error = false;
 
@@ -37,6 +38,8 @@ export default class CommonStore extends BaseStore {
     @observable platform = '';
     @observable selected_contract_type = '';
 
+    @observable changing_language_timer_id = '';
+
     @action.bound
     setSelectedContractType(contract_type) {
         this.selected_contract_type = contract_type;
@@ -58,7 +61,12 @@ export default class CommonStore extends BaseStore {
     @action.bound
     changeCurrentLanguage(new_language) {
         if (this.current_language !== new_language) {
+            if (this.changing_language_timer_id) clearTimeout(this.changing_language_timer_id);
             this.current_language = new_language;
+            this.is_language_changing = true;
+            this.changing_language_timer_id = setTimeout(() => {
+                this.is_language_changing = false;
+            }, 10000);
         }
     }
 
@@ -189,10 +197,14 @@ export default class CommonStore extends BaseStore {
     setServicesError(error) {
         this.services_error = error;
         if (isMobile()) {
-            this.root_store.ui.addToast({
-                content: error.message,
-                type: 'error',
-            });
+            if (error.code === 'CompanyWideLimitExceeded') {
+                this.root_store.ui.toggleServicesErrorModal(true);
+            } else {
+                this.root_store.ui.addToast({
+                    content: error.message,
+                    type: 'error',
+                });
+            }
         } else {
             this.root_store.ui.toggleServicesErrorModal(true);
         }

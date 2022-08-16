@@ -48,7 +48,6 @@
     &__checkbox-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
         grid-gap: 1.6rem;
         padding-bottom: 1.1rem;
 
@@ -56,13 +55,16 @@
             grid-template-columns: 1fr;
         }
     }
-    &__clipboard {
-        &-wrapper {
-            display: flex;
-            align-items: center;
+    &__clipboard-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        padding-right: 1.3rem;
+        height: 2.1rem;
+        @media screen and (max-width: 926px) {
+            padding-left: 0;
         }
-
-        margin-left: 0.8rem;
     }
     &__table {
         width: 100%;
@@ -72,20 +74,43 @@
                 border-bottom: 2px solid var(--general-section-1);
             }
 
+            white-space: nowrap;
             padding: 2.4rem 0;
             text-align: left;
         }
         &-cell {
+            vertical-align: middle;
             &-row {
                 border-bottom: 1px solid var(--general-section-1);
             }
 
-            padding: 2.4rem 0;
+            padding: 1.6rem 0;
 
             &--name {
+                max-width: 15rem;
+                padding-right: 1.3rem;
                 > .dc-text {
                     word-break: break-all;
                 }
+            }
+        }
+        &-scopes-cell-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            max-width: 22rem;
+            margin-right: 1rem;
+            @media screen and (max-width: 926px) {
+                margin-top: 0.4rem;
+            }
+        }
+        &-scope-cell {
+            border: 0.1rem solid $color-grey-5;
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.4rem;
+            &-admin {
+                border: 0.1rem solid $COLOR_GREEN_5;
+                color: $COLOR_GREEN_5;
             }
         }
     }
@@ -93,13 +118,7 @@
         padding: 0 1.4rem 1.6rem;
 
         @include mobile {
-            margin-left: 1.2rem;
-
-            & .dc-timeline {
-                &__flex {
-                    margin-top: 2.4rem;
-                }
-            }
+            margin: 1.2rem;
         }
     }
     &__portal-footer {
@@ -113,7 +132,7 @@
         &-item {
             margin-bottom: 0.8rem;
             display: grid;
-            grid-template-columns: 1.6fr 0.4fr;
+            grid-template-columns: 1.5fr 0.5fr;
 
             &--name {
                 word-break: break-all;
@@ -133,5 +152,53 @@
     &__scrollbars {
         height: 100%;
         width: 100%;
+        flex: 1;
+    }
+    &__visibility-icon {
+        cursor: pointer;
+        height: 100%;
+    }
+    &__delete-icon {
+        margin: 0 1.6rem;
+        @media screen and (max-width: 926px) {
+            margin-top: calc(50% - 3.3rem);
+        }
+    }
+    &__bullet {
+        background-color: var(--text-prominent);
+        border-radius: 100%;
+        margin-right: 0.8rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        flex: none;
+        margin-top: 0.65rem;
+
+        &-wrapper {
+            display: flex;
+            margin-bottom: 1.1rem;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        &-container {
+            margin-top: 1.6rem;
+            margin-left: 1rem;
+        }
+    }
+    &__modal-title {
+        margin-bottom: 2.4rem;
+    }
+    &__modal-footer {
+        padding: 0 2.4rem 2.4rem !important;
+    }
+    &__pass-dot {
+        background-color: var(--text-prominent);
+        border-radius: 100%;
+        width: 0.4rem;
+        height: 0.4rem;
+        &-container {
+            display: flex;
+            gap: 0.4rem;
+        }
     }
 }

@@ -14,6 +14,7 @@ const BuyAdPaymentMethodsList = ({
     should_clear_payment_method_selections = true,
     selected_methods,
     setSelectedMethods,
+    touched,
 }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
@@ -36,6 +37,7 @@ const BuyAdPaymentMethodsList = ({
         setPaymentMethodsList(
             my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_methods]);
 
     const onClickDeletePaymentMethodItem = value => {
@@ -51,6 +53,7 @@ const BuyAdPaymentMethodsList = ({
                     text: my_profile_store.getPaymentMethodDisplayName(value),
                 },
             ]);
+            if (typeof touched === 'function') touched(true);
         }
     };
 
@@ -64,6 +67,7 @@ const BuyAdPaymentMethodsList = ({
                 ...payment_methods_list.filter(payment_method => payment_method.value !== value),
                 selected_edit_method,
             ]);
+            if (typeof touched === 'function') touched(true);
         }
     };
 
@@ -74,6 +78,7 @@ const BuyAdPaymentMethodsList = ({
                 setSelectedMethods([...selected_methods, value]);
                 setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
             }
+            if (typeof touched === 'function') touched(true);
         }
     };
 
@@ -247,6 +252,7 @@ BuyAdPaymentMethodsList.propTypes = {
     selected_methods: PropTypes.array,
     setSelectedMethods: PropTypes.func,
     should_clear_payment_method_selections: PropTypes.bool,
+    touched: PropTypes.func,
 };
 
 export default observer(BuyAdPaymentMethodsList);

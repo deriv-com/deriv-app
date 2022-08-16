@@ -1,7 +1,9 @@
 .on-ramp {
     &__page-header {
         margin-bottom: 1.7rem;
-        @include mobile {
+
+        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+        @media (max-width: 926px) {
             margin: 1.7rem;
         }
     }
@@ -10,6 +12,7 @@
         padding: 1.6rem 1.6rem 0.8rem;
         border-radius: 0.8rem;
         margin-top: 1.6rem;
+        width: 100%;
 
         &-header {
             margin-bottom: 1.6rem;
@@ -25,11 +28,14 @@
         padding: 1.6rem 1.6rem 0.8rem;
         border-radius: 0.8rem;
         display: grid;
+        width: 100%;
         grid-column-gap: 2.4rem;
         grid-template-areas: (
             'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
         );
-        @include mobile {
+
+        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+        @media (max-width: 926px) {
             grid-template-areas: (
                 'logo name name name' 'logo description description description'
                     'logo description description description' 'payment-icons payment-icons payment-icons buy'
@@ -42,7 +48,9 @@
         &-logo {
             align-self: center;
             grid-area: logo;
-            @include mobile {
+
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (max-width: 926px) {
                 align-self: start;
             }
         }
@@ -54,7 +62,9 @@
             grid-area: description;
             width: 390px;
             height: 60px;
-            @include mobile {
+
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (max-width: 926px) {
                 width: auto;
                 height: auto;
             }
@@ -62,8 +72,8 @@
         &-payment-icons {
             position: relative;
             white-space: nowrap;
-            grid-area: payment-icons;
             margin-top: auto;
+            grid-area: payment-icons;
             overflow: hidden;
 
             &-shadow {

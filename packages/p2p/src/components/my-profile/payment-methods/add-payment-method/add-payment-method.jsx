@@ -52,7 +52,7 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
 
 AddPaymentMethod.propTypes = {
     should_show_page_return: PropTypes.bool,
-    should_show_seperated_footer: PropTypes.bool,
+    should_show_separated_footer: PropTypes.bool,
 };
 
 export default observer(AddPaymentMethod);

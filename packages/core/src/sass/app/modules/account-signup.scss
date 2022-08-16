@@ -48,6 +48,11 @@
             background-color: var(--general-main-2);
         }
     }
+    @include mobile {
+        &__password-selection {
+            height: 36.5rem !important;
+        }
+    }
     &__same-citizenship {
         display: flex;
         justify-content: space-between;

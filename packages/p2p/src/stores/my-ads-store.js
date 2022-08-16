@@ -31,6 +31,7 @@ export default class MyAdsStore extends BaseStore {
     @observable is_form_loading = false;
     @observable is_quick_add_error_modal_open = false;
     @observable is_quick_add_modal_open = false;
+    @observable is_quick_add_modal_list_open = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
     @observable is_switch_modal_open = false;
@@ -519,6 +520,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsQuickAddModalOpen(is_quick_add_modal_open) {
         this.is_quick_add_modal_open = is_quick_add_modal_open;
+    }
+
+    @action.bound
+    setIsQuickAddModalListOpen(is_quick_add_modal_list_open) {
+        this.is_quick_add_modal_list_open = is_quick_add_modal_list_open;
     }
 
     @action.bound

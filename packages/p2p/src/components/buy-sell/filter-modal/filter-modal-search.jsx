@@ -2,7 +2,6 @@ import React from 'react';
 import { Field as FormField, Formik, Form } from 'formik';
 import debounce from 'lodash.debounce';
 import { Icon, Input } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -58,7 +57,7 @@ const FilterModalSearch = () => {
                                     name='search'
                                     onFocus={submitForm}
                                     onKeyUp={() => onSearchKeyUp(submitForm)}
-                                    placeholder={isDesktop() ? localize('Search payment method') : localize('Search')}
+                                    placeholder={localize('Search payment method')}
                                     trailing_icon={
                                         search ? (
                                             <Icon

@@ -1,5 +1,6 @@
 .filter-modal-search {
     border-bottom: 1px solid var(--border-normal);
+    padding: 0 1.6rem;
 
     .dc-input {
         border: unset;
@@ -7,7 +8,7 @@
     }
 
     @include mobile {
-        margin: 0.8rem 1.6rem 1rem;
+        padding: 0.8rem 1.6rem;
         min-width: 25rem;
 
         .dc-input {
@@ -34,10 +35,6 @@
                 height: 4rem;
                 padding-right: 3rem;
                 width: unset;
-
-                @include mobile {
-                    padding: 0 2.8rem 0 0.4rem;
-                }
             }
 
             &__leading-icon {
@@ -45,6 +42,10 @@
                 margin-left: 0.8rem;
                 pointer-events: unset;
                 position: unset;
+
+                @include mobile {
+                    margin-left: 0;
+                }
             }
         }
     }

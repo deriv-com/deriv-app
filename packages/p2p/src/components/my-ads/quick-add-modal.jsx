@@ -1,15 +1,26 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Formik, Field } from 'formik';
-import { Autocomplete, Button, Icon, Input, MobileFullPageModal, Modal, Text } from '@deriv/components';
+import {
+    Autocomplete,
+    Button,
+    Icon,
+    Input,
+    MobileFullPageModal,
+    Modal,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
+import FilterModalSearch from '../buy-sell/filter-modal/filter-modal-search';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import QuickAdModalList from './quick-add-modal-list.jsx';
+import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 import './quick-add-modal.scss';
 
 const QuickAddModal = ({ advert }) => {
@@ -92,162 +103,143 @@ const QuickAddModal = ({ advert }) => {
         if (is_buy_advert) {
             return (
                 <MobileFullPageModal
-                    body_className='quick-add-modal--body'
                     height_offset='80px'
                     is_flex
                     is_modal_open={my_ads_store.is_quick_add_modal_open}
                     page_header_text={localize('Add payment method')}
-                    pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
+                    pageHeaderReturnFn={() =>
+                        my_ads_store.is_quick_add_modal_open
+                            ? my_ads_store.setIsQuickAddModalListOpen(false)
+                            : setShouldCloseAllModals(false)
+                    }
                     secondary
                     text={localize('Cancel')}
-                    renderPageFooterChildren={() => (
-                        <>
-                            <Button
-                                has_effect
-                                large
-                                onClick={setShouldCloseAllModals}
-                                secondary
-                                text={localize('Cancel')}
-                            />
-                            <Button
-                                className='quick-add-modal--button'
-                                has_effect
-                                is_disabled={
-                                    selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
-                                }
-                                large
-                                onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
-                                primary
-                                text={localize('Add')}
-                            />
-                        </>
-                    )}
+                    renderPageFooterChildren={() =>
+                        !my_ads_store.is_quick_add_modal_list_open && (
+                            <React.Fragment>
+                                <Button
+                                    has_effect
+                                    large
+                                    onClick={setShouldCloseAllModals}
+                                    secondary
+                                    text={localize('Cancel')}
+                                />
+                                <Button
+                                    className='quick-add-modal--button'
+                                    has_effect
+                                    is_disabled={
+                                        selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
+                                    }
+                                    large
+                                    onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
+                                    primary
+                                    text={localize('Add')}
+                                />
+                            </React.Fragment>
+                        )
+                    }
                 >
-                    <div className='p2p-my-ads__info'>
-                        <Text color='prominent' size='xxs'>
-                            <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
-                        </Text>
-                    </div>
-                    {selected_methods.length > 0 ? (
+                    {my_ads_store.is_quick_add_modal_list_open ? (
                         <React.Fragment>
-                            {selected_methods.map((payment_method, key) => {
-                                const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
-                                const payment_method_icon = method.replace(' ', '');
-
-                                return (
-                                    <Formik key={key} enableReinitialize initialValues={{}}>
-                                        <Field name='payment_method'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-add-modal--input'
-                                                    leading_icon={
-                                                        <Icon
-                                                            icon={
-                                                                payment_method_icon === 'BankTransfer' ||
-                                                                payment_method_icon === 'Other'
-                                                                    ? `IcCashier${payment_method_icon}`
-                                                                    : 'IcCashierEwallet'
-                                                            }
-                                                        />
-                                                    }
-                                                    trailing_icon={
-                                                        <Icon
-                                                            icon='IcDelete'
-                                                            onClick={() => {
-                                                                onClickDeletePaymentMethodItem(payment_method);
-                                                            }}
-                                                        />
-                                                    }
-                                                    type='text'
-                                                    value={method}
-                                                />
-                                            )}
-                                        </Field>
-                                    </Formik>
-                                );
-                            })}
-                            {selected_methods.length < 3 && (
-                                <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                                    {() => (
-                                        <Field name='payment_method'>
-                                            {({ field }) => (
-                                                <div className='p2p-my-ads--border'>
-                                                    <Autocomplete
-                                                        {...field}
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        data-lpignore='true'
-                                                        has_updating_list={false}
-                                                        label={
-                                                            <React.Fragment>
-                                                                <Icon icon='IcAddCircle' size={14} />
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Add' />
-                                                                </Text>
-                                                            </React.Fragment>
-                                                        }
-                                                        list_items={my_profile_store.payment_methods_list}
-                                                        onItemSelection={({ value }) => {
-                                                            onClickPaymentMethodItem(value);
-                                                        }}
-                                                        required
-                                                        trailing_icon={<></>}
-                                                        type='text'
-                                                    />
-                                                </div>
-                                            )}
-                                        </Field>
-                                    )}
-                                </Formik>
-                            )}
+                            <FilterModalSearch />
+                            <div className='quick-add-modal__checkbox-container'>
+                                <ThemedScrollbars>
+                                    <QuickAdModalList
+                                        onClickPaymentMethodItem={onClickPaymentMethodItem}
+                                        selected_methods={selected_methods}
+                                    />
+                                </ThemedScrollbars>
+                            </div>
                         </React.Fragment>
                     ) : (
-                        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                            {() => (
-                                <Field name='payment_method'>
-                                    {({ field }) => (
-                                        <div className='p2p-my-ads--border'>
-                                            <Autocomplete
-                                                {...field}
-                                                autoComplete='off' // prevent chrome autocomplete
-                                                data-lpignore='true'
-                                                has_updating_list={false}
-                                                label={
-                                                    <React.Fragment>
-                                                        <Icon icon='IcAddCircle' size={14} />
-                                                        <Text color='less-prominent' size='xs'>
-                                                            <Localize i18n_default_text='Add' />
-                                                        </Text>
-                                                    </React.Fragment>
-                                                }
-                                                list_items={my_profile_store.payment_methods_list}
-                                                onItemSelection={({ value }) => {
-                                                    onClickPaymentMethodItem(value);
-                                                }}
-                                                required
-                                                trailing_icon={<></>}
-                                                type='text'
-                                            />
+                        <div className='quick-add-modal--body'>
+                            <div className='p2p-my-ads__info'>
+                                <Text color='prominent' size='xxs'>
+                                    <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
+                                </Text>
+                            </div>
+                            {selected_methods.length > 0 ? (
+                                <React.Fragment>
+                                    {selected_methods.map((payment_method, key) => {
+                                        const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
+                                        const payment_method_icon = method.replace(' ', '');
+
+                                        return (
+                                            <Formik key={key} enableReinitialize initialValues={{}}>
+                                                <Field name='payment_method'>
+                                                    {({ field }) => (
+                                                        <Input
+                                                            {...field}
+                                                            className='quick-add-modal--input'
+                                                            leading_icon={
+                                                                <Icon
+                                                                    icon={
+                                                                        payment_method_icon === 'BankTransfer' ||
+                                                                        payment_method_icon === 'Other'
+                                                                            ? `IcCashier${payment_method_icon}`
+                                                                            : 'IcCashierEwallet'
+                                                                    }
+                                                                />
+                                                            }
+                                                            trailing_icon={
+                                                                <Icon
+                                                                    icon='IcDelete'
+                                                                    onClick={() => {
+                                                                        onClickDeletePaymentMethodItem(payment_method);
+                                                                    }}
+                                                                />
+                                                            }
+                                                            type='text'
+                                                            value={method}
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </Formik>
+                                        );
+                                    })}
+                                    {selected_methods.length < 3 && (
+                                        <div
+                                            className='quick-add-modal__add-button'
+                                            onClick={() => my_ads_store.setIsQuickAddModalListOpen(true)}
+                                            role='button'
+                                        >
+                                            <Icon className='quick-add-modal__icon' icon='IcAddOutline' />
+                                            <Text size='xs' color='less-prominent'>
+                                                <Localize i18n_default_text='Add' />
+                                            </Text>
                                         </div>
                                     )}
-                                </Field>
+                                </React.Fragment>
+                            ) : (
+                                <div
+                                    className='quick-add-modal__add-button'
+                                    onClick={() => my_ads_store.setIsQuickAddModalListOpen(true)}
+                                    role='button'
+                                >
+                                    <Icon className='quick-add-modal__icon' icon='IcAddOutline' />
+                                    <Text size='xs' color='less-prominent'>
+                                        <Localize i18n_default_text='Add' />
+                                    </Text>
+                                </div>
                             )}
-                        </Formik>
-                    )}
-                    {selected_methods.length < 3 && (
-                        <div className='quick-add-modal--message'>
-                            <Localize
-                                i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
-                                components={[
-                                    <Text key={0} color='less-prominent' size='xxs' />,
-                                    <Text
-                                        key={1}
-                                        className='link'
-                                        size='xxs'
-                                        onClick={() => onClickPaymentMethodItem('other')}
-                                    />,
-                                ]}
-                            />
+                            {selected_methods.length < 3 && !selected_methods.includes('other') && (
+                                <div className='quick-add-modal--message'>
+                                    <Localize
+                                        i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
+                                        components={[
+                                            <Text key={0} color='less-prominent' size='xxs' />,
+                                            <Text
+                                                key={1}
+                                                className='link'
+                                                size='xxs'
+                                                onClick={() =>
+                                                    onClickPaymentMethodItem({ text: 'Other', value: 'other' })
+                                                }
+                                            />,
+                                        ]}
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
                 </MobileFullPageModal>
@@ -366,7 +358,7 @@ const QuickAddModal = ({ advert }) => {
                             })}
                             {selected_methods.length < 3 && (
                                 <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                                    {() => (
+                                    {({ setFieldValue }) => (
                                         <Field name='payment_method'>
                                             {({ field }) => (
                                                 <div className='p2p-my-ads--border'>
@@ -380,9 +372,21 @@ const QuickAddModal = ({ advert }) => {
                                                         list_items={my_profile_store.payment_methods_list.filter(
                                                             ({ value }) => !selected_methods.includes(value)
                                                         )}
-                                                        not_found_text='Other'
+                                                        not_found_text={
+                                                            selected_methods.includes('other')
+                                                                ? 'No results found'
+                                                                : 'Other'
+                                                        }
+                                                        onBlur={e => {
+                                                            e.preventDefault();
+                                                            setFieldValue('payment_method', '');
+                                                        }}
                                                         onItemSelection={({ value }) => {
-                                                            onClickPaymentMethodItem(value !== '' ? value : 'other');
+                                                            if (selected_methods.includes('other')) {
+                                                                onClickPaymentMethodItem(value);
+                                                            } else {
+                                                                onClickPaymentMethodItem('other');
+                                                            }
                                                         }}
                                                         placeholder={localize('Add')}
                                                         required
@@ -398,7 +402,7 @@ const QuickAddModal = ({ advert }) => {
                         </React.Fragment>
                     ) : (
                         <Formik enableReinitialize innerRef={formik_ref} initialValues={{ payment_method: '' }}>
-                            {() => (
+                            {({ setFieldValue }) => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
                                         <div className='p2p-my-ads--border'>
@@ -410,9 +414,15 @@ const QuickAddModal = ({ advert }) => {
                                                 has_updating_list={false}
                                                 leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                 list_items={my_profile_store.payment_methods_list}
-                                                not_found_text='Other'
+                                                not_found_text={
+                                                    selected_methods.includes('other') ? 'No results found' : 'Other'
+                                                }
+                                                onBlur={e => {
+                                                    e.preventDefault();
+                                                    setFieldValue('payment_method', '');
+                                                }}
                                                 onItemSelection={({ value }) => {
-                                                    onClickPaymentMethodItem(value !== '' ? value : 'other');
+                                                    onClickPaymentMethodItem(value === '' ? 'other' : value);
                                                 }}
                                                 placeholder={localize('Add')}
                                                 required
@@ -425,7 +435,7 @@ const QuickAddModal = ({ advert }) => {
                             )}
                         </Formik>
                     )}
-                    {selected_methods.length < 3 && (
+                    {selected_methods.length < 3 && !selected_methods.includes('other') && (
                         <div className='quick-add-modal--message'>
                             <Localize
                                 i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
@@ -444,7 +454,6 @@ const QuickAddModal = ({ advert }) => {
                 </Modal.Body>
                 <Modal.Footer has_separator>
                     <Button has_effect large onClick={setShouldCloseAllModals} secondary text={localize('Cancel')} />
-
                     <Button
                         has_effect
                         is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0}

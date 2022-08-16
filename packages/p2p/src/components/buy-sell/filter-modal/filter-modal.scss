@@ -1,4 +1,19 @@
 .filter-modal {
+    &__arrow {
+        min-width: 1.8rem;
+        min-height: 1.8rem;
+    }
+
+    &__checkbox-container {
+        height: 36rem;
+
+        .dc-checkbox {
+            @include mobile {
+                padding: 2rem 0.8rem;
+            }
+        }
+    }
+
     &__column {
         display: flex;
         flex-direction: column;
@@ -7,27 +22,16 @@
         }
     }
 
-    &__select {
-        cursor: pointer;
-    }
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-    &__arrow {
-        min-width: 1.8rem;
-        min-height: 1.8rem;
-    }
-
-    &__selected-payment-methods {
-        max-width: 350px;
-        max-height: 45px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-
-        @media (max-width: 450px) {
-            max-width: 300px;
-        }
-        @media (max-width: 400px) {
-            max-width: 250px;
+        &-page-return {
+            @include mobile {
+                margin: 0;
+            }
         }
     }
 
@@ -52,12 +56,27 @@
         }
     }
 
-    &__toggle-label {
-        margin: 0;
+    &__select {
+        cursor: pointer;
     }
 
-    &__checkbox-container {
-        height: 36rem;
+    &__selected-payment-methods {
+        max-width: 350px;
+        max-height: 45px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        @media (max-width: 450px) {
+            max-width: 300px;
+        }
+        @media (max-width: 400px) {
+            max-width: 250px;
+        }
+    }
+
+    &__toggle-label {
+        margin: 0;
     }
 }
 
@@ -79,5 +98,11 @@
     .dc-checkbox {
         min-height: 4.9rem;
         padding: 0 1.6rem;
+    }
+}
+
+.dc-mobile-full-page-modal {
+    &__body {
+        flex-direction: column;
     }
 }

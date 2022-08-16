@@ -1,4 +1,13 @@
 .quick-add-modal {
+    &__add-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border: 1px dashed var(--border-normal);
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
     &--body {
         display: flex;
         flex-direction: column;
@@ -9,12 +18,22 @@
         margin-left: 0.5rem;
     }
 
+    &__checkbox-container {
+        height: 36rem;
+
+        .dc-checkbox {
+            @include mobile {
+                padding: 2rem 0.8rem;
+            }
+        }
+    }
+
     &--page-return {
         height: 0;
     }
 
-    h3.dc-text {
-        padding: 0 2.5rem;
+    &__icon {
+        margin-right: 1rem;
     }
 
     &--input {

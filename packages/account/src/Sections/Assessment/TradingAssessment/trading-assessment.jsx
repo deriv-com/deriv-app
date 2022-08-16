@@ -2,58 +2,8 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-
-// const HandleAssessment = () => {
-//     const [is_form_visible, setIsFormVisible] = React.useState(true);
-//     const [api_initial_load_error, setApiInitialLoadError] = React.useState(null);
-//     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
-//     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
-//     const [initial_form_values, setInitialFormValues] = React.useState({});
-
-//     const showForm = is_visible => {
-//         setIsFormVisible(is_visible);
-//         setIsConfirmationVisible(false);
-//     };
-
-//     const onSubmit = async (values, { setSubmitting, setStatus }) => {
-//         setStatus({ msg: '' });
-//         setIsBtnLoading(true);
-//         const form_payload = {
-//             financial_information: { ...values },
-//         };
-//         const data = await setFinancialAndTradingAssessment(form_payload);
-//         if (data.error) {
-//             setIsBtnLoading(false);
-//             setStatus({ msg: data.error.message });
-//         } else {
-//             WS.authorized.storage.getFinancialAssessment().then(res_data => {
-//                 setInitialFormValues(res_data.get_financial_assessment);
-//                 setIsSubmitSuccess(true);
-//                 setIsBtnLoading(false);
-
-//                 if (isDesktop()) {
-//                     setTimeout(() => setIsSubmitSuccess(false), 10000);
-//                 }
-
-//                 removeNotificationMessage({ key: 'risk' });
-//                 removeNotificationByKey({ key: 'risk' });
-//             });
-//             setSubmitting(false);
-//         }
-//     };
-
-//     const validateFields = values => {
-//         setIsSubmitSuccess(false);
-//         const errors = {};
-//         Object.keys(values).forEach(field => {
-//             if (!values[field]) {
-//                 errors[field] = localize('This field is required');
-//             }
-//         });
-//         return errors;
-//     };
-
-// }
+import { trading_assessment_questions } from '../../../Configs/trading-assessment-config';
+import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 
 const TradingAssessment = () => {
     return (
@@ -63,6 +13,76 @@ const TradingAssessment = () => {
                     title={localize('Trading Experience')}
                     subtitle={`(${localize('All fields are required')})`}
                 />
+                <fieldset>
+                    <DesktopWrapper>
+                        {trading_assessment_questions.map(e => {
+                            if (e.field_type === 'radio') {
+                                return (
+                                    <fieldset>
+                                        <DesktopWrapper>
+                                            <Text as='h1' color='prominent' weight='bold'>
+                                                {e.question_text}
+                                            </Text>
+                                            <Dropdown
+                                                is_align_text_left
+                                                name={e?.question_text}
+                                                placeholder='Select One'
+                                                list={e?.answer_options}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <Text as='h1' color='prominent' weight='bold' size='xs'>
+                                                {e?.question_text}
+                                            </Text>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                label={e?.answer_options[0].text}
+                                                name={e?.question_text}
+                                                list_items={e?.answer_options}
+                                                hide_placeholder={true}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                );
+                                // eslint-disable-next-line no-else-return
+                            } else {
+                                return (
+                                    <React.Fragment>
+                                        {e.questions.map((item, index) => {
+                                            return (
+                                                <fieldset key={index}>
+                                                    <DesktopWrapper>
+                                                        <Text as='h1' color='prominent' weight='bold'>
+                                                            {item.question_text}
+                                                        </Text>
+                                                        <Dropdown
+                                                            is_align_text_left
+                                                            name={item?.question_text}
+                                                            placeholder='Select One'
+                                                            list={item?.answer_options}
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <Text as='h1' color='prominent' weight='bold' size='xs'>
+                                                            {item?.question_text}
+                                                        </Text>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            label={item?.answer_options[0].text}
+                                                            name={item?.question_text}
+                                                            list_items={item?.answer_options}
+                                                            hide_placeholder={true}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                            );
+                                        })}
+                                    </React.Fragment>
+                                );
+                            }
+                        })}
+                    </DesktopWrapper>
+                </fieldset>
             </FormBody>
         </form>
     );

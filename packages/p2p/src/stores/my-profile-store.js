@@ -438,6 +438,7 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     validatePaymentMethodFields(values) {
         const errors = {};
+        const no_symbols_regex = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/;
 
         Object.keys(values).forEach(key => {
             const value = values[key];
@@ -446,7 +447,7 @@ export default class MyProfileStore extends BaseStore {
 
             if (required && !value) {
                 errors[key] = localize('This field is required.');
-            } else if (!textValidator(value)) {
+            } else if (!no_symbols_regex.test(value)) {
                 errors[key] = localize(
                     "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
                     {

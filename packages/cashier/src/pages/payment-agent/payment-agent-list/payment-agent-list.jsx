@@ -33,6 +33,13 @@ const PaymentAgentList = ({
     }, [onMount]);
 
     React.useEffect(() => {
+        if (payment_agent_active_tab_index && !verification_code) {
+            sendVerificationEmail();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
         if (typeof setSideNotes === 'function' && !is_loading) {
             const side_notes = [];
 

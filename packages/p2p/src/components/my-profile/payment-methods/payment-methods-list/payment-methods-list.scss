@@ -14,6 +14,11 @@
             bottom: 0;
             position: fixed;
         }
+
+        &-wrapper {
+            display: flex;
+            word-break: break-all;
+        }
     }
     &__button {
         margin: 0 0 2.4rem;

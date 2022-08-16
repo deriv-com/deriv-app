@@ -28,7 +28,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
     dxtrade: {
         synthetic: 'IcDxtradeSyntheticPlatform',
         financial: 'IcDxtradeFinancialPlatform',
-        cfd: 'IcMt5CfdPlatform',
+        cfd: 'IcDxtradeDerivx',
     },
 };
 

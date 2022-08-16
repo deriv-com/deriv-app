@@ -3,7 +3,9 @@
     "compilerOptions": {
         "outDir": "./lib",
         "rootDir": "./src",
-        "baseUrl": "./"
+        "paths": {
+            "@deriv/*": ["../*/src"]
+        }
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx"]
 }

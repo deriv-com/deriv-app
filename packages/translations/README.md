@@ -1,11 +1,14 @@
 # `@deriv/translations`
 
->
-
--   Extract new string translations to Crowdin
+-   Extract new string translations to Crowdin.
 -   Staging/dev branch is the source of truth for strings that should be translated.
--   React i18next configuration and translation components
-    >
+-   React i18next configuration and translation components.
+
+<br />
+
+Push and pull Crowdin translations actions will automatically extract strings from the Deriv.app repo and upload them to Crowdin. It will also check whether Crowdin has new translations available, and if so, it will automatically download these translations and create a PR to Deriv.app's `master` branch to merge them in. For more information you can check [here](https://github.com/binary-com/deriv-app/blob/master/.github/workflows/push_and_pull_crowdin_translations.yml)
+
+<br />
 
 **In this document**
 

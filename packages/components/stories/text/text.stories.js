@@ -17,7 +17,6 @@ stories.add(
         <Theme is_dark={boolean('dark theme', false)}>
             <div className='text-component-container'>
                 <Text
-                    size='s'
                     align='right'
                     weight={select('weight', ['lighter', 'normal', 'bold', 'bolder'], 'bold')}
                     color={select(

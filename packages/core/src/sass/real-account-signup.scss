@@ -44,3 +44,121 @@
         }
     }
 }
+.poi-form-on-signup {
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+
+        @include mobile {
+            display: unset;
+            position: relative;
+        }
+
+        .proof-of-identity {
+            &:is(span) {
+                width: unset;
+                height: unset;
+            }
+            &__container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 45%;
+                justify-content: unset;
+
+                @include mobile {
+                    width: 100%;
+                    padding: 0 1.2rem;
+                    overflow-y: unset;
+                    justify-content: unset;
+                }
+
+                .icon {
+                    width: 12.8rem;
+                    height: 12.8rem;
+                    margin: 1.6rem 0 2.4rem;
+                }
+                .dc-input__bottom-label {
+                    margin: unset;
+                }
+                .btm-spacer {
+                    margin-bottom: 1.6rem;
+                }
+                .spacer {
+                    margin: 1.6rem 0;
+                }
+            }
+
+            &__inner-container {
+                display: unset;
+                flex-direction: unset;
+                justify-content: unset;
+                align-items: unset;
+                width: 100%;
+            }
+            &__image {
+                width: 100%;
+                max-width: unset;
+                border-radius: unset;
+                object-fit: unset;
+
+                &-container {
+                    width: unset;
+                    height: unset;
+                    padding: unset;
+                    border-radius: unset;
+                    background-color: unset;
+                }
+            }
+            &__fieldset {
+                width: 100%;
+                margin-bottom: 2rem;
+
+                @include mobile {
+                    margin: 0 0 1.8rem;
+                }
+
+                &-container {
+                    display: unset;
+                    flex-direction: unset;
+                    justify-content: unset;
+                    align-items: unset;
+                }
+                &-input {
+                    width: unset;
+                    margin-bottom: 1rem;
+                }
+            }
+            &__sample-container {
+                margin-top: 2.4rem;
+                margin-left: unset;
+                width: unset;
+            }
+
+            &__submit-button {
+                margin-left: 0.8rem;
+                @include mobile {
+                    margin-right: unset;
+                }
+            }
+        }
+    }
+    & .details-form {
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 8.2rem;
+        height: 100%;
+        position: relative;
+
+        @include mobile {
+            max-height: calc(100% - 5rem);
+        }
+    }
+    @include mobile {
+        overflow: hidden;
+    }
+}

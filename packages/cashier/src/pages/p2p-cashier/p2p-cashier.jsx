@@ -13,6 +13,7 @@ const P2PCashier = ({
     addNotificationMessage,
     currency,
     current_focus,
+    filterNotificationMessages,
     history,
     is_dark_mode_on,
     is_logging_in,
@@ -83,6 +84,7 @@ const P2PCashier = ({
             addNotificationMessage={addNotificationMessage}
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
             balance={balance}
+            filterNotificationMessages={filterNotificationMessages}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}
@@ -110,6 +112,7 @@ P2PCashier.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    filterNotificationMessages: PropTypes.func,
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_logging_in: PropTypes.bool,
@@ -130,6 +133,7 @@ export default withRouter(
         addNotificationMessage: notifications.addNotificationMessage,
         balance: client.balance,
         currency: client.currency,
+        filterNotificationMessages: notifications.filterNotificationMessages,
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
         is_dark_mode_on: ui.is_dark_mode_on,

@@ -2,6 +2,7 @@ import { cloneObject } from '@deriv/shared';
 import { action, computed, observable, reaction } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
+import { order_list } from 'Constants/order-list';
 
 export default class OrderStore {
     constructor(root_store) {
@@ -150,17 +151,21 @@ export default class OrderStore {
     }
 
     @action.bound
-    onOrdersUpdate() {
+    async onOrdersUpdate() {
         if (this.order_id) {
             // If orders was updated, find current viewed order (if any)
             // and trigger a re-render (in case status was updated).
-            const order = this.orders.find(o => o.id === this.order_id);
 
-            if (order) {
-                this.setQueryDetails(order);
-            } else {
-                this.root_store.general_store.redirectTo('orders');
-            }
+            await requestWS({ p2p_order_info: 1, id: this.order_id }).then(response => {
+                if (!response?.error) {
+                    const { p2p_order_info } = response;
+                    if (p2p_order_info) {
+                        this.setQueryDetails(p2p_order_info);
+                    } else {
+                        this.root_store.general_store.redirectTo('orders');
+                    }
+                }
+            });
         }
     }
 
@@ -258,6 +263,11 @@ export default class OrderStore {
             general_store.props.server_time
         );
         this.setOrderId(order_information.id); // Sets the id in URL
+        if (order_information.is_active_order) {
+            general_store.setOrderTableType(order_list.ACTIVE);
+        } else {
+            general_store.setOrderTableType(order_list.INACTIVE);
+        }
         if (order_information?.payment_method_details) {
             this.setOrderPaymentMethodDetails(Object.values(order_information?.payment_method_details));
         }

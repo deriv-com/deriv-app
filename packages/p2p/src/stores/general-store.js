@@ -209,6 +209,7 @@ export default class GeneralStore extends BaseStore {
                     values={{ name: advertiser_name }}
                 />
             ),
+            platform: 'P2P',
             type: 'p2p_completed_order',
         });
     }
@@ -332,6 +333,7 @@ export default class GeneralStore extends BaseStore {
         }
 
         this.props.refreshNotifications();
+        this.props.filterNotificationMessages();
     }
 
     @action.bound

@@ -18,7 +18,6 @@ const App = props => {
     React.useEffect(() => {
         general_store.setAppProps(props);
         general_store.setWebsocketInit(websocket_api);
-        order_store.setOrderId(order_id);
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {
@@ -54,6 +53,7 @@ const App = props => {
     React.useEffect(() => {
         if (order_id) {
             general_store.redirectTo('orders');
+            order_store.setOrderId(order_id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);

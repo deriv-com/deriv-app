@@ -126,7 +126,7 @@ const JurisdictionCard = ({
         <Icon icon='IcCheckmark' className={`${card_classname}__bullet-wrapper--checkmark`} color={'green'} size={18} />
     );
 
-    const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
+    const one_or_two_cards = number_of_cards === 1 || number_of_cards === 2;
 
     const getAccountTitle = () => {
         switch (account_type) {
@@ -173,7 +173,7 @@ const JurisdictionCard = ({
                 if (!is_fully_authenticated)
                     return (
                         <div className={`${card_classname}__footer`}>
-                            <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
+                            <Text size={one_or_two_cards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
                                 <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                             </Text>
                         </div>
@@ -295,7 +295,7 @@ const JurisdictionCard = ({
                     [`${card_classname}--selected`]: jurisdiction_selected_shortcode === type_of_card,
                 })}
                 onClick={disabled ? () => undefined : () => cardSelection(`${type_of_card}`)}
-                style={OneOrTwoCards ? { width: '32em' } : { width: '27.6em' }}
+                style={one_or_two_cards ? { width: '32em' } : { width: '27.6em' }}
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
                     <div className={classNames(`${card_classname}__over-header`)}>

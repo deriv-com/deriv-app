@@ -41,18 +41,18 @@ const OrderRow = ({ style, row: order }) => {
 
     const {
         account_currency,
-        advertiser_details,
         amount_display,
-        client_details,
         has_review_details,
         id,
         is_buy_order_for_user,
         is_completed_order,
         is_order_reviewable,
+        is_user_rated_previously,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
+        previous_recommendation,
         price_display,
         rating,
         should_highlight_alert,
@@ -107,9 +107,7 @@ const OrderRow = ({ style, row: order }) => {
             <RatingModal
                 is_buy_order_for_user={is_buy_order_for_user}
                 is_rating_modal_open={should_show_rating_modal}
-                is_user_rated_previously={
-                    is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
-                }
+                is_user_rated_previously={is_user_rated_previously}
                 onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                 onClickDone={() => {
                     order_store.setOrderRating(id);
@@ -125,9 +123,7 @@ const OrderRow = ({ style, row: order }) => {
                     should_show_order_details.current = true;
                 }}
                 onClickStar={order_store.handleRating}
-                previous_recommendation={
-                    is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
-                }
+                previous_recommendation={previous_recommendation}
                 rating_value={order_store.rating_value}
             />
             <div onClick={onRowClick}>

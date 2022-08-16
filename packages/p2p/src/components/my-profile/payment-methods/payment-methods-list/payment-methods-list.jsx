@@ -145,18 +145,20 @@ const PaymentMethodsList = () => {
                 is_open={my_profile_store.is_confirm_delete_modal_open}
                 small
                 has_close_icon={false}
-                title={localize('Delete {{payment_method_name}}?', {
-                    payment_method_name:
-                        my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value ||
-                        my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
-                        my_profile_store?.payment_method_to_delete?.fields?.account?.value,
-                })}
                 onMount={() => general_store.setIsModalOpen(true)}
                 onUnmount={() => general_store.setIsModalOpen(false)}
             >
-                <Modal.Body>
+                <Modal.Body className='payment-methods-list__modal-wrapper'>
                     <Text as='p' size='xs' color='prominent'>
-                        <Localize i18n_default_text='Are you sure you want to remove this payment method?' />
+                        <Localize
+                            i18n_default_text='Delete {{payment_method_name}}?'
+                            values={{
+                                payment_method_name:
+                                    my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value ||
+                                    my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
+                                    my_profile_store?.payment_method_to_delete?.fields?.account?.value,
+                            }}
+                        />
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>

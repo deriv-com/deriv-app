@@ -2,7 +2,6 @@ const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { transformContentUrlBase } = require('./helpers');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
-
 const gitRevisionPlugin = new GitRevisionPlugin();
 
 const copyConfig = base => {
@@ -136,64 +135,27 @@ const copyConfig = base => {
 
 const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
-    exclude: [/\**/],
-    runtimeCaching: [
-        {
-            urlPattern: /public\/(images|sprites)\/(?!.*favicons).*$/,
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'assets',
-                expiration: {
-                    maxAgeSeconds: 60 * 60 * 24,
-                },
-            },
-        },
-        {
-            urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
-            },
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'core-js-files',
-                expiration: {
-                    maxAgeSeconds: 60 * 60 * 24,
-                },
-            },
-        },
-        {
-            urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/smartcharts\//);
-            },
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'smartchart-files',
-                expiration: {
-                    maxAgeSeconds: 60 * 60 * 24,
-                },
-            },
-        },
-        {
-            urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/css\//);
-            },
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'core-css-files',
-                expiration: {
-                    maxAgeSeconds: 60 * 60 * 24,
-                },
-            },
-        },
-        {
-            urlPattern: /(account|appstore|bot|cashier|cfd|trader|reports)\//,
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'packages-files',
-                expiration: {
-                    maxAgeSeconds: 60 * 60 * 24,
-                },
-            },
-        },
+    exclude: [
+        /CNAME$/,
+        /index\.html$/,
+        /404\.html$/,
+        /^localstorage-sync\.html$/,
+        /\.map$/,
+        /sitemap\.xml$/,
+        /robots\.txt$/,
+        /manifest\.json$/,
+        /^public\/images\/favicons\//,
+        /^favicon\.ico$/,
+        /^apple-app-site-association/,
+        /^assetlinks.json/,
+        /^.well-known\//,
+        /^account\//,
+        /^js\/smartcharts\//,
+        /^bot\//,
+        /^media\//,
+        /^trader\//,
+        /^cashier\//,
+        /^js\/core\.[a-z_]*-json\./,
     ],
     skipWaiting: true,
     clientsClaim: true,

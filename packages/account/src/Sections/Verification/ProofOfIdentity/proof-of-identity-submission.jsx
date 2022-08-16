@@ -11,6 +11,7 @@ import { identity_status_codes, submission_status_code, service_code } from './p
 
 const POISubmission = ({
     allow_poi_resubmission,
+    has_attempted_idv,
     has_require_submission,
     height,
     identity_last_attempt,
@@ -112,9 +113,11 @@ const POISubmission = ({
 
     switch (submission_status) {
         case submission_status_code.selecting: {
+            const show_helper_msg = has_attempted_idv && Number(idv.submissions_left) > 0;
             return (
                 <CountrySelector
                     handleSelectionNext={handleSelectionNext}
+                    show_helper_msg={show_helper_msg}
                     is_from_external={is_from_external}
                     residence_list={residence_list}
                     selected_country={selected_country}

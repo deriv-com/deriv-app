@@ -169,14 +169,18 @@ const JurisdictionModal = ({
             type: account_type.type,
         };
 
-        if (is_eu && jurisdiction_selected_shortcode === 'maltainvest') {
+        if (is_eu) {
             if (poi_poa_verified) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
-            openPasswordModal(type_of_account);
+            if (account_type.type === 'financial' && poi_poa_verified && !has_submitted_personal_details) {
+                toggleCFDPersonalDetailsModal();
+            } else {
+                openPasswordModal(type_of_account);
+            }
         } else if (jurisdiction_selected_shortcode === 'vanuatu') {
             if (need_poi_for_vanuatu) {
                 toggleCFDVerificationModal();

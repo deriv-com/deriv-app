@@ -196,7 +196,7 @@ describe('<CFDPOA />', () => {
         expect(submit_btn).toBeEnabled();
     });
 
-    it('should render the fileuploader mock components', async () => {
+    it('should render the fileuploader mock component', async () => {
         render(<CFDPOA {...props} />);
         expect(await screen.findByText(/Address information/i)).toBeInTheDocument();
         expect(screen.getByText(/FileUploaderContainer/i)).toBeInTheDocument();

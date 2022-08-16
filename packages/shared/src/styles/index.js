@@ -6,7 +6,7 @@ const resources = [
     'fonts.scss',
     'inline-icons.scss',
     'devices.scss',
-    'responsive.module.scss',
+    'responsive.scss',
 ];
 
 module.exports = resources.map(file => path.resolve(__dirname, file));

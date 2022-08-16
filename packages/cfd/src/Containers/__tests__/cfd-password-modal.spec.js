@@ -97,7 +97,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
     });
 
-    it('should render password form with Try later button', async () => {
+    it('should render password form with Try later button and forget password button', async () => {
         const props = {
             ...mock_props,
             is_cfd_password_modal_enabled: true,
@@ -118,8 +118,9 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByRole('button', { name: /forgot password?/i })).toBeInTheDocument();
     });
 
-    it('should close modal when Cancel button is clicked', async () => {
+    it('should close modal when Forget Password button is clicked', async () => {
         const mockDisableCFDPasswordModalFn = jest.fn();
+        const mockSetMt5Error = jest.fn();
         const props = {
             ...mock_props,
             is_cfd_password_modal_enabled: true,
@@ -129,8 +130,8 @@ describe('<CFDPasswordModal/>', () => {
             platform: 'mt5',
             error_type: 'PasswordReset',
             setCFDSuccessDialog: mockFn,
-            setMt5Error: mockDisableCFDPasswordModalFn,
-            disableCFDPasswordModal: mockFn,
+            setMt5Error: mockSetMt5Error,
+            disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         };
 
         render(
@@ -144,7 +145,7 @@ describe('<CFDPasswordModal/>', () => {
         await waitFor(() => {
             expect(mockFn).toHaveBeenCalledWith(false);
             expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();
-            expect(mockFn).toHaveBeenCalledWith(false);
+            expect(mockSetMt5Error).toHaveBeenCalledWith(false);
         });
     });
 
@@ -244,11 +245,14 @@ describe('<CFDPasswordModal/>', () => {
         );
         const ele_password_input = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_input, { target: { value: user_input } });
-        fireEvent.focusOut(ele_password_input);
+        await waitFor(() => {
+            fireEvent.focusOut(ele_password_input);
+        });
 
         await waitFor(() => {
             expect(validPassword).toHaveBeenCalled();
         });
+        expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
     });
 
     it('should show password dialog asking user to provide POI', async () => {
@@ -277,6 +281,7 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should close the dialog when you click on Submit proof', async () => {
         const mockDisableCFDPasswordModalFn = jest.fn();
+        const mockSetMt5Error = jest.fn();
         const props = {
             ...mock_props,
             is_cfd_password_modal_enabled: true,
@@ -288,8 +293,8 @@ describe('<CFDPasswordModal/>', () => {
             is_eu: true,
             is_fully_authenticated: false,
             setCFDSuccessDialog: mockFn,
-            setMt5Error: mockDisableCFDPasswordModalFn,
-            disableCFDPasswordModal: mockFn,
+            setMt5Error: mockSetMt5Error,
+            disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         };
 
         render(
@@ -303,7 +308,7 @@ describe('<CFDPasswordModal/>', () => {
         await waitFor(() => {
             expect(mockFn).toHaveBeenCalledWith(false);
             expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();
-            expect(mockFn).toHaveBeenCalledWith(false);
+            expect(mockSetMt5Error).toHaveBeenCalledWith(false);
         });
     });
 

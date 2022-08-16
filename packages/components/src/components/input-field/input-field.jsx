@@ -132,7 +132,7 @@ const InputField = ({
         if (max_is_disabled) return;
         let increment_value;
 
-        const current_value = local_value || value;
+        const current_value = +(local_value || value);
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
         const is_crypto = !!currency && isCryptocurrency(currency);

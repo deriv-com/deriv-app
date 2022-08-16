@@ -119,6 +119,12 @@ MobileFullPageModal.propTypes = {
     renderPageHeaderText: PropTypes.func,
     should_header_stick_body: PropTypes.bool,
     should_wrap_body: PropTypes.bool,
+    body_className: PropTypes.string,
+    is_popup: PropTypes.bool,
+    page_footer_parent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf, PropTypes.node]),
+    renderPageHeader: PropTypes.func,
+    page_footer_parent_className: PropTypes.string,
 };
 
 export default MobileFullPageModal;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { getFormattedText } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
-import { roundOffDecimal } from 'Utils/format-value.js';
+import { roundOffDecimal } from 'Utils/format-value';
 import { useStores } from 'Stores';
 
 const BuySellFormReceiveAmount = () => {

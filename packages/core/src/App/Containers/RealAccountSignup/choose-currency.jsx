@@ -162,14 +162,18 @@ const ChooseCurrency = ({
 
 ChooseCurrency.propTypes = {
     account_list: PropTypes.array,
+    all_payment_agent_list: PropTypes.array,
     available_crypto_currencies: PropTypes.array,
     closeRealAccountSignup: PropTypes.func,
     continueRouteAfterChooseCrypto: PropTypes.func,
     currency_title: PropTypes.string,
+    deposit_target: PropTypes.string,
     has_fiat: PropTypes.bool,
     legal_allowed_currencies: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
+    setShouldShowAllAvailableCurrencies: PropTypes.func,
     setShouldShowCancel: PropTypes.func,
+    should_show_all_available_currencies: PropTypes.bool,
     switchAccount: PropTypes.func,
 };
 

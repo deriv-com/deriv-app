@@ -66,9 +66,6 @@ const CreateAdForm = () => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
-        my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
-            my_ads_store.setShouldShowAddPaymentMethodModal(false);
-        });
 
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
@@ -370,16 +367,13 @@ const CreateAdForm = () => {
             </Formik>
             <CreateAdErrorModal />
             <CancelAddPaymentMethodModal
+                closeAllModalsOnCancel
                 onCancel={() => {
+                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
                     my_ads_store.setShouldShowAddPaymentMethod(false);
                 }}
-                onGoBack={() => {
-                    if (isMobile()) {
-                        my_ads_store.setShouldShowAddPaymentMethodModal(true);
-                    } else {
-                        setTimeout(() => my_ads_store.setShouldShowAddPaymentMethodModal(true), 250);
-                    }
-                }}
+                onGoBack={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
+                onCancelAddPaymentMethodForm={my_ads_store.setShouldShowAddPaymentMethodModal}
             />
             <CreateAdAddPaymentMethodModal />
             <Modal

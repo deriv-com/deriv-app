@@ -46,6 +46,8 @@ export default class MyProfileStore extends BaseStore {
     @observable should_show_add_payment_method_form = false;
     @observable should_show_edit_payment_method_form = false;
 
+    MODAL_TRANSITION_DURATION = 250;
+
     @computed
     get advertiser_has_payment_methods() {
         return !!Object.keys(this.advertiser_payment_methods).length;
@@ -389,6 +391,18 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    @action.bound
+    hideCancelAddPaymentMethodModal(close_all_modals_on_cancel) {
+        if (!close_all_modals_on_cancel) {
+            if (isMobile()) {
+                this.on_cancel_add_payment_method_form_handler(true);
+            } else {
+                setTimeout(() => this.on_cancel_add_payment_method_form_handler(true), this.MODAL_TRANSITION_DURATION);
+            }
+        }
+        this.setIsCancelAddPaymentMethodModalOpen(false);
+    }
+
     /**
      * Save the current form state (such as selected payment method) and field values if the form has already been initialized
      */
@@ -411,8 +425,8 @@ export default class MyProfileStore extends BaseStore {
             this.setIsCancelAddPaymentMethodModalOpen(true);
         } else {
             this.saveFormState();
-            setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), 250);
-            this.on_cancel_add_payment_method_form_handler();
+            setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), this.MODAL_TRANSITION_DURATION);
+            this.on_cancel_add_payment_method_form_handler(false);
         }
     }
 

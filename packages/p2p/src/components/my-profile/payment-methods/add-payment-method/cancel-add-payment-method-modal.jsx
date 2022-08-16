@@ -6,8 +6,27 @@ import { Localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 import PropTypes from 'prop-types';
 
-const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} }) => {
+const CancelAddPaymentMethodModal = ({
+    closeAllModalsOnCancel = false,
+    onCancel,
+    onGoBack,
+    onCancelAddPaymentMethodForm,
+}) => {
     const { my_profile_store } = useStores();
+
+    const transitionModal = handler => {
+        if (isMobile()) {
+            handler?.();
+        } else {
+            setTimeout(handler, my_profile_store.MODAL_TRANSITION_DURATION);
+        }
+    };
+
+    React.useEffect(() => {
+        my_profile_store.setOnCancelAddPaymentMethodFormHandler(onCancelAddPaymentMethodForm);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Modal
@@ -29,13 +48,9 @@ const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} 
                 <Button
                     large
                     onClick={() => {
-                        if (isMobile()) {
-                            onCancel();
-                        } else {
-                            setTimeout(onCancel, 250);
-                        }
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        transitionModal(onCancel);
                         my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                        my_profile_store.hideCancelAddPaymentMethodModal(closeAllModalsOnCancel);
                         my_profile_store.clearFormState();
                     }}
                     secondary
@@ -45,9 +60,9 @@ const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} 
                 <Button
                     large
                     onClick={() => {
-                        onGoBack();
+                        transitionModal(onGoBack);
                         my_profile_store.setShouldShowAddPaymentMethodForm(true);
-                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        my_profile_store.hideCancelAddPaymentMethodModal();
                     }}
                     primary
                 >
@@ -59,7 +74,9 @@ const CancelAddPaymentMethodModal = ({ onCancel = () => {}, onGoBack = () => {} 
 };
 
 CancelAddPaymentMethodModal.propTypes = {
+    closeAllModalsOnCancel: PropTypes.bool,
     onCancel: PropTypes.func,
+    onCancelAddPaymentMethodForm: PropTypes.func.isRequired,
     onGoBack: PropTypes.func,
 };
 

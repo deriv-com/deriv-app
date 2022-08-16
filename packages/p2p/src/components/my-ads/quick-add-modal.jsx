@@ -78,23 +78,17 @@ const QuickAddModal = ({ advert }) => {
         setSelectedMethods([]);
     };
 
-    React.useEffect(() => {
-        my_profile_store.setOnCancelAddPaymentMethodFormHandler(() => {
-            my_ads_store.setIsQuickAddModalOpen(false);
-        });
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     if (isMobile()) {
         if (is_buy_advert) {
             return (
                 <React.Fragment>
                     <CancelAddPaymentMethodModal
+                        closeAllModalsOnCancel
                         onCancel={() => {
                             my_ads_store.setIsQuickAddModalOpen(false);
                             clearSelectedPaymentMethods();
                         }}
+                        onCancelAddPaymentMethodForm={my_ads_store.setIsQuickAddModalOpen}
                     />
 
                     <MobileFullPageModal
@@ -153,11 +147,10 @@ const QuickAddModal = ({ advert }) => {
                         my_ads_store.setIsQuickAddModalOpen(true);
                     }}
                     onGoBack={() => {
-                        setTimeout(() => {
-                            my_ads_store.setIsQuickAddModalOpen(true);
-                            my_ads_store.shouldShowAddPaymentMethod(true);
-                        }, 250);
+                        my_ads_store.setIsQuickAddModalOpen(true);
+                        my_ads_store.setShouldShowAddPaymentMethod(true);
                     }}
+                    onCancelAddPaymentMethodForm={my_ads_store.setIsQuickAddModalOpen}
                 />
                 <MobileFullPageModal
                     body_className='quick-add-modal--body'
@@ -251,10 +244,10 @@ const QuickAddModal = ({ advert }) => {
         return (
             <React.Fragment>
                 <CancelAddPaymentMethodModal
+                    closeAllModalsOnCancel
                     onCancel={clearSelectedPaymentMethods}
-                    onGoBack={() => {
-                        setTimeout(() => my_ads_store.setIsQuickAddModalOpen(true), 250);
-                    }}
+                    onGoBack={() => my_ads_store.setIsQuickAddModalOpen(true)}
+                    onCancelAddPaymentMethodForm={my_ads_store.setIsQuickAddModalOpen}
                 />
                 <Modal
                     className='p2p-my-ads__modal-error quick-add-modal--pointer-events'
@@ -304,11 +297,10 @@ const QuickAddModal = ({ advert }) => {
                     my_ads_store.setIsQuickAddModalOpen(true);
                 }}
                 onGoBack={() => {
-                    setTimeout(() => {
-                        my_ads_store.setIsQuickAddModalOpen(true);
-                        my_ads_store.shouldShowAddPaymentMethod(true);
-                    }, 250);
+                    my_ads_store.setIsQuickAddModalOpen(true);
+                    my_ads_store.shouldShowAddPaymentMethod(true);
                 }}
+                onCancelAddPaymentMethodForm={my_ads_store.setIsQuickAddModalOpen}
             />
             <Modal
                 className='p2p-my-ads__modal-error quick-add-modal--pointer-events'

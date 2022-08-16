@@ -33,7 +33,7 @@
     }
 
     &--pointer-events {
-        & .dc-modal-header__close .dc-icon {
+        .dc-modal-header__close .dc-icon {
             pointer-events: none;
         }
     }

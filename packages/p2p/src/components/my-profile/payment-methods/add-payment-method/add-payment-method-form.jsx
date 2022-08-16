@@ -28,9 +28,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const validateFields = usePaymentMethodValidator();
 
     const formikRef = node => {
-        if (node !== null) {
-            my_profile_store.setFormikRef(node);
-        }
+        if (node) my_profile_store.setFormikRef(node);
     };
 
     React.useEffect(() => {

@@ -61,16 +61,9 @@ const BuySellTable = ({ onScroll }) => {
         return (
             <>
                 <CancelAddPaymentMethodModal
-                    onCancel={() => {
-                        buy_sell_store.setShouldShowPopup(true);
-                    }}
-                    onGoBack={() => {
-                        if (isDesktop()) {
-                            setTimeout(() => buy_sell_store.setShouldShowPopup(true), 230);
-                        } else {
-                            buy_sell_store.setShouldShowPopup(true);
-                        }
-                    }}
+                    onCancel={() => buy_sell_store.setShouldShowPopup(true)}
+                    onGoBack={() => buy_sell_store.setShouldShowPopup(true)}
+                    onCancelAddPaymentMethodForm={buy_sell_store.setShouldShowPopup}
                 />
                 <Table className='buy-sell__table'>
                     <Modal

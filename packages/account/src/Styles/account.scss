@@ -291,6 +291,18 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        &__question {
+            position: relative;
+            max-width: 64rem;
+            margin-top: 0.9rem;
+            margin-bottom: 2rem;
+            &--text {
+                margin-bottom: 1.6rem;
+                @include mobile {
+                    margin-bottom: 2.4rem;
+                }
+            }
+        }
         &__fieldset {
             position: relative;
             max-width: 400px;

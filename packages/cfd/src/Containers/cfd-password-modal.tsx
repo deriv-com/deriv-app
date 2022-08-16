@@ -193,22 +193,22 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         if (type === 'synthetic') {
-            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} data_testid='IcDxtradeSyntheticPlatform' />;
+            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
         } else if (type === 'financial') {
-            return <Icon icon='IcDxtradeFinancialPlatform' size={128} data_testid='IcDxtradeFinancialPlatform' />;
+            return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
         }
     }
 
     switch (type) {
         case 'synthetic':
-            return <Icon icon='IcMt5SyntheticPlatform' size={128} data_testid='IcMt5SyntheticPlatform' />;
+            return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
         case 'financial':
             if (is_eu) {
-                return <Icon icon='IcMt5CfdPlatform' size={128} data_testid='IcMt5CfdPlatform' />;
+                return <Icon icon='IcMt5CfdPlatform' size={128} />;
             }
-            return <Icon icon='IcMt5FinancialPlatform' size={128} data_testid='IcMt5FinancialPlatform' />;
+            return <Icon icon='IcMt5FinancialPlatform' size={128} />;
         default:
-            return <Icon icon='IcMt5FinancialStpPlatform' size={128} data_testid='IcMt5FinancialStpPlatform' />;
+            return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
     }
 });
 IconType.displayName = 'IconType';
@@ -264,7 +264,7 @@ const CreatePassword = ({
                 <form onSubmit={handleSubmit}>
                     <div
                         className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'
-                        data-testid='create-password'
+                        data-testid='dt_create_password'
                     >
                         <Icon
                             icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
@@ -309,7 +309,7 @@ const CreatePassword = ({
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                         }}
-                                        data_testId={`${platform}_password`}
+                                        data_testId={`dt_${platform}_password`}
                                     />
                                 )}
                             </PasswordMeter>
@@ -496,7 +496,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                 }}
-                                data_testId={`${props.platform}_password`}
+                                data_testId={`dt_${props.platform}_password`}
                             />
                         </div>
 

@@ -17,6 +17,11 @@ jest.mock('@deriv/account', () => ({
     )),
 }));
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: jest.fn(({ icon }) => <div>{icon}</div>),
+}));
+
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
@@ -30,7 +35,7 @@ jest.mock('@deriv/shared', () => ({
     validPassword: jest.fn().mockReturnValue(true),
 }));
 
-describe('ChangePasswordConfirmation', () => {
+describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
     const history = createBrowserHistory();
     let modal_root_el;
@@ -89,7 +94,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        expect(await screen.findByTestId('create-password')).toBeInTheDocument();
+        expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
     });
 
     it('should render password form with Try later button', async () => {
@@ -109,8 +114,8 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByRole('button', { name: /Try later/i })).toBeInTheDocument();
-        expect(await screen.findByRole('button', { name: /Forgot password?/i })).toBeInTheDocument();
+        expect(await screen.findByRole('button', { name: /try later/i })).toBeInTheDocument();
+        expect(await screen.findByRole('button', { name: /forgot password?/i })).toBeInTheDocument();
     });
 
     it('should close modal when Cancel button is clicked', async () => {
@@ -133,7 +138,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_cancel_btn = await screen.findByRole('button', { name: /Forgot password?/i });
+        const ele_cancel_btn = await screen.findByRole('button', { name: /forgot password?/i });
         fireEvent.click(ele_cancel_btn);
 
         await waitFor(() => {
@@ -164,7 +169,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_cancel_btn = await screen.findByRole('button', { name: /Forgot password?/i });
+        const ele_cancel_btn = await screen.findByRole('button', { name: /forgot password?/i });
         fireEvent.click(ele_cancel_btn);
         await waitFor(() => {
             expect(WS.verifyEmail).toHaveBeenCalled();
@@ -188,9 +193,9 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByText(/Enter your DMT5 password to add a DMT5 account/i)).toBeInTheDocument();
-        expect(await screen.findByRole('button', { name: /Add account/i })).toBeInTheDocument();
-        expect(await screen.findByTestId('mt5_password')).toBeInTheDocument();
+        expect(await screen.findByText(/enter your dmt5 password to add a dmt5 account/i)).toBeInTheDocument();
+        expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
+        expect(await screen.findByTestId('dt_mt5_password')).toBeInTheDocument();
     });
 
     it('should hold the password value provided by the user', async () => {
@@ -211,7 +216,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_password_field = await screen.findByTestId('mt5_password');
+        const ele_password_field = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_field, { target: { value: user_input } });
 
         await waitFor(() => {
@@ -237,7 +242,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_password_input = await screen.findByTestId('mt5_password');
+        const ele_password_input = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_input, { target: { value: user_input } });
         fireEvent.focusOut(ele_password_input);
 
@@ -266,7 +271,7 @@ describe('ChangePasswordConfirmation', () => {
         );
 
         expect(
-            await screen.findByText(/We need proof of your identity and address before you can start trading./i)
+            await screen.findByText(/we need proof of your identity and address before you can start trading./i)
         ).toBeInTheDocument();
     });
 
@@ -293,7 +298,7 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        fireEvent.click(await screen.findByRole('button', { name: /Submit proof/i }));
+        fireEvent.click(await screen.findByRole('button', { name: /submit proof/i }));
 
         await waitFor(() => {
             expect(mockFn).toHaveBeenCalledWith(false);
@@ -321,8 +326,8 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByRole('button', { name: /Maybe later/i }));
-        expect(await screen.findByRole('button', { name: /Transfer now/i }));
+        expect(await screen.findByRole('button', { name: /maybe later/i }));
+        expect(await screen.findByRole('button', { name: /transfer now/i }));
     });
 
     it('should display IcMt5SyntheticPlatform icon in Success Dialog', async () => {
@@ -343,7 +348,7 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByTestId('IcMt5SyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display IcMt5FinancialPlatform icon in Success Dialog', async () => {
@@ -363,7 +368,7 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByTestId('IcMt5FinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
     });
 
     it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
@@ -383,7 +388,7 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByTestId('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
@@ -403,7 +408,7 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByTestId('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
     });
 
     it('should display IcMt5CfdPlatform icon in Success Dialog', async () => {
@@ -424,7 +429,7 @@ describe('ChangePasswordConfirmation', () => {
             </Router>
         );
 
-        expect(await screen.findByTestId('IcMt5CfdPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {
@@ -449,7 +454,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_cancel_btn = await screen.findByRole('button', { name: /Forgot password?/i });
+        const ele_cancel_btn = await screen.findByRole('button', { name: /forgot password?/i });
         fireEvent.click(ele_cancel_btn);
         await waitFor(() => {
             expect(WS.verifyEmail).toHaveBeenCalledWith('demo@deriv.com', 'trading_platform_dxtrade_password_reset', {
@@ -460,6 +465,7 @@ describe('ChangePasswordConfirmation', () => {
 
     it('should create DMT5 password when clicked on Create DMT5 password', async () => {
         const user_input = 'zo8lAet#2q01Ih';
+        const mockSubmitMt5Password = jest.fn();
         validPassword.mockReturnValue(true);
         const props = {
             ...mock_props,
@@ -469,7 +475,7 @@ describe('ChangePasswordConfirmation', () => {
             getAccountStatus: mockFn,
             platform: 'mt5',
             account_type: { category: 'real', type: 'financial' },
-            submitMt5Password: mockFn,
+            submitMt5Password: mockSubmitMt5Password,
         };
 
         render(
@@ -477,13 +483,15 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />;
             </Router>
         );
-        fireEvent.change(await screen.findByTestId('mt5_password'), { target: { value: user_input } });
+        fireEvent.change(await screen.findByTestId('dt_mt5_password'), { target: { value: user_input } });
         fireEvent.click(await screen.findByRole('button', { name: 'Create DMT5 password' }));
 
-        expect(await screen.findByTestId('dt_initial_loader')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(mockSubmitMt5Password).toHaveBeenCalled();
+        });
     });
 
-    it('should create CFD password when clicked on Add account', async () => {
+    it('should create DerivX platform password when clicked on Add account', async () => {
         const user_input = 'zo8lAet#2q01Ih';
         const mockSubmitCFDPasswordFn = jest.fn();
         validPassword.mockReturnValue(true);
@@ -503,7 +511,7 @@ describe('ChangePasswordConfirmation', () => {
                 <CFDPasswordModal {...props} />;
             </Router>
         );
-        fireEvent.change(await screen.findByTestId('dxtrader_password'), { target: { value: user_input } });
+        fireEvent.change(await screen.findByTestId('dt_dxtrader_password'), { target: { value: user_input } });
         fireEvent.click(await screen.findByRole('button', { name: 'Add account' }));
 
         await waitFor(() => {

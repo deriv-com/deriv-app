@@ -32,7 +32,6 @@ describe('<PaymentAgentList />', () => {
         payment_agent_active_tab_index: 0,
         verification_code: '',
         onMount: jest.fn(),
-        sendVerificationEmail: jest.fn(),
         setSideNotes: jest.fn(),
     };
 

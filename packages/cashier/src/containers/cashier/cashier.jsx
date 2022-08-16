@@ -98,7 +98,7 @@ const Cashier = ({
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
-    if ((!is_logged_in && is_logging_in) || !is_account_setting_loaded) {
+    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded) {
         return <Loading is_fullscreen />;
     }
 

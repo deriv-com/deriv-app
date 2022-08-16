@@ -3,7 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import Confirm from 'Components/confirm';
+import TransferConfirm from 'Components/transfer-confirm';
 
 const PaymentAgentWithdrawConfirm = ({
     amount,
@@ -16,7 +16,7 @@ const PaymentAgentWithdrawConfirm = ({
     setIsTryWithdrawSuccessful,
     verification_code,
 }) => (
-    <Confirm
+    <TransferConfirm
         data={[
             { label: localize('From account number'), value: client_loginid, key: 'transfer_from' },
             {

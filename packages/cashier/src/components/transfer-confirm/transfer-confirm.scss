@@ -1,0 +1,112 @@
+.transfer-confirm {
+    padding: 0 1.6rem;
+    width: 100%;
+    &__header {
+        margin-top: 1.4rem;
+        margin-bottom: 2.4rem;
+    }
+    &__column {
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+    }
+    &__row {
+        width: 40rem;
+        display: flex;
+        column-gap: 1.6rem;
+        row-gap: 1.2rem;
+        padding: 0.8rem 0;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--general-section-1);
+
+        &-label,
+        &-value {
+            display: flex;
+            flex-direction: column;
+            row-gap: 1.2rem;
+        }
+
+        > :last-child {
+            max-width: 50%;
+
+            &.description {
+                word-wrap: break-word;
+            }
+        }
+    }
+    &__warning-icon {
+        margin-top: 0.8rem;
+        min-width: 7.2rem;
+        min-height: 7.2rem;
+        margin-bottom: 2.4rem;
+        @include mobile {
+            min-width: 4.8rem;
+            min-height: 4.8rem;
+            margin: 1.6rem 0;
+        }
+        &__description {
+            margin-bottom: 3.2rem;
+            @include mobile {
+                margin-bottom: 4rem;
+            }
+        }
+    }
+    &__warnings {
+        width: 40rem;
+        display: flex;
+        flex-direction: column;
+        margin: 4rem auto 3.2rem;
+        @include mobile {
+            margin-bottom: 2.4rem;
+        }
+        &-bullet {
+            background-color: var(--text-loss-danger);
+            border-radius: 100%;
+            margin-right: 0.8rem;
+            width: 0.4rem;
+            height: 0.4rem;
+            flex: none;
+            margin-top: 0.65rem;
+
+            &-wrapper {
+                display: flex;
+            }
+        }
+    }
+    &__checkbox {
+        width: 40rem;
+        .dc-checkbox__box {
+            margin-left: 0;
+        }
+    }
+    &__checkbox-label {
+        font-size: var(--text-size-xxs);
+    }
+    &__submit {
+        margin: 4rem auto 0;
+        width: 40rem;
+        display: flex;
+        justify-content: flex-end;
+
+        > :not(:first-child) {
+            margin-left: 0.8rem;
+        }
+
+        @include mobile {
+            margin: 4rem auto 3.2rem;
+        }
+    }
+    @include mobile {
+        &__row,
+        &__warnings,
+        &__checkbox,
+        &__submit {
+            width: 100%;
+        }
+    }
+}

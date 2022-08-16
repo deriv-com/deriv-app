@@ -338,3 +338,11 @@
         top: calc(2.4rem + 4.1rem);
     }
 }
+
+// Able to scroll the page container (app-contents) until 926px (MobileWrapper) if it should be scrollable
+@media (max-width: 926px) {
+    .app-contents--is-mobile,
+    .app-contents--is-scrollable {
+        overflow-y: auto;
+    }
+}

@@ -24,7 +24,7 @@ The executable script (exposed as `deriv-publisher`) takes a single argument (ei
 
 The Webpack utilities help Webpack resolve imports to any local `@deriv` dependencies:
 
--   `getLocalDerivPackageAliases`: returns an object of aliases when creating a build for publishing, i.e. it will tell Webpack to ignore the `node_modules` and tells it where to look instead.
+-   `getLocalDerivPackageAliases`: returns an object of aliases when creating a build for publishing, i.e. it will tell Webpack to ignore the `node_modules` and tells it where to look instead (in the local file path i.e. the absolute path of the executing file).
 -   `getLocalDerivPackageExternals`: returns an object of externals when creating a build that won't be published, i.e. it will tell Webpack to not bundle these packages as they will be included by the consumer of this package.
 
 ## Example
@@ -40,6 +40,8 @@ Below is a simple example that could easily be extended.
   }
 }
 ```
+
+The `publish_package` command first removes local `@deriv` packages using prepublish, then it publishes the package to the npm registry and restores the local `@deriv` packages to package.json using postpublish
 
 ## Install
 

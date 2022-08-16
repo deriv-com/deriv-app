@@ -68,7 +68,7 @@ const eucontent: TModalContentProps[] = [
         id: 'jurisdiction',
         attribute: localize('Jurisdiction'),
         values: {
-            financial_maltainvest: { text: localize('Malta Financial Services Authority') },
+            financial_maltainvest: { text: localize('Malta') },
         },
     },
     {
@@ -104,6 +104,7 @@ const eucontent: TModalContentProps[] = [
                 text: [
                     localize('Forex'),
                     localize('Stocks'),
+                    localize('Commodities'),
                     localize('Stock indices'),
                     localize('Synthetic indices'),
                     localize('Cryptocurrencies'),

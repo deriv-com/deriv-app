@@ -391,6 +391,11 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    /**
+     * Hides the cancel add payment method modal and show previously hidden modals if close_all_modals_on_cancel is false
+     * @callback close_all_modals_on_cancel
+     * @params {close_all_modals_on_cancel} close_all_modals_on_cancel - If set to true, previous modals will not be shown and all modals are closed
+     */
     @action.bound
     hideCancelAddPaymentMethodModal(close_all_modals_on_cancel) {
         if (this.on_cancel_add_payment_method_form_handler && !close_all_modals_on_cancel) {

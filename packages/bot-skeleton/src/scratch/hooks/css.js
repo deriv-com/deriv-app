@@ -140,7 +140,7 @@ Blockly.Css.CONTENT = [
     'min-height: 34px;',
     'background-color: #d6dadb;',
     'border-radius: 4px;',
-    'color: var(--text-prominent);',
+    'color: $color-grey;',
     'padding: 8px;',
     'font-size: 12px;',
     'font-family: "IBM Plex Sans";',
@@ -372,7 +372,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyText {',
-    'fill: var(--text-general);',
+    'fill: $color-white',
     'font-family: inherit;',
     'font-size: var(--text-size-s);',
     'font-weight: normal;',
@@ -397,11 +397,11 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyEditableText>.blocklyEditableLabel {',
-    'fill: var(--text-general);',
+    'fill: $color-black-1;',
     '}',
 
     '.blocklyDropdownText {',
-    'fill: var(--text-general) !important;',
+    'fill: $color-black-1 !important;',
     '}',
 
     '.blocklyBubbleText {',
@@ -638,7 +638,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyMutatorBackground {',
     'fill: #fff;',
-    'stroke: #ddd;',
+    'stroke: #fff;',
     'stroke-width: 1;',
     '}',
 

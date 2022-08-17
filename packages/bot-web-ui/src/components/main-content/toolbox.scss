@@ -49,13 +49,16 @@
         font-size: 1.6em;
         background-color: var(--general-section-1);
         text-align: center;
+        color: var(--text-general);
     }
     &__item {
         display: flex;
         flex-direction: row;
+        color: var(--text-general);
 
         &:hover {
             background-color: var(--general-hover);
+            color: var(--text-prominent);
         }
     }
     &__category-arrow {

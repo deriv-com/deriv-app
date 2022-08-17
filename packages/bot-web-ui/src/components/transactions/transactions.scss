@@ -164,6 +164,7 @@
     &__cell {
         display: flex;
         align-items: center;
+        color: var(--text-general);
     }
     &__profit {
         &--win {

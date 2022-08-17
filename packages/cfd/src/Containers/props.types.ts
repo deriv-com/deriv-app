@@ -200,6 +200,7 @@ export type TJurisdictionModalProps = {
     is_jurisdiction_modal_visible: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;

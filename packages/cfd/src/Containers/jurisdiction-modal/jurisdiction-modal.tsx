@@ -9,24 +9,25 @@ import { WS, getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 
 const JurisdictionModal = ({
+    account_status,
     account_settings,
     account_type,
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
     is_eu,
+    is_virtual,
     jurisdiction_selected_shortcode,
+    mt5_login_list,
+    openPasswordModal,
+    real_synthetic_accounts_existing_data,
+    real_financial_accounts_existing_data,
+    trading_platform_available_accounts,
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
-    trading_platform_available_accounts,
-    openPasswordModal,
     setAccountSettings,
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
-    account_status,
-    is_virtual,
-    real_synthetic_accounts_existing_data,
-    real_financial_accounts_existing_data,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
@@ -51,13 +52,26 @@ const JurisdictionModal = ({
     const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
 
-    React.useEffect(() => {
-        if (is_jurisdiction_modal_visible) {
-            if ((poa_status === 'pending' || poi_status === 'pending') && !is_eu) {
+    const selectSVGJurisdiction = () => {
+        if (account_type.type && !is_eu) {
+            const created_svg_accounts = mt5_login_list.filter(
+                data =>
+                    data.market_type === account_type.type &&
+                    data.landing_company_short === 'svg' &&
+                    data.account_type === 'real'
+            );
+            if (!created_svg_accounts.length && (poa_status === 'pending' || poi_status === 'pending')) {
                 setJurisdictionSelectedShortcode('svg');
             } else {
                 setJurisdictionSelectedShortcode('');
             }
+        } else {
+            setJurisdictionSelectedShortcode('');
+        }
+    };
+    React.useEffect(() => {
+        if (is_jurisdiction_modal_visible) {
+            selectSVGJurisdiction();
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
                 if (!account_settings) {
@@ -260,6 +274,7 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
     is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
+    mt5_login_list: client.mt5_login_list,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     setAccountSettings: client.setAccountSettings,

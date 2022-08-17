@@ -1,9 +1,6 @@
 /* -------------------------------------------------------------------------- */
-/* RESPONSIVE MIXINS                                                          */
+/* RESPONSIVE MIXIN                                                           */
 /* -------------------------------------------------------------------------- */
-
-// Variables ----------------------------------------------------------------
-$unit: 1px;
 
 // These variables are the max-width of the breakpoints
 $breakpoints: (
@@ -11,8 +8,7 @@ $breakpoints: (
     'tablet': 1081,
     'desktop': 'infinity',
 );
-
-// Functions ----------------------------------------------------------------
+$unit: 1px;
 
 /// Add unit to the given number
 ///
@@ -36,29 +32,32 @@ $breakpoints: (
 @function get-breakpoint($breakpoint, $breakpoints: $breakpoints) {
     $breakpoints-list: map-keys($breakpoints);
 
-    $bp-indexes: (
-        'prev': (
-            index($breakpoints-list, $breakpoint) - 1,
-        ),
-        'next': (
-            index($breakpoints-list, $breakpoint) + 1,
-        ),
-    );
-
     $bp-values: (
-        'prev': if(map-get($bp-indexes, 'prev') == 0, '', nth($breakpoints-list, map-get($bp-indexes, 'prev'))),
-        'next': if(map-get($bp-indexes, 'next') == 0, '', nth($breakpoints-list, map-get($bp-indexes, 'next'))),
+        'prev':
+            if(
+                (index($breakpoints-list, $breakpoint) - 1) == 0,
+                '',
+                nth($breakpoints-list, (index($breakpoints-list, $breakpoint) - 1))
+            ),
+        'next':
+            if(
+                (index($breakpoints-list, $breakpoint) + 1) == 0 or
+                    ((index($breakpoints-list, $breakpoint) + 1) > length($breakpoints-list)),
+                '',
+                nth($breakpoints-list, (index($breakpoints-list, $breakpoint) + 1))
+            ),
     );
 
     @return $bp-values;
 }
 
-// Mixins -------------------------------------------------------------------
-
 /// Use media query in Breakpoints
 ///
 /// @param {string} $breakpoint
 /// @param {string} $extend [""] | @accept "down" | "up"
+/// @param {string} $orientation [""] | @accept "portrait" | "landscape"
+/// @param {string} $screen ['']
+/// @param {string} $extra ['']
 /// @param {map} $breakpoints [$breakpoints]
 ///
 /// @example
@@ -71,32 +70,33 @@ $breakpoints: (
 ///         /* CSS STYLES */
 ///     }
 ///
-@mixin bp($breakpoint, $extend: '', $breakpoints: $breakpoints) {
-    $bp: get-breakpoint($breakpoint);
-
+@mixin bp($breakpoint, $extend: '', $orientation: '', $screen: '', $extra: '', $breakpoints: $breakpoints) {
     @if index($breakpoints, $breakpoint) != 'null' {
+        $bp: get-breakpoint($breakpoint);
         $min-query: '';
         $max-query: '';
         $query: '';
 
         @if map-get($bp, 'prev') != '' {
-            $min-query: 'min-width: #{unit(map-get($breakpoints, map-get($bp, ' prev ')) + 1)}';
+            $min-query: if(
+                $extend == 'down',
+                '',
+                'min-width: #{unit(map-get($breakpoints, map-get($bp, ' prev ')) + 1)}'
+            );
         }
 
         @if map-get($bp, 'next') != '' {
-            $max-query: 'max-width: #{unit(map-get($breakpoints, $breakpoint))}';
+            $max-query: if($extend == 'up', '', 'max-width: #{unit(map-get($breakpoints, $breakpoint))}');
         }
 
-        // Handle Extend
-        @if $extend == 'down' {
-            $min-query: '';
-        } @else if $extend == 'up' {
-            $max-query: '';
-        }
+        $screen-query: if($screen != '', 'only #{$screen} and ', null);
+        $width-query: "(#{$min-query} #{if($min-query != '' and $max-query != '', ') and (', null)} #{$max-query})";
+        $orientation-query: if($orientation != '', ' and (orientation: #{$orientation})', null);
+        $extra-query: if($extra != '', ' and #{$extra}', null);
 
-        $query: "#{$min-query} #{if($min-query != '' and $max-query != '', ') and (', null)} #{$max-query}";
+        $query: '#{$screen-query} #{$width-query} #{$orientation-query} #{$extra-query}';
 
-        @media ($query) {
+        @media #{$query} {
             @content;
         }
     } @else {
@@ -105,21 +105,29 @@ $breakpoints: (
 }
 
 // Alias --------------------------------------------------------------------
-// TODO: uncomment these aliases when it is safe and they won't be overwritten the mixins in file: `devices.scss`
-// @mixin mobile {
-//     @include bp("mobile") {
-//         @content;
-//     }
-// }
+// These aliases are added to support deprecated mixins, which were used in the devices.scss.
+// TODO: These aliases should be removed when all the deprecated mixins replaced with the bp mixin.
 
-// @mixin tablet {
-//     @include bp("tablet") {
-//         @content;
-//     }
-// }
+@mixin mobile {
+    @include bp('mobile') {
+        @content;
+    }
+}
 
-// @mixin desktop {
-//     @include bp("desktop") {
-//         @content;
-//     }
-// }
+@mixin tablet {
+    @include bp('tablet') {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @include bp('tablet', 'up') {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @include bp('desktop') {
+        @content;
+    }
+}

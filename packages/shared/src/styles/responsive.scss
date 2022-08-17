@@ -70,10 +70,11 @@ $unit: 1px;
         $query: '';
 
         @if map-get($bp, 'prev') != '' {
+            $prev-str: 'prev'; // Just for ignoring stylelint rule: media-feature-range-operator-space-(after/before)
             @if ($extend == 'down') {
                 $min-query: '';
             } @else {
-                $min-query: 'min-width: #{unit(map-get($breakpoints, map-get($bp, ' prev ')) + 1)}';
+                $min-query: 'min-width: #{unit(map-get($breakpoints, map-get($bp, $prev-str)) + 1)}';
             }
         }
 

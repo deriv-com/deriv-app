@@ -1,22 +1,25 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ExpandedCard from '../ExpandedCard.jsx';
+import { localize } from '@deriv/translations';
 
 describe('ExpandedCard.jsx', () => {
     let card_details;
 
     beforeAll(() => {
         card_details = {
-            icon: 'IcCreditCard',
-            creation_time: '9 o clock',
+            icon: 'IcStockVisa',
             id: 'abc12340',
             payment_method: 'credit_debit_card',
             payment_method_identifier: '12345678910111213',
-            title: 'Credit / Debit card',
-            paragraphs: [
-                'Upload a photo of your card or bank statement showing your name and card number. Your card number must only show the first 6 and last 4 digits.',
+            title: 'VISA',
+            instructions: [
+                localize(
+                    'Upload a photo of your card showing your name and card number. Your card number must only show the first 6 and last 4 digits. If your card does not have your name embossed on it, we will require a bank statement that shows your name and card number.'
+                ),
             ],
-            input_label: 'Card Number',
+            input_label: localize('Card number'),
+            documents_required: 1,
         };
     });
     it('should display correct identifier', () => {
@@ -27,7 +30,7 @@ describe('ExpandedCard.jsx', () => {
                 show_browse_button={[]}
             />
         );
-        const element = screen.getByText('Card Number', { exact: true });
+        const element = screen.getByText('Card number', { exact: true });
         expect(element).toBeInTheDocument();
     });
     it('should show example link for credit/debit card', () => {

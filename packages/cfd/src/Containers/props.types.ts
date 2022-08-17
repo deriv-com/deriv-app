@@ -160,23 +160,23 @@ export type TCFDPasswordManagerModal = {
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };
 
-export type TAvailableAccountAPI = [
-    {
-        market_type: string;
-        name: string;
-        requirements: {
-            signup: Array<string>;
-            withdrawal: Array<string>;
-        };
-        shortcode: string;
-        sub_account_type: string;
-    }
-];
+// export type TAvailableAccountAPI = [
+//     {
+//         market_type: string;
+//         name: string;
+//         requirements: {
+//             signup: Array<string>;
+//             withdrawal: Array<string>;
+//         };
+//         shortcode: string;
+//         sub_account_type: string;
+//     }
+// ];
 
 export type TJurisdictionCard = {
     jurisdiction_selected_shortcode: string;
-    synthetic_available_accounts: TAvailableAccountAPI;
-    financial_available_accounts: TAvailableAccountAPI;
+    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
+    financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
     type_of_card: string;
@@ -207,6 +207,8 @@ export type TJurisdictionModalProps = {
     toggleCFDPersonalDetailsModal: () => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
+    real_synthetic_accounts_existing_data: TExistingData;
+    real_financial_accounts_existing_data: TExistingData;
 };
 
 export type TJurisdictionModalContent = {
@@ -214,8 +216,8 @@ export type TJurisdictionModalContent = {
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    synthetic_available_accounts: TAvailableAccountAPI;
-    financial_available_accounts: TAvailableAccountAPI;
+    synthetic_available_accounts: TTradingPlatformAvailableAccount[]; // Changed Prop type as the input is of type TTradingPlatformAvailableAccount
+    financial_available_accounts: TTradingPlatformAvailableAccount[]; // Changed Prop type as the input is of type TTradingPlatformAvailableAccount
     checked: boolean;
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;

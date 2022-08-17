@@ -42,7 +42,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     account_status: GetAccountStatus;
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
-    needs_poi_for_vanuatu: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;

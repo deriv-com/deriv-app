@@ -25,6 +25,8 @@ const JurisdictionModal = ({
     toggleCFDVerificationModal,
     account_status,
     is_virtual,
+    real_synthetic_accounts_existing_data,
+    real_financial_accounts_existing_data,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
@@ -40,9 +42,12 @@ const JurisdictionModal = ({
         poi_or_poa_not_submitted,
         poi_poa_verified_for_bvi_labuan_maltainvest,
         poi_poa_verified_for_vanuatu,
+
+        poi_acknowledged_for_vanuatu,
+        poa_acknowledged,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
     } = getAuthenticationStatusInfo(account_status);
 
-    const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
 
@@ -93,28 +98,36 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
 
-    const isNextButtonEnabled = () => {
+    const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
-            if (jurisdiction_selected_shortcode === 'svg') {
-                return true;
-            } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+            const is_account_created =
+                account_type.type === 'synthetic'
+                    ? real_synthetic_accounts_existing_data?.some(
+                          account => account.landing_company_short === jurisdiction_selected_shortcode
+                      )
+                    : real_financial_accounts_existing_data?.some(
+                          account => account.landing_company_short === jurisdiction_selected_shortcode
+                      );
+
+            if (!is_account_created) {
+                if (jurisdiction_selected_shortcode === 'svg') {
+                    return false;
+                } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+                    return (
+                        (poa_acknowledged && poi_acknowledged_for_vanuatu && !poi_poa_verified_for_vanuatu) ||
+                        (poi_poa_verified_for_vanuatu && !checked)
+                    );
+                }
                 return (
-                    (poi_or_poa_not_submitted ||
-                        need_poi_for_vanuatu ||
-                        need_poa_submission ||
-                        (poi_poa_verified_for_vanuatu && checked)) &&
-                    !poi_poa_pending
+                    (poa_acknowledged &&
+                        poi_acknowledged_for_bvi_labuan_maltainvest &&
+                        !poi_poa_verified_for_bvi_labuan_maltainvest) ||
+                    (poi_poa_verified_for_bvi_labuan_maltainvest && !checked)
                 );
             }
-            return (
-                (poi_or_poa_not_submitted ||
-                    need_poi_for_bvi_labuan_maltainvest ||
-                    need_poa_submission ||
-                    (poi_poa_verified_for_bvi_labuan_maltainvest && checked)) &&
-                !poi_poa_pending
-            );
+            return true;
         }
-        return false;
+        return true;
     };
 
     const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) => {
@@ -179,6 +192,8 @@ const JurisdictionModal = ({
                 checked={checked}
                 financial_available_accounts={financial_available_accounts}
                 is_virtual={is_virtual}
+                real_financial_accounts_existing_data={real_financial_accounts_existing_data}
+                real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 setChecked={setChecked}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
@@ -186,7 +201,7 @@ const JurisdictionModal = ({
             />
             <Modal.Footer has_separator>
                 <Button
-                    disabled={!isNextButtonEnabled()}
+                    disabled={isNextButtonDisabled()}
                     primary
                     style={{ width: isMobile() ? '100%' : 'unset' }}
                     onClick={() => {
@@ -235,20 +250,22 @@ const JurisdictionModal = ({
     );
 };
 
-export default connect(({ modules, ui, client }: RootStore) => ({
-    account_type: modules.cfd.account_type,
+export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
+    account_type: cfd.account_type,
     account_settings: client.account_settings,
     account_status: client.account_status,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_eu: client.is_eu,
-    is_jurisdiction_modal_visible: modules.cfd.is_jurisdiction_modal_visible,
+    is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
     is_virtual: client.is_virtual,
-    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
+    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
+    real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
+    real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     setAccountSettings: client.setAccountSettings,
-    setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
+    setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
-    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
+    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
+    toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,
+    toggleJurisdictionModal: cfd.toggleJurisdictionModal,
 }))(JurisdictionModal);

@@ -1,6 +1,4 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
 import { TJurisdictionModalContent } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-content-items/jurisdiction-modal-checkbox';
 import JurisdictionCard from './jurisdiction-modal-content-items/jurisdiction-modal-card/jurisdiction-card';
@@ -21,29 +19,20 @@ const JurisdictionModalContent = ({
 }: TJurisdictionModalContent) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
-    const cardsToBeShown = (type_of_card: string) => {
-        const is_available =
-            account_type === 'synthetic'
-                ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-                : financial_available_accounts?.some(account => account.shortcode === type_of_card);
-        return is_available;
-    };
+    const cardsToBeShown = (type_of_card: string) =>
+        account_type === 'synthetic'
+            ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
+            : financial_available_accounts?.some(account => account.shortcode === type_of_card);
 
     const disableCard = (type_of_card: string) => {
         if (is_virtual && type_of_card !== 'svg') {
             return true;
         }
-        const is_available =
-            account_type === 'synthetic'
-                ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
-                : real_financial_accounts_existing_data?.some(
-                      account => account.landing_company_short === type_of_card
-                  );
-
-        return is_available;
+        return account_type === 'synthetic'
+            ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
+            : real_financial_accounts_existing_data?.some(account => account.landing_company_short === type_of_card);
     };
-
-    const jurisdiction_cards_array = ['bvi', 'maltainvest', 'vanuatu', 'labuan', 'svg'];
+    const jurisdiction_cards_array = ['svg', 'bvi', 'vanuatu', 'labuan', 'maltainvest'];
     return (
         <>
             <div className={`${card_classname}__wrapper`}>
@@ -80,7 +69,4 @@ const JurisdictionModalContent = ({
     );
 };
 
-export default connect(({ modules: { cfd } }: RootStore) => ({
-    real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
-    real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
-}))(JurisdictionModalContent);
+export default JurisdictionModalContent;

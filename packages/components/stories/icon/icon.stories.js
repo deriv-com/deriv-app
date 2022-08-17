@@ -4,7 +4,7 @@ import { withInfo } from '@storybook/addon-info';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import Icon from 'Components/icon';
-import { icons } from './icons.js';
+import { icons } from './icons';
 import notes from './README.md';
 import Theme from '../shared/theme';
 import { Text } from '../button/shared-style';
@@ -55,7 +55,6 @@ stories
                                             >
                                                 <Icon
                                                     icon={icon}
-                                                    size={48}
                                                     color={select('color', {
                                                         default: undefined,
                                                         active: 'active',

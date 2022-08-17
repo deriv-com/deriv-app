@@ -70,21 +70,25 @@ $unit: 1px;
         $query: '';
 
         @if map-get($bp, 'prev') != '' {
-            $min-query: if(
-                $extend == 'down',
-                '',
-                'min-width: #{unit(map-get($breakpoints, map-get($bp, 'prev')) + 1)}'
-            );
+            @if ($extend == 'down') {
+                $min-query: '';
+            } @else {
+                $min-query: 'min-width: #{unit(map-get($breakpoints, map-get($bp, ' prev ')) + 1)}';
+            }
         }
 
         @if map-get($bp, 'next') != '' {
-            $max-query: if($extend == 'up', '', 'max-width: #{unit(map-get($breakpoints, $breakpoint))}');
+            @if ($extend == 'up') {
+                $max-query: '';
+            } @else {
+                $max-query: 'max-width: #{unit(map-get($breakpoints, $breakpoint))}';
+            }
         }
 
-        $screen-query: if($screen!= '', 'only #{$screen} and ', null);
+        $screen-query: if($screen != '', 'only #{$screen} and ', null);
         $width-query: "(#{$min-query} #{if($min-query != '' and $max-query != '', ') and (', null)} #{$max-query})";
-        $orientation-query: if($orientation!= '', ' and (orientation: #{$orientation})', null);
-        $extra-query: if($extra!= '', ' and #{$extra}', null);
+        $orientation-query: if($orientation != '', ' and (orientation: #{$orientation})', null);
+        $extra-query: if($extra != '', ' and #{$extra}', null);
 
         $query: '#{$screen-query} #{$width-query} #{$orientation-query} #{$extra-query}';
 

@@ -229,8 +229,8 @@ export const getAuthenticationStatusInfo = account_status => {
         need_poa_resubmission,
         poa_not_submitted,
         poi_not_submitted,
-        poi_pending_for_vanuatu,
         poa_pending,
+        poi_pending_for_vanuatu,
         poi_pending_for_bvi_labuan_maltainvest,
     };
 };

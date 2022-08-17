@@ -5,7 +5,6 @@ import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const setHookState = (is_content_shown: boolean) => jest.fn().mockImplementation(() => [is_content_shown, () => {}]);
 React.useState = setHookState(true);
-jest.mock('react-inlinesvg', () => jest.fn(() => 'mockedInlineSVG'));
 
 describe('WalletCard Component', () => {
     const props = {

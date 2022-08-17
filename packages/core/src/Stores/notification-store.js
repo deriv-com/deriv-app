@@ -1048,21 +1048,48 @@ export default class NotificationStore extends BaseStore {
             },
             poo_required: {
                 key: 'poo_required',
-                header: localize('Your proof of ownership is required'),
-                message: localize('Your proof of ownership is required to unlock your account'),
+                header: (
+                    <Localize
+                        i18n_default_text='<0>Proof of ownership</0> <1>required</1>'
+                        components={[<div key={0} />, <div key={1} />]}
+                    />
+                ),
+                message: (
+                    <Localize
+                        i18n_default_text='<0></0><1>Your account is currently locked</1> <2></2><3>Please upload your proof of</3> <4>ownership to unlock your account.</4> <5></5>'
+                        components={[
+                            <br key={0} />,
+                            <div key={1} />,
+                            <br key={2} />,
+                            <div key={3} />,
+                            <div key={4} />,
+                            <br key={5} />,
+                        ]}
+                    />
+                ),
                 action: {
                     route: routes.proof_of_ownership,
-                    text: localize('Unlock my account'),
+                    text: localize('Upload my document'),
                 },
                 type: 'warning',
             },
             poo_rejected: {
                 key: 'poo_rejected',
-                header: localize('Proof of ownership verification failed'),
-                message: localize('We were unable to verify your proof of ownership.'),
+                header: (
+                    <Localize
+                        i18n_default_text='<0>Proof of ownership</0> <1>verification failed</1>'
+                        components={[<div key={0} />, <div key={1} />]}
+                    />
+                ),
+                message: (
+                    <Localize
+                        i18n_default_text='<0></0><1>Please upload your document</1> <2>with the correct details.</2> <3></3>'
+                        components={[<br key={0} />, <div key={1} />, <div key={2} />, <br key={3} />]}
+                    />
+                ),
                 action: {
                     route: routes.proof_of_ownership,
-                    text: localize('Try again'),
+                    text: localize('Upload again'),
                 },
                 type: 'warning',
             },

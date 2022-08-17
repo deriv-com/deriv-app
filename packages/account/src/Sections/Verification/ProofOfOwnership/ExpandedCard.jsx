@@ -50,9 +50,15 @@ const ExpandedCard = ({
     return (
         <>
             <div>
-                {card_details.paragraphs.map((para, idx) => (
-                    <Text className='proof-of-ownership__card-open-desc' as='p' color='general' size='xs' key={idx}>
-                        {para} {exampleLink()}
+                {card_details?.instructions?.map(instruction => (
+                    <Text
+                        className='proof-of-ownership__card-open-desc'
+                        as='p'
+                        color='general'
+                        size='xs'
+                        key={instruction}
+                    >
+                        {instruction} {exampleLink()}
                     </Text>
                 ))}
                 <fieldset>

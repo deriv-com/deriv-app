@@ -453,8 +453,10 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     setShouldShowPopup(should_show_popup) {
+        const { my_profile_store } = this.root_store;
         this.should_show_popup = should_show_popup;
-        if (!this.should_show_popup) {
+        // do not refresh adverts if modal transition happens between add payment method and cancel add payment method modal
+        if (!this.should_show_popup && !my_profile_store.is_modal_transitioning) {
             this.fetchAdvertiserAdverts();
         }
     }

@@ -28,6 +28,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_confirm_delete_modal_open = false;
     @observable is_delete_payment_method_error_modal_open = false;
     @observable is_loading = true;
+    @observable is_modal_transitioning = false;
     @observable is_submit_success = false;
     @observable on_cancel_add_payment_method_form_handler = null;
     @observable payment_info = '';
@@ -429,8 +430,12 @@ export default class MyProfileStore extends BaseStore {
         if (isMobile()) {
             this.setIsCancelAddPaymentMethodModalOpen(true);
         } else {
+            this.setIsModalTransitioning(true);
             this.saveFormState();
-            setTimeout(() => this.setIsCancelAddPaymentMethodModalOpen(true), this.MODAL_TRANSITION_DURATION);
+            setTimeout(() => {
+                this.setIsCancelAddPaymentMethodModalOpen(true);
+                this.setIsModalTransitioning(false);
+            }, this.MODAL_TRANSITION_DURATION);
             this.on_cancel_add_payment_method_form_handler?.(false);
         }
     }
@@ -618,6 +623,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsModalTransitioning(is_modal_transitioning) {
+        this.is_modal_transitioning = is_modal_transitioning;
     }
 
     @action.bound

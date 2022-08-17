@@ -65,7 +65,6 @@ const CreateAdAddPaymentMethodModal = () => {
 
     return (
         <Modal
-            id='create_ad_add_payment_method_modal'
             className='p2p-my-ads__modal-error'
             has_close_icon
             height='560px'

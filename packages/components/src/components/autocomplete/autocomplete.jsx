@@ -42,6 +42,7 @@ const Autocomplete = React.memo(props => {
         onHideDropdownList,
         onItemSelection,
         onScrollStop,
+        onShowDropdownList,
         should_filter_by_char,
         value,
         ...other_props
@@ -218,7 +219,13 @@ const Autocomplete = React.memo(props => {
         }
     };
 
-    const showDropdownList = () => setShouldShowList(true);
+    const showDropdownList = () => {
+        setShouldShowList(true);
+
+        if (typeof props.onShowDropdownList === 'function') {
+            props.onShowDropdownList();
+        }
+    };
 
     const hideDropdownList = () => {
         setShouldShowList(false);
@@ -325,6 +332,7 @@ Autocomplete.propTypes = {
     not_found_text: PropTypes.string,
     onHideDropdownList: PropTypes.func,
     onItemSelection: PropTypes.func,
+    onShowDropdownList: PropTypes.func,
     list_portal_id: PropTypes.string,
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,

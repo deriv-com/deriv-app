@@ -11,6 +11,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
+    const [is_close_circle_icon_showing, setIsCloseCircleIconShowing] = React.useState(false);
 
     const MAX_PAYMENT_METHOD_SELECTION = 3;
 
@@ -98,7 +99,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                                                     }
                                                 />
                                             }
-                                            list_items={payment_methods_list}
+                                            list_items={is_close_circle_icon_showing ? [method] : payment_methods_list}
                                             list_portal_id='deriv_app'
                                             onBlur={e => {
                                                 e.preventDefault();
@@ -111,16 +112,25 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                                                     onEditPaymentMethodItem(value, key);
                                                 }
                                             }}
+                                            onHideDropdownList={() => {
+                                                setIsCloseCircleIconShowing(false);
+                                            }}
                                             onItemSelection={({ value }) => onEditPaymentMethodItem(value, key)}
                                             onFocus={() => {
                                                 setSelectedEditMethod({ value: payment_method, text: method });
-                                                setFieldValue('payment_method', '');
+                                                // setFieldValue('payment_method', '');
                                             }}
+                                            onShowDropdownList={() => setIsCloseCircleIconShowing(true)}
                                             required
                                             trailing_icon={
                                                 <Icon
-                                                    icon='IcDelete'
-                                                    onClick={() => onClickDeletePaymentMethodItem(payment_method)}
+                                                    className='buy-ad-payment-methods-list__icon'
+                                                    color={is_close_circle_icon_showing ? 'secondary' : 'black'}
+                                                    icon={is_close_circle_icon_showing ? 'IcCloseCircle' : 'IcDelete'}
+                                                    onClick={event => {
+                                                        event.stopPropagation();
+                                                        onClickDeletePaymentMethodItem(payment_method);
+                                                    }}
                                                 />
                                             }
                                             type='text'

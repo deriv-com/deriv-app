@@ -242,12 +242,15 @@ export default class OrderStore {
             // When we're looking at a list, it's safe to move orders from Active to Past.
             if (order_idx === -1) {
                 this.orders.unshift(p2p_order_info);
-            } else if (get_order_status.is_completed_order && get_order_status.has_review_details) {
+            } else if (
+                (get_order_status.is_completed_order && get_order_status.has_review_details) ||
+                !get_order_status.is_reviewable
+            ) {
+                Object.assign(this.orders[order_idx], p2p_order_info);
+            } else if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
                 Object.assign(this.orders[order_idx], p2p_order_info);
             } else if (get_order_status.is_inactive_order) {
                 this.orders.splice(order_idx, 1);
-            } else if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
-                Object.assign(this.orders[order_idx], p2p_order_info);
             }
         } else if (this.orders[order_idx]) {
             // When looking at a specific order, it's NOT safe to move orders between tabs

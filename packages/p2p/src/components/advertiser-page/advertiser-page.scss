@@ -18,7 +18,7 @@
             display: flex;
 
             @include mobile {
-                margin: 0 1.6rem;
+                margin: 0 0 1rem;
 
                 .dp2p-avatar {
                     align-self: center;
@@ -93,18 +93,7 @@
         padding-bottom: 0.7rem;
 
         @include mobile {
-            display: inline-grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            &--overflow {
-                grid-template-columns: auto auto;
-
-                .advertiser-page__rating--row:last-child {
-                    border-left: unset;
-                    padding-left: unset;
-                    height: 3rem;
-                }
-            }
+            padding-top: 0.7rem;
         }
 
         &--row {
@@ -135,6 +124,10 @@
     &__row {
         display: flex;
         flex-direction: row;
+    }
+
+    &__joined-since {
+        margin-bottom: 0.7rem;
     }
 
     &__stats {

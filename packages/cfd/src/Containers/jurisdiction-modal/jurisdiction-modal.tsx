@@ -43,10 +43,9 @@ const JurisdictionModal = ({
         poi_acknowledged_for_vanuatu,
         poa_acknowledged,
         poi_acknowledged_for_bvi_labuan_maltainvest,
+        need_poa_resubmission,
+        poi_failed,
     } = getAuthenticationStatusInfo(account_status);
-
-    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
-    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
 
     const selectSVGJurisdiction = () => {
         if (account_type.type && !is_eu) {
@@ -179,7 +178,7 @@ const JurisdictionModal = ({
 
     const buttonText = () => {
         const is_non_svg_selected = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
-        if (poa_failed && is_non_svg_selected && !poi_or_poa_not_submitted) {
+        if (need_poa_resubmission && is_non_svg_selected && !poi_or_poa_not_submitted) {
             return <Localize i18n_default_text='Resubmit proof of address' />;
         } else if (
             jurisdiction_selected_shortcode === 'vanuatu' &&
@@ -188,7 +187,7 @@ const JurisdictionModal = ({
             return <Localize i18n_default_text='Next' />;
         } else if (poi_failed && is_non_svg_selected && !poi_or_poa_not_submitted) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
-        } else if (poa_failed && poi_failed && is_non_svg_selected) {
+        } else if (need_poa_resubmission && poi_failed && is_non_svg_selected) {
             return <Localize i18n_default_text='Resubmit' />;
         }
         return <Localize i18n_default_text='Next' />;

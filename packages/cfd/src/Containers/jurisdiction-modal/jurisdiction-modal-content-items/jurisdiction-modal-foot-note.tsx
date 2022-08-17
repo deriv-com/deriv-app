@@ -20,9 +20,6 @@ const JurisdictionModalFootNote = ({
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_acknowledged_for_vanuatu,
         poi_or_poa_not_submitted,
-        poa_pending,
-        poi_pending_for_vanuatu,
-        poi_pending_for_bvi_labuan_maltainvest,
     } = getAuthenticationStatusInfo(account_status);
 
     const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
@@ -149,9 +146,11 @@ const JurisdictionModalFootNote = ({
                     </Text>
                 )}
 
-            {poa_pending &&
-                ((is_vanuatu_type && poi_pending_for_vanuatu) ||
-                    (is_bvi_labuan_maltainvest_type && poi_pending_for_bvi_labuan_maltainvest)) && (
+            {poa_acknowledged &&
+                ((is_vanuatu_type && poi_acknowledged_for_vanuatu && !poi_poa_verified_for_vanuatu) ||
+                    (is_bvi_labuan_maltainvest_type &&
+                        poi_acknowledged_for_bvi_labuan_maltainvest &&
+                        !poi_poa_verified_for_bvi_labuan_maltainvest)) && (
                     <div className={`${card_classname}__footnote--pending`}>
                         <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
                             <Localize i18n_default_text='You will be able to open this account once your submitted documents have been verified.' />

@@ -126,12 +126,10 @@ const VerificationStatusBanner = ({
                 );
             } else if (need_poi_for_vanuatu && poa_acknowledged) {
                 return (
-                    <div className={`${card_classname}__verification-status`}>
-                        <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={'white'}>
-                                <Localize i18n_default_text='Check your proof of identity' />
-                            </Text>
-                        </div>
+                    <div className={`${card_classname}__footer--none`}>
+                        <Text as='p' size='xxs' align='center' color={'prominent'}>
+                            <Localize i18n_default_text='Proof of identity required' />
+                        </Text>
                     </div>
                 );
             } else if (need_poi_for_vanuatu && need_poa_submission) {

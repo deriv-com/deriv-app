@@ -9,7 +9,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
-import { generateEffectiveRate } from 'Utils/format-value.js';
+import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {

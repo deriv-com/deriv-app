@@ -139,11 +139,12 @@ const AccountActions = React.memo(
 AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
-    acc_switcher_disabled_message: PropTypes.any,
+    acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,
+    is_eu: PropTypes.bool,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
     country_standpoint: PropTypes.object,

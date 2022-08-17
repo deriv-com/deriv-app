@@ -132,7 +132,7 @@ const InputField = ({
         if (max_is_disabled) return;
         let increment_value;
 
-        const current_value = local_value || value;
+        const current_value = +(local_value || value);
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
         const is_crypto = !!currency && isCryptocurrency(currency);
@@ -376,6 +376,14 @@ InputField.propTypes = {
     type: PropTypes.string,
     unit: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    data_testid: PropTypes.string,
+    data_tip: PropTypes.string,
+    data_value: PropTypes.string,
+    is_error_tooltip_hidden: PropTypes.bool,
+    inputmode: PropTypes.string,
+    max_value: PropTypes.number,
+    min_value: PropTypes.number,
+    format: PropTypes.func,
 };
 
 export default InputField;

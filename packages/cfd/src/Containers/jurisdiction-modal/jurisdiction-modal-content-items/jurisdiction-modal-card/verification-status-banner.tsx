@@ -29,13 +29,13 @@ const VerificationStatusBanner = ({
         need_poi_for_vanuatu,
         need_poi_for_bvi_labuan_maltainvest,
         poi_or_poa_not_submitted,
-        poi_verified_for_vanuatu,
-        poi_verified_for_bvi_labuan_maltainvest,
-        poa_verified,
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_acknowledged_for_vanuatu,
         poa_acknowledged,
         need_poa_submission,
+        poi_poa_verified_for_vanuatu,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
+        need_poa_resubmission,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
@@ -99,18 +99,21 @@ const VerificationStatusBanner = ({
                     </Text>
                 </div>
             );
-        } else if (type_of_card === 'vanuatu' && poa_verified && poi_verified_for_vanuatu) {
-            //if both verified for vanuatu
-            return null;
-        } else if (
-            (type_of_card === 'bvi' || type_of_card === 'labuan' || type_of_card === 'maltainvest') &&
-            poa_verified &&
-            poi_verified_for_bvi_labuan_maltainvest
-        ) {
-            //if both verified for bvi and labuan
-            return null;
         } else if (type_of_card === 'vanuatu') {
-            if (!poi_or_poa_not_submitted && need_poa_submission && poi_acknowledged_for_vanuatu) {
+            if (poi_poa_verified_for_vanuatu) {
+                return null; //both verified-no banner
+            } else if (poi_acknowledged_for_vanuatu && poa_acknowledged && !poi_poa_verified_for_vanuatu) {
+                //one is pending and other is verified
+                return (
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--pending`}>
+                            <Text size='xxxs' color={'prominent'}>
+                                <Localize i18n_default_text='Pending verification' />
+                            </Text>
+                        </div>
+                    </div>
+                );
+            } else if (poi_acknowledged_for_vanuatu && need_poa_resubmission) {
                 // poa is rejected,suspected, failed-resubmit
                 return (
                     <div className={`${card_classname}__verification-status`}>
@@ -121,22 +124,14 @@ const VerificationStatusBanner = ({
                         </div>
                     </div>
                 );
-            } else if (poi_acknowledged_for_vanuatu && poa_acknowledged) {
-                return (
-                    <div className={`${card_classname}__verification-status`}>
-                        <div className={`${card_classname}__verification-status--pending`}>
-                            <Text size='xxxs' color={'prominent'}>
-                                <Localize i18n_default_text='Pending verification' />
-                            </Text>
-                        </div>
-                    </div>
-                );
             } else if (need_poi_for_vanuatu && poa_acknowledged) {
                 return (
-                    <div className={`${card_classname}__footer--none`}>
-                        <Text as='p' size='xxs' align='center' color={'prominent'}>
-                            <Localize i18n_default_text='Proof of identity required' />
-                        </Text>
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--POA_POI`}>
+                            <Text size='xxxs' color={'white'}>
+                                <Localize i18n_default_text='Check your proof of identity' />
+                            </Text>
+                        </div>
                     </div>
                 );
             } else if (need_poi_for_vanuatu && need_poa_submission) {
@@ -151,23 +146,25 @@ const VerificationStatusBanner = ({
                 );
             }
         } else if (type_of_card === 'bvi' || type_of_card === 'labuan' || type_of_card === 'maltainvest') {
-            if (!poi_or_poa_not_submitted && need_poa_submission && poi_acknowledged_for_bvi_labuan_maltainvest) {
-                // poa is rejected,suspected, failed-resubmit
-                return (
-                    <div className={`${card_classname}__verification-status`}>
-                        <div className={`${card_classname}__verification-status--POA_POI`}>
-                            <Text size='xxxs' color={'white'}>
-                                <Localize i18n_default_text='Check your proof of address' />
-                            </Text>
-                        </div>
-                    </div>
-                );
+            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                return null; //both verified-no banner
             } else if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged) {
                 return (
                     <div className={`${card_classname}__verification-status`}>
                         <div className={`${card_classname}__verification-status--pending`}>
                             <Text size='xxxs' color={'prominent'}>
                                 <Localize i18n_default_text='Pending verification' />
+                            </Text>
+                        </div>
+                    </div>
+                );
+            } else if (need_poa_resubmission && poi_acknowledged_for_bvi_labuan_maltainvest) {
+                // poa is rejected,suspected, failed-resubmit
+                return (
+                    <div className={`${card_classname}__verification-status`}>
+                        <div className={`${card_classname}__verification-status--POA_POI`}>
+                            <Text size='xxxs' color={'white'}>
+                                <Localize i18n_default_text='Check your proof of address' />
                             </Text>
                         </div>
                     </div>

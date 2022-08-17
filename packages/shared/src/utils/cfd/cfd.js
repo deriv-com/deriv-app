@@ -234,6 +234,3 @@ export const getAuthenticationStatusInfo = account_status => {
         poi_pending_for_bvi_labuan_maltainvest,
     };
 };
-
-export const is_bvi_labuan_maltainvest = jurisdiction_type =>
-    jurisdiction_type === 'bvi' || jurisdiction_type === 'labuan' || jurisdiction_type === 'maltainvest';

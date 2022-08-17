@@ -73,7 +73,7 @@ $unit: 1px;
             $min-query: if(
                 $extend == 'down',
                 '',
-                'min-width: #{unit(map-get($breakpoints, map-get($bp, ' prev ')) + 1)}'
+                'min-width: #{unit(map-get($breakpoints, map-get($bp, 'prev')) + 1)}'
             );
         }
 
@@ -81,10 +81,10 @@ $unit: 1px;
             $max-query: if($extend == 'up', '', 'max-width: #{unit(map-get($breakpoints, $breakpoint))}');
         }
 
-        $screen-query: if($screen != '', 'only #{$screen} and ', null);
+        $screen-query: if($screen!= '', 'only #{$screen} and ', null);
         $width-query: "(#{$min-query} #{if($min-query != '' and $max-query != '', ') and (', null)} #{$max-query})";
-        $orientation-query: if($orientation != '', ' and (orientation: #{$orientation})', null);
-        $extra-query: if($extra != '', ' and #{$extra}', null);
+        $orientation-query: if($orientation!= '', ' and (orientation: #{$orientation})', null);
+        $extra-query: if($extra!= '', ' and #{$extra}', null);
 
         $query: '#{$screen-query} #{$width-query} #{$orientation-query} #{$extra-query}';
 

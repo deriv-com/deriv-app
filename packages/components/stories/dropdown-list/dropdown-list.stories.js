@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
+import { boolean } from '@storybook/addon-knobs';
 import React, { useState } from 'react';
 import DropdownList from 'Components/dropdown-list';
 import notes from './README.md';

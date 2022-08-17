@@ -107,11 +107,9 @@ const BriefModal = ({
 };
 
 BriefModal.propTypes = {
-    country_standpoint: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     IntervalField: PropTypes.func,
-    is_mx: PropTypes.bool,
     is_visible: PropTypes.bool,
     logout: PropTypes.func,
     onSubmit: PropTypes.func,

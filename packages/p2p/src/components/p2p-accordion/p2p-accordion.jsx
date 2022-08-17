@@ -34,7 +34,6 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
             state_ref = [...Array(list.length).keys()].reduce((acc, val) => ({ ...acc, [val]: false }), {});
         }
         setOpenIdx(state_ref);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_expand_all]);
 
     React.useLayoutEffect(() => {
@@ -54,7 +53,6 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
                 onChange(true);
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open_idx]);
 
     const onClick = index => setOpenIdx(prev_state => ({ ...prev_state, [index]: !prev_state[index] }));
@@ -92,11 +90,8 @@ const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, o
 
 P2PAccordion.propTypes = {
     className: PropTypes.string,
-    icon_close: PropTypes.string,
-    icon_open: PropTypes.string,
-    is_expand_all: PropTypes.bool, // Expands all Child elements
     list: PropTypes.arrayOf(PropTypes.object),
-    onChange: PropTypes.func,
+    is_expand_all: PropTypes.bool, // Expands all Child elements
 };
 
 export default P2PAccordion;

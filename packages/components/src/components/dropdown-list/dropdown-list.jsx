@@ -199,6 +199,4 @@ DropdownList.propTypes = {
     onItemSelection: PropTypes.func,
     style: PropTypes.object,
     portal_id: PropTypes.string,
-    onScrollStop: PropTypes.func,
-    setActiveIndex: PropTypes.func,
 };

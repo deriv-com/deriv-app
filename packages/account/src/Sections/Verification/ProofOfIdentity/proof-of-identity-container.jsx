@@ -29,7 +29,6 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
-    setIsCfdPoiCompleted,
 }) => {
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
@@ -77,6 +76,7 @@ const ProofOfIdentityContainer = ({
     const {
         idv,
         allow_poi_resubmission,
+        has_attempted_idv,
         identity_last_attempt,
         identity_status,
         is_age_verified,
@@ -100,6 +100,7 @@ const ProofOfIdentityContainer = ({
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
+                has_attempted_idv={has_attempted_idv}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
                 identity_last_attempt={identity_last_attempt}
@@ -113,21 +114,18 @@ const ProofOfIdentityContainer = ({
                 redirect_button={redirect_button}
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
-                setIsCfdPoiCompleted={setIsCfdPoiCompleted}
             />
         );
     } else if (
         !identity_last_attempt ||
         // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
-        (identity_status === identity_status_codes.verified && identity_status !== identity_last_attempt.status) ||
-        // Prioritise pending status from back office. We can't rely on last attempt as it doesn't get updated after manual upload (Should be refactored)
-        identity_status === identity_status_codes.pending
+        (identity_status === 'verified' && identity_status !== identity_last_attempt.status)
     ) {
         switch (identity_status) {
             case identity_status_codes.pending:
                 return (
                     <UploadComplete
-                        is_from_external={!!is_from_external}
+                        is_from_external={is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
                     />
@@ -135,7 +133,7 @@ const ProofOfIdentityContainer = ({
             case identity_status_codes.verified:
                 return (
                     <Verified
-                        is_from_external={!!is_from_external}
+                        is_from_external={is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
                     />
@@ -143,7 +141,7 @@ const ProofOfIdentityContainer = ({
             case identity_status_codes.expired:
                 return (
                     <Expired
-                        is_from_external={!!is_from_external}
+                        is_from_external={is_from_external}
                         redirect_button={redirect_button}
                         handleRequireSubmission={handleRequireSubmission}
                     />
@@ -178,13 +176,7 @@ const ProofOfIdentityContainer = ({
                 />
             );
         case service_code.manual:
-            return (
-                <Unsupported
-                    manual={manual}
-                    is_from_external={is_from_external}
-                    setIsCfdPoiCompleted={setIsCfdPoiCompleted}
-                />
-            );
+            return <Unsupported manual={manual} />;
         default:
             return null;
     }

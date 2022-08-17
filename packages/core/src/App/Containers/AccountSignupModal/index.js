@@ -1,3 +1,1 @@
-import AccountSignupModal from './account-signup-modal.jsx';
-
-export default AccountSignupModal;
+export default from './account-signup-modal.jsx';

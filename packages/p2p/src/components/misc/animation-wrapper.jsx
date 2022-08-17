@@ -25,8 +25,6 @@ const AnimationWrapper = ({ children, is_visible, onEntered, onExit }) => {
 AnimationWrapper.propTypes = {
     children: PropTypes.any,
     is_visible: PropTypes.bool,
-    onEntered: PropTypes.func,
-    onExit: PropTypes.func,
 };
 
 export default AnimationWrapper;

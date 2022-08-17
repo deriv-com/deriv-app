@@ -171,11 +171,6 @@ DataTable.propTypes = {
     getRowSize: PropTypes.func,
     onScroll: PropTypes.func,
     passthrough: PropTypes.object,
-    content_loader: PropTypes.elementType,
-    getActionColumns: PropTypes.func,
-    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    keyMapper: PropTypes.func,
-    preloaderCheck: PropTypes.func,
 };
 
 export default DataTable;

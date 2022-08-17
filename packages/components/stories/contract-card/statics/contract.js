@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import React from 'react';
 
 export const getCardLabels = () => ({
     APPLY: 'Apply',

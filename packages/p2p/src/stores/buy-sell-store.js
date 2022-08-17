@@ -5,7 +5,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
-import { removeTrailingZeros } from 'Utils/format-value';
+import { removeTrailingZeros } from 'Utils/format-value.js';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {

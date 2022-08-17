@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
-import { generateEffectiveRate } from 'Utils/format-value';
+import { generateEffectiveRate } from 'Utils/format-value.js';
 import './advertiser-page.scss';
 
 const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
@@ -135,7 +135,6 @@ AdvertiserPageRow.displayName = 'AdvertiserPageRow';
 
 AdvertiserPageRow.propTypes = {
     advert: PropTypes.object,
-    row: PropTypes.object,
     showAdPopup: PropTypes.func,
 };
 

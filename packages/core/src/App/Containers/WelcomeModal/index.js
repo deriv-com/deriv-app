@@ -1,3 +1,1 @@
-import WelcomeModal from './welcome-modal.jsx';
-
-export default WelcomeModal;
+export default from './welcome-modal.jsx';

@@ -227,10 +227,6 @@ AddCurrency.propTypes = {
     openRealAccountSignup: PropTypes.func,
     setShouldShowAllAvailableCurrencies: PropTypes.func,
     deposit_target: PropTypes.string,
-    onSubmit: PropTypes.func,
-    is_add_crypto: PropTypes.bool,
-    is_add_fiat: PropTypes.bool,
-    hasNoAvailableCrypto: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({

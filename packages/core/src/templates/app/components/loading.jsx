@@ -36,9 +36,7 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
 };
 
 Loading.propTypes = {
-    className: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    is_fullscreen: PropTypes.bool,
     is_slow_loading: PropTypes.bool,
     status: PropTypes.array,
     theme: PropTypes.string,

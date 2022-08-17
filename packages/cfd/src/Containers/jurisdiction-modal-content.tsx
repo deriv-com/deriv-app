@@ -673,6 +673,33 @@ const JurisdictionModalContent = ({
     return (
         <>
             <div className={`${card_classname}__wrapper`}>
+                {cardsToBeShown('svg') && (
+                    <JurisdictionCard
+                        type_of_card='svg'
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        synthetic_available_accounts={synthetic_available_accounts}
+                        financial_available_accounts={financial_available_accounts}
+                        account_type={account_type}
+                        poa_status={poa_status}
+                        poi_status={poi_status}
+                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                        disabled={disableCard('svg')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
+                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
+                        poa_verified={poa_verified}
+                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
+                        need_poi_for_vanuatu={need_poi_for_vanuatu}
+                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+                    />
+                )}
                 {cardsToBeShown('bvi') && (
                     <JurisdictionCard
                         type_of_card='bvi'
@@ -700,7 +727,6 @@ const JurisdictionModalContent = ({
                         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                     />
                 )}
-
                 {cardsToBeShown('maltainvest') && is_eu && (
                     <JurisdictionCard
                         type_of_card='maltainvest'
@@ -728,7 +754,6 @@ const JurisdictionModalContent = ({
                         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                     />
                 )}
-
                 {cardsToBeShown('vanuatu') && (
                     <JurisdictionCard
                         type_of_card='vanuatu'
@@ -767,34 +792,6 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('labuan')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
-                )}
-
-                {cardsToBeShown('svg') && (
-                    <JurisdictionCard
-                        type_of_card='svg'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('svg')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}

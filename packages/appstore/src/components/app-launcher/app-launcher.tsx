@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import { Icon } from '@deriv/components';
+import { Icon, Money } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Button, Text } from '@deriv/ui';
@@ -54,7 +54,7 @@ const AppLauncher = ({
                 </Text>
                 {is_app_installed && !show_active_balance && (
                     <Text type='paragraph-2' bold={true}>
-                        {balance.toFixed(2)} {currency}
+                        <Money currency={currency} amount={balance} should_format={false} show_currency={true} />
                     </Text>
                 )}
                 {(!is_app_installed || show_active_balance) && (
@@ -78,7 +78,7 @@ const AppLauncher = ({
                         {localize('Currency')}
                     </Text>
                     <Text type='subtitle-2' bold={true}>
-                        {balance.toFixed(2)} {currency}
+                        <Money currency={currency} amount={balance} should_format={false} show_currency={true} />
                     </Text>
                 </div>
             )}

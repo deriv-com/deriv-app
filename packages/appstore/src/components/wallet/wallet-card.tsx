@@ -114,18 +114,18 @@ const CardText = ({ balance, currency, demo, wallet_name }: CardText) => {
     if (balance) {
         return (
             <div>
-                <Text as='div' type='extra-small' bold={false}>
+                <Text type='extra-small' bold={false}>
                     {demo ? 'Demo' : wallet_title} {fiat_wallets.every(f => wallet_name !== f) && wallet_currency}{' '}
                     wallet
                 </Text>
-                <Text as='div' type='paragraph-2' bold>
+                <Text type='paragraph-2' bold>
                     {balance} {wallet_currency}
                 </Text>
             </div>
         );
     }
     return (
-        <Text as='div' type='paragraph-2' bold={false}>
+        <Text type='paragraph-2' bold={false}>
             {demo ? 'Demo' : wallet_title} wallet
         </Text>
     );

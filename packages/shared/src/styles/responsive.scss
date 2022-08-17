@@ -31,21 +31,13 @@ $unit: 1px;
 ///
 @function get-breakpoint($breakpoint, $breakpoints: $breakpoints) {
     $breakpoints-list: map-keys($breakpoints);
+    $has-prev-bp: (index($breakpoints-list, $breakpoint) - 1) == 0;
+    $has-next-bp: (index($breakpoints-list, $breakpoint) + 1) == 0 or
+        ((index($breakpoints-list, $breakpoint) + 1) > length($breakpoints-list));
 
     $bp-values: (
-        'prev':
-            if(
-                (index($breakpoints-list, $breakpoint) - 1) == 0,
-                '',
-                nth($breakpoints-list, (index($breakpoints-list, $breakpoint) - 1))
-            ),
-        'next':
-            if(
-                (index($breakpoints-list, $breakpoint) + 1) == 0 or
-                    ((index($breakpoints-list, $breakpoint) + 1) > length($breakpoints-list)),
-                '',
-                nth($breakpoints-list, (index($breakpoints-list, $breakpoint) + 1))
-            ),
+        'prev': if($has-prev-bp, '', nth($breakpoints-list, (index($breakpoints-list, $breakpoint) - 1))),
+        'next': if($has-next-bp, '', nth($breakpoints-list, (index($breakpoints-list, $breakpoint) + 1))),
     );
 
     @return $bp-values;

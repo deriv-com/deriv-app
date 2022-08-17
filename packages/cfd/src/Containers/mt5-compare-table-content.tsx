@@ -261,7 +261,7 @@ const DMT5CompareModalContent = ({
                 get_settings_response = account_settings;
             }
             const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-                get_settings_response as GetSettings;
+                get_settings_response;
             if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
                 setHasSubmittedPersonalDetails(true);
             }

@@ -1,3 +1,1 @@
-import SmartTraderIFrame from './SmartTraderIFrame.jsx';
-
-export default SmartTraderIFrame;
+export default from './SmartTraderIFrame.jsx';

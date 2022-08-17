@@ -13,6 +13,7 @@ jest.mock('@deriv/account', () => ({
     FormSubHeader: () => <div>FormSubHeader</div>,
 }));
 
+jest.mock('../../Components/cfd-personal-details-form', () => jest.fn(() => <div>CFDPersoinalDetails</div>));
 jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div>CFDPOA</div>));
 jest.mock('../../Components/cfd-poi', () => jest.fn(() => <div>CFDPOI</div>));
 
@@ -32,21 +33,34 @@ const toHavaClassFn = (item, class_name, should_have) => {
     }
 };
 
-const testAllStepsFn = (steps, step_no) => {
+const testAllStepsFn = (screen, steps, step_no) => {
     steps.map((step, index) => {
+        const item = screen.getByText(step.header);
+        const item_parent = item.parentElement.firstChild;
         if (index === step_no) {
             getByTextFn(step.body, true);
         } else {
             getByTextFn(step.body, false);
+        }
+        if (index <= step_no) {
+            toHavaClassFn(item_parent, 'identifier--active', true);
+        } else {
+            toHavaClassFn(item_parent, 'identifier--active', false);
         }
     });
 };
 
 const steps = [
     {
+        header: 'Personal details',
+        body: 'CFDPersoinalDetails',
+    },
+    {
+        header: 'Proof of identity',
         body: 'CFDPOI',
     },
     {
+        header: 'Proof of address',
         body: 'CFDPOA',
     },
 ];
@@ -70,7 +84,6 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
 
     const mock_props = {
         addNotificationByKey: jest.fn(),
-        fetchStatesList: jest.fn(),
         openPendingDialog: jest.fn(),
         refreshNotifications: jest.fn(),
         removeNotificationByKey: jest.fn(),
@@ -167,19 +180,36 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     it('should render CFDFinancialStpRealAccountSignup component', () => {
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        expect(screen.getByTestId('dt_cfd_financial_stp_modal_body')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cfd_financial_stp_modal_heading')).toBeInTheDocument();
+    });
+
+    it('should show headers properly', () => {
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
+
+        getByTextFn('Complete your personal details', true);
+        steps.map((step, index) => {
+            getByTextFn(step.header, true);
+            getByTextFn(index + 1, true);
+        });
     });
 
     it('should render properly for the first step content', () => {
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        testAllStepsFn(steps, 0);
+        testAllStepsFn(screen, steps, 0);
     });
 
     it('should render properly for the second step content', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([1, () => {}]);
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
-        testAllStepsFn(steps, 1);
+        testAllStepsFn(screen, steps, 1);
+    });
+
+    it('should render properly for the third step content', () => {
+        jest.spyOn(React, 'useState').mockReturnValueOnce([2, () => {}]);
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
+
+        testAllStepsFn(screen, steps, 2);
     });
 });

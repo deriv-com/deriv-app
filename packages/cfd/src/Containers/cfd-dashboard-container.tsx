@@ -9,14 +9,9 @@ import {
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
 import { TCFDDashboardContainer } from './props.types';
-import classNames from 'classnames';
 
 const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on, dxtrade_tokens }: TCFDDashboardContainer) => (
-    <div
-        className={classNames('cfd-dashboard__download-center', {
-            'cfd-dashboard__download-center--mt5': platform === CFD_PLATFORMS.MT5,
-        })}
-    >
+    <div className='cfd-dashboard__download-center'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'
@@ -148,16 +143,6 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on, dxtrad
                     >
                         <Icon icon='IcInstallationApple' width={120} height={40} />
                     </a>
-                    {platform === CFD_PLATFORMS.MT5 && (
-                        <a
-                            className='cfd-dashboard__download-center-options--mobile-link'
-                            href={getPlatformMt5DownloadLink('huawei')}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <Icon icon='IcInstallationHuawei' width={120} height={40} />
-                        </a>
-                    )}
                 </div>
             </div>
         </div>

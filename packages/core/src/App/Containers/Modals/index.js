@@ -1,3 +1,1 @@
-import AppModals from './app-modals.jsx';
-
-export default AppModals;
+export default from './app-modals.jsx';

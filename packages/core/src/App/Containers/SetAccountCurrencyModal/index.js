@@ -1,3 +1,1 @@
-import SetAccountCurrencyModal from './set-currency-modal.jsx';
-
-export default SetAccountCurrencyModal;
+export default from './set-currency-modal.jsx';

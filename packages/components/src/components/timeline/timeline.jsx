@@ -12,7 +12,7 @@ const Oval = ({ children }) => {
     );
 };
 
-const Timeline = ({ children, disabled_items, ...props }) => {
+const Timeline = ({ children, ...props }) => {
     return (
         <div {...props}>
             {children.map((child, idx) => (
@@ -20,7 +20,6 @@ const Timeline = ({ children, disabled_items, ...props }) => {
                     key={idx}
                     className={classNames('dc-timeline__flex', {
                         'dc-timeline__flex--no-border': children.length === idx + 1,
-                        'dc-timeline__flex--disabled': disabled_items && disabled_items.includes(idx + 1),
                     })}
                 >
                     <Oval>{idx + 1}</Oval>

@@ -281,23 +281,12 @@ export default class NotificationStore extends BaseStore {
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (needs_verification.includes('identity')) {
-                    if (
-                        poi_name_mismatch &&
-                        identity?.services.onfido.last_rejected &&
-                        !personal_details_locked &&
-                        onfido_submissions_left > 0
-                    ) {
+                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
+                    if (!personal_details_locked && onfido_submissions_left > 0) {
                         this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
-                    } else if (identity.status === 'rejected' && onfido_submissions_left === 0) {
+                    } else {
                         this.addNotificationMessage(this.client_notifications.onfido_failed);
-                    } else if (is_identity_verification_needed) {
-                        this.addNotificationMessage(this.client_notifications.identity);
                     }
-                }
-
-                if (!needs_verification.length && document.status === 'verified' && identity.status === 'verified') {
-                    this.addNotificationMessage(this.client_notifications.poa_poi_verified);
                 }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
@@ -359,8 +348,10 @@ export default class NotificationStore extends BaseStore {
                             this.addNotificationMessage(this.client_notifications.unwelcome);
                         }
                     }
+                    if (is_identity_verification_needed) {
+                        this.addNotificationMessage(this.client_notifications.identity);
+                    }
                 }
-
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
                 if (is_p2p_visible) {
@@ -808,12 +799,6 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
-            },
-            poa_poi_verified: {
-                key: 'poa_poi_verified',
-                header: localize('Proof of identity and address verified'),
-                type: 'announce',
-                should_hide_close_btn: false,
             },
             poi_name_mismatch: {
                 action: {

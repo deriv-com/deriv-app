@@ -78,7 +78,6 @@ const IconTradeTypes = ({ type, className, ...props }) => {
 
 IconTradeTypes.propTypes = {
     type: PropTypes.string,
-    className: PropTypes.string,
 };
 
 export default IconTradeTypes;

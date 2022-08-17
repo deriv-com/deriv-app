@@ -59,7 +59,6 @@ MenuLinks.propTypes = {
             text: PropTypes.func,
         })
     ),
-    is_logged_in: PropTypes.bool,
 };
 
 export { MenuLinks };

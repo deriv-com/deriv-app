@@ -1,3 +1,1 @@
-import UpdateEmailModal from './update-email-modal.jsx';
-
-export default UpdateEmailModal;
+export default from './update-email-modal.jsx';

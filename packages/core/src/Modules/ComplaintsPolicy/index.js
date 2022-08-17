@@ -1,3 +1,1 @@
-import ComplaintsPolicyContent from './Components/complaints-policy.jsx';
-
-export default ComplaintsPolicyContent;
+export default from './Components/complaints-policy.jsx';

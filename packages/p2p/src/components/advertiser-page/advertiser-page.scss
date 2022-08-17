@@ -18,7 +18,7 @@
             display: flex;
 
             @include mobile {
-                margin: 0 1.6rem;
+                margin: 0 0 1rem;
 
                 .dp2p-avatar {
                     align-self: center;
@@ -93,21 +93,18 @@
         padding-bottom: 0.7rem;
 
         @include mobile {
-            flex-flow: row wrap;
+            padding-top: 0.7rem;
         }
 
         &--row {
             align-items: center;
-            border-right: 1px solid var(--general-section-1);
+            border-left: 1px solid var(--general-section-1);
             display: flex;
             padding: 0 0.8rem;
 
             &:first-child {
                 padding-left: unset;
-            }
-
-            &:last-child {
-                border-right: unset;
+                border-left: unset;
             }
         }
 
@@ -127,6 +124,10 @@
     &__row {
         display: flex;
         flex-direction: row;
+    }
+
+    &__joined-since {
+        margin-bottom: 0.7rem;
     }
 
     &__stats {

@@ -23,25 +23,10 @@ describe('<CountrySelector/>', () => {
             ],
             selected_country: '',
             setSelectedCountry: jest.fn(),
-            show_helper_msg: '',
         };
     });
 
-    it('should render CountrySelector component not external with helper message', () => {
-        mock_props.show_helper_msg = true;
-
-        const { container } = render(<CountrySelector {...mock_props} />);
-
-        expect(screen.getByText('Proof of identity')).toBeInTheDocument();
-        expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
-        expect(screen.getByText('Country')).toBeInTheDocument();
-        expect(screen.getByText('Try submitting an ID document instead.')).toBeInTheDocument();
-
-        const div_with_external_class = container.querySelector('.external-dropdown');
-        expect(div_with_external_class).not.toBeInTheDocument();
-    });
-
-    it('should render CountrySelector component external without hepler message', () => {
+    it('should render CountrySelector component external', () => {
         mock_props.is_from_external = true;
 
         const { container } = render(<CountrySelector {...mock_props} />);
@@ -49,7 +34,6 @@ describe('<CountrySelector/>', () => {
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
         expect(screen.getByText('Country')).toBeInTheDocument();
-        expect(screen.queryByText('Try submitting an ID document instead.')).not.toBeInTheDocument();
 
         const div_with_external_class = container.querySelector('.external-dropdown');
         expect(div_with_external_class).toBeInTheDocument();

@@ -1,20 +1,20 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
-import { TJurisdictionCard } from '../../../props.types';
+import { TJurisdictionCardProps } from 'Containers/props.types';
 import VerificationStatusBanner from './verification-status-banner';
 
 const JurisdictionCard = ({
+    account_type,
+    disabled,
     jurisdiction_selected_shortcode,
-    synthetic_available_accounts,
     financial_available_accounts,
     setJurisdictionSelectedShortcode,
-    account_type,
+    synthetic_available_accounts,
     type_of_card,
-    disabled,
-}: TJurisdictionCard) => {
+}: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;

@@ -160,20 +160,7 @@ export type TCFDPasswordManagerModal = {
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };
 
-// export type TAvailableAccountAPI = [
-//     {
-//         market_type: string;
-//         name: string;
-//         requirements: {
-//             signup: Array<string>;
-//             withdrawal: Array<string>;
-//         };
-//         shortcode: string;
-//         sub_account_type: string;
-//     }
-// ];
-
-export type TJurisdictionCard = {
+export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
@@ -182,6 +169,25 @@ export type TJurisdictionCard = {
     type_of_card: string;
     disabled: boolean;
 };
+
+export type TVerificationStatusBannerProps = {
+    account_status: GetAccountStatus;
+    account_type: string;
+    card_classname: string;
+    disabled: boolean;
+    is_fully_authenticated: boolean;
+    is_virtual: boolean;
+    type_of_card: string;
+};
+
+export type TJurisdictionCheckBoxProps = {
+    account_status: GetAccountStatus;
+    class_name: string;
+    is_checked: boolean;
+    jurisdiction_selected_shortcode: string;
+    onCheck: () => void;
+};
+
 type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
@@ -212,13 +218,13 @@ export type TJurisdictionModalProps = {
     real_financial_accounts_existing_data: TExistingData;
 };
 
-export type TJurisdictionModalContent = {
+export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    synthetic_available_accounts: TTradingPlatformAvailableAccount[]; // Changed Prop type as the input is of type TTradingPlatformAvailableAccount
-    financial_available_accounts: TTradingPlatformAvailableAccount[]; // Changed Prop type as the input is of type TTradingPlatformAvailableAccount
+    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
+    financial_available_accounts: TTradingPlatformAvailableAccount[];
     checked: boolean;
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;
@@ -226,7 +232,7 @@ export type TJurisdictionModalContent = {
     is_virtual: boolean;
 };
 
-export type TJurisdictionModalFootNote = {
+export type TJurisdictionModalFootNoteProps = {
     account_status: GetAccountStatus;
     card_classname: string;
     account_type: string;

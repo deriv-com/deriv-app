@@ -1,25 +1,15 @@
 import React from 'react';
-
 import { Text, Checkbox, StaticUrl } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { isMobile, getAuthenticationStatusInfo } from '@deriv/shared';
-
-import { GetAccountStatus } from '@deriv/api-types';
-
-type TJurisdictionCheckBoxProps = {
-    jurisdiction_selected_shortcode: string;
-    onCheck: () => void;
-    is_checked: boolean;
-    account_status: GetAccountStatus;
-    class_name: string;
-};
+import { Localize } from '@deriv/translations';
+import { TJurisdictionCheckBoxProps } from '../../props.types';
 
 const JurisdictionCheckBox = ({
-    onCheck,
-    is_checked,
-    jurisdiction_selected_shortcode,
     account_status,
     class_name,
+    is_checked,
+    jurisdiction_selected_shortcode,
+    onCheck,
 }: TJurisdictionCheckBoxProps) => {
     const { poi_poa_verified_for_bvi_labuan_maltainvest, poi_poa_verified_for_vanuatu } =
         getAuthenticationStatusInfo(account_status);

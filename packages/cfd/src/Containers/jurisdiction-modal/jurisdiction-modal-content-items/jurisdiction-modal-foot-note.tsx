@@ -1,15 +1,15 @@
 import React from 'react';
-import { TJurisdictionModalFootNote } from '../../props.types';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { TJurisdictionModalFootNoteProps } from '../../props.types';
 
 const JurisdictionModalFootNote = ({
     account_status,
     account_type,
     jurisdiction_selected_shortcode,
     card_classname,
-}: TJurisdictionModalFootNote) => {
+}: TJurisdictionModalFootNoteProps) => {
     const {
         need_poi_for_vanuatu,
         need_poi_for_bvi_labuan_maltainvest,

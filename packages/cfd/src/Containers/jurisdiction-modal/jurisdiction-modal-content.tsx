@@ -1,5 +1,5 @@
 import React from 'react';
-import { TJurisdictionModalContent } from '../props.types';
+import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-content-items/jurisdiction-modal-checkbox';
 import JurisdictionCard from './jurisdiction-modal-content-items/jurisdiction-modal-card/jurisdiction-card';
 import JurisdictionModalFootNote from './jurisdiction-modal-content-items/jurisdiction-modal-foot-note';
@@ -16,7 +16,7 @@ const JurisdictionModalContent = ({
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
     is_virtual,
-}: TJurisdictionModalContent) => {
+}: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
     const cardsToBeShown = (type_of_card: string) =>

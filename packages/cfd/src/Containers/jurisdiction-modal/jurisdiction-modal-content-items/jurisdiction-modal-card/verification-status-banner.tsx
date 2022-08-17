@@ -1,29 +1,19 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import { GetAccountStatus } from '@deriv/api-types';
+import { TVerificationStatusBannerProps } from 'Containers/props.types';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-type TVerificationStatusBannerProps = {
-    type_of_card: string;
-    account_status: GetAccountStatus;
-    is_virtual: boolean;
-    card_classname: string;
-    account_type: string;
-    disabled: boolean;
-    is_fully_authenticated: boolean;
-};
-
 const VerificationStatusBanner = ({
-    type_of_card,
     account_status,
-    is_virtual,
-    card_classname,
     account_type,
+    card_classname,
     disabled,
     is_fully_authenticated,
+    is_virtual,
+    type_of_card,
 }: TVerificationStatusBannerProps) => {
     const {
         need_poi_for_vanuatu,

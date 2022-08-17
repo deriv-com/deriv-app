@@ -58,7 +58,7 @@ describe('<Cashier />', () => {
         is_p2p_enabled: true,
         is_onramp_tab_visible: true,
         is_visible: true,
-        routes: getRoutesConfig({})[0].routes,
+        routes: getRoutesConfig()[0].routes,
         routeBackInApp: jest.fn(),
         onMount: jest.fn(),
         setAccountSwitchListener: jest.fn(),

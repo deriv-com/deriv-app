@@ -1,10 +1,29 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 import CFDDashboard from '../cfd-dashboard';
 import { BrowserRouter } from 'react-router-dom';
 import { CFD_PLATFORMS, getCFDPlatformLabel, routes } from '@deriv/shared';
+import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 
-let mock_connect_props = {
+type TMockConnectProps = {
+    isEligibleForMoreRealMt5: () => boolean;
+    isEligibleForMoreDemoMt5Svg: () => boolean;
+    setMT5TradeAccount: () => void;
+    dxtrade_tokens: { [key: string]: string };
+    landing_companies?: LandingCompany;
+    current_list?: Record<
+        string,
+        DetailsOfEachMT5Loginid & { account_id?: string; display_login: string; enabled?: number; platform?: string }
+    >;
+};
+
+type TRenderWithRouterParams = {
+    rerender?: ReturnType<typeof render>['rerender'];
+    component: React.ReactNode;
+};
+
+const mock_connect_props: TMockConnectProps = {
     isEligibleForMoreRealMt5: jest.fn(() => true),
     isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
     setMT5TradeAccount: jest.fn(),
@@ -34,24 +53,14 @@ jest.mock('Stores/connect', () => ({
 }));
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
-    ResetTradingPasswordModal: props => (
-        <div style={{ display: props.is_visible ? 'block' : 'none' }}>ResetTradingPasswordModal</div>
-    ),
+    ResetTradingPasswordModal: props => (props.is_visible ? 'ResetTradingPasswordModal' : ''),
 }));
-jest.mock('../../Components/success-dialog.jsx', () => () => <div>SuccessDialog</div>);
-jest.mock('../cfd-password-modal.tsx', () => props => (
-    <div style={{ display: props.is_cfd_password_modal_enabled ? 'block' : 'none' }}>CFDPasswordModal</div>
-));
-jest.mock('../cfd-top-up-demo-modal', () => props => (
-    <div style={{ display: props.is_top_up_virtual_open ? 'block' : 'none' }}>CFDTopUpDemoModal</div>
-));
-jest.mock('../cfd-personal-details-modal', () => () => <div>CFDPersonalDetailsModal</div>);
-jest.mock('../mt5-trade-modal', () => props => (
-    <div style={{ display: props.is_open ? 'block' : 'none' }}>MT5TradeModal</div>
-));
-jest.mock('../jurisdiction-modal', () => props => (
-    <div style={{ display: props.is_jurisdiction_modal_visible ? 'block' : 'none' }}>JurisdictionModal</div>
-));
+jest.mock('../../Components/success-dialog.jsx', () => () => 'SuccessDialog');
+jest.mock('../cfd-password-modal.tsx', () => props => props.is_cfd_password_modal_enabled ? 'CFDPasswordModal' : '');
+jest.mock('../cfd-top-up-demo-modal', () => props => props.is_top_up_virtual_open ? 'CFDTopUpDemoModal' : '');
+jest.mock('../cfd-personal-details-modal', () => () => 'CFDPersonalDetailsModal');
+jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' : '');
+jest.mock('../jurisdiction-modal', () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : '');
 
 describe('<CFDDashboard />', () => {
     let props;
@@ -208,7 +217,7 @@ describe('<CFDDashboard />', () => {
             virtual_company: 'virtual',
         };
         mock_connect_props.current_list = {
-            ['mt5.real.synthetic_svg@p01_ts03']: {
+            'mt5.real.synthetic_svg@p01_ts03': {
                 account_type: 'real',
                 balance: 0,
                 country: 'id',
@@ -235,7 +244,7 @@ describe('<CFDDashboard />', () => {
                 },
                 sub_account_type: 'financial',
             },
-            ['mt5.demo.synthetic_svg@p01_ts02']: {
+            'mt5.demo.synthetic_svg@p01_ts02': {
                 account_type: 'demo',
                 balance: 10000,
                 country: 'id',
@@ -262,7 +271,7 @@ describe('<CFDDashboard />', () => {
                 },
                 sub_account_type: 'financial',
             },
-            ['dxtrade.real.synthetic@synthetic']: {
+            'dxtrade.real.synthetic@synthetic': {
                 account_id: 'DXR1000',
                 account_type: 'real',
                 balance: 0,
@@ -281,8 +290,9 @@ describe('<CFDDashboard />', () => {
 
     const portalRoot = global.document.createElement('div');
     portalRoot.setAttribute('id', 'deriv_app');
+    // eslint-disable-next-line testing-library/no-node-access
     const body = global.document.querySelector('body');
-    body.appendChild(portalRoot);
+    body?.appendChild(portalRoot);
 
     const dmt5_welcome_header = /welcome to deriv mt5 \(dmt5\) dashboard/i;
     const derivx_welcome_header = /welcome to deriv x/i;
@@ -296,13 +306,13 @@ describe('<CFDDashboard />', () => {
     const mt5_account_error = /some of your dmt5 accounts are unavailable at the moment./i;
     const dxtrade_account_error = /some of your deriv X accounts are unavailable at the moment./i;
 
-    const renderwithRouter = ({ component, callback }) => {
-        if (callback) return callback(<BrowserRouter>{component}</BrowserRouter>);
+    const renderwithRouter = ({ component, rerender }: TRenderWithRouterParams) => {
+        if (rerender) return rerender(<BrowserRouter>{component}</BrowserRouter>);
         return render(<BrowserRouter>{component}</BrowserRouter>);
     };
 
     it('CFDDashboard should be rendered correctly for DMT5 & for Deriv X', () => {
-        const { rerender } = renderwithRouter({ component: <CFDDashboard {...props} /> });
+        const { rerender } = renderwithRouter({ component: <CFDDashboard {...props} /> }) as ReturnType<typeof render>;
 
         expect(screen.getByRole('heading', { name: dmt5_welcome_header })).toBeInTheDocument();
         expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
@@ -312,12 +322,12 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: compare_accounts_button_label })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: dmt5_download_header })).toBeInTheDocument();
-        screen.getAllByText(/modal/i).forEach(modal => {
-            expect(modal).not.toBeVisible();
+        screen.queryAllByText(/modal/i).forEach(modal => {
+            expect(modal).not.toBeInTheDocument();
         });
 
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: <CFDDashboard {...props} platform={CFD_PLATFORMS.DXTRADE} location={{ pathname: '/derivx' }} />,
         });
 
@@ -376,14 +386,16 @@ describe('<CFDDashboard />', () => {
             name: 'Poland',
             virtual_company: 'virtual',
         };
-        const { rerender } = renderwithRouter({ component: <CFDDashboard {...props} is_logged_in is_eu /> });
+        const { rerender } = renderwithRouter({
+            component: <CFDDashboard {...props} is_logged_in is_eu />,
+        }) as ReturnType<typeof render>;
 
         expect(screen.getByRole('button', { name: account_information_button_label })).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: compare_accounts_button_label })).not.toBeInTheDocument();
 
         mock_connect_props.landing_companies = {};
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: <CFDDashboard {...props} is_logged_in={false} is_eu_country />,
         });
 
@@ -393,20 +405,20 @@ describe('<CFDDashboard />', () => {
     it('Should show error when is_logged_in & has real/demo account error in DMT5/Deriv X', () => {
         const { rerender } = renderwithRouter({
             component: <CFDDashboard {...props} is_logged_in has_mt5_real_account_error />,
-        });
+        }) as ReturnType<typeof render>;
 
         expect(screen.getByText(mt5_account_error)).toBeInTheDocument();
 
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: <CFDDashboard {...props} is_logged_in has_mt5_demo_account_error />,
         });
         fireEvent.click(screen.getByText(demo_tab_name));
         expect(screen.getByText(mt5_account_error)).toBeInTheDocument();
 
-        getCFDPlatformLabel.mockReturnValue('Deriv X');
+        (getCFDPlatformLabel as jest.Mock).mockReturnValue('Deriv X');
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: (
                 <CFDDashboard
                     {...props}
@@ -420,7 +432,7 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByText(dxtrade_account_error)).toBeInTheDocument();
 
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: (
                 <CFDDashboard
                     {...props}
@@ -437,12 +449,12 @@ describe('<CFDDashboard />', () => {
     it('Should show Loading when is_loading or when is_logging_in in DMT5/Deriv X', () => {
         const { rerender } = renderwithRouter({
             component: <CFDDashboard {...props} platform={CFD_PLATFORMS.MT5} is_loading />,
-        });
+        }) as ReturnType<typeof render>;
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: dmt5_welcome_header })).not.toBeInTheDocument();
 
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: <CFDDashboard {...props} platform={CFD_PLATFORMS.DXTRADE} is_logging_in />,
         });
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
@@ -487,14 +499,14 @@ describe('<CFDDashboard />', () => {
     it('Top up button in DMT5 (= Fund transfer button in Deriv X) should redirect to Cashier when in Real, & should trigger CFDTopUpDemoModal when in Demo', () => {
         const { rerender } = renderwithRouter({
             component: <CFDDashboard {...props} is_logged_in />,
-        });
+        }) as ReturnType<typeof render>;
         fireEvent.click(screen.getByRole('button', { name: top_up_button_label }));
         expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(1);
         expect(global.window.location.pathname).toBe(routes.cashier_acc_transfer);
 
-        global.window.location = { pathname: routes.dxtrade, hash: '' };
+        global.window.location = { pathname: routes.dxtrade, hash: '' } as (string | Location) & Location;
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: <CFDDashboard {...props} is_logged_in platform={CFD_PLATFORMS.DXTRADE} />,
         });
         fireEvent.click(screen.getByRole('button', { name: /fund transfer/i }));
@@ -502,13 +514,13 @@ describe('<CFDDashboard />', () => {
         expect(global.window.location.pathname).toBe(routes.cashier_acc_transfer);
 
         renderwithRouter({
-            callback: rerender,
+            rerender,
             component: <CFDDashboard {...props} is_logged_in platform={CFD_PLATFORMS.MT5} />,
         });
         fireEvent.click(screen.getByText(demo_tab_name));
         fireEvent.click(screen.getByRole('button', { name: top_up_button_label }));
         expect(props.setCurrentAccount).toHaveBeenCalledWith(
-            mock_connect_props.current_list['mt5.demo.synthetic_svg@p01_ts02'],
+            mock_connect_props.current_list?.['mt5.demo.synthetic_svg@p01_ts02'],
             {
                 category: 'demo',
                 type: 'synthetic',

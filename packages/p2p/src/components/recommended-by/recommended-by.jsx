@@ -7,31 +7,36 @@ import RecommendedModal from './recommended-modal.jsx';
 
 const RecommendedBy = ({ recommended_average, recommended_count }) => {
     const [is_recommended_modal_open, setIsRecommendedModalOpen] = React.useState(false);
-    const message =
-        recommended_count === 1
-            ? localize('Recommended by {{recommended_count}} trader', {
-                  recommended_count,
-              })
-            : localize('Recommended by {{recommended_count}} traders', {
-                  recommended_count,
-              });
+    const getRecommendedMessage = () => {
+        if (recommended_count) {
+            if (recommended_count === 1) {
+                return localize('Recommended by {{recommended_count}} trader', {
+                    recommended_count,
+                });
+            }
+            return localize('Recommended by {{recommended_count}} traders', {
+                recommended_count,
+            });
+        }
+        return localize('Recommended by 0 traders');
+    };
 
     return (
         <React.Fragment>
             <RecommendedModal
                 is_recommended_modal_open={is_recommended_modal_open}
-                message={message}
+                message={getRecommendedMessage()}
                 setIsRecommendedModalOpen={setIsRecommendedModalOpen}
             />
             <Popover
                 alignment='top'
                 className='recommended-by--container'
-                message={message}
+                message={getRecommendedMessage()}
                 onClick={isMobile() ? () => setIsRecommendedModalOpen(true) : () => {}}
             >
                 <Icon className='recommended-by--icon' icon='IcThumbsUp' size={14} />
                 <Text color='less-prominent' line_height='s' size={isMobile() ? 'xxxs' : 'xs'}>
-                    {`${recommended_average}%`}
+                    {`${recommended_average !== null ? recommended_average : 0}%`}
                 </Text>
             </Popover>
         </React.Fragment>

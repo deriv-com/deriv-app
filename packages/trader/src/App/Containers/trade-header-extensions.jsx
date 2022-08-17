@@ -18,7 +18,7 @@ const TradeHeaderExtensions = ({
     const show_positions_toggle = location.pathname !== routes.mt5;
     const show_component = is_logged_in && show_positions_toggle;
 
-    const PopulateHeaderfunction = React.useCallback(() => {
+    const populateHeaderfunction = React.useCallback(() => {
         const header_items = show_component && (
             <MobileWrapper>
                 <MobxContentProvider store={store}>
@@ -42,7 +42,7 @@ const TradeHeaderExtensions = ({
                 }
             }
 
-            PopulateHeaderfunction();
+            populateHeaderfunction();
         };
 
         waitForLogin();
@@ -51,7 +51,7 @@ const TradeHeaderExtensions = ({
     }, [
         onMountCashier,
         onMountPositions,
-        PopulateHeaderfunction,
+        populateHeaderfunction,
         populateHeaderExtensions,
         setAccountSwitchListener,
         store,
@@ -59,7 +59,7 @@ const TradeHeaderExtensions = ({
     ]);
 
     React.useEffect(() => {
-        PopulateHeaderfunction();
+        populateHeaderfunction();
     });
 
     return null;

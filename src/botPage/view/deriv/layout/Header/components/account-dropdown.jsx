@@ -28,7 +28,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
   const { setIsAccDropdownOpen, virtual } = props;
   const [activeTab, setActiveTab] = React.useState(virtual ? "demo" : "real");
   const [show_logout_modal, updaetShowLogoutModal] = React.useState(false)
-  const { total_deriv, accounts, balance, currency } = useSelector(state => state.client);
+  const { accounts, balance, currency } = useSelector(state => state.client);
   const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
   const container_ref = React.useRef();
   const dispatch = useDispatch();
@@ -103,7 +103,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
             <span className="account__switcher-total-balance-amount account__switcher-balance">
               
               {activeTab === "demo" ? getTotalDemo(accounts) : getBalance}
-              <span className="symbols">&nbsp;{activeTab === "demo" ? "USD" : total_deriv.currency}</span>
+              <span className="symbols">&nbsp;{activeTab === "demo" ? "USD" : currency}</span>
             </span>
           </div>
           <Separator />

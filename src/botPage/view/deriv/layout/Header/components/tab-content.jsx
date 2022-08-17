@@ -83,7 +83,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                         || "unknown"}.svg`}
                     />
                     <span>
-                      {(!currency) ? <span className="symbols">No currency assigned</span> : <></>}
+                      {!currency && (<span className="symbols">{translate("No currency assigned")}</span>)}
                       {demo_account
                         ? translate("Demo")
                         : config.currency_name_map[currency]?.name ||
@@ -94,8 +94,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                       </div>
                     </span>
                     <span className="account__switcher-balance test">
-                      {console.log('function called', getBalance())}
-                      {account.currency ? getBalance() : ""}
+                      {account.currency && getBalance()}
                       <span className="symbols test2">
                         &nbsp;
                         {account?.currency === "UST"

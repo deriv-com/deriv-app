@@ -95,7 +95,7 @@ const TransferConfirm = ({
     return (
         <div
             className={classNames('cashier__wrapper--align-center', {
-                confirm: !is_payment_agent_withdraw,
+                'transfer-confirm': !is_payment_agent_withdraw,
             })}
         >
             <Icon

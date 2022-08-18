@@ -23,7 +23,7 @@ const initRoutesConfig = is_cra => {
                     component: Deposit,
                     getTitle: () => localize('Deposit'),
                     icon_component: 'IcCashierAdd',
-                    is_affiliate: false,
+                    is_visible_for: [],
                     default: true,
                 },
                 {
@@ -31,35 +31,35 @@ const initRoutesConfig = is_cra => {
                     component: Withdrawal,
                     getTitle: () => localize('Withdrawal'),
                     icon_component: 'IcCashierMinus',
-                    is_affiliate: true,
+                    is_visible_for: ['affiliate'],
                 },
                 {
                     path: routes.cashier_pa,
                     component: PaymentAgent,
                     getTitle: () => localize('Payment agents'),
                     icon_component: 'IcPaymentAgent',
-                    is_affiliate: false,
+                    is_visible_for: [],
                 },
                 {
                     path: routes.cashier_acc_transfer,
                     component: AccountTransfer,
                     getTitle: () => localize('Transfer'),
                     icon_component: 'IcAccountTransfer',
-                    is_affiliate: true,
+                    is_visible_for: ['affiliate'],
                 },
                 {
                     path: routes.cashier_pa_transfer,
                     component: PaymentAgentTransfer,
                     getTitle: () => localize('Transfer to client'),
                     icon_component: 'IcAccountTransfer',
-                    is_affiliate: false,
+                    is_visible_for: [],
                 },
                 {
                     path: routes.cashier_p2p,
                     component: P2PCashier,
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
-                    is_affiliate: false,
+                    is_visible_for: [],
                 },
                 {
                     path: routes.cashier_p2p_verification,
@@ -67,7 +67,7 @@ const initRoutesConfig = is_cra => {
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
                     is_invisible: true,
-                    is_affiliate: false,
+                    is_visible_for: [],
                 },
                 {
                     id: 'gtm-onramp-tab',
@@ -75,7 +75,7 @@ const initRoutesConfig = is_cra => {
                     component: OnRamp,
                     getTitle: () => localize('Fiat onramp'),
                     icon_component: 'IcCashierOnRamp',
-                    is_affiliate: false,
+                    is_visible_for: [],
                 },
             ],
         },
@@ -84,7 +84,7 @@ const initRoutesConfig = is_cra => {
     if (is_cra) {
         cashier_module.forEach(cashier => {
             if (cashier.routes) {
-                cashier.routes = cashier.routes.filter(route => route.is_affiliate);
+                cashier.routes = cashier.routes.filter(route => route.is_visible_for.includes('affiliate'));
             }
         });
     }
@@ -103,7 +103,6 @@ const getRoutesConfig = is_cra => {
         cra_routes_config = initRoutesConfig(true);
         cra_routes_config.push(route_default);
     }
-
     return is_cra ? cra_routes_config : routes_config;
 };
 

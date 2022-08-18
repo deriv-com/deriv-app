@@ -50,4 +50,5 @@ CircularProgress.propTypes = {
     radius: PropTypes.number,
     stroke: PropTypes.number,
     warning_limit: PropTypes.number,
+    icon: PropTypes.string,
 };

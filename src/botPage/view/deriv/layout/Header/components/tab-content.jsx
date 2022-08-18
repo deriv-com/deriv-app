@@ -91,9 +91,9 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                         {acc} 
                       </div>
                     </span>
-                    <span className="account__switcher-balance test">
+                    <span className="account__switcher-balance">
                       {account?.currency && getBalance()}
-                      <span className="symbols test2">
+                      <span className="symbols">
                         &nbsp;
                         {account?.currency === "UST"
                           ? "USDT"

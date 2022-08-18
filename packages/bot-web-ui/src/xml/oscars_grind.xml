@@ -5,7 +5,7 @@
     <variable type="" id="l6`t`DbnHr`2hOJ2RunJ" islocal="false" iscloud="false">oscarsGrind:totalProfit</variable>
     <variable type="" id="B]-9VFrM)n:-K5Y;qoag" islocal="false" iscloud="false">oscarsGrind:tradeAgain</variable>
     <variable type="" id="+lQ]WrF1Y3Wvit?DOdgu" islocal="false" iscloud="false">oscarsGrind:profitThreshold</variable>
-    <variable type="" id="V0OvvcA:RnlA|:N~#`d." islocal="false" iscloud="false">oscarsGrind:size</variable>
+    <variable type="" id="V0OvvcA:RnlA|:N~#`d." islocal="false" iscloud="false">oscarsGrind:oscar_unit</variable>
     <variable type="" id="AsrkUSs=QxLDd%5XEYj/" islocal="false" iscloud="false">oscarsGrind:initialStake</variable>
     <variable type="" id="~CU8[xGLOd;e[Y%Hr57I" islocal="false" iscloud="false">oscarsGrind:units</variable>
     <variable type="" id="x`,%}bI1vC`O(k3uhVR_" islocal="false" iscloud="false">oscarsGrind:lossThreshold</variable>
@@ -206,7 +206,7 @@
                         <field name="OP">EQ</field>
                         <value name="A">
                           <block type="variables_get" id=",3oT/P!TpHF[OyoMRK,4">
-                            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:oscar_unit</field>
                           </block>
                         </value>
                         <value name="B">
@@ -216,7 +216,7 @@
                     </value>
                     <statement name="DO0">
                       <block type="variables_set" id="vs7E%QIYfT*!c?ytY*Os">
-                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:oscar_unit</field>
                         <value name="VALUE">
                           <shadow type="math_number" id="ZU]`rKA~b;b*-3@Xe1T!">
                             <field name="NUM">0</field>
@@ -242,7 +242,7 @@
                         <statement name="DO0">
                           <block type="variables_set" id="MJ[9tY-n2r.NbytTFK.L">
                             <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:units</field>
-                            <value name="VALUE" strategy_value="size">
+                            <value name="VALUE" strategy_value="oscar_unit">
                               <shadow type="math_number" id="(o6lVcwiVXStriK+0/Tq">
                                 <field name="NUM">0</field>
                               </shadow>
@@ -321,7 +321,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="GdpJx|@?ThGN{j=gqgnG">
-            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:oscar_unit</field>
           </block>
         </value>
         <value name="B">
@@ -389,7 +389,7 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set" id="pIfk1kA2s8Ih]*flmTE*">
-                    <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                    <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:oscar_unit</field>
                     <value name="VALUE">
                       <block type="math_arithmetic" id="{?Sw]m92m/iVY.@==f91">
                         <field name="OP">ADD</field>
@@ -398,7 +398,7 @@
                             <field name="NUM">1</field>
                           </shadow>
                           <block type="variables_get" id="[:*JP#bYj0%~J|-gQMI=">
-                            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:oscar_unit</field>
                           </block>
                         </value>
                         <value name="B">
@@ -420,7 +420,7 @@
                     </value>
                     <next>
                       <block type="variables_set" id="H~pwuieau2,eC#ghI*}D">
-                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:oscar_unit</field>
                         <value name="VALUE">
                           <shadow type="math_number" id="Amh]hPhPj-Y%;y$Gub1s">
                             <field name="NUM">0</field>

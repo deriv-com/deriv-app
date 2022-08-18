@@ -5,7 +5,7 @@ import { Field as FormField, Formik, Form } from 'formik';
 import { Icon, Input } from '@deriv/components';
 import './cashier-search-box.scss';
 
-const CashierSearchBox = ({ className, onClear, onSearch, placeholder, setIsSearchLoading }) => {
+const CashierSearchBox = ({ className, onClear, onSearch, placeholder, search_term, setIsSearchLoading }) => {
     React.useEffect(() => {
         return onClear;
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -17,7 +17,9 @@ const CashierSearchBox = ({ className, onClear, onSearch, placeholder, setIsSear
     };
 
     const onSearchKeyUpDown = (submitForm, search) => {
-        if (!search.trim()) return;
+        if (!search.trim() && search_term) {
+            onClear();
+        } else if (!search.trim()) return;
 
         setIsSearchLoading(true);
         submitForm();
@@ -67,6 +69,7 @@ CashierSearchBox.propTypes = {
     onClear: PropTypes.func,
     onSearch: PropTypes.func,
     placeholder: PropTypes.string,
+    search_term: PropTypes.string,
     setIsSearchLoading: PropTypes.func,
 };
 

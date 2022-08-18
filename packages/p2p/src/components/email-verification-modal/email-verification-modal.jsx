@@ -84,7 +84,7 @@ const EmailVerificationModal = ({
                         <div className='email-verification-modal--reason'>
                             <Icon icon='IcEmailFirewall' size={36} />
                             <Text className='email-verification-modal--reason__text' color='prominent' size='xxs'>
-                                <Localize i18n_default_text='We can’t deliver the email to this address (usually because of firewalls or filtering).' />
+                                <Localize i18n_default_text="We can't deliver the email to this address (usually because of firewalls or filtering)." />
                             </Text>
                         </div>
                     </React.Fragment>

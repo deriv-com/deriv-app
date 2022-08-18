@@ -23,10 +23,13 @@ export default class OrderStore {
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = false;
+    @observable is_rating_modal_open = false;
+    @observable is_recommended = undefined;
     @observable orders = [];
     @observable order_id = null;
     @observable order_payment_method_details = null;
     @observable order_rerender_timeout = null;
+    @observable rating_value = 0;
 
     interval;
     order_info_subscription = {};
@@ -50,6 +53,20 @@ export default class OrderStore {
     @computed
     get nav() {
         return this.root_store.general_store.parameters?.nav;
+    }
+
+    @action.bound
+    confirmOrderRequest(id) {
+        const { order_details_store } = this.root_store;
+
+        requestWS({
+            p2p_order_confirm: 1,
+            id,
+        }).then(response => {
+            if (response && response.error) {
+                order_details_store.setErrorMessage(response.error.message);
+            }
+        });
     }
 
     @action.bound
@@ -81,6 +98,11 @@ export default class OrderStore {
                 setShouldShowCancelModal(true);
             }
         });
+    }
+
+    @action.bound
+    handleRating(rate) {
+        this.setRatingValue(rate);
     }
 
     @action.bound
@@ -172,6 +194,86 @@ export default class OrderStore {
     }
 
     @action.bound
+    setOrderRating(id) {
+        const rating = this.rating_value / 20;
+
+        requestWS({
+            p2p_order_review: 1,
+            order_id: id,
+            rating,
+            ...(this.is_recommended === undefined ? {} : { recommended: this.is_recommended }),
+        }).then(response => {
+            if (response) {
+                if (response.error) {
+                    this.setErrorMessage(response.error.message);
+                }
+                this.setIsRatingModalOpen(false);
+            }
+        });
+    }
+
+    @action.bound
+    subscribeToCurrentOrder() {
+        this.order_info_subscription = subscribeWS(
+            {
+                p2p_order_info: 1,
+                id: this.order_id,
+                subscribe: 1,
+            },
+            [this.setOrderDetails]
+        );
+    }
+
+    @action.bound
+    syncOrder(p2p_order_info) {
+        const { general_store } = this.root_store;
+
+        const get_order_status = createExtendedOrderDetails(
+            p2p_order_info,
+            general_store.client.loginid,
+            general_store.props.server_time
+        );
+
+        const order_idx = this.orders.findIndex(order => order.id === p2p_order_info.id);
+
+        // Checking for null since that's the initial value, we don't want to check for !this.order_id
+        // since it can be undefined or any other value that we wouldn't need
+        if (this.order_id === null) {
+            // When we're looking at a list, it's safe to move orders from Active to Past.
+            if (order_idx === -1) {
+                this.orders.unshift(p2p_order_info);
+            } else if (
+                (get_order_status.is_completed_order && get_order_status.has_review_details) ||
+                !get_order_status.is_reviewable
+            ) {
+                Object.assign(this.orders[order_idx], p2p_order_info);
+            } else if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
+                Object.assign(this.orders[order_idx], p2p_order_info);
+            } else if (get_order_status.is_inactive_order) {
+                this.orders.splice(order_idx, 1);
+            }
+        } else if (this.orders[order_idx]) {
+            // When looking at a specific order, it's NOT safe to move orders between tabs
+            // in this case, only update the order details.
+            Object.assign(this.orders[order_idx], p2p_order_info);
+        }
+    }
+
+    @action.bound
+    unsubscribeFromCurrentOrder() {
+        clearTimeout(this.order_rerender_timeout);
+
+        if (this.order_info_subscription.unsubscribe) {
+            this.order_info_subscription.unsubscribe();
+        }
+    }
+
+    @action.bound
+    setForceRerenderOrders(forceRerenderFn) {
+        this.forceRerenderFn = forceRerenderFn;
+    }
+
+    @action.bound
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
@@ -197,6 +299,11 @@ export default class OrderStore {
     }
 
     @action.bound
+    setData(data) {
+        this.data = data;
+    }
+
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -209,6 +316,16 @@ export default class OrderStore {
     @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsRatingModalOpen(is_rating_modal_open) {
+        this.is_rating_modal_open = is_rating_modal_open;
+    }
+
+    @action.bound
+    setIsRecommended(is_recommended) {
+        this.is_recommended = is_recommended;
     }
 
     @action.bound
@@ -292,60 +409,7 @@ export default class OrderStore {
     }
 
     @action.bound
-    setData(data) {
-        this.data = data;
-    }
-
-    @action.bound
-    subscribeToCurrentOrder() {
-        this.order_info_subscription = subscribeWS(
-            {
-                p2p_order_info: 1,
-                id: this.order_id,
-                subscribe: 1,
-            },
-            [this.setOrderDetails]
-        );
-    }
-
-    @action.bound
-    syncOrder(p2p_order_info) {
-        const { general_store } = this.root_store;
-
-        const get_order_status = createExtendedOrderDetails(
-            p2p_order_info,
-            general_store.client.loginid,
-            general_store.props.server_time
-        );
-
-        const order_idx = this.orders.findIndex(order => order.id === p2p_order_info.id);
-
-        if (this.order_id === null) {
-            // When we're looking at a list, it's safe to move orders from Active to Past.
-            if (order_idx === -1) {
-                this.orders.unshift(p2p_order_info);
-            } else if (get_order_status.is_inactive_order) {
-                this.orders.splice(order_idx, 1);
-            } else if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
-                Object.assign(this.orders[order_idx], p2p_order_info);
-            }
-        } else if (this.orders[order_idx]) {
-            // When looking at a specific order, it's NOT safe to move orders between tabs
-            // in this case, only update the order details.
-            Object.assign(this.orders[order_idx], p2p_order_info);
-        }
-    }
-
-    @action.bound
-    unsubscribeFromCurrentOrder() {
-        clearTimeout(this.order_rerender_timeout);
-
-        if (this.order_info_subscription.unsubscribe) {
-            this.order_info_subscription.unsubscribe();
-        }
-    }
-
-    setForceRerenderOrders(forceRerenderFn) {
-        this.forceRerenderFn = forceRerenderFn;
+    setRatingValue(rating_value) {
+        this.rating_value = rating_value;
     }
 }

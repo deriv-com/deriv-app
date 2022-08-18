@@ -12,10 +12,11 @@ const StarRating = ({
     full_star_color,
     full_star_className,
     full_star_icon,
-    initial_value,
+    initial_value = 0,
     is_readonly = false,
     number_of_stars,
     onClick,
+    rating_value,
     rtl = false,
     should_allow_half_icon = true,
     should_allow_hover_effect = true,
@@ -55,6 +56,7 @@ const StarRating = ({
             iconsCount={number_of_stars}
             initialValue={fractionalized_value}
             onClick={onClick}
+            ratingValue={rating_value}
             readonly={is_readonly}
             rtl={rtl}
             size={star_size}
@@ -70,10 +72,11 @@ StarRating.propTypes = {
     full_star_color: PropTypes.string,
     full_star_className: PropTypes.string,
     full_star_icon: PropTypes.string,
-    initial_value: PropTypes.string,
+    initial_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_readonly: PropTypes.bool,
     number_of_stars: PropTypes.number,
     onClick: PropTypes.func,
+    rating_value: PropTypes.number,
     rtl: PropTypes.bool,
     should_allow_half_icon: PropTypes.bool,
     should_allow_hover_effect: PropTypes.bool,

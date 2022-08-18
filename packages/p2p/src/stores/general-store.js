@@ -29,6 +29,7 @@ export default class GeneralStore extends BaseStore {
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
+    @observable review_period;
     @observable should_show_real_name = false;
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
@@ -120,6 +121,17 @@ export default class GeneralStore extends BaseStore {
         }
 
         return local_storage_settings;
+    }
+
+    @action.bound
+    getWebsiteStatus() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response && !response.error) {
+                const { p2p_config } = response.website_status;
+
+                this.setReviewPeriod(p2p_config.review_period);
+            }
+        });
     }
 
     @action.bound
@@ -513,6 +525,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
+    }
+
+    @action.bound
+    setReviewPeriod(review_period) {
+        this.review_period = review_period;
     }
 
     @action.bound

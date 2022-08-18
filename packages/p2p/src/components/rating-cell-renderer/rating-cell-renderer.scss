@@ -1,0 +1,9 @@
+.rating-cell-renderer {
+    margin-left: auto;
+
+    &--star {
+        > svg {
+            margin-right: 0.4rem;
+        }
+    }
+}

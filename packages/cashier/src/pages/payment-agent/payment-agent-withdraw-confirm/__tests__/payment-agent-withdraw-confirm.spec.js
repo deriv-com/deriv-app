@@ -29,15 +29,15 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     const setIsTryWithdrawSuccessful = jest.fn();
 
     it('component should be rendered', () => {
-        const { container } = render(<PaymentAgentWithdrawConfirm />);
+        render(<PaymentAgentWithdrawConfirm />);
 
-        expect(container.querySelector('.cashier__wrapper--confirm')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cashier_wrapper_transfer_confirm')).toBeInTheDocument();
     });
 
     it('component <Row /> should be rendered when has data', () => {
-        const { container } = render(<PaymentAgentWithdrawConfirm />);
+        render(<PaymentAgentWithdrawConfirm />);
 
-        expect(container.querySelector('.confirm__row')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_transfer_confirm_row_0')).toBeInTheDocument();
     });
 
     it('component <ErrorDialog /> should be rendered when has an error', () => {

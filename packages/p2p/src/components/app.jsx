@@ -18,6 +18,7 @@ const App = props => {
     React.useEffect(() => {
         general_store.setAppProps(props);
         general_store.setWebsocketInit(websocket_api);
+        general_store.getWebsiteStatus();
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {

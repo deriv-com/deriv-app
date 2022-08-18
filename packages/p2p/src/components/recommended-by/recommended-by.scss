@@ -1,7 +1,9 @@
 .recommended-by {
     &--container {
-        align-items: center;
-        display: flex;
+        .dc-popover__target {
+            align-items: center;
+            display: flex;
+        }
     }
 
     &--icon {

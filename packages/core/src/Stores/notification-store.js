@@ -189,6 +189,7 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
+            is_risk_client,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -246,6 +247,13 @@ export default class NotificationStore extends BaseStore {
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
             }
+
+            if (is_risk_client) {
+                this.addNotificationMessage(this.client_notifications.risk_client);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -1038,7 +1046,20 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
+            risk_client: {
+                key: 'risk_client',
+                header: localize('You can only make deposits.'),
+                message: (
+                    <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals and trading, please complete your financial assessment.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start assessment'),
+                },
+            },
         };
+
         this.client_notifications = notifications;
     }
 

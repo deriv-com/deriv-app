@@ -23,6 +23,57 @@ import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
+const InputSize = ({
+    onChangeInputValue,
+    handleChange,
+    active_index,
+    getSizeDesc,
+    getSizeText,
+    initial_errors,
+    errors,
+    setCurrentFocus,
+    touched,
+    is_mobile,
+    getFieldNames,
+}) => {
+    const input_name = Object.freeze({
+        0: 'input_size',
+        1: 'input_alembert_unit',
+        2: 'input_oscar_unit',
+    });
+
+    return (
+        <Field name={getFieldNames()[active_index]}>
+            {({ field }) => (
+                <Input
+                    {...field}
+                    className='quick-strategy__input'
+                    label_className='quick-strategy__input-label'
+                    field_className='quick-strategy__input-field'
+                    type='text'
+                    error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                    label={getSizeText(active_index)}
+                    onChange={e => {
+                        handleChange(e);
+                        onChangeInputValue(input_name[active_index], e);
+                    }}
+                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                    onBlur={() => setCurrentFocus(null)}
+                    placeholder='2'
+                    trailing_icon={
+                        <Popover
+                            alignment={is_mobile ? 'top' : 'bottom'}
+                            message={getSizeDesc(active_index)}
+                            zIndex={popover_zindex.QUICK_STRATEGY}
+                        >
+                            <Icon icon='IcInfoOutline' />
+                        </Popover>
+                    }
+                />
+            )}
+        </Field>
+    );
+};
 const QuickStrategyForm = ({
     active_index,
     createStrategy,
@@ -46,6 +97,7 @@ const QuickStrategyForm = ({
     selected_duration_unit,
     description,
     setCurrentFocus,
+    getFieldNames,
 }) => (
     <Formik
         initialValues={initial_values}
@@ -57,6 +109,7 @@ const QuickStrategyForm = ({
             // Check values in favour of isValid, this is a hack to persist validation through tab switching.
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
+
             const is_submit_enabled = !isSubmitting && is_valid;
 
             return (
@@ -323,38 +376,20 @@ const QuickStrategyForm = ({
                                     'quick-strategy__form-row--multiple': !is_mobile,
                                 })}
                             >
-                                <Field name='quick-strategy__size'>
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            className='quick-strategy__input'
-                                            label_className='quick-strategy__input-label'
-                                            field_className='quick-strategy__input-field'
-                                            type='text'
-                                            error={
-                                                initial_errors[field.name] ||
-                                                (touched[field.name] && errors[field.name])
-                                            }
-                                            label={getSizeText(active_index)}
-                                            onChange={e => {
-                                                handleChange(e);
-                                                onChangeInputValue('input_size', e);
-                                            }}
-                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                            onBlur={() => setCurrentFocus(null)}
-                                            placeholder='2'
-                                            trailing_icon={
-                                                <Popover
-                                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                                    message={getSizeDesc(active_index)}
-                                                    zIndex={popover_zindex.QUICK_STRATEGY}
-                                                >
-                                                    <Icon icon='IcInfoOutline' />
-                                                </Popover>
-                                            }
-                                        />
-                                    )}
-                                </Field>
+                                <InputSize
+                                    onChangeInputValue={onChangeInputValue}
+                                    handleChange={handleChange}
+                                    active_index={active_index}
+                                    getSizeDesc={getSizeDesc}
+                                    getSizeText={getSizeText}
+                                    initial_errors={validation_errors}
+                                    errors={errors}
+                                    setCurrentFocus={setCurrentFocus}
+                                    touched={touched}
+                                    is_mobile={is_mobile}
+                                    getFieldNames={getFieldNames}
+                                />
+
                                 <Field name='quick-strategy__profit'>
                                     {({ field }) => (
                                         <Input
@@ -471,6 +506,7 @@ const ContentRenderer = props => {
         onHideDropdownList,
         onScrollStopDropdownList,
         validateQuickStrategy,
+        getFieldNames,
         selected_symbol,
         selected_trade_type,
         setCurrentFocus,
@@ -508,6 +544,7 @@ const ContentRenderer = props => {
                             onHideDropdownList={onHideDropdownList}
                             onScrollStopDropdownList={onScrollStopDropdownList}
                             validateQuickStrategy={validateQuickStrategy}
+                            getFieldNames={getFieldNames}
                             symbol_dropdown={symbol_dropdown_options}
                             trade_type_dropdown={trade_type_dropdown_options}
                             is_mobile={is_mobile}
@@ -582,6 +619,7 @@ QuickStrategy.propTypes = {
     toggleStrategyModal: PropTypes.func,
     trade_type_dropdown: PropTypes.array,
     validateQuickStrategy: PropTypes.func,
+    getFieldNames: PropTypes.object,
 };
 
 export default connect(({ run_panel, quick_strategy, ui }) => ({
@@ -609,5 +647,6 @@ export default connect(({ run_panel, quick_strategy, ui }) => ({
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     validateQuickStrategy: quick_strategy.validateQuickStrategy,
+    getFieldNames: quick_strategy.getFieldNames,
     setCurrentFocus: ui.setCurrentFocus,
 }))(QuickStrategy);

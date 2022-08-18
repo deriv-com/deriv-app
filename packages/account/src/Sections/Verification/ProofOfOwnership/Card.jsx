@@ -5,7 +5,18 @@ import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
 
-const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, error, validateField, updateErrors }) => {
+const Card = ({
+    card,
+    handleChange,
+    handleBlur,
+    values,
+    setFieldValue,
+    index,
+    error,
+    validateField,
+    updateErrors,
+    is_dark_mode,
+}) => {
     const [show_browse_button, setShowBrowseButton] = React.useState([]);
     const card_details = paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other;
     values.data[index].files_required = card_details.documents_required;
@@ -22,7 +33,6 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
     const icon = (
         <Icon
             icon={'IcChevronUpBold'}
-            color='black'
             size={16}
             className={classNames('proof-of-ownership__card-item-icon', {
                 'proof-of-ownership__card-item-icon--invert': !is_open,
@@ -37,7 +47,12 @@ const Card = ({ card, handleChange, handleBlur, values, setFieldValue, index, er
             role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
-                <Icon icon={card_details?.icon} className='proof-of-ownership__card-item-logo' width={64} height={58} />
+                <Icon
+                    icon={`${is_dark_mode ? card_details?.icon_dark : card_details?.icon_light}`}
+                    className='proof-of-ownership__card-item-logo'
+                    width={68}
+                    height={58}
+                />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
                     {card?.payment_method || 'Payment method'}
                 </Text>
@@ -80,6 +95,7 @@ Card.propTypes = {
     error: PropTypes.object,
     validateField: PropTypes.func,
     updateErrors: PropTypes.func,
+    is_dark_mode: PropTypes.bool,
 };
 
 export default Card;

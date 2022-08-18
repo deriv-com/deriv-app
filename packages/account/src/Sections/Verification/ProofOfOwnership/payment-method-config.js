@@ -3,7 +3,8 @@ import { Localize, localize } from '@deriv/translations';
 
 const paymentMethodConfig = {
     AdvCash: {
-        icon: 'IcOtherPaymentMethod',
+        icon_light: 'IcAdvcashLight',
+        icon_dark: 'IcAdvcashDark',
         instructions: [
             localize(
                 'Upload a screenshot of "Personal Info". Please be sure to capture your full name and your e-mail'
@@ -14,7 +15,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     AstroPay: {
-        icon: 'IcOtherPaymentMethod',
+        icon_light: 'IcAstroPayLight',
+        icon_dark: 'IcAstroPayDark',
         instructions: [
             <Localize
                 key={1}
@@ -27,7 +29,8 @@ const paymentMethodConfig = {
         documents_required: 2,
     },
     Beyonic: {
-        icon: 'IcBeyonic',
+        icon_light: 'IcBeyonic',
+        icon_dark: 'IcBeyonic',
         instructions: [
             localize(
                 'Upload your monthly mobile bill statement or mobile money statement showing your name and mobile number.'
@@ -38,7 +41,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     'Boleto (D24 Voucher)': {
-        icon: 'IcOtherPaymentMethod',
+        icon_light: 'IcBoletoD24VoucherLight',
+        icon_dark: 'IcBoletoD24VoucherDark',
         instructions: [
             localize('Upload your bank statement that shows your name and account details for the transaction.'),
         ],
@@ -47,7 +51,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     VISA: {
-        icon: 'IcStockVisa',
+        icon_light: 'IcVisaLight',
+        icon_dark: 'IcVisaDark',
         instructions: [
             localize(
                 'Upload a photo of your card showing your name and card number. Your card number must only show the first 6 and last 4 digits. If your card does not have your name embossed on it, we will require a bank statement that shows your name and card number.'
@@ -58,7 +63,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     MasterCard: {
-        icon: 'IcStockMasterCard',
+        icon_light: 'IcMasterCardLight',
+        icon_dark: 'IcMasterCardDark',
         instructions: [
             localize(
                 'Upload a photo of your card showing your name and card number. Your card number must only show the first 6 and last 4 digits. If your card does not have your name embossed on it, we will require a bank statement that shows your name and card number.'
@@ -69,7 +75,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     PIX: {
-        icon: 'IcOtherPaymentMethod',
+        icon_light: 'IcOtherPaymentMethod',
+        icon_dark: 'IcOtherPaymentMethod',
         instructions: [
             localize(
                 `Upload a screenshot of your "Personal Account' page on your computer or "Account Information" page on your mobile. You may also provide a screenshot of your bank details linked to your Pix account.`
@@ -80,7 +87,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     Skrill: {
-        icon: 'IcWalletSkrillLight',
+        icon_light: 'IcSkrillLight',
+        icon_dark: 'IcSkrillDark',
         instructions: [
             localize(
                 'Upload a screenshot of "Your profile" or "Personal details". It should show your name, email and account number'
@@ -91,7 +99,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     NETeller: {
-        icon: 'IcWalletNetellerLight',
+        icon_light: 'IcNetellerLight',
+        icon_dark: 'IcNetellerDark',
         instructions: [
             localize(
                 'Upload a screenshot of "Your profile" or "Personal details". It should show your name, email and account number'
@@ -102,11 +111,10 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     OnlineNaira: {
-        icon: 'IcOnlineNaira',
+        icon_light: 'IcOnlineNaira',
+        icon_dark: 'IcOnlineNaira',
         instructions: [
             localize('Upload the following documents:'),
-            localize(''),
-            localize(''),
             <Localize
                 key={1}
                 i18n_default_text='1. Upload a screenshot of the General Information page <0>via</0>'
@@ -127,7 +135,8 @@ const paymentMethodConfig = {
         documents_required: 2,
     },
     WebMoney: {
-        icon: 'IcWalletWebmoneyLight',
+        icon_light: 'IcWebMoneyLight',
+        icon_dark: 'IcWebMoneyDark',
         instructions: [
             localize(
                 'Upload a screenshot of the "Account" or "Personal details" page. It should show your name, account number, phone, and email'
@@ -138,21 +147,24 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     ZingPay: {
-        icon: 'IcZingpay',
+        icon_light: 'IcZingpay',
+        icon_dark: 'IcZingpay',
         instructions: [localize('Upload your Zingpay bank statement showing your name and bank account number.')],
         input_label: localize('Bank Account Number'),
         title: 'ZingPay',
         documents_required: 1,
     },
     SticPay: {
-        icon: 'IcWalletSticpayLight',
+        icon_light: 'IcSticpayLight',
+        icon_dark: 'IcSticpayDark',
         instructions: [localize('Upload a screenshot of your "Personal details". It should show your name and email')],
         input_label: localize('Email address'),
         title: 'SticPay',
         documents_required: 1,
     },
     Jeton: {
-        icon: 'IcWalletJetonLight',
+        icon_light: 'IcJetonLight',
+        icon_dark: 'IcJetonDark',
         instructions: [
             localize('Upload a screenshot of your "Personal details". It should show your name and account number'),
         ],
@@ -161,7 +173,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     other: {
-        icon: 'IcOtherPaymentMethod',
+        icon_light: 'IcOtherPaymentMethod',
+        icon_dark: 'IcOtherPaymentMethod',
         instructions: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
         title: '[Payment Method Name]',

@@ -27,11 +27,6 @@ export default {
             payment_method_identifier: '12343323234242412324234',
         },
         {
-            id: '8',
-            payment_method: 'Maestro',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
             id: '9',
             payment_method: 'PIX',
             payment_method_identifier: '1231234235354634534646',
@@ -63,7 +58,7 @@ export default {
         },
         {
             id: '15',
-            payment_method: 'jeton',
+            payment_method: 'Jeton',
             payment_method_identifier: '1239990908079896967213',
         },
         {

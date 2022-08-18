@@ -27,7 +27,7 @@ const ExpandedCard = ({
     };
 
     const exampleLink = () =>
-        ['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(icon => icon === card_details.icon) ? (
+        ['IcCreditCard', 'IcVisa', 'IcMasterCard'].some(icon => icon === card_details.icon) ? (
             <span
                 className='proof-of-ownership__card-open-desc-link'
                 key={0}
@@ -42,7 +42,7 @@ const ExpandedCard = ({
         );
     const formatIdentifier = (id, type) => {
         let formatted_id = id;
-        if (['IcCreditCard', 'IcStockVisa', 'IcStockMasterCard'].some(s => s === type))
+        if (['IcCreditCard', 'IcVisa', 'IcMasterCard'].some(s => s === type))
             formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
         else if (type === 'IcEwallet') return formatted_id;
         return formatted_id.replace(/\s/g, '').replace(/(\w{4})/g, '$1 ');
@@ -63,7 +63,7 @@ const ExpandedCard = ({
                 ))}
                 <fieldset>
                     <div className='proof-of-ownership__card-open-inputs'>
-                        {card_details.input_label && card_details.icon !== 'IcCreditCard' && (
+                        {card_details.input_label && card_details.icon_light !== 'IcCreditCard' && (
                             <div className='proof-of-ownership__card-open-inputs-field'>
                                 <Input
                                     label={card_details.input_label}
@@ -81,7 +81,7 @@ const ExpandedCard = ({
                         {controls_to_show.map(i => (
                             <React.Fragment key={i}>
                                 {/* Used React.Fragment instead of the <></> to resolve devtools console errors/warnings of missing key prop. */}
-                                {card_details.icon === 'IcCreditCard' && (
+                                {card_details.icon_light === 'IcCreditCard' && (
                                     <div className='proof-of-ownership__card-open-inputs-field' key={i}>
                                         <Input
                                             label={card_details.input_label}

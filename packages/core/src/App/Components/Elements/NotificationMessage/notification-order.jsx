@@ -31,6 +31,7 @@ const NotificationOrder = ({ action, header, message, onClose }) => {
                             {action.route ? (
                                 <BinaryLink
                                     className={classNames('dc-btn', 'dc-btn--secondary', 'notification__cta-button')}
+                                    onClick={onClose}
                                     to={action.route}
                                 >
                                     <Text size='xxs' weight='bold'>

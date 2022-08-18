@@ -63,142 +63,140 @@ jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' :
 jest.mock('../jurisdiction-modal', () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : '');
 
 describe('<CFDDashboard />', () => {
-    let props;
-    beforeEach(() => {
-        props = {
-            account_status: {},
-            beginRealSignupForMt5: jest.fn(),
-            checkShouldOpenAccount: jest.fn(),
-            country: 'Indonesia',
-            createCFDAccount: jest.fn(),
-            enableApp: jest.fn(),
-            disableApp: jest.fn(),
-            disableCFDPasswordModal: jest.fn(),
-            dxtrade_accounts_list_error: null,
-            dxtrade_disabled_signup_types: {
-                demo: false,
-                real: false,
-            },
-            dxtrade_verification_code: {},
-            getRealSyntheticAccountsExistingData: jest.fn(),
-            getRealFinancialAccountsExistingData: jest.fn(),
-            has_maltainvest_account: false,
-            has_mt5_real_account_error: false,
-            has_mt5_demo_account_error: false,
-            has_dxtrade_real_account_error: false,
-            has_dxtrade_demo_account_error: false,
-            has_real_account: true,
-            is_accounts_switcher_on: false,
-            is_dark_mode_on: false,
-            is_eu: false,
-            is_eu_country: false,
-            is_loading: false,
-            is_logged_in: false,
-            is_logging_in: false,
-            is_mt5_allowed: true,
-            is_mt5_trade_modal_visible: false,
-            is_dxtrade_allowed: true,
-            is_reset_trading_password_modal_visible: false,
-            is_virtual: false,
-            isAccountOfTypeDisabled: jest.fn(() => false),
-            location: {
-                pathname: '/mt5',
-                hash: '',
-            },
-            mt5_disabled_signup_types: {
-                demo: false,
-                real: false,
-            },
-            mt5_verification_code: {},
-            mt5_status_server: {
-                demo: [
-                    {
-                        all: 0,
-                        platform: 1,
-                        server_number: 1,
-                    },
-                    {
-                        all: 0,
-                        platform: 1,
-                        server_number: 2,
-                    },
-                ],
-                real: [
-                    {
-                        all: 0,
-                        deposits: 0,
-                        platform: 1,
-                        server_number: 1,
-                        withdrawals: 0,
-                    },
-                    {
-                        all: 0,
-                        deposits: 0,
-                        platform: 1,
-                        server_number: 2,
-                        withdrawals: 0,
-                    },
-                ],
-            },
-            NotificationMessages: () => <div>NotificationMessages</div>,
-            onMount: jest.fn(),
-            onUnmount: jest.fn(),
-            openAccountNeededModal: jest.fn(),
-            openDerivRealAccountNeededModal: jest.fn(),
-            openPasswordModal: jest.fn(),
-            openTopUpModal: jest.fn(),
-            platform: CFD_PLATFORMS.MT5,
-            residence: 'id',
-            residence_list: [
+    const props = {
+        account_status: {},
+        beginRealSignupForMt5: jest.fn(),
+        checkShouldOpenAccount: jest.fn(),
+        country: 'Indonesia',
+        createCFDAccount: jest.fn(),
+        enableApp: jest.fn(),
+        disableApp: jest.fn(),
+        disableCFDPasswordModal: jest.fn(),
+        dxtrade_accounts_list_error: null,
+        dxtrade_disabled_signup_types: {
+            demo: false,
+            real: false,
+        },
+        dxtrade_verification_code: {},
+        getRealSyntheticAccountsExistingData: jest.fn(),
+        getRealFinancialAccountsExistingData: jest.fn(),
+        has_maltainvest_account: false,
+        has_mt5_real_account_error: false,
+        has_mt5_demo_account_error: false,
+        has_dxtrade_real_account_error: false,
+        has_dxtrade_demo_account_error: false,
+        has_real_account: true,
+        is_accounts_switcher_on: false,
+        is_dark_mode_on: false,
+        is_eu: false,
+        is_eu_country: false,
+        is_loading: false,
+        is_logged_in: false,
+        is_logging_in: false,
+        is_mt5_allowed: true,
+        is_mt5_trade_modal_visible: false,
+        is_dxtrade_allowed: true,
+        is_reset_trading_password_modal_visible: false,
+        is_virtual: false,
+        isAccountOfTypeDisabled: jest.fn(() => false),
+        location: {
+            pathname: '/mt5',
+            hash: '',
+        },
+        mt5_disabled_signup_types: {
+            demo: false,
+            real: false,
+        },
+        mt5_verification_code: {},
+        mt5_status_server: {
+            demo: [
                 {
-                    identity: {
-                        services: {
-                            idv: {
-                                documents_supported: {},
-                                has_visual_sample: 0,
-                                is_country_supported: 0,
-                            },
-                            onfido: {
-                                documents_supported: {
-                                    driving_licence: {
-                                        display_name: 'Driving Licence',
-                                    },
-                                    national_identity_card: {
-                                        display_name: 'National Identity Card',
-                                    },
-                                    passport: {
-                                        display_name: 'Passport',
-                                    },
-                                },
-                                is_country_supported: 1,
-                            },
-                        },
-                    },
-                    phone_idd: '62',
-                    text: 'Indonesia',
-                    tin_format: ['^\\d{15}$'],
-                    value: 'id',
+                    all: 0,
+                    platform: 1,
+                    server_number: 1,
+                },
+                {
+                    all: 0,
+                    platform: 1,
+                    server_number: 2,
                 },
             ],
-            setAccountType: jest.fn(),
-            setCFDPasswordResetModal: jest.fn(),
-            setCurrentAccount: jest.fn(),
-            standpoint: {
-                financial_company: 'svg',
-                gaming_company: 'svg',
-                iom: false,
-                malta: false,
-                maltainvest: false,
-                svg: true,
+            real: [
+                {
+                    all: 0,
+                    deposits: 0,
+                    platform: 1,
+                    server_number: 1,
+                    withdrawals: 0,
+                },
+                {
+                    all: 0,
+                    deposits: 0,
+                    platform: 1,
+                    server_number: 2,
+                    withdrawals: 0,
+                },
+            ],
+        },
+        NotificationMessages: () => <div>NotificationMessages</div>,
+        onMount: jest.fn(),
+        onUnmount: jest.fn(),
+        openAccountNeededModal: jest.fn(),
+        openDerivRealAccountNeededModal: jest.fn(),
+        openPasswordModal: jest.fn(),
+        openTopUpModal: jest.fn(),
+        platform: CFD_PLATFORMS.MT5,
+        residence: 'id',
+        residence_list: [
+            {
+                identity: {
+                    services: {
+                        idv: {
+                            documents_supported: {},
+                            has_visual_sample: 0,
+                            is_country_supported: 0,
+                        },
+                        onfido: {
+                            documents_supported: {
+                                driving_licence: {
+                                    display_name: 'Driving Licence',
+                                },
+                                national_identity_card: {
+                                    display_name: 'National Identity Card',
+                                },
+                                passport: {
+                                    display_name: 'Passport',
+                                },
+                            },
+                            is_country_supported: 1,
+                        },
+                    },
+                },
+                phone_idd: '62',
+                text: 'Indonesia',
+                tin_format: ['^\\d{15}$'],
+                value: 'id',
             },
-            toggleAccountsDialog: jest.fn(),
-            toggleMT5TradeModal: jest.fn(),
-            toggleShouldShowRealAccountsList: jest.fn(),
-            toggleCFDPersonalDetailsModal: jest.fn(),
-            toggleResetTradingPasswordModal: jest.fn(),
-            upgradeable_landing_companies: ['svg'],
-        };
-
+        ],
+        setAccountType: jest.fn(),
+        setCFDPasswordResetModal: jest.fn(),
+        setCurrentAccount: jest.fn(),
+        standpoint: {
+            financial_company: 'svg',
+            gaming_company: 'svg',
+            iom: false,
+            malta: false,
+            maltainvest: false,
+            svg: true,
+        },
+        toggleAccountsDialog: jest.fn(),
+        toggleMT5TradeModal: jest.fn(),
+        toggleShouldShowRealAccountsList: jest.fn(),
+        toggleCFDPersonalDetailsModal: jest.fn(),
+        toggleResetTradingPasswordModal: jest.fn(),
+        upgradeable_landing_companies: ['svg'],
+    };
+    beforeEach(() => {
         mock_connect_props.landing_companies = {
             config: {
                 tax_details_required: 1,

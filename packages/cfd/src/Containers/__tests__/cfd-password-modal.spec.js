@@ -121,6 +121,7 @@ describe('<CFDPasswordModal/>', () => {
     it('should close modal when Forget Password button is clicked', async () => {
         const mockDisableCFDPasswordModalFn = jest.fn();
         const mockSetMt5Error = jest.fn();
+        const mockSetCFDSuccessDialog = jest.fn();
         const props = {
             ...mock_props,
             is_cfd_password_modal_enabled: true,
@@ -129,7 +130,7 @@ describe('<CFDPasswordModal/>', () => {
             getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordReset',
-            setCFDSuccessDialog: mockFn,
+            setCFDSuccessDialog: mockSetCFDSuccessDialog,
             setMt5Error: mockSetMt5Error,
             disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         };
@@ -139,11 +140,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_cancel_btn = await screen.findByRole('button', { name: /forgot password?/i });
-        fireEvent.click(ele_cancel_btn);
+        const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
+        fireEvent.click(ele_forget_btn);
 
         await waitFor(() => {
-            expect(mockFn).toHaveBeenCalledWith(false);
+            expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
             expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();
             expect(mockSetMt5Error).toHaveBeenCalledWith(false);
         });
@@ -170,8 +171,8 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_cancel_btn = await screen.findByRole('button', { name: /forgot password?/i });
-        fireEvent.click(ele_cancel_btn);
+        const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
+        fireEvent.click(ele_forget_btn);
         await waitFor(() => {
             expect(WS.verifyEmail).toHaveBeenCalled();
         });
@@ -282,6 +283,7 @@ describe('<CFDPasswordModal/>', () => {
     it('should close the dialog when you click on Submit proof', async () => {
         const mockDisableCFDPasswordModalFn = jest.fn();
         const mockSetMt5Error = jest.fn();
+        const mockSetCFDSuccessDialog = jest.fn();
         const props = {
             ...mock_props,
             is_cfd_password_modal_enabled: true,
@@ -292,7 +294,7 @@ describe('<CFDPasswordModal/>', () => {
             platform: 'mt5',
             is_eu: true,
             is_fully_authenticated: false,
-            setCFDSuccessDialog: mockFn,
+            setCFDSuccessDialog: mockSetCFDSuccessDialog,
             setMt5Error: mockSetMt5Error,
             disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         };
@@ -306,7 +308,7 @@ describe('<CFDPasswordModal/>', () => {
         fireEvent.click(await screen.findByRole('button', { name: /submit proof/i }));
 
         await waitFor(() => {
-            expect(mockFn).toHaveBeenCalledWith(false);
+            expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
             expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();
             expect(mockSetMt5Error).toHaveBeenCalledWith(false);
         });
@@ -459,8 +461,8 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...props} />
             </Router>
         );
-        const ele_cancel_btn = await screen.findByRole('button', { name: /forgot password?/i });
-        fireEvent.click(ele_cancel_btn);
+        const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
+        fireEvent.click(ele_forget_btn);
         await waitFor(() => {
             expect(WS.verifyEmail).toHaveBeenCalledWith('demo@deriv.com', 'trading_platform_dxtrade_password_reset', {
                 url_parameters: { redirect_to: 21 },
@@ -506,7 +508,7 @@ describe('<CFDPasswordModal/>', () => {
             is_cfd_success_dialog_enabled: false,
             account_status: { status: ['mt5_password_not_set'], category: 'Real' },
             getAccountStatus: mockFn,
-            platform: 'dxtrader',
+            platform: 'dxtrade',
             account_type: { category: 'real', type: 'financial' },
             submitCFDPassword: mockSubmitCFDPasswordFn,
         };
@@ -516,7 +518,7 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...props} />;
             </Router>
         );
-        fireEvent.change(await screen.findByTestId('dt_dxtrader_password'), { target: { value: user_input } });
+        fireEvent.change(await screen.findByTestId('dt_dxtrade_password'), { target: { value: user_input } });
         fireEvent.click(await screen.findByRole('button', { name: 'Add account' }));
 
         await waitFor(() => {

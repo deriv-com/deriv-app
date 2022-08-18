@@ -285,7 +285,7 @@ describe('<CFDDashboard />', () => {
                 platform: 'dxtrade',
             },
         };
-        global.window.location.hash = '';
+        window.location.hash = '';
     });
 
     const dmt5_welcome_header = /welcome to deriv mt5 \(dmt5\) dashboard/i;
@@ -492,7 +492,7 @@ describe('<CFDDashboard />', () => {
                 />
             ),
         });
-        expect(global.window.location.pathname).toBe(routes.mt5);
+        expect(window.location.pathname).toBe(routes.mt5);
         expect(screen.queryByRole('heading', { name: derivx_welcome_header })).not.toBeInTheDocument();
     });
     it('Top up button in DMT5 (= Fund transfer button in Deriv X) should redirect to Cashier when in Real, & should trigger CFDTopUpDemoModal when in Demo', () => {
@@ -501,16 +501,16 @@ describe('<CFDDashboard />', () => {
         }) as ReturnType<typeof render>;
         fireEvent.click(screen.getByRole('button', { name: top_up_button_label }));
         expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(1);
-        expect(global.window.location.pathname).toBe(routes.cashier_acc_transfer);
+        expect(window.location.pathname).toBe(routes.cashier_acc_transfer);
 
-        global.window.location = { pathname: routes.dxtrade, hash: '' } as (string | Location) & Location;
+        window.location = { pathname: routes.dxtrade, hash: '' } as (string | Location) & Location;
         renderwithRouter({
             rerender,
             component: <CFDDashboard {...props} is_logged_in platform={CFD_PLATFORMS.DXTRADE} />,
         });
         fireEvent.click(screen.getByRole('button', { name: /fund transfer/i }));
         expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(2);
-        expect(global.window.location.pathname).toBe(routes.cashier_acc_transfer);
+        expect(window.location.pathname).toBe(routes.cashier_acc_transfer);
 
         renderwithRouter({
             rerender,
@@ -537,7 +537,7 @@ describe('<CFDDashboard />', () => {
         expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
     });
     it('Should trigger CFDResetPasswordModal when URL hash contains reset-password', () => {
-        global.window.location.hash = 'reset-password';
+        window.location.hash = 'reset-password';
         renderwithRouter({
             component: <CFDDashboard {...props} is_logged_in />,
         });

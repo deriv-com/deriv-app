@@ -57,6 +57,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
             .map((acc, index) => {
               const account = accounts[acc]
               const { demo_account, currency, balance } = account;
+              const currency_icon = demo_account ? "virtual" : currency?.toLowerCase() || "unknown"
               const getBalance = () => {
                   return balance.toLocaleString(undefined, {
                     minimumFractionDigits:
@@ -77,10 +78,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                   >
                     <input type="hidden" name="account_name" value={acc} />
                     <img
-                      src={`image/deriv/currency/ic-currency-${demo_account
-                        ? "virtual"
-                        : currency?.toLowerCase()
-                        || "unknown"}.svg`}
+                      src={`image/deriv/currency/ic-currency-${currency_icon}.svg`}
                     />
                     <span>
                       {!currency && (<span className="symbols">{translate("No currency assigned")}</span>)}
@@ -94,7 +92,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                       </div>
                     </span>
                     <span className="account__switcher-balance test">
-                      {account.currency && getBalance()}
+                      {account?.currency && getBalance()}
                       <span className="symbols test2">
                         &nbsp;
                         {account?.currency === "UST"

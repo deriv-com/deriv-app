@@ -288,12 +288,6 @@ describe('<CFDDashboard />', () => {
         global.window.location.hash = '';
     });
 
-    const portalRoot = global.document.createElement('div');
-    portalRoot.setAttribute('id', 'deriv_app');
-    // eslint-disable-next-line testing-library/no-node-access
-    const body = global.document.querySelector('body');
-    body?.appendChild(portalRoot);
-
     const dmt5_welcome_header = /welcome to deriv mt5 \(dmt5\) dashboard/i;
     const derivx_welcome_header = /welcome to deriv x/i;
     const real_tab_name = 'Real account';
@@ -307,8 +301,13 @@ describe('<CFDDashboard />', () => {
     const dxtrade_account_error = /some of your deriv X accounts are unavailable at the moment./i;
 
     const renderwithRouter = ({ component, rerender }: TRenderWithRouterParams) => {
-        if (rerender) return rerender(<BrowserRouter>{component}</BrowserRouter>);
-        return render(<BrowserRouter>{component}</BrowserRouter>);
+        const ui = (
+            <div id='deriv_app'>
+                <BrowserRouter>{component}</BrowserRouter>
+            </div>
+        );
+        if (rerender) return rerender(ui);
+        return render(ui);
     };
 
     it('CFDDashboard should be rendered correctly for DMT5 & for Deriv X', () => {

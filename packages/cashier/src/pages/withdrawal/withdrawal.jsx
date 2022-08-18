@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { isCryptocurrency, isDesktop, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -17,6 +17,8 @@ import SideNote from 'Components/side-note';
 import USDTSideNote from 'Components/usdt-side-note';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import RecentTransaction from 'Components/recent-transaction';
+import DisableWithdrawalModal from './disable-withdrawal-modal';
+import { useHistory } from 'react-router-dom';
 
 const WithdrawalSideNote = ({ is_mobile, currency }) => {
     const notes = [
@@ -65,7 +67,12 @@ const Withdrawal = ({
     verification_code,
     willMountWithdraw,
     recentTransactionOnMount,
+    is_risk_client,
 }) => {
+    const [is_withdrawal_blocked, setIsWithdrawalBlocked] = React.useState(false);
+
+    const history = useHistory();
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -107,6 +114,10 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 
+    React.useEffect(() => {
+        setIsWithdrawalBlocked(is_risk_client);
+    }, []);
+
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
@@ -125,6 +136,19 @@ const Withdrawal = ({
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
+
+    if (is_withdrawal_blocked) {
+        return (
+            <DisableWithdrawalModal
+                is_risk_client={is_withdrawal_blocked}
+                onClick={() => {
+                    setIsWithdrawalBlocked(false);
+                    history.push(routes.financial_assessment);
+                }}
+            />
+        );
+    }
+
     if (!+balance) {
         return (
             <>
@@ -178,6 +202,7 @@ Withdrawal.propTypes = {
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
+    is_risk_client: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -206,6 +231,7 @@ export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
+    is_risk_client: client.is_risk_client,
     is_switching: client.is_switching,
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_virtual: client.is_virtual,

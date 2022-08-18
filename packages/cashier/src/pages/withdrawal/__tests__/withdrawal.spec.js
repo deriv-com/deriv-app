@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Withdrawal from '../withdrawal';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, routes } from '@deriv/shared';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -32,6 +32,7 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<Withdrawal />', () => {
+    let modal_root_el;
     const props = {
         check10kLimit: jest.fn(),
         recentTransactionOnMount: jest.fn(),
@@ -54,7 +55,18 @@ describe('<Withdrawal />', () => {
         is_virtual: false,
         verification_code: '',
         verify_error: {},
+        is_risk_client: false,
     };
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
 
     it('should render <CashierLocked /> component', () => {
         const history = createBrowserHistory();
@@ -247,5 +259,32 @@ describe('<Withdrawal />', () => {
         );
 
         expect(props.setSideNotes).toHaveBeenCalledTimes(1);
+    });
+
+    it('should show the Withdrawal block dialog when the user is categorized as a high risk client', () => {
+        const history = createBrowserHistory();
+
+        render(
+            <Router history={history}>
+                <Withdrawal {...props} is_risk_client={true} />
+            </Router>
+        );
+
+        expect(screen.getByRole('button', { name: /start assessment/i })).toBeInTheDocument();
+    });
+
+    it('should redirect user to financial assessment page on button click', () => {
+        const history = createBrowserHistory();
+
+        render(
+            <Router history={history}>
+                <Withdrawal {...props} is_risk_client={true} />
+            </Router>
+        );
+
+        const el_start_assessment_btn = screen.getByRole('button', { name: /start assessment/i });
+
+        fireEvent.click(el_start_assessment_btn);
+        expect(history.location.pathname).toBe(routes.financial_assessment);
     });
 });

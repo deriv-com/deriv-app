@@ -114,6 +114,8 @@ const OrderRow = ({ style, row: order }) => {
                     setShouldShowRatingModal(false);
                     should_show_order_details.current = true;
                     order_store.setRatingValue(0);
+                    general_store.props.removeNotificationMessage({ key: `order-${id}` });
+                    general_store.props.removeNotificationByKey({ key: `order-${id}` });
                 }}
                 onClickNotRecommended={() => order_store.setIsRecommended(0)}
                 onClickRecommended={() => order_store.setIsRecommended(1)}

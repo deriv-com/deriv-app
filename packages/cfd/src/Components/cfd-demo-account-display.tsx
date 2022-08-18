@@ -5,7 +5,6 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
-import { TTradingPlatformAccounts } from './props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
@@ -34,10 +33,7 @@ type TCFDDemoAccountDisplayProps = {
     isSyntheticCardVisible: (account_category: string) => boolean;
     isFinancialCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
-    openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
-        meta: TOpenAccountTransferMeta
-    ) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     platform: string;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;

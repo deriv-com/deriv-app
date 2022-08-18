@@ -84,7 +84,7 @@
     },
     "dependencies": {
         "@deriv/account": "^1.0.0",
-        "@deriv/api-types": "1.0.48",
+        "@deriv/api-types": "1.0.53",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/shared": "^1.0.0",

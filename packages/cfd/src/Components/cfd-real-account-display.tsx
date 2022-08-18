@@ -7,7 +7,6 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts } from './props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
@@ -39,13 +38,10 @@ type TCFDRealAccountDisplayProps = {
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     realSyntheticAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
     realFinancialAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
-    openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
-        meta: TOpenAccountTransferMeta
-    ) => void;
+    openAccountTransfer: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     platform: string;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
@@ -106,7 +102,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) => {
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
             return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
                 category: account.account_type as keyof TOpenAccountTransferMeta,

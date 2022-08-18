@@ -46,6 +46,8 @@ import {
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
 
+import DisableWithdrawalModal from '../Disable-withdrawal/disable-withdrawal-modal';
+
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
@@ -179,6 +181,7 @@ const FinancialAssessment = ({
     is_authentication_needed,
     is_financial_account,
     is_svg,
+    is_risk_client,
     is_trading_experience_incomplete,
     is_virtual,
     platform,
@@ -197,6 +200,8 @@ const FinancialAssessment = ({
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
+    const [is_financial_assessment_required, setIsFinancialAssessmentRequired] = React.useState(false);
+
     const {
         income_source,
         employment_status,
@@ -229,7 +234,7 @@ const FinancialAssessment = ({
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-
+                    setIsFinancialAssessmentRequired(is_risk_client);
                     setInitialFormValues(data.get_financial_assessment);
                     setIsLoading(false);
                 });
@@ -308,6 +313,15 @@ const FinancialAssessment = ({
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     if (isMobile() && is_authentication_needed && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
+
+    if (is_financial_assessment_required) {
+        return (
+            <DisableWithdrawalModal
+                is_risk_client={is_financial_assessment_required}
+                onClick={() => setIsFinancialAssessmentRequired(false)}
+            />
+        );
+    }
 
     return (
         <React.Fragment>
@@ -986,6 +1000,7 @@ FinancialAssessment.propTypes = {
 export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
+    is_risk_client: client.is_risk_client,
     is_svg: client.is_svg,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,

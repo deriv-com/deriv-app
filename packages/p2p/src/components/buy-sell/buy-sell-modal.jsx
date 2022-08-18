@@ -202,52 +202,48 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             </MobileFullPageModal>
         );
     }
-    if (should_show_popup) {
-        return (
-            <Modal
-                className='buy-sell__modal'
-                height={table_type === buy_sell.BUY ? 'auto' : '649px'}
-                width='456px'
-                is_open={should_show_popup}
-                title={ModalTitle(my_profile_store, table_type, selected_ad)}
-                portalId={general_store.props.modal_root_id}
-                toggleModal={onCancel}
-            >
-                {/* Parent height - Modal.Header height - Modal.Footer height */}
-                <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
-                    <Modal.Body className='buy-sell__modal--layout'>
-                        {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                        {!!error_message && <BuySellFormError />}
-                        {my_profile_store.should_show_add_payment_method_form ? (
-                            <AddPaymentMethodForm should_show_separated_footer />
-                        ) : (
-                            <Form
-                                advert={selected_ad}
-                                handleClose={onCancel}
-                                handleConfirm={onConfirmClick}
-                                setIsSubmitDisabled={setIsSubmitDisabled}
-                                setErrorMessage={setErrorMessage}
-                                setSubmitForm={setSubmitForm}
-                            />
-                        )}
-                    </Modal.Body>
-                </ThemedScrollbars>
-                {!my_profile_store.should_show_add_payment_method_form && (
-                    <Modal.Footer has_separator>
-                        {my_profile_store.should_show_add_payment_method_form ? null : (
-                            <BuySellModalFooter
-                                is_submit_disabled={is_submit_disabled}
-                                onCancel={onCancel}
-                                onSubmit={submitForm.current}
-                            />
-                        )}
-                    </Modal.Footer>
-                )}
-            </Modal>
-        );
-    }
-
-    return null;
+    return (
+        <Modal
+            className='buy-sell__modal'
+            height={table_type === buy_sell.BUY ? 'auto' : '649px'}
+            width='456px'
+            is_open={should_show_popup}
+            title={ModalTitle(my_profile_store, table_type, selected_ad)}
+            portalId={general_store.props.modal_root_id}
+            toggleModal={onCancel}
+        >
+            {/* Parent height - Modal.Header height - Modal.Footer height */}
+            <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
+                <Modal.Body className='buy-sell__modal--layout'>
+                    {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                    {!!error_message && <BuySellFormError />}
+                    {my_profile_store.should_show_add_payment_method_form ? (
+                        <AddPaymentMethodForm should_show_separated_footer />
+                    ) : (
+                        <Form
+                            advert={selected_ad}
+                            handleClose={onCancel}
+                            handleConfirm={onConfirmClick}
+                            setIsSubmitDisabled={setIsSubmitDisabled}
+                            setErrorMessage={setErrorMessage}
+                            setSubmitForm={setSubmitForm}
+                        />
+                    )}
+                </Modal.Body>
+            </ThemedScrollbars>
+            {!my_profile_store.should_show_add_payment_method_form && (
+                <Modal.Footer has_separator>
+                    {my_profile_store.should_show_add_payment_method_form ? null : (
+                        <BuySellModalFooter
+                            is_submit_disabled={is_submit_disabled}
+                            onCancel={onCancel}
+                            onSubmit={submitForm.current}
+                        />
+                    )}
+                </Modal.Footer>
+            )}
+        </Modal>
+    );
 };
 
 BuySellModal.propTypes = {

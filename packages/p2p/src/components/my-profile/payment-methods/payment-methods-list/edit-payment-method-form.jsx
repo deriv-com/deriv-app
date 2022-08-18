@@ -1,29 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Field, Form, Formik, useFormikContext } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import { usePaymentMethodValidator } from 'Components/hooks';
+import { useFormHistory, usePaymentMethodValidator } from 'Components/hooks';
 import { useStores } from 'Stores';
 import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import classNames from 'classnames';
 
-const RestoreFormHistory = () => {
-    const { setValues } = useFormikContext();
-    const { my_profile_store } = useStores();
-
-    React.useEffect(() => {
-        if (my_profile_store.formik_history) setValues(my_profile_store.formik_history.values);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    return null;
-};
-
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
     const validateFields = usePaymentMethodValidator();
+    const { formikRef, FormHistory } = useFormHistory();
 
     React.useEffect(() => {
         return () => {
@@ -32,10 +21,6 @@ const EditPaymentMethodForm = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const formikRef = node => {
-        if (node) my_profile_store.setFormikRef(node);
-    };
 
     if (!my_profile_store.payment_method_info) {
         return <Loading is_fullscreen={false} />;
@@ -66,7 +51,7 @@ const EditPaymentMethodForm = () => {
                                     page_title={localize('Edit payment method')}
                                 />
                             </DesktopWrapper>
-                            <RestoreFormHistory />
+                            <FormHistory />
                             <Form className='add-payment-method-form__form'>
                                 <div className='add-payment-method-form__form-wrapper'>
                                     <Field name='choose_payment_method'>

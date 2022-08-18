@@ -40,8 +40,11 @@ const MyProfileContent = () => {
                         page_header_text={generatePageHeaderText()}
                         pageHeaderReturnFn={() => {
                             if (my_profile_store.is_add_payment_method_form_modified) {
-                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
-                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                if (my_profile_store.should_show_edit_payment_method_form) {
+                                    my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                } else {
+                                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                }
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
                                 my_profile_store.setShouldShowEditPaymentMethodForm(false);

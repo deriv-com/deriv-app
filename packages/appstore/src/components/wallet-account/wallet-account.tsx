@@ -5,6 +5,7 @@ import { Icon, Money } from '@deriv/components';
 import { Text } from '@deriv/ui';
 import { ArrayElement } from 'Types';
 import WalletCard from 'Components/wallet';
+import WalletActionButton from 'Components/wallet-action-button';
 
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
@@ -21,13 +22,19 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                     <div className='wallet-account__logo'>
                         <WalletCard wallet_name={account.is_virtual === 1 ? 'demo' : ''} size='sm' />
                     </div>
-                    <Text bold type='subtitle-2'>
-                        <Localize
-                            key={0}
-                            i18n_default_text='Demo {{currency}} wallet'
-                            values={{ currency: account.currency }}
-                        />
-                    </Text>
+                    <div className='wallet-account__info'>
+                        <Text bold type='subtitle-2'>
+                            <Localize
+                                i18n_default_text='Demo {{currency}} wallet'
+                                values={{ currency: account.currency }}
+                            />
+                        </Text>
+                        <div className='wallet-account__actions'>
+                            <WalletActionButton size='small' label='Reports' icon='icAppstoreTransfer' />
+                            <WalletActionButton size='small' label='Transaction' icon='icAppstoreTransaction' />
+                            <WalletActionButton size='small' label='Reset Balance' icon='icAppstoreResetBalance' />
+                        </div>
+                    </div>
                 </div>
                 <div className='wallet-account__balance'>
                     {account.is_virtual && (
@@ -40,7 +47,6 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                     </Text>
                 </div>
             </div>
-            <div>arrow</div>
         </div>
     );
 };

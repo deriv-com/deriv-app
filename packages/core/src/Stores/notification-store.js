@@ -228,6 +228,12 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
+            if (is_risk_client) {
+                this.addNotificationMessage(this.client_notifications.risk_client);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
+            }
+
             if (is_poi_dob_mismatch) {
                 this.addNotificationMessage(this.client_notifications.poi_dob_mismatch);
             } else {
@@ -246,12 +252,6 @@ export default class NotificationStore extends BaseStore {
                 !hidden_close_account_notification
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
-            }
-
-            if (is_risk_client) {
-                this.addNotificationMessage(this.client_notifications.risk_client);
-            } else {
-                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
             }
 
             const client = accounts[loginid];

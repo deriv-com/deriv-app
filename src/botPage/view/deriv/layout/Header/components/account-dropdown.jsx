@@ -34,13 +34,6 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const logout = useLogout();
-  const getBalance = () => {
-    return balance.toLocaleString(undefined, {
-      minimumFractionDigits:
-        config.currency_name_map[currency]
-          ?.fractional_digits ?? 2,
-    })
-  }
   React.useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -101,8 +94,11 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
           <div className="account__switcher-total-balance">
             <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
             <span className="account__switcher-total-balance-amount account__switcher-balance">
-              
-              {activeTab === "demo" ? getTotalDemo(accounts) : getBalance}
+              {activeTab === "demo" ? getTotalDemo(accounts) : balance.toLocaleString(undefined, {
+                minimumFractionDigits:
+                  config.currency_name_map[currency]
+                    ?.fractional_digits ?? 2,
+              })}
               <span className="symbols">&nbsp;{activeTab === "demo" ? "USD" : currency}</span>
             </span>
           </div>

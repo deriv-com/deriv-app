@@ -37,22 +37,27 @@ jest.mock('@deriv/shared', () => ({
 
 describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
+    const mockDisableCFDPasswordModalFn = jest.fn();
+    const mockSetMt5Error = jest.fn();
+    const mockSetCFDSuccessDialog = jest.fn();
+    const mockSubmitMt5Password = jest.fn();
+    const mockSubmitCFDPasswordFn = jest.fn();
     const history = createBrowserHistory();
     let modal_root_el;
     const mock_props = {
         account_title: '',
         account_type: {},
         account_status: {},
-        disableCFDPasswordModal: null,
+        disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         email: '',
         error_message: '',
         error_type: '',
         form_error: '',
-        getAccountStatus: null,
+        getAccountStatus: mockFn,
         history: history,
         is_eu: false,
         is_fully_authenticated: false,
-        is_cfd_password_modal_enabled: false,
+        is_cfd_password_modal_enabled: true,
         is_cfd_success_dialog_enabled: false,
         is_dxtrade_allowed: false,
         platform: '',
@@ -60,10 +65,10 @@ describe('<CFDPasswordModal/>', () => {
         landing_companies: {},
         mt5_login_list: [],
         cfd_new_account: {},
-        setCFDSuccessDialog: null,
-        setMt5Error: null,
-        submitMt5Password: null,
-        submitCFDPassword: null,
+        setCFDSuccessDialog: mockSetCFDSuccessDialog,
+        setMt5Error: mockSetMt5Error,
+        submitMt5Password: mockSubmitMt5Password,
+        submitCFDPassword: mockSubmitCFDPasswordFn,
     };
 
     beforeAll(() => {
@@ -83,10 +88,7 @@ describe('<CFDPasswordModal/>', () => {
     it('should render create Password modal when valid conditions are met', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'mt5',
         };
         render(
@@ -100,10 +102,7 @@ describe('<CFDPasswordModal/>', () => {
     it('should render password form with Try later button and forget password button', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: [] },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordReset',
         };
@@ -119,20 +118,11 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should close modal when Forget Password button is clicked', async () => {
-        const mockDisableCFDPasswordModalFn = jest.fn();
-        const mockSetMt5Error = jest.fn();
-        const mockSetCFDSuccessDialog = jest.fn();
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordReset',
-            setCFDSuccessDialog: mockSetCFDSuccessDialog,
-            setMt5Error: mockSetMt5Error,
-            disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         };
 
         render(
@@ -151,18 +141,11 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should invoke verifyEmail when forgot password is clicked', async () => {
-        const mockDisableCFDPasswordModalFn = jest.fn();
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: [], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordReset',
-            setCFDSuccessDialog: mockFn,
-            setMt5Error: mockDisableCFDPasswordModalFn,
-            disableCFDPasswordModal: mockFn,
             account_type: { category: 'real', type: 'financial' },
         };
 
@@ -181,10 +164,7 @@ describe('<CFDPasswordModal/>', () => {
     it('should display password field for user to enter the password', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: [], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: '',
         };
@@ -204,10 +184,7 @@ describe('<CFDPasswordModal/>', () => {
         const user_input = 'zo8lAet#2q01Ih';
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: [], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'financial_stp' },
@@ -231,10 +208,7 @@ describe('<CFDPasswordModal/>', () => {
         const user_input = 'demo@deriv.com';
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: [], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             email: user_input,
         };
@@ -259,11 +233,9 @@ describe('<CFDPasswordModal/>', () => {
     it('should show password dialog asking user to provide POI', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
             account_type: { category: 'real', type: 'financial_stp' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             is_eu: true,
             is_fully_authenticated: false,
@@ -281,22 +253,14 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should close the dialog when you click on Submit proof', async () => {
-        const mockDisableCFDPasswordModalFn = jest.fn();
-        const mockSetMt5Error = jest.fn();
-        const mockSetCFDSuccessDialog = jest.fn();
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
             account_type: { category: 'real', type: 'financial_stp' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             is_eu: true,
             is_fully_authenticated: false,
-            setCFDSuccessDialog: mockSetCFDSuccessDialog,
-            setMt5Error: mockSetMt5Error,
-            disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
         };
 
         render(
@@ -317,11 +281,9 @@ describe('<CFDPasswordModal/>', () => {
     it('should show success message with options to transfer now or later when password has been updated successfully', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
             account_type: { category: 'real', type: 'financial_stp' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             is_eu: true,
             is_fully_authenticated: true,
@@ -340,10 +302,8 @@ describe('<CFDPasswordModal/>', () => {
     it('should display IcMt5SyntheticPlatform icon in Success Dialog', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordError',
             is_eu: true,
@@ -361,10 +321,8 @@ describe('<CFDPasswordModal/>', () => {
     it('should display IcMt5FinancialPlatform icon in Success Dialog', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'financial' },
@@ -381,10 +339,8 @@ describe('<CFDPasswordModal/>', () => {
     it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'dxtrade',
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'synthetic' },
@@ -401,10 +357,8 @@ describe('<CFDPasswordModal/>', () => {
     it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'dxtrade',
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'financial' },
@@ -421,10 +375,8 @@ describe('<CFDPasswordModal/>', () => {
     it('should display IcMt5CfdPlatform icon in Success Dialog', async () => {
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'financial' },
@@ -440,18 +392,12 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {
-        const mockDisableCFDPasswordModalFn = jest.fn();
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: [], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'dxtrade',
             error_type: 'PasswordReset',
             setCFDSuccessDialog: mockFn,
-            setMt5Error: mockDisableCFDPasswordModalFn,
-            disableCFDPasswordModal: mockFn,
             account_type: { category: 'demo', type: 'financial' },
             email: 'demo@deriv.com',
         };
@@ -472,17 +418,12 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should create DMT5 password when clicked on Create DMT5 password', async () => {
         const user_input = 'zo8lAet#2q01Ih';
-        const mockSubmitMt5Password = jest.fn();
         validPassword.mockReturnValue(true);
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: ['mt5_password_not_set'], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'mt5',
             account_type: { category: 'real', type: 'financial' },
-            submitMt5Password: mockSubmitMt5Password,
         };
 
         render(
@@ -500,17 +441,12 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should create DerivX platform password when clicked on Add account', async () => {
         const user_input = 'zo8lAet#2q01Ih';
-        const mockSubmitCFDPasswordFn = jest.fn();
         validPassword.mockReturnValue(true);
         const props = {
             ...mock_props,
-            is_cfd_password_modal_enabled: true,
-            is_cfd_success_dialog_enabled: false,
             account_status: { status: ['mt5_password_not_set'], category: 'Real' },
-            getAccountStatus: mockFn,
             platform: 'dxtrade',
             account_type: { category: 'real', type: 'financial' },
-            submitCFDPassword: mockSubmitCFDPasswordFn,
         };
 
         render(

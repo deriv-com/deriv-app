@@ -5,7 +5,7 @@
     <variable type="" id="weOIq50C[S,Wr;`!|gYR" islocal="false" iscloud="false">dalembert:totalProfit</variable>
     <variable type="" id="[w@pzvBAlteju[8,x#hD" islocal="false" iscloud="false">dalembert:tradeAgain</variable>
     <variable type="" id="ZGpA`4foih2T_0.]xE66" islocal="false" iscloud="false">dalembert:profitThreshold</variable>
-    <variable type="" id="o((rBg*rL/qm;RU%PM7_" islocal="false" iscloud="false">dalembert:size</variable>
+    <variable type="" id="o((rBg*rL/qm;RU%PM7_" islocal="false" iscloud="false">dalembert:alembert_unit</variable>
     <variable type="" id="-PgUuax5KQf1zn42iCd~" islocal="false" iscloud="false">dalembert:initialStake</variable>
     <variable type="" id="R2yOKK{FmV|TULnU8.,[" islocal="false" iscloud="false">dalembert:units</variable>
     <variable type="" id="%o8CQE,uNdg`rmRL:-ca" islocal="false" iscloud="false">dalembert:lossThreshold</variable>
@@ -205,7 +205,7 @@
                         <field name="OP">EQ</field>
                         <value name="A">
                           <block type="variables_get" id="7$B#MO,8@;GIu@Mofrx}">
-                            <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+                            <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
                           </block>
                         </value>
                         <value name="B">
@@ -215,7 +215,7 @@
                     </value>
                     <statement name="DO0">
                       <block type="variables_set" id="iX^w=Jc(b/VlAIdNMduh">
-                        <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+                        <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
                         <value name="VALUE">
                           <shadow type="math_number" id="d#8t+7WO$h2wHp|@8_eA">
                             <field name="NUM">0</field>
@@ -241,7 +241,7 @@
                         <statement name="DO0">
                           <block type="variables_set" id="5zYkm?%M%dhWa.SDk_?Q">
                             <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:units</field>
-                            <value name="VALUE" strategy_value="size">
+                            <value name="VALUE" strategy_value="alembert_unit">
                               <shadow type="math_number" id="FU3;}.nT{+$wT#*Dn^k7">
                                 <field name="NUM">0</field>
                               </shadow>
@@ -293,7 +293,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="WL}Si1.(d7}}-{ii1}Rl">
-            <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+            <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
           </block>
         </value>
         <value name="B">
@@ -328,7 +328,7 @@
                 <field name="OP">GTE</field>
                 <value name="A">
                   <block type="variables_get" id="m;w7$qbTH`u!5kRA_DP.">
-                    <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+                    <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
                   </block>
                 </value>
                 <value name="B">
@@ -340,7 +340,7 @@
             </value>
             <statement name="DO0">
               <block type="variables_set" id="w2-6K;;V7wo0kQz^).AJ">
-                <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+                <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
                 <value name="VALUE">
                   <block type="math_arithmetic" id=")Uof!0df^98?7N}o}qlB">
                     <field name="OP">MINUS</field>
@@ -349,7 +349,7 @@
                         <field name="NUM">1</field>
                       </shadow>
                       <block type="variables_get" id="LU8$7f.xFmq`yfwO48oZ">
-                        <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+                        <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
                       </block>
                     </value>
                     <value name="B">
@@ -376,7 +376,7 @@
         </statement>
         <statement name="ELSE">
           <block type="variables_set" id="mA1b~rG(;BN~zemGwthV">
-            <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+            <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
             <value name="VALUE">
               <block type="math_arithmetic" id="FOv}cpsixo3M,fTMoxl]">
                 <field name="OP">ADD</field>
@@ -385,7 +385,7 @@
                     <field name="NUM">1</field>
                   </shadow>
                   <block type="variables_get" id="Im*Ml*f*_oi)nrK`osaC">
-                    <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
+                    <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
                   </block>
                 </value>
                 <value name="B">

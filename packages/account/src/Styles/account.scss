@@ -2328,7 +2328,7 @@ $MIN_HEIGHT_FLOATING: calc(
         margin-top: 2.4rem;
     }
     &__card {
-        border: 1px solid var(--general-section-5);
+        border: 2px solid var(--general-section-5);
         border-radius: 8px;
         margin-bottom: 1.6rem;
         display: flex;
@@ -2404,7 +2404,18 @@ $MIN_HEIGHT_FLOATING: calc(
                         width: 100%;
                     }
                 }
-
+                .dc-input {
+                    color: var(--text-general);
+                    -webkit-text-fill-color: var(--text-general);
+                }
+                .dc-input__field {
+                    color: var(--text-general);
+                    -webkit-text-fill-color: var(--text-general);
+                }
+                .dc-field.dc-field--error {
+                    color: var(--text-loss-danger);
+                    -webkit-text-fill-color: var(--text-loss-danger);
+                }
                 @include desktop {
                     .dc-input {
                         width: unset;
@@ -2421,6 +2432,8 @@ $MIN_HEIGHT_FLOATING: calc(
                     border-radius: 4px;
                     height: 4rem;
                     margin-right: 10px;
+                    color: var(--text-general);
+                    -webkit-text-fill-color: var(--text-general);
                     @include mobile {
                         width: 100%;
                     }
@@ -2438,7 +2451,6 @@ $MIN_HEIGHT_FLOATING: calc(
                             flex-grow: 8;
                         }
                     }
-
                     &-btn {
                         margin-left: 1rem;
                         padding: 10px 16px;

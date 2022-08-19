@@ -19,7 +19,8 @@ const Card = ({
 }) => {
     const [show_browse_button, setShowBrowseButton] = React.useState([]);
     const card_details = paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other;
-    values.data[index].files_required = card_details.documents_required;
+    card_details.icon = is_dark_mode ? card_details?.icon_dark : card_details?.icon_light;
+    values.data[index].files_required = card_details?.documents_required;
     const updateShowBrowseButton = (sub_index, value) => {
         const show_browse_button_state = [...show_browse_button];
         show_browse_button_state[sub_index] = value;
@@ -47,14 +48,9 @@ const Card = ({
             role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
-                <Icon
-                    icon={`${is_dark_mode ? card_details?.icon_dark : card_details?.icon_light}`}
-                    className='proof-of-ownership__card-item-logo'
-                    width={68}
-                    height={58}
-                />
+                <Icon icon={card_details?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {card?.payment_method || 'Payment method'}
+                    {card?.payment_method || '[Payment Method Name]'}
                 </Text>
                 <Button
                     id='proof-of-ownership'
@@ -68,7 +64,7 @@ const Card = ({
             {is_open && (
                 <ExpandedCard
                     card_details={card_details}
-                    identifier={card.payment_method_identifier}
+                    identifier={card?.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     values={values}

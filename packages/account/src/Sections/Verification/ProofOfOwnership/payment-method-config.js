@@ -21,7 +21,15 @@ const paymentMethodConfig = {
             <Localize
                 key={1}
                 i18n_default_text='Upload screenshots from the "personal details" page and the "account" page <0>via</0>'
-                components={[<a key={0} target='_blank' rel='noreferrer' href='https://app.astropay.com/profile' />]}
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        target='_blank'
+                        rel='noreferrer'
+                        href='https://app.astropay.com/profile'
+                    />,
+                ]}
             />,
         ],
         input_label: localize('Account Number'),
@@ -119,14 +127,26 @@ const paymentMethodConfig = {
                 key={1}
                 i18n_default_text='1. Upload a screenshot of the General Information page <0>via</0>'
                 components={[
-                    <a key={0} target='_blank' rel='noreferrer' href='https://onlinenaira.com/members/index.htm' />,
+                    <a
+                        key={0}
+                        className='link'
+                        target='_blank'
+                        rel='noreferrer'
+                        href='https://onlinenaira.com/members/index.htm'
+                    />,
                 ]}
             />,
             <Localize
                 key={1}
                 i18n_default_text='2. Upload a screenshot of the Settings page showing your Account/Mobile Money details <0>via</0>'
                 components={[
-                    <a key={0} target='_blank' rel='noreferrer' href='https://onlinenaira.com/members/bank.htm' />,
+                    <a
+                        key={0}
+                        className='link'
+                        target='_blank'
+                        rel='noreferrer'
+                        href='https://onlinenaira.com/members/bank.htm'
+                    />,
                 ]}
             />,
         ],

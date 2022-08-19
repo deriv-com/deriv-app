@@ -33,11 +33,11 @@ const Cashier = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
-    // is_virtual,
     is_visible,
     location,
     onMount,
     p2p_notification_count,
+    resetLastLocation,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -50,8 +50,10 @@ const Cashier = ({
         // we still need to populate the tabs shown on cashier
         return () => {
             toggleCashier();
+            resetLastLocation();
         };
     }, [toggleCashier]);
+
     React.useEffect(() => {
         (async () => {
             await WS?.wait('authorize');
@@ -199,6 +201,7 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    resetLastLocation: PropTypes.func,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -226,6 +229,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.general_store.onMountCommon,
     p2p_notification_count: modules.cashier.general_store.p2p_notification_count,
+    resetLastLocation: modules.cashier.account_prompt_dialog.resetLastLocation,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,

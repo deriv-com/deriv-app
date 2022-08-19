@@ -63,6 +63,7 @@ describe('<Cashier />', () => {
         onMount: jest.fn(),
         setAccountSwitchListener: jest.fn(),
         toggleCashier: jest.fn(),
+        resetLastLocation: jest.fn(),
     };
 
     it('should show the loading component if client_tnc_status is not yet loaded or not yet logged in', () => {

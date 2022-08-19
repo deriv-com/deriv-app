@@ -262,6 +262,13 @@ export default class OrderStore {
             // in this case, only update the order details.
             Object.assign(this.orders[order_idx], p2p_order_info);
         }
+
+        if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
+            // Remove notification once order review period is finished
+            const notification_key = `order-${p2p_order_info.id}`;
+            general_store.props.removeNotificationMessage({ key: notification_key });
+            general_store.props.removeNotificationByKey({ key: notification_key });
+        }
     }
 
     @action.bound

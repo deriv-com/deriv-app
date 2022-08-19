@@ -8,7 +8,7 @@ describe('ExpandedCard.jsx', () => {
 
     beforeAll(() => {
         card_details = {
-            icon: 'IcVisa',
+            icon: 'IcVisaLight',
             id: '1',
             payment_method: 'VISA',
             payment_method_identifier: '12345678910111213',

@@ -83,8 +83,8 @@ const paymentMethodConfig = {
         documents_required: 1,
     },
     PIX: {
-        icon_light: 'IcOtherPaymentMethod',
-        icon_dark: 'IcOtherPaymentMethod',
+        icon_light: 'IcPixLight',
+        icon_dark: 'IcPixDark',
         instructions: [
             localize(
                 `Upload a screenshot of your "Personal Account' page on your computer or "Account Information" page on your mobile. You may also provide a screenshot of your bank details linked to your Pix account.`

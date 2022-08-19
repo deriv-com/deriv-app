@@ -340,6 +340,8 @@ export const icons =
         'IcPc',
         'IcPercentSolid',
         'IcPhone',
+        'IcPixDark',
+        'IcPixLight',
         'IcPlayOutline',
         'IcPlay',
         'IcPoaError',

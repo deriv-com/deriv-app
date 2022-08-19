@@ -140,7 +140,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && replaceCashierMenuOnclick()}
+                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div

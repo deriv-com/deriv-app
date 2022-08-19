@@ -1,9 +1,11 @@
 import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import QStrategy from 'Components/q-strategy';
 
 const Dashboard: React.FC = () => {
-    const [active_index, setActiveTabIndex] = React.useState(0);
+    //! later change to '0'
+    const [active_index, setActiveTabIndex] = React.useState(1);
 
     return (
         <div className='dashboard__container'>
@@ -16,6 +18,9 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div label='Quick Strategy'>
                     <div>Contennt 2</div>
+                    <div>
+                        <QStrategy />
+                    </div>
                 </div>
                 <div label='Bot Builder'>
                     <div>Contennt 3</div>

@@ -1,0 +1,25 @@
+export type TQuickStrategyProps = {
+    active_index: number;
+    createStrategy: any;
+    duration_unit_dropdown: any;
+    getSizeDesc: any;
+    getSizeText: any;
+    initial_errors: any;
+    initial_values: any;
+    is_onscreen_keyboard_active: any;
+    is_mobile: boolean;
+    is_stop_button_visible: boolean;
+    onChangeDropdownItem: any;
+    onChangeInputValue: any;
+    onHideDropdownList: any;
+    onScrollStopDropdownList: any;
+    setActiveTabIndex: any;
+    selected_symbol: any;
+    selected_trade_type: any;
+    selected_duration_unit: any;
+    symbol_dropdown: any;
+    toggleStrategyModal: any;
+    trade_type_dropdown: any;
+    validateQuickStrategy: any;
+    setCurrentFocus: any;
+};

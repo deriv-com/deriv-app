@@ -16,6 +16,7 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
+// eslint-disable-next-line react/display-name
 jest.mock('@deriv/p2p', () => () => <div>P2P</div>);
 
 describe('<P2PCashier />', () => {

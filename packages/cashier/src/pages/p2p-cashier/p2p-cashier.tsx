@@ -7,25 +7,21 @@ import { routes, WS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { get, init, timePromise } from '_common/server_time';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
-
-type TLocalCurrencyConfig = {
-    currency: string;
-    decimal_places: number;
-};
+import { RootStore, TClientStore } from 'Types';
 
 type TP2PCashierProps = RouteComponentProps & {
-    balance: string;
-    currency: string;
+    balance: RootStore['client']['balance'];
+    // balance: TClientStore['balance'];
+    currency: RootStore['client']['currency'];
     current_focus: string;
     is_dark_mode_on: boolean;
-    is_logging_in: boolean;
+    is_logging_in: RootStore['client']['is_logging_in'];
     is_mobile: boolean;
-    is_virtual: boolean;
-    local_currency_config: TLocalCurrencyConfig;
-    loginid: string;
+    is_virtual: RootStore['client']['is_virtual'];
+    local_currency_config: RootStore['client']['local_currency_config'];
+    loginid: RootStore['client']['loginid'];
     platform: string;
-    residence: string;
+    residence: RootStore['client']['residence'];
     setCurrentFocus: (value: string) => void;
     setNotificationCount: (value: number) => void;
     setOnRemount: (func: () => void) => void;

@@ -344,6 +344,7 @@ export default class GeneralStore extends BaseStore {
             this.disposeUserBarredReaction();
         }
 
+        this.setActiveIndex(0);
         this.props.refreshNotifications();
         this.props.filterNotificationMessages();
     }

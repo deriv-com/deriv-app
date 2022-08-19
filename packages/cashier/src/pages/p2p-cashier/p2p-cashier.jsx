@@ -63,7 +63,14 @@ const P2PCashier = ({
                 current_query_params.append('order', input_order_id);
             }
 
-            if (order_id !== input_order_id) {
+            if (!input_order_id) {
+                history.replace({
+                    search: '',
+                    hash: location.hash,
+                });
+
+                setOrderId(null);
+            } else if (order_id !== input_order_id) {
                 // Changing query params
                 history.push({
                     pathname: routes.cashier_p2p,

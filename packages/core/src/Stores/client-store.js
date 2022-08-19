@@ -442,6 +442,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_risk_client() {
+        return (
+            this.is_logged_in &&
+            this.is_withdrawal_lock &&
+            this.account_status?.status?.includes('financial_assessment_not_complete')
+        );
+    }
+
+    @computed
     get is_authentication_needed() {
         return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }

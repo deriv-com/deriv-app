@@ -197,6 +197,7 @@ const FinancialAssessment = ({
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
+
     const {
         income_source,
         employment_status,
@@ -229,7 +230,6 @@ const FinancialAssessment = ({
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-
                     setInitialFormValues(data.get_financial_assessment);
                     setIsLoading(false);
                 });

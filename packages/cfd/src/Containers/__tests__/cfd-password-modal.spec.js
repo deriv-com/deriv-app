@@ -278,7 +278,7 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should show success message with options to transfer now or later when password has been updated successfully', async () => {
+    it('should show success dialog with buttons to transfer now or later when password has been updated successfully', async () => {
         const props = {
             ...mock_props,
             is_cfd_success_dialog_enabled: true,

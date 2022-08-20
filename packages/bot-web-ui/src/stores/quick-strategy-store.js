@@ -26,6 +26,7 @@ export default class QuickStrategyStore {
     @observable symbol_dropdown = [];
     @observable trade_type_dropdown = [];
     @observable duration_unit_dropdown = [];
+    @observable values_flags = [];
 
     @computed
     get initial_values() {
@@ -173,6 +174,13 @@ export default class QuickStrategyStore {
 
         if (this.is_strategy_modal_open) {
             await this.updateSymbolDropdown();
+        }
+    }
+
+    @action.bound
+    toggleValuesFlags(value_flag) {
+        if (!this.values_flags.includes(value_flag)) {
+            this.values_flags.push(value_flag);
         }
     }
 
@@ -450,7 +458,7 @@ export default class QuickStrategyStore {
                 return;
             }
 
-            if (number_fields.includes(key)) {
+            if (this.values_flags.includes(key) && number_fields.includes(key)) {
                 if (isNaN(value)) {
                     errors[key] = localize('Must be a number');
                 } else if (value <= 0) {
@@ -460,12 +468,11 @@ export default class QuickStrategyStore {
                 }
             }
 
-            if (value === '') {
+            if (this.values_flags.includes(key) && value === '') {
                 errors[key] = localize('Field cannot be empty');
             }
         });
-
-        if (this.active_index === 0 && values['quick-strategy__size'] < 2) {
+        if (this.active_index === 0 && values['quick-strategy__size'] > 0 && values['quick-strategy__size'] < 2) {
             errors['quick-strategy__size'] = localize('Value must be higher than 2');
         }
 

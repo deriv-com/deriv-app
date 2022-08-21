@@ -81,13 +81,15 @@ type TMt5StatusServerType = {
     all: number;
     platform: number;
     server_number: number;
+    deposits?: number;
+    withdrawals?: number;
 };
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
 export type TObjectCFDAccount = { category: string; type: string; set_password?: number; platform?: string };
 
-type TCFDDashboardProps = RouteComponentProps & {
+export type TCFDDashboardProps = RouteComponentProps & {
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;

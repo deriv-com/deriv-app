@@ -15,6 +15,8 @@
     }
 
     &--star {
+        pointer-events: none;
+
         > svg {
             margin-right: 1.9rem;
         }

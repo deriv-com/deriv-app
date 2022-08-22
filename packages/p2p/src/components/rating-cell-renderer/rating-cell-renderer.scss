@@ -2,6 +2,8 @@
     margin-left: auto;
 
     &--star {
+        pointer-events: none;
+
         > svg {
             margin-right: 0.4rem;
         }

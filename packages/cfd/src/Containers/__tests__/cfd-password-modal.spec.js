@@ -161,7 +161,8 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should display password field for user to enter the password', async () => {
+    it('should display password field for user to enter the password and hold the entered value', async () => {
+        const user_input = 'zo8lAet#2q01Ih';
         const props = {
             ...mock_props,
             account_status: { status: [], category: 'Real' },
@@ -175,28 +176,11 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText(/enter your dmt5 password to add a dmt5 account/i)).toBeInTheDocument();
-        expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
-        expect(await screen.findByTestId('dt_mt5_password')).toBeInTheDocument();
-    });
-
-    it('should hold the password value provided by the user', async () => {
-        const user_input = 'zo8lAet#2q01Ih';
-        const props = {
-            ...mock_props,
-            account_status: { status: [], category: 'Real' },
-            platform: 'mt5',
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'financial_stp' },
-        };
-
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...props} />
-            </Router>
-        );
         const ele_password_field = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_field, { target: { value: user_input } });
+
+        expect(await screen.findByText(/enter your dmt5 password to add a dmt5 account/i)).toBeInTheDocument();
+        expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
 
         await waitFor(() => {
             expect(ele_password_field.value).toEqual(user_input);

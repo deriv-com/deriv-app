@@ -28,14 +28,14 @@ import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display';
-import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
-import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
-import CFDDxtraderAccountDisplay from './cfd-dxtrader/cfd-dxtrader-account-display';
-import CFDDxtraderDemoAccountDisplay from './cfd-dxtrader/cfd-dxtrader-demo-account-display';
+import CFDMT5RealAccountDisplay from 'Components/cfd-mt5-real-account-display';
+import CFDMT5DemoAccountDisplay from 'Components/cfd-mt5-demo-account-display';
+import CFDDxtraderRealAccountDisplay from 'Components/cfd-dxtrader-real-account-display';
+import CFDDxtraderDemoAccountDisplay from 'Components/cfd-dxtrader-demo-account-display';
+import 'Sass/cfd-dashboard.scss';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -57,6 +57,7 @@ type TLoadTab = {
     landing_companies?: LandingCompany;
 };
 
+// TODO: remove this component and use loading inside the tab instead of LoadTab
 const LoadTab = ({ children, is_loading, loading_component, ...props }: TLoadTab) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
@@ -226,6 +227,12 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         if (window.location.hash === '#demo') {
             setIsDemoEnabled(true);
             setActiveIndex(1);
+        }
+
+        // TODO: Reconsider this.
+        if (platform === CFD_PLATFORMS.DXTRADE) {
+            setIsRealEnabled(true);
+            setIsDemoEnabled(true);
         }
     });
 
@@ -468,6 +475,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 selected_server={password_manager.selected_server}
                                 toggleModal={togglePasswordManagerModal}
                             />
+                            {/* TODO: Replace this with loading component */}
                             <LoadTab
                                 active_index={active_index}
                                 top
@@ -488,7 +496,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 />
                                             )}
                                             {platform === CFD_PLATFORMS.DXTRADE && (
-                                                <CFDDxtraderAccountDisplay
+                                                <CFDDxtraderRealAccountDisplay
                                                     is_accounts_switcher_on={is_accounts_switcher_on}
                                                     is_logged_in={is_logged_in}
                                                     has_cfd_account_error={
@@ -514,7 +522,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 />
                                             )}
                                             {platform === CFD_PLATFORMS.MT5 && (
-                                                <CFDRealAccountDisplay
+                                                <CFDMT5RealAccountDisplay
                                                     is_accounts_switcher_on={is_accounts_switcher_on}
                                                     is_eu={is_eu}
                                                     is_eu_country={is_eu_country}
@@ -579,7 +587,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             />
                                         )}
                                         {platform === CFD_PLATFORMS.MT5 && (
-                                            <CFDDemoAccountDisplay
+                                            <CFDMT5DemoAccountDisplay
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}

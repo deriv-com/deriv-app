@@ -24,7 +24,7 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-type TCFDRealAccountDisplayProps = {
+type TCFDMT5RealAccountDisplay = {
     has_real_account: boolean;
     is_accounts_switcher_on: boolean;
     is_eu: boolean;
@@ -58,7 +58,7 @@ type TCFDRealAccountDisplayProps = {
     should_enable_add_button?: boolean;
 };
 
-const CFDRealAccountDisplay = ({
+const CFDMT5RealAccountDisplay = ({
     has_real_account,
     is_accounts_switcher_on,
     is_eu,
@@ -83,7 +83,7 @@ const CFDRealAccountDisplay = ({
     residence,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
-}: TCFDRealAccountDisplayProps) => {
+}: TCFDMT5RealAccountDisplay) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const financial_specs = React.useMemo(() => {
@@ -238,4 +238,4 @@ const CFDRealAccountDisplay = ({
     );
 };
 
-export { CFDRealAccountDisplay };
+export default CFDMT5RealAccountDisplay;

@@ -558,26 +558,15 @@ const ModalContent = ({
     platform,
     show_eu_related,
     residence,
-    is_eu,
+    // is_eu,
     is_uk,
 }: TModalContentProps) => {
     const [cols, setCols] = React.useState<Array<Record<string, string | React.ReactNode | undefined>>>([]);
-    const [template_columns, updateColumnsStyle] = React.useState(
-        platform === CFD_PLATFORMS.DXTRADE ? '1fr 1.5fr' : '1.5fr 1fr 2fr 1fr'
-    );
+    const [template_columns, updateColumnsStyle] = React.useState('1fr 1.5fr');
 
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_uk }));
-
-        if (is_logged_in && platform === CFD_PLATFORMS.MT5) {
-            updateColumnsStyle(
-                `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
-                    landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
-            );
-        } else if (is_logged_in && platform === CFD_PLATFORMS.DXTRADE) {
-            updateColumnsStyle(`1fr ${landing_companies?.dxtrade_gaming_company ? '1.5fr' : ''}`);
-        }
+        updateColumnsStyle('1fr 1.5fr');
     }, [
         landing_companies?.mt_financial_company,
         landing_companies?.mt_gaming_company,
@@ -590,7 +579,7 @@ const ModalContent = ({
     ]);
 
     const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;
-    const financial_account_table_head_text = is_eu ? localize('CFDs') : localize('Financial');
+    // const financial_account_table_head_text = is_eu ? localize('CFDs') : localize('Financial');
 
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
@@ -605,59 +594,7 @@ const ModalContent = ({
                         <Table.Header>
                             <Table.Row className='cfd-compare-accounts__table-row'>
                                 <Table.Head fixed />
-                                {is_logged_in ? (
-                                    <React.Fragment>
-                                        {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (
-                                            <Table.Head>
-                                                {platform === CFD_PLATFORMS.DXTRADE
-                                                    ? localize('CFDs')
-                                                    : localize('Synthetic')}
-                                            </Table.Head>
-                                        )}
-                                        {isLandingCompanyEnabled({
-                                            landing_companies,
-                                            platform,
-                                            type: 'financial',
-                                        }) && (
-                                            <Table.Head>
-                                                {financial_account_table_head_text}
-                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                    *
-                                                </Text>
-                                            </Table.Head>
-                                        )}
-                                        {isLandingCompanyEnabled({
-                                            landing_companies,
-                                            platform,
-                                            type: 'financial_stp',
-                                        }) && (
-                                            <Table.Head>
-                                                {localize('Financial STP')}
-                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                    *
-                                                </Text>
-                                            </Table.Head>
-                                        )}
-                                    </React.Fragment>
-                                ) : (
-                                    <React.Fragment>
-                                        <Table.Head>{localize('Synthetic')}</Table.Head>
-                                        <Table.Head>
-                                            {localize('Financial')}
-                                            <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                *
-                                            </Text>
-                                        </Table.Head>
-                                        {platform === CFD_PLATFORMS.MT5 && (
-                                            <Table.Head>
-                                                {localize('Financial STP')}
-                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                    *
-                                                </Text>
-                                            </Table.Head>
-                                        )}
-                                    </React.Fragment>
-                                )}
+                                <Table.Head>{localize('Deriv X')}</Table.Head>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>

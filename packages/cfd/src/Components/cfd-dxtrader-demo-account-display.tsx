@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFDAccountCard } from 'Components/cfd-account-card';
 import specifications, { TSpecifications } from 'Constants/cfd-specifications';
-import Loading from '../../templates/_common/components/loading';
+import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts } from 'Components/props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
@@ -68,11 +68,11 @@ const CFDDxtraderDemoAccountDisplay = ({
         <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
             <CFDAccountCard
                 key='cfd'
-                title={localize('CFDs')}
+                title={localize('Deriv X')}
                 type={{
                     category: 'demo',
-                    type: 'cfd',
                     platform: 'dxtrade',
+                    type: 'dxtrade',
                 }}
                 is_disabled={has_cfd_account_error || standpoint.malta}
                 is_logged_in={is_logged_in}

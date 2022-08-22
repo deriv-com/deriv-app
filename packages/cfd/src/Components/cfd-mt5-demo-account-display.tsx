@@ -22,7 +22,7 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-type TCFDDemoAccountDisplayProps = {
+type TCFDMT5DemoAccountDisplayProps = {
     is_eu: boolean;
     is_eu_country: boolean;
     has_maltainvest_account: boolean;
@@ -46,7 +46,7 @@ type TCFDDemoAccountDisplayProps = {
     toggleMT5TradeModal: () => void;
 };
 
-const CFDDemoAccountDisplay = ({
+const CFDMT5DemoAccountDisplay = ({
     is_eu,
     is_eu_country,
     has_maltainvest_account,
@@ -64,7 +64,7 @@ const CFDDemoAccountDisplay = ({
     openPasswordManager,
     residence,
     toggleMT5TradeModal,
-}: TCFDDemoAccountDisplayProps) => {
+}: TCFDMT5DemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openCFDAccount = () => {
@@ -196,4 +196,4 @@ const CFDDemoAccountDisplay = ({
     );
 };
 
-export { CFDDemoAccountDisplay };
+export default CFDMT5DemoAccountDisplay;

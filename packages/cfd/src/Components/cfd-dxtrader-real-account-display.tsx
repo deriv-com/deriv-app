@@ -36,7 +36,7 @@ type TCFDRealAccountDisplayProps = {
     should_enable_add_button?: boolean;
 };
 
-const CFDDxtraderAccountDisplay = ({
+const CFDDxtraderRealAccountDisplay = ({
     has_real_account,
     is_accounts_switcher_on,
     has_cfd_account_error,
@@ -71,7 +71,7 @@ const CFDDxtraderAccountDisplay = ({
         });
     };
 
-    const existing_accounts_data = (acc_type: 'synthetic') => {
+    const existing_accounts_data = (acc_type: 'dxtrade') => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
@@ -85,7 +85,7 @@ const CFDDxtraderAccountDisplay = ({
 
     const synthetic_account_items = (
         <CFDAccountCard
-            key='cfd'
+            key='dxtrade'
             has_cfd_account_error={has_cfd_account_error}
             title={localize('Deriv X')}
             has_real_account={has_real_account}
@@ -93,10 +93,10 @@ const CFDDxtraderAccountDisplay = ({
             is_logged_in={is_logged_in}
             type={{
                 category: 'real',
-                type: 'cfd',
                 platform: 'dxtrade',
+                type: 'dxtrade',
             }}
-            existing_accounts_data={existing_accounts_data('synthetic')}
+            existing_accounts_data={existing_accounts_data('dxtrade')}
             commission_message={localize('No commission')}
             onSelectAccount={() => onSelectRealAccount('synthetic')}
             onPasswordManager={openPasswordManager}
@@ -130,4 +130,4 @@ const CFDDxtraderAccountDisplay = ({
     );
 };
 
-export default CFDDxtraderAccountDisplay;
+export default CFDDxtraderRealAccountDisplay;

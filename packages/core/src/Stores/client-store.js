@@ -780,6 +780,7 @@ export default class ClientStore extends BaseStore {
         return (
             'dxtrade_financial_company' in landing_companies ||
             'dxtrade_gaming_company' in landing_companies ||
+            'dxtrade_all_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
     };

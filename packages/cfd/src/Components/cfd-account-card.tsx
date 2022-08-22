@@ -26,9 +26,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         cfd: 'IcMt5CfdPlatform',
     },
     dxtrade: {
-        synthetic: 'IcDxtradeSyntheticPlatform',
-        financial: 'IcDxtradeFinancialPlatform',
-        cfd: 'IcDxtradeDerivx',
+        dxtrade: 'IcDxtradeDerivxPlatform',
     },
 };
 
@@ -196,7 +194,8 @@ const CFDAccountCardComponent = ({
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    const platform_icon = is_eu ? 'cfd' : type.type;
+    // TODO: check this condition with @hirad
+    const platform_icon = is_eu ? 'dxtrade' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;

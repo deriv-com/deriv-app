@@ -114,7 +114,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
                     }
                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
-                    onClickDone={() => order_store.setOrderRating(id)}
+                    onClickDone={() => {
+                        order_store.setOrderRating(id);
+                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
+                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                    }}
                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                     onClickRecommended={() => order_store.setIsRecommended(1)}
                     onClickSkip={() => {
@@ -285,7 +289,11 @@ const OrderDetails = observer(({ onPageReturn }) => {
                                             : client_details?.is_recommended
                                     }
                                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
-                                    onClickDone={() => order_store.setOrderRating(id)}
+                                    onClickDone={() => {
+                                        order_store.setOrderRating(id);
+                                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
+                                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                                    }}
                                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                                     onClickRecommended={() => order_store.setIsRecommended(1)}
                                     onClickSkip={() => {

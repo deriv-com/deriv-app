@@ -421,7 +421,16 @@ const AccountTransferForm = ({
                 validateOnBlur={false}
                 enableReinitialize
             >
-                {({ errors, handleChange, isSubmitting, touched, setFieldValue, setFieldTouched, setFieldError }) => (
+                {({
+                    errors,
+                    handleChange,
+                    isSubmitting,
+                    touched,
+                    setFieldValue,
+                    setFieldTouched,
+                    setFieldError,
+                    values,
+                }) => (
                     <React.Fragment>
                         {isSubmitting || accounts_list.length === 0 ? (
                             <div className='cashier__loader-wrapper'>
@@ -590,9 +599,11 @@ const AccountTransferForm = ({
                                             !!selected_from.error ||
                                             !!selected_to.error ||
                                             !+selected_from.balance ||
-                                            !converter_from_amount ||
                                             !!converter_from_error ||
-                                            !!converter_to_error
+                                            !!converter_to_error ||
+                                            (selected_from.currency === selected_to.currency
+                                                ? !values.amount
+                                                : !converter_from_amount)
                                         }
                                         primary
                                         large

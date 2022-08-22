@@ -97,11 +97,12 @@ let routes_config, cra_routes_config;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 const getRoutesConfig = is_cra => {
-    if (!routes_config && !cra_routes_config) {
-        routes_config = initRoutesConfig(false);
-        routes_config.push(route_default);
+    if (is_cra && !cra_routes_config) {
         cra_routes_config = initRoutesConfig(true);
         cra_routes_config.push(route_default);
+    } else if (!routes_config) {
+        routes_config = initRoutesConfig(false);
+        routes_config.push(route_default);
     }
     return is_cra ? cra_routes_config : routes_config;
 };

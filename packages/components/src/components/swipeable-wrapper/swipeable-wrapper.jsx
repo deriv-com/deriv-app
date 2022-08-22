@@ -43,6 +43,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     return (
         <div className='dc-swipeable'>
             <div
+                {...swipe_handlers}
                 style={{
                     transform: `translateX(${props.is_disabled ? -100 : active_index * -100}vw)`,
                 }}

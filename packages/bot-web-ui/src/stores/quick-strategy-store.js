@@ -458,7 +458,7 @@ export default class QuickStrategyStore {
                 return;
             }
 
-            if (this.values_flags.includes(key) && number_fields.includes(key)) {
+            if (!this.values_flags.includes(key) && number_fields.includes(key)) {
                 if (isNaN(value)) {
                     errors[key] = localize('Must be a number');
                 } else if (value <= 0) {

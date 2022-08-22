@@ -35,7 +35,6 @@ const InputSize = ({
     touched,
     is_mobile,
     getFieldNames,
-    toggleValuesFlags,
     setValidationErrors,
     validateQuickStrategy,
     values,
@@ -60,12 +59,14 @@ const InputSize = ({
                     onChange={e => {
                         handleChange(e);
                         onChangeInputValue(input_name[active_index], e);
-                    }}
-                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                    onBlur={e => {
-                        setCurrentFocus(null);
-                        toggleValuesFlags(e.currentTarget.name);
                         setValidationErrors(validateQuickStrategy(values));
+                    }}
+                    onFocus={e => {
+                        setCurrentFocus(e.currentTarget.name);
+                        setValidationErrors(validateQuickStrategy(values));
+                    }}
+                    onBlur={() => {
+                        setCurrentFocus(null);
                     }}
                     placeholder='2'
                     trailing_icon={
@@ -303,20 +304,20 @@ const QuickStrategyForm = ({
                                                 type='text'
                                                 error={
                                                     initial_errors[field.name] ||
-                                                    //this condition should be changed because affects to other types of strategies, but without validation_errors we never display some error messages
-                                                    (active_index === 0 ? validation_errors[field.name] : null) ||
                                                     (touched[field.name] && errors[field.name])
                                                 }
                                                 label={localize('Duration value')}
                                                 onChange={e => {
                                                     handleChange(e);
                                                     onChangeInputValue('input_duration_value', e);
-                                                }}
-                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                onBlur={e => {
-                                                    setCurrentFocus(null);
-                                                    toggleValuesFlags(e.currentTarget.name);
                                                     setValidationErrors(validateQuickStrategy(values));
+                                                }}
+                                                onFocus={e => {
+                                                    setCurrentFocus(e.currentTarget.name);
+                                                    setValidationErrors(validateQuickStrategy(values));
+                                                }}
+                                                onBlur={() => {
+                                                    setCurrentFocus(null);
                                                 }}
                                                 placeholder='5'
                                                 trailing_icon={
@@ -349,20 +350,17 @@ const QuickStrategyForm = ({
                                                 type='text'
                                                 error={
                                                     initial_errors[field.name] ||
-                                                    //this condition should be changed because affects to other types of strategies, but without validation_errors we never display some error messages
-                                                    (active_index === 0 ? validation_errors[field.name] : null) ||
                                                     (touched[field.name] && errors[field.name])
                                                 }
                                                 label={localize('Initial stake')}
                                                 onChange={e => {
                                                     handleChange(e);
                                                     onChangeInputValue('input_stake', e);
+                                                    setValidationErrors(validateQuickStrategy(values));
                                                 }}
                                                 onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                onBlur={e => {
+                                                onBlur={() => {
                                                     setCurrentFocus(null);
-                                                    toggleValuesFlags(e.currentTarget.name);
-                                                    setValidationErrors(validateQuickStrategy(values));
                                                 }}
                                                 placeholder='10'
                                                 trailing_icon={
@@ -387,18 +385,16 @@ const QuickStrategyForm = ({
                                                 type='text'
                                                 error={
                                                     initial_errors[field.name] ||
-                                                    //this condition should be changed because affects to other types of strategies, but without validation_errors we never display some error messages
-                                                    (active_index === 0 ? validation_errors[field.name] : null) ||
                                                     (touched[field.name] && errors[field.name])
                                                 }
                                                 label={localize('Loss threshold')}
                                                 onChange={e => {
                                                     handleChange(e);
                                                     onChangeInputValue('input_loss', e);
+                                                    setValidationErrors(validateQuickStrategy(values));
                                                 }}
                                                 onFocus={e => {
                                                     setCurrentFocus(e.currentTarget.name);
-                                                    toggleValuesFlags(e.currentTarget.name);
                                                     setValidationErrors(validateQuickStrategy(values));
                                                 }}
                                                 onBlur={() => setCurrentFocus(null)}
@@ -451,18 +447,16 @@ const QuickStrategyForm = ({
                                                 type='text'
                                                 error={
                                                     initial_errors[field.name] ||
-                                                    //this condition should be changed because affects to other types of strategies, but without validation_errors we never display some error messages
-                                                    (active_index === 0 ? validation_errors[field.name] : null) ||
                                                     (touched[field.name] && errors[field.name])
                                                 }
                                                 label={localize('Profit threshold')}
                                                 onChange={e => {
                                                     handleChange(e);
                                                     onChangeInputValue('input_profit', e);
+                                                    setValidationErrors(validateQuickStrategy(values));
                                                 }}
                                                 onFocus={e => {
                                                     setCurrentFocus(e.currentTarget.name);
-                                                    toggleValuesFlags(e.currentTarget.name);
                                                     setValidationErrors(validateQuickStrategy(values));
                                                 }}
                                                 onBlur={() => setCurrentFocus(null)}

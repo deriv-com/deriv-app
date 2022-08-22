@@ -37,10 +37,18 @@ const CashierOnboarding = ({
 }) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
-    const has_crypto_account = Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency));
-    const has_fiat_account = Object.values(accounts).some(
-        acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency)
+    const has_crypto_account = React.useMemo(
+        () => Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency)),
+        [accounts]
     );
+    const has_fiat_account = React.useMemo(
+        () =>
+            Object.values(accounts).some(
+                acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency)
+            ),
+        [accounts]
+    );
+
     const is_currency_banner_visible =
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
 

@@ -590,6 +590,7 @@ const AccountTransferForm = ({
                                             !!selected_from.error ||
                                             !!selected_to.error ||
                                             !+selected_from.balance ||
+                                            !converter_from_amount ||
                                             !!converter_from_error ||
                                             !!converter_to_error
                                         }

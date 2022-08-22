@@ -100,8 +100,8 @@
 
         &__option {
             padding: 0 0.2rem;
-            color: #333333;
-            border-right: 1px solid #eaeced;
+            color: var(--icon-grey-background);
+            border-right: 1px solid var(--general-disabled);
             line-break: anywhere;
 
             &:first-of-type {

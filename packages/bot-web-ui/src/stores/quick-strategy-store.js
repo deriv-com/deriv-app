@@ -50,16 +50,16 @@ export default class QuickStrategyStore {
         this.root_store = root_store;
         this.qs_cache = getSetting('quick_strategy') || {};
     }
-    selected_symbol = this.qs_cache.selected_symbol || '';
-    selected_trade_type = this.qs_cache.selected_trade_type || '';
-    selected_duration_unit = this.qs_cache.selected_duration_unit || '';
-    input_duration_value = this.qs_cache.input_duration_value || '';
-    input_stake = this.qs_cache.input_stake || '';
-    input_size = this.qs_cache.input_size || '';
-    input_alembert_unit = this.qs_cache.input_alembert_unit || '';
-    input_oscar_unit = this.qs_cache.input_oscar_unit || '';
-    input_loss = this.qs_cache.input_loss || '';
-    input_profit = this.qs_cache.input_profit || '';
+    selected_symbol = this.qs_cache?.selected_symbol || '';
+    selected_trade_type = this.qs_cache?.selected_trade_type || '';
+    selected_duration_unit = this.qs_cache?.selected_duration_unit || '';
+    input_duration_value = this.qs_cache?.input_duration_value || '';
+    input_stake = this.qs_cache?.input_stake || '';
+    input_size = this.qs_cache?.input_size || '';
+    input_alembert_unit = this.qs_cache?.input_alembert_unit || '';
+    input_oscar_unit = this.qs_cache?.input_oscar_unit || '';
+    input_loss = this.qs_cache?.input_loss || '';
+    input_profit = this.qs_cache?.input_profit || '';
 
     is_strategy_modal_open = false;
     active_index = 0;
@@ -117,7 +117,7 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_symbol = symbol;
         this.selected_symbol = symbol;
         delete this.qs_cache?.selected_duration_unit;
-        delete this.qs_cache.duration_value;
+        delete this.qs_cache?.duration_value;
         delete this.qs_cache?.selected_trade_type;
     }
 
@@ -125,7 +125,7 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_trade_type = trade_type;
         this.selected_trade_type = trade_type;
         delete this.qs_cache?.selected_duration_unit;
-        delete this.qs_cache.duration_value;
+        delete this.qs_cache?.duration_value;
     }
 
     setDurationInputValue(duration_value) {
@@ -388,7 +388,7 @@ export default class QuickStrategyStore {
                 first_trade_type.text = this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value);
             });
         } else {
-            delete this.qs_cache.selected_trade_type;
+            delete this.qs_cache?.selected_trade_type;
         }
         if (first_trade_type) {
             this.setSelectedTradeType(first_trade_type);
@@ -439,11 +439,11 @@ export default class QuickStrategyStore {
         const min_duration = durations.find(duration => duration.unit === duration_type);
         if (min_duration) {
             let duration_input_value = min_duration.min;
-            const cache_unit = this.qs_cache.input_duration_value;
+            const cache_unit = this.qs_cache?.input_duration_value;
             if (cache_unit && cache_unit < min_duration.max && cache_unit > min_duration.min) {
                 duration_input_value = cache_unit;
             } else {
-                delete this.qs_cache.input_duration_value;
+                delete this.qs_cache?.input_duration_value;
             }
             this.setDurationInputValue(duration_input_value);
 

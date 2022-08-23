@@ -23,6 +23,7 @@ const Cashier = ({
     is_account_transfer_visible,
     is_account_setting_loaded,
     is_cashier_onboarding,
+    is_cra,
     is_crypto,
     is_crypto_transactions_visible,
     is_loading,
@@ -66,7 +67,18 @@ const Cashier = ({
     const getMenuOptions = () => {
         const options = [];
         routes_config.forEach(route => {
-            if (
+            if (is_cra) {
+                if (!route.hide_for.includes('affiliate')) {
+                    options.push({
+                        default: route.default,
+                        icon: route.icon_component,
+                        label: route.getTitle(),
+                        value: route.component,
+                        path: route.path,
+                        has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    });
+                }
+            } else if (
                 !route.is_invisible &&
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
@@ -184,6 +196,7 @@ Cashier.propTypes = {
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
     is_cashier_onboarding: PropTypes.bool,
+    is_cra: PropTypes.bool,
     is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_loading: PropTypes.bool,
@@ -212,6 +225,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
+    is_cra: client.is_cra,
     is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,

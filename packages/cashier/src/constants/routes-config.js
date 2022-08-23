@@ -8,103 +8,89 @@ import { AccountTransfer, Deposit, OnRamp, P2PCashier, PaymentAgent, PaymentAgen
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Components/page-404')));
 
 // Order matters
-const initRoutesConfig = is_cra => {
-    const cashier_module = [
-        {
-            path: routes.cashier,
-            component: Cashier,
-            is_modal: true,
-            is_authenticated: true,
-            getTitle: () => localize('Cashier'),
-            icon_component: 'IcCashier',
-            routes: [
-                {
-                    path: routes.cashier_deposit,
-                    component: Deposit,
-                    getTitle: () => localize('Deposit'),
-                    icon_component: 'IcCashierAdd',
-                    is_visible_for: [],
-                    default: true,
-                },
-                {
-                    path: routes.cashier_withdrawal,
-                    component: Withdrawal,
-                    getTitle: () => localize('Withdrawal'),
-                    icon_component: 'IcCashierMinus',
-                    is_visible_for: ['affiliate'],
-                },
-                {
-                    path: routes.cashier_pa,
-                    component: PaymentAgent,
-                    getTitle: () => localize('Payment agents'),
-                    icon_component: 'IcPaymentAgent',
-                    is_visible_for: [],
-                },
-                {
-                    path: routes.cashier_acc_transfer,
-                    component: AccountTransfer,
-                    getTitle: () => localize('Transfer'),
-                    icon_component: 'IcAccountTransfer',
-                    is_visible_for: ['affiliate'],
-                },
-                {
-                    path: routes.cashier_pa_transfer,
-                    component: PaymentAgentTransfer,
-                    getTitle: () => localize('Transfer to client'),
-                    icon_component: 'IcAccountTransfer',
-                    is_visible_for: [],
-                },
-                {
-                    path: routes.cashier_p2p,
-                    component: P2PCashier,
-                    getTitle: () => localize('Deriv P2P'),
-                    icon_component: 'IcDp2p',
-                    is_visible_for: [],
-                },
-                {
-                    path: routes.cashier_p2p_verification,
-                    component: P2PCashier,
-                    getTitle: () => localize('Deriv P2P'),
-                    icon_component: 'IcDp2p',
-                    is_invisible: true,
-                    is_visible_for: [],
-                },
-                {
-                    id: 'gtm-onramp-tab',
-                    path: routes.cashier_onramp,
-                    component: OnRamp,
-                    getTitle: () => localize('Fiat onramp'),
-                    icon_component: 'IcCashierOnRamp',
-                    is_visible_for: [],
-                },
-            ],
-        },
-    ];
+const initRoutesConfig = () => [
+    {
+        path: routes.cashier,
+        component: Cashier,
+        is_modal: true,
+        is_authenticated: true,
+        getTitle: () => localize('Cashier'),
+        icon_component: 'IcCashier',
+        routes: [
+            {
+                path: routes.cashier_deposit,
+                component: Deposit,
+                getTitle: () => localize('Deposit'),
+                icon_component: 'IcCashierAdd',
+                hide_for: ['affiliate'],
+                default: true,
+            },
+            {
+                path: routes.cashier_withdrawal,
+                component: Withdrawal,
+                getTitle: () => localize('Withdrawal'),
+                icon_component: 'IcCashierMinus',
+                hide_for: [],
+            },
+            {
+                path: routes.cashier_pa,
+                component: PaymentAgent,
+                getTitle: () => localize('Payment agents'),
+                icon_component: 'IcPaymentAgent',
+                hide_for: ['affiliate'],
+            },
+            {
+                path: routes.cashier_acc_transfer,
+                component: AccountTransfer,
+                getTitle: () => localize('Transfer'),
+                icon_component: 'IcAccountTransfer',
+                hide_for: [],
+            },
+            {
+                path: routes.cashier_pa_transfer,
+                component: PaymentAgentTransfer,
+                getTitle: () => localize('Transfer to client'),
+                icon_component: 'IcAccountTransfer',
+                hide_for: ['affiliate'],
+            },
+            {
+                path: routes.cashier_p2p,
+                component: P2PCashier,
+                getTitle: () => localize('Deriv P2P'),
+                icon_component: 'IcDp2p',
+                hide_for: ['affiliate'],
+            },
+            {
+                path: routes.cashier_p2p_verification,
+                component: P2PCashier,
+                getTitle: () => localize('Deriv P2P'),
+                icon_component: 'IcDp2p',
+                is_invisible: true,
+                hide_for: ['affiliate'],
+            },
+            {
+                id: 'gtm-onramp-tab',
+                path: routes.cashier_onramp,
+                component: OnRamp,
+                getTitle: () => localize('Fiat onramp'),
+                icon_component: 'IcCashierOnRamp',
+                hide_for: ['affiliate'],
+            },
+        ],
+    },
+];
 
-    if (is_cra) {
-        cashier_module.forEach(cashier => {
-            if (cashier.routes) {
-                cashier.routes = cashier.routes.filter(route => route.is_visible_for.includes('affiliate'));
-            }
-        });
-    }
+let routesConfig;
 
-    return cashier_module;
-};
-
-let routes_config, cra_routes_config;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = is_cra => {
-    if (is_cra && !cra_routes_config) {
-        cra_routes_config = initRoutesConfig(true);
-        cra_routes_config.push(route_default);
-    } else if (!routes_config) {
-        routes_config = initRoutesConfig(false);
-        routes_config.push(route_default);
+const getRoutesConfig = () => {
+    if (!routesConfig) {
+        routesConfig = initRoutesConfig();
+        routesConfig.push(route_default);
     }
-    return is_cra ? cra_routes_config : routes_config;
+    return routesConfig;
 };
 
 export default getRoutesConfig;

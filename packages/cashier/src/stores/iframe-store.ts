@@ -1,8 +1,18 @@
 import { action, observable, makeObservable } from 'mobx';
 import Constants from 'Constants/constants';
+import { TRootStore } from 'Types';
+
+type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
 export default class IframeStore {
-    constructor({ WS, root_store }) {
+    root_store: TRootStore;
+    iframe_height = 0;
+    iframe_url = '';
+    is_session_timeout = true;
+    onIframeLoaded: TOnIframeLoadedCallback | null = null;
+    timeout_session: NodeJS.Timeout | null = null;
+
+    constructor({ root_store }: { root_store: TRootStore }) {
         makeObservable(this, {
             iframe_height: observable,
             iframe_url: observable,
@@ -18,28 +28,20 @@ export default class IframeStore {
         });
 
         this.root_store = root_store;
-        this.WS = WS;
     }
 
-    iframe_height = 0;
-    iframe_url = '';
-    is_session_timeout = true;
-
-    onIframeLoaded = '';
-    timeout_session = '';
-
-    setSessionTimeout(is_session_time_out) {
+    setSessionTimeout(is_session_time_out: boolean): void {
         this.is_session_timeout = is_session_time_out;
         if (is_session_time_out) {
             this.removeOnIframeLoaded();
         }
     }
 
-    async checkIframeLoaded() {
+    async checkIframeLoaded(): Promise<void> {
         const { modules, ui } = this.root_store;
 
         this.removeOnIframeLoaded();
-        this.onIframeLoaded = function (e) {
+        this.onIframeLoaded = (e: MessageEvent) => {
             if (/cashier|doughflow/.test(e.origin)) {
                 modules.cashier.general_store.setLoading(false);
                 // set the height of the container after content loads so that the
@@ -52,31 +54,34 @@ export default class IframeStore {
                 // do not remove the listener
                 // on every iframe screen change we need to update the height to more/less to match the new content
             }
-        }.bind(this);
+        };
         window.addEventListener('message', this.onIframeLoaded, false);
     }
 
-    removeOnIframeLoaded() {
+    removeOnIframeLoaded(): void {
         if (this.onIframeLoaded) {
             window.removeEventListener('message', this.onIframeLoaded, false);
-            this.onIframeLoaded = '';
+            this.onIframeLoaded = null;
         }
     }
 
-    clearTimeoutCashierUrl() {
+    clearTimeoutCashierUrl(): void {
         if (this.timeout_session) {
             clearTimeout(this.timeout_session);
         }
     }
 
-    setTimeoutCashierUrl() {
+    setTimeoutCashierUrl(): void {
         this.clearTimeoutCashierUrl();
         this.timeout_session = setTimeout(() => {
             this.setSessionTimeout(true);
         }, 60000);
     }
 
-    setIframeUrl(url, container = this.root_store.modules.cashier.general_store.active_container) {
+    setIframeUrl(
+        url: string,
+        container: 'withdraw' | 'payment_agent' = this.root_store.modules.cashier.general_store.active_container
+    ): void {
         const { client, ui } = this.root_store;
 
         if (url) {
@@ -88,11 +93,11 @@ export default class IframeStore {
         }
     }
 
-    setContainerHeight(height) {
+    setContainerHeight(height: number): void {
         this.iframe_height = height;
     }
 
-    clearIframe() {
+    clearIframe(): void {
         this.setContainerHeight(0);
         this.setIframeUrl('');
         this.clearTimeoutCashierUrl();

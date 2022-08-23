@@ -6,7 +6,7 @@ let CFD_text_translated;
 const CFD_text = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
-    mt5_cfds_mfsa: 'MT5 CFDs MFSA',
+    mt5_cfds_mfsa: 'MT5 CFDs',
     cfd: 'CFDs',
     synthetic: 'Synthetic',
     synthetic_bvi: 'Synthetic BVI',

@@ -263,6 +263,10 @@ const AccountTransferForm = ({
         return undefined;
     };
 
+    const shouldShowTransferButton = amount => {
+        return selected_from.currency === selected_to.currency ? !amount : !converter_from_amount;
+    };
+
     const getAccounts = (type, { is_mt, is_dxtrade }) => {
         if (type === 'from') {
             if (is_mt) return mt_accounts_from;
@@ -601,9 +605,7 @@ const AccountTransferForm = ({
                                             !+selected_from.balance ||
                                             !!converter_from_error ||
                                             !!converter_to_error ||
-                                            (selected_from.currency === selected_to.currency
-                                                ? !values.amount
-                                                : !converter_from_amount)
+                                            shouldShowTransferButton(values.amount)
                                         }
                                         primary
                                         large

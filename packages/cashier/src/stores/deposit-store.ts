@@ -1,9 +1,13 @@
 import { action, computed, observable, makeObservable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
+import { TRootStore, TWebSocket } from 'Types';
 
 export default class DepositStore {
-    constructor({ WS, root_store }) {
+    root_store: TRootStore;
+    WS: TWebSocket;
+
+    constructor({ WS, root_store }: { WS: TWebSocket; root_store: TRootStore }) {
         makeObservable(this, {
             container: observable,
             error: observable,
@@ -37,7 +41,7 @@ export default class DepositStore {
         setOnRemount(this.onMountDeposit);
         await onMountCommon();
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
         setLoading(true);
 

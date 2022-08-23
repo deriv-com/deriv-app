@@ -25,4 +25,15 @@ export type TClientStore = {
         payment_withdraw: string;
     };
     setVerificationCode: (code: string, action: string) => void;
+    updateAccountStatus: () => Promise<void>;
+    mt5_login_list: {
+        account_type: string;
+        sub_account_type: string;
+    }[];
+    is_authentication_needed: boolean;
+    is_tnc_needed: boolean;
+    is_financial_account: boolean;
+    is_financial_information_incomplete: boolean;
+    is_trading_experience_incomplete: boolean;
+    is_eu: boolean;
 };

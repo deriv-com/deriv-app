@@ -66,7 +66,6 @@ const Cashier = ({
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
-
         routes_config.forEach(route => {
             if (
                 (is_cra && !route.hide_for.includes('affiliate')) ||

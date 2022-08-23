@@ -5,8 +5,6 @@ import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => {
-    const { is_cra } = props;
-
     return (
         <React.Suspense
             fallback={() => {
@@ -18,7 +16,7 @@ const BinaryRoutes = props => {
             }}
         >
             <Switch>
-                {getRoutesConfig(is_cra).map((route, idx) => (
+                {getRoutesConfig().map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

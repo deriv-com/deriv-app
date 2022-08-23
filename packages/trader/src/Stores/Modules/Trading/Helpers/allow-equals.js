@@ -1,11 +1,10 @@
-import { localize } from '@deriv/translations';
 import { isEmptyObject, getPropertyValue } from '@deriv/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
 export const hasCallPutEqual = contract_type_list => {
     if (isEmptyObject(contract_type_list)) return false;
 
-    return (getPropertyValue(contract_type_list, localize('Ups & Downs')) || []).some(
+    return (getPropertyValue(contract_type_list, 'Ups & Downs') || []).categories.some(
         contract => contract.value === 'rise_fall_equal'
     );
 };
@@ -14,7 +13,7 @@ export const hasDurationForCallPutEqual = (contract_type_list, duration_unit, co
     if (!contract_type_list || !duration_unit || !contract_start_type) return false;
 
     const contract_list = Object.keys(contract_type_list || {}).reduce(
-        (key, list) => [...key, ...contract_type_list[list].map(contract => contract.value)],
+        (key, list) => [...key, ...contract_type_list[list].categories.map(contract => contract.value)],
         []
     );
 

@@ -126,7 +126,7 @@ const JurisdictionCard = ({
         <Icon icon='IcCheckmark' className={`${card_classname}__bullet-wrapper--checkmark`} color={'green'} size={18} />
     );
 
-    const OneOrTwoCards = number_of_cards === 1 || number_of_cards === 2;
+    const one_or_two_cards = number_of_cards === 1 || number_of_cards === 2;
 
     const getAccountTitle = () => {
         switch (account_type) {
@@ -173,7 +173,7 @@ const JurisdictionCard = ({
                 if (!is_fully_authenticated)
                     return (
                         <div className={`${card_classname}__footer`}>
-                            <Text size={OneOrTwoCards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
+                            <Text size={one_or_two_cards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
                                 <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                             </Text>
                         </div>
@@ -295,7 +295,7 @@ const JurisdictionCard = ({
                     [`${card_classname}--selected`]: jurisdiction_selected_shortcode === type_of_card,
                 })}
                 onClick={disabled ? () => undefined : () => cardSelection(`${type_of_card}`)}
-                style={OneOrTwoCards ? { width: '32em' } : { width: '27.6em' }}
+                style={one_or_two_cards ? { width: '32em' } : { width: '27.6em' }}
             >
                 {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
                     <div className={classNames(`${card_classname}__over-header`)}>
@@ -673,6 +673,33 @@ const JurisdictionModalContent = ({
     return (
         <>
             <div className={`${card_classname}__wrapper`}>
+                {cardsToBeShown('svg') && (
+                    <JurisdictionCard
+                        type_of_card='svg'
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        synthetic_available_accounts={synthetic_available_accounts}
+                        financial_available_accounts={financial_available_accounts}
+                        account_type={account_type}
+                        poa_status={poa_status}
+                        poi_status={poi_status}
+                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                        disabled={disableCard('svg')}
+                        poa_failed={poa_failed}
+                        poi_failed={poi_failed}
+                        poi_poa_none={poi_poa_none}
+                        poa_acknowledged={poa_acknowledged}
+                        poi_acknowledged={poi_acknowledged}
+                        is_fully_authenticated={is_fully_authenticated}
+                        is_virtual={is_virtual}
+                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
+                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
+                        poa_verified={poa_verified}
+                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
+                        need_poi_for_vanuatu={need_poi_for_vanuatu}
+                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
+                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
+                    />
+                )}
                 {cardsToBeShown('bvi') && (
                     <JurisdictionCard
                         type_of_card='bvi'
@@ -700,7 +727,6 @@ const JurisdictionModalContent = ({
                         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                     />
                 )}
-
                 {cardsToBeShown('maltainvest') && is_eu && (
                     <JurisdictionCard
                         type_of_card='maltainvest'
@@ -728,7 +754,6 @@ const JurisdictionModalContent = ({
                         poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
                     />
                 )}
-
                 {cardsToBeShown('vanuatu') && (
                     <JurisdictionCard
                         type_of_card='vanuatu'
@@ -767,34 +792,6 @@ const JurisdictionModalContent = ({
                         poi_status={poi_status}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('labuan')}
-                        poa_failed={poa_failed}
-                        poi_failed={poi_failed}
-                        poi_poa_none={poi_poa_none}
-                        poa_acknowledged={poa_acknowledged}
-                        poi_acknowledged={poi_acknowledged}
-                        is_fully_authenticated={is_fully_authenticated}
-                        is_virtual={is_virtual}
-                        poi_verified_for_vanuatu={poi_verified_for_vanuatu}
-                        poi_verified_for_labuan_bvi={poi_verified_for_labuan_bvi}
-                        poa_verified={poa_verified}
-                        poi_acknowledged_for_bvi_labuan={poi_acknowledged_for_bvi_labuan}
-                        need_poi_for_vanuatu={need_poi_for_vanuatu}
-                        need_poi_for_bvi_labuan={need_poi_for_bvi_labuan}
-                        poi_acknowledged_for_vanuatu={poi_acknowledged_for_vanuatu}
-                    />
-                )}
-
-                {cardsToBeShown('svg') && (
-                    <JurisdictionCard
-                        type_of_card='svg'
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        synthetic_available_accounts={synthetic_available_accounts}
-                        financial_available_accounts={financial_available_accounts}
-                        account_type={account_type}
-                        poa_status={poa_status}
-                        poi_status={poi_status}
-                        setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                        disabled={disableCard('svg')}
                         poa_failed={poa_failed}
                         poi_failed={poi_failed}
                         poi_poa_none={poi_poa_none}

@@ -3,67 +3,89 @@ import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { trading_assessment_questions } from '../../../Configs/trading-assessment-config';
-import { Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text, FormSubmitButton } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
-import { isMobile } from '@deriv/shared';
+import { isMobile, WS } from '@deriv/shared';
+import { connect } from 'Stores/connect';
+import { withRouter } from 'react-router';
+import { Formik, Form } from 'formik';
 
-const TradingAssessment = () => {
+const TradingAssessment = ({
+    setFinancialAndTradingAssessment,
+    setShouldShowRiskWarningModal,
+    setShouldShowAppropriatenessWarningModal,
+}) => {
+    const [is_btn_loading, setIsBtnLoading] = React.useState(false);
+    const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
+    const [initial_form_values, setInitialFormValues] = React.useState({});
+
+    React.useEffect(() => {
+        WS.authorized.storage.getFinancialAssessment().then(data => {
+            WS.wait('get_account_status').then(() => {
+                if (data.error) {
+                    return;
+                }
+                setInitialFormValues(data.get_financial_assessment);
+            });
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleSubmit = async values => {
+        if (values.risk_tolerance === 'No') {
+            setShouldShowRiskWarningModal(true);
+        } else {
+            setIsBtnLoading(true);
+            const form_payload = {
+                trading_experience_regulated: {
+                    cfd_experience: values.cfd_experience,
+                    cfd_frequency: values.cfd_frequency,
+                    cfd_trading_definition: values.cfd_trading_definition,
+                    leverage_impact_trading: values.leverage_impact_trading,
+                    leverage_trading_high_risk_stop_loss: values.leverage_trading_high_risk_stop_loss,
+                    required_initial_margin: values.required_initial_margin,
+                    risk_tolerance: values.risk_tolerance,
+                    source_of_experience: values.source_of_experience,
+                    trading_experience_financial_instruments: values.trading_experience_financial_instruments,
+                    trading_frequency_financial_instruments: values.trading_frequency_financial_instruments,
+                },
+            };
+            const data = await setFinancialAndTradingAssessment(form_payload);
+            const { trading_score } = data.set_financial_assessment ?? {};
+            if (trading_score === 0) {
+                setShouldShowAppropriatenessWarningModal(true);
+                setIsBtnLoading(false);
+                setIsSubmitSuccess(true);
+            } else {
+                setIsBtnLoading(false);
+                setIsSubmitSuccess(true);
+            }
+            WS.authorized.storage.getFinancialAssessment().then(res_data => {
+                setInitialFormValues(res_data.get_financial_assessment);
+                setIsSubmitSuccess(false);
+            });
+        }
+    };
+
     return (
-        <form className='account-form account-form__financial-assessment'>
-            <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
-                <FormSubHeader
-                    title={localize('Trading Experience')}
-                    subtitle={`(${localize('All fields are required')})`}
-                />
-                {trading_assessment_questions.map(e => {
-                    if (e.field_type === 'radio') {
-                        return (
-                            <fieldset className='account-form__question'>
-                                <DesktopWrapper>
-                                    <Text
-                                        as='h1'
-                                        color='prominent'
-                                        weight='bold'
-                                        size='xs'
-                                        className='account-form__question--text'
-                                    >
-                                        {e.question_text}
-                                    </Text>
-                                    <Dropdown
-                                        is_align_text_left
-                                        name={e?.question_text}
-                                        placeholder='Select One'
-                                        list={e?.answer_options}
-                                    />
-                                </DesktopWrapper>
-                                <MobileWrapper>
-                                    <Text
-                                        as='h1'
-                                        color='prominent'
-                                        weight='bold'
-                                        size='xs'
-                                        line_height='xl'
-                                        className='account-form__question--text'
-                                    >
-                                        {e?.question_text}
-                                    </Text>
-                                    <SelectNative
-                                        placeholder={localize('Please select')}
-                                        label={e?.answer_options[0].text}
-                                        name={e?.question_text}
-                                        list_items={e?.answer_options}
-                                        hide_placeholder={true}
-                                    />
-                                </MobileWrapper>
-                            </fieldset>
-                        );
-                        // eslint-disable-next-line no-else-return
-                    } else {
-                        return (
-                            <React.Fragment>
-                                {e.questions.map((item, index) => {
+        <Formik
+            initialValues={initial_form_values}
+            enableReinitialize
+            onSubmit={(values, action) => handleSubmit(values, action)}
+        >
+            {({ values, dirty, isSubmitting, handleChange }) => {
+                return (
+                    <Form className='acccount-form account-form account-form__trading-assessment'>
+                        <FormBody scroll_offset={isMobile() ? '150px' : '80px'}>
+                            <FormSubHeader
+                                title={localize('Trading Experience')}
+                                subtitle={localize('All fields are required')}
+                            />
+                            {trading_assessment_questions.map(item => {
+                                if (item.field_type === 'radio') {
+                                    const form_control = item.form_control;
                                     return (
-                                        <fieldset key={index} className='account-form__question'>
+                                        <fieldset className='account-form__question'>
                                             <DesktopWrapper>
                                                 <Text
                                                     as='h1'
@@ -76,9 +98,10 @@ const TradingAssessment = () => {
                                                 </Text>
                                                 <Dropdown
                                                     is_align_text_left
-                                                    name={item?.question_text}
-                                                    placeholder='Select One'
+                                                    name={form_control}
+                                                    value={values[form_control]}
                                                     list={item?.answer_options}
+                                                    onChange={handleChange}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -93,26 +116,88 @@ const TradingAssessment = () => {
                                                     {item?.question_text}
                                                 </Text>
                                                 <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    label={item?.answer_options[0].text}
-                                                    name={item?.question_text}
+                                                    value={values[form_control]}
+                                                    name={form_control}
                                                     list_items={item?.answer_options}
                                                     hide_placeholder={true}
+                                                    onChange={e => handleChange(e)}
+                                                    should_show_empty_option={false}
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
                                     );
-                                })}
-                            </React.Fragment>
-                        );
-                    }
-                })}
-            </FormBody>
-            <FormFooter>
-                <Button className='account-form__footer-btn' type='button' text={localize('Submit')} large primary />
-            </FormFooter>
-        </form>
+                                    // eslint-disable-next-line no-else-return
+                                } else {
+                                    return (
+                                        <React.Fragment>
+                                            {item.questions.map((items, index) => {
+                                                const form_control = item.form_control;
+                                                return (
+                                                    <fieldset key={index} className='account-form__question'>
+                                                        <DesktopWrapper>
+                                                            <Text
+                                                                as='h1'
+                                                                color='prominent'
+                                                                weight='bold'
+                                                                size='xs'
+                                                                className='account-form__question--text'
+                                                            >
+                                                                {items.question_text}
+                                                            </Text>
+                                                            <Dropdown
+                                                                is_align_text_left
+                                                                name={form_control}
+                                                                value={values[form_control]}
+                                                                list={items?.answer_options}
+                                                                onChange={handleChange}
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <Text
+                                                                as='h1'
+                                                                color='prominent'
+                                                                weight='bold'
+                                                                size='xs'
+                                                                line_height='xl'
+                                                                className='account-form__question--text'
+                                                            >
+                                                                {items?.question_text}
+                                                            </Text>
+                                                            <SelectNative
+                                                                value={values[form_control]}
+                                                                name={form_control}
+                                                                list_items={items?.answer_options}
+                                                                onChange={e => handleChange(e)}
+                                                                should_show_empty_option={false}
+                                                            />
+                                                        </MobileWrapper>
+                                                    </fieldset>
+                                                );
+                                            })}
+                                        </React.Fragment>
+                                    );
+                                }
+                            })}
+                        </FormBody>
+                        <FormFooter>
+                            <FormSubmitButton
+                                is_disabled={isSubmitting || !dirty || is_submit_success}
+                                is_loading={is_btn_loading}
+                                is_absolute={isMobile()}
+                                label={localize('Submit')}
+                            />
+                        </FormFooter>
+                    </Form>
+                );
+            }}
+        </Formik>
     );
 };
 
-export default TradingAssessment;
+export default connect(({ client, ui }) => ({
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    updateAccountStatus: client.updateAccountStatus,
+}))(withRouter(TradingAssessment));

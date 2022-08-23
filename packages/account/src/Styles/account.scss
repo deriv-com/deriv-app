@@ -42,6 +42,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         & .account-form {
             &__personal-details,
+            &__trading-assessment,
             &__financial-assessment {
                 .account__scrollbars_container {
                     width: 68.5rem;
@@ -293,14 +294,18 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__question {
             position: relative;
-            max-width: 64rem;
-            margin-top: 0.9rem;
+            max-width: 67.2rem;
+            margin-top: 1.6rem;
             margin-bottom: 2rem;
             &--text {
                 margin-bottom: 1.6rem;
+                max-width: 67.2rem;
                 @include mobile {
                     margin-bottom: 2.4rem;
                 }
+            }
+            .dc-dropdown__display {
+                max-width: 67.2rem;
             }
         }
         &__fieldset {
@@ -537,6 +542,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        &__trading-assessment,
         &__financial-assessment {
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);

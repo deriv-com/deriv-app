@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import RadioButton from '../radio-button.jsx';
+import RadioButton from '../radio-button.tsx';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

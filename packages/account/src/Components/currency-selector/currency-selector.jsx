@@ -6,7 +6,7 @@ import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedSc
 import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
-import RadioButton from './radio-button.jsx';
+import RadioButton from './radio-button.tsx';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;

@@ -3,19 +3,19 @@
     "compilerOptions": {
         "outDir": "./dist",
         "rootDir": "./src",
-        "baseUrl": "./",
+        "baseUrl": "src",
         "paths": {
-            "Components/*": ["src/Components/*"],
-            "Containers/*": ["src/Containers/*"],
-            "Constants/*": ["src/Constants/*"],
-            "Configs/*": ["src/Configs/*"],
-            "Duplicated/*": ["src/Duplicated/*"],
-            "Helpers/*": ["src/Helpers/*"],
-            "Layout/*": ["src/Layout/*"],
-            "Modules/*": ["src/Modules/*"],
-            "Sections/*": ["src/Sections/*"],
-            "Stores/*": ["src/Stores/*"],
-            "Styles/*": ["src/Styles/*"]
+            "Assets/*": ["Assets/*"],
+            "Components/*": ["Components/*"],
+            "Containers/*": ["Containers/*"],
+            "Constants/*": ["Constants/*"],
+            "Configs/*": ["Configs/*"],
+            "Helpers/*": ["Helpers/*"],
+            "Modules/*": ["Modules/*"],
+            "Sections/*": ["Sections/*"],
+            "Stores/*": ["Stores/*"],
+            "Styles/*": ["Styles/*"],
+            "Types": ["Types"]
         }
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"] // *** The files TypeScript should type check ***

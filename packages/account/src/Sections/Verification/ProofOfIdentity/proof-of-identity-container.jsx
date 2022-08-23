@@ -119,9 +119,7 @@ const ProofOfIdentityContainer = ({
     } else if (
         !identity_last_attempt ||
         // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
-        (identity_status === identity_status_codes.verified && identity_status !== identity_last_attempt.status) ||
-        // Prioritise pending status from back office. We can't rely on last attempt as it doesn't get updated after manual upload (Should be refactored)
-        identity_status === identity_status_codes.pending
+        (identity_status === 'verified' && identity_status !== identity_last_attempt.status)
     ) {
         switch (identity_status) {
             case identity_status_codes.pending:
@@ -154,16 +152,17 @@ const ProofOfIdentityContainer = ({
             default:
                 break;
         }
-    } else if (identity_status === identity_status_codes.pending && manual?.status === identity_status_codes.pending) {
-        // The last attempt status for manual is not provided by API
-        return (
-            <UploadComplete
-                is_from_external={is_from_external}
-                needs_poa={needs_poa}
-                redirect_button={redirect_button}
-            />
-        );
     }
+    // else if (identity_status === identity_status_codes.pending && manual?.status === identity_status_codes.pending) {
+    //     // The last attempt status for manual is not provided by API
+    //     return (
+    //         <UploadComplete
+    //             is_from_external={is_from_external}
+    //             needs_poa={needs_poa}
+    //             redirect_button={redirect_button}
+    //         />
+    //     );
+    // }
 
     switch (identity_last_attempt.service) {
         case service_code.idv:

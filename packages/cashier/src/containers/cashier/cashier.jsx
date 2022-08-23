@@ -66,25 +66,17 @@ const Cashier = ({
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
+
         routes_config.forEach(route => {
-            if (is_cra) {
-                if (!route.hide_for.includes('affiliate')) {
-                    options.push({
-                        default: route.default,
-                        icon: route.icon_component,
-                        label: route.getTitle(),
-                        value: route.component,
-                        path: route.path,
-                        has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
-                    });
-                }
-            } else if (
-                !route.is_invisible &&
-                (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
-                (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
-                (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
-                (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
+            if (
+                (is_cra && !route.hide_for.includes('affiliate')) ||
+                (!is_cra &&
+                    !route.is_invisible &&
+                    (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
+                    (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
+                    (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
+                    (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
+                    (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible))
             ) {
                 options.push({
                     ...(route.path === routes.cashier_p2p && { count: p2p_notification_count }),

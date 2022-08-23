@@ -15,6 +15,7 @@ const Icon = React.forwardRef(
             icon,
             id,
             onClick,
+            onMouseDown,
             onMouseEnter,
             onMouseLeave,
             size = 16,
@@ -55,6 +56,7 @@ const Icon = React.forwardRef(
                 id={id}
                 width={width || size}
                 onClick={onClick}
+                onMouseDown={onMouseDown}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 ref={ref}
@@ -82,6 +84,7 @@ Icon.propTypes = {
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     icon: PropTypes.string,
     onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

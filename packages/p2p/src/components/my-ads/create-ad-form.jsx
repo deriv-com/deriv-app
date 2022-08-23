@@ -60,7 +60,10 @@ const CreateAdForm = () => {
         my_ads_store.setShowAdForm(false);
     };
 
+    React.useEffect(() => {}, [my_ads_store.current_method.is_deleted]);
+
     React.useEffect(() => {
+        my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
         const disposeApiErrorReaction = reaction(
@@ -72,6 +75,7 @@ const CreateAdForm = () => {
 
         return () => {
             disposeApiErrorReaction();
+            my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
             my_ads_store.setApiErrorMessage('');
             floating_rate_store.setApiErrorMessage('');
         };
@@ -401,7 +405,12 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid || !selected_methods.length}
+                                                is_disabled={
+                                                    isSubmitting ||
+                                                    !isValid ||
+                                                    !selected_methods.length ||
+                                                    my_ads_store.current_method.is_deleted
+                                                }
                                             >
                                                 <Localize i18n_default_text='Post ad' />
                                             </Button>

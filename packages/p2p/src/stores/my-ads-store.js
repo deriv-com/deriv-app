@@ -18,6 +18,7 @@ export default class MyAdsStore extends BaseStore {
     @observable api_table_error_message = '';
     @observable available_balance = null;
     @observable contact_info = '';
+    @observable current_method = { key: null, is_deleted: false };
     @observable default_advert_description = '';
     @observable delete_error_message = '';
     @observable edit_ad_form_error = '';
@@ -442,13 +443,22 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setApiErrorCode(error_code) {
+        this.error_code = error_code;
+    }
+
+    @action.bound
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
     }
 
+    /**
+     * Stores an object, which is used that is used to keep track of the current payment method chosen by the user in buy-ad-payment-methods-list
+     * @param {object} current_method - An object which stores the index (key) and if the user has deleted it (is_deleted) from the list
+     */
     @action.bound
-    setApiErrorCode(error_code) {
-        this.error_code = error_code;
+    setCurrentMethod(current_method) {
+        this.current_method = current_method;
     }
 
     @action.bound

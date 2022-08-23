@@ -91,6 +91,8 @@ const EditAdForm = () => {
         my_ads_store.error_code
     );
 
+    React.useEffect(() => {}, [my_ads_store.current_method.is_deleted]);
+
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
@@ -121,7 +123,10 @@ const EditAdForm = () => {
                 !!Object.values({ ...payment_method_names }).length;
             setIsPaymentMethodTouched(is_payment_method_available);
         }
-        return () => my_ads_store.setApiErrorCode(null);
+        return () => {
+            my_ads_store.setApiErrorCode(null);
+            my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -439,7 +444,8 @@ const EditAdForm = () => {
                                                             !isValid ||
                                                             !check_dirty ||
                                                             selected_methods.length === 0 ||
-                                                            !(!!payment_method_names || !!payment_method_details)
+                                                            !(!!payment_method_names || !!payment_method_details) ||
+                                                            my_ads_store.current_method.is_deleted
                                                         }
                                                     >
                                                         <Localize i18n_default_text='Save changes' />

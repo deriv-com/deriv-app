@@ -35,6 +35,7 @@ const Autocomplete = React.memo(props => {
         dropdown_offset,
         error,
         has_updating_list = true,
+        hide_list = false,
         input_id,
         is_alignment_top,
         list_items,
@@ -44,6 +45,7 @@ const Autocomplete = React.memo(props => {
         onScrollStop,
         onShowDropdownList,
         should_filter_by_char,
+        show_list = false,
         value,
         ...other_props
     } = props;
@@ -72,11 +74,13 @@ const Autocomplete = React.memo(props => {
     }, [list_items, has_updating_list]);
 
     React.useEffect(() => {
+        if (show_list) showDropdownList();
+        if (hide_list) hideDropdownList();
         if (should_show_list && list_item_ref.current) {
             const item = list_item_ref.current.offsetTop;
             dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
         }
-    }, [should_show_list, list_item_ref]);
+    }, [show_list, hide_list, should_show_list, list_item_ref]);
 
     React.useEffect(() => {
         if (list_wrapper_ref.current && list_portal_id && should_show_list) {
@@ -344,6 +348,8 @@ Autocomplete.propTypes = {
     onScrollStop: PropTypes.func,
     value: PropTypes.string,
     onBlur: PropTypes.func,
+    show_list: PropTypes.bool,
+    hide_list: PropTypes.bool,
 };
 
 export default Autocomplete;

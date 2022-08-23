@@ -605,6 +605,7 @@ const AccountTransferForm = ({
                                             !+selected_from.balance ||
                                             !!converter_from_error ||
                                             !!converter_to_error ||
+                                            !!errors.amount ||
                                             shouldShowTransferButton(values.amount)
                                         }
                                         primary

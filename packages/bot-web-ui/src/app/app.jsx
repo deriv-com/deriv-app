@@ -91,7 +91,7 @@ const App = ({ passthrough }) => {
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
-            <div className='bot'>
+            <div className='bot-dashboard'>
                 {show_dashboard ? (
                     <Dashboard />
                 ) : (

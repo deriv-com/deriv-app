@@ -115,7 +115,19 @@
         position: absolute;
         right: 2.7rem;
         top: 1.9rem;
+        svg {
+            cursor: pointer;
+        }
     }
+}
+.side_bar_container_none {
+    display: none;
+}
+.w-100 {
+    width: 100%;
+}
+.side_bar_container_block {
+    display: block;
 }
 
 .main_dashboard_container {

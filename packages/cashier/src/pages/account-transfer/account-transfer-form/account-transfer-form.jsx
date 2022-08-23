@@ -317,6 +317,8 @@ const AccountTransferForm = ({
 
                 const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
 
+                if (value.toLowerCase().includes('cra')) return;
+
                 getAccounts('to', account).push({
                     text,
                     value,

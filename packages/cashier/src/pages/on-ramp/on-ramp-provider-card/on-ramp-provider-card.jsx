@@ -28,11 +28,11 @@ const OnRampProviderCard = ({ is_dark_mode_on, provider, setSelectedProvider, is
             <div className='on-ramp__provider-payment-icons'>
                 <div className='on-ramp__provider-payment-icons-shadow' />
                 <NewsTicker speed={10}>
-                    {payment_icons.map((payment_icon, idx) => (
+                    {payment_icons.map(payment_icon => (
                         <Icon
                             data_testid={is_dark_mode_on ? 'dti_payment_icon_dark' : 'dti_payment_icon_light'}
                             icon={is_dark_mode_on ? payment_icon.dark : payment_icon.light}
-                            key={idx}
+                            key={is_dark_mode_on ? payment_icon.dark : payment_icon.light}
                             size={40}
                         />
                     ))}

@@ -30,8 +30,8 @@ const Row = ({ item_key, label, value }: TRowProps) => (
     <div className='transfer-confirm__row' data-testid={`dt_transfer_confirm_row_${item_key}`}>
         {Array.isArray(label) ? (
             <div>
-                {label.map((label_text, idx) => (
-                    <Text as='div' key={idx} size='xs' align='left'>
+                {label.map(label_text => (
+                    <Text as='div' key={label_text} size='xs' align='left'>
                         {label_text}
                     </Text>
                 ))}
@@ -41,8 +41,8 @@ const Row = ({ item_key, label, value }: TRowProps) => (
         )}
         {Array.isArray(value) ? (
             <div>
-                {value.map((v, idx) => (
-                    <Text as='div' key={idx} size='xs' weight='bold' align='right'>
+                {value.map(v => (
+                    <Text as='div' key={v} size='xs' weight='bold' align='right'>
                         {v}
                     </Text>
                 ))}
@@ -104,14 +104,14 @@ const TransferConfirm = ({
             <div className='transfer-confirm__column-wrapper'>
                 <div className='transfer-confirm__column'>
                     {data.map((d, key) => (
-                        <Row item_key={key} label={d.label} value={d.value} key={key} />
+                        <Row item_key={key} label={d.label} value={d.value} key={d.label} />
                     ))}
                 </div>
             </div>
             {warning_messages && (
                 <div className='transfer-confirm__warnings'>
-                    {warning_messages.map((warning, idx) => (
-                        <WarningBullet key={idx}>
+                    {warning_messages.map((warning, index) => (
+                        <WarningBullet key={`${warning}-${index}`}>
                             <Text as='p' size='xxs' color='loss-danger' align='left'>
                                 {warning}
                             </Text>

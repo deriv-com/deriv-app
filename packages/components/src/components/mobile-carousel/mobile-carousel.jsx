@@ -61,10 +61,10 @@ export const MobileCarousel = ({ children, ...props }) => {
                 </div>
             </div>
             <div className='dc-carousel__footer'>
-                {React.Children.map(children, (child, idx) => {
+                {React.Children.map(children, (_child, idx) => {
                     return (
                         <span
-                            key={idx}
+                            key={`carousel-item${idx}`}
                             onClick={() => goToIndex(idx)}
                             color={idx === index ? 'active' : 'secondary'}
                             className={classNames('dc-carousel__circle', {

@@ -23,8 +23,12 @@ const Routes: React.FC = () => {
                 <Switch>
                     {getRoutesConfig({
                         consumer_routes: config.routes,
-                    }).map((route: TRoute, idx: number) => (
-                        <RouteWithSubroutes key={idx} should_redirect_login {...route} />
+                    }).map((route: TRoute) => (
+                        <RouteWithSubroutes
+                            key={`${route?.getTitle?.()}${route?.path}`}
+                            should_redirect_login
+                            {...route}
+                        />
                     ))}
                 </Switch>
             </RoutesWrapper>

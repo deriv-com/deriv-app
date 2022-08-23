@@ -517,7 +517,7 @@ const CFDCompareAccountHint = ({
                 )
                 .map((account, index) => {
                     return (
-                        <div key={index} className='cfd-compare-accounts__bullet-wrapper'>
+                        <div key={account.attribute} className='cfd-compare-accounts__bullet-wrapper'>
                             <Text
                                 size='xs'
                                 line_height='x'

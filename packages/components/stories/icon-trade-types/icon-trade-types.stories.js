@@ -19,7 +19,7 @@ storiesOf('IconTradeTypes', module)
                     <div className='grid-container'>
                         {TradeTypes.map((tradeName, index) => {
                             return (
-                                <div className='box' key={index}>
+                                <div className='box' key={tradeName}>
                                     <p className='box__title'>{tradeName}</p>
                                     <IconTradeTypes className={'box__icon'} type={tradeName} size={16} />
                                 </div>

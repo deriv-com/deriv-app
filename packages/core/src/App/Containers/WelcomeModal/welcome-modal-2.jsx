@@ -25,7 +25,7 @@ const WelcomeColumn = ({
         >
             <div className='welcome-column__icons'>
                 {icons.map((icon, index) => (
-                    <Icon className='welcome-column__icon' icon={icon} key={index} size={48} />
+                    <Icon className='welcome-column__icon' icon={icon} key={`${icon}${index}`} size={48} />
                 ))}
             </div>
             <div className='welcome-column__title'>{title}</div>
@@ -44,7 +44,7 @@ const WelcomeColumn = ({
                 <div className='welcome-column__platforms__container'>
                     {platforms.map((platform, index) =>
                         platform ? (
-                            <React.Fragment key={index}>
+                            <React.Fragment key={`${platform.icon}${platform.title}`}>
                                 <div className='welcome-column__platform'>
                                     <Icon className='welcome-column__platform__icon' icon={platform.icon} size={32} />
                                     <Text

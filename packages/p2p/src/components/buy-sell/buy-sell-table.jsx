@@ -69,10 +69,10 @@ const BuySellTable = ({ onScroll }) => {
                             selected={buy_sell_store.selected_value}
                             required
                         >
-                            {buy_sell_store.sort_list.map((list_item, key) => {
+                            {buy_sell_store.sort_list.map(list_item => {
                                 return (
                                     <RadioGroup.Item
-                                        key={key}
+                                        key={`${list_item.value}${list_item.text}`}
                                         value={list_item.value}
                                         label={
                                             <Text color='prominent' size='s'>

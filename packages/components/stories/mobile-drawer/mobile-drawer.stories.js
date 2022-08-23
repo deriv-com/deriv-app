@@ -43,7 +43,7 @@ storiesOf('MobileDrawer', module).add(
 
                             <MobileDrawer.Body>
                                 {Array.from(new Array(3)).map((item, index) => (
-                                    <MobileDrawer.Item key={index}>
+                                    <MobileDrawer.Item key={`${item}${index}`}>
                                         <p>{`Menu item ${index}`}</p>
                                     </MobileDrawer.Item>
                                 ))}
@@ -56,7 +56,7 @@ storiesOf('MobileDrawer', module).add(
                                     onToggle={toggleSubMenu}
                                 >
                                     {Array.from(new Array(2)).map((lang, idx) => (
-                                        <MobileDrawer.Item key={idx}>
+                                        <MobileDrawer.Item key={`${lang}${idx}`}>
                                             <p>{`SubMenu item ${idx}`}</p>
                                         </MobileDrawer.Item>
                                     ))}
@@ -65,7 +65,7 @@ storiesOf('MobileDrawer', module).add(
                                         section_title={'SubMenu Section'}
                                     >
                                         {Array.from(new Array(2)).map((lang, idx) => (
-                                            <MobileDrawer.Item key={idx}>
+                                            <MobileDrawer.Item key={`${lang}${idx}`}>
                                                 <p>{`Section Item ${idx}`}</p>
                                             </MobileDrawer.Item>
                                         ))}
@@ -77,7 +77,7 @@ storiesOf('MobileDrawer', module).add(
                                 </MobileDrawer.SubMenu>
 
                                 {Array.from(new Array(2)).map((item, index) => (
-                                    <MobileDrawer.Item key={index}>
+                                    <MobileDrawer.Item key={`${item}${index}`}>
                                         <p>{`Menu item ${index + 2}`}</p>
                                     </MobileDrawer.Item>
                                 ))}

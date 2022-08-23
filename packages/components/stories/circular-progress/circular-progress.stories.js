@@ -52,9 +52,9 @@ storiesOf('Circular Progress', module)
                 paddingTop: '10px',
             }}
         >
-            {progresses.map((item, index) => {
+            {progresses.map(item => {
                 return (
-                    <Theme is_dark={item.is_dark} key={index}>
+                    <Theme is_dark={item.is_dark} key={item.value}>
                         <CircularProgress progress={item.value} icon={item.icon} />
                     </Theme>
                 );

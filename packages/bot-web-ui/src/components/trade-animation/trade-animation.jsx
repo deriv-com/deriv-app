@@ -151,7 +151,7 @@ const TradeAnimation = ({
                         <div className={`animation__progress-bar animation__progress-${contract_stage}`} />
                     </div>
                     {status_classes.map((status_class, i) => (
-                        <CircularWrapper key={i} className={status_class} />
+                        <CircularWrapper key={`${status_class}-${i}`} className={status_class} />
                     ))}
                 </div>
             </div>

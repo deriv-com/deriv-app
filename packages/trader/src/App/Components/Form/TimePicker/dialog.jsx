@@ -69,7 +69,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                                         { [`${preClass}__selector-list-item--selected`]: hour === h },
                                         { [`${preClass}__selector-list-item--disabled`]: !is_enabled }
                                     )}
-                                    key={key}
+                                    key={`${key}${h}`}
                                     onClick={() => {
                                         selectOption('h', h, selected_time, is_enabled);
                                     }}
@@ -100,7 +100,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                                         { [`${preClass}__selector-list-item--selected`]: minute === mm },
                                         { [`${preClass}__selector-list-item--disabled`]: !is_enabled }
                                     )}
-                                    key={key}
+                                    key={`${key}${mm}`}
                                     onClick={() => {
                                         selectOption('m', mm, selected_time, is_enabled);
                                     }}

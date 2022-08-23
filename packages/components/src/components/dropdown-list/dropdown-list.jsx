@@ -64,7 +64,7 @@ const ListItems = React.forwardRef((props, ref) => {
                                 item_idx++;
                                 return (
                                     <ListItem
-                                        key={item_idx}
+                                        key={`item-${item_idx}`}
                                         item={item}
                                         index={item_idx}
                                         is_active={item_idx === active_index}
@@ -89,7 +89,7 @@ const ListItems = React.forwardRef((props, ref) => {
             {list_items.length ? (
                 list_items.map((item, item_idx) => (
                     <ListItem
-                        key={item_idx}
+                        key={`item${item_idx}`}
                         item={item}
                         index={item_idx}
                         is_active={item_idx === active_index}
@@ -145,7 +145,7 @@ const DropdownList = React.forwardRef((props, ref) => {
                     {is_object ? (
                         Object.keys(list_items).map((items, idx) => (
                             <ListItems
-                                key={idx}
+                                key={`list-item${idx}`}
                                 not_found_text={not_found_text}
                                 active_index={active_index}
                                 list_items={list_items[items]}

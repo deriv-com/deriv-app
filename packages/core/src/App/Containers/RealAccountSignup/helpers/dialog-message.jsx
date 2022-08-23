@@ -71,9 +71,9 @@ export const DialogMessage = ({
 
     return Array.isArray(message) ? (
         <>
-            {message.map((text, index) => (
+            {message.map(text => (
                 <Text
-                    key={index}
+                    key={text}
                     as='p'
                     align='center'
                     className='status-dialog__message-text'

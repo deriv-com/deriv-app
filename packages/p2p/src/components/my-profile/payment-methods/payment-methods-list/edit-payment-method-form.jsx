@@ -70,12 +70,12 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                                         )}
                                     </Field>
                                     {Object.values(my_profile_store.selected_payment_method_fields).map(
-                                        (payment_method_field, key) => {
+                                        payment_method_field => {
                                             return (
                                                 <Field
                                                     name={payment_method_field[0]}
                                                     id={payment_method_field[0]}
-                                                    key={key}
+                                                    key={payment_method_field[0]}
                                                 >
                                                     {({ field }) => (
                                                         <Input

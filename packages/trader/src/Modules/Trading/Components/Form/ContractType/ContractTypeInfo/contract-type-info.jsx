@@ -8,9 +8,9 @@ import { getContractTypes } from '../../../../Helpers/contract-type';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
-    const cards = contract_types.map((type, idx) => {
+    const cards = contract_types.map(type => {
         return (
-            <div key={idx} className='contract-type-info__card'>
+            <div key={type.value} className='contract-type-info__card'>
                 <div className='contract-type-info__gif'>
                     <TradeCategoriesGIF category={type.value} />
                 </div>

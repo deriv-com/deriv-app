@@ -31,12 +31,12 @@ stories
                 <div style={{ padding: '3.2rem' }}>
                     {Object.keys(icons).map((sprite, idx) => {
                         return (
-                            <React.Fragment key={idx}>
+                            <React.Fragment key={`${sprite}${idx}`}>
                                 <Text size='2.4rem'>{sprite}</Text>
                                 <ul style={grid_style}>
-                                    {icons[sprite].map((icon, index) => (
+                                    {icons[sprite].map(icon => (
                                         <li
-                                            key={index}
+                                            key={icon}
                                             style={{
                                                 textAlign: 'center',
                                                 display: 'flex',

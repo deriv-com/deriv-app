@@ -9,14 +9,14 @@ const FixedSize = () => (
         <Table fixed scroll_width={400} scroll_height={400}>
             <Table.Header>
                 <Table.Row className='table-storybook-row'>
-                    {sample_data.fields.map((field, index) => (
-                        <Table.Head key={index}>{field.label}</Table.Head>
+                    {sample_data.fields.map(field => (
+                        <Table.Head key={field.label}>{field.label}</Table.Head>
                     ))}
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {sample_data.data.map((item, index) => (
-                    <Table.Row className='table-storybook-row' key={index}>
+                {sample_data.data.map(item => (
+                    <Table.Row className='table-storybook-row' key={item.users.phone}>
                         {sample_data.fields.map((field, key) => (
                             <React.Fragment key={key}>
                                 {field.name === 'site' ? (

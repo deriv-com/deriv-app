@@ -98,7 +98,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                 );
                 texts.push(
                     <Localize
-                        key={texts.length}
+                        key={1}
                         i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to your local supervisory authority.'
                         components={[<br key={0} />, <br key={1} />]}
                     />
@@ -106,7 +106,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
             } else {
                 texts.push(
                     <Localize
-                        key={texts.length}
+                        key={2}
                         i18n_default_text="You can send your complaint to the <0>European Commission's Online Dispute Resolution (ODR)</0> platform. This is not applicable to UK clients."
                         components={[
                             <a
@@ -122,7 +122,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
 
                 texts.push(
                     <Localize
-                        key={texts.length}
+                        key={3}
                         i18n_default_text='<0/><1/>You can also refer your dispute to the Malta Gaming Authority via the <2>Player Support Unit</2>.'
                         components={[
                             <br key={0} />,
@@ -140,7 +140,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
 
                 texts.push(
                     <Localize
-                        key={texts.length}
+                        key={4}
                         i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to the <2>Information and Data Protection Commissioner</2> (Malta) on their website or make a complaint to any supervisory authority within the European Union.'
                         components={[
                             <br key={0} />,
@@ -161,7 +161,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
         default: {
             texts.push(
                 <Localize
-                    key={0}
+                    key={5}
                     i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
                     components={[
                         <a
@@ -177,7 +177,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
             if (landing_company_shortcode === 'maltainvest') {
                 texts.push(
                     <Localize
-                        key={texts.length}
+                        key={6}
                         i18n_default_text='<0/><1/>You may also raise your unresolved dispute to the <2>Office of the Arbiter for Financial Services</2>.'
                         components={[
                             <br key={0} />,
@@ -196,7 +196,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                 if (is_uk) {
                     texts.push(
                         <Localize
-                            key={texts.length}
+                            key={7}
                             i18n_default_text='<0/><1/>If you reside in the UK and you are unhappy with our response you may escalate your complaint to the <2>Financial Ombudsman Service</2>.'
                             components={[
                                 <br key={0} />,
@@ -414,13 +414,13 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
     const can_show_complaints_procedure = /^(svg|labuan|vanuatu|maltainvest)$/.test(landing_company_shortcode);
 
     const modal_content = [...policy_content, ...(can_show_complaints_procedure ? complaints_procedure : [])].map(
-        (row, index) => (
-            <div key={index} className='complaints-policy__section'>
+        row => (
+            <div key={row.title} className='complaints-policy__section'>
                 <div className='complaints-policy__section-title'>{row.title}</div>
                 {row.list && (
                     <div className='complaints-policy__list'>
-                        {row.list.map((item, i) => (
-                            <div key={i} className='complaints-policy__list-item'>
+                        {row.list.map(item => (
+                            <div key={item} className='complaints-policy__list-item'>
                                 {item}
                             </div>
                         ))}
@@ -430,8 +430,8 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
                     <div className='complaints-policy__section-content'>
                         {row.content.text}
                         {/* eslint-disable-next-line react/display-name */}
-                        {row.content.subcontent?.map((item, i) => (
-                            <div key={i} className='complaints-policy__subsection'>
+                        {row.content.subcontent?.map(item => (
+                            <div key={`${item.text}${item.title}`} className='complaints-policy__subsection'>
                                 <div className='complaints-policy__subsection-title'>{item.title}</div>
                                 <div className='complaints-policy__subsection-content'>{item.text}</div>
                             </div>

@@ -25,7 +25,7 @@ const CashierOnboardingDetails = ({
                     <Icon icon={is_dark_mode_on ? 'IcChevronRightBoldDark' : 'IcChevronRightBold'} size={16} />
                 </div>
                 {detail_contents?.map((content, id) => (
-                    <div key={id} className='cashier-onboarding-detail__array'>
+                    <div key={`content-${id}`} className='cashier-onboarding-detail__array'>
                         <div className='cashier-onboarding-detail__icons'>
                             <NewsTicker speed={10}>
                                 <div className={classNames({ 'cashier-onboarding-detail__icons-array': !is_mobile })}>

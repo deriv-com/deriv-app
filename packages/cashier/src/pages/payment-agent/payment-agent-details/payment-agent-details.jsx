@@ -14,7 +14,7 @@ const Detail = ({ action, icon, is_last_child, children, ...rest }) => {
             <div>
                 {detail.map((child, id) => (
                     <a
-                        key={id}
+                        key={child}
                         className='payment-agent-details__contact cashier__paragraph'
                         href={`${action ? `${action}:` : ''}${child}`}
                         {...rest}

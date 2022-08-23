@@ -43,11 +43,11 @@ const SideNote = ({ children, className, has_bullets = true, has_title = true, i
                         {children && <>{children}</>}
 
                         {!children &&
-                            side_notes.map((note, i) =>
+                            side_notes.map(note =>
                                 has_bullets ? (
-                                    <SideNoteBullet key={i}>{note}</SideNoteBullet>
+                                    <SideNoteBullet key={note}>{note}</SideNoteBullet>
                                 ) : (
-                                    <Text key={i} className='side-note__text' size='xxs' as='p'>
+                                    <Text key={note} className='side-note__text' size='xxs' as='p'>
                                         {note}
                                     </Text>
                                 )

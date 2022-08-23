@@ -166,9 +166,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         </div>
                         <div className='p2p-my-ads__table-row-methods'>
                             {payment_method_names ? (
-                                payment_method_names.map((payment_method, key) => {
+                                payment_method_names.map(payment_method => {
                                     return (
-                                        <div className='p2p-my-ads__table__payment-method--label' key={key}>
+                                        <div className='p2p-my-ads__table__payment-method--label' key={payment_method}>
                                             <Text color='general' size='xxxs' line-height='l'>
                                                 {payment_method}
                                             </Text>
@@ -231,9 +231,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 <Table.Cell>
                     <div className='p2p-my-ads__table__payment-method'>
                         {payment_method_names ? (
-                            payment_method_names.map((payment_method, key) => {
+                            payment_method_names.map(payment_method => {
                                 return (
-                                    <div className='p2p-my-ads__table__payment-method--label' key={key}>
+                                    <div className='p2p-my-ads__table__payment-method--label' key={payment_method}>
                                         <Text color='general' size='xs' line-height='l'>
                                             {payment_method}
                                         </Text>

@@ -15,8 +15,8 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_descript
                     'dw-app-to-trade__cards-wrapper--three-column': cards.length === 3,
                 })}
             >
-                {cards.map((data, idx) => (
-                    <div key={idx}>
+                {cards.map(data => (
+                    <div key={data.title}>
                         <AppToTradeCard
                             title={data.title}
                             subtitle={data.sub_title}
@@ -33,8 +33,8 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_descript
                     'dw-app-to-trade__benefits-wrapper--three-column': benefit_data.length / 2 === 3,
                 })}
             >
-                {benefit_data.map((data, idx) => (
-                    <div key={idx}>
+                {benefit_data.map(data => (
+                    <div key={`${data.icon}${data.description}`}>
                         <AppToTradeBenefit icon={data.icon} description={data.description} />
                     </div>
                 ))}

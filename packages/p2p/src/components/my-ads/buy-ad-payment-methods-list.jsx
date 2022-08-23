@@ -78,7 +78,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                     const payment_method_icon = method.replace(' ', '');
 
                     return (
-                        <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
+                        <Formik key={method} enableReinitialize initialValues={{ payment_method: method }}>
                             {({ setFieldValue }) => (
                                 <Field name='payment_method'>
                                     {({ field }) => (

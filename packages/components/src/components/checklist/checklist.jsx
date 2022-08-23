@@ -32,9 +32,9 @@ ItemStatus.propTypes = {
 
 const Checklist = ({ items, className, itemClassName }) => (
     <div className={classNames('dc-checklist', className)}>
-        {items.map((item, idx) => (
+        {items.map(item => (
             <div
-                key={idx}
+                key={`${item.button_text}${item.content}`}
                 className={classNames('dc-checklist__item', itemClassName, {
                     'dc-checklist__item--disabled': item.is_disabled,
                 })}

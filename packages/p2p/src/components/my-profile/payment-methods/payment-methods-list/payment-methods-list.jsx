@@ -46,7 +46,7 @@ const PaymentMethodsList = () => {
                     <ThemedScrollbars className='payment-methods-list__list' height={'60vh'}>
                         <div className='payment-methods-list__list-container'>
                             {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
-                                (payment_methods_list_method, key) => {
+                                payment_methods_list_method => {
                                     const payment_methods_list =
                                         my_profile_store.advertiser_payment_methods_list.filter(
                                             payment_method =>
@@ -56,22 +56,20 @@ const PaymentMethodsList = () => {
                                         );
 
                                     return (
-                                        <React.Fragment key={key}>
+                                        <React.Fragment key={payment_methods_list_method?.display_name}>
                                             <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
                                                 {`${payment_methods_list_method.display_name}s`}
                                             </Text>
 
                                             <div className='payment-methods-list__list-body'>
-                                                {payment_methods_list.map(
-                                                    (each_payment_method, each_payment_method_key) => (
-                                                        <PaymentMethodCard
-                                                            key={each_payment_method_key}
-                                                            large={true}
-                                                            payment_method={each_payment_method}
-                                                            show_payment_method_name={false}
-                                                        />
-                                                    )
-                                                )}
+                                                {payment_methods_list.map(each_payment_method => (
+                                                    <PaymentMethodCard
+                                                        key={each_payment_method?.display_name}
+                                                        large={true}
+                                                        payment_method={each_payment_method}
+                                                        show_payment_method_name={false}
+                                                    />
+                                                ))}
                                             </div>
                                         </React.Fragment>
                                     );
@@ -102,7 +100,7 @@ const PaymentMethodsList = () => {
                 >
                     <div className='payment-methods-list__list-container'>
                         {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
-                            (payment_methods_list_method, key) => {
+                            payment_methods_list_method => {
                                 const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
                                     payment_method =>
                                         payment_method.method === payment_methods_list_method.method ||
@@ -111,7 +109,7 @@ const PaymentMethodsList = () => {
                                 );
 
                                 return (
-                                    <React.Fragment key={key}>
+                                    <React.Fragment key={payment_methods_list_method?.display_name}>
                                         <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
                                             {`${payment_methods_list_method.display_name}s`}
                                         </Text>
@@ -122,16 +120,14 @@ const PaymentMethodsList = () => {
                                             is_only_horizontal
                                             is_scrollbar_hidden
                                         >
-                                            {payment_methods_list.map(
-                                                (each_payment_method, each_payment_method_key) => (
-                                                    <PaymentMethodCard
-                                                        key={each_payment_method_key}
-                                                        payment_method={each_payment_method}
-                                                        small
-                                                        show_payment_method_name={false}
-                                                    />
-                                                )
-                                            )}
+                                            {payment_methods_list.map(each_payment_method => (
+                                                <PaymentMethodCard
+                                                    key={each_payment_method?.display_name}
+                                                    payment_method={each_payment_method}
+                                                    small
+                                                    show_payment_method_name={false}
+                                                />
+                                            ))}
                                         </ThemedScrollbars>
                                     </React.Fragment>
                                 );

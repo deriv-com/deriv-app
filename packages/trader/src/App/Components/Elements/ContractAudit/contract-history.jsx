@@ -23,7 +23,7 @@ const ContractHistory = ({ currency, history = [] }) => {
             <div className='contract-audit__tabs-content'>
                 {history.map((item, key) => (
                     <ContractAuditItem
-                        key={key}
+                        key={`${key}${item.display_name}`}
                         id={`dt_history_label_${key}`}
                         label={item.display_name}
                         timestamp={+item.order_date}

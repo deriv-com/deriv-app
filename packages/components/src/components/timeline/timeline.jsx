@@ -17,7 +17,7 @@ const Timeline = ({ children, disabled_items, ...props }) => {
         <div {...props}>
             {children.map((child, idx) => (
                 <div
-                    key={idx}
+                    key={child.props.item_title}
                     className={classNames('dc-timeline__flex', {
                         'dc-timeline__flex--no-border': children.length === idx + 1,
                         'dc-timeline__flex--disabled': disabled_items && disabled_items.includes(idx + 1),

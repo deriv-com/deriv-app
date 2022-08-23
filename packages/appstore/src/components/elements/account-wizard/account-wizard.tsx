@@ -89,7 +89,7 @@ const StepperHeader = ({
             <div className='dw-account-wizard__header-steps'>
                 {filtered_items.map((item, i) => (
                     <div
-                        key={i}
+                        key={`${item?.header?.title}${item?.icon}`}
                         className={classNames('dw-account-wizard__header-step', {
                             'dw-account-wizard__header-step--disabled': isDisabled(i),
                             'dw-account-wizard__header-step--active': i === current_step,
@@ -319,7 +319,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 has_currency={has_currency}
                 form_error={form_error}
                 {...passthrough}
-                key={step_index}
+                key={step?.header?.title}
             />
         );
     });

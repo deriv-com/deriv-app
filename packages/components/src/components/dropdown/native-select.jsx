@@ -5,16 +5,16 @@ const NativeSelect = React.forwardRef(({ name, list, value, onChange }, ref) => 
     <div className='dc-native-select dc-native-select__wrapper'>
         <select ref={ref} className='dc-native-select__select' name={name} value={value} onChange={onChange}>
             {Array.isArray(list)
-                ? list.map((item, idx) => (
-                      <option key={idx} value={item.value} disabled={item.disabled}>
+                ? list.map(item => (
+                      <option key={item.value} value={item.value} disabled={item.disabled}>
                           {item.nativepicker_text || item.text}
                       </option>
                   ))
                 : Object.keys(list).map(key => (
                       <React.Fragment key={key}>
                           <optgroup label={key}>
-                              {list[key].map((item, idx) => (
-                                  <option key={idx} value={item.value} disabled={item.disabled}>
+                              {list[key].map(item => (
+                                  <option key={item.value} value={item.value} disabled={item.disabled}>
                                       {item.nativepicker_text || item.text}
                                   </option>
                               ))}

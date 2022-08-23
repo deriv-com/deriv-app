@@ -110,12 +110,12 @@ const FileDropzone = ({ className, noClick = false, ...props }) => {
                         {/* Handle cases for displaying multiple files and single filenames */}
 
                         {props.multiple && props.value.length > 0 && !props.validation_error_message
-                            ? props.value.map((file, idx) => (
+                            ? props.value.map(file => (
                                   <Text
                                       size='xxs'
                                       weight='bold'
                                       align='center'
-                                      key={idx}
+                                      key={file.name}
                                       className='dc-file-dropzone__filename'
                                   >
                                       {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}

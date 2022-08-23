@@ -108,7 +108,7 @@ const Carousel = ({
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
-                                <Card key={idx} width={width}>
+                                <Card key={type.key} width={width}>
                                     {list[idx]}
                                 </Card>
                             ))}

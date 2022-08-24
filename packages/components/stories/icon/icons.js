@@ -453,6 +453,7 @@ export const icons =
         'IcCurrencyVirtual',
     ],
     'dxtrade': [
+        'IcDxtradeDerivxPlatform',
         'IcDxtradeDeviceDesktopLight',
         'IcDxtradeDeviceDesktop',
         'IcDxtradeDeviceLaptopLight',

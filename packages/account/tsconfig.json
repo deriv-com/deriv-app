@@ -18,5 +18,5 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src"] // *** The files TypeScript should type check ***
+    "include": ["src"]
 }

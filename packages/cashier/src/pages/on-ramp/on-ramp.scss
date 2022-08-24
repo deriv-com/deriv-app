@@ -48,7 +48,9 @@
         &-logo {
             align-self: center;
             grid-area: logo;
-            @include mobile {
+
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (max-width: 926px) {
                 align-self: start;
             }
         }
@@ -60,7 +62,9 @@
             grid-area: description;
             width: 390px;
             height: 60px;
-            @include mobile {
+
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (max-width: 926px) {
                 width: auto;
                 height: auto;
             }

@@ -25,10 +25,12 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         financial_stp: 'IcMt5FinancialStpPlatform',
         cfd: 'IcMt5CfdPlatform',
     },
+    // TODO: Line 30, 31 and 32 should be removed after real released.
     dxtrade: {
         synthetic: 'IcDxtradeSyntheticPlatform',
         financial: 'IcDxtradeFinancialPlatform',
         cfd: 'IcMt5CfdPlatform',
+        dxtrade: 'IcDxtradeDerivxPlatform',
     },
 };
 
@@ -196,6 +198,7 @@ const CFDAccountCardComponent = ({
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
+    // TODO: Ask about this condition from @hirad
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />

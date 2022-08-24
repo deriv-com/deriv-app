@@ -24,6 +24,10 @@ const CFD_text = {
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }) => {
+    if (market_type === 'all') {
+        return 'dxtrade';
+    }
+
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {

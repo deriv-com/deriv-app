@@ -11,6 +11,21 @@ import { connect } from 'Stores/connect';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
 
+const populateData = form_data => {
+    return {
+        risk_tolerance: form_data.risk_tolerance,
+        source_of_experience: form_data.source_of_experience,
+        cfd_experience: form_data.cfd_experience,
+        cfd_frequency: form_data.cfd_frequency,
+        trading_experience_financial_instruments: form_data.trading_experience_financial_instruments,
+        trading_frequency_financial_instruments: form_data.trading_frequency_financial_instruments,
+        cfd_trading_definition: form_data.cfd_trading_definition,
+        leverage_impact_trading: form_data.leverage_impact_trading,
+        leverage_trading_high_risk_stop_loss: form_data.leverage_trading_high_risk_stop_loss,
+        required_initial_margin: form_data.required_initial_margin,
+    };
+};
+
 const TradingAssessment = ({
     is_virtual,
     setFinancialAndTradingAssessment,
@@ -28,7 +43,8 @@ const TradingAssessment = ({
             history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
-                setInitialFormValues(data.get_financial_assessment);
+                // set initial form data
+                setInitialFormValues(populateData(data.get_financial_assessment));
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,7 +108,7 @@ const TradingAssessment = ({
 
     return (
         <Formik
-            initialValues={initial_form_values ?? form_data}
+            initialValues={initial_form_values}
             onSubmit={values => {
                 setFormData(values);
                 handleSubmit(values);

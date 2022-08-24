@@ -453,7 +453,6 @@ const RealAccountSignup = ({
     };
 
     if (should_show_risk_warning_modal) {
-        //TODO: handle other modals
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_warning_modal}

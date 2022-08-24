@@ -1,1 +1,3 @@
-export default from './trading-assessment.jsx';
+import TradingAssessment from './trading-assessment.jsx';
+
+export default TradingAssessment;

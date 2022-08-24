@@ -1,34 +1,34 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-import { trading_assessment_questions } from '../../../Configs/trading-assessment-config';
+import { RiskToleranceWarningModal } from 'Components/trading-assessment';
+import { trading_assessment_questions } from 'Configs/trading-assessment-config.js';
 import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text, FormSubmitButton } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { useHistory, withRouter } from 'react-router';
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 
 const TradingAssessment = ({
     is_virtual,
     setFinancialAndTradingAssessment,
-    setShouldShowRiskWarningModal,
     setShouldShowAppropriatenessWarningModal,
 }) => {
     const history = useHistory();
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
+    const [should_accept_risk, setShouldAcceptRisk] = React.useState(false);
+    const [form_data, setFormData] = React.useState({});
 
     React.useEffect(() => {
         if (is_virtual) {
             history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
-                WS.wait('get_account_status').then(() => {
-                    setInitialFormValues(data.get_financial_assessment);
-                });
+                setInitialFormValues(data.get_financial_assessment);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,7 +36,7 @@ const TradingAssessment = ({
 
     const handleSubmit = async values => {
         if (values.risk_tolerance === 'No') {
-            setShouldShowRiskWarningModal(true);
+            setShouldAcceptRisk(true);
         } else {
             setIsBtnLoading(true);
             const form_payload = {
@@ -57,12 +57,9 @@ const TradingAssessment = ({
             const { trading_score } = data.set_financial_assessment ?? {};
             if (trading_score === 0) {
                 setShouldShowAppropriatenessWarningModal(true);
-                setIsBtnLoading(false);
-                setIsSubmitSuccess(true);
-            } else {
-                setIsBtnLoading(false);
-                setIsSubmitSuccess(true);
             }
+            setIsBtnLoading(false);
+            setIsSubmitSuccess(true);
             WS.authorized.storage.getFinancialAssessment().then(res_data => {
                 setInitialFormValues(res_data.get_financial_assessment);
                 setIsSubmitSuccess(false);
@@ -70,25 +67,50 @@ const TradingAssessment = ({
         }
     };
 
+    const handleAcceptRisk = () => {
+        setFormData(prev_data => ({ ...prev_data, risk_tolerance: 'Yes' }));
+        setShouldAcceptRisk(false);
+        handleSubmit({ ...form_data, risk_tolerance: 'Yes' });
+    };
+
+    if (should_accept_risk) {
+        return (
+            <RiskToleranceWarningModal
+                show_risk_modal
+                title={localize('Risk Tolerance Warning')}
+                button_text={localize('Yes, I understand the risk.')}
+                onClick={handleAcceptRisk}
+                body_content={
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, you must confirm that you understand your capital is at risk'
+                        components={[<br key={0} />]}
+                    />
+                }
+            />
+        );
+    }
+
     return (
         <Formik
-            initialValues={initial_form_values}
-            enableReinitialize
-            onSubmit={(values, action) => handleSubmit(values, action)}
+            initialValues={initial_form_values ?? form_data}
+            onSubmit={values => {
+                setFormData(values);
+                handleSubmit(values);
+            }}
         >
             {({ values, dirty, isSubmitting, handleChange }) => {
                 return (
-                    <form className='account-form account-form__trading-assessment'>
+                    <Form className='account-form account-form__trading-assessment'>
                         <FormBody scroll_offset={isMobile() ? '150px' : '80px'}>
                             <FormSubHeader
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}
                             />
-                            {trading_assessment_questions.map(item => {
+                            {trading_assessment_questions.map((item, index) => {
                                 if (item.field_type === 'radio') {
                                     const form_control = item.form_control;
                                     return (
-                                        <fieldset className='account-form__question'>
+                                        <fieldset className='account-form__question' key={form_control}>
                                             <DesktopWrapper>
                                                 <Text
                                                     as='h1'
@@ -132,11 +154,11 @@ const TradingAssessment = ({
                                     // eslint-disable-next-line no-else-return
                                 } else {
                                     return (
-                                        <React.Fragment>
-                                            {item.questions.map((items, index) => {
+                                        <React.Fragment key={index}>
+                                            {item.questions.map(items => {
                                                 const form_control = items.form_control;
                                                 return (
-                                                    <fieldset key={index} className='account-form__question'>
+                                                    <fieldset key={form_control} className='account-form__question'>
                                                         <DesktopWrapper>
                                                             <Text
                                                                 as='h1'
@@ -190,7 +212,7 @@ const TradingAssessment = ({
                                 label={localize('Submit')}
                             />
                         </FormFooter>
-                    </form>
+                    </Form>
                 );
             }}
         </Formik>
@@ -199,7 +221,6 @@ const TradingAssessment = ({
 
 export default connect(({ client, ui }) => ({
     setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
-    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
     is_virtual: client.is_virtual,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,

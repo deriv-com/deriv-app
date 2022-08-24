@@ -1,1 +1,3 @@
-export default './financial-assessment.jsx';
+import FinancialAssessment from './financial-assessment.jsx';
+
+export default FinancialAssessment;

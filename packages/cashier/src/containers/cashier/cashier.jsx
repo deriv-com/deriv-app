@@ -64,19 +64,22 @@ const Cashier = ({
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
     const onClickClose = () => routeBackInApp(history);
+
+    const is_cra_route_visible = route => is_cra && !route.hide_for.includes('affiliate');
+
+    const is_non_cra_route_visible = route =>
+        !is_cra &&
+        !route.is_invisible &&
+        (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
+        (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
+        (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
+        (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
+        (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible);
+
     const getMenuOptions = () => {
         const options = [];
         routes_config.forEach(route => {
-            if (
-                (is_cra && !route.hide_for.includes('affiliate')) ||
-                (!is_cra &&
-                    !route.is_invisible &&
-                    (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
-                    (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
-                    (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                    (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
-                    (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible))
-            ) {
+            if (is_cra_route_visible(route) || is_non_cra_route_visible(route)) {
                 options.push({
                     ...(route.path === routes.cashier_p2p && { count: p2p_notification_count }),
                     default: route.default,

@@ -17,6 +17,7 @@ export const icons = {
         'IcAppstoreInformation',
         'IcAppstoreLinkWallet',
         'IcAppstoreLinkedWallets',
+        'IcAppstoreMenuHomepage',
         'IcAppstoreMultipliersTradeType',
         'IcAppstoreOptionTradeType',
         'IcAppstoreSkeletonCardBorder',

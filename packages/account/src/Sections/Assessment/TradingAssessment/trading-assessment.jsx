@@ -8,7 +8,7 @@ import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { useHistory, withRouter } from 'react-router';
-import { Formik, Form } from 'formik';
+import { Formik } from 'formik';
 
 const TradingAssessment = ({
     is_virtual,
@@ -78,7 +78,7 @@ const TradingAssessment = ({
         >
             {({ values, dirty, isSubmitting, handleChange }) => {
                 return (
-                    <Form className='acccount-form account-form__trading-assessment'>
+                    <form className='account-form account-form__trading-assessment'>
                         <FormBody scroll_offset={isMobile() ? '150px' : '80px'}>
                             <FormSubHeader
                                 title={localize('Trading Experience')}
@@ -190,7 +190,7 @@ const TradingAssessment = ({
                                 label={localize('Submit')}
                             />
                         </FormFooter>
-                    </Form>
+                    </form>
                 );
             }}
         </Formik>

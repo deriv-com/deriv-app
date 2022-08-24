@@ -23,6 +23,7 @@ module.exports = function (env) {
             'error-component': 'Components/error-component',
             'file-uploader-container': 'Components/file-uploader-container',
             'financial-assessment': 'Sections/Assessment/FinancialAssessment',
+            'trading-assessment': 'Sections/Assessment/TradingAssessment',
             'financial-details': 'Components/financial-details',
             'financial-details-config': 'Configs/financial-details-config',
             'form-body': 'Components/form-body',

@@ -253,15 +253,13 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcMt5SyntheticPlatform icon in Success Dialog', async () => {
         const props = {
-            is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
-            is_eu: true,
             account_type: { category: 'real', type: 'synthetic' },
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
+                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled is_eu />
             </Router>
         );
 
@@ -270,14 +268,13 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcMt5FinancialPlatform icon in Success Dialog', async () => {
         const props = {
-            is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'financial' },
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
+                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
             </Router>
         );
 
@@ -286,7 +283,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
         const props = {
-            is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
             error_type: 'PasswordError',
@@ -294,7 +290,7 @@ describe('<CFDPasswordModal/>', () => {
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
+                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
             </Router>
         );
 
@@ -303,7 +299,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
         const props = {
-            is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
             error_type: 'PasswordError',
@@ -311,7 +306,7 @@ describe('<CFDPasswordModal/>', () => {
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
+                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
             </Router>
         );
 
@@ -320,15 +315,13 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcMt5CfdPlatform icon in Success Dialog', async () => {
         const props = {
-            is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'financial' },
-            is_eu: true,
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
+                <CFDPasswordModal {...mock_props} {...props} is_eu is_cfd_success_dialog_enabled />
             </Router>
         );
 

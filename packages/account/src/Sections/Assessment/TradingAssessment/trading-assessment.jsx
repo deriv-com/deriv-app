@@ -5,29 +5,32 @@ import FormSubHeader from 'Components/form-sub-header';
 import { trading_assessment_questions } from '../../../Configs/trading-assessment-config';
 import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text, FormSubmitButton } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
-import { isMobile, WS } from '@deriv/shared';
+import { isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { withRouter } from 'react-router';
+import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
 
 const TradingAssessment = ({
+    is_virtual,
     setFinancialAndTradingAssessment,
     setShouldShowRiskWarningModal,
     setShouldShowAppropriatenessWarningModal,
 }) => {
+    const history = useHistory();
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
 
     React.useEffect(() => {
-        WS.authorized.storage.getFinancialAssessment().then(data => {
-            WS.wait('get_account_status').then(() => {
-                if (data.error) {
-                    return;
-                }
-                setInitialFormValues(data.get_financial_assessment);
+        if (is_virtual) {
+            history.push(routes.personal_details);
+        } else {
+            WS.authorized.storage.getFinancialAssessment().then(data => {
+                WS.wait('get_account_status').then(() => {
+                    setInitialFormValues(data.get_financial_assessment);
+                });
             });
-        });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -75,7 +78,7 @@ const TradingAssessment = ({
         >
             {({ values, dirty, isSubmitting, handleChange }) => {
                 return (
-                    <Form className='acccount-form account-form account-form__trading-assessment'>
+                    <Form className='acccount-form account-form__trading-assessment'>
                         <FormBody scroll_offset={isMobile() ? '150px' : '80px'}>
                             <FormSubHeader
                                 title={localize('Trading Experience')}
@@ -131,7 +134,7 @@ const TradingAssessment = ({
                                     return (
                                         <React.Fragment>
                                             {item.questions.map((items, index) => {
-                                                const form_control = item.form_control;
+                                                const form_control = items.form_control;
                                                 return (
                                                     <fieldset key={index} className='account-form__question'>
                                                         <DesktopWrapper>
@@ -197,6 +200,7 @@ const TradingAssessment = ({
 export default connect(({ client, ui }) => ({
     setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    is_virtual: client.is_virtual,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     updateAccountStatus: client.updateAccountStatus,

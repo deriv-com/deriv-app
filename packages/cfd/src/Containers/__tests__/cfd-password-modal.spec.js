@@ -270,7 +270,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcMt5FinancialPlatform icon in Success Dialog', async () => {
         const props = {
-            ...mock_props,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
@@ -287,7 +286,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
         const props = {
-            // ...mock_props,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',

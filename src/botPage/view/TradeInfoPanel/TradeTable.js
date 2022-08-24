@@ -3,7 +3,7 @@ import { Parser } from 'json2csv';
 import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column } from 'react-virtualized';
-import { observer as global_observer } from '../../../common/utils/observer';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import { appendRow, updateRow, saveAs, isNumber } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
@@ -21,9 +21,8 @@ const getProfit = ({ sell_price, buy_price, currency }) => {
 
 const getTimestamp = date => {
     const buy_date = new Date(date * 1000);
-    return `${buy_date.toISOString().split('T')[0]} ${buy_date.toTimeString().slice(0, 8)} ${
-        buy_date.toTimeString().split(' ')[1]
-    }`;
+    return `${buy_date.toISOString().split('T')[0]} ${buy_date.toTimeString().slice(0, 8)} ${buy_date.toTimeString().split(' ')[1]
+        }`;
 };
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
@@ -75,11 +74,11 @@ const TradeTable = ({ account_id, api }) => {
 
     const clearBot = () => {
         setAccountState({ [account_id]: { ...initial_state } });
-        global_observer.emit('summary.disable_clear');
+        globalObserver.emit('summary.disable_clear');
     };
 
     const stopBot = () => {
-        if (account_state[account_id]?.rows?.length > 0) global_observer.emit('summary.enable_clear');
+        if (account_state[account_id]?.rows?.length > 0) globalObserver.emit('summary.enable_clear');
     };
 
     const contractBot = contract => {
@@ -128,46 +127,51 @@ const TradeTable = ({ account_id, api }) => {
     };
 
     const refreshContract = async (_api, contract_id) => {
-        const contract_info = await _api.send({ proposal_open_contract: 1, contract_id });
-        const contract = contract_info.proposal_open_contract;
-        const trade_obj = getTradeObject(contract);
-        const trade = {
-            ...trade_obj,
-            profit: getProfit(trade_obj),
-        };
-        if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-            trade.exit_tick = '-';
-        }
-
-        const actual_rows = actual_account_state_ref.current[account_id].rows;
-        const updated_rows = actual_rows.map(row => {
-            const { reference } = row;
-            if (reference === trade.reference) {
-                return {
-                    contract_status: translate('Settled'),
-                    contract_settled: true,
-                    reference,
-                    ...trade,
-                };
-            }
-            return row;
+        const contract_info = await _api.send({ proposal_open_contract: 1, contract_id }).catch(e => {
+            globalObserver.emit('Error', e);
         });
-        setAccountState({ [account_id]: { rows: updated_rows } });
+
+        if (contract_info) {
+            const contract = contract_info.proposal_open_contract;
+            const trade_obj = getTradeObject(contract);
+            const trade = {
+                ...trade_obj,
+                profit: getProfit(trade_obj),
+            };
+            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+                trade.exit_tick = '-';
+            }
+
+            const actual_rows = actual_account_state_ref.current[account_id].rows;
+            const updated_rows = actual_rows.map(row => {
+                const { reference } = row;
+                if (reference === trade.reference) {
+                    return {
+                        contract_status: translate('Settled'),
+                        contract_settled: true,
+                        reference,
+                        ...trade,
+                    };
+                }
+                return row;
+            });
+            setAccountState({ [account_id]: { rows: updated_rows } });
+        }
     };
 
     React.useEffect(() => {
-        global_observer.register('summary.export', exportSummary);
-        global_observer.register('summary.clear', clearBot);
-        global_observer.register('bot.stop', stopBot);
-        global_observer.register('bot.contract', contractBot);
-        global_observer.register('contract.settled', settledContract);
+        globalObserver.register('summary.export', exportSummary);
+        globalObserver.register('summary.clear', clearBot);
+        globalObserver.register('bot.stop', stopBot);
+        globalObserver.register('bot.contract', contractBot);
+        globalObserver.register('contract.settled', settledContract);
 
         return () => {
-            global_observer.unregister('summary.export', exportSummary);
-            global_observer.unregister('summary.clear', clearBot);
-            global_observer.unregister('bot.stop', stopBot);
-            global_observer.unregister('bot.contract', contractBot);
-            global_observer.unregister('contract.settled', settledContract);
+            globalObserver.unregister('summary.export', exportSummary);
+            globalObserver.unregister('summary.clear', clearBot);
+            globalObserver.unregister('bot.stop', stopBot);
+            globalObserver.unregister('bot.contract', contractBot);
+            globalObserver.unregister('contract.settled', settledContract);
         };
     }, [account_state]);
 
@@ -183,17 +187,19 @@ const TradeTable = ({ account_id, api }) => {
             return to_data_row;
         });
 
-        const json2csvParser = new Parser({ fields: [
-            'id',
-            'timestamp',
-            'reference',
-            'contract_type',
-            'entry_tick',
-            'exit_tick',
-            'buy_price',
-            'sell_price',
-            'profit',
-        ] });
+        const json2csvParser = new Parser({
+            fields: [
+                'id',
+                'timestamp',
+                'reference',
+                'contract_type',
+                'entry_tick',
+                'exit_tick',
+                'buy_price',
+                'sell_price',
+                'profit',
+            ],
+        });
         const data = json2csvParser.parse(to_data_rows);
 
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });

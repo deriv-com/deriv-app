@@ -16,13 +16,12 @@ import ToolBox from "../ToolBox";
 import SidebarToggle from "../../components/SidebarToggle";
 import LogTable from "../../../LogTable";
 import TradeInfoPanel from "../../../TradeInfoPanel";
-import { isLoggedIn } from "../../utils";
+import { isLoggedIn, getRelatedDeriveOrigin } from "../../utils";
 import { updateActiveAccount, updateActiveToken, updateIsLogged } from "../../store/client-slice";
 import { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
 import { parseQueryString } from "../../../../../common/utils/tools";
 import initialize, { applyToolboxPermissions } from "../../blockly-worksace";
 import { observer as globalObserver } from "../../../../../common/utils/observer";
-import { getRelatedDeriveOrigin } from "../../utils";
 import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
 import api from "../../api";
 import Helmet from "react-helmet";
@@ -37,6 +36,7 @@ const Main = () => {
 
 	React.useEffect(() => {
 		if (should_reload_workspace) {
+			// eslint-disable-next-line no-underscore-dangle
 			const _blockly = new _Blockly();
 			setBlockly(_blockly);
 			init(_blockly);
@@ -55,9 +55,7 @@ const Main = () => {
 		}
 	}, [should_reload_workspace]);
 
-	const init = (blockly) => {
-		blockly?.initPromise;
-
+	const init = () => {
 		const local_storage_sync = document.getElementById("localstorage-sync");
 		if (local_storage_sync) {
 			local_storage_sync.src = `${getRelatedDeriveOrigin().origin}/localstorage-sync.html`
@@ -69,6 +67,7 @@ const Main = () => {
 		dispatch(updateShowTour(isDone("welcomeFinished") || days_passed));
 	}
 
+	// eslint-disable-next-line arrow-body-style
 	const loginCheck = async () => {
 		return new Promise(resolve => {
 			const queryStr = parseQueryString();
@@ -89,7 +88,9 @@ const Main = () => {
 						}
 						dispatch(updateIsLogged(isLoggedIn()));
 						history.replace('/');
-						api.send({ balance: 1, account: 'all' }).catch(() => {})
+						api.send({ balance: 1, account: 'all' }).catch((e) => {
+							globalObserver.emit('Error', e);
+						})
 						applyToolboxPermissions();
 						resolve();
 					});
@@ -111,8 +112,8 @@ const Main = () => {
 		});
 	}
 
-	const initializeBlockly = (blockly) => {
-		initialize(blockly)
+	const initializeBlockly = (_blockly) => {
+		initialize(_blockly)
 			.then(() => {
 				$(".show-on-load").show();
 				$(".barspinner").hide();

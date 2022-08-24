@@ -20,7 +20,7 @@ export const parseQueryString = () => {
 };
 
 export const getQueryParams = (qs = '') => {
-    if(!qs) return {};
+    if (!qs) return {};
     const data = {};
     qs.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
         data[a1] = a3;
@@ -96,6 +96,7 @@ export const translate = (input, params = []) => {
 
     params.forEach((replacement, index) => {
         if (translatedString && typeof translatedString === 'string') {
+            // eslint-disable-next-line no-useless-escape
             translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
         }
     });
@@ -156,6 +157,7 @@ export const loadExternalScript = (src, async = true, defer = true) =>
 export const errLogger = (err, msg) => {
     const err_str = JSON.stringify(err);
     const err_msg = `${msg} - Error: ${err_str}`;
+    // eslint-disable-next-line no-console
     console.warn(err_msg);
     trackJSTrack(new TrackJSError(translate(err_msg), err_str));
 };

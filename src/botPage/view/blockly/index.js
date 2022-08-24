@@ -74,8 +74,8 @@ const marketsWereRemoved = xml => {
                 },
             ],
         })
-            .then(() => {})
-            .catch(() => {});
+            .then(() => { })
+            .catch(() => { });
         return true;
     }
     return false;
@@ -212,8 +212,8 @@ export const load = (blockStr, dropEvent = {}) => {
                 },
             ],
         })
-            .then(() => {})
-            .catch(() => {});
+            .then(() => { })
+            .catch(() => { });
         return;
     }
 
@@ -303,7 +303,7 @@ export default class _Blockly {
     constructor() {
         this.generatedJs = '';
         // eslint-disable-next-line no-underscore-dangle
-        Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
+        Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => { }; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
             $.get('xml/toolbox.xml', toolboxXml => {
                 blocks();
@@ -412,7 +412,9 @@ export default class _Blockly {
         const active_account = getActiveAccount();
 
         if (currency_field && active_account) {
+            // eslint-disable-next-line no-underscore-dangle
             currency_field.text_ = active_account?.currency;
+            // eslint-disable-next-line no-underscore-dangle
             currency_field.render_();
         }
     }

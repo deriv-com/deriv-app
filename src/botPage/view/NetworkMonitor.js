@@ -1,3 +1,5 @@
+import { observer as globalObserver } from '../../common/utils/observer';
+
 export default class NetworkMonitor {
     constructor(apiInstance, parentElement) {
         this.api = apiInstance;
@@ -19,7 +21,7 @@ export default class NetworkMonitor {
             this.parentElement.html('<span class=\'connecting\'></span>');
             this.api.send({ ping: '1' }).then(() => {
                 this.parentElement.html('<span class=\'online\'></span>');
-            });
+            }).catch((e) => globalObserver.emit('Error', e));
         } else {
             this.parentElement.html('<span class=\'offline\'></span>');
         }

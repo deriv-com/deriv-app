@@ -51,10 +51,10 @@ export default class _Symbol {
                         resolve();
                     }).catch(error => {
                         globalObserver.emit("Error", error);
-                      });
+                    });
                 }).catch(error => {
                     globalObserver.emit("Error", error);
-                  });
+                });
             };
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
             const token_list = getTokenList();
@@ -62,7 +62,8 @@ export default class _Symbol {
                 this.api
                     .authorize(token_list[0].token)
                     .then(() => getActiveSymbolsLogic())
-                    .catch(() => {
+                    .catch((e) => {
+                        globalObserver.emit('Error', e);
                         removeAllTokens();
                         getActiveSymbolsLogic();
                     });

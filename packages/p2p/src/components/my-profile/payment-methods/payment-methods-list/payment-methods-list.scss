@@ -13,6 +13,10 @@
         &--footer {
             bottom: 0;
             position: fixed;
+
+            @include mobile {
+                background: var(--general-main-1);
+            }
         }
 
         &-wrapper {

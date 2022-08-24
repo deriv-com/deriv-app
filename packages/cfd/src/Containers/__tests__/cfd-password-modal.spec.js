@@ -305,7 +305,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
         const props = {
-            // ...mock_props,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
@@ -323,7 +322,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display IcMt5CfdPlatform icon in Success Dialog', async () => {
         const props = {
-            // ...mock_props,
             is_cfd_success_dialog_enabled: true,
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
@@ -341,7 +339,6 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {
         const props = {
-            // ...mock_props,
             account_status: { status: [], category: 'Real' },
             platform: 'dxtrade',
             error_type: 'PasswordReset',
@@ -367,12 +364,6 @@ describe('<CFDPasswordModal/>', () => {
     it('should create DMT5 password when clicked on Create DMT5 password', async () => {
         const user_input = 'zo8lAet#2q01Ih';
         validPassword.mockReturnValue(true);
-        // const props = {
-        //     // ...mock_props,
-        //     account_status: { status: ['mt5_password_not_set'], category: 'Real' },
-        //     // platform: 'mt5',
-        //     account_type: { category: 'real', type: 'financial' },
-        // };
 
         render(
             <Router history={history}>
@@ -395,12 +386,6 @@ describe('<CFDPasswordModal/>', () => {
     it('should create DerivX platform password when clicked on Add account', async () => {
         const user_input = 'zo8lAet#2q01Ih';
         validPassword.mockReturnValue(true);
-        // const props = {
-        //     // ...mock_props,
-        //     account_status: { status: ['mt5_password_not_set'], category: 'Real' },
-        //     platform: 'dxtrade',
-        //     account_type: { category: 'real', type: 'financial' },
-        // };
 
         render(
             <Router history={history}>

@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { translate } from "../../../../../../common/utils/tools";
-import { generateDerivLink } from "../../../utils";
 import { getTokenList } from "../../../../../../common/utils/storageManager";
 import { useDispatch } from "react-redux";
 import { setAccountSwitcherToken } from "../../../store/ui-slice";
@@ -17,7 +16,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const item_ref = React.useRef([]);
   const isReal = tab === "real";
   const token_list = getTokenList();
-
+  const { visible, url, label } = config.add_account;
   const onChangeAccount = (acc) => {
     const account_token = token_list.find(token => token.accountName === acc);
     if (account_token?.token && acc !== active_account_name) {
@@ -32,7 +31,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
       setIsAccDropdownOpen(false);
     }
   }
-
+  
   return (
     <div className={`account__switcher-tabs-content ${isActive ? "" : "hide"}`}>
       <div className="account__switcher-accordion">
@@ -57,8 +56,17 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
             .sort((acc, acc1) => { return acc === active_account_name ? -1 : (acc1 === active_account_name ? 1 : 0) })
             .map((acc, index) => {
               const account = accounts[acc]
+              const { demo_account, currency, balance } = account;
+              const currency_icon = demo_account ? "virtual" : currency?.toLowerCase() || "unknown"
+              const getBalance = () => {
+                  return balance.toLocaleString(undefined, {
+                    minimumFractionDigits:
+                      config.currency_name_map[currency]
+                        ?.fractional_digits ?? 2,
+                  })
+              }
               return (
-                isReal !== Boolean(account.demo_account) && (
+                isReal !== Boolean(demo_account) && (
                   <div
                     className={classNames('account__switcher-acc', { 'account__switcher-acc--active': index === 0 })}
                     key={acc}
@@ -70,26 +78,21 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                   >
                     <input type="hidden" name="account_name" value={acc} />
                     <img
-                      src={`image/deriv/currency/ic-currency-${accounts[acc].demo_account
-                        ? "virtual"
-                        : account.currency?.toLowerCase()
-                        }.svg`}
+                      src={`image/deriv/currency/ic-currency-${currency_icon}.svg`}
                     />
                     <span>
-                      {accounts[acc].demo_account
+                      {!currency && (<span className="symbols">{translate("No currency assigned")}</span>)}
+                      {demo_account
                         ? translate("Demo")
-                        : config.currency_name_map[account.currency]?.name ||
-                        account.currency}
+                        : config.currency_name_map[currency]?.name ||
+                        currency}
+                        
                       <div className="account__switcher-loginid">
-                        {acc}
+                        {acc} 
                       </div>
                     </span>
                     <span className="account__switcher-balance">
-                      {account?.balance?.toLocaleString(undefined, {
-                        minimumFractionDigits:
-                          config.currency_name_map[account.currency]
-                            ?.fractional_digits ?? 2,
-                      })}
+                      {account?.currency && getBalance()}
                       <span className="symbols">
                         &nbsp;
                         {account?.currency === "UST"
@@ -101,9 +104,9 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                 )
               );
             })}
-          {isReal && config.add_account.visible && (
+          {isReal && visible && (
             <a
-              href={config.add_account.url}
+              href={url}
               rel="noopener noreferrer"
               className="account__switcher-add"
             >
@@ -112,7 +115,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                 src="image/deriv/ic-add-circle.svg"
               />
               <span className="account__switcher-add-text">
-                {config.add_account.label}
+                {label}
               </span>
             </a>
           )}

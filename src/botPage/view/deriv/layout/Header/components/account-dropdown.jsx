@@ -20,19 +20,20 @@ const getTotalDemo = (accounts) => {
   return total.toLocaleString(undefined, {
     minimumFractionDigits: config.currency_name_map[total]?.fractional_digits ?? 2,
   });
+  
 };
+
 
 const AccountDropdown = React.forwardRef((props, dropdownRef) => {
   const { setIsAccDropdownOpen, virtual } = props;
   const [activeTab, setActiveTab] = React.useState(virtual ? "demo" : "real");
   const [show_logout_modal, updaetShowLogoutModal] = React.useState(false)
-  const { total_deriv, accounts } = useSelector(state => state.client);
+  const { accounts, balance, currency } = useSelector(state => state.client);
   const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
   const container_ref = React.useRef();
   const dispatch = useDispatch();
   const location = useLocation();
   const logout = useLogout();
-
   React.useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -54,6 +55,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     }
     dispatch(setShouldReloadWorkspace(true));
   }
+  
 
   return (
     <div className="account__switcher-dropdown-wrapper show" ref={dropdownRef}>
@@ -92,8 +94,12 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
           <div className="account__switcher-total-balance">
             <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
             <span className="account__switcher-total-balance-amount account__switcher-balance">
-              {activeTab === "demo" ? getTotalDemo(accounts) : total_deriv.amount}
-              <span className="symbols">&nbsp;{activeTab === "demo" ? "USD" : total_deriv.currency}</span>
+              {activeTab === "demo" ? getTotalDemo(accounts) : balance.toLocaleString(undefined, {
+                minimumFractionDigits:
+                  config.currency_name_map[currency]
+                    ?.fractional_digits ?? 2,
+              })}
+              <span className="symbols">&nbsp;{activeTab === "demo" ? "USD" : currency}</span>
             </span>
           </div>
           <Separator />

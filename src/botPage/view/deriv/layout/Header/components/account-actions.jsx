@@ -33,10 +33,13 @@ const AccountActions = () => {
         active_token,
         active_account_name
     } = useSelector(state => state.client);
+    const { currency_name_map, deposit } = config;
+    const { visible, label, url } = deposit;
     const { account_switcher_token, is_bot_running } = useSelector(state => state.ui);
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
+
 
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
@@ -69,16 +72,20 @@ const AccountActions = () => {
 
     const renderAccountMenu = () => {
         const account_icon = is_bot_running ? 'image/deriv/ic-lock.svg' : 'image/deriv/ic-chevron-down-bold.svg';
+        const currency_icon = is_virtual ? "virtual" : currency.toLowerCase() || "unknown"
         return (
             <div className={classNames('header__acc-info', { disabled: is_bot_running })}>
                 <img
                     id="header__acc-icon"
                     className="header__acc-icon"
-                    src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency.toLowerCase()}.svg`}
+                    src={`image/deriv/currency/ic-currency-${currency_icon}.svg`}
                 />
                 <div id="header__acc-balance" className="header__acc-balance">
-                    {balance.toLocaleString(undefined, { minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2 })}
-                    <span className="symbols">&nbsp;{currency}</span>
+                    {
+                        currency ? balance.toLocaleString(undefined,
+                            { minimumFractionDigits: currency_name_map[currency]?.fractional_digits ?? 2 }) : ""
+                    }
+                    <span className="symbols">&nbsp;{currency ? currency : translate("No currency assigned")}</span>
                 </div>
                 <img
                     className={`header__icon header__expand ${is_acc_dropdown_open ? "open" : ""}`}
@@ -115,8 +122,8 @@ const AccountActions = () => {
                     setIsAccDropdownOpen={setIsAccDropdownOpen}
                 />}
 
-            {config.deposit.visible && <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href={config.deposit.url}>
-                {config.deposit.label}
+            {visible && <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href={url}>
+                {label}
             </a>}
             {account_switcher_token && (
                 <Modal

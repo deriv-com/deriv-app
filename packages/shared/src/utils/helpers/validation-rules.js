@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { getTotalProfit } from '../contract';
-import { getBuyPrice } from "./logic";
+import { getBuyPrice } from './logic';
 
 export const getContractValidationRules = () => ({
     has_contract_update_stop_loss: {

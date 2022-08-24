@@ -22,6 +22,8 @@ const QStrategy = (props: TQuickStrategyProps) => {
                 </div>
             ) : (
                 <div className='q-strategy__container'>
+                    <p>{localize('Quick strategy')}</p>
+                    <p>{localize('Choose a template and set your trade parameters.')}</p>
                     <QStrategyContainer {...props} />
                 </div>
             )}

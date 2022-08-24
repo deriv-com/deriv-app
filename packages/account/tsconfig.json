@@ -5,16 +5,14 @@
         "rootDir": "./src",
         "baseUrl": "src",
         "paths": {
-            "Assets/*": ["Assets/*"],
             "Components/*": ["Components/*"],
-            "Containers/*": ["Containers/*"],
             "Constants/*": ["Constants/*"],
+            "Containers/*": ["Containers/*"],
             "Configs/*": ["Configs/*"],
             "Helpers/*": ["Helpers/*"],
             "Modules/*": ["Modules/*"],
             "Sections/*": ["Sections/*"],
             "Stores/*": ["Stores/*"],
-            "Styles/*": ["Styles/*"],
             "Types": ["Types"]
         }
     },

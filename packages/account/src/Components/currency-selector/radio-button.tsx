@@ -1,22 +1,24 @@
-import React, { AllHTMLAttributes, Fragment, InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, AllHTMLAttributes, ReactElement } from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { Popover, Icon } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { TReactElement } from 'Types';
+// import { TReactElement } from 'Types';
 
-type TUSTPopoverProps = {
+type TUSTPopover = {
     id: string;
 };
 
-interface TRadioButtonProps extends AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> {
+type TRadioButtonExtend = {
     field: InputHTMLAttributes<HTMLInputElement>;
     icon: string;
     second_line_label: string;
-}
+};
 
-const USTPopover = ({ id }: TUSTPopoverProps) => {
-    let popover_message: TReactElement | undefined;
+type TRadioButton = AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TRadioButtonExtend;
+
+const USTPopover = ({ id }: TUSTPopover) => {
+    let popover_message: ReactElement | undefined;
     if (/^UST$/i.test(id)) {
         popover_message = (
             <Localize
@@ -63,9 +65,9 @@ const RadioButton = ({
     second_line_label,
     onClick,
     ...props
-}: TRadioButtonProps) => {
+}: TRadioButton) => {
     return (
-        <Fragment>
+        <React.Fragment>
             <input
                 name={name}
                 id={id}
@@ -87,25 +89,25 @@ const RadioButton = ({
                 onClick={onClick}
             >
                 {icon ? (
-                    <Fragment>
+                    <React.Fragment>
                         <Icon className='currency-list__icon' icon={icon} />
                         <div className='label currency-list__item-text'>
                             <div className='currency-list__item-label'>{label}</div>
                             <div className='currency-list__item-code'>{second_line_label}</div>
                         </div>
-                    </Fragment>
+                    </React.Fragment>
                 ) : (
-                    <Fragment>
+                    <React.Fragment>
                         <Icon className='currency-list__icon' icon={`IcCurrency-${id?.toLowerCase()}`} />
                         {id && /^(UST|eUSDT|tUSDT)$/i.test(id) && <USTPopover id={id} />}
                         <div className='label currency-list__item-text'>
                             <div className='currency-list__item-label'>{label}</div>
                             <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
                         </div>
-                    </Fragment>
+                    </React.Fragment>
                 )}
             </label>
-        </Fragment>
+        </React.Fragment>
     );
 };
 

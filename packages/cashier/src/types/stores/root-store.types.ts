@@ -8,3 +8,5 @@ export type RootStore = {
     modules: any;
     ui: TUiStore;
 };
+
+export type TRootStore = RootStore;

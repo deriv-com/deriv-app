@@ -294,6 +294,8 @@ $card-width: 456px;
     }
 
     &__star {
+        pointer-events: none;
+
         > svg {
             margin-right: 0.2rem;
         }

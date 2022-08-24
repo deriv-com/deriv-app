@@ -118,6 +118,8 @@
         margin-top: 0.1rem;
 
         &--star {
+            pointer-events: none;
+
             > svg {
                 margin-right: 0.1rem;
             }

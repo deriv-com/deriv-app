@@ -32,6 +32,13 @@
         }
     }
 
+    .p2p-my-ads__form-field--focused {
+        .dc-input__label {
+            color: var(--text-prominent);
+            background-color: var(--general-main-1);
+        }
+    }
+
     &__header {
         display: flex;
         align-items: center;

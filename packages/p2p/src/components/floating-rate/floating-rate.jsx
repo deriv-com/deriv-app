@@ -58,6 +58,7 @@ const FloatingRate = ({
                     current_focus={general_store.current_focus}
                     decimal_point_change={2}
                     id='floating_rate_input'
+                    inline_prefix='%'
                     is_autocomplete_disabled
                     is_float
                     is_incrementable
@@ -69,7 +70,7 @@ const FloatingRate = ({
                     setCurrentFocus={general_store.setCurrentFocus}
                     required={required}
                     type={isMobile() && os !== 'iOS' ? 'tel' : 'number'}
-                    value={`${value}%`}
+                    value={value}
                     data_testid={data_testid}
                 />
                 <div className='floating-rate__mkt-rate'>
@@ -92,7 +93,8 @@ const FloatingRate = ({
                         className='floating-rate__mkt-rate--msg'
                     >
                         1 {fiat_currency} ={' '}
-                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}
+                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}{' '}
+                        {local_currency}
                     </Text>
                 </div>
             </section>

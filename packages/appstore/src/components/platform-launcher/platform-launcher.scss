@@ -1,0 +1,138 @@
+.platform-launcher {
+    @include mobile {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0px;
+        height: 56px;
+    }
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px;
+        gap: 16px;
+
+        width: 183.2px;
+        height: 54px;
+        margin-bottom: 16px;
+        &--icon {
+            width: 32px;
+            height: 32px;
+        }
+        &--title-desc-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0px;
+
+            width: 135.2px;
+            height: 54px;
+            &--title {
+                width: 135.2px;
+                height: 18px;
+
+                font-style: normal;
+                font-weight: 700;
+                font-size: 12px;
+                line-height: 18px;
+            }
+            &--description {
+                width: 160px;
+                height: 36px;
+
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 18px;
+            }
+            @include mobile {
+                width: 183px;
+                height: 28px;
+                left: 0px;
+                top: 0px;
+
+                &--title {
+                    width: 164px;
+                    height: 14px;
+                    font-size: 10px;
+                }
+                &--description {
+                    width: 183px;
+                    height: 14px;
+
+                    font-family: 'IBM Plex Sans';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 9.6px;
+                    line-height: 14px;
+                    /* or 150% */
+
+                    /* system/light/2 - general (text) */
+
+                    color: #333333;
+                }
+            }
+        }
+        @include mobile {
+            justify-content: center;
+            padding: 0px 0px 0px 8px;
+            gap: 12px;
+
+            width: 278px;
+            height: 32px;
+        }
+    }
+    &__trade-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 6px 16px;
+
+        width: 183.2px;
+        height: 32px;
+
+        /* brand/coral */
+
+        background: #ff444f;
+        border-radius: 4px;
+
+        &--label {
+            width: 38px;
+            height: 20px;
+
+            font-family: 'IBM Plex Sans';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 20px;
+            /* identical to box height, or 143% */
+
+            text-align: center;
+
+            /* dark/1 - prominent (text) */
+
+            color: #ffffff;
+        }
+
+        @include mobile {
+            padding: 3px 8px;
+            width: 49px;
+            height: 24px;
+            left: 219px;
+            top: 2px;
+
+            /* brand/coral */
+            border-radius: 4px;
+
+            &--label {
+                width: 33px;
+                height: 18px;
+
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
+    }
+}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
-import { getPlatformInformation, routes } from '@deriv/shared';
+import { getPlatformInformation, routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -40,9 +40,17 @@ const ShowCashier = () => {
 };
 
 const RedirectToOldInterface = () => {
+    const platform_store = React.useContext(PlatformContext);
+    const disablePreAppstore = () => {
+        platform_store.setIsPreAppStore(false);
+    };
     return (
         <div className='dashboard-platform-header__redirect'>
-            <BinaryLink to={routes.trade} className='dashboard-platform-header__redirect--link'>
+            <BinaryLink
+                to={routes.trade}
+                className='dashboard-platform-header__redirect--link'
+                onClick={disablePreAppstore}
+            >
                 <Text as='p' size='xs' color='general'>
                     <Localize i18n_default_text='Back to old interface' />
                 </Text>

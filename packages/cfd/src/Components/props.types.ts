@@ -1,5 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
+type CFD_Platform = 'dxtrade' | 'mt5';
+
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
@@ -21,6 +23,16 @@ export type TType = {
     category: string;
     type: string;
     platform: string;
+};
+
+export type TCFDDashboardContainer = {
+    platform: CFD_Platform;
+    active_index: number;
+    is_dark_mode_on: boolean;
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TCFDAccountCardActionProps = {

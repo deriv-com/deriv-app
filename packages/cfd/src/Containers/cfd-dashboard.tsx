@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
-import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
+import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
     isEmptyObject,
     isMobile,
@@ -21,14 +21,13 @@ import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal';
 import MT5TradeModal from './mt5-trade-modal';
 import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
-import CFDDashboardContainer from './cfd-dashboard-container';
+import CFDDownloadContainer from 'Components/cfd-download-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
 import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
@@ -610,75 +609,12 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 </div>
                             </div>
                         </div>
-                        <DesktopWrapper>
-                            <CFDDashboardContainer
-                                platform={platform}
-                                active_index={active_index}
-                                is_dark_mode_on={is_dark_mode_on}
-                                dxtrade_tokens={dxtrade_tokens}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <div className='cfd-dashboard__download-center'>
-                                <h1 className='cfd-dashboard__download-center--heading'>
-                                    {platform === CFD_PLATFORMS.MT5 && (
-                                        <Localize i18n_default_text='Download the MT5 app' />
-                                    )}
-                                    {platform === CFD_PLATFORMS.DXTRADE && (
-                                        <Localize i18n_default_text='Download the Deriv X app' />
-                                    )}
-                                </h1>
-                                <div className='cfd-dashboard__download-center-options--mobile'>
-                                    <div className='cfd-dashboard__download-center-options--mobile-devices'>
-                                        {platform === CFD_PLATFORMS.MT5 && (
-                                            <React.Fragment>
-                                                <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
-                                                <Icon icon='IcMt5DevicePhone' width={48} height={74} />
-                                            </React.Fragment>
-                                        )}
-                                        {platform === CFD_PLATFORMS.DXTRADE && (
-                                            <React.Fragment>
-                                                <Icon icon='IcDxtradeDeviceTablet' width={133} height={106} />
-                                                <Icon icon='IcDxtradeDevicePhone' width={48} height={74} />
-                                            </React.Fragment>
-                                        )}
-                                    </div>
-                                    <div className='cfd-dashboard__download-center-options--mobile-links'>
-                                        <a
-                                            href={
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? getPlatformMt5DownloadLink('android')
-                                                    : getPlatformDXTradeDownloadLink('android')
-                                            }
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
-                                            <Icon icon='IcInstallationGoogle' width={135} height={40} />
-                                        </a>
-                                        <a
-                                            href={
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? getPlatformMt5DownloadLink('ios')
-                                                    : getPlatformDXTradeDownloadLink('ios')
-                                            }
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
-                                            <Icon icon='IcInstallationApple' width={135} height={40} />
-                                        </a>
-                                        {platform === CFD_PLATFORMS.MT5 && (
-                                            <a
-                                                href={getPlatformMt5DownloadLink('huawei')}
-                                                target='_blank'
-                                                rel='noopener noreferrer'
-                                            >
-                                                <Icon icon='IcInstallationHuawei' width={135} height={40} />
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </MobileWrapper>
+                        <CFDDownloadContainer
+                            platform={platform}
+                            active_index={active_index}
+                            is_dark_mode_on={is_dark_mode_on}
+                            dxtrade_tokens={dxtrade_tokens}
+                        />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
                         <CFDServerErrorDialog />

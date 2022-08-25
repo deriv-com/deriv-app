@@ -29,6 +29,41 @@
         width: 100%;
     }
 
+    &--rating {
+        display: flex;
+        flex-direction: row;
+        padding: 0.8rem 0;
+
+        @include mobile {
+            flex-flow: row wrap;
+        }
+
+        &__row {
+            align-items: center;
+            border-right: 1px solid var(--general-section-1);
+            display: flex;
+            padding: 0 0.8rem;
+
+            &:first-child {
+                padding-left: unset;
+            }
+
+            &:last-child {
+                border-right: unset;
+            }
+
+            .filled-icons {
+                pointer-events: none;
+            }
+        }
+
+        &__text {
+            display: flex;
+            gap: 0.8rem;
+            margin-left: 0.4rem;
+        }
+    }
+
     &--row {
         display: flex;
         flex-direction: row;

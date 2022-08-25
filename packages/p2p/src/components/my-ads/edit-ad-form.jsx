@@ -269,7 +269,8 @@ const EditAdForm = () => {
                                                                             account_currency,
                                                                         }
                                                                     )}
-                                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--focused'
+                                                                    label_className='p2p-my-ads__form-label--focused'
+                                                                    className='p2p-my-ads__form-field'
                                                                     trailing_icon={
                                                                         <Text
                                                                             color={

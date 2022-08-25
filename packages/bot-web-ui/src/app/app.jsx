@@ -31,6 +31,27 @@ const App = ({ passthrough }) => {
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
 
     React.useEffect(() => {
+        /**
+         * Inject: External Script Hotjar - for DBot only
+         */
+        (function (h, o, t, j) {
+            /* eslint-disable */
+            h.hj =
+                h.hj ||
+                function () {
+                    (h.hj.q = h.hj.q || []).push(arguments);
+                };
+            /* eslint-enable */
+            h._hjSettings = { hjid: 3050531, hjsv: 6 };
+            const a = o.getElementsByTagName('head')[0];
+            const r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    }, []);
+
+    React.useEffect(() => {
         showDigitalOptionsMaltainvestError(core.client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [core.client.is_options_blocked, core.client.account_settings.country_code]);
@@ -60,7 +81,6 @@ const App = ({ passthrough }) => {
         const onDisconnectFromNetwork = () => {
             setIsLoading(false);
         };
-
         window.addEventListener('offline', onDisconnectFromNetwork);
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);

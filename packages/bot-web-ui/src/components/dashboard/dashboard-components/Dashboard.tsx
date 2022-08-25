@@ -1,6 +1,5 @@
 import React from 'react';
 import Content from './Content';
-import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 
 interface DashboardProps {
     checkIfSidebarOpen: boolean;

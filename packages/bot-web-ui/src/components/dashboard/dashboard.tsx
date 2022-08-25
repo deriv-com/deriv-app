@@ -3,6 +3,8 @@ import { Tabs, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
+import Joyride from 'react-joyride';
+import JoyrideConfig from './joyrideConfig';
 
 interface SideBarProps {
     checkIfSidebarOpen: boolean;
@@ -14,20 +16,23 @@ const Dashboard = (props: SideBarProps) => {
     const [showSideBar, setshowSideBar] = React.useState<boolean>(true);
     const dashBoradClass = 'dashboard__container ';
     const sidebarClasstoggle = showSideBar === false ? 'w-100' : '';
+    const { DashBorardSteps } = JoyrideConfig;
+
     return (
         <div className='main_dashboard_container'>
             <div className={dashBoradClass + sidebarClasstoggle}>
+                <Joyride steps={DashBorardSteps} />
                 <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
                     {/* [Todo] needs to update tabs component children instead of using label property */}
                     <div label={localize('Dashboard')}>
                         <DashboardComponents />
                     </div>
-                    <div label='Bot Builder'>
+                    <div label='Quick Strategy' id='id-quick-strategy' />
+                    <div label='Bot Builder' id='id-bot-builder'>
                         <div>Contennt 3</div>
                     </div>
-                    <div label='Quick Strategy' />
-                    <div label='Charts' />
-                    <div label='Tutorial'>
+                    <div label='Charts' id='id-charts' />
+                    <div label='Tutorial' id='id-tutorials'>
                         <div>Contennt 4</div>
                     </div>
                 </Tabs>

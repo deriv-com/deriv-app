@@ -1,12 +1,29 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import Translations from './Translations';
+import Joyride from 'react-joyride';
+
+const steps = [
+    {
+        target: '#dc-tabs__content_group_tiles',
+        content: 'This is my awesome feature!',
+    },
+    {
+        target: '.my-other-step',
+        content: 'This another awesome feature!',
+    },
+];
+
+interface DashboardProps {
+    steps: (state: boolean) => void;
+}
 
 const { IconArray } = Translations;
 
 const Card = () => {
     return (
-        <div className='dc-tabs__content_group_tiles'>
+        <div className='dc-tabs__content_group_tiles' id='dc-tabs__content_group_tiles'>
+            <Joyride steps={steps} />
             {IconArray.map((icons, index) => {
                 const { icon, content } = icons;
                 return (

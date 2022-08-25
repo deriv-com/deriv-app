@@ -15,6 +15,11 @@
             width: 100%;
             background-color: var(--general-main-1);
         }
+
+        &-wrapper {
+            display: flex;
+            word-break: break-all;
+        }
     }
     &__button {
         margin: 0 0 2.4rem;

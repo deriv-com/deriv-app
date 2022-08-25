@@ -492,8 +492,10 @@
 
     &__verification-status,
     &__verification-status--pending,
-    &__verification-status--POA_POI,
-    &__verification-status--verified {
+    &__verification-status--failed,
+    &__verification-status--account_added,
+    &__verification-status--poi_verified
+    {
         width: 100%;
         min-height: 2.4rem;
         display: flex;
@@ -504,21 +506,20 @@
 
         &--pending {
             background-color: #ffad3a;
-            color: #333333;
             border-radius: 0.5rem;
         }
 
-        &--verified {
+        &--poi_verified{
+            background: #377CFC;
+            border-radius: 0.5rem;
+        }
+        &--account_added {
             background-color: #4bb4b3;
             border-radius: 0.5rem;
-            &-text {
-                color: #fff;
-            }
         }
 
-        &--POA_POI {
+        &--failed {
             background-color: #ec3f3f;
-            color: #fff;
             border-radius: 0.5rem;
         }
     }
@@ -537,7 +538,6 @@
         text-align: center;
         &--none {
             background-color: var(--general-section-1);
-            color: #333333;
             margin-top: auto;
             padding: 0.3rem;
             border-radius: 0.5rem;

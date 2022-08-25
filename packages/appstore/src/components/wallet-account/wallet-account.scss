@@ -10,9 +10,28 @@
         height: 100%;
 
         &-icon {
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
             width: 100%;
-            height: 100%;
+            height: 15.8rem;
+            position: absolute;
         }
+    }
+
+    &__accordion {
+        position: relative;
+        background: #fff8f9;
+    }
+
+    &__options {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__test {
+        background-color: #ff444f29;
     }
 
     &__content {

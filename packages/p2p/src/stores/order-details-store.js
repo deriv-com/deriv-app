@@ -8,6 +8,7 @@ export default class OrderDetailsStore {
         this.root_store = root_store;
     }
 
+    @observable error_message = '';
     @observable interval = null;
     @observable popup_options = {};
     @observable remaining_time;
@@ -37,6 +38,11 @@ export default class OrderDetailsStore {
     @action.bound
     onCancelClick() {
         this.setShouldShowPopup(false);
+    }
+
+    @action.bound
+    setErrorMessage(error_message) {
+        this.error_message = error_message;
     }
 
     @action.bound

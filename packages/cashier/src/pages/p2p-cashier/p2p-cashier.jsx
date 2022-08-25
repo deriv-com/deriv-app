@@ -28,6 +28,9 @@ const P2PCashier = ({
     setOnRemount,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
+    const [action_param, setActionParam] = React.useState();
+    const [code_param, setCodeParam] = React.useState();
+
     const server_time = {
         get,
         init,
@@ -36,7 +39,16 @@ const P2PCashier = ({
 
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
-        const passed_order_id = url_params.get('order');
+        let passed_order_id;
+
+        setActionParam(url_params.get('action'));
+        setCodeParam(url_params.get('code'));
+
+        if (url_params.has('order_id')) {
+            passed_order_id = url_params.get('order_id');
+        } else if (url_params.has('order')) {
+            passed_order_id = url_params.get('order');
+        }
 
         if (passed_order_id) {
             setQueryOrder(passed_order_id);
@@ -49,8 +61,9 @@ const P2PCashier = ({
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
 
-            if (current_query_params.has('order')) {
+            if (current_query_params.has('order_id') || current_query_params.has('order')) {
                 current_query_params.delete('order');
+                current_query_params.delete('order_id');
             }
 
             if (input_order_id) {
@@ -77,8 +90,9 @@ const P2PCashier = ({
 
     return (
         <P2P
-            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
             balance={balance}
+            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            current_focus={current_focus}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}
@@ -88,13 +102,14 @@ const P2PCashier = ({
             platform={platform}
             poi_url={routes.proof_of_identity}
             server_time={server_time}
-            setNotificationCount={setNotificationCount}
-            setOnRemount={setOnRemount}
-            setOrderId={setQueryOrder}
-            should_show_verification={/verification/.test(location.hash)}
-            websocket_api={WS}
-            current_focus={current_focus}
             setCurrentFocus={setCurrentFocus}
+            setNotificationCount={setNotificationCount}
+            setOrderId={setQueryOrder}
+            setOnRemount={setOnRemount}
+            should_show_verification={/verification/.test(location.hash)}
+            verification_action={action_param}
+            verification_code={code_param}
+            websocket_api={WS}
         />
     );
 };

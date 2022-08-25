@@ -7,6 +7,7 @@ import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
 import { requestWS } from 'Utils/websocket';
 import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value';
+import { useStores } from 'Stores';
 
 const OrderDetailsConfirmModal = ({
     order_information,
@@ -14,6 +15,7 @@ const OrderDetailsConfirmModal = ({
     hideConfirmOrderModal,
     should_show_confirm_modal,
 }) => {
+    const { order_store } = useStores();
     const {
         amount,
         account_currency,
@@ -39,7 +41,27 @@ const OrderDetailsConfirmModal = ({
             .then(response => {
                 if (isMounted()) {
                     if (response.error) {
-                        setErrorMessage(response.error.message);
+                        setIsCheckboxChecked(false);
+                        if (response.error.code === 'OrderEmailVerificationRequired') {
+                            clearTimeout(wait);
+                            hideConfirmOrderModal();
+                            const wait = setTimeout(() => order_store.setIsEmailVerificationModalOpen(true), 250);
+                        } else if (
+                            response?.error.code === 'InvalidVerificationToken' ||
+                            response?.error.code === 'ExcessiveVerificationRequests'
+                        ) {
+                            clearTimeout(wait);
+                            hideConfirmOrderModal();
+                            order_store.setVerificationLinkErrorMessage(response.error.message);
+                            const wait = setTimeout(() => order_store.setIsInvalidVerificationLinkModalOpen(true), 230);
+                        } else if (response?.error.code === 'ExcessiveVerificationFailures') {
+                            clearTimeout(wait);
+                            hideConfirmOrderModal();
+                            order_store.setVerificationLinkErrorMessage(response.error.message);
+                            const wait = setTimeout(() => order_store.setIsEmailLinkBlockedModalOpen(true), 230);
+                        } else {
+                            setErrorMessage(response.error.message);
+                        }
                     }
                 }
             })
@@ -97,7 +119,6 @@ const OrderDetailsConfirmModal = ({
                         <Localize i18n_default_text='Please confirm only after checking your bank or e-wallet account to make sure you have received payment.' />
                     )}
                 </Text>
-
                 <Checkbox
                     className='order-details-card__modal-checkbox'
                     onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}

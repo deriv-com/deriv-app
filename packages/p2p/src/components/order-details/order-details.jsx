@@ -6,6 +6,7 @@ import { formatMoney, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
+import EmailVerificationModal from 'Components/email-verification-modal';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx';
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
@@ -16,7 +17,12 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
+import { requestWS } from 'Utils/websocket';
 import 'Components/order-details/order-details.scss';
+import LoadingModal from '../loading-modal';
+import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
+import EmailLinkBlockedModal from '../email-link-blocked-modal';
+import EmailLinkVerifiedModal from '../email-link-verified-modal';
 
 const OrderDetails = observer(({ onPageReturn }) => {
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
@@ -56,6 +62,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
 
+        order_store.getSettings();
+        order_store.getWebsiteStatus();
+
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
         } else {
@@ -68,6 +77,28 @@ const OrderDetails = observer(({ onPageReturn }) => {
             order_store.setOrderPaymentMethodDetails(undefined);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const confirmOrderRequest = () => {
+        requestWS({
+            p2p_order_confirm: 1,
+            id,
+        }).then(response => {
+            if (response?.error) {
+                if (response?.error.code === 'OrderEmailVerificationRequired') {
+                    order_store.setIsEmailVerificationModalOpen(true);
+                } else if (
+                    response.error.code === 'InvalidVerificationToken' ||
+                    response.error.code === 'ExcessiveVerificationRequests'
+                ) {
+                    order_store.setVerificationLinkErrorMessage(response.error.message);
+                    order_store.setIsInvalidVerificationLinkModalOpen(true);
+                } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                    order_store.setVerificationLinkErrorMessage(response.error.message);
+                    order_store.setIsEmailLinkBlockedModalOpen(true);
+                }
+            }
+        });
+    };
 
     const page_title =
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
@@ -97,6 +128,29 @@ const OrderDetails = observer(({ onPageReturn }) => {
                     />
                 </div>
             )}
+            <EmailVerificationModal
+                email_address={order_store.user_email_address}
+                is_email_verification_modal_open={order_store.is_email_verification_modal_open}
+                onClickResendEmailButton={confirmOrderRequest}
+                setIsEmailVerificationModalOpen={order_store.setIsEmailVerificationModalOpen}
+            />
+            <EmailLinkVerifiedModal
+                is_email_link_verified_modal_open={order_store.is_email_link_verified_modal_open}
+                onClickConfirm={order_store.confirmOrder}
+                setIsEmailLinkVerifiedModalOpen={order_store.setIsEmailLinkVerifiedModalOpen}
+            />
+            <InvalidVerificationLinkModal
+                invalid_verification_link_error_message={order_store.verification_link_error_message}
+                is_invalid_verification_link_modal_open={order_store.is_invalid_verification_link_modal_open}
+                setIsInvalidVerificationLinkModalOpen={order_store.setIsInvalidVerificationLinkModalOpen}
+                onClickGetNewLinkButton={confirmOrderRequest}
+            />
+            <EmailLinkBlockedModal
+                email_link_blocked_modal_error_message={order_store.verification_link_error_message}
+                is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
+                setIsEmailLinkBlockedModalOpen={order_store.setIsEmailLinkBlockedModalOpen}
+            />
+            <LoadingModal is_loading_modal_open={order_store.is_loading_modal_open} />
             <div className='order-details'>
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>

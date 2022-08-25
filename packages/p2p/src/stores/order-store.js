@@ -22,11 +22,18 @@ export default class OrderStore {
     @observable cancels_remaining = null;
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable is_email_link_blocked_modal_open = false;
+    @observable is_email_link_verified_modal_open = false;
+    @observable is_email_verification_modal_open = false;
+    @observable is_invalid_verification_link_modal_open = false;
     @observable is_loading = false;
+    @observable is_loading_modal_open = false;
     @observable orders = [];
     @observable order_id = null;
     @observable order_payment_method_details = null;
     @observable order_rerender_timeout = null;
+    @observable user_email_address = '';
+    @observable verification_link_error_message = '';
 
     interval;
     order_info_subscription = {};
@@ -63,6 +70,15 @@ export default class OrderStore {
         });
 
         this.getWebsiteStatus(setShouldShowCancelModal);
+    }
+
+    @action.bound
+    getSettings() {
+        requestWS({ get_settings: 1 }).then(response => {
+            if (response && !response.error) {
+                this.setUserEmailAddress(response.get_settings.email);
+            }
+        });
     }
 
     @action.bound
@@ -207,8 +223,33 @@ export default class OrderStore {
     }
 
     @action.bound
+    setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
+        this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
+    }
+
+    @action.bound
+    setIsEmailLinkVerifiedModalOpen(is_email_link_verified_modal_open) {
+        this.is_email_link_verified_modal_open = is_email_link_verified_modal_open;
+    }
+
+    @action.bound
+    setIsEmailVerificationModalOpen(is_email_verification_modal_open) {
+        this.is_email_verification_modal_open = is_email_verification_modal_open;
+    }
+
+    @action.bound
+    setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
+        this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsLoadingModalOpen(is_loading_modal_open) {
+        this.is_loading_modal_open = is_loading_modal_open;
     }
 
     @action.bound
@@ -297,6 +338,16 @@ export default class OrderStore {
     }
 
     @action.bound
+    setUserEmailAddress(user_email_address) {
+        this.user_email_address = user_email_address;
+    }
+
+    @action.bound
+    setVerificationLinkErrorMessage(verification_link_error_message) {
+        this.verification_link_error_message = verification_link_error_message;
+    }
+
+    @action.bound
     subscribeToCurrentOrder() {
         this.order_info_subscription = subscribeWS(
             {
@@ -342,6 +393,44 @@ export default class OrderStore {
 
         if (this.order_info_subscription.unsubscribe) {
             this.order_info_subscription.unsubscribe();
+        }
+    }
+
+    @action.bound
+    confirmOrder() {
+        const { general_store } = this.root_store;
+        requestWS({
+            p2p_order_confirm: 1,
+            id: this.order_id,
+            verification_code: general_store.props?.verification_code,
+        });
+    }
+
+    @action.bound
+    verifyEmailCode(verification_action, verification_code) {
+        this.setIsLoadingModalOpen(true);
+        if (verification_action === 'p2p_order_confirm') {
+            requestWS({
+                p2p_order_confirm: 1,
+                id: this.order_id,
+                verification_code,
+                dry_run: 1,
+            }).then(response => {
+                this.setIsLoadingModalOpen(false);
+
+                if (!response.error) {
+                    this.setIsEmailLinkVerifiedModalOpen(true);
+                } else if (
+                    response.error.code === 'InvalidVerificationToken' ||
+                    response.error.code === 'ExcessiveVerificationRequests'
+                ) {
+                    this.setVerificationLinkErrorMessage(response.error.message);
+                    this.setIsInvalidVerificationLinkModalOpen(true);
+                } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                    this.setVerificationLinkErrorMessage(response.error.message);
+                    this.setIsEmailLinkBlockedModalOpen(true);
+                }
+            });
         }
     }
 

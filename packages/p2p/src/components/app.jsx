@@ -11,13 +11,12 @@ import { setLanguage } from './i18next';
 import './app.scss';
 
 const App = props => {
-    const { general_store, order_store } = useStores();
+    const { general_store } = useStores();
     const { balance, className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
         general_store.setWebsocketInit(websocket_api);
-        order_store.setOrderId(order_id);
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {

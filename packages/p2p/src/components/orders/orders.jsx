@@ -8,7 +8,7 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { order_store } = useStores();
+    const { general_store, order_store } = useStores();
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
@@ -17,9 +17,15 @@ const Orders = observer(() => {
     order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {
+        // DO NOT REMOVE. This fixes all P2P order routing issues
+        order_store.setOrderId(general_store.props?.order_id);
+
         const disposeOrderIdReaction = reaction(
             () => order_store.order_id,
-            () => order_store.onOrderIdUpdate(),
+            () => {
+                // DO NOT REMOVE. This fixes all P2P order routing issues
+                order_store.onOrderIdUpdate();
+            },
             { fireImmediately: true }
         );
 
@@ -37,6 +43,16 @@ const Orders = observer(() => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (general_store.props?.verification_action && general_store.props?.verification_code) {
+            order_store.verifyEmailCode(
+                general_store.props?.verification_action,
+                general_store.props?.verification_code
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [general_store.props?.verification_action, general_store.props?.verification_code]);
 
     if (order_store.order_information) {
         return (

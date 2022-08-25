@@ -4,16 +4,18 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 const InvalidVerificationLinkModal = ({
+    invalid_verification_link_error_message,
     is_invalid_verification_link_modal_open,
     onClickGetNewLinkButton,
     setIsInvalidVerificationLinkModalOpen,
-    verification_link_expiry_time,
+    // TODO: Uncomment when time is available in BE response
+    // verification_link_expiry_time,
 }) => {
     return (
         <Modal
             has_close_icon
             is_open={is_invalid_verification_link_modal_open}
-            title=''
+            renderTitle={() => <></>}
             toggleModal={() => setIsInvalidVerificationLinkModalOpen(false)}
             width='440px'
         >
@@ -23,14 +25,18 @@ const InvalidVerificationLinkModal = ({
                     <Localize i18n_default_text='Invalid verification link' />
                 </Text>
                 <Text align='center' color='prominent' size='s'>
-                    <Localize
-                        i18n_default_text='The verification link becomes invalid after {{verification_link_expiry_time}} minutes. Hit the button below to request a new one.'
-                        values={{ verification_link_expiry_time }}
-                    />
+                    {invalid_verification_link_error_message}
                 </Text>
             </Modal.Body>
             <Modal.Footer className='invalid-verification-link-modal--footer'>
-                <Button large primary onClick={onClickGetNewLinkButton}>
+                <Button
+                    large
+                    primary
+                    onClick={() => {
+                        setIsInvalidVerificationLinkModalOpen(false);
+                        onClickGetNewLinkButton();
+                    }}
+                >
                     <Localize i18n_default_text='Get new link' />
                 </Button>
             </Modal.Footer>
@@ -39,10 +45,12 @@ const InvalidVerificationLinkModal = ({
 };
 
 InvalidVerificationLinkModal.propTypes = {
+    invalid_verification_link_error_message: PropTypes.string,
     is_invalid_verification_link_modal_open: PropTypes.bool,
     onClickGetNewLinkButton: PropTypes.func,
     setIsInvalidVerificationLinkModalOpen: PropTypes.func,
-    verification_link_expiry_time: PropTypes.number,
+    // TODO: Uncomment when time is available in BE response
+    // verification_link_expiry_time: PropTypes.number,
 };
 
 export default InvalidVerificationLinkModal;

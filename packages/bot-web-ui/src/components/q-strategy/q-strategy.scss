@@ -1,5 +1,17 @@
 .q-strategy {
-    &__container {
-        height: 76rem; //!should be changed
+    &__title {
+        margin: 15px 0;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.43;
+        color: var(--text-general);
+    }
+
+    &__description {
+        margin: 15px 0;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.43;
+        color: var(--text-general);
     }
 }

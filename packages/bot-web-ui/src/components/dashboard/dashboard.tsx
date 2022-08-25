@@ -17,10 +17,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
                 <div label='Quick Strategy'>
-                    <div>Contennt 2</div>
-                    <div>
-                        <QStrategy />
-                    </div>
+                    <QStrategy />
                 </div>
                 <div label='Bot Builder'>
                     <div>Contennt 3</div>

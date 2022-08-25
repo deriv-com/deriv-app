@@ -2,6 +2,7 @@ export type TQuickStrategyProps = {
     active_index: number;
     createStrategy: any;
     duration_unit_dropdown: any;
+    types_strategies_dropdown: any;
     getSizeDesc: any;
     getSizeText: any;
     initial_errors: any;
@@ -17,6 +18,7 @@ export type TQuickStrategyProps = {
     selected_symbol: any;
     selected_trade_type: any;
     selected_duration_unit: any;
+    selected_type_strategy: any;
     symbol_dropdown: any;
     toggleStrategyModal: any;
     trade_type_dropdown: any;

@@ -51,6 +51,7 @@ export default class GeneralStore extends BaseStore {
     @observable percentage = 0;
     @observable show_p2p_in_cashier_onboarding = false;
     @observable onRemount = () => {};
+    @observable p2p_completed_orders = null;
 
     active_container = Constants.containers.deposit;
     is_populating_values = false;
@@ -261,6 +262,21 @@ export default class GeneralStore extends BaseStore {
         const advertiser_error = this.p2p_advertiser_error;
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
         this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
+    }
+
+    @action.bound
+    setP2pCompletedOrders(p2p_completed_orders) {
+        this.p2p_completed_orders = p2p_completed_orders;
+    }
+
+    @action.bound
+    async getP2pCompletedOrders() {
+        await this.WS.authorized.send({ p2p_order_list: 1, active: 0 }).then(response => {
+            if (!response?.error) {
+                const { p2p_order_list } = response;
+                this.setP2pCompletedOrders(p2p_order_list.list);
+            }
+        });
     }
 
     @action.bound

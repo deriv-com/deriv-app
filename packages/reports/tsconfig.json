@@ -8,7 +8,6 @@
             "Containers/*": ["./src/Containers/*"],
             "Helpers/*": ["./src/Helpers/*"],
             "Modules/*": ["./src/Modules/*"],
-            "sass/*": ["./src/sass/*"],
             "Stores/*": ["./src/Stores/*"],
             "templates/*": ["./src/templates/*"],
             "Utils/*": ["./src/Utils/*"],

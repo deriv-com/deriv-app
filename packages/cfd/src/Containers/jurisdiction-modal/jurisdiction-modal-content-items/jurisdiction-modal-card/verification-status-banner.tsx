@@ -16,6 +16,7 @@ const VerificationStatusBanner = ({
     type_of_card,
 }: TVerificationStatusBannerProps) => {
     const {
+        poi_not_submitted_for_vanuatu,
         poi_or_poa_not_submitted,
         poi_verified_for_vanuatu,
         poi_verified_for_bvi_labuan_maltainvest,
@@ -111,6 +112,14 @@ const VerificationStatusBanner = ({
                 </div>
             </div>
         );
+    } else if (is_vanuatu && poi_not_submitted_for_vanuatu) {
+        return (
+            <div className={`${card_classname}__footer--none`}>
+                <Text as='p' size='xxs' align='center' color='prominent'>
+                    <Localize i18n_default_text='You will need to submit proof of identity' />
+                </Text>
+            </div>
+        );
     } else if (
         (is_vanuatu && poi_pending_for_vanuatu) ||
         (is_regulated_except_vanuatu && poi_pending_for_bvi_labuan_maltainvest)
@@ -138,6 +147,7 @@ const VerificationStatusBanner = ({
             </div>
         );
     }
+    return null;
 };
 
 export default connect(({ client }: RootStore) => ({

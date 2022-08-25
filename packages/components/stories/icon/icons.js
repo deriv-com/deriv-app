@@ -22,6 +22,7 @@ export const icons = {
         'IcAppstoreOptionTradeType',
         'IcAppstoreSkeletonCardBorder',
         'IcAppstoreSuccess',
+        'IcAppstoreTradingHubOnboarding',
         'IcAppstoreWalletAudLight',
         'IcAppstoreWalletBitcoinLight',
         'IcAppstoreWalletCardPlaceholderDarkRedLine',

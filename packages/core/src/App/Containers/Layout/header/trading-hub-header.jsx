@@ -1,9 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, withRouter } from 'react-router-dom';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
-import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
+import { getPlatformInformation, routes } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -31,22 +31,24 @@ const DerivLogo = () => {
         </div>
     );
 };
-const ShowReports = () => {
+
+const RedirectToOldInterface = () => {
     return (
-        <div className='dashboard-platform-header__report'>
-            <BinaryLink id='db_reports_tab' key='db_reports_tab' to={routes.reports}>
-                <Icon icon='IcReports' size={20} />
+        <div className='dashboard-platform-header__redirect'>
+            <BinaryLink to={routes.trade} className='dashboard-platform-header__redirect--link'>
+                <Text as='p' size='xs' color='general'>
+                    <Localize i18n_default_text='Back to old interface' />
+                </Text>
+                <Icon icon='IcArrowRight' size={18} color='red' />
             </BinaryLink>
         </div>
     );
 };
 
-const ShowCashier = () => {
+const TradingHubOnboarding = () => {
     return (
-        <div className='dashboard-platform-header__cashier'>
-            <BinaryLink id='db_cashier_tab' key='db_cashier_tab' to={routes.cashier_deposit}>
-                <Icon icon='IcCashier' size={20} />
-            </BinaryLink>
+        <div className='dashboard-platform-header__tradinghub--onboarding'>
+            <Icon icon='IcAppstoreTradingHubOnboarding' size={20} />
         </div>
     );
 };
@@ -67,27 +69,15 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
 const ShowSettings = ({ toggleSettings }) => {
     return (
         <div className='dashboard-platform-header__setting'>
-            <Popover alignment='top'>
+            <Popover alignment='top' to={routes.personal_details}>
                 <a
                     id='dt_settings_toggle'
                     onClick={toggleSettings}
                     className='dashboard-platform-header__setting--icon'
                 >
-                    <Icon icon='IcGearLight' size={22} />
+                    <Icon icon='IcUserOutline' size={20} />
                 </a>
             </Popover>
-        </div>
-    );
-};
-
-const AccountBalance = ({ balance, currency }) => {
-    return (
-        <div className='dashboard-platform-header__balance'>
-            <Divider />
-            <Icon icon='IcWalletDerivApps' size={28} className='dashboard-platform-header__balance--icon' />
-            <Text size='s' line_height='xxl' weight='bold' color='profit-success'>
-                <Money amount={balance} currency={currency} show_currency />
-            </Text>
         </div>
     );
 };
@@ -95,8 +85,6 @@ const AccountBalance = ({ balance, currency }) => {
 const DashboardPlatformHeader = ({
     account_status,
     app_routing_history,
-    balance,
-    currency,
     disableApp,
     enableApp,
     header_extension,
@@ -130,7 +118,6 @@ const DashboardPlatformHeader = ({
             }
             return true;
         });
-    const history = useHistory();
     return (
         <header className='dashboard-platform-header'>
             <div className='dashboard-platform-header__menu-left'>
@@ -168,16 +155,14 @@ const DashboardPlatformHeader = ({
                 <PreAppstoreMenuHomepage />
                 <DerivLogo />
                 <Divider />
-
                 <DesktopWrapper>
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </DesktopWrapper>
             </div>
             <div className='dashboard-platform-header__menu-right'>
-                <DesktopWrapper>
-                    <ShowCashier />
-                    <ShowReports />
-                </DesktopWrapper>
+                <RedirectToOldInterface />
+                <Divider />
+                <TradingHubOnboarding />
                 <ShowNotifications
                     is_notifications_visible={is_notifications_visible}
                     notifications_count={notifications_count}
@@ -192,15 +177,6 @@ const DashboardPlatformHeader = ({
                         settings_extension={settings_extension}
                     />
                 </DesktopWrapper>
-                <AccountBalance balance={balance} currency={currency} />
-                <Button
-                    small={isMobile()}
-                    has_effect
-                    text={localize('Top up')}
-                    onClick={() => history.push(routes.dashboard)}
-                    primary
-                    className='dashboard-platform-header__button'
-                />
             </div>
         </header>
     );
@@ -263,4 +239,5 @@ export default connect(({ client, common, modules, notifications, ui, menu }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
+    toggleSettingsModal: ui.toggleSettingsModal,
 }))(withRouter(DashboardPlatformHeader));

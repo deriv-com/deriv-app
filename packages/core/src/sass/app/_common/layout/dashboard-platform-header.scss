@@ -51,6 +51,12 @@
         &--title {
             margin-left: 8px;
         }
+
+        &--onboarding {
+            padding: 2rem;
+            margin-right: 0.3rem;
+            cursor: pointer;
+        }
     }
 
     &__platform-information {
@@ -73,8 +79,20 @@
         }
     }
 
+    &__redirect {
+        display: flex;
+
+        &--link {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+    }
+
     &__setting {
-        margin-right: 12px;
+        margin-right: 25px;
 
         &--icon {
             cursor: pointer;

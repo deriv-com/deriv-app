@@ -42,6 +42,7 @@ const getMessage = ({
     const ask_self_exclusion_max_turnover_set = cashier_validation?.includes('ASK_SELF_EXCLUSION_MAX_TURNOVER_SET');
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
+    const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
 
     if (is_system_maintenance) {
         if (is_crypto && is_withdrawal_locked)
@@ -350,6 +351,14 @@ const getMessage = ({
                 title: localize('Withdrawals are locked'),
                 description: localize(
                     'You can only make deposits. Please contact us via live chat for more information.'
+                ),
+            };
+        if (pa_commision_withdrawal_limit)
+            return {
+                icon: 'IcCashierWithdrawalLock',
+                title: localize('Cashier is locked for withdrawals'),
+                description: localize(
+                    "It seems that you've no commissions to withdraw at the moment. You can make withdrawals once you receive your commissions."
                 ),
             };
     }

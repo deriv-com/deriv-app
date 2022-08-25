@@ -4,11 +4,12 @@ import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
 import { getPlatformInformation, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { PlatformSwitcher, ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
+import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
+import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
@@ -24,10 +25,16 @@ const PreAppstoreMenuHomepage = () => {
     );
 };
 
-const DerivLogo = () => {
+const ShowCashier = () => {
+    const history = useHistory();
     return (
-        <div className='dashboard-platform-header__deriv--logo'>
-            <Icon icon='IcBrandDerivLogo' size={80} />
+        <div className='dashboard-platform-header__cashier' onClick={() => history.push(routes.cashier_deposit)}>
+            <BinaryLink to={routes.trade} className='dashboard-platform-header__redirect--cashierlink'>
+                <Icon icon='IcCashier' size={16} />
+                <Text as='p' size='s' color='general' className='dashboard-platform-header__redirect--cashiertext'>
+                    <Localize i18n_default_text='Cashier' />
+                </Text>
+            </BinaryLink>
         </div>
     );
 };
@@ -66,22 +73,6 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
     );
 };
 
-const ShowSettings = ({ toggleSettings }) => {
-    return (
-        <div className='dashboard-platform-header__setting'>
-            <Popover alignment='top' to={routes.personal_details}>
-                <a
-                    id='dt_settings_toggle'
-                    onClick={toggleSettings}
-                    className='dashboard-platform-header__setting--icon'
-                >
-                    <Icon icon='IcUserOutline' size={20} />
-                </a>
-            </Popover>
-        </div>
-    );
-};
-
 const DashboardPlatformHeader = ({
     account_status,
     app_routing_history,
@@ -97,18 +88,14 @@ const DashboardPlatformHeader = ({
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
     is_account_transfer_visible,
-    is_settings_modal_on,
     is_virtual,
     location,
     logoutClient,
     notifications_count,
     setDarkMode,
-    settings_extension,
     should_allow_authentication,
     toggleNotifications,
-    toggleSettingsModal,
     is_social_signup,
-    menu_items,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
@@ -153,10 +140,10 @@ const DashboardPlatformHeader = ({
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <PreAppstoreMenuHomepage />
-                <DerivLogo />
+                <DerivBrandLogo className='dashboard-platform-header__logo' />
                 <Divider />
                 <DesktopWrapper>
-                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <ShowCashier />
                 </DesktopWrapper>
             </div>
             <div className='dashboard-platform-header__menu-right'>
@@ -169,13 +156,17 @@ const DashboardPlatformHeader = ({
                     toggleNotifications={toggleNotifications}
                 />
                 <DesktopWrapper>
-                    <ShowSettings
-                        disableApp={disableApp}
-                        enableApp={enableApp}
-                        is_settings_modal_on={is_settings_modal_on}
-                        toggleSettingsModal={toggleSettingsModal}
-                        settings_extension={settings_extension}
-                    />
+                    <Popover
+                        classNameBubble='account-settings-toggle__tooltip'
+                        alignment='bottom'
+                        message={<Localize i18n_default_text='Manage account settings' />}
+                        should_disable_pointer_events
+                        zIndex={9999}
+                    >
+                        <BinaryLink className='dashboard-platform-header__setting' to={routes.personal_details}>
+                            <Icon icon='IcUserOutline' size={20} />
+                        </BinaryLink>
+                    </Popover>
                 </DesktopWrapper>
             </div>
         </header>

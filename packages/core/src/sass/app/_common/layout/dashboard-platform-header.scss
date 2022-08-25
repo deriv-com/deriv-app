@@ -38,6 +38,11 @@
         align-items: center;
     }
 
+    &__logo {
+        width: 8rem;
+        height: 3rem;
+    }
+
     &__tradinghub {
         display: flex;
         justify-content: center;
@@ -88,6 +93,18 @@
             margin-right: 1rem;
             padding: 0.5rem;
             text-decoration: none;
+        }
+
+        &--cashierlink {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            text-decoration: none;
+            padding: 2rem;
+        }
+
+        &--cashiertext {
+            padding: 0.7rem;
         }
     }
 

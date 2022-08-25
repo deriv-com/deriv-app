@@ -3,69 +3,69 @@
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        padding: 0px;
-        height: 56px;
+        padding: 0rem;
+        height: 5.6rem;
     }
     &__container {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0px;
-        gap: 16px;
+        padding: 0rem;
+        gap: 1.6rem;
 
-        width: 183.2px;
-        height: 54px;
-        margin-bottom: 16px;
+        width: 18.32rem;
+        height: 5.4rem;
+        margin-bottom: 1.6rem;
         &--icon {
-            width: 32px;
-            height: 32px;
+            width: 3.2rem;
+            height: 3.2rem;
         }
         &--title-desc-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 0px;
+            padding: 0rem;
 
-            width: 135.2px;
-            height: 54px;
+            width: 13.52rem;
+            height: 5.4rem;
             &--title {
-                width: 135.2px;
-                height: 18px;
+                width: 13.52rem;
+                height: 1.8rem;
 
                 font-style: normal;
                 font-weight: 700;
-                font-size: 12px;
-                line-height: 18px;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
             }
             &--description {
-                width: 160px;
-                height: 36px;
+                width: 16rem;
+                height: 3.6rem;
 
                 font-style: normal;
                 font-weight: 400;
-                font-size: 12px;
-                line-height: 18px;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
             }
             @include mobile {
-                width: 183px;
-                height: 28px;
-                left: 0px;
-                top: 0px;
+                width: 18.3rem;
+                height: 2.8rem;
+                left: 0rem;
+                top: 0rem;
 
                 &--title {
-                    width: 164px;
-                    height: 14px;
-                    font-size: 10px;
+                    width: 16.4rem;
+                    height: 1.4rem;
+                    font-size: 1rem;
                 }
                 &--description {
-                    width: 183px;
-                    height: 14px;
+                    width: 18.3rem;
+                    height: 1.4rem;
 
                     font-family: 'IBM Plex Sans';
                     font-style: normal;
                     font-weight: 400;
-                    font-size: 9.6px;
-                    line-height: 14px;
+                    font-size: 0.96rem;
+                    line-height: 1.4rem;
                     /* or 150% */
 
                     /* system/light/2 - general (text) */
@@ -76,11 +76,11 @@
         }
         @include mobile {
             justify-content: center;
-            padding: 0px 0px 0px 8px;
-            gap: 12px;
+            padding: 0rem 0rem 0rem 0.8rem;
+            gap: 1.2rem;
 
-            width: 278px;
-            height: 32px;
+            width: 27.8rem;
+            height: 3.2rem;
         }
     }
     &__trade-button {
@@ -88,25 +88,24 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 6px 16px;
+        padding: 0.6rem 1.6rem;
 
-        width: 183.2px;
-        height: 32px;
-
+        width: 18.32rem;
+        height: 3.2rem;
         /* brand/coral */
 
         background: #ff444f;
-        border-radius: 4px;
+        border-radius: 0.4rem;
 
         &--label {
-            width: 38px;
-            height: 20px;
+            width: 3.8rem;
+            height: 2rem;
 
             font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: 700;
-            font-size: 14px;
-            line-height: 20px;
+            font-size: 1.4rem;
+            line-height: 2rem;
             /* identical to box height, or 143% */
 
             text-align: center;
@@ -117,21 +116,21 @@
         }
 
         @include mobile {
-            padding: 3px 8px;
-            width: 49px;
-            height: 24px;
-            left: 219px;
-            top: 2px;
+            padding: 0.3rem 0.8rem;
+            width: 4.9rem;
+            height: 2.4rem;
+            left: 21.9rem;
+            top: 0.2rem;
 
             /* brand/coral */
-            border-radius: 4px;
+            border-radius: 0.4rem;
 
             &--label {
-                width: 33px;
-                height: 18px;
+                width: 3.3rem;
+                height: 1.8rem;
 
-                font-size: 12px;
-                line-height: 18px;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
             }
         }
     }

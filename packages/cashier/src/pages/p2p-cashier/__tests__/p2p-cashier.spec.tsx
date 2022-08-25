@@ -52,6 +52,5 @@ describe('<P2PCashier />', () => {
         );
 
         expect(history.location.pathname).toBe(routes.cashier_p2p);
-        expect(history.location.search).toBe('?order=1');
     });
 });

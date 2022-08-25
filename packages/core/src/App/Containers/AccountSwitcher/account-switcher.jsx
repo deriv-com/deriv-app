@@ -25,6 +25,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
+import { getExchangeRate } from 'Utils/ExchangeCurrencyRate/exchange_currency_rate';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -40,6 +41,7 @@ const AccountSwitcher = props => {
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
+    const [exchanged_rate, setExchangedRate] = React.useState('');
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
@@ -52,6 +54,14 @@ const AccountSwitcher = props => {
             setDmt5RealVisible(false);
         }
     }, [getMaxAccountsDisplayed]);
+
+    React.useEffect(() => {
+        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
+
+        getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
+            setExchangedRate(res)
+        );
+    }, []);
 
     React.useEffect(() => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
@@ -326,7 +336,12 @@ const AccountSwitcher = props => {
             .filter(account => (is_demo ? isDemo(account) : !isDemo(account)))
             .reduce(
                 (total, account) => {
-                    total.balance += account.balance;
+                    const real_account_loginid = props.account_list?.find(acc => !acc.is_virtual)?.loginid;
+                    if (!is_demo && props.accounts[real_account_loginid].currency !== account.currency) {
+                        total.balance += account.balance * exchanged_rate;
+                    } else {
+                        total.balance += account.balance;
+                    }
                     return total;
                 },
                 { balance: 0 }
@@ -336,10 +351,11 @@ const AccountSwitcher = props => {
     const getTotalDemoAssets = () => {
         const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
+        const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
         const mt5_demo_total = getTotalBalance(props.mt5_login_list);
         const dxtrade_demo_total = getTotalBalance(props.dxtrade_accounts_list);
 
-        let total = vrtc_balance;
+        let total = vrtc_currency !== props.obj_total_balance.currency ? vrtc_balance * exchanged_rate : vrtc_balance;
 
         if (Array.isArray(props.mt5_login_list)) {
             total += mt5_demo_total.balance;
@@ -903,9 +919,9 @@ const AccountSwitcher = props => {
                 </Text>
                 <Text size='xs' color='prominent' className='acc-switcher__balance'>
                     <Money
-                        currency={isRealAccountTab ? props.obj_total_balance.currency : 'USD'}
+                        currency={props.obj_total_balance.currency}
                         amount={formatMoney(
-                            isRealAccountTab ? props.obj_total_balance.currency : 'USD',
+                            props.obj_total_balance.currency,
                             isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
                             true
                         )}

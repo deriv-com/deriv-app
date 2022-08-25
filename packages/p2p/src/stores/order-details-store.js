@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 export default class OrderDetailsStore {
     constructor(root_store) {
         makeObservable(this, {
+            error_message: observable,
             interval: observable,
             popup_options: observable,
             remaining_time: observable,
@@ -13,6 +14,7 @@ export default class OrderDetailsStore {
             countDownTimer: action.bound,
             handleShowPopup: action.bound,
             onCancelClick: action.bound,
+            setErrorMessage: action.bound,
             setIntervalState: action.bound,
             setPopupOptions: action.bound,
             setRemainingTime: action.bound,
@@ -22,6 +24,7 @@ export default class OrderDetailsStore {
         this.root_store = root_store;
     }
 
+    error_message = '';
     interval = null;
     popup_options = {};
     remaining_time;
@@ -48,6 +51,10 @@ export default class OrderDetailsStore {
 
     onCancelClick() {
         this.setShouldShowPopup(false);
+    }
+
+    setErrorMessage(error_message) {
+        this.error_message = error_message;
     }
 
     setIntervalState(interval) {

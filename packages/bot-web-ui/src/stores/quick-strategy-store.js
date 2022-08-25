@@ -23,7 +23,6 @@ export default class QuickStrategyStore {
             symbol_dropdown: observable,
             trade_type_dropdown: observable,
             duration_unit_dropdown: observable,
-            values_flags: observable,
             initial_values: computed,
             initial_errors: computed,
             setActiveTabIndex: action.bound,
@@ -38,7 +37,6 @@ export default class QuickStrategyStore {
             onChangeInputValue: action.bound,
             onHideDropdownList: action.bound,
             toggleStrategyModal: action.bound,
-            toggleValuesFlags: action.bound,
             createStrategy: action.bound,
             updateSymbolDropdown: action.bound,
             updateTradeTypeDropdown: action.bound,
@@ -66,7 +64,6 @@ export default class QuickStrategyStore {
     symbol_dropdown = [];
     trade_type_dropdown = [];
     duration_unit_dropdown = [];
-    values_flags = [];
 
     get initial_values() {
         const init = {
@@ -77,13 +74,15 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
-            'quick-strategy__size': this.input_size,
-            'alembert-unit': this.input_alembert_unit,
-            'oscar-unit': this.input_oscar_unit,
+            ...(this.active_index === 0 && { 'quick-strategy__size': this.input_size }),
+            ...(this.active_index === 1 && { 'alembert-unit': this.input_alembert_unit }),
+            ...(this.active_index === 2 && { 'oscar-unit': this.input_oscar_unit }),
+
             'quick-strategy__loss': this.input_loss,
             'quick-strategy__profit': this.input_profit,
         };
         storeSetting('quick_strategy', this.qs_cache);
+
         return init;
     }
 
@@ -200,12 +199,6 @@ export default class QuickStrategyStore {
 
         if (this.is_strategy_modal_open) {
             await this.updateSymbolDropdown();
-        }
-    }
-
-    toggleValuesFlags(value_flag) {
-        if (!this.values_flags.includes(value_flag)) {
-            this.values_flags.push(value_flag);
         }
     }
 
@@ -453,20 +446,14 @@ export default class QuickStrategyStore {
         }
     }
 
-    validateQuickStrategy(current_form_values, should_ignore_empty = false) {
-        const values = { ...current_form_values };
-        if (this.getFieldNames())
-            Object.keys(this.getFieldNames())
-                .filter(key => +key !== this.active_index)
-                .map(key => delete values[this.getFieldNames()[key]]);
-
+    validateQuickStrategy(values, should_ignore_empty = false) {
         const errors = {};
         const number_fields = [
             'quick-strategy__duration-value',
             'quick-strategy__stake',
-            ...(values['quick-strategy__size'] ? ['quick-strategy__size'] : []),
-            ...(values['alembert-unit'] ? ['alembert-unit'] : []),
-            ...(values['oscar-unit'] ? ['oscar-unit'] : []),
+            ...(this.active_index === 0 ? ['quick-strategy__size'] : []),
+            ...(this.active_index === 1 ? ['alembert-unit'] : []),
+            ...(this.active_index === 2 ? ['oscar-unit'] : []),
             'quick-strategy__profit',
             'quick-strategy__loss',
         ];
@@ -477,7 +464,7 @@ export default class QuickStrategyStore {
                 return;
             }
 
-            if (this.values_flags.includes(key) && number_fields.includes(key)) {
+            if (number_fields.includes(key)) {
                 if (isNaN(value)) {
                     errors[key] = localize('Must be a number');
                 } else if (value <= 0) {
@@ -487,13 +474,13 @@ export default class QuickStrategyStore {
                 }
             }
 
-            if (this.values_flags.includes(key) && value === '') {
+            if (value === '') {
                 errors[key] = localize('Field cannot be empty');
             }
+            if (key === 'quick-strategy__size' && values[key] < 2) {
+                errors[key] = localize('Value must be higher than 2');
+            }
         });
-        if (this.active_index === 0 && values['quick-strategy__size'] > 0 && values['quick-strategy__size'] < 2) {
-            errors['quick-strategy__size'] = localize('Value must be higher than 2');
-        }
 
         const duration = this.duration_unit_dropdown.find(d => d.text === values['quick-strategy__duration-unit']);
 
@@ -506,7 +493,6 @@ export default class QuickStrategyStore {
                 errors['quick-strategy__duration-value'] = localize('Maximum duration: {{ max }}', { max });
             }
         }
-
         return errors;
     }
 
@@ -572,13 +558,5 @@ export default class QuickStrategyStore {
         );
 
         return list_obj?.text || '';
-    };
-
-    getFieldNames = () => {
-        return Object.freeze({
-            0: 'quick-strategy__size',
-            1: 'alembert-unit',
-            2: 'oscar-unit',
-        });
     };
 }

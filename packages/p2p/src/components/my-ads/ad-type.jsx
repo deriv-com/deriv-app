@@ -6,8 +6,8 @@ import './ad-type.scss';
 
 const AdType = ({ float_rate }) => {
     return (
-        <div className='ad-type'>
-            <Text as='span' size='xxs' weight='normal' line_height='xs' className='ad-type__badge'>
+        <div className='ad-types'>
+            <Text as='span' size='xxs' weight='normal' line_height='xs' className='ad-types__badge'>
                 {localize('Float')}
             </Text>
             <Text as='span' size='xxs' weight='normal' line_height='xxs'>

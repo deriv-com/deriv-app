@@ -46,7 +46,8 @@ const Orders = observer(() => {
 
     React.useEffect(() => {
         if (general_store.props?.verification_action && general_store.props?.verification_code) {
-            order_store.verifyEmailCode(
+            order_store.setIsLoadingModalOpen(true);
+            order_store.verifyEmailVerificationCode(
                 general_store.props?.verification_action,
                 general_store.props?.verification_code
             );

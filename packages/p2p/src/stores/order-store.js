@@ -393,8 +393,7 @@ export default class OrderStore {
     }
 
     @action.bound
-    verifyEmailCode(verification_action, verification_code) {
-        this.setIsLoadingModalOpen(true);
+    verifyEmailVerificationCode(verification_action, verification_code) {
         if (verification_action === 'p2p_order_confirm') {
             requestWS({
                 p2p_order_confirm: 1,
@@ -403,18 +402,22 @@ export default class OrderStore {
                 dry_run: 1,
             }).then(response => {
                 this.setIsLoadingModalOpen(false);
-
                 if (!response.error) {
-                    this.setIsEmailLinkVerifiedModalOpen(true);
+                    clearTimeout(wait);
+                    const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 600);
                 } else if (
-                    response.error.code === 'InvalidVerificationToken' ||
-                    response.error.code === 'ExcessiveVerificationRequests'
+                    (response.error.code === 'InvalidVerificationToken' ||
+                        response.error.code === 'ExcessiveVerificationRequests') &&
+                    // This is for an issue when both error codes are received simultaneously. DO NOT REMOVE.
+                    !response?.error.code === 'ExcessiveVerificationFailures'
                 ) {
+                    clearTimeout(wait);
                     this.setVerificationLinkErrorMessage(response.error.message);
-                    this.setIsInvalidVerificationLinkModalOpen(true);
+                    const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 700);
                 } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                    clearTimeout(wait);
                     this.setVerificationLinkErrorMessage(response.error.message);
-                    this.setIsEmailLinkBlockedModalOpen(true);
+                    const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
                 }
             });
         }

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { getPlatformSettings, routes, PlatformContext } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -107,11 +107,16 @@ const ToggleMenuDrawer = React.forwardRef(
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-        const { is_appstore } = React.useContext(PlatformContext);
+        const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
+
+        const disablePreAppstore = () => {
+            setIsPreAppStore(false);
+            toggleDrawer();
+        };
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup);
+                const routes_config = getRoutesConfig({ is_appstore, is_pre_appstore }, is_social_signup);
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -137,7 +142,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, account_status, should_allow_authentication, is_social_signup]);
+        }, [is_appstore, account_status, should_allow_authentication, is_social_signup, is_pre_appstore]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -313,7 +318,133 @@ const ToggleMenuDrawer = React.forwardRef(
                                     )}
                                 </MobileDrawer.Body>
                             )}
-                            {!is_appstore && (
+                            {is_pre_appstore && (
+                                <React.Fragment>
+                                    <MobileDrawer.SubHeader
+                                        className={classNames({
+                                            'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
+                                        })}
+                                    >
+                                        <Button
+                                            className='header__menu--back-to-ui'
+                                            type='button'
+                                            large
+                                            onClickLink={disablePreAppstore}
+                                        >
+                                            <Text className='header__menu--back-to-ui-text' size='xs'>
+                                                {localize('Back to old interface')}
+                                            </Text>
+                                            <Icon
+                                                className='header__menu-mobile-rightarrow'
+                                                icon='IcArrowRight'
+                                                size={18}
+                                                color='red'
+                                            />
+                                        </Button>
+                                    </MobileDrawer.SubHeader>
+                                    <MobileDrawer.Body>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to={routes.trading_hub}
+                                                icon='IcAppstoreMenuHomepage'
+                                                text={localize('Trading Hub')}
+                                                onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to={routes.trade}
+                                                icon='IcTrade'
+                                                text={localize('Trade')}
+                                                onClickLink={disablePreAppstore}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        {primary_routes_config.map((route_config, idx) =>
+                                            getRoutesWithSubMenu(route_config, idx)
+                                        )}
+                                        {getLanguageRoutes()}
+
+                                        <MobileDrawer.Item
+                                            className='header__menu-mobile-theme--tradinghub'
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                toggleTheme(!is_dark_mode);
+                                            }}
+                                        >
+                                            <div className={classNames('header__menu-mobile-link')}>
+                                                <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                                <span className='header__menu-mobile-link-text'>
+                                                    {localize('Dark theme')}
+                                                </span>
+                                                <ToggleSwitch
+                                                    id='dt_mobile_drawer_theme_toggler'
+                                                    handleToggle={() => toggleTheme(!is_dark_mode)}
+                                                    is_enabled={is_dark_mode}
+                                                />
+                                            </div>
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to={routes.helpcentre}
+                                                icon='IcHelpCentre'
+                                                text={localize('Help centre')}
+                                                onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to={routes.account_limits}
+                                                icon='IcAccountLimits'
+                                                text={localize('Account Limits')}
+                                                onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to='https://deriv.com/responsible/'
+                                                icon='IcVerification'
+                                                text={localize('Responsible trading')}
+                                                onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to='https://deriv.com/responsible/'
+                                                icon='IcRegulatoryInformation'
+                                                text={localize('Regulatory information')}
+                                                onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item className='header__menu-mobile-theme'>
+                                            <MenuLink
+                                                link_to='https://deriv.com/responsible/'
+                                                icon='IcDerivOutline'
+                                                text={localize('Go to Deriv.com')}
+                                                onClickLink={toggleDrawer}
+                                                changeCurrentLanguage={changeCurrentLanguage}
+                                            />
+                                        </MobileDrawer.Item>
+                                        {is_logged_in && (
+                                            <MobileDrawer.Item
+                                                onClick={() => {
+                                                    logoutClient();
+                                                    toggleDrawer();
+                                                }}
+                                            >
+                                                <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                            </MobileDrawer.Item>
+                                        )}
+                                    </MobileDrawer.Body>
+                                </React.Fragment>
+                            )}
+
+                            {!is_appstore && !is_pre_appstore && (
                                 <React.Fragment>
                                     <MobileDrawer.SubHeader
                                         className={classNames({

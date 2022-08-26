@@ -33,6 +33,12 @@
         padding-bottom: 1.6rem;
         margin-bottom: 1.6rem;
     }
+
+    &__-mobile-theme--tradinghub {
+        padding-bottom: 1.6rem;
+        margin-bottom: 1.6rem;
+    }
+
     &__menu-mobile-link {
         text-decoration: none;
         display: flex;
@@ -116,6 +122,22 @@
             }
         }
     }
+
+    &__menu--back-to-ui {
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+    }
+
+    &__menu--back-to-ui-text {
+        align-items: flex-start;
+    }
+
+    &__menu-mobile-rightarrow {
+        align-items: flex-end;
+        margin-left: 9rem;
+    }
+
     &__menu-toggle {
         align-self: center;
         display: flex;

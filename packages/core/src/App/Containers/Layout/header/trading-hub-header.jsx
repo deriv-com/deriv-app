@@ -15,7 +15,7 @@ const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
 };
 
-const PreAppstoreMenuHomepage = () => {
+export const PreAppstoreMenuHomepage = () => {
     const history = useHistory();
 
     return (
@@ -190,6 +190,7 @@ const DashboardPlatformHeader = ({
                             notifications_count={notifications_count}
                             toggleNotifications={toggleNotifications}
                         />
+
                         <Popover
                             classNameBubble='account-settings-toggle__tooltip'
                             alignment='bottom'

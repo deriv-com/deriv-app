@@ -308,6 +308,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 67.2rem;
             }
         }
+
+        &__question:last-child {
+            .dc-list {
+                .dc-themed-scrollbars__autohide {
+                    top: 1px;
+                }
+            }
+        }
+
         &__fieldset {
             position: relative;
             max-width: 400px;

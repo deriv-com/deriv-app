@@ -475,7 +475,11 @@ export default class AccountTransferStore {
         this.selected_to.error = '';
 
         const accounts = this.accounts_list;
-        this.selected_to = accounts.find(account => account.value === target.value) || {};
+        this.selected_to = target.value.toLowerCase().includes('cra')
+            ? accounts.find(
+                  account => !account.value.toLowerCase().includes('cra') && account.value !== this.selected_to.value
+              )
+            : accounts.find(account => account.value === target.value) || {};
         if (hasTransferNotAllowedLoginid(this.selected_to.value)) {
             this.selected_to.error = getSelectedError(this.selected_to.value);
         }

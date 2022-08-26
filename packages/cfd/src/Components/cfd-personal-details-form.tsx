@@ -232,6 +232,7 @@ const CFDPersonalDetailsForm = ({
     index,
     form_error,
 }: TCFDPersonalDetailsFormProps) => {
+    const [should_show_tax_number_field, setShouldShowTaxNumber] = React.useState(false);
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
 
@@ -284,6 +285,14 @@ const CFDPersonalDetailsForm = ({
                 const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
                 const handleItemSelection = (item: ResidenceList[0], _field: string) => {
                     const item_value = item.value ? item.text : '';
+
+                    const [tax_residence_obj] = residence_list.filter(res => res.text === item_value);
+
+                    if (tax_residence_obj?.tin_format) {
+                        setShouldShowTaxNumber(true);
+                    } else {
+                        setShouldShowTaxNumber(false);
+                    }
                     setFieldValue(_field, item_value, true);
                 };
 
@@ -464,17 +473,19 @@ const CFDPersonalDetailsForm = ({
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <InputField
-                                                    id='real_mt5_tax_identification_number'
-                                                    name='tax_identification_number'
-                                                    label={localize('Tax identification number')}
-                                                    placeholder={localize('Tax identification number')}
-                                                    value={values.tax_identification_number}
-                                                    onBlur={handleBlur}
-                                                    optional
-                                                />
-                                            </fieldset>
+                                            {should_show_tax_number_field && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <InputField
+                                                        id='real_mt5_tax_identification_number'
+                                                        name='tax_identification_number'
+                                                        label={localize('Tax identification number')}
+                                                        placeholder={localize('Tax identification number')}
+                                                        value={values.tax_identification_number}
+                                                        onBlur={handleBlur}
+                                                        optional
+                                                    />
+                                                </fieldset>
+                                            )}
                                             {!is_in_personal_details_modal && (
                                                 <FormSubHeader title={localize('Account opening reason')} />
                                             )}

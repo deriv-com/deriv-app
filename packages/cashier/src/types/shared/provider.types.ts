@@ -1,6 +1,6 @@
 import { MutableRefObject } from 'react';
 
-export type TProvider = {
+export type TProviderDetails = {
     icon: {
         dark: string;
         light: string;

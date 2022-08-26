@@ -4,19 +4,19 @@ import { Button, HintBox, Icon, Loading, Popover, Text } from '@deriv/components
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore, TProvider } from 'Types';
+import { TRootStore, TProviderDetails } from 'Types';
 
 type TOnRampProviderPopupProps = {
     api_error: string;
     deposit_address: string;
-    is_dark_mode_on: boolean;
+    is_dark_mode_on: TRootStore['ui']['is_dark_mode_on'];
     is_deposit_address_loading: boolean;
     is_deposit_address_popover_open: boolean;
     is_requesting_widget_html: boolean;
     onClickCopyDepositAddress: () => void;
     onClickDisclaimerContinue: () => void;
     onClickGoToDepositPage: () => void;
-    selected_provider: TProvider;
+    selected_provider: TProviderDetails;
     setDepositAddressRef: (ref: HTMLDivElement | null) => void;
     setIsOnRampModalOpen: (boolean: boolean) => void;
     should_show_dialog: boolean;
@@ -192,7 +192,7 @@ const OnRampProviderPopup = ({
     );
 };
 
-export default connect(({ modules, ui }: RootStore) => ({
+export default connect(({ modules, ui }: TRootStore) => ({
     api_error: modules.cashier.onramp.api_error,
     deposit_address: modules.cashier.onramp.deposit_address,
     is_dark_mode_on: ui.is_dark_mode_on,

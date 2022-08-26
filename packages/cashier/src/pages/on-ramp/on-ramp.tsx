@@ -5,25 +5,35 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
-import { RootStore, TMenuOption, TProvider, TReactFormEvent } from 'Types';
+import { TRootStore, TProviderDetails, TReactFormEvent } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
 
+type TMenuOption = {
+    count?: number;
+    default: boolean;
+    icon: string;
+    label: string;
+    value: string;
+    path: string;
+    has_side_note: boolean;
+};
+
 type TOnRampProps = {
-    filtered_onramp_providers: TProvider[];
+    filtered_onramp_providers: TProviderDetails[];
     is_cashier_locked: boolean;
     is_cashier_onboarding: boolean;
     is_deposit_locked: boolean;
     is_onramp_modal_open: boolean;
-    is_switching: boolean;
+    is_switching: TRootStore['client']['is_switching'];
     is_loading: boolean;
     menu_options: TMenuOption[];
     onMountOnramp: () => void;
     onUnmountOnramp: () => void;
     onramp_popup_modal_title: string;
     resetPopup: () => void;
-    routeTo: (selected_cashier_path: string) => void;
+    routeTo: TRootStore['common']['routeTo'];
     setIsOnRampModalOpen: (set_is_on_ramp_modal_open: boolean) => void;
     setSideNotes: (ReactComponent: React.ReactElement[]) => void;
     should_show_dialog: boolean;
@@ -40,6 +50,7 @@ const OnRampSideNote = () => {
 
     return <SideNote side_notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
 };
+
 const OnRampInfo = () => (
     <div className='on-ramp__info'>
         <Text color='prominent' size='s' weight='bold' className='on-ramp__info-header' as='p'>
@@ -159,7 +170,7 @@ const OnRamp = ({
     );
 };
 
-export default connect(({ modules, common, client }: RootStore) => ({
+export default connect(({ modules, common, client }: TRootStore) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,

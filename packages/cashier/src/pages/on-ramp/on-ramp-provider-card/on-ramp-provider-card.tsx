@@ -2,13 +2,13 @@ import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore, TProvider } from 'Types';
+import { TRootStore, TProviderDetails } from 'Types';
 
 type TOnRampProviderCardProps = {
-    is_dark_mode_on: boolean;
-    provider: TProvider;
-    setSelectedProvider: (provider: TProvider) => void;
-    is_mobile: boolean;
+    is_dark_mode_on: TRootStore['ui']['is_dark_mode_on'];
+    provider: TProviderDetails;
+    setSelectedProvider: (provider: TProviderDetails) => void;
+    is_mobile: TRootStore['ui']['is_mobile'];
 };
 
 const OnRampProviderCard = ({
@@ -64,7 +64,7 @@ const OnRampProviderCard = ({
     );
 };
 
-export default connect(({ modules, ui }: RootStore) => ({
+export default connect(({ modules, ui }: TRootStore) => ({
     setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_mobile: ui.is_mobile,

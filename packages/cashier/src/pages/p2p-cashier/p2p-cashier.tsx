@@ -18,7 +18,7 @@ type TP2PCashierProps = RouteComponentProps & {
     addNotificationMessage: TNotificationStore['addNotificationMessage'];
     balance: TClientStore['balance'];
     currency: TClientStore['currency'];
-    current_focus: string;
+    current_focus: TUiStore['current_focus'];
     filterNotificationMessages: TNotificationStore['filterNotificationMessages'];
     is_dark_mode_on: TUiStore['is_dark_mode_on'];
     is_logging_in: TClientStore['is_logging_in'];

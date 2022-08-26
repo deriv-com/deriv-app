@@ -16,7 +16,7 @@
         text-align: center;
         display: flex;
         position: relative;
-        width: 6.7rem;
+        width: fit-content;
 
         @include mobile {
             margin-bottom: 0.8rem;
@@ -41,6 +41,6 @@
         text-align: center;
         display: flex;
         position: relative;
-        width: 8rem;
+        width: fit-content;
     }
 }

@@ -12,6 +12,7 @@ import {
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
+import { when } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -86,6 +87,25 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
     return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
 };
 
+const MarketRateChangeErrorModal = ({ is_open, closeModal }) => (
+    <Modal is_open={is_open} small className='rate-changed-modal'>
+        <Modal.Body>
+            <Text
+                as='p'
+                align='left'
+                className='rate-changed-modal__message'
+                size={isMobile() ? 'xxs' : 'xs'}
+                line_height='s'
+            >
+                <Localize i18n_default_text={'The advertiser changed the rate before you confirmed the order.'} />
+            </Text>
+        </Modal.Body>
+        <Modal.Footer className='rate-changed-modal__button'>
+            <Button onClick={closeModal} text={localize('Try again')} primary large />
+        </Modal.Footer>
+    </Modal>
+);
+
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
     const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
@@ -99,26 +119,32 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         />
     );
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
+    const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
     const formik_ref = React.useRef();
 
-    const BuySellFormError = () => (
-        <div className='buy-sell__modal--error-message'>
-            <HintBox
-                className='buy-sell__modal-danger'
-                icon='IcAlertDanger'
-                message={
-                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_CLIENT_BALANCE ? (
-                            <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                        ) : (
-                            error_message
-                        )}
-                    </Text>
-                }
-                is_danger
-            />
-        </div>
-    );
+    const BuySellFormError = () => {
+        if (buy_sell_store.form_error_code !== api_error_codes.MARKET_RATE_CHANGE) {
+            return (
+                <div className='buy-sell__modal--error-message'>
+                    <HintBox
+                        className='buy-sell__modal-danger'
+                        icon='IcAlertDanger'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                                {buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
+                                    <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                                ) : (
+                                    error_message
+                                )}
+                            </Text>
+                        }
+                        is_danger
+                    />
+                </div>
+            );
+        }
+        return null;
+    };
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
@@ -144,6 +170,35 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
+        const disposer = when(
+            () => buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE,
+            () => {
+                if (!isMobile()) {
+                    buy_sell_store.hidePopup();
+                    setTimeout(() => setShowMarketRateChangeErrorModal(true), 250);
+                } else {
+                    setShowMarketRateChangeErrorModal(true);
+                }
+                buy_sell_store.setFormErrorCode('');
+            }
+        );
+
+        return disposer;
+    }, []);
+
+    // React.useEffect(() => {
+    //     if (buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE) {
+    //         if (!isMobile()) {
+    //             buy_sell_store.hidePopup();
+    //             setTimeout(() => setShowMarketRateChangeErrorModal(true), 250);
+    //         } else {
+    //             setShowMarketRateChangeErrorModal(true);
+    //         }
+    //         buy_sell_store.setFormErrorCode('');
+    //     }
+    // }, [error_message]);
+
+    React.useEffect(() => {
         const balance_check =
             parseFloat(general_store.balance) === 0 ||
             parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit;
@@ -161,97 +216,104 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
 
-    if (isMobile()) {
-        return (
-            <MobileFullPageModal
-                body_className='buy-sell__modal-body'
-                className='buy-sell__modal'
-                height_offset='80px'
-                is_flex
-                is_modal_open={should_show_popup}
-                page_header_className='buy-sell__modal-header'
-                page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
-                pageHeaderReturnFn={onCancel}
-                page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
-                renderPageFooterChildren={() =>
-                    !my_profile_store.should_show_add_payment_method_form && (
-                        <BuySellModalFooter
-                            is_submit_disabled={is_submit_disabled}
-                            onCancel={onCancel}
-                            onSubmit={submitForm.current}
-                        />
-                    )
-                }
-                page_footer_className={
-                    my_profile_store.should_show_add_payment_method_form
-                        ? 'add-payment-method__footer'
-                        : 'buy-sell__modal-footer'
-                }
-            >
-                {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                {!!error_message && <BuySellFormError />}
-                {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
-                ) : (
-                    <Form
-                        advert={selected_ad}
-                        handleClose={onCancel}
-                        handleConfirm={onConfirmClick}
-                        setIsSubmitDisabled={setIsSubmitDisabled}
-                        setErrorMessage={setErrorMessage}
-                        setSubmitForm={setSubmitForm}
-                        setPageFooterParent={setPageFooterParent}
-                    />
-                )}
-            </MobileFullPageModal>
-        );
-    }
-    if (should_show_popup) {
-        return (
-            <Modal
-                className='buy-sell__modal'
-                height={table_type === buy_sell.BUY ? 'auto' : '649px'}
-                width='456px'
-                is_open={should_show_popup}
-                title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
-                portalId={general_store.props.modal_root_id}
-                toggleModal={onCancel}
-            >
-                {/* Parent height - Modal.Header height - Modal.Footer height */}
-                <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
-                    <Modal.Body className='buy-sell__modal--layout'>
-                        {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                        {!!error_message && <BuySellFormError />}
-                        {my_profile_store.should_show_add_payment_method_form ? (
-                            <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
-                        ) : (
-                            <Form
-                                advert={selected_ad}
-                                handleClose={onCancel}
-                                handleConfirm={onConfirmClick}
-                                setIsSubmitDisabled={setIsSubmitDisabled}
-                                setErrorMessage={setErrorMessage}
-                                setSubmitForm={setSubmitForm}
-                            />
-                        )}
-                    </Modal.Body>
-                </ThemedScrollbars>
-                {!my_profile_store.should_show_add_payment_method_form && (
-                    <Modal.Footer has_separator>
-                        {my_profile_store.should_show_add_payment_method_form ? null : (
+    return (
+        <React.Fragment>
+            <MarketRateChangeErrorModal
+                is_open={show_market_rate_change_error_modal}
+                closeModal={() => {
+                    if (!isMobile()) {
+                        setTimeout(() => setShouldShowPopup(true), 350);
+                    }
+                    setShowMarketRateChangeErrorModal(false);
+                }}
+            />
+            {isMobile() && (
+                <MobileFullPageModal
+                    body_className='buy-sell__modal-body'
+                    className='buy-sell__modal'
+                    height_offset='80px'
+                    is_flex
+                    is_modal_open={should_show_popup}
+                    page_header_className='buy-sell__modal-header'
+                    page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
+                    pageHeaderReturnFn={onCancel}
+                    page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
+                    renderPageFooterChildren={() =>
+                        !my_profile_store.should_show_add_payment_method_form && (
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
                                 onSubmit={submitForm.current}
                             />
-                        )}
-                    </Modal.Footer>
-                )}
-            </Modal>
-        );
-    }
-
-    return null;
+                        )
+                    }
+                    page_footer_className={
+                        my_profile_store.should_show_add_payment_method_form
+                            ? 'add-payment-method__footer'
+                            : 'buy-sell__modal-footer'
+                    }
+                >
+                    {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                    {!!error_message && <BuySellFormError />}
+                    {my_profile_store.should_show_add_payment_method_form ? (
+                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
+                    ) : (
+                        <Form
+                            advert={selected_ad}
+                            handleClose={onCancel}
+                            handleConfirm={onConfirmClick}
+                            setIsSubmitDisabled={setIsSubmitDisabled}
+                            setErrorMessage={setErrorMessage}
+                            setSubmitForm={setSubmitForm}
+                            setPageFooterParent={setPageFooterParent}
+                        />
+                    )}
+                </MobileFullPageModal>
+            )}
+            {!isMobile() && should_show_popup && (
+                <Modal
+                    className='buy-sell__modal'
+                    height={table_type === buy_sell.BUY ? 'auto' : '649px'}
+                    width='456px'
+                    is_open={should_show_popup}
+                    title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
+                    portalId={general_store.props.modal_root_id}
+                    toggleModal={onCancel}
+                >
+                    {/* Parent height - Modal.Header height - Modal.Footer height */}
+                    <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
+                        <Modal.Body className='buy-sell__modal--layout'>
+                            {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                            {!!error_message && <BuySellFormError />}
+                            {my_profile_store.should_show_add_payment_method_form ? (
+                                <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
+                            ) : (
+                                <Form
+                                    advert={selected_ad}
+                                    handleClose={onCancel}
+                                    handleConfirm={onConfirmClick}
+                                    setIsSubmitDisabled={setIsSubmitDisabled}
+                                    setErrorMessage={setErrorMessage}
+                                    setSubmitForm={setSubmitForm}
+                                />
+                            )}
+                        </Modal.Body>
+                    </ThemedScrollbars>
+                    {!my_profile_store.should_show_add_payment_method_form && (
+                        <Modal.Footer has_separator>
+                            {my_profile_store.should_show_add_payment_method_form ? null : (
+                                <BuySellModalFooter
+                                    is_submit_disabled={is_submit_disabled}
+                                    onCancel={onCancel}
+                                    onSubmit={submitForm.current}
+                                />
+                            )}
+                        </Modal.Footer>
+                    )}
+                </Modal>
+            )}
+        </React.Fragment>
+    );
 };
 
 BuySellModal.propTypes = {

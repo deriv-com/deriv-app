@@ -14,6 +14,7 @@ export const icons = {
         'IcAppstoreCloseLight',
         'IcAppstoreEllipse',
         'IcAppstoreError',
+        'IcAppstoreHome',
         'IcAppstoreInformation',
         'IcAppstoreLinkWallet',
         'IcAppstoreLinkedWallets',

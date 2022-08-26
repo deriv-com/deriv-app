@@ -12,6 +12,7 @@ import './appstore/ic-appstore-close-dark.svg';
 import './appstore/ic-appstore-close-light.svg';
 import './appstore/ic-appstore-ellipse.svg';
 import './appstore/ic-appstore-error.svg';
+import './appstore/ic-appstore-home.svg';
 import './appstore/ic-appstore-information.svg';
 import './appstore/ic-appstore-link-wallet.svg';
 import './appstore/ic-appstore-linked-wallets.svg';

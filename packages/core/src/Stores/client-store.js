@@ -443,11 +443,17 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_risk_client() {
+        if (isEmptyObject(this.account_status)) return false;
         return (
             this.is_logged_in &&
-            this.is_withdrawal_lock &&
-            this.account_status?.status?.includes('financial_assessment_not_complete')
+            !this.is_virtual &&
+            ['standard', 'high'].includes(this.account_status.risk_classification)
         );
+    }
+
+    @computed
+    get is_financial_assessment_incomplete() {
+        return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
 
     @computed

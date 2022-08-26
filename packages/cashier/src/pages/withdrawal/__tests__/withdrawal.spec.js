@@ -56,6 +56,7 @@ describe('<Withdrawal />', () => {
         verification_code: '',
         verify_error: {},
         is_risk_client: false,
+        is_financial_assessment_incomplete: false,
     };
 
     beforeAll(() => {
@@ -266,7 +267,7 @@ describe('<Withdrawal />', () => {
 
         render(
             <Router history={history}>
-                <Withdrawal {...props} is_risk_client={true} />
+                <Withdrawal {...props} is_risk_client is_financial_assessment_incomplete />
             </Router>
         );
 
@@ -278,7 +279,7 @@ describe('<Withdrawal />', () => {
 
         render(
             <Router history={history}>
-                <Withdrawal {...props} is_risk_client={true} />
+                <Withdrawal {...props} is_risk_client is_financial_assessment_incomplete />
             </Router>
         );
 

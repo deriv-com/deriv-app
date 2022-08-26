@@ -68,6 +68,7 @@ const Withdrawal = ({
     willMountWithdraw,
     recentTransactionOnMount,
     is_risk_client,
+    is_financial_assessment_incomplete,
 }) => {
     const [is_withdrawal_blocked, setIsWithdrawalBlocked] = React.useState(false);
 
@@ -115,7 +116,7 @@ const Withdrawal = ({
     }, [currency, tab_index, crypto_transactions]);
 
     React.useEffect(() => {
-        setIsWithdrawalBlocked(is_risk_client);
+        setIsWithdrawalBlocked(is_risk_client && is_financial_assessment_incomplete);
     }, []);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
@@ -198,6 +199,7 @@ Withdrawal.propTypes = {
     current_currency_type: PropTypes.string,
     error: PropTypes.object,
     iframe_url: PropTypes.string,
+    is_financial_assessment_incomplete: PropTypes.bool,
     is_10k_withdrawal_limit_reached: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
@@ -232,6 +234,7 @@ export default connect(({ client, modules }) => ({
     is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_risk_client: client.is_risk_client,
+    is_financial_assessment_incomplete: client.is_financial_assessment_incomplete,
     is_switching: client.is_switching,
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_virtual: client.is_virtual,

@@ -190,6 +190,7 @@ export default class NotificationStore extends BaseStore {
             has_enabled_two_fa,
             is_poi_dob_mismatch,
             is_risk_client,
+            is_financial_assessment_incomplete,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -228,7 +229,7 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
-            if (is_risk_client) {
+            if (is_risk_client && is_financial_assessment_incomplete) {
                 this.addNotificationMessage(this.client_notifications.risk_client);
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.risk_client });

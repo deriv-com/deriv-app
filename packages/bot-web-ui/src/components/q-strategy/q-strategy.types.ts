@@ -10,6 +10,7 @@ export type TQuickStrategyProps = {
     is_onscreen_keyboard_active: any;
     is_mobile: boolean;
     is_stop_button_visible: boolean;
+    is_strategy_modal_open: boolean;
     onChangeDropdownItem: any;
     onChangeInputValue: any;
     onHideDropdownList: any;

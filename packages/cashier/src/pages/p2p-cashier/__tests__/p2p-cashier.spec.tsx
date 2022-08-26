@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import P2PCashier from '../p2p-cashier';

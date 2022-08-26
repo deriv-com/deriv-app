@@ -44,7 +44,7 @@ const TradingAssessment = ({
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 // set initial form data
-                setInitialFormValues(populateData(data.get_financial_assessment));
+                setInitialFormValues(() => populateData(data.get_financial_assessment));
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,12 +109,14 @@ const TradingAssessment = ({
     return (
         <Formik
             initialValues={initial_form_values}
+            enableReinitialize
+            initialTouched={false}
             onSubmit={values => {
                 setFormData(values);
                 handleSubmit(values);
             }}
         >
-            {({ values, dirty, isSubmitting, handleChange }) => {
+            {({ values, dirty, isSubmitting, handleChange, handleBlur }) => {
                 return (
                     <Form className='account-form account-form__trading-assessment'>
                         <FormBody scroll_offset={isMobile() ? '150px' : '80px'}>
@@ -143,6 +145,7 @@ const TradingAssessment = ({
                                                     value={values[form_control]}
                                                     list={item?.answer_options}
                                                     onChange={handleChange}
+                                                    handleBlur={handleBlur}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -191,6 +194,7 @@ const TradingAssessment = ({
                                                                 value={values[form_control]}
                                                                 list={items?.answer_options}
                                                                 onChange={handleChange}
+                                                                handleBlur={handleBlur}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>

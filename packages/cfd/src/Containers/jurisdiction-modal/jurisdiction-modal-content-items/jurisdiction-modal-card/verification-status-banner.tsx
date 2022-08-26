@@ -11,7 +11,6 @@ const VerificationStatusBanner = ({
     account_type,
     card_classname,
     disabled,
-    is_fully_authenticated,
     is_virtual,
     type_of_card,
 }: TVerificationStatusBannerProps) => {
@@ -80,16 +79,13 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (is_svg) {
-        if (!is_fully_authenticated)
-            return (
-                <div className={`${card_classname}__footer`}>
-                    <Text size={'xxxs'} color='less-prominent'>
-                        <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
-                    </Text>
-                </div>
-            );
-
-        return null;
+        return (
+            <div className={`${card_classname}__footer`}>
+                <Text size={'xxxs'} color='less-prominent'>
+                    <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
+                </Text>
+            </div>
+        );
     } else if (poi_or_poa_not_submitted) {
         // if poi or poa is not submitted
         return (
@@ -133,6 +129,17 @@ const VerificationStatusBanner = ({
                 </div>
             </div>
         );
+        // } else if(){
+        //     return (
+        //         <div className={`${card_classname}__verification-status`}>
+        //             <div className={`${card_classname}__verification-status--failed`}>
+        //                 <Text size='xxxs' color='colored-background'>
+        //                     <Localize i18n_default_text='Please contact us via livechat' />
+        //                 </Text>
+        //             </div>
+        //         </div>
+        //     );
+        // }
     } else if (
         (is_vanuatu && poi_resubmit_for_vanuatu) ||
         (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)
@@ -153,5 +160,4 @@ const VerificationStatusBanner = ({
 export default connect(({ client }: RootStore) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
-    is_fully_authenticated: client.is_fully_authenticated,
 }))(VerificationStatusBanner);

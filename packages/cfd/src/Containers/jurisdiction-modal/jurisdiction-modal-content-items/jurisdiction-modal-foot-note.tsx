@@ -11,15 +11,11 @@ const JurisdictionModalFootNote = ({
     card_classname,
 }: TJurisdictionModalFootNoteProps) => {
     const {
-        need_poi_for_vanuatu,
-        need_poi_for_bvi_labuan_maltainvest,
-        need_poa_resubmission,
-        poa_acknowledged,
-        poi_poa_verified_for_bvi_labuan_maltainvest,
-        poi_poa_verified_for_vanuatu,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
-        poi_acknowledged_for_vanuatu,
         poi_or_poa_not_submitted,
+        poi_pending_for_vanuatu,
+        poi_verified_for_bvi_labuan_maltainvest,
+        poi_pending_for_bvi_labuan_maltainvest,
+        poi_verified_for_vanuatu,
     } = getAuthenticationStatusInfo(account_status);
 
     const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
@@ -45,7 +41,7 @@ const JurisdictionModalFootNote = ({
                 </div>
             )}
 
-            {poi_poa_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'bvi' && (
+            {poi_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'bvi' && (
                 <div className={`${card_classname}__footnote`}>
                     <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                         <Localize
@@ -55,7 +51,7 @@ const JurisdictionModalFootNote = ({
                     </Text>
                 </div>
             )}
-            {poi_poa_verified_for_vanuatu && jurisdiction_selected_shortcode === 'vanuatu' && (
+            {poi_verified_for_vanuatu && jurisdiction_selected_shortcode === 'vanuatu' && (
                 <div className={`${card_classname}__footnote`}>
                     <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                         <Localize
@@ -65,7 +61,7 @@ const JurisdictionModalFootNote = ({
                     </Text>
                 </div>
             )}
-            {poi_poa_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'labuan' && (
+            {poi_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'labuan' && (
                 <div className={`${card_classname}__footnote`}>
                     <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                         <Localize
@@ -75,7 +71,7 @@ const JurisdictionModalFootNote = ({
                     </Text>
                 </div>
             )}
-            {poi_poa_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'maltainvest' && (
+            {poi_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'maltainvest' && (
                 <div className={`${card_classname}__footnote`}>
                     <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                         <Localize
@@ -86,77 +82,20 @@ const JurisdictionModalFootNote = ({
                 </div>
             )}
             {poi_or_poa_not_submitted && (is_vanuatu_type || is_bvi_labuan_maltainvest_type) && (
-                <Text
-                    as='p'
-                    color='prominent'
-                    align='center'
-                    size='xs'
-                    weight='bold'
-                    line_height='xs'
-                    className={`${card_classname}__footnote`}
-                >
-                    <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
-                </Text>
+                <div className={`${card_classname}__footnote`}>
+                    <Text as='p' color='prominent' align='center' size='xs' weight='bold' line_height='xs'>
+                        <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
+                    </Text>
+                </div>
             )}
-
-            {((is_vanuatu_type && need_poi_for_vanuatu) ||
-                (is_bvi_labuan_maltainvest_type && need_poi_for_bvi_labuan_maltainvest)) &&
-                poa_acknowledged &&
-                !poi_or_poa_not_submitted && (
-                    <Text
-                        as='p'
-                        color='prominent'
-                        align='center'
-                        size='xs'
-                        weight='bold'
-                        line_height='xs'
-                        className={`${card_classname}__footnote`}
-                    >
-                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
+            {((is_vanuatu_type && poi_pending_for_vanuatu) ||
+                (is_bvi_labuan_maltainvest_type && poi_pending_for_bvi_labuan_maltainvest)) && (
+                <div className={`${card_classname}__footnote--pending`}>
+                    <Text as='p' align='center' weight='bold' size='xs' line_height='xs'>
+                        <Localize i18n_default_text='You can open this account once your submitted documents have been verified' />
                     </Text>
-                )}
-            {((is_vanuatu_type && poi_acknowledged_for_vanuatu) ||
-                (is_bvi_labuan_maltainvest_type && poi_acknowledged_for_bvi_labuan_maltainvest)) &&
-                need_poa_resubmission && (
-                    <Text
-                        as='p'
-                        color='prominent'
-                        align='center'
-                        size='xs'
-                        weight='bold'
-                        line_height='xs'
-                        className={`${card_classname}__footnote`}
-                    >
-                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
-                    </Text>
-                )}
-            {((is_vanuatu_type && need_poi_for_vanuatu) ||
-                (is_bvi_labuan_maltainvest_type && need_poi_for_bvi_labuan_maltainvest)) &&
-                need_poa_resubmission && (
-                    <Text
-                        as='p'
-                        color='prominent'
-                        align='center'
-                        size='xs'
-                        weight='bold'
-                        line_height='xs'
-                        className={`${card_classname}__footnote`}
-                    >
-                        <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity and address.' />
-                    </Text>
-                )}
-
-            {poa_acknowledged &&
-                ((is_vanuatu_type && poi_acknowledged_for_vanuatu && !poi_poa_verified_for_vanuatu) ||
-                    (is_bvi_labuan_maltainvest_type &&
-                        poi_acknowledged_for_bvi_labuan_maltainvest &&
-                        !poi_poa_verified_for_bvi_labuan_maltainvest)) && (
-                    <div className={`${card_classname}__footnote--pending`}>
-                        <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
-                            <Localize i18n_default_text='You will be able to open this account once your submitted documents have been verified.' />
-                        </Text>
-                    </div>
-                )}
+                </div>
+            )}
         </>
     );
 };

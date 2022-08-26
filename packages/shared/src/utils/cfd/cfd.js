@@ -192,7 +192,7 @@ export const getAuthenticationStatusInfo = account_status => {
 
     const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
     const poi_not_submitted_for_vanuatu =
-        (onfido_status && onfido_status === 'none') || (manual_status && manual_status === 'none');
+        onfido_status && onfido_status === 'none' && manual_status && manual_status === 'none';
     const poi_resubmit_for_vanuatu =
         ((onfido_status && failed_cases.includes(onfido_status)) ||
             (manual_status && failed_cases.includes(manual_status))) &&

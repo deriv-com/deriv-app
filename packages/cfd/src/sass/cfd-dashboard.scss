@@ -494,8 +494,7 @@
     &__verification-status--pending,
     &__verification-status--failed,
     &__verification-status--account_added,
-    &__verification-status--poi_verified
-    {
+    &__verification-status--poi_verified {
         width: 100%;
         min-height: 2.4rem;
         display: flex;
@@ -509,8 +508,8 @@
             border-radius: 0.5rem;
         }
 
-        &--poi_verified{
-            background: #377CFC;
+        &--poi_verified {
+            background: #377cfc;
             border-radius: 0.5rem;
         }
         &--account_added {
@@ -548,7 +547,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 2.4rem auto 0;
+        margin: 1.6rem auto 0;
         @include desktop {
             width: 99.2rem;
         }
@@ -560,7 +559,6 @@
 
         &--pending {
             color: #ffad3a;
-            margin-top: 2.4rem;
         }
     }
 

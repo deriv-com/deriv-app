@@ -175,7 +175,6 @@ export type TVerificationStatusBannerProps = {
     account_type: string;
     card_classname: string;
     disabled: boolean;
-    is_fully_authenticated: boolean;
     is_virtual: boolean;
     type_of_card: string;
 };

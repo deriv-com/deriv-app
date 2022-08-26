@@ -1050,7 +1050,7 @@ export default class NotificationStore extends BaseStore {
                 key: 'risk_client',
                 header: localize('You can only make deposits.'),
                 message: (
-                    <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals and trading, please complete your financial assessment.' />
+                    <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
                 ),
                 type: 'warning',
                 action: {

@@ -23,6 +23,9 @@ const VerificationStatusBanner = ({
         poi_pending_for_vanuatu,
         poi_resubmit_for_vanuatu,
         poi_resubmit_for_bvi_labuan_maltainvest,
+        poi_acknowledged_for_vanuatu,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
+        no_onfido_left,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
@@ -72,7 +75,7 @@ const VerificationStatusBanner = ({
         return (
             <div className={`${card_classname}__verification-status`}>
                 <div className={`${card_classname}__verification-status--account_added`}>
-                    <Text size='xxxs' weight='bold' color='colored-background'>
+                    <Text size='xxs' weight='bold' color='colored-background'>
                         <Localize i18n_default_text='Account added' />
                     </Text>
                 </div>
@@ -102,7 +105,7 @@ const VerificationStatusBanner = ({
         return (
             <div className={`${card_classname}__verification-status`}>
                 <div className={`${card_classname}__verification-status--poi_verified`}>
-                    <Text size='xxxs' color='colored-background'>
+                    <Text size='xxs' color='colored-background'>
                         <Localize i18n_default_text='You are verified to add this account' />
                     </Text>
                 </div>
@@ -123,23 +126,25 @@ const VerificationStatusBanner = ({
         return (
             <div className={`${card_classname}__verification-status`}>
                 <div className={`${card_classname}__verification-status--pending`}>
-                    <Text size='xxxs' color='prominent'>
+                    <Text size='xxs' color='prominent'>
                         <Localize i18n_default_text='Pending proof of identity review' />
                     </Text>
                 </div>
             </div>
         );
-        // } else if(){
-        //     return (
-        //         <div className={`${card_classname}__verification-status`}>
-        //             <div className={`${card_classname}__verification-status--failed`}>
-        //                 <Text size='xxxs' color='colored-background'>
-        //                     <Localize i18n_default_text='Please contact us via livechat' />
-        //                 </Text>
-        //             </div>
-        //         </div>
-        //     );
-        // }
+    } else if (
+        (is_vanuatu && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
+        (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
+    ) {
+        return (
+            <div className={`${card_classname}__verification-status`}>
+                <div className={`${card_classname}__verification-status--failed`}>
+                    <Text size='xxs' color='colored-background'>
+                        <Localize i18n_default_text='Please contact us via livechat' />
+                    </Text>
+                </div>
+            </div>
+        );
     } else if (
         (is_vanuatu && poi_resubmit_for_vanuatu) ||
         (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)
@@ -147,7 +152,7 @@ const VerificationStatusBanner = ({
         return (
             <div className={`${card_classname}__verification-status`}>
                 <div className={`${card_classname}__verification-status--failed`}>
-                    <Text size='xxxs' color='colored-background'>
+                    <Text size='xxs' color='colored-background'>
                         <Localize i18n_default_text='Resubmit proof of identity' />
                     </Text>
                 </div>

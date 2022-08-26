@@ -558,7 +558,9 @@
         }
 
         &--pending {
-            color: #ffad3a;
+            .dc-text{
+                color: #ffad3a;
+            }
         }
     }
 

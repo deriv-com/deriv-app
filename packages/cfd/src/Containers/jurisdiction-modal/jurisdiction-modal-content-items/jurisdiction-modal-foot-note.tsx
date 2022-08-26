@@ -51,7 +51,7 @@ const JurisdictionModalFootNote = ({
                     </Text>
                 </div>
             )}
-            {poi_verified_for_vanuatu && jurisdiction_selected_shortcode === 'vanuatu' && (
+            {poi_verified_for_vanuatu && is_vanuatu_type && (
                 <div className={`${card_classname}__footnote`}>
                     <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                         <Localize
@@ -90,7 +90,7 @@ const JurisdictionModalFootNote = ({
             )}
             {((is_vanuatu_type && poi_pending_for_vanuatu) ||
                 (is_bvi_labuan_maltainvest_type && poi_pending_for_bvi_labuan_maltainvest)) && (
-                <div className={`${card_classname}__footnote--pending`}>
+                <div className={`${card_classname}__footnote ${card_classname}__footnote--pending`}>
                     <Text as='p' align='center' weight='bold' size='xs' line_height='xs'>
                         <Localize i18n_default_text='You can open this account once your submitted documents have been verified' />
                     </Text>

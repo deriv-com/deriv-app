@@ -291,14 +291,21 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
                     } else if (identity.status === 'rejected' && onfido_submissions_left === 0) {
                         this.addNotificationMessage(this.client_notifications.onfido_failed);
-                    } else if (is_identity_verification_needed) {
+                    }else if(identity.status !== 'verified'){
+                        this.addNotificationMessage(this.client_notifications.poi_failed);
+                    }
+                    else if (is_identity_verification_needed) {
                         this.addNotificationMessage(this.client_notifications.identity);
                     }
                 }
 
-                if (!needs_verification.length && document.status === 'verified' && identity.status === 'verified') {
-                    this.addNotificationMessage(this.client_notifications.poa_poi_verified);
+                if (!needs_verification.length && identity.status === 'verified') {
+                    this.addNotificationMessage(this.client_notifications.poi_verified);
                 }
+                if (!needs_verification.length && document.status === 'verified') {
+                    this.addNotificationMessage(this.client_notifications.poa_verified);
+                }
+                if
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(
@@ -809,9 +816,35 @@ export default class NotificationStore extends BaseStore {
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
-            poa_poi_verified: {
-                key: 'poa_poi_verified',
-                header: localize('Proof of identity and address verified'),
+            poa_failed:{
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'poi_failed',
+                header: localize('Please resubmit your proof of address or we may restrict your account.'),
+                message: localize('Please submit your proof of identity.'),
+                type: 'danger',
+            },
+            poa_verified: {
+                key: 'poa_verified',
+                header: localize('Your proof of address is verified.'),
+                type: 'announce',
+                should_hide_close_btn: false,
+            },
+            poi_failed:{
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Resubmit proof of identity'),
+                },
+                key: 'poi_failed',
+                header: localize('Your proof of identity verification has failed'),
+                message: localize('Please submit your proof of identity.'),
+                type: 'danger',
+            },
+            poi_verified: {
+                key: 'poi_verified',
+                header: localize('Your proof of identity is verified.'),
                 type: 'announce',
                 should_hide_close_btn: false,
             },

@@ -33,8 +33,6 @@ const JurisdictionModal = ({
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     const {
-        onfido_status,
-        manual_status,
         poa_status,
         poi_status,
         poi_or_poa_not_submitted,
@@ -45,6 +43,10 @@ const JurisdictionModal = ({
         poi_acknowledged_for_bvi_labuan_maltainvest,
         need_poa_resubmission,
         poi_failed,
+
+        poi_resubmit_for_bvi_labuan_maltainvest,
+        poi_resubmit_for_vanuatu,
+        no_onfido_left,
     } = getAuthenticationStatusInfo(account_status);
 
     const selectSVGJurisdiction = () => {
@@ -107,6 +109,11 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
 
+    const is_regulated_except_vanuatu =
+        jurisdiction_selected_shortcode &&
+        jurisdiction_selected_shortcode !== 'svg' &&
+        jurisdiction_selected_shortcode !== 'vanuatu';
+
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
             const is_account_created =
@@ -161,6 +168,11 @@ const JurisdictionModal = ({
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
             openPasswordModal(type_of_account);
+        } else if (
+            (jurisdiction_selected_shortcode === 'vanuatu' && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
+            (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
+        ) {
+            (window as any).LC_API.open_chat_window();
         } else if (jurisdiction_selected_shortcode === 'vanuatu') {
             if (poi_poa_verified_for_vanuatu) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
@@ -177,18 +189,16 @@ const JurisdictionModal = ({
     };
 
     const buttonText = () => {
-        const is_non_svg_selected = jurisdiction_selected_shortcode !== 'svg' && jurisdiction_selected_shortcode;
-        if (need_poa_resubmission && is_non_svg_selected && !poi_or_poa_not_submitted) {
-            return <Localize i18n_default_text='Resubmit proof of address' />;
-        } else if (
-            jurisdiction_selected_shortcode === 'vanuatu' &&
-            (onfido_status === 'none' || manual_status === 'none')
+        if (
+            (jurisdiction_selected_shortcode === 'vanuatu' && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
+            (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
         ) {
-            return <Localize i18n_default_text='Next' />;
-        } else if (poi_failed && is_non_svg_selected && !poi_or_poa_not_submitted) {
+            return <Localize i18n_default_text='Contact us via livechat' />;
+        } else if (
+            (jurisdiction_selected_shortcode === 'vanuatu' && poi_resubmit_for_vanuatu) ||
+            (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)
+        ) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
-        } else if (need_poa_resubmission && poi_failed && is_non_svg_selected) {
-            return <Localize i18n_default_text='Resubmit' />;
         }
         return <Localize i18n_default_text='Next' />;
     };

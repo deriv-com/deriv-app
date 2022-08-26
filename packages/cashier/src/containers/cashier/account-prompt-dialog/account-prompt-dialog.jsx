@@ -24,7 +24,7 @@ const AccountPromptDialog = ({
         [accounts]
     );
 
-    const non_crypto_currency = accounts[non_crypto_account_loginid].currency;
+    const non_crypto_currency = non_crypto_account_loginid && accounts[non_crypto_account_loginid].currency;
 
     return (
         <Dialog

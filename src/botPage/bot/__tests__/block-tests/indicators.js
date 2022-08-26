@@ -12,13 +12,13 @@ const periods = 12;
 
 const bbOption = {
     periods,
-    stdDevUp  : 5,
+    stdDevUp: 5,
     stdDevDown: 5,
 };
 
 const macdOption = {
-    fastEmaPeriod  : 12,
-    slowEmaPeriod  : 26,
+    fastEmaPeriod: 12,
+    slowEmaPeriod: 26,
     signalEmaPeriod: 9,
 };
 
@@ -51,14 +51,14 @@ describe('Relative Strength Index', () => {
             const { ticks } = result;
 
             expected = {
-                sma  : sma(ticks, { periods }),
-                smaa : smaa(ticks, { periods }),
-                bb   : bb(ticks, bbOption)[1],
-                bba  : bba(ticks, bbOption).map(e => e[2]),
-                ema  : ema(ticks, { periods }),
-                emaa : emaa(ticks, { periods }),
-                rsi  : rsi(ticks, { periods }),
-                rsia : rsia(ticks, { periods }),
+                sma: sma(ticks, { periods }),
+                smaa: smaa(ticks, { periods }),
+                bb: bb(ticks, bbOption)[1],
+                bba: bba(ticks, bbOption).map(e => e[2]),
+                ema: ema(ticks, { periods }),
+                emaa: emaa(ticks, { periods }),
+                rsi: rsi(ticks, { periods }),
+                rsia: rsia(ticks, { periods }),
                 macda: macda(ticks, macdOption).map(e => e[0]),
             };
 

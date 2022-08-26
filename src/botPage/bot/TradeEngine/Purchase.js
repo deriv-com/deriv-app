@@ -56,9 +56,10 @@ export default Engine =>
                 currency,
             });
 
-            const action = () => this.api.send({ buy: proposal.id, price: proposal.ask_price }).catch(e => {
-                globalObserver.emit('Error', e);
-            });
+            const action = () =>
+                this.api.send({ buy: proposal.id, price: proposal.ask_price }).catch(e => {
+                    globalObserver.emit('Error', e);
+                });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);

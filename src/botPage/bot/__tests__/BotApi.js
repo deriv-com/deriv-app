@@ -23,16 +23,16 @@ describe('Interface', () => {
         beforeAll(done => {
             Bot.init('Xkq6oGFEHh6hJH8', {
                 candleInterval: 60,
-                contractTypes : ['DIGITODD', 'DIGITEVEN'],
-                symbol        : 'R_100',
+                contractTypes: ['DIGITODD', 'DIGITEVEN'],
+                symbol: 'R_100',
             });
 
             Bot.start({
-                amount       : 1,
-                currency     : 'USD',
-                duration     : 5,
+                amount: 1,
+                currency: 'USD',
+                duration: 5,
                 duration_unit: 't',
-                basis        : 'stake',
+                basis: 'stake',
             });
 
             watch('before').then(c => {

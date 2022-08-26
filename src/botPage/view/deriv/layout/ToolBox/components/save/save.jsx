@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import LoadingButton from '../loading_button';
 import SAVE_LOAD_TYPE from '../../common';
-import useIsMounted from "../../../../../../../common/hooks/isMounted";
+import useIsMounted from '../../../../../../../common/hooks/isMounted';
 import { cleanBeforeExport } from '../../../../../blockly/utils';
 import * as style from '../../../../../style';
 import google_drive_util from '../../../../../../../common/integrations/GoogleDrive';
@@ -16,7 +16,8 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
     const [save_as_collection, setSaveAsCollection] = React.useState(false);
     const isMounted = useIsMounted();
 
-    const onChange = e => e.target.type === 'radio' ? setSaveType(e.target.value) : setSaveAsCollection(e.target.checked);
+    const onChange = e =>
+        e.target.type === 'radio' ? setSaveType(e.target.value) : setSaveAsCollection(e.target.checked);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -45,58 +46,52 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
     };
 
     return (
-        <form
-            id="save-dialog"
-            onSubmit={onSubmit}
-            className="dialog-content"
-            style={style.content}
-        >
-            <div className="input-row">
+        <form id='save-dialog' onSubmit={onSubmit} className='dialog-content' style={style.content}>
+            <div className='input-row'>
                 <input
-                    id="save-filename"
-                    name="save-filename"
-                    title="Choose filename for your blocks"
-                    type="text"
+                    id='save-filename'
+                    name='save-filename'
+                    title='Choose filename for your blocks'
+                    type='text'
                     onChange={e => setFileName(e.target.value)}
-                    data-lpignore="true"
-                    autoComplete="false"
+                    data-lpignore='true'
+                    autoComplete='false'
                     value={file_name}
                 />
             </div>
-            <div className="input-row center-text">
-                <span className="integration-option">
+            <div className='input-row center-text'>
+                <span className='integration-option'>
                     <input
-                        type="radio"
-                        id="save-local"
-                        name="save-option"
+                        type='radio'
+                        id='save-local'
+                        name='save-option'
                         value={SAVE_LOAD_TYPE.local}
                         defaultChecked
                         onChange={onChange}
                     />
-                    <label htmlFor="save-local">{translate('My computer')}</label>
+                    <label htmlFor='save-local'>{translate('My computer')}</label>
                 </span>
                 {is_gd_logged_in && (
-                    <span className="integration-option">
+                    <span className='integration-option'>
                         <input
-                            type="radio"
-                            id="save-google-drive"
-                            name="save-option"
+                            type='radio'
+                            id='save-google-drive'
+                            name='save-option'
                             value={SAVE_LOAD_TYPE.google_drive}
                             onChange={onChange}
                         />
-                        <label htmlFor="save-google-drive">Google Drive</label>
+                        <label htmlFor='save-google-drive'>Google Drive</label>
                     </span>
                 )}
-
             </div>
-            <div id="collection" className="input-row">
+            <div id='collection' className='input-row'>
                 <input
                     title={translate(
                         'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
                     )}
-                    name="save-is-collection"
-                    id="save-is-collection"
-                    type="checkbox"
+                    name='save-is-collection'
+                    id='save-is-collection'
+                    type='checkbox'
                     onChange={onChange}
                     style={style.checkbox}
                 />
@@ -104,19 +99,16 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
                     title={translate(
                         'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
                     )}
-                    htmlFor="save-is-collection"
+                    htmlFor='save-is-collection'
                 >
                     {translate('Save as collection')}
                 </label>
-                <div className="description">
+                <div className='description'>
                     {translate('Save your blocks and settings for re-use in other strategies')}
                 </div>
             </div>
-            <div className="center-text input-row last">
-                <button
-                    type="submit"
-                    disabled={is_loading}
-                >
+            <div className='center-text input-row last'>
+                <button type='submit' disabled={is_loading}>
                     {is_loading ? <LoadingButton /> : translate('Save')}
                 </button>
             </div>

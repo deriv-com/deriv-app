@@ -24,7 +24,8 @@
     "dataLayer": false
   },
   "plugins": [
-    "react"
+    "react",
+    "prettier"
   ],
   "rules": {
     "react/jsx-uses-react": "error",

@@ -1,8 +1,9 @@
+import { translate } from "../src/common/i18n";
+
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const mustache = require('gulp-mustache');
 const { getManifest } = require('./revision');
-import { translate } from "../src/common/i18n";
 require('./static');
 require('./bundle');
 require('./webpack');

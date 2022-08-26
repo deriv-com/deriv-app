@@ -7,8 +7,8 @@ export default Interface =>
         sendWebhook(url, payload) {
             const onError = () => notify('warn', translate('Unable to send webhook'));
             const fetchOption = {
-                method : 'POST',
-                mode   : 'cors',
+                method: 'POST',
+                mode: 'cors',
                 headers: { 'Content-Type': 'application/json' },
             };
 

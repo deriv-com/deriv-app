@@ -5,8 +5,12 @@ import { expectValue } from '../shared';
 Blockly.Blocks.emaa = {
     init: function init() {
         this.appendDummyInput().appendField(translate('Exponential Moving Average Array'));
-        this.appendValueInput('INPUT').setCheck('Array').appendField(translate('Input List'));
-        this.appendValueInput('PERIOD').setCheck('Number').appendField(translate('Period'));
+        this.appendValueInput('INPUT')
+            .setCheck('Array')
+            .appendField(translate('Input List'));
+        this.appendValueInput('PERIOD')
+            .setCheck('Number')
+            .appendField(translate('Period'));
         this.setOutput(true, 'Array');
         this.setColour('#dedede');
         this.setTooltip(

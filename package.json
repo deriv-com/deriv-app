@@ -13,19 +13,15 @@
       "tools.js"
     ]
   },
-  "lint-staged": {
-    "*.js": [
-      "eslint",
-      "git add"
-    ]
-  },
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/",
     "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min --test --branch $1; cp -r www/ branch/$1; cp www/index.html www/404.html; gulp release-branch --branch $1;}; d",
     "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
     "build": "webpack --config webpack.config.cli.js",
-    "build-min": "gulp build-min"
+    "build-min": "gulp build-min",
+    "prepare": "husky install",
+    "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}"
   },
   "husky": {
     "hooks": {
@@ -77,7 +73,7 @@
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-watch": "^5.0.1",
-    "husky": "^7.0.4",
+    "husky": "^8.0.0",
     "i18next-scanner": "^3.1.0",
     "immutable": "^4.0.0",
     "jest": "^27.4.7",
@@ -86,7 +82,7 @@
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "2.2.0",
     "json2csv": "^5.0.6",
-    "lint-staged": "^8.1.7",
+    "lint-staged": "^8.2.1",
     "loader-utils": "^3.2.0",
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^5.0.1",
@@ -115,6 +111,7 @@
     "concat-stream": "^2.0.0",
     "core-js": "^3.18",
     "crc-32": "^1.2.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "gh-pages": "^3.2.3",
     "js-cookie": "^3.0.1",
     "mobx": "^6.3.12",

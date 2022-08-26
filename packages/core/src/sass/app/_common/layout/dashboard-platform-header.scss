@@ -31,11 +31,24 @@
         }
     }
 
+    &__mobile-parent {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     &__menu-right {
         justify-content: flex-end;
         display: inline-flex;
         flex: 1;
         align-items: center;
+    }
+
+    &__menu-middle {
+        display: flex;
+        align-items: center;
+        margin-left: 2rem;
+        justify-content: space-between;
     }
 
     &__logo {
@@ -110,6 +123,10 @@
 
     &__setting {
         margin-right: 25px;
+
+        @include mobile {
+            margin-left: 25px;
+        }
 
         &--icon {
             cursor: pointer;

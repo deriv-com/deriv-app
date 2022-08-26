@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, withRouter } from 'react-router-dom';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { getPlatformInformation, routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
@@ -113,6 +113,8 @@ const DashboardPlatformHeader = ({
             }
             return true;
         });
+    const history = useHistory();
+
     return (
         <header className='dashboard-platform-header'>
             <div className='dashboard-platform-header__menu-left'>
@@ -147,23 +149,25 @@ const DashboardPlatformHeader = ({
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <PreAppstoreMenuHomepage />
-                <DerivBrandLogo className='dashboard-platform-header__logo' />
-                <Divider />
                 <DesktopWrapper>
+                    <PreAppstoreMenuHomepage />
+                </DesktopWrapper>
+                <DerivBrandLogo className='dashboard-platform-header__logo' />
+                <DesktopWrapper>
+                    <Divider />
                     <ShowCashier />
                 </DesktopWrapper>
             </div>
-            <div className='dashboard-platform-header__menu-right'>
-                <RedirectToOldInterface />
-                <Divider />
-                <TradingHubOnboarding />
-                <ShowNotifications
-                    is_notifications_visible={is_notifications_visible}
-                    notifications_count={notifications_count}
-                    toggleNotifications={toggleNotifications}
-                />
-                <DesktopWrapper>
+            <DesktopWrapper>
+                <div className='dashboard-platform-header__menu-right'>
+                    <RedirectToOldInterface />
+                    <Divider />
+                    <TradingHubOnboarding />
+                    <ShowNotifications
+                        is_notifications_visible={is_notifications_visible}
+                        notifications_count={notifications_count}
+                        toggleNotifications={toggleNotifications}
+                    />
                     <Popover
                         classNameBubble='account-settings-toggle__tooltip'
                         alignment='bottom'
@@ -175,8 +179,39 @@ const DashboardPlatformHeader = ({
                             <Icon icon='IcUserOutline' size={20} />
                         </BinaryLink>
                     </Popover>
-                </DesktopWrapper>
-            </div>
+                </div>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <div className='dashboard-platform-header__mobile-parent'>
+                    <div className='dashboard-platform-header__menu-middle'>
+                        <TradingHubOnboarding />
+                        <ShowNotifications
+                            is_notifications_visible={is_notifications_visible}
+                            notifications_count={notifications_count}
+                            toggleNotifications={toggleNotifications}
+                        />
+                        <Popover
+                            classNameBubble='account-settings-toggle__tooltip'
+                            alignment='bottom'
+                            message={<Localize i18n_default_text='Manage account settings' />}
+                            should_disable_pointer_events
+                            zIndex={9999}
+                        >
+                            <BinaryLink className='dashboard-platform-header__setting' to={routes.personal_details}>
+                                <Icon icon='IcUserOutline' size={20} />
+                            </BinaryLink>
+                        </Popover>
+                    </div>
+                    <div className='dashboard-platform-header__cashier-button'>
+                        <Button primary small>
+                            <Localize
+                                i18n_default_text='Cashier'
+                                onClick={() => history.push(routes.cashier_deposit)}
+                            />
+                        </Button>
+                    </div>
+                </div>
+            </MobileWrapper>
         </header>
     );
 };

@@ -16,7 +16,6 @@ const POISubmission = ({
     identity_last_attempt,
     idv,
     is_from_external,
-    is_idv_disallowed,
     needs_poa,
     onfido,
     onStateChange,
@@ -37,7 +36,7 @@ const POISubmission = ({
             const is_onfido_supported =
                 selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
 
-            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+            if (is_idv_supported && Number(idv_submissions_left) > 0) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);

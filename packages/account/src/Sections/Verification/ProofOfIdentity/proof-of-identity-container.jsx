@@ -80,7 +80,6 @@ const ProofOfIdentityContainer = ({
         identity_last_attempt,
         identity_status,
         is_age_verified,
-        is_idv_disallowed,
         manual,
         needs_poa,
         onfido,
@@ -105,7 +104,6 @@ const ProofOfIdentityContainer = ({
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
-                is_idv_disallowed={is_idv_disallowed}
                 manual={manual}
                 needs_poa={needs_poa}
                 onfido={onfido}

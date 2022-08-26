@@ -135,9 +135,10 @@ commands:
       - run:
           name: Pushing Image to docker hub
           command: |
+            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>
-
+            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >>
+            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG}
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:

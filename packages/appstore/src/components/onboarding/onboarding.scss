@@ -1,0 +1,41 @@
+.onboarding-wrapper {
+    height: 100%;
+    background-color: $color-grey-7;
+}
+
+.onboarding-header {
+    display: flex;
+    justify-content: space-between;
+
+    &__cross-icon {
+        margin-top: 3.5rem;
+        margin-right: 3rem;
+    }
+}
+
+.onboarding-body {
+    display: flex;
+    justify-content: center;
+    color: $color-white;
+}
+
+.onboarding-footer {
+    background-color: $color-white;
+    position: absolute;
+    top: 86%;
+    width: 100%;
+
+    &-header {
+        line-height: 3rem;
+    }
+
+    &-text {
+        line-height: 2rem;
+    }
+
+    &-buttons {
+        display: flex;
+        justify-content: space-around;
+        margin: 2.4rem 0;
+    }
+}

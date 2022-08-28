@@ -5,11 +5,11 @@ import { DesktopWrapper, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
 import { TReactChildren } from 'Types';
 
-type TAccountTransferBullet = {
+type TAccountTransferBulletProps = {
     children: TReactChildren;
 };
 
-type TAccountTransferNote = {
+type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];
     currency: string;
     is_crypto_to_crypto_transfer: boolean;
@@ -20,7 +20,7 @@ type TAccountTransferNote = {
     transfer_fee: string | number;
 };
 
-const AccountTransferBullet = ({ children }: TAccountTransferBullet) => (
+const AccountTransferBullet = ({ children }: TAccountTransferBulletProps) => (
     <div className='account-transfer-form__bullet-wrapper'>
         <div className='account-transfer-form__bullet' />
         <Text size='xxs'>{children}</Text>
@@ -36,7 +36,7 @@ const AccountTransferNote = ({
     is_mt_transfer,
     minimum_fee,
     transfer_fee,
-}: TAccountTransferNote) => {
+}: TAccountTransferNoteProps) => {
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
 

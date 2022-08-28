@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { TRootStore, TClientStore } from 'Types';
 
-type TAccountTransferLocked = {
+type TAccountTransferLockedProps = {
     is_financial_account: TClientStore['is_financial_account'];
     is_financial_information_incomplete: TClientStore['is_financial_information_incomplete'];
     is_trading_experience_incomplete: TClientStore['is_trading_experience_incomplete'];
@@ -16,7 +16,7 @@ const AccountTransferLocked = ({
     is_financial_account,
     is_financial_information_incomplete,
     is_trading_experience_incomplete,
-}: TAccountTransferLocked) => {
+}: TAccountTransferLockedProps) => {
     const history = useHistory();
     const items = [
         ...(is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete)

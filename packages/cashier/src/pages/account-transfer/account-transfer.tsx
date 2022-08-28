@@ -13,7 +13,7 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 
-type TAccountTransfer = {
+type TAccountTransferProps = {
     accounts_list: Array<TAccountsList>;
     container: string;
     error: {
@@ -56,8 +56,8 @@ const AccountTransfer = ({
     setActiveTab,
     setIsTransferConfirm,
     setSideNotes,
-}: TAccountTransfer) => {
-    const [is_loading_status, setIsLoadingStatus] = React.useState(true);
+}: TAccountTransferProps) => {
+    const [is_loading_status, setIsLoadingStatus] = React.useState<boolean>(true);
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {

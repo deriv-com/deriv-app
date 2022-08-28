@@ -6,12 +6,12 @@ import { connect } from 'Stores/connect';
 import { TRootStore, TClientStore, TUiStore } from 'Types';
 import './account-transfer-no-account.scss';
 
-type TAccountTransferNoAccount = {
+type TAccountTransferNoAccountProps = {
     is_dxtrade_allowed: TClientStore['is_dxtrade_allowed'];
     toggleAccountsDialog: TUiStore['toggleAccountsDialog'];
 };
 
-const AccountTransferNoAccount = ({ is_dxtrade_allowed, toggleAccountsDialog }: TAccountTransferNoAccount) => (
+const AccountTransferNoAccount = ({ is_dxtrade_allowed, toggleAccountsDialog }: TAccountTransferNoAccountProps) => (
     <div className='cashier__wrapper cashier__no-balance'>
         <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
         <Text as='h2' weight='bold' align='center'>

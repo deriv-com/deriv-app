@@ -27,7 +27,7 @@ import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import './account-transfer-form.scss';
 
-type TAccountTransferForm = {
+type TAccountTransferFormProps = {
     account_limits: TClientStore['account_limits'];
     account_transfer_amount: string;
     accounts_list: Array<TAccount>;
@@ -172,7 +172,7 @@ const AccountTransferForm = ({
     transfer_limit,
     validateTransferFromAmount,
     validateTransferToAmount,
-}: TAccountTransferForm) => {
+}: TAccountTransferFormProps) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
     const [transfer_to_hint, setTransferToHint] = React.useState();

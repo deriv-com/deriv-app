@@ -16,7 +16,12 @@ type TSelect = {
     text: string;
 };
 
-type TAccountTransferReceipt = RouteComponentProps & {
+type TSwitch = {
+    value?: string;
+    currency?: string;
+};
+
+type TAccountTransferReceiptProps = RouteComponentProps & {
     disableApp: TUiStore['disableApp'];
     enableApp: TUiStore['enableApp'];
     is_from_derivgo: TCommonStore['is_from_derivgo'];
@@ -41,9 +46,9 @@ const AccountTransferReceipt = ({
     selected_from,
     selected_to,
     switchAccount,
-}: TAccountTransferReceipt) => {
-    const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
-    const [switch_to, setSwitchTo] = React.useState<{ value?: string; currency?: string }>({});
+}: TAccountTransferReceiptProps) => {
+    const [is_switch_visible, setIsSwitchVisible] = React.useState<boolean>(false);
+    const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
 
     React.useEffect(() => {
         return () => {

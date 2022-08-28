@@ -60,24 +60,14 @@
     "@nrwl/nx-cloud": "latest"
   },
   "scripts": {
-    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
-    "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
-
-
-
-
     "build:all": "nx run-many --target=build --all",
     "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
     "build:since": "nx affected --target=build",
-    "test:jest-all": "nx run-many --target=test:jest --all",
-    "test:jest-one": "f () { nx test @deriv/$1 ;}; f",
     "test:eslint-all": "nx run-many --all --target=test:eslint",
     "test:eslint-one": "f () { nx test @deriv/$1 --target=test:eslint ;}; f",
-    "test:jest-since": "nx affected --target=test:jest",
     "test:eslint-since": "f () { nx affected --target=eslint ;}; f",
-
-
-
+    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
+    "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
     "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
     "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
     "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations  --scope @deriv/cashier --scope @deriv/account --scope @deriv/p2p --scope @deriv/cfd --scope @deriv/reports -- npm run build:travis",
@@ -93,8 +83,7 @@
     "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
-    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint && npm run test:jest ;}; f",
-    "test:eslint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:eslint $2;}; f",
+    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && npm run test:jest ;}; f",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
     "test:jest": "jest --all --maxWorkers=2",

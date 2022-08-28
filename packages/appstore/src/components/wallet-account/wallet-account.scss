@@ -28,10 +28,11 @@
     &__options {
         display: flex;
         flex-wrap: wrap;
+        gap: 3rem;
     }
 
-    &__test {
-        background-color: #ff444f29;
+    &__app-launcher-button {
+        background-color: #ff444f29 !important;
     }
 
     &__content {

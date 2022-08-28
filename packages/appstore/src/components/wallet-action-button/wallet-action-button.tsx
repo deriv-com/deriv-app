@@ -7,7 +7,7 @@ type TWalletActionButtonProps = {
     size: 'small' | 'medium' | 'large';
     icon: string;
     label?: string;
-    onClick?: () => void;
+    onClick?: (e: any) => void;
 };
 
 const WalletActionButton = ({ icon, label, onClick, size }: TWalletActionButtonProps) => {

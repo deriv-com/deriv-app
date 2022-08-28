@@ -22,15 +22,17 @@
 .onboarding-footer {
     background-color: $color-white;
     position: absolute;
-    top: 86%;
+    top: 80%;
     width: 100%;
 
     &-header {
         line-height: 3rem;
+        margin-top: 4.8rem;
     }
 
     &-text {
         line-height: 2rem;
+        margin-top: 0.8rem;
     }
 
     &-buttons {

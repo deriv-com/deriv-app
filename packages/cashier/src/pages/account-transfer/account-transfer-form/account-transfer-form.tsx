@@ -27,6 +27,16 @@ import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import './account-transfer-form.scss';
 
+type TSelect = {
+    currency: string;
+    balance: number;
+    is_dxtrade: boolean;
+    is_crypto: boolean;
+    is_mt: boolean;
+    value: string;
+    error: string;
+};
+
 type TAccountTransferFormProps = {
     account_limits: TClientStore['account_limits'];
     account_transfer_amount: string;
@@ -51,24 +61,8 @@ type TAccountTransferFormProps = {
     recentTransactionOnMount: () => void;
     requestTransferBetweenAccounts: ({ amount }: { amount: number }) => void;
     resetConverter: () => void;
-    selected_from: {
-        currency: string;
-        balance: number;
-        is_dxtrade: boolean;
-        is_crypto: boolean;
-        is_mt: boolean;
-        value: string;
-        error: string;
-    };
-    selected_to: {
-        currency: string;
-        balance: number;
-        is_dxtrade: boolean;
-        is_crypto: boolean;
-        is_mt: boolean;
-        value: string;
-        error: string;
-    };
+    selected_from: TSelect;
+    selected_to: TSelect;
     setAccountTransferAmount: (amount: string) => void;
     setErrorMessage: (message: string) => void;
     setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
@@ -202,7 +196,7 @@ const AccountTransferForm = ({
         });
         if (!is_ok) return message;
 
-        if (+selected_from.balance < +amount) return localize('Insufficient balance');
+        if (selected_from.balance && +selected_from.balance < +amount) return localize('Insufficient balance');
 
         return undefined;
     };

@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-container,testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
@@ -112,13 +111,11 @@ describe('<AccountTransferForm />', () => {
         props.setErrorMessage = jest.fn();
         props.setAccountTransferAmount = jest.fn();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        const amount_field = container.querySelector('input[name=amount]');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
-
-        fireEvent.change(amount_field, { target: { value: '1' } });
-        fireEvent.change(amount_field, { target: { value: '' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '' } });
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('This field is required.')).toBeInTheDocument();
@@ -132,12 +129,10 @@ describe('<AccountTransferForm />', () => {
         props.setAccountTransferAmount = jest.fn();
         props.selected_from.balance = 100;
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        const amount_field = container.querySelector('input[name=amount]');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
-
-        fireEvent.change(amount_field, { target: { value: '200' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '200' } });
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
@@ -238,8 +233,10 @@ describe('<AccountTransferForm />', () => {
                 mt5: {},
             },
         };
-        props.selected_from = { is_dxtrade: true, currency: 'USD' };
-        props.selected_to = { is_dxtrade: true, currency: 'USD' };
+        props.selected_from.is_dxtrade = true;
+        props.selected_from.currency = 'USD';
+        props.selected_to.is_dxtrade = true;
+        props.selected_to.currency = 'USD';
 
         render(<AccountTransferForm {...props} />);
 
@@ -267,8 +264,10 @@ describe('<AccountTransferForm />', () => {
     it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
-        props.selected_from = { currency: 'BTC', is_crypto: true };
-        props.selected_to = { currency: 'BTC', is_crypto: true };
+        props.selected_from.is_crypto = true;
+        props.selected_from.currency = 'BTC';
+        props.selected_to.is_crypto = true;
+        props.selected_to.currency = 'BTC';
         props.transfer_fee = 2;
 
         render(<AccountTransferForm {...props} />);

@@ -41,6 +41,8 @@
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-knobs": "^6.4.0",
     "@testing-library/react": "^12.0.0",
+    "@types/react": "^18.0.7",
+    "@types/react-dom": "^18.0.0",
     "babel-loader": "^8.1.0",
     "copy-webpack-plugin": "^9.0.1",
     "copy-webpack-plugin-v6": "npm:copy-webpack-plugin@6",
@@ -84,6 +86,7 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^5.1.0",
     "react-transition-group": "^4.3.0",
-    "react-virtualized": "^9.22.2"
+    "react-virtualized": "^9.22.2",
+    "typescript": "^4.6.3"
   }
 }

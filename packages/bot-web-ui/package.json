@@ -37,6 +37,8 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
+        "@types/react": "^18.0.7",
+        "@types/react-dom": "^18.0.0",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "clean-webpack-plugin": "^3.0.0",
@@ -82,6 +84,7 @@
         "react": "^16.14.0",
         "react-content-loader": "^4.3.2",
         "react-dom": "^16.14.0",
-        "react-transition-group": "^4.3.0"
+        "react-transition-group": "^4.3.0",
+        "typescript": "^4.6.3"
     }
 }

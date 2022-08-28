@@ -5,7 +5,7 @@
     align-items: center;
     max-width: 240px;
     padding: 1rem;
-    border-radius: 4px;
+    border-radius: $BORDER_RADIUS;
     border: 2px dashed $color-red-6;
     cursor: pointer;
     &_title {
@@ -36,7 +36,7 @@
     align-items: center;
     width: 34px;
     height: 34px;
-    border-radius: 4px;
+    border-radius: $BORDER_RADIUS;
     background-color: $color-red-6;
     cursor: pointer;
 }

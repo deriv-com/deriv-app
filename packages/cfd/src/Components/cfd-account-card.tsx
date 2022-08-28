@@ -198,7 +198,6 @@ const CFDAccountCardComponent = ({
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    // TODO: Ask about this condition from @hirad
     const platform_icon = is_eu ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />

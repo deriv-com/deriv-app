@@ -7,8 +7,6 @@ import { useStores, initContext } from 'Stores';
 import './app.scss';
 import { CoreStoreTypes } from 'Stores/root-store';
 
-//test
-
 type TAppProps = {
     passthrough: {
         root_store: CoreStoreTypes;

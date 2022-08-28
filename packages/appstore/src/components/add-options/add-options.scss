@@ -4,28 +4,28 @@
     justify-content: center;
     align-items: center;
     max-width: 240px;
-    padding: 10px;
+    padding: 1rem;
     border-radius: 4px;
-    border: 2px dashed #ffe1e3;
+    border: 2px dashed $color-red-6;
     cursor: pointer;
     &_title {
         display: flex;
         justify-content: center;
         align-items: center;
         & > p {
-            color: #ff444f;
-            margin-left: 8px;
+            color: $color-red;
+            margin-left: 0.8rem;
         }
     }
     &_description {
         & > p {
-            color: #999999;
+            color: $color-grey-1;
         }
     }
     &:hover {
         // should check with design team
-        border-color: #ff444f;
-        background-color: #ffe1e3;
+        border-color: $color-red;
+        background-color: $color-red-6;
     }
 }
 
@@ -36,6 +36,7 @@
     align-items: center;
     width: 34px;
     height: 34px;
-    background-color: #fff7f7;
+    border-radius: 4px;
+    background-color: $color-red-6;
     cursor: pointer;
 }

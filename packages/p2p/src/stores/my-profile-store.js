@@ -160,9 +160,12 @@ export default class MyProfileStore extends BaseStore {
     }
 
     get payment_method_field_set() {
-        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and their name
+        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and its name/required properties
         return this.selected_payment_method_fields.reduce((dict, field_data) => {
-            return { ...dict, [field_data[0]]: field_data[1].display_name };
+            return {
+                ...dict,
+                [field_data[0]]: { display_name: field_data[1].display_name, required: field_data[1].required },
+            };
         }, {});
     }
 
@@ -170,9 +173,11 @@ export default class MyProfileStore extends BaseStore {
         const object = {};
 
         Object.values(this.selected_payment_method_fields).forEach(field => {
-            const filter = Object.entries(this.payment_method_info.fields).filter(
-                payment_method_field => payment_method_field[0] === field[0]
-            );
+            const filter = this.payment_method_info
+                ? Object.entries(this.payment_method_info.fields).filter(
+                      payment_method_field => payment_method_field[0] === field[0]
+                  )
+                : {};
 
             if (Object.values(filter).length > 0) {
                 object[field[0]] = Object.values(filter)[0][1].value;
@@ -185,7 +190,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     get payment_method_info() {
-        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit.ID)[0];
+        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit?.ID)[0];
     }
 
     get payment_methods_list_items() {
@@ -506,6 +511,38 @@ export default class MyProfileStore extends BaseStore {
         return errors;
     };
 
+    @action.bound
+    validatePaymentMethodFields(values) {
+        const errors = {};
+        const no_symbols_regex = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/;
+
+        Object.keys(values).forEach(key => {
+            const value = values[key];
+            const payment_method_field_set = this.payment_method_field_set[key];
+            const { display_name, required } = payment_method_field_set;
+
+            if (required && !value) {
+                errors[key] = localize('This field is required.');
+            } else if (!no_symbols_regex.test(value)) {
+                errors[key] = localize(
+                    "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                    {
+                        field_name: display_name,
+                        interpolation: { escapeValue: false },
+                    }
+                );
+            } else if (value.length > 200) {
+                errors[key] = localize('{{field_name}} has exceeded maximum length of 200 characters.', {
+                    field_name: display_name,
+                    interpolation: { escapeValue: false },
+                });
+            }
+        });
+
+        return errors;
+    }
+
+    @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
     }

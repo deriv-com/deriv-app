@@ -1,55 +1,122 @@
 import { popover_zindex } from 'Constants/z-indexes';
+import QuickStrategyStore from 'Stores/quick-strategy-store';
+
+const quick_strategy_store = new QuickStrategyStore();
+
+const common_inputs_properties = {
+    label_className: 'quick-strategy__input-label',
+    field_className: 'quick-strategy__input-field',
+    className: 'quick-strategy__input',
+    zIndex: popover_zindex.QUICK_STRATEGY,
+};
+
+const getMessage = property => `The bot will stop trading if your total ${property} exceeds this amount.`;
 
 const data_fields = [
     {
-        num: 0,
-        id: 'firstName',
-        name: 'firstName',
-        label: '',
+        id: 'base__types-strategies',
+        name: 'base__types-strategies',
         field_name: 'quick-strategy__types-strategies',
-        dropdown_item: 'type-strategy',
         className: '',
-        isAbleBeDisabled: 'true',
-        isDouble: true,
+        input_value: 'type-strategy',
+        label: '',
+        isDouble: true, //?
     },
     {
-        id: 'martingale__stake',
-        name: 'martingale__stake',
+        id: 'base__symbol',
+        name: 'base__symbol',
+        field_name: 'quick-strategy__symbol',
+        className: 'quick-strategy__dropdown quick-strategy__leading',
+        input_value: 'symbol',
+        label: 'Asset',
+    },
+    {
+        id: 'base__trade-type',
+        name: 'base__trade-type',
+        field_name: 'quick-strategy__trade-type',
+        className: 'quick-strategy__dropdown quick-strategy__leading',
+        input_value: 'trade-type',
+        label: 'Trade type',
+    },
+    {
+        id: 'base__duration-unit',
+        name: 'base__duration-unit',
+        field_name: 'quick-strategy__duration-unit',
+        className: '',
+        input_value: 'duration-unit',
+        label: 'Duration unit',
+        is_able_disabled: 'true',
+    },
+    {
+        id: 'base__duration-value',
+        name: 'base__duration-value',
+        field_name: 'quick-strategy__duration-value',
+        input_value: 'input_duration_value',
+        label: 'Duration value',
+        placeholder: '5',
+        trailing_icon_message: 'The trade length of your purchased contract.',
+        ...common_inputs_properties,
+    },
+    {
+        id: 'base__stake',
+        name: 'base__stake',
         field_name: 'quick-strategy__stake',
-        className: 'quick-strategy__input',
-        label_className: 'quick-strategy__input-label',
-        field_className: 'quick-strategy__input-field',
         input_value: 'input_stake',
         label: 'Initial stake',
         placeholder: '10',
         trailing_icon_message: 'The amount that you pay to enter a trade.',
-        zIndex: popover_zindex.QUICK_STRATEGY,
+        ...common_inputs_properties,
     },
     {
-        id: 'martingale__loss',
-        name: 'martingale__loss',
+        id: 'base__loss',
+        name: 'base__loss',
         field_name: 'quick-strategy__loss',
-        className: 'quick-strategy__input',
-        label_className: 'quick-strategy__input-label',
-        field_className: 'quick-strategy__input-field',
         input_value: 'input_loss',
         label: 'Loss threshold',
         placeholder: '5000',
-        trailing_icon_message: 'The bot will stop trading if your total loss exceeds this amount.',
-        zIndex: popover_zindex.QUICK_STRATEGY,
+        trailing_icon_message: getMessage('loss'),
+        ...common_inputs_properties,
     },
     {
-        id: 'martingale__profit',
-        name: 'martingale__profit',
+        id: 'martingale__size',
+        name: 'martingale__size',
+        field_name: 'martingale__size', //was quick-strategy__size, change others places
+        input_value: 'input_size',
+        label: 'Size',
+        placeholder: '2',
+        trailing_icon_message: quick_strategy_store.getSizeDesc(0), // index later change to as 'martingale' and for others
+        ...common_inputs_properties,
+    },
+    {
+        id: 'alembert-unit',
+        name: 'alembert-unit',
+        field_name: 'alembert-unit', //was quick-strategy__size, change others places
+        input_value: 'input_alembert_unit',
+        label: '',
+        placeholder: '2',
+        trailing_icon_message: quick_strategy_store.getSizeDesc(1),
+        ...common_inputs_properties,
+    },
+    {
+        id: 'oscar-unit',
+        name: 'oscar-unit',
+        field_name: 'oscar-unit', //was quick-strategy__size, change others places
+        input_value: 'input_oscar_unit',
+        label: 'Units',
+        placeholder: '2',
+        trailing_icon_message: quick_strategy_store.getSizeDesc(2),
+        ...common_inputs_properties,
+    },
+    {
+        id: 'base__profit',
+        name: 'base__profit',
         field_name: 'quick-strategy__profit',
-        className: 'quick-strategy__input',
-        label_className: 'quick-strategy__input-label',
-        field_className: 'quick-strategy__input-field',
         input_value: 'input_profit',
         label: 'Profit threshold',
         placeholder: '5000',
-        trailing_icon_message: 'The bot will stop trading if your total profit exceeds this amount.',
-        zIndex: popover_zindex.QUICK_STRATEGY,
+        trailing_icon_message: getMessage('profit'),
+        ...common_inputs_properties,
     },
 ];
+
 export default data_fields;

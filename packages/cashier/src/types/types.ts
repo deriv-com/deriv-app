@@ -10,3 +10,5 @@ export type TSocketCallTypes = {
         response: VerifyEmailResponse;
     };
 };
+
+export type TEmailVerificationType = VerifyEmailRequest['type'];

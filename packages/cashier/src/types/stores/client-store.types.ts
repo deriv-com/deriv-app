@@ -24,4 +24,5 @@ export type TClientStore = {
     verification_code: {
         payment_withdraw: string;
     };
+    email: string;
 };

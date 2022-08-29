@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import Chart from 'Components/chart';
 
 const Dashboard: React.FC = () => {
     const [active_index, setActiveTabIndex] = React.useState(0);
@@ -22,6 +23,11 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div label='Tutorial'>
                     <div>Contennt 4</div>
+                </div>
+                <div label='Chart'>
+                    <div className='dashboard__chart-wrapper'>
+                        <Chart />
+                    </div>
                 </div>
             </Tabs>
         </div>

@@ -71,25 +71,23 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            if (response) {
-                if (response.error) {
-                    if (response.error.code === 'OrderEmailVerificationRequired') {
-                        clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
-                    } else if (
-                        response?.error.code === 'InvalidVerificationToken' ||
-                        response?.error.code === 'ExcessiveVerificationRequests'
-                    ) {
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
-                    } else if (response?.error.code === 'ExcessiveVerificationFailures') {
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
-                    } else {
-                        order_details_store.setErrorMessage(response.error.message);
-                    }
+            if (response?.error) {
+                if (response.error.code === 'OrderEmailVerificationRequired') {
+                    clearTimeout(wait);
+                    const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
+                } else if (
+                    response?.error.code === 'InvalidVerificationToken' ||
+                    response?.error.code === 'ExcessiveVerificationRequests'
+                ) {
+                    clearTimeout(wait);
+                    this.setVerificationLinkErrorMessage(response.error.message);
+                    const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
+                } else if (response?.error.code === 'ExcessiveVerificationFailures') {
+                    clearTimeout(wait);
+                    this.setVerificationLinkErrorMessage(response.error.message);
+                    const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
+                } else {
+                    order_details_store.setErrorMessage(response.error.message);
                 }
             }
         });
@@ -254,12 +252,14 @@ export default class OrderStore {
 
     @action.bound
     setOrderDetails(response) {
-        if (!response.error) {
-            const { p2p_order_info } = response;
+        if (response) {
+            if (!response?.error) {
+                const { p2p_order_info } = response;
 
-            this.setQueryDetails(p2p_order_info);
-        } else {
-            this.unsubscribeFromCurrentOrder();
+                this.setQueryDetails(p2p_order_info);
+            } else {
+                this.unsubscribeFromCurrentOrder();
+            }
         }
     }
 

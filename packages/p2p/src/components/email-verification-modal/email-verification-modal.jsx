@@ -96,7 +96,6 @@ const EmailVerificationModal = ({
 EmailVerificationModal.propTypes = {
     email_address: PropTypes.string,
     is_email_verification_modal_open: PropTypes.bool,
-    is_verifying: PropTypes.bool,
     onClickResendEmailButton: PropTypes.func,
     // TODO: Uncomment when time is available in BE response
     // remaining_time: PropTypes.string,

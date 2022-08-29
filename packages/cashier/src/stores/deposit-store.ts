@@ -23,7 +23,7 @@ export default class DepositStore {
     container = Constants.containers.deposit;
     error = new ErrorStore();
 
-    async onMountDeposit() {
+    async onMountDeposit(): Promise<void> {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const {
@@ -88,7 +88,7 @@ export default class DepositStore {
         setLoading(false);
     }
 
-    get is_deposit_locked() {
+    get is_deposit_locked(): boolean {
         const {
             is_authentication_needed,
             is_tnc_needed,
@@ -122,7 +122,7 @@ export default class DepositStore {
         );
     }
 
-    submitFundsProtection() {
+    submitFundsProtection(): void {
         this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
             if (response.error) {
                 this.error.setMessage(response.error.message);

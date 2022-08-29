@@ -8,3 +8,8 @@ export type TRootStore = {
     modules: any;
     ui: TUiStore;
 };
+
+/**
+ * @deprecated Please use `TRootStore` instead.
+ */
+export type RootStore = TRootStore;

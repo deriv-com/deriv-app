@@ -107,8 +107,8 @@ describe('<CFDPersonalDetailsForm />', () => {
     const opening_reason_required_error = 'Account opening reason is required';
 
     it('should render properly on desktop', () => {
+        jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => {}]);
         render(<CFDPersonalDetailsForm {...props} />);
-
         expect(screen.getByTestId('dt_cfd_details_form_description')).toBeInTheDocument();
         expect(screen.getAllByText('FormSubHeader').length).toBe(3);
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeInTheDocument();
@@ -148,8 +148,8 @@ describe('<CFDPersonalDetailsForm />', () => {
             tax_identification_number: '',
             account_opening_reason: '',
         };
+        jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => {}]);
         render(<CFDPersonalDetailsForm {...props} is_fully_authenticated value={values} />);
-
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeDisabled();
         expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeDisabled();
         expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeEnabled();
@@ -167,8 +167,8 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should enable the Next button for form submission when all required fields are filled', async () => {
+        jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => {}]);
         render(<CFDPersonalDetailsForm {...props} />);
-
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
@@ -223,8 +223,8 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should disable the Next button in case of invalid input in a required field', async () => {
+        jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => {}]);
         render(<CFDPersonalDetailsForm {...props} />);
-
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
 
         fireEvent.change(tax_id_input, { target: { value: 'invalid_text_id_0' } });

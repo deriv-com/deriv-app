@@ -21,6 +21,8 @@ const MenuLink = ({
     text,
     onClickLink,
 }) => {
+    const derivStaticUrl = /(deriv.com)/.test(link_to);
+
     if (is_language) {
         return (
             <span
@@ -50,6 +52,27 @@ const MenuLink = ({
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </div>
+        );
+    } else if (derivStaticUrl) {
+        return (
+            <a
+                className={classNames('header__menu-mobile-link', {
+                    'header__menu-mobile-link--disabled': is_disabled,
+                    'header__menu-mobile-link--active': is_active,
+                })}
+                href={link_to}
+            >
+                <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                <Text
+                    className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
+                    as='h3'
+                    size='xs'
+                    weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
+                >
+                    {text}
+                </Text>
+                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+            </a>
         );
     }
 
@@ -389,7 +412,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
-                                                link_to='/help-centre/'
+                                                link_to='https://deriv.com/help-centre//'
                                                 icon='IcHelpCentre'
                                                 text={localize('Help centre')}
                                                 onClickLink={toggleDrawer}
@@ -407,7 +430,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
-                                                link_to='deriv.com/responsible/'
+                                                link_to='https://deriv.com/responsible/'
                                                 icon='IcVerification'
                                                 text={localize('Responsible trading')}
                                                 onClickLink={toggleDrawer}
@@ -416,7 +439,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
-                                                link_to='https://deriv.com/responsible/'
+                                                link_to='https://deriv.com/regulatory'
                                                 icon='IcRegulatoryInformation'
                                                 text={localize('Regulatory information')}
                                                 onClickLink={toggleDrawer}
@@ -425,7 +448,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item className='header__menu-mobile-theme'>
                                             <MenuLink
-                                                link_to='deriv.com/'
+                                                link_to='https://deriv.com'
                                                 icon='IcDerivOutline'
                                                 text={localize('Go to Deriv.com')}
                                                 onClickLink={toggleDrawer}

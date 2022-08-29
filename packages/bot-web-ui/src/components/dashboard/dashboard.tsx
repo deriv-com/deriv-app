@@ -32,7 +32,6 @@ const Dashboard = (props: SideBarProps) => {
                     <div label={localize('Dashboard')}>
                         <DashboardComponents />
                     </div>
-
                     <div label='Quick Strategy' id='id-quick-strategy' onTabItemClick={handleClick} />
                     <div label='Bot Builder' id='id-bot-builder'>
                         <div>Contennt 3</div>

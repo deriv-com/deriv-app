@@ -25,6 +25,7 @@ export default {
             showProgress: true,
             showSkipButton: true,
             spotlightClicks: true,
+            disableBeacon: true,
         },
         {
             target: '#id-quick-strategy',
@@ -39,6 +40,7 @@ export default {
             showProgress: true,
             showSkipButton: true,
             spotlightClicks: true,
+            disableBeacon: true,
         },
         {
             target: '#id-bot-builder',
@@ -53,6 +55,7 @@ export default {
             showProgress: true,
             spotlightClicks: true,
             showSkipButton: false,
+            disableBeacon: true,
         },
         {
             target: '#id-charts',
@@ -67,6 +70,7 @@ export default {
             showProgress: true,
             showSkipButton: false,
             spotlightClicks: true,
+            disableBeacon: true,
         },
         {
             target: '#id-tutorials',
@@ -81,6 +85,7 @@ export default {
             showProgress: true,
             showSkipButton: false,
             spotlightClicks: true,
+            disableBeacon: true,
         },
         {
             target: '#dc-tabs__content_group_tiles',
@@ -95,6 +100,7 @@ export default {
             showProgress: true,
             showSkipButton: false,
             spotlightClicks: true,
+            disableBeacon: true,
         },
     ],
 };

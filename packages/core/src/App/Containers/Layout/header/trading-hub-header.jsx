@@ -220,8 +220,6 @@ const DashboardPlatformHeader = ({
 DashboardPlatformHeader.propTypes = {
     account_status: PropTypes.object,
     app_routing_history: PropTypes.array,
-    balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     header_extension: PropTypes.any,
@@ -241,7 +239,6 @@ DashboardPlatformHeader.propTypes = {
     should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
-    toggleSettingsModal: PropTypes.func,
     location: PropTypes.object,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
@@ -251,8 +248,6 @@ DashboardPlatformHeader.propTypes = {
 export default connect(({ client, common, modules, notifications, ui, menu }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
-    balance: client.balance,
-    currency: client.currency,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
@@ -267,12 +262,10 @@ export default connect(({ client, common, modules, notifications, ui, menu }) =>
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     notifications_count: notifications.filtered_notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
-    toggleSettingsModal: ui.toggleSettingsModal,
 }))(withRouter(DashboardPlatformHeader));

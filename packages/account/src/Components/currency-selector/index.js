@@ -1,3 +1,3 @@
-import CurrencySelector from './currency-selector.jsx';
+import CurrencySelector from './currency-selector';
 
 export default CurrencySelector;

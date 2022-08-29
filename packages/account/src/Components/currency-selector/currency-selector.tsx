@@ -1,15 +1,55 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Field, Formik } from 'formik';
+import React, { HTMLAttributes, RefObject } from 'react';
+import { Field, Formik, FormikProps } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import RadioButtonGroup from './radio-button-group.jsx';
-import RadioButton from './radio-button.tsx';
+import RadioButtonGroup from './radio-button-group';
+import RadioButton from './radio-button';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import { TAuthAccountInfo, TCurrencyInfo, TPlatformContext, TRealAccount, TFormValidation } from 'Types';
 
 export const Hr = () => <div className='currency-hr' />;
+
+type TCurrencySelectorForm = {
+    currency: string;
+};
+
+type TCurrencySelectorExtend = {
+    accounts: { [key: string]: TAuthAccountInfo };
+    available_crypto_currencies: TCurrencyInfo[];
+    getCurrentStep: () => number;
+    goToNextStep: () => void;
+    goToPreviousStep: () => void;
+    has_cancel: boolean;
+    has_currency: boolean;
+    has_fiat: boolean;
+    has_real_account: boolean;
+    has_wallet_account: boolean;
+    is_appstore: boolean;
+    is_dxtrade_allowed: boolean;
+    is_eu: boolean;
+    is_mt5_allowed: boolean;
+    legal_allowed_currencies: TCurrencyInfo[];
+    onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    onSave: (current_step: number, values: TCurrencySelectorForm) => void;
+    onSubmit: (
+        current_step: number | null,
+        values: TCurrencySelectorForm,
+        action: (isSubmitting: boolean) => void,
+        next_step: () => void
+    ) => void;
+    onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
+    real_account_signup: TRealAccount;
+    real_account_signup_target: string;
+    resetRealAccountSignupParams: () => void;
+    selected_step_ref?: RefObject<FormikProps<TCurrencySelectorForm>>;
+    set_currency: boolean;
+    validate: (values: TCurrencySelectorForm) => TCurrencySelectorForm;
+    value: TCurrencySelectorForm;
+};
+
+type TCurrencySelector = HTMLAttributes<HTMLInputElement | HTMLLabelElement> & TCurrencySelectorExtend;
 
 const CurrencySelector = ({
     getCurrentStep,
@@ -37,10 +77,10 @@ const CurrencySelector = ({
     accounts,
     is_eu,
     ...props
-}) => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
-    const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
+}: TCurrencySelector) => {
+    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const crypto = legal_allowed_currencies.filter((currency: TCurrencyInfo) => currency.type === 'crypto');
+    const fiat = legal_allowed_currencies.filter((currency: TCurrencyInfo) => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
 
@@ -48,11 +88,11 @@ const CurrencySelector = ({
         item => item.landing_company_shortcode === real_account_signup_target
     ).length;
 
-    const isSubmitDisabled = values => {
+    const isSubmitDisabled = (values: TCurrencySelectorForm) => {
         return selected_step_ref?.current?.isSubmitting || !values.currency;
     };
 
-    const checkSubmitStatus = values => {
+    const checkSubmitStatus = (values: TCurrencySelectorForm) => {
         const is_submit_disabled = isSubmitDisabled(values);
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
@@ -61,15 +101,15 @@ const CurrencySelector = ({
         }
     };
 
-    const handleCancel = values => {
+    const handleCancel = (values: TCurrencySelectorForm) => {
         const current_step = getCurrentStep() - 1;
         onSave(current_step, values);
         onCancel(current_step, goToPreviousStep);
     };
 
-    const handleValidate = values => {
+    const handleValidate = (values: TCurrencySelectorForm) => {
         checkSubmitStatus(values);
-        const { errors } = splitValidationResultTypes(validate(values));
+        const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
         return errors;
     };
 
@@ -144,7 +184,7 @@ const CurrencySelector = ({
         >
             {({ handleSubmit, values, errors, touched }) => (
                 <AutoHeightWrapper default_height={450}>
-                    {({ setRef, height }) => (
+                    {({ setRef, height }: { setRef: string; height: number }) => (
                         <form
                             ref={setRef}
                             onSubmit={handleSubmit}
@@ -174,7 +214,7 @@ const CurrencySelector = ({
                                                 description={description}
                                                 has_fiat={should_disable_fiat && has_fiat}
                                             >
-                                                {reorderCurrencies(fiat).map(currency => (
+                                                {reorderCurrencies(fiat).map((currency: TCurrencyInfo) => (
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
@@ -200,13 +240,13 @@ const CurrencySelector = ({
                                                 item_count={reorderCurrencies(crypto, 'crypto').length}
                                                 description={description}
                                             >
-                                                {reorderCurrencies(crypto, 'crypto').map(currency => (
+                                                {reorderCurrencies(crypto, 'crypto').map((currency: TCurrencyInfo) => (
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
                                                         selected={
                                                             available_crypto_currencies?.filter(
-                                                                ({ value }) => value === currency.value
+                                                                ({ value }: TCurrencyInfo) => value === currency.value
                                                             )?.length === 0
                                                         }
                                                         name='currency'
@@ -245,36 +285,6 @@ const CurrencySelector = ({
             )}
         </Formik>
     );
-};
-
-CurrencySelector.propTypes = {
-    accounts: PropTypes.object,
-    available_crypto_currencies: PropTypes.array,
-    controls: PropTypes.object,
-    getCurrentStep: PropTypes.func,
-    goToNextStep: PropTypes.func,
-    goToPreviousStep: PropTypes.func,
-    has_cancel: PropTypes.bool,
-    has_currency: PropTypes.bool,
-    has_fiat: PropTypes.bool,
-    has_real_account: PropTypes.bool,
-    has_wallet_account: PropTypes.bool,
-    is_appstore: PropTypes.bool,
-    is_dxtrade_allowed: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
-    legal_allowed_currencies: PropTypes.array,
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    onSubmit: PropTypes.func,
-    onSubmitEnabledChange: PropTypes.func,
-    real_account_signup: PropTypes.string,
-    real_account_signup_target: PropTypes.string,
-    resetRealAccountSignupParams: PropTypes.func,
-    selected_step_ref: PropTypes.shape({ current: PropTypes.any }),
-    set_currency: PropTypes.bool,
-    validate: PropTypes.func,
-    value: PropTypes.any,
 };
 
 export default CurrencySelector;

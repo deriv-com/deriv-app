@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
-import RadioButtonGroup from '../radio-button-group.jsx';
+import RadioButtonGroup from '../radio-button-group';
 
 describe('<RadioButtonGroup/>', () => {
     const props = {

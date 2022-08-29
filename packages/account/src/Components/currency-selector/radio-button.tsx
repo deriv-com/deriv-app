@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { Popover, Icon } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-// import { TReactElement } from 'Types';
 
 type TUSTPopover = {
     id: string;

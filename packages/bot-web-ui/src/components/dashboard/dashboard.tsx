@@ -3,7 +3,7 @@ import { Tabs, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
-import Joyride from 'react-joyride';
+import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 
 interface SideBarProps {
@@ -17,17 +17,21 @@ const Dashboard = (props: SideBarProps) => {
     const dashBoradClass = 'dashboard__container ';
     const sidebarClasstoggle = showSideBar === false ? 'w-100' : '';
     const { DashBorardSteps } = JoyrideConfig;
-
+    const [tourRun, setTourRun] = React.useState<boolean>(true);
+    const handleClick = (e: any) => {
+        e.preventDefault();
+        setTourRun(true);
+    };
     return (
         <div className='main_dashboard_container'>
             <div className={dashBoradClass + sidebarClasstoggle}>
-                <Joyride steps={DashBorardSteps} />
+                <ReactJoyride steps={DashBorardSteps} run={tourRun} continuous={true} showProgress={true} />
                 <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
                     {/* [Todo] needs to update tabs component children instead of using label property */}
                     <div label={localize('Dashboard')}>
                         <DashboardComponents />
                     </div>
-                    <div label='Quick Strategy' id='id-quick-strategy' />
+                    <div label='Quick Strategy' id='id-quick-strategy' onTabItemClick={handleClick} />
                     <div label='Bot Builder' id='id-bot-builder'>
                         <div>Contennt 3</div>
                     </div>

@@ -13,8 +13,7 @@ const TourGuideComponent = data => {
 export default {
     DashBorardSteps: [
         {
-            target: '#id-quick-strategy',
-            text: 'Start using the <strong>joyride</strong>',
+            target: 'body',
             content: (
                 <TourGuideComponent
                     Header={'Start with a tempplate'}
@@ -23,21 +22,79 @@ export default {
                     }
                 />
             ),
+            showProgress: true,
+            showSkipButton: true,
+            spotlightClicks: true,
+        },
+        {
+            target: '#id-quick-strategy',
+            content: (
+                <TourGuideComponent
+                    Header={'Start with a tempplate'}
+                    Para={
+                        'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    }
+                />
+            ),
+            showProgress: true,
+            showSkipButton: true,
+            spotlightClicks: true,
         },
         {
             target: '#id-bot-builder',
-            content: 'Start using the <strong>joyride</strong>',
-            text: 'Start using the <strong>joyride</strong>',
+            content: (
+                <TourGuideComponent
+                    Header={'Start with a BotBuilder'}
+                    Para={
+                        'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    }
+                />
+            ),
+            showProgress: true,
+            spotlightClicks: true,
+            showSkipButton: false,
         },
         {
             target: '#id-charts',
-            content: 'Start using the <strong>joyride</strong>',
-            text: 'Start using the <strong>joyride</strong>',
+            content: (
+                <TourGuideComponent
+                    Header={'Start with a charts'}
+                    Para={
+                        'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    }
+                />
+            ),
+            showProgress: true,
+            showSkipButton: false,
+            spotlightClicks: true,
         },
         {
             target: '#id-tutorials',
-            content: 'Start using the <strong>joyride</strong>',
-            text: 'Start using the <strong>joyride</strong>',
+            content: (
+                <TourGuideComponent
+                    Header={'Start with a tutorials'}
+                    Para={
+                        'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    }
+                />
+            ),
+            showProgress: true,
+            showSkipButton: false,
+            spotlightClicks: true,
+        },
+        {
+            target: '#dc-tabs__content_group_tiles',
+            content: (
+                <TourGuideComponent
+                    Header={'Start with a tutorials'}
+                    Para={
+                        'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    }
+                />
+            ),
+            showProgress: true,
+            showSkipButton: false,
+            spotlightClicks: true,
         },
     ],
 };

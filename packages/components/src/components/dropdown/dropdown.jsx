@@ -398,7 +398,7 @@ const Dropdown = ({
                             is_align_text_left={is_align_text_left}
                             is_title={is_list_visible}
                             placeholder={placeholder}
-                            value={value || 0}
+                            value={value ?? 0}
                             list={list}
                         />
                     </div>

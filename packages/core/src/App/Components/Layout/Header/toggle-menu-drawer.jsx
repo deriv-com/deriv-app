@@ -329,7 +329,9 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu--back-to-ui'
                                             type='button'
                                             large
-                                            onClickLink={disablePreAppstore}
+                                            onClick={() => {
+                                                setIsPreAppStore(false);
+                                            }}
                                         >
                                             <Text className='header__menu--back-to-ui-text' size='xs'>
                                                 {localize('Back to old interface')}
@@ -387,7 +389,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
-                                                link_to={routes.helpcentre}
+                                                link_to='/help-centre/'
                                                 icon='IcHelpCentre'
                                                 text={localize('Help centre')}
                                                 onClickLink={toggleDrawer}
@@ -405,7 +407,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
-                                                link_to='https://deriv.com/responsible/'
+                                                link_to='deriv.com/responsible/'
                                                 icon='IcVerification'
                                                 text={localize('Responsible trading')}
                                                 onClickLink={toggleDrawer}
@@ -423,7 +425,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item className='header__menu-mobile-theme'>
                                             <MenuLink
-                                                link_to='https://deriv.com/responsible/'
+                                                link_to='deriv.com/'
                                                 icon='IcDerivOutline'
                                                 text={localize('Go to Deriv.com')}
                                                 onClickLink={toggleDrawer}

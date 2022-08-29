@@ -40,7 +40,6 @@ export const routes = {
     token: '/settings/token',
     trade: '/',
     bot: '/bot',
-    helpcentre: '/help-centre/',
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',
     cashier_withdrawal: '/cashier/withdrawal',

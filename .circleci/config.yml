@@ -80,7 +80,7 @@ commands:
     steps:
       - run:
           name: "Build all packages"
-          command: npm run build
+          command: npm run build:all
 
   build_storybook:
     description: "Build storybook"
@@ -167,7 +167,7 @@ commands:
           name: "Publish to cloudflare pages (staging)"
           command: |
             npm i wrangler@2.0.19
-            cd packages/core 
+            cd packages/core
             npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
             echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
 
@@ -176,9 +176,9 @@ commands:
     steps:
       - run:
           name: "Publish to cloudflare pages (production)"
-          command: | 
+          command: |
             npm i wrangler@2.0.19
-            cd packages/core 
+            cd packages/core
             npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
             echo "New website - http://cf-pages-deriv-app.deriv.com"
 
@@ -338,4 +338,3 @@ workflows:
                 - gh-pages
             tags:
               ignore: /.*/
-              

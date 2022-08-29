@@ -4,7 +4,6 @@ import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import GTM from '../../../common/gtm';
-import { observer as globalObserver } from '../../../common/utils/observer';
 
 let delay_index = 0;
 let purchase_reference;
@@ -56,9 +55,7 @@ export default Engine =>
                 currency,
             });
 
-            const action = () => this.api.send({ buy: proposal.id, price: proposal.ask_price }).catch(e => {
-                globalObserver.emit('Error', e);
-            });
+            const action = () => this.api.send({ buy: proposal.id, price: proposal.ask_price });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);

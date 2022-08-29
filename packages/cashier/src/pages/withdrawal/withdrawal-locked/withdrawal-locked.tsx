@@ -1,21 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { TClientStore, TRootStore } from 'Types';
 import CashierLocked from 'Components/cashier-locked';
 
-const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }) => {
+type TWithdrawalLockedProps = {
+    account_status: Required<TClientStore['account_status']>;
+    is_10K_limit: boolean;
+    is_ask_financial_risk_approval: boolean;
+};
+
+type TItem = {
+    content: string;
+    status: string;
+    onClick: () => void;
+};
+
+const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }: TWithdrawalLockedProps) => {
     const { document, identity, needs_verification } = account_status.authentication;
-    const is_poi_needed = is_10K_limit && identity.status !== 'verified';
-    const has_poi_submitted = identity.status !== 'none';
+    const is_poi_needed = is_10K_limit && identity?.status !== 'verified';
+    const has_poi_submitted = identity?.status !== 'none';
     const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || document?.status !== 'verified');
     const has_poa_submitted = document?.status !== 'none';
     const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();
-    const items = [
+    const items: TItem[] = [
         ...(is_poi_needed
             ? [
                   {
@@ -70,13 +82,7 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_
     );
 };
 
-WithdrawalLocked.propTypes = {
-    account_status: PropTypes.object,
-    is_10K_limit: PropTypes.bool,
-    is_ask_financial_risk_approval: PropTypes.bool,
-};
-
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client }: TRootStore) => ({
     account_status: client.account_status,
     is_10K_limit: modules.cashier.withdraw.is_10k_withdrawal_limit_reached,
     is_ask_financial_risk_approval: modules.cashier.withdraw.error.is_ask_financial_risk_approval,

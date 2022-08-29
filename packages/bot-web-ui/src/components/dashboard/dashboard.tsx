@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
 import ReactJoyride from 'react-joyride';
@@ -31,11 +32,16 @@ const Dashboard = (props: SideBarProps) => {
                     <div label={localize('Dashboard')}>
                         <DashboardComponents />
                     </div>
+
                     <div label='Quick Strategy' id='id-quick-strategy' onTabItemClick={handleClick} />
                     <div label='Bot Builder' id='id-bot-builder'>
                         <div>Contennt 3</div>
                     </div>
-                    <div label='Charts' id='id-charts' />
+                    <div label='Charts' id='id-charts'>
+                        <div className='dashboard__chart-wrapper'>
+                            <Chart />
+                        </div>
+                    </div>
                     <div label='Tutorial' id='id-tutorials'>
                         <div>Contennt 4</div>
                     </div>

@@ -4,14 +4,14 @@ import classNames from 'classnames';
 import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 
-export interface TAddOptionsPtops extends HTMLAttributes<HTMLDivElement> {
+export interface TAddOptionsProps extends HTMLAttributes<HTMLDivElement> {
     onClickHandler: () => void;
     class_names?: string;
     title: string;
     description: string;
 }
 
-const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOptionsPtops) => {
+const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOptionsProps) => {
     const getHeightWidthOfIcon = () => {
         return isMobile()
             ? {

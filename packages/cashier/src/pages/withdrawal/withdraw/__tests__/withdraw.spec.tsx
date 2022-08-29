@@ -1,6 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Withdraw from '../withdraw.jsx';
+import Withdraw from '../withdraw';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

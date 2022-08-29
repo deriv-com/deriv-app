@@ -50,6 +50,8 @@ const P2PCashier = ({
         setActionParam(url_params.get('action'));
         setCodeParam(url_params.get('code'));
 
+        // Different emails give us different params (order / order_id),
+        // don't remove order_id since it's consistent for mobile and web for 2FA
         if (url_params.has('order_id')) {
             passed_order_id = url_params.get('order_id');
         } else if (url_params.has('order')) {

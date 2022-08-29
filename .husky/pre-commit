@@ -3,4 +3,3 @@
 
 npm test
 npx lint-staged
-git add -A

@@ -18,12 +18,12 @@ const renderElements = () => {
 const loginCheck = () => {
     if (!getTokenList().length) {
         loadLang();
-        oauthLogin(() => {
-            $('.show-on-load').show();
-            $('.barspinner').hide();
-            renderElements();
-            GTM.init();
-        });
+            oauthLogin(() => {
+                $('.show-on-load').show();
+                $('.barspinner').hide();
+                renderElements();
+                GTM.init();
+            });
     }
 };
 

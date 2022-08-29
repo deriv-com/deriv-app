@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, MobileFullPageModal } from '@deriv/components';
+import { Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
@@ -39,7 +39,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
     ) : (
         <React.Fragment>
             <PageReturn onClick={onPageReturn} page_title={page_title} />
-            {children}
+            <ThemedScrollbars height='70vh'>{children}</ThemedScrollbars>
         </React.Fragment>
     );
 };

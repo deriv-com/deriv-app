@@ -3,6 +3,7 @@ import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import ServerTime from 'Utils/server-time';
 import { roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
+import { countDecimalPlaces } from 'Utils/string';
 
 export default class FloatingRateStore extends BaseStore {
     @observable fixed_rate_adverts_status;
@@ -46,7 +47,11 @@ export default class FloatingRateStore extends BaseStore {
     }
     @action.bound
     setFloatRateOffsetLimit(offset_limit) {
-        this.float_rate_offset_limit = parseFloat(offset_limit).toFixed(2);
+        if (countDecimalPlaces(offset_limit) > 2) {
+            this.float_rate_offset_limit = parseFloat(offset_limit - 0.005).toFixed(2);
+        } else {
+            this.float_rate_offset_limit = parseFloat(offset_limit).toFixed(2);
+        }
     }
     @action.bound
     setFixedRateAdvertsEndDate(end_date) {

@@ -47,7 +47,7 @@ const AccountTransferReceipt = ({
     selected_to,
     switchAccount,
 }: TAccountTransferReceiptProps) => {
-    const [is_switch_visible, setIsSwitchVisible] = React.useState<boolean>(false);
+    const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
 
     React.useEffect(() => {

@@ -57,7 +57,7 @@ const AccountTransfer = ({
     setIsTransferConfirm,
     setSideNotes,
 }: TAccountTransferProps) => {
-    const [is_loading_status, setIsLoadingStatus] = React.useState<boolean>(true);
+    const [is_loading_status, setIsLoadingStatus] = React.useState(true);
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {

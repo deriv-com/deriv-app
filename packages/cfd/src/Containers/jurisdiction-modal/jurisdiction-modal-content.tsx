@@ -1,8 +1,8 @@
 import React from 'react';
 import { TJurisdictionModalContentProps } from '../props.types';
-import JurisdictionCheckBox from './jurisdiction-modal-content-items/jurisdiction-modal-checkbox';
-import JurisdictionCard from './jurisdiction-modal-content-items/jurisdiction-modal-card/jurisdiction-card';
-import JurisdictionModalFootNote from './jurisdiction-modal-content-items/jurisdiction-modal-foot-note';
+import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
+import JurisdictionCard from './jurisdiction-card';
+import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 
 const JurisdictionModalContent = ({
     account_status,

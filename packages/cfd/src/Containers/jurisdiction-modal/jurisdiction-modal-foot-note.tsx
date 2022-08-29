@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionModalFootNoteProps } from '../../props.types';
+import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const JurisdictionModalFootNote = ({
     account_status,

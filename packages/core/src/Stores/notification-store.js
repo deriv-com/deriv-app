@@ -143,9 +143,26 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     addVerificationNotifications(identity, document) {
-        if (identity.status === 'expired') this.addNotificationMessage(this.client_notifications.poi_expired);
+        //identity
+        if (identity.status === 'verified') {
+            this.addNotificationMessage(this.client_notifications.poi_verified);
+        } else if (identity.status === 'rejected' && identity?.services.onfido.submissions_left === 0) {
+            this.addNotificationMessage(this.client_notifications.has_reached_poi_upload_limit);
+        } else if (identity.status === 'expired') {
+            this.addNotificationMessage(this.client_notifications.poi_expired);
+        } else if (identity.status !== 'none') {
+            this.addNotificationMessage(this.client_notifications.poi_failed);
+        }
 
-        if (document.status === 'expired') this.addNotificationMessage(this.client_notifications.poa_expired);
+        // document
+
+        if (document.status === 'verified') {
+            this.addNotificationMessage(this.client_notifications.poa_verified);
+        } else if (document.status === 'expired') {
+            this.addNotificationMessage(this.client_notifications.poa_expired);
+        } else if (document.status !== 'none') {
+            this.addNotificationMessage(this.client_notifications.poa_failed);
+        }
     }
 
     @action.bound
@@ -281,31 +298,17 @@ export default class NotificationStore extends BaseStore {
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (needs_verification.includes('identity')) {
-                    if (
-                        poi_name_mismatch &&
-                        identity?.services.onfido.last_rejected &&
-                        !personal_details_locked &&
-                        onfido_submissions_left > 0
-                    ) {
+                if (is_identity_verification_needed) {
+                    this.addNotificationMessage(this.client_notifications.identity);
+                }
+                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
+                    if (!personal_details_locked && onfido_submissions_left > 0) {
                         this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
-                    } else if (identity.status === 'rejected' && onfido_submissions_left === 0) {
+                    } else {
                         this.addNotificationMessage(this.client_notifications.onfido_failed);
-                    }else if(identity.status !== 'verified'){
-                        this.addNotificationMessage(this.client_notifications.poi_failed);
-                    }
-                    else if (is_identity_verification_needed) {
-                        this.addNotificationMessage(this.client_notifications.identity);
                     }
                 }
 
-                if (!needs_verification.length && identity.status === 'verified') {
-                    this.addNotificationMessage(this.client_notifications.poi_verified);
-                }
-                if (!needs_verification.length && document.status === 'verified') {
-                    this.addNotificationMessage(this.client_notifications.poa_verified);
-                }
-                if
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(
@@ -662,6 +665,20 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Deriv P2P',
                 type: 'news',
             },
+            has_reached_poi_upload_limit: {
+                key: 'has_reached_poi_upload_limit',
+                header: localize('Need help?'),
+                message: localize(
+                    'It looks like you’ve tried to verify your proof of identity for more than 3 times. Please contact us via live chat for help.'
+                ),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Yes, I need help'),
+                },
+                type: 'danger',
+            },
             identity: {
                 key: 'identity',
                 header: localize('Let’s verify your ID'),
@@ -733,34 +750,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('To continue trading with us, please confirm who you are.'),
                 type: 'danger',
             },
-            needs_poa_virtual: {
-                action: {
-                    route: routes.proof_of_address,
-                    text: localize('Verify address'),
-                },
-                key: 'needs_poa_virtual',
-                header: localize('Please Verify your address'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
-                ),
-                type: 'danger',
-            },
-            needs_poi_virtual: {
-                action: {
-                    onClick: async () => {
-                        const { switchAccount, first_switchable_real_loginid } = client_data;
 
-                        await switchAccount(first_switchable_real_loginid);
-                    },
-                    text: localize('Verify identity'),
-                },
-                key: 'needs_poi_virtual',
-                header: localize('Please Verify your identity'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
-                ),
-                type: 'danger',
-            },
             new_version_available: {
                 action: {
                     onClick: () => window.location.reload(),
@@ -816,12 +806,12 @@ export default class NotificationStore extends BaseStore {
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
-            poa_failed:{
+            poa_failed: {
                 action: {
                     route: routes.proof_of_address,
                     text: localize('Resubmit proof of address'),
                 },
-                key: 'poi_failed',
+                key: 'poa_failed',
                 header: localize('Please resubmit your proof of address or we may restrict your account.'),
                 message: localize('Please submit your proof of identity.'),
                 type: 'danger',
@@ -832,7 +822,7 @@ export default class NotificationStore extends BaseStore {
                 type: 'announce',
                 should_hide_close_btn: false,
             },
-            poi_failed:{
+            poi_failed: {
                 action: {
                     route: routes.proof_of_identity,
                     text: localize('Resubmit proof of identity'),

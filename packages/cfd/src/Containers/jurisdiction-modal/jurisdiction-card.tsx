@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Icon, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
-import { TJurisdictionCardProps } from 'Containers/props.types';
-import VerificationStatusBanner from './verification-status-banner';
+import { TJurisdictionCardProps } from '../props.types';
+import VerificationStatusBanner from './jurisdiction-card-banner';
 
 const JurisdictionCard = ({
     account_type,

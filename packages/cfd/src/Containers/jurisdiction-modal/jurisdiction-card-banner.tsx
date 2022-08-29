@@ -1,7 +1,7 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import { TVerificationStatusBannerProps } from 'Containers/props.types';
+import { TVerificationStatusBannerProps } from '../props.types';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';

@@ -86,7 +86,7 @@ export default class CFDStore extends BaseStore {
             setCFDSuccessDialog: action.bound,
             storeProofOfAddress: action.bound,
             getAccountStatus: action.bound,
-            creatMT5Password: action.bound,
+            createMT5Password: action.bound,
             submitMt5Password: action.bound,
             createCFDPassword: action.bound,
             submitCFDPassword: action.bound,

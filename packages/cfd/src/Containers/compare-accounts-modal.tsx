@@ -189,7 +189,8 @@ const CompareAccountsModal = ({
                             header_classname={is_dxtrade ? '' : 'cfd-real-compare-accounts-mobile-header'}
                         >
                             {is_dxtrade ? (
-                                <ModalContent
+                                <DxtradeCompareAccountContent
+                                    is_demo_tab={is_demo_tab}
                                     is_logged_in={is_logged_in}
                                     landing_companies={landing_companies}
                                     platform={platform}

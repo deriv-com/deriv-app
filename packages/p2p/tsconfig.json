@@ -8,10 +8,10 @@
             "Constants/*": ["src/constants/*"],
             "Stores/*": ["src/stores/*"],
             "Translations/*": ["src/translations/*"],
-            "Utils/*": ["src/utils/*"]
+            "Utils/*": ["src/utils/*"],
+            "@deriv/*":["../*/src"]
         },
         "outDir": "./lib",
-        "rootDir": "./src"
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["src"]
 }

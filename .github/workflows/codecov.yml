@@ -20,7 +20,7 @@ jobs:
         run: |
           npm install
           npm run bootstrap
-          npm run build
+          npm run build:all
           npm run test:jest
 
       - name: Upload coverage to Codecov

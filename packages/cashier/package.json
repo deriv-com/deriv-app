@@ -12,7 +12,7 @@
         "test": "__tests__"
     },
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.16.0"
     },
     "files": [
         "lib"
@@ -44,8 +44,8 @@
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "loadjs": "^4.2.0",
-        "mobx": "^5.15.7",
-        "mobx-react": "6.3.1",
+        "mobx": "^6.6.1",
+        "mobx-react-lite": "^3.4.0",
         "moment": "^2.29.2",
         "prop-types": "^15.7.2",
         "qrcode.react": "^1.0.0",

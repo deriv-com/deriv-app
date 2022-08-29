@@ -166,6 +166,7 @@ const CFDDownloadContainer = ({ platform, is_dark_mode_on, active_index, dxtrade
             className={classnames('cfd-dashboard__download-container', {
                 'cfd-dashboard__download-container--is-mt5': platform === CFD_PLATFORMS.MT5,
             })}
+            data-testid='dt_cfd_dashboard_download_center_container'
         >
             {platform === CFD_PLATFORMS.MT5 && (
                 <h1 className='cfd-dashboard__download-container__heading'>

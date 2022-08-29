@@ -70,7 +70,7 @@
 
                     /* system/light/2 - general (text) */
 
-                    color: #333333;
+                    color: $color-black-1;
                 }
             }
         }
@@ -112,7 +112,7 @@
 
             /* dark/1 - prominent (text) */
 
-            color: #ffffff;
+            color: $color-white;
         }
 
         @include mobile {

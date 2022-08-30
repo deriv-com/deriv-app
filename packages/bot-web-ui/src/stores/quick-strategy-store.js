@@ -543,25 +543,11 @@ export default class QuickStrategyStore {
     getSizeDesc = index => {
         switch (index) {
             case 0:
-                return localize(
-                    'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.'
-                );
+                return 'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.';
             case 1:
-                return localize('The amount that you may add to your stake if you’re losing a trade.');
+                return 'The amount that you may add to your stake if you’re losing a trade.';
             case 2:
-                return localize('The amount that you may add to your stake after each successful trade.');
-            default:
-                return '';
-        }
-    };
-
-    getSizeText = index => {
-        switch (index) {
-            case 0:
-                return localize('Size');
-            case 1:
-            case 2:
-                return localize('Units');
+                return 'The amount that you may add to your stake after each successful trade.';
             default:
                 return '';
         }

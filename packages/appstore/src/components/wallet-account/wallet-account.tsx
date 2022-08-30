@@ -14,18 +14,17 @@ type WalletAccountProps = {
 };
 
 const WalletAccount = ({ account }: WalletAccountProps) => {
-    // const apiCall = async () => {
-    //     const response = await WS.authorized.storage.send({
-    //         new_account_virtual: 1,
-    //         type: "trading"
+    const apiCall = async () => {
+        const response = await WS.authorized.storage.send({
+            new_account_virtual: 1,
+            type: 'trading',
+        });
 
-    //     });
-
-    //     console.log(response)
-    // }
+        // console.log(response);
+    };
 
     return (
-        <div className='simti'>
+        <>
             <Accordion
                 expand_section
                 elevation_type='xs'
@@ -33,55 +32,48 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                     /**do something */
                 }}
                 type='containerWithBorder'
-                className='wallet-account__accordion'
+                className='wallet-account'
             >
-                <Icon className='wallet-account__background-icon' icon='IcAppstoreDemoWallet' />
+                <Icon className='wallet-account__background' icon='IcAppstoreDemoWallet' />
                 <Accordion.Title size='medium'>
-                    <div className='wallet-account'>
-                        <div className='wallet-account__background' />
-                        <div className='wallet-account__content'>
-                            <div className='wallet-account__details'>
-                                <div className='wallet-account__logo'>
-                                    <WalletCard wallet_name={account.is_virtual === 1 ? 'demo' : ''} size='sm' />
-                                </div>
-                                <div className='wallet-account__info'>
-                                    <Text bold type='subtitle-2'>
-                                        <Localize
-                                            i18n_default_text='Demo {{currency}} wallet'
-                                            values={{ currency: account.currency }}
-                                        />
-                                    </Text>
-                                    <div className='wallet-account__actions'>
-                                        <WalletActionButton size='small' label='Reports' icon='icAppstoreTransfer' />
-                                        <WalletActionButton
-                                            size='small'
-                                            label='Transaction'
-                                            icon='icAppstoreTransaction'
-                                        />
-                                        <WalletActionButton
-                                            size='small'
-                                            label='Reset Balance'
-                                            icon='icAppstoreResetBalance'
-                                        />
-                                    </div>
-                                </div>
+                    <div className='wallet-account__header'>
+                        <div className='wallet-account__details'>
+                            <div className='wallet-account__logo'>
+                                <WalletCard wallet_name={account.is_virtual === 1 ? 'demo' : ''} size='sm' />
                             </div>
-                            <div className='wallet-account__balance'>
-                                {account.is_virtual && (
-                                    <Text bold={false} type='small' align='right'>
-                                        {localize('Virtual balance')}
-                                    </Text>
-                                )}
-                                <Text bold type='subtitle-1'>
-                                    <Money amount={account.wallet?.balance} currency={account.currency} show_currency />
+                            <div className='wallet-account__info'>
+                                <Text bold type='subtitle-2'>
+                                    <Localize
+                                        i18n_default_text='Demo {{currency}} wallet'
+                                        values={{ currency: account.currency }}
+                                    />
                                 </Text>
+                                <div className='wallet-account__actions'>
+                                    <WalletActionButton size='small' label='Reports' icon='icAppstoreTransfer' />
+                                    <WalletActionButton size='small' label='Transaction' icon='icAppstoreTransaction' />
+                                    <WalletActionButton
+                                        size='small'
+                                        label='Reset Balance'
+                                        icon='icAppstoreResetBalance'
+                                    />
+                                </div>
                             </div>
+                        </div>
+                        <div className='wallet-account__balance'>
+                            {account.is_virtual && (
+                                <Text bold={false} type='small' align='right'>
+                                    {localize('Virtual balance')}
+                                </Text>
+                            )}
+                            <Text bold type='subtitle-1'>
+                                <Money amount={account.wallet?.balance} currency={account.currency} show_currency />
+                            </Text>
                         </div>
                     </div>
                 </Accordion.Title>
                 <Accordion.Content size='medium'>
-                    <div style={{ padding: '2.1rem', overflow: 'hidden' }}>
-                        <div className='title'>
+                    <div className='wallet-account__content'>
+                        <div>
                             <Text bold type='subtitle-1'>
                                 {localize('CFDs')}
                             </Text>
@@ -94,13 +86,13 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 </a>
                             </Text>
                         </div>
-                        <Text bold type='paragraph-1' style={{ marginTop: '2rem' }}>
+                        <Text bold type='paragraph-1' style={{ marginTop: '2rem', marginBottom: '-1rem' }}>
                             {localize('Deriv MT5')}
                         </Text>
                         <div className='wallet-account__options'>
                             <AppsLauncher
                                 app_name='Derived'
-                                icon_name='IcAppstoreTradingAccountsDerived'
+                                icon_name='TradingDerived'
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
@@ -109,7 +101,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
 
                             <AppsLauncher
                                 app_name='Financial'
-                                icon_name='IcAppstoreTradingAccountsFinancial'
+                                icon_name='TradingFinancial'
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
@@ -117,18 +109,18 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                             />
                         </div>
 
-                        <Text bold type='paragraph-1'>
+                        <Text bold type='paragraph-1' style={{ marginBottom: '-1.5rem' }}>
                             {localize('Deriv X')}
                         </Text>
                         <AppsLauncher
                             app_name='Deriv X2'
-                            icon_name='IcAppstoreDx'
+                            icon_name='DerivX'
                             is_app_installed={false}
                             button_className='wallet-account__app-launcher-button'
                             jurisdiction=''
                             description='Trade CFDs on Deriv X with synthetic indices that simulate real-world market movements.'
                         />
-                        <div className='title'>
+                        <div>
                             <Text bold type='subtitle-1'>
                                 {localize('Options & Multipliers')}
                             </Text>
@@ -144,22 +136,23 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 </a>
                             </Text>
                         </div>
-                        <AppsLauncher
-                            app_name='Financial'
-                            icon_name='IcAppstoreTradingAccountsFinancial'
-                            is_app_installed={false}
-                            button_className='wallet-account__app-launcher-button'
-                            jurisdiction=''
-                            description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
-                        />
-
-                        {/* <div>
-                            <button onClick={apiCall}>test api call</button>
-                        </div> */}
+                        <div className='wallet-account__deriv-apps'>
+                            <AppsLauncher
+                                className='wallet-account__app-launcher--full-width'
+                                app_name='Deriv Apps'
+                                icon_name='DerivApps'
+                                is_app_installed={false}
+                                button_className='wallet-account__app-launcher-button'
+                                jurisdiction=''
+                                handleClick={apiCall}
+                                description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                            />
+                            <div className='test'>apps</div>
+                        </div>
                     </div>
                 </Accordion.Content>
             </Accordion>
-        </div>
+        </>
     );
 };
 

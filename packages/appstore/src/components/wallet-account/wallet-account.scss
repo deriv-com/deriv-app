@@ -1,28 +1,22 @@
 .wallet-account {
-    height: 12.8rem;
     position: relative;
-    border-radius: 1.6rem;
-    overflow: hidden;
+    background: #fff8f9;
 
     &__background {
         position: absolute;
         width: 100%;
         height: 100%;
-
-        &-icon {
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 15.8rem;
-            position: absolute;
-        }
+        height: 15.8rem;
     }
 
-    &__accordion {
+    &__header {
+        height: 100%;
         position: relative;
-        background: #fff8f9;
+        border-radius: 1.6rem;
+        overflow: hidden;
+        padding: 2.4rem;
+        display: flex;
+        align-items: center;
     }
 
     &__options {
@@ -35,13 +29,6 @@
         background-color: #ff444f29 !important;
     }
 
-    &__content {
-        position: relative;
-        padding: 2.4rem;
-        display: flex;
-        align-items: center;
-        height: 100%;
-    }
     &__details {
         display: flex;
         flex: 1;
@@ -63,5 +50,26 @@
     &__balance {
         display: flex;
         flex-direction: column;
+    }
+
+    &__content {
+        padding: 2.1rem;
+        overflow: hidden;
+    }
+
+    &__deriv-apps {
+        background-color: #fff0f1;
+        border-radius: 16px;
+        padding: 0 24px 24px;
+        margin-top: 24px;
+    }
+
+    &__app-launcher--full-width {
+        margin: 1.6rem 0;
+        min-height: 9.6rem;
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+        border-bottom: 1px solid #fff;
     }
 }

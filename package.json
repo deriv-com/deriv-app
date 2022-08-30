@@ -56,7 +56,7 @@
         "stylelint-no-unsupported-browser-features": "^4.0.0",
         "stylelint-selector-bem-pattern": "^2.1.0",
         "stylelint-webpack-plugin": "^2.1.1",
-        "nx": "14.1.9",
+        "nx": "^14.5.10",
         "@nrwl/nx-cloud": "latest"
     },
     "scripts": {

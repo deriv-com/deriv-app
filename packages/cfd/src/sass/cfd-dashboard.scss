@@ -653,6 +653,7 @@
     min-height: 21rem;
     width: 30.4em;
     position: relative;
+    justify-content: space-between;
     @include desktop {
         height: 100%;
     }

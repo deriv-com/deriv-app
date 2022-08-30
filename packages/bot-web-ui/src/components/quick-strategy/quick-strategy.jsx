@@ -639,7 +639,7 @@ export default connect(({ run_panel, quick_strategy, ui }) => ({
     onChangeSymbolInput: quick_strategy.onChangeSymbolInput,
     onHideDropdownList: quick_strategy.onHideDropdownList,
     onScrollStopDropdownList: quick_strategy.onScrollStopDropdownList,
-    setActiveTabIndex: quick_strategy.setActiveTabIndex,
+    setActiveTabIndex: quick_strategy.setActiveTypeStrategyIndex,
     selected_symbol: quick_strategy.selected_symbol,
     selected_trade_type: quick_strategy.selected_trade_type,
     selected_duration_unit: quick_strategy.selected_duration_unit,

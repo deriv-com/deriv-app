@@ -143,7 +143,7 @@ const idv_document_data = {
     zw: {
         national_id: {
             new_display_name: 'National ID',
-            example_format: '12-345678 C 90',
+            example_format: '081234567F53',
             sample_image: getImageLocation('zw_national_identity_card.png'),
         },
     },

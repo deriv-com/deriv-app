@@ -1,5 +1,5 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { WS } from '@deriv/shared';
+import { useWs as WS } from 'Services/websocket';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import {
@@ -95,7 +95,8 @@ export default class WalletStore extends BaseStore {
     async getWalletNames() {
         if (this.wallet_names) return;
         this.setIsLoading(true);
-        const response = await WS.authorized.storage.send({
+
+        const response = await WS().authorized.storage.send({
             get_account_types: 1,
         });
 
@@ -119,7 +120,7 @@ export default class WalletStore extends BaseStore {
     async createRealWalletAccount(create_wallet_data: any) {
         if (!create_wallet_data) return;
 
-        const response = await WS.authorized.send({
+        const response = await WS().authorized.send({
             new_account_wallet: 1,
             ...create_wallet_data,
         });

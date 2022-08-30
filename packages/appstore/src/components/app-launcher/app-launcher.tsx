@@ -1,9 +1,10 @@
 import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import { Icon, Money } from '@deriv/components';
+import { Money } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Button, Text } from '@deriv/ui';
+import WalletIcon from 'Assets/svgs/wallet';
 
 export interface TAppLauncherProps extends HTMLAttributes<HTMLDivElement> {
     icon_name: string;
@@ -31,22 +32,10 @@ const AppLauncher = ({
     button_className,
     ...props
 }: TAppLauncherProps) => {
-    const getHeightWidthOfIcon = () => {
-        return isMobile()
-            ? {
-                  width: 48,
-                  height: 48,
-              }
-            : {
-                  width: 64,
-                  height: 64,
-              };
-    };
-
     return (
         <div className='app-launcher' {...props}>
             <div>
-                <Icon icon={icon_name} width={getHeightWidthOfIcon().width} height={getHeightWidthOfIcon().height} />
+                <WalletIcon icon={icon_name} />
             </div>
             <div>
                 <Text type='paragraph-2' bold={!is_app_installed || show_active_balance}>

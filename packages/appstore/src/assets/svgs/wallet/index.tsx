@@ -27,8 +27,10 @@ import CreditCardsDark from 'Assets/svgs/wallet/credit-cards-dark.svg';
 import CreditCardsLight from 'Assets/svgs/wallet/credit-cards-light.svg';
 import DemoDark from 'Assets/svgs/wallet/demo-dark.svg';
 import DemoLight from 'Assets/svgs/wallet/demo-light.svg';
+import DerivApps from 'Assets/svgs/wallet/deriv-apps.svg';
 import DerivP2pDark from 'Assets/svgs/wallet/deriv-p2p-dark.svg';
 import DerivP2pLight from 'Assets/svgs/wallet/deriv-p2p-light.svg';
+import DerivX from 'Assets/svgs/wallet/derivx.svg';
 import DinersClubDark from 'Assets/svgs/wallet/diners-club-dark.svg';
 import DinersClubLight from 'Assets/svgs/wallet/diners-club-light.svg';
 import EthereumDark from 'Assets/svgs/wallet/ethereum-dark.svg';
@@ -79,6 +81,8 @@ import SticpayDark from 'Assets/svgs/wallet/sticpay-dark.svg';
 import SticpayLight from 'Assets/svgs/wallet/sticpay-light.svg';
 import TetherDark from 'Assets/svgs/wallet/tether-dark.svg';
 import TetherLight from 'Assets/svgs/wallet/tether-light.svg';
+import TradingDerived from 'Assets/svgs/wallet/trading-accounts-derived.svg';
+import TradingFinancial from 'Assets/svgs/wallet/trading-accounts-financial.svg';
 import TrustlyDark from 'Assets/svgs/wallet/trustly-dark.svg';
 import TrustlyLight from 'Assets/svgs/wallet/trustly-light.svg';
 import UsdCoinDark from 'Assets/svgs/wallet/usd-coin-dark.svg';
@@ -125,8 +129,10 @@ const Icons = {
     CreditCardsLight,
     DemoDark,
     DemoLight,
+    DerivApps,
     DerivP2pDark,
     DerivP2pLight,
+    DerivX,
     DinersClubDark,
     DinersClubLight,
     EthereumDark,
@@ -177,6 +183,8 @@ const Icons = {
     SticpayLight,
     TetherDark,
     TetherLight,
+    TradingDerived,
+    TradingFinancial,
     TrustlyDark,
     TrustlyLight,
     UsdCoinDark,

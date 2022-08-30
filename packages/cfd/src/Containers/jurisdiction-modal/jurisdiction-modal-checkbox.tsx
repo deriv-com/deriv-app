@@ -11,20 +11,18 @@ const JurisdictionCheckBox = ({
     jurisdiction_selected_shortcode,
     onCheck,
 }: TJurisdictionCheckBoxProps) => {
-    const { poi_poa_verified_for_bvi_labuan_maltainvest, poi_poa_verified_for_vanuatu } =
+    const { poi_verified_for_bvi_labuan_maltainvest, poi_verified_for_vanuatu } =
         getAuthenticationStatusInfo(account_status);
 
     const shouldShowCheckBox = () => {
         if (jurisdiction_selected_shortcode) {
             if (jurisdiction_selected_shortcode === 'svg') {
                 return false;
-            } else if (jurisdiction_selected_shortcode === 'vanuatu' && poi_poa_verified_for_vanuatu) {
+            } else if (jurisdiction_selected_shortcode === 'vanuatu' && poi_verified_for_vanuatu) {
                 return true;
             } else if (
-                (jurisdiction_selected_shortcode === 'bvi' ||
-                    jurisdiction_selected_shortcode === 'labuan' ||
-                    jurisdiction_selected_shortcode === 'maltainvest') &&
-                poi_poa_verified_for_bvi_labuan_maltainvest
+                ['bvi', 'labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode) &&
+                poi_verified_for_bvi_labuan_maltainvest
             ) {
                 return true;
             }

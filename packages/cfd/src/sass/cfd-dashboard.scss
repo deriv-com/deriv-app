@@ -494,7 +494,9 @@
     &__verification-status--pending,
     &__verification-status--failed,
     &__verification-status--account_added,
-    &__verification-status--poi_verified {
+    &__verification-status--poi_verified,
+    &__verification-status--not_submitted,
+    &__verification-status--hint {
         width: 100%;
         min-height: 2.4rem;
         display: flex;
@@ -521,28 +523,20 @@
             background-color: #ec3f3f;
             border-radius: 0.5rem;
         }
-    }
-
-    &__h2-header {
-        margin: 1.4rem 0 2.4rem;
-    }
-
-    &__footer {
-        font-weight: 400;
-        font-size: 10px;
-        line-height: 14px;
-        color: #333333;
-        padding: 0.5rem 0.8rem;
-        margin-top: auto;
-        text-align: center;
-        &--none {
+        &--not_submitted {
             background-color: var(--general-section-1);
-            margin-top: auto;
             padding: 0.3rem;
             border-radius: 0.5rem;
         }
+        &--hint {
+            font-weight: 400;
+            line-height: 14px;
+            text-align: center;
+        }
     }
-
+    &__h2-header {
+        margin: 1.4rem 0 2.4rem;
+    }
     &__footnote {
         display: flex;
         flex-direction: column;
@@ -558,9 +552,7 @@
         }
 
         &--pending {
-            .dc-text{
-                color: #ffad3a;
-            }
+            color: #ffad3a;
         }
     }
 

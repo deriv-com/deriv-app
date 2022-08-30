@@ -107,7 +107,7 @@ const CFDDbViOnBoarding = ({
     );
 };
 
-export default connect(({ client, modules, ui }: RootStore) => ({
+export default connect(({ modules, ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_cfd_verification_modal_visible: modules.cfd.is_cfd_verification_modal_visible,

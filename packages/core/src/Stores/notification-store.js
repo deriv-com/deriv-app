@@ -150,7 +150,7 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.has_reached_poi_upload_limit);
         } else if (identity.status === 'expired') {
             this.addNotificationMessage(this.client_notifications.poi_expired);
-        } else if (identity.status !== 'none') {
+        } else if (!['none', 'pending'].includes(identity.status)) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
 
@@ -160,7 +160,7 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (document.status === 'expired') {
             this.addNotificationMessage(this.client_notifications.poa_expired);
-        } else if (document.status !== 'none') {
+        } else if (!['none', 'pending'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }

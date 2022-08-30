@@ -280,7 +280,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     } = props;
     const { form_error, poa_status, resubmit_poa } = form_state;
 
-    const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
+    const is_form_visible = !is_loading && poa_status !== PoaStatusCodes.verified;
 
     return (
         <Formik

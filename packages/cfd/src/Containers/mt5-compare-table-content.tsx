@@ -242,11 +242,13 @@ const DMT5CompareModalContent = ({
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
     const {
-        poa_acknowledged,
         poi_acknowledged_for_vanuatu,
+        no_onfido_left,
         poi_acknowledged_for_bvi_labuan_maltainvest,
-        poi_poa_verified_for_vanuatu,
-        poi_poa_verified_for_bvi_labuan_maltainvest,
+        poi_pending_for_vanuatu,
+        poi_pending_for_bvi_labuan_maltainvest,
+        poi_verified_for_vanuatu,
+        poi_verified_for_bvi_labuan_maltainvest,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -335,37 +337,44 @@ const DMT5CompareModalContent = ({
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setJurisdictionSelectedShortcode('bvi');
-                if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                if (poi_verified_for_bvi_labuan_maltainvest) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else if (!poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left) {
+                    (window as any).LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
                 break;
             case 'financial_labuan':
                 setJurisdictionSelectedShortcode('labuan');
-                if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                if (poi_verified_for_bvi_labuan_maltainvest) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else if (!poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left) {
+                    (window as any).LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
                 break;
             case 'financial_vanuatu':
                 setJurisdictionSelectedShortcode('vanuatu');
-                if (poi_poa_verified_for_vanuatu) {
+                if (poi_verified_for_vanuatu) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else if (!poi_acknowledged_for_vanuatu && no_onfido_left) {
+                    (window as any).LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
                 break;
             case 'financial_maltainvest':
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                if (poi_verified_for_bvi_labuan_maltainvest) {
                     openPasswordModal(type_of_account);
+                } else if (!poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left) {
+                    (window as any).LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
                 break;
-
             default:
         }
     };
@@ -485,13 +494,19 @@ const DMT5CompareModalContent = ({
         if (type === 'svg') {
             return false;
         } else if (type === 'vanuatu') {
-            return poa_acknowledged && poi_acknowledged_for_vanuatu && !poi_poa_verified_for_vanuatu;
+            return poi_pending_for_vanuatu;
         }
-        return (
-            poa_acknowledged &&
-            poi_acknowledged_for_bvi_labuan_maltainvest &&
-            !poi_poa_verified_for_bvi_labuan_maltainvest
-        );
+        return poi_pending_for_bvi_labuan_maltainvest;
+    };
+
+    const should_show_contact_us_button = (item: TFooterButtonData) => {
+        const type = item.action.split('_')[1];
+        if (type === 'svg') {
+            return false;
+        } else if (type === 'vanuatu') {
+            return !poi_acknowledged_for_vanuatu && no_onfido_left;
+        }
+        return !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left;
     };
 
     return (
@@ -566,7 +581,9 @@ const DMT5CompareModalContent = ({
                                                 primary_light
                                                 onClick={() => onButtonClick(item)}
                                             >
-                                                {item.label}
+                                                {should_show_contact_us_button(item)
+                                                    ? localize('Contact Us')
+                                                    : item.label}
                                             </Button>
                                         )}
                                     </Table.Cell>

@@ -19,95 +19,67 @@ const JurisdictionCard = ({
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
 
+    const is_synthetic = account_type === 'synthetic';
     const [number_of_cards] = React.useState(
-        account_type === 'synthetic'
-            ? number_of_synthetic_accounts_to_be_shown
-            : number_of_financial_accounts_to_be_shown
-    );
-
-    const cardSelection = (cardType: string) => {
-        if (jurisdiction_selected_shortcode === cardType) {
-            setJurisdictionSelectedShortcode('');
-        } else {
-            setJurisdictionSelectedShortcode(cardType);
-        }
-    };
-
-    const Checkmark = () => (
-        <Icon icon='IcCheckmark' className={`${card_classname}__bullet-wrapper--checkmark`} color={'green'} size={18} />
+        is_synthetic ? number_of_synthetic_accounts_to_be_shown : number_of_financial_accounts_to_be_shown
     );
 
     const one_or_two_cards = number_of_cards === 1 || number_of_cards === 2;
 
+    const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
+
+    const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+
+    const cardSelection = (cardType: string) => {
+        setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
+    };
+    const Checkmark = () => (
+        <Icon icon='IcCheckmark' className={`${card_classname}__bullet-wrapper--checkmark`} color={'green'} size={18} />
+    );
     return (
         <>
             <div
                 className={classNames(card_classname, {
                     [`${card_classname}--selected`]: jurisdiction_selected_shortcode === type_of_card,
                 })}
-                onClick={disabled ? () => undefined : () => cardSelection(`${type_of_card}`)}
+                onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
                 style={one_or_two_cards ? { width: '32em' } : { width: '27.6em' }}
             >
-                {jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].is_over_header_available && (
+                {card_values.is_over_header_available && (
                     <div className={classNames(`${card_classname}__over-header`)}>
                         <Text as='p' color={'info-blue'} line_height='xxl' weight='bold'>
-                            <Localize
-                                i18n_default_text={
-                                    jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents]
-                                        .over_header
-                                }
-                            />
+                            <Localize i18n_default_text={card_values.over_header} />
                         </Text>
                     </div>
                 )}
                 <div className={`${card_classname}__info-container`}>
                     <Text as='p' color={'prominent'} weight='bold' size='sm' className={`${card_classname}__h2-header`}>
-                        <Localize
-                            i18n_default_text={
-                                jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents].header
-                            }
-                        />
+                        <Localize i18n_default_text={card_values.header} />
                     </Text>
-                    {account_type === 'synthetic'
-                        ? jurisdiction_contents[
-                              type_of_card as keyof typeof jurisdiction_contents
-                          ].synthetic_contents.map((item, index) => (
-                              <div className={`${card_classname}__bullet-wrapper`} key={index}>
-                                  <div>
-                                      <Checkmark />
-                                  </div>
-                                  <Text as='p' size='xs' color={'prominent'}>
-                                      <Localize i18n_default_text={item} />
-                                  </Text>
-                              </div>
-                          ))
-                        : jurisdiction_contents[
-                              type_of_card as keyof typeof jurisdiction_contents
-                          ].financial_contents.map((item, index) => (
-                              <div className={`${card_classname}__bullet-wrapper`} key={index}>
-                                  <div>
-                                      <Checkmark />
-                                  </div>
-                                  <Text as='p' size='xs' color={'prominent'}>
-                                      <Localize i18n_default_text={item} />
-                                  </Text>
-                                  {/* TODO: find a better solution */}
-                                  {/Straight-through processing/.test(item) && (
-                                      <Popover
-                                          alignment='left'
-                                          className='cfd-compare-accounts-tooltip'
-                                          classNameBubble='cfd-compare-accounts-tooltip--msg'
-                                          icon='info'
-                                          disable_message_icon
-                                          is_bubble_hover_enabled
-                                          message={localize(
-                                              'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
-                                          )}
-                                          zIndex={9999}
-                                      />
-                                  )}
-                              </div>
-                          ))}
+                    {card_data.map((item, index) => (
+                        <div className={`${card_classname}__bullet-wrapper`} key={index}>
+                            <div>
+                                <Checkmark />
+                            </div>
+                            <Text as='p' size='xs' color={'prominent'}>
+                                <Localize i18n_default_text={item} />
+                            </Text>
+                            {/Straight-through processing/.test(item) && (
+                                <Popover
+                                    alignment='left'
+                                    className='cfd-compare-accounts-tooltip'
+                                    classNameBubble='cfd-compare-accounts-tooltip--msg'
+                                    icon='info'
+                                    disable_message_icon
+                                    is_bubble_hover_enabled
+                                    message={localize(
+                                        'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
+                                    )}
+                                    zIndex={9999}
+                                />
+                            )}
+                        </div>
+                    ))}
                 </div>
                 <VerificationStatusBanner
                     type_of_card={type_of_card}

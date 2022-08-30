@@ -1,10 +1,16 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TRootStore } from 'Types';
 
-const ResendEmailButtonWrapper = ({ resend_timeout, resendVerificationEmail }) => (
+type TResetEmailButtonWrapperProp = {
+    is_withdrawal: boolean;
+    resend_timeout: number;
+    resendVerificationEmail: () => void;
+};
+
+const ResendEmailButtonWrapper = ({ resend_timeout, resendVerificationEmail }: TResetEmailButtonWrapperProp) => (
     <Button
         className='verification-email__resend-button'
         classNameSpan='verification-email__resend-button-text'
@@ -23,13 +29,7 @@ const ResendEmailButtonWrapper = ({ resend_timeout, resendVerificationEmail }) =
     />
 );
 
-ResendEmailButtonWrapper.propTypes = {
-    is_withdrawal: PropTypes.bool,
-    resend_timeout: PropTypes.number,
-    resendVerificationEmail: PropTypes.func,
-};
-
-export default connect(({ modules }, props) => ({
+export default connect(({ modules }: TRootStore, props: TResetEmailButtonWrapperProp) => ({
     resend_timeout: props.is_withdrawal
         ? modules.cashier.withdraw.verification.resend_timeout
         : modules.cashier.payment_agent.verification.resend_timeout,

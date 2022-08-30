@@ -13,8 +13,8 @@ describe('PaymentAgentStore', () => {
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
                 email: 'pa@example.com',
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
+                phone_numbers: '+12345678',
+                urls: 'http://www.pa.com',
                 supported_payment_methods: [{ payment_method: 'Visa' }],
             },
             {
@@ -23,8 +23,8 @@ describe('PaymentAgentStore', () => {
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
                 email: 'pa@example.com',
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
+                phone_numbers: '+12345678',
+                urls: 'http://www.pa.com',
                 supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             },
         ],
@@ -268,8 +268,8 @@ describe('PaymentAgentStore', () => {
             max_withdrawal: '2000',
             min_withdrawal: '10',
             email: 'pa@example.com',
-            telephone: '+12345678',
-            url: 'http://www.pa.com',
+            phone_numbers: '+12345678',
+            urls: 'http://www.pa.com',
         };
 
         payment_agent_store.addPaymentAgent(payment_agent);

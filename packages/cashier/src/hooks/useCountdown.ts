@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 const ONE_SECOND = 1000;
 
-type TCountdownOptions = {
+export type TCountdownOptions = {
     from: number;
     to?: number;
     increment?: boolean;

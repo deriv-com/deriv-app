@@ -35,8 +35,8 @@ const TradingHubLogout = ({ logout }) => {
         <div
             className='dc-vertical-tab__header-account__logout-tab'
             onClick={() => {
-                history.push(shared_routes.index);
                 logout();
+                history.push(shared_routes.index);
             }}
         >
             <div className='dc-vertical-tab__header-account__logout'>

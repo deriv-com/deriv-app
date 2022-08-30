@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize, Localize } from '@deriv/translations';
-import { Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import WalletCard from 'Components/wallet';
 import WalletIcon from 'Assets/svgs/wallet';
 
@@ -76,7 +76,13 @@ const CreateWallet = ({
                                     {wallet.getTitle()}
                                 </Text>
                                 {wallet?.has_information && (
-                                    <Icon icon='IcInfoOutline' onClick={() => setShouldShowFiat(true)} />
+                                    <Button
+                                        has_effect
+                                        text={localize('Learn more')}
+                                        small
+                                        primary_light
+                                        onClick={() => setShouldShowFiat(true)}
+                                    />
                                 )}
                             </div>
                             <div

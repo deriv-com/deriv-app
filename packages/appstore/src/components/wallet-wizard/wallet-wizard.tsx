@@ -51,7 +51,6 @@ const WalletWizard = ({ close }: WalletWizardProps) => {
                 onComplete={onComplete}
                 onClose={() => close()}
                 wizard_title={localize("Let's get you a new wallet.")}
-                lock_final_step
                 primary_button_label={is_final_step ? 'Add wallet' : 'Next'}
                 secondary_button_label='Back'
                 onChangeStep={onChangeStep}
@@ -76,7 +75,7 @@ const WalletWizard = ({ close }: WalletWizardProps) => {
                 </Wizard.Step>
                 <Wizard.RightPanel>
                     <div className='wallet-wizard__right-panel'>
-                        <SelectedWallet selected_wallet={currency} />
+                        {currency && <SelectedWallet selected_wallet={currency} />}
                         <WalletDescription selected_wallet={currency} />
                     </div>
                 </Wizard.RightPanel>

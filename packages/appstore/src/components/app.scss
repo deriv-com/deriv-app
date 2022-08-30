@@ -2,7 +2,7 @@
     height: 100%;
 }
 
-@keyframes triggerEffect {
+@keyframes triggerAnimation {
     10% {
         transform: rotate(10deg);
     }
@@ -29,8 +29,5 @@
     }
     90% {
         transform: rotate(10deg);
-    }
-    100% {
-        transform: rotate(-10deg);
     }
 }

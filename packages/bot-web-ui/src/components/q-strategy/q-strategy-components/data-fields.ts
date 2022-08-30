@@ -12,7 +12,7 @@ const common_inputs_properties = {
 
 const getMessage = property => `The bot will stop trading if your total ${property} exceeds this amount.`;
 
-const data_fields = [
+const data_fields: Array<any> = [
     {
         id: 'base__types-strategies',
         name: 'base__types-strategies',

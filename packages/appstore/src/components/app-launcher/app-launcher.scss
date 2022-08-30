@@ -1,0 +1,24 @@
+.app-launcher {
+    margin: 1.6rem 0;
+    width: 40rem;
+    min-height: 9.6rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+
+    @include mobile {
+        width: 32.8rem;
+        min-height: 7.2rem;
+        gap: 1.6rem;
+    }
+
+    &__button {
+        height: fit-content;
+        margin-left: auto;
+    }
+
+    &__balance {
+        margin-left: auto;
+        white-space: nowrap;
+    }
+}

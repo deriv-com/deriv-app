@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/ui';
+import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WalletCard from 'Components/wallet';
 import './completed-step.scss';

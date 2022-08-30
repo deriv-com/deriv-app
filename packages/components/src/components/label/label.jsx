@@ -36,6 +36,8 @@ const Label = ({ mode, children, size = 'regular', className }) => {
 Label.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     mode: PropTypes.oneOf(available_modes),
+    size: PropTypes.string,
+    className: PropTypes.string,
 };
 
 export default Label;

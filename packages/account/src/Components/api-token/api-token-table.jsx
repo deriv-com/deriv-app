@@ -19,7 +19,7 @@ const ApiTokenTable = () => {
         return sentenced_case;
     };
 
-    const getTraslatedScopes = str => {
+    const getTranslatedScopes = str => {
         switch (str) {
             case 'read':
                 return localize('Read');
@@ -37,7 +37,7 @@ const ApiTokenTable = () => {
     };
 
     const getScopeValue = token => {
-        const titled_scopes = token.scopes.map(scope => getTraslatedScopes(scope));
+        const titled_scopes = token.scopes.map(scope => getTranslatedScopes(scope));
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {

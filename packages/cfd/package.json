@@ -106,6 +106,6 @@
         "react-dom": "^16.14.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "^4.3.0"
+        "react-transition-group": "4.4.2"
     }
 }

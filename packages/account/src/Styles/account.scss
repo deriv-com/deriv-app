@@ -2331,3 +2331,20 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 /* stylelint-enable */
+
+.financial-banner {
+    background: rgba(255, 173, 58, 0.16);
+    border-radius: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    padding: 0.8rem;
+    max-width: 49.5rem;
+    max-height: 5.3rem;
+    margin-bottom: 2.4rem;
+
+    @include mobile {
+        margin: 1rem 2.2rem 1.6rem 1rem;
+        max-width: 32.8rem;
+    }
+}

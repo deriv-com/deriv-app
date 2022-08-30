@@ -313,24 +313,24 @@ const FinancialAssessment = ({
         <React.Fragment>
             <Formik
                 initialValues={{
-                    income_source,
-                    employment_status,
-                    employment_industry,
-                    occupation,
-                    source_of_wealth,
-                    education_level,
-                    net_income,
-                    estimated_worth,
-                    account_turnover,
+                    income_source: '' || income_source,
+                    employment_status: '' || employment_status,
+                    employment_industry: '' || employment_industry,
+                    occupation: '' || occupation,
+                    source_of_wealth: '' || source_of_wealth,
+                    education_level: '' || education_level,
+                    net_income: '' || net_income,
+                    estimated_worth: '' || estimated_worth,
+                    account_turnover: '' || account_turnover,
                     ...(has_trading_experience && {
-                        binary_options_trading_experience,
-                        binary_options_trading_frequency,
-                        cfd_trading_experience,
-                        cfd_trading_frequency,
-                        forex_trading_experience,
-                        forex_trading_frequency,
-                        other_instruments_trading_experience,
-                        other_instruments_trading_frequency,
+                        binary_options_trading_experience: '' || binary_options_trading_experience,
+                        binary_options_trading_frequency: '' || binary_options_trading_frequency,
+                        cfd_trading_experience: '' || cfd_trading_experience,
+                        cfd_trading_frequency: '' || cfd_trading_frequency,
+                        forex_trading_experience: '' || forex_trading_experience,
+                        forex_trading_frequency: '' || forex_trading_frequency,
+                        other_instruments_trading_experience: '' || other_instruments_trading_experience,
+                        other_instruments_trading_frequency: '' || other_instruments_trading_frequency,
                     }),
                 }}
                 enableReinitialize
@@ -363,6 +363,21 @@ const FinancialAssessment = ({
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
+                                {/* {is_trading_experience_incomplete && !is_submit_success && ( */}
+                                {!is_submit_success && (
+                                    <div className='financial-banner'>
+                                        <Icon icon='IcAlertWarning' />
+                                        {isMobile() ? (
+                                            <Text size='xxxs' line_height='s'>
+                                                <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
+                                            </Text>
+                                        ) : (
+                                            <Text size='xxs' line_height='l'>
+                                                <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                                            </Text>
+                                        )}
+                                    </div>
+                                )}
                                 <FormBody scroll_offset={getScrollOffset()}>
                                     <FormSubHeader
                                         title={localize('Financial information')}

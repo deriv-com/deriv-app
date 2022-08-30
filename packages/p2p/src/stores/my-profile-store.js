@@ -511,8 +511,7 @@ export default class MyProfileStore extends BaseStore {
         return errors;
     };
 
-    @action.bound
-    validatePaymentMethodFields(values) {
+    validatePaymentMethodFields = values => {
         const errors = {};
         const no_symbols_regex = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/;
 
@@ -523,7 +522,7 @@ export default class MyProfileStore extends BaseStore {
 
             if (required && !value) {
                 errors[key] = localize('This field is required.');
-            } else if (!no_symbols_regex.test(value)) {
+            } else if (value && !no_symbols_regex.test(value)) {
                 errors[key] = localize(
                     "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
                     {
@@ -540,9 +539,8 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return errors;
-    }
+    };
 
-    @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
     }

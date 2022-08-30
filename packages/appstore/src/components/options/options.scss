@@ -1,0 +1,94 @@
+.options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 24px;
+
+    width: 1152px;
+    height: 303px;
+
+    &__title-description-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+
+        width: 1152px;
+        height: 60px;
+
+        &--title {
+            width: 1152px;
+            height: 36px;
+
+            /* desktop/subtitle/Sub 1 - bold */
+
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 36px;
+            /* identical to box height, or 150% */
+
+            /* system/light/1 - prominent (text) */
+
+            color: #333333;
+        }
+        &--description {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            padding: 0px;
+            gap: 4px;
+
+            width: 1070px;
+            height: 24px;
+        }
+    }
+    &__accounts-platform-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+
+        width: 1152px;
+        height: 219px;
+
+        background: #ffffff;
+        border-radius: 16px;
+        &--accounts {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0px;
+            gap: 16px;
+
+            width: 1152px;
+            height: 72px;
+        }
+        &--platform {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 16px 23px 16px 24px;
+            gap: 24px;
+
+            width: 1152px;
+            height: 147px;
+
+            /* card shadow */
+
+            background: linear-gradient(0deg, #f2f3f4, #f2f3f4), #ffffff;
+            border-radius: 0px 6px 6px;
+            &--divider {
+                width: 40px;
+                height: 1px;
+
+                /* system/light/6 - hover (background) */
+
+                background: #e6e9e9;
+                transform: rotate(90deg);
+            }
+        }
+    }
+}

@@ -42,6 +42,7 @@ const AccountSwitcher = props => {
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
     const [exchanged_rate, setExchangedRate] = React.useState('');
+    const [exchanged_rate_mt5_dxtrade, setExchangedRateMT5Dxtrade] = React.useState({ mt5_demo: '', dxtrade: '' });
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
@@ -61,6 +62,21 @@ const AccountSwitcher = props => {
         getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
             setExchangedRate(res)
         );
+
+        const mt5_demo_currency = props.mt5_login_list.find(account => isDemo(account))?.currency;
+        const dxtrade_demo_currency = props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
+
+        if (mt5_demo_currency) {
+            getExchangeRate(mt5_demo_currency, props.obj_total_balance.currency).then(res =>
+                setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, mt5_demo: res }))
+            );
+        }
+
+        if (dxtrade_demo_currency) {
+            getExchangeRate(dxtrade_demo_currency, props.obj_total_balance.currency).then(res =>
+                setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, dxtrade: res }))
+            );
+        }
     }, []);
 
     React.useEffect(() => {
@@ -358,10 +374,20 @@ const AccountSwitcher = props => {
         let total = vrtc_currency !== props.obj_total_balance.currency ? vrtc_balance * exchanged_rate : vrtc_balance;
 
         if (Array.isArray(props.mt5_login_list)) {
-            total += mt5_demo_total.balance;
+            const mt5_demo_currency = props.mt5_login_list.find(account => isDemo(account))?.currency;
+
+            total +=
+                mt5_demo_currency !== props.obj_total_balance.currency
+                    ? mt5_demo_total.balance * exchanged_rate_mt5_dxtrade.mt5_demo
+                    : mt5_demo_total.balance;
         }
         if (Array.isArray(props.dxtrade_accounts_list)) {
-            total += dxtrade_demo_total.balance;
+            const dxtrade_demo_currency = props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
+
+            total +=
+                dxtrade_demo_currency !== props.obj_total_balance.currency
+                    ? dxtrade_demo_total.balance * exchanged_rate_mt5_dxtrade.dxtrade
+                    : dxtrade_demo_total.balance;
         }
 
         return total;

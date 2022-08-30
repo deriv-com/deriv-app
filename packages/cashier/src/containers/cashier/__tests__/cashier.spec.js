@@ -125,9 +125,9 @@ describe('<Cashier />', () => {
 
         renderWithRouter(<Cashier {...props} />);
 
-        const payment_agent_link = screen.getByRole('link', { name: 'Payment agents' });
-        fireEvent.click(payment_agent_link);
+        const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
+        fireEvent.click(withdrawal_link);
 
-        expect(history.location.pathname).toBe('/cashier/payment-agent');
+        expect(history.location.pathname).toBe('/cashier/withdrawal');
     });
 });

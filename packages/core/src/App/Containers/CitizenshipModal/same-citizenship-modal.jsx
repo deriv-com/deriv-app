@@ -12,7 +12,7 @@ const SameCitizenshipModal = ({
 }) => (
     <div>
         <Text as='p' className='account-signup__text'>
-            {localize('Are you a citizen of the same country where you live?')}
+            {localize('Are you a citizen of {{- residence}}?', { residence })}
         </Text>
         <div className='account-signup__same-citizenship'>
             <Button

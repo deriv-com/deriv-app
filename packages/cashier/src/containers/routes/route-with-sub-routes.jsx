@@ -12,6 +12,14 @@ import {
 import { getLanguage } from '@deriv/translations';
 
 const RouteWithSubRoutes = route => {
+    const { is_cra } = route;
+
+    const validateCraRoutes = pathname => {
+        return [routes.cashier_withdrawal, routes.cashier_acc_transfer].includes(pathname);
+    };
+
+    const is_valid_cra_route = validateCraRoutes(location.pathname);
+
     const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
@@ -25,6 +33,8 @@ const RouteWithSubRoutes = route => {
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
             redirectToLogin(route.is_logged_in, getLanguage());
+        } else if (is_cra && !is_valid_cra_route) {
+            result = <Redirect to={routes.cashier_withdrawal} />;
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);

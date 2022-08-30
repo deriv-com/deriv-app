@@ -6,17 +6,25 @@ import { connect } from 'Stores/connect';
 import BinaryRoutes from './binary-routes.jsx';
 import ErrorComponent from './error-component';
 
-const Routes = ({ error, has_error, is_logged_in, is_logging_in, passthrough }) => {
+const Routes = ({ error, is_cra, has_error, is_logged_in, is_logging_in, passthrough }) => {
     if (has_error) {
         return <ErrorComponent {...error} />;
     }
 
-    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
+    return (
+        <BinaryRoutes
+            is_cra={is_cra}
+            is_logged_in={is_logged_in}
+            is_logging_in={is_logging_in}
+            passthrough={passthrough}
+        />
+    );
 };
 
 Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
+    is_cra: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -27,9 +35,10 @@ Routes.propTypes = {
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common }) => ({
-        is_logged_in: client.is_logged_in,
-        is_logging_in: client.is_logging_in,
         error: common.error,
         has_error: common.has_error,
+        is_cra: client.is_cra,
+        is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
     }))(Routes)
 );

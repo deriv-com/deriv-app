@@ -635,6 +635,7 @@
     min-height: 24rem;
     width: 30.4em;
     position: relative;
+    justify-content: space-between;
     @include desktop {
         height: 100%;
     }
@@ -705,6 +706,7 @@
         display: grid;
         grid-template-rows: 1fr;
         justify-content: center;
+        height: 100%;
 
         @include mobile {
             grid-template-rows: 1fr;

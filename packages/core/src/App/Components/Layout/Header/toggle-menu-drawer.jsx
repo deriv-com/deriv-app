@@ -343,40 +343,56 @@ const ToggleMenuDrawer = React.forwardRef(
                             )}
                             {is_pre_appstore && (
                                 <React.Fragment>
-                                    <MobileDrawer.SubHeader
-                                        className={classNames({
-                                            'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
-                                        })}
-                                    >
-                                        <Button
-                                            className='header__menu--back-to-ui'
-                                            type='button'
-                                            large
-                                            onClick={() => {
-                                                setIsPreAppStore(false);
-                                            }}
+                                    {is_logged_in ? (
+                                        <MobileDrawer.SubHeader
+                                            className={classNames({
+                                                'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
+                                            })}
                                         >
-                                            <Text className='header__menu--back-to-ui-text' size='xs'>
-                                                {localize('Back to old interface')}
-                                            </Text>
-                                            <Icon
-                                                className='header__menu-mobile-rightarrow'
-                                                icon='IcArrowRight'
-                                                size={18}
-                                                color='red'
-                                            />
-                                        </Button>
-                                    </MobileDrawer.SubHeader>
+                                            <Button
+                                                className='header__menu--back-to-ui'
+                                                type='button'
+                                                large
+                                                onClick={() => {
+                                                    setIsPreAppStore(false);
+                                                }}
+                                            >
+                                                <Text className='header__menu--back-to-ui-text' size='xs'>
+                                                    {localize('Back to old interface')}
+                                                </Text>
+                                                <Icon
+                                                    className='header__menu-mobile-rightarrow'
+                                                    icon='IcArrowRight'
+                                                    size={18}
+                                                    color='red'
+                                                />
+                                            </Button>
+                                        </MobileDrawer.SubHeader>
+                                    ) : (
+                                        <MobileDrawer.SubHeader
+                                            className={classNames({
+                                                'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
+                                            })}
+                                        >
+                                            {platform_switcher}
+                                        </MobileDrawer.SubHeader>
+                                    )}
                                     <MobileDrawer.Body>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.trading_hub}
-                                                icon='IcAppstoreHome'
-                                                text={localize('Trading Hub')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
+                                        <div
+                                            className='header__menu-mobile-platform-switcher'
+                                            id='mobile_platform_switcher'
+                                        />
+                                        {is_logged_in && (
+                                            <MobileDrawer.Item>
+                                                <MenuLink
+                                                    link_to={routes.trading_hub}
+                                                    icon='IcAppstoreHome'
+                                                    text={localize('Trading Hub')}
+                                                    onClickLink={toggleDrawer}
+                                                    changeCurrentLanguage={changeCurrentLanguage}
+                                                />
+                                            </MobileDrawer.Item>
+                                        )}
                                         <MobileDrawer.Item>
                                             <MenuLink
                                                 link_to={routes.trade}
@@ -390,7 +406,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
                                         {getLanguageRoutes()}
-
                                         <MobileDrawer.Item
                                             className='header__menu-mobile-theme--tradinghub'
                                             onClick={e => {
@@ -410,60 +425,66 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 />
                                             </div>
                                         </MobileDrawer.Item>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to='https://deriv.com/help-centre//'
-                                                icon='IcHelpCentre'
-                                                text={localize('Help centre')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.account_limits}
-                                                icon='IcAccountLimits'
-                                                text={localize('Account Limits')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to='https://deriv.com/responsible/'
-                                                icon='IcVerification'
-                                                text={localize('Responsible trading')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to='https://deriv.com/regulatory'
-                                                icon='IcRegulatoryInformation'
-                                                text={localize('Regulatory information')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
-                                        <MobileDrawer.Item className='header__menu-mobile-theme'>
-                                            <MenuLink
-                                                link_to='https://deriv.com'
-                                                icon='IcDerivOutline'
-                                                text={localize('Go to Deriv.com')}
-                                                onClickLink={toggleDrawer}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
                                         {is_logged_in && (
-                                            <MobileDrawer.Item
-                                                onClick={() => {
-                                                    logoutClient();
-                                                    toggleDrawer();
-                                                }}
-                                            >
-                                                <MenuLink icon='IcLogout' text={localize('Log out')} />
-                                            </MobileDrawer.Item>
+                                            <>
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to='https://deriv.com/help-centre//'
+                                                        icon='IcHelpCentre'
+                                                        text={localize('Help centre')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
+                                                    />
+                                                </MobileDrawer.Item>
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to={routes.account_limits}
+                                                        icon='IcAccountLimits'
+                                                        text={localize('Account Limits')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
+                                                    />
+                                                </MobileDrawer.Item>
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to='https://deriv.com/responsible/'
+                                                        icon='IcVerification'
+                                                        text={localize('Responsible trading')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
+                                                    />
+                                                </MobileDrawer.Item>
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to='https://deriv.com/regulatory'
+                                                        icon='IcRegulatoryInformation'
+                                                        text={localize('Regulatory information')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
+                                                    />
+                                                </MobileDrawer.Item>
+                                                <MobileDrawer.Item className='header__menu-mobile-theme'>
+                                                    <MenuLink
+                                                        link_to='https://deriv.com'
+                                                        icon='IcDerivOutline'
+                                                        text={localize('Go to Deriv.com')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
+                                                    />
+                                                </MobileDrawer.Item>
+                                                <MobileDrawer.Item
+                                                    onClick={() => {
+                                                        logoutClient();
+                                                        toggleDrawer();
+                                                    }}
+                                                >
+                                                    <MenuLink
+                                                        link_to={routes.index}
+                                                        icon='IcLogout'
+                                                        text={localize('Log out')}
+                                                    />
+                                                </MobileDrawer.Item>
+                                            </>
                                         )}
                                     </MobileDrawer.Body>
                                 </React.Fragment>

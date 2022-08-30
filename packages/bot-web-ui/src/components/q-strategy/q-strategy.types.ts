@@ -15,7 +15,7 @@ export type TQuickStrategyProps = {
     onChangeInputValue: any;
     onHideDropdownList: any;
     onScrollStopDropdownList: any;
-    setActiveTabIndex: any;
+    setActiveTypeStrategyIndex: any;
     selected_symbol: any;
     selected_trade_type: any;
     selected_duration_unit: any;

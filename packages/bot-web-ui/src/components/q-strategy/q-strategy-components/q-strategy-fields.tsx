@@ -26,6 +26,7 @@ const QStrategyFields = ({
 }: any) => {
     const fields = data_fields.map((item, idx) => {
         const {
+            index,
             id,
             name,
             field_name,
@@ -62,10 +63,13 @@ const QStrategyFields = ({
             ? selected_duration_unit
             : '';
 
+        const isBaseField = name.startsWith('base__');
+        const isUniqField = index === selected_type_strategy.index;
+
         return (
-            <Field name={field_name} key={id}>
+            <Field name={isBaseField ? field_name : isUniqField ? field_name : ''} key={id}>
                 {({ field }) => {
-                    return name.startsWith('base__') ? (
+                    return isBaseField ? (
                         <>
                             {isInputField ? (
                                 <Input
@@ -136,30 +140,32 @@ const QStrategyFields = ({
                             )}
                         </>
                     ) : (
-                        <Input
-                            {...field}
-                            className={className}
-                            label_className={label_className}
-                            field_className={field_className}
-                            type='text'
-                            label={localize(label)}
-                            onChange={e => {
-                                handleChange(e);
-                                onChangeInputValue(input_value, e);
-                            }}
-                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                            onBlur={() => setCurrentFocus(null)}
-                            placeholder={placeholder}
-                            trailing_icon={
-                                <Popover
-                                    alignment={is_mobile ? 'top' : 'bottom'}
-                                    message={localize(trailing_icon_message)}
-                                    zIndex={zIndex}
-                                >
-                                    <Icon icon='IcInfoOutline' />
-                                </Popover>
-                            }
-                        />
+                        isUniqField && (
+                            <Input
+                                {...field}
+                                className={className}
+                                label_className={label_className}
+                                field_className={field_className}
+                                type='text'
+                                label={localize(label)}
+                                onChange={e => {
+                                    handleChange(e);
+                                    onChangeInputValue(input_value, e);
+                                }}
+                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                onBlur={() => setCurrentFocus(null)}
+                                placeholder={placeholder}
+                                trailing_icon={
+                                    <Popover
+                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                        message={localize(trailing_icon_message)}
+                                        zIndex={zIndex}
+                                    >
+                                        <Icon icon='IcInfoOutline' />
+                                    </Popover>
+                                }
+                            />
+                        )
                     );
                 }}
             </Field>

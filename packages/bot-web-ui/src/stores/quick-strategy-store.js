@@ -41,7 +41,7 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
-            ...(this.active_index === 0 && { 'quick-strategy__size': this.input_size }),
+            ...(this.active_index === 0 && { martingale__size: this.input_size }),
             ...(this.active_index === 1 && { 'alembert-unit': this.input_alembert_unit }),
             ...(this.active_index === 2 && { 'oscar-unit': this.input_oscar_unit }),
 
@@ -60,7 +60,7 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    setActiveTabIndex(index) {
+    setActiveTypeStrategyIndex(index) {
         this.active_index = index;
     }
 
@@ -166,7 +166,7 @@ export default class QuickStrategyStore {
         } else if (type === 'type-strategy') {
             const typeStrategy = this.types_strategies_dropdown.find(item => item.value === value);
             this.setSelectedTypeStrategy(typeStrategy);
-            this.setActiveTabIndex(typeStrategy.index);
+            this.setActiveTypeStrategyIndex(typeStrategy.index);
 
             if (typeStrategy) {
                 setFieldValue('quick-strategy__types-strategies', typeStrategy.text);

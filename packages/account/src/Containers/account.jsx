@@ -8,6 +8,8 @@ import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Styles/account.scss';
+import Icon from '@deriv/components/src/components/icon/icon';
+import { useHistory } from 'react-router';
 
 const AccountLogout = ({ logout, history }) => {
     return (
@@ -27,9 +29,30 @@ const AccountLogout = ({ logout, history }) => {
     );
 };
 
+const TradingHubLogout = ({ logout }) => {
+    const history = useHistory();
+    return (
+        <div
+            className='dc-vertical-tab__header-account__logout-tab'
+            onClick={() => {
+                history.push(shared_routes.index);
+                logout();
+            }}
+        >
+            <div className='dc-vertical-tab__header-account__logout'>
+                <Icon icon='IcLogout' className='dc-vertical-tab__header-account__logout--icon' />
+                <Text color='general' size='xs' weight='bold'>
+                    {localize('Log out')}
+                </Text>
+            </div>
+        </div>
+    );
+};
+
 const PageOverlayWrapper = ({
     is_from_derivgo,
     is_appstore,
+    is_pre_appstore,
     list_groups,
     logout,
     onClickClose,
@@ -74,6 +97,7 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
+                extra_content={is_pre_appstore && <TradingHubLogout logout={logout} history={history} />}
             />
         </PageOverlay>
     );
@@ -95,7 +119,7 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -159,6 +183,7 @@ const Account = ({
                 <PageOverlayWrapper
                     is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
+                    is_pre_appstore={is_pre_appstore}
                     list_groups={list_groups}
                     logout={logout}
                     onClickClose={onClickClose}

@@ -22,6 +22,23 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 4.4rem;
             background-color: var(--general-main-1);
         }
+
+        &__header {
+            &-account__logout {
+                margin-top: 1rem;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                border: solid 2px $color-grey-7;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+
+                &--icon {
+                    margin-right: 0.8rem;
+                }
+            }
+        }
     }
     .dc-vertical-tab--dashboard {
         height: unset;

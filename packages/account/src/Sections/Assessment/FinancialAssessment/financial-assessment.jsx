@@ -363,8 +363,7 @@ const FinancialAssessment = ({
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
-                                {/* {is_trading_experience_incomplete && !is_submit_success && ( */}
-                                {!is_submit_success && (
+                                {is_trading_experience_incomplete && !is_submit_success && (
                                     <div className='financial-banner'>
                                         <Icon icon='IcAlertWarning' />
                                         {isMobile() ? (

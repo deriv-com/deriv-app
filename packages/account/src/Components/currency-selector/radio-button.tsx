@@ -9,6 +9,7 @@ type TUSTPopover = {
 };
 
 type TRadioButtonExtend = {
+    children: never;
     field: InputHTMLAttributes<HTMLInputElement>;
     icon: string;
     second_line_label: string;

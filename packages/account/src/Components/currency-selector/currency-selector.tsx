@@ -18,6 +18,7 @@ type TCurrencySelectorForm = {
 type TCurrencySelectorExtend = {
     accounts: { [key: string]: TAuthAccountInfo };
     available_crypto_currencies: TCurrencyInfo[];
+    children: never;
     getCurrentStep: () => number;
     goToNextStep: () => void;
     goToPreviousStep: () => void;
@@ -203,13 +204,9 @@ const CurrencySelector = ({
                                     {!!reorderCurrencies(fiat)?.length && (
                                         <React.Fragment>
                                             <RadioButtonGroup
-                                                id='currency'
                                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                                 label={localize('Fiat currencies')}
                                                 is_fiat
-                                                value={values.currency}
-                                                error={errors.currency}
-                                                touched={touched.currency}
                                                 item_count={reorderCurrencies(fiat).length}
                                                 description={description}
                                                 has_fiat={should_disable_fiat && has_fiat}
@@ -231,12 +228,8 @@ const CurrencySelector = ({
                                     {!!reorderCurrencies(crypto, 'crypto')?.length && (
                                         <React.Fragment>
                                             <RadioButtonGroup
-                                                id='currency'
                                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                                 label={localize('Cryptocurrencies')}
-                                                value={values.currency}
-                                                error={errors.currency}
-                                                touched={touched.currency}
                                                 item_count={reorderCurrencies(crypto, 'crypto').length}
                                                 description={description}
                                             >

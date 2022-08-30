@@ -17,7 +17,7 @@ type TOnboardingProps = {
 };
 
 const Onboarding = ({ contents }: TOnboardingProps) => {
-    const amount_of_steps = Object.keys(contents).map(content => content);
+    const amount_of_steps = Object.keys(contents);
 
     const [step, setStep] = React.useState<number>(1);
 
@@ -29,7 +29,7 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
         if (step < amount_of_steps.length) setStep(step + 1);
     };
 
-    const onboarding_step = `step${step}`;
+    const onboarding_step = amount_of_steps[step - 1];
 
     return (
         <div className='onboarding-wrapper'>

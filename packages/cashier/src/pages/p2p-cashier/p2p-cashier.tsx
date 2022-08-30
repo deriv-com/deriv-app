@@ -5,7 +5,7 @@ import P2P from '@deriv/p2p';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { get, init, timePromise } from '_common/server_time';
+import { get, init, timePromise } from 'Utils/server_time';
 import { connect } from 'Stores/connect';
 import { TClientStore, TCommonStore, TNotificationStore, TRootStore, TUiStore } from 'Types';
 

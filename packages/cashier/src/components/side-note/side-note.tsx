@@ -1,13 +1,34 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import { TReactChildren, TSideNotesProps } from 'Types';
 import './side-note.scss';
 
-const SideNoteTitle = ({ children_length, side_notes_length, title }) => {
-    const length_of_notes = children_length || side_notes_length;
+type TSideNoteTitle = {
+    children_length?: number;
+    side_notes_length?: number;
+    title?: string | JSX.Element;
+};
+
+type TSideNoteBullet = {
+    children: TReactChildren;
+    id: number;
+};
+
+type TSideNoteProps = {
+    children?: TReactChildren[];
+    className?: string;
+    has_bullets?: boolean;
+    has_title?: boolean;
+    is_mobile?: boolean;
+    side_notes?: TSideNotesProps[];
+    title?: string | JSX.Element;
+};
+
+const SideNoteTitle = ({ children_length, side_notes_length, title }: TSideNoteTitle) => {
+    const length_of_notes = children_length || side_notes_length || 0;
 
     return (
         <Text className='side-note__title' weight='bold' as='p'>
@@ -17,14 +38,22 @@ const SideNoteTitle = ({ children_length, side_notes_length, title }) => {
     );
 };
 
-const SideNoteBullet = ({ children }) => (
-    <div className='side-note__bullet-wrapper'>
-        <div className='side-note__bullet' />
+const SideNoteBullet = ({ children, id }: TSideNoteBullet) => (
+    <div className='side-note__bullet-wrapper' data-testid={`dt_side_note_bullet_wrapper_${id}`}>
+        <div className='side-note__bullet' data-testid={`dt_side_note_bullet_${id}`} />
         <div>{children}</div>
     </div>
 );
 
-const SideNote = ({ children, className, has_bullets = true, has_title = true, is_mobile, side_notes, title }) => {
+const SideNote = ({
+    children,
+    className,
+    has_bullets = true,
+    has_title = true,
+    is_mobile,
+    side_notes,
+    title,
+}: TSideNoteProps) => {
     const Wrapper = is_mobile ? MobileWrapper : DesktopWrapper;
 
     return (
@@ -43,9 +72,11 @@ const SideNote = ({ children, className, has_bullets = true, has_title = true, i
                         {children && <>{children}</>}
 
                         {!children &&
-                            side_notes.map((note, i) =>
+                            side_notes?.map((note, i) =>
                                 has_bullets ? (
-                                    <SideNoteBullet key={i}>{note}</SideNoteBullet>
+                                    <SideNoteBullet id={i} key={i}>
+                                        {note}
+                                    </SideNoteBullet>
                                 ) : (
                                     <Text key={i} className='side-note__text' size='xxs' as='p'>
                                         {note}
@@ -57,16 +88,6 @@ const SideNote = ({ children, className, has_bullets = true, has_title = true, i
             )}
         </>
     );
-};
-
-SideNote.propTypes = {
-    children: PropTypes.any,
-    className: PropTypes.string,
-    has_bullets: PropTypes.bool,
-    has_title: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    side_notes: PropTypes.array,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default SideNote;

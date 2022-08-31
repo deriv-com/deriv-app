@@ -1,9 +1,9 @@
-import { Field, ErrorMessage } from 'formik';
+import { Field } from 'formik';
 import React from 'react';
-import { Autocomplete, SelectNative, Icon, Input, Popover, IconTradeTypes, Text } from '@deriv/components';
+import { Icon, Input, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { data_fields } from '.';
+import { data_fields, SelectField } from '.';
 
 const QStrategyFields = ({
     is_mobile,
@@ -24,6 +24,7 @@ const QStrategyFields = ({
     setCurrentFocus,
     values,
     description,
+    getFieldMap,
 }: any) => {
     let tempIsDoubleIdx: number;
 
@@ -43,8 +44,6 @@ const QStrategyFields = ({
             zIndex,
             is_able_disabled,
         } = item;
-
-        if (tempIsDoubleIdx === idx) return;
 
         const isInputField = input_value.startsWith('input_');
 
@@ -72,14 +71,73 @@ const QStrategyFields = ({
         const isUniqStrategyField = index === selected_type_strategy.index;
         const isCurrentStrategyFields = isBaseField || isUniqStrategyField;
 
-        if (isInputField) {
+        const isDurationUnitField = name.endsWith('duration-unit');
+        const isDurationValueField = name.endsWith('duration-value');
+        const isProfitField = name.endsWith('profit');
+        if (tempIsDoubleIdx === idx || isDurationValueField || isProfitField) return;
+
+        if (isCurrentStrategyFields && isInputField) {
             tempIsDoubleIdx = idx + 1;
         }
 
         /* eslint consistent-return: off */
-        return (
-            isCurrentStrategyFields &&
-            (isInputField ? (
+        return isCurrentStrategyFields ? (
+            isDurationUnitField ? (
+                <div
+                    className={classNames('quick-strategy__form-row', {
+                        'quick-strategy__form-row--multiple': !is_mobile,
+                    })}
+                >
+                    <SelectField
+                        field_name={field_name}
+                        id={id}
+                        is_mobile={is_mobile}
+                        getDropdownList={getDropdownList}
+                        getSelectedValue={getSelectedValue}
+                        label={label}
+                        input_value={input_value}
+                        setFieldValue={setFieldValue}
+                        className={className}
+                        is_able_disabled={is_able_disabled}
+                        values={values}
+                        onChangeDropdownItem={onChangeDropdownItem}
+                        onHideDropdownList={onHideDropdownList}
+                        onScrollStopDropdownList={onScrollStopDropdownList}
+                        selected_trade_type={selected_trade_type}
+                        selected_symbol={selected_symbol}
+                    />
+                    <Field name={data_fields[4]?.field_name} key={data_fields[4]?.id}>
+                        {({ field }) => {
+                            return (
+                                <Input
+                                    {...field}
+                                    className={data_fields[4]?.className}
+                                    label_className={data_fields[4]?.label_className}
+                                    field_className={data_fields[4]?.field_className}
+                                    type='text'
+                                    label={localize(data_fields[4]?.label)}
+                                    onChange={e => {
+                                        handleChange(e);
+                                        onChangeInputValue(data_fields[4]?.input_value, e);
+                                    }}
+                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                    onBlur={() => setCurrentFocus(null)}
+                                    placeholder={data_fields[4]?.placeholder}
+                                    trailing_icon={
+                                        <Popover
+                                            alignment={is_mobile ? 'top' : 'bottom'}
+                                            message={localize(data_fields[4]?.trailing_icon_message)}
+                                            zIndex={data_fields[4]?.zIndex}
+                                        >
+                                            <Icon icon='IcInfoOutline' />
+                                        </Popover>
+                                    }
+                                />
+                            );
+                        }}
+                    </Field>
+                </div>
+            ) : isInputField && !isDurationValueField ? (
                 <div
                     className={classNames('quick-strategy__form-row', {
                         'quick-strategy__form-row--multiple': !is_mobile,
@@ -115,28 +173,62 @@ const QStrategyFields = ({
                             );
                         }}
                     </Field>
-                    <Field name={field_name} key={data_fields[idx + 1]?.id}>
+                    <Field
+                        name={isUniqStrategyField ? data_fields[10]?.field_name : data_fields[idx + 1]?.field_name}
+                        key={isUniqStrategyField ? data_fields[10]?.id : data_fields[idx + 1]?.id}
+                    >
                         {({ field }) => {
                             return (
                                 <Input
                                     {...field}
-                                    className={data_fields[idx + 1]?.className}
-                                    label_className={data_fields[idx + 1]?.label_className}
-                                    field_className={data_fields[idx + 1]?.field_className}
+                                    className={
+                                        isUniqStrategyField
+                                            ? data_fields[10]?.className
+                                            : data_fields[idx + 1]?.className
+                                    }
+                                    label_className={
+                                        isUniqStrategyField
+                                            ? data_fields[10]?.label_className
+                                            : data_fields[idx + 1]?.label_className
+                                    }
+                                    field_className={
+                                        isUniqStrategyField
+                                            ? data_fields[10]?.field_className
+                                            : data_fields[idx + 1]?.field_className
+                                    }
                                     type='text'
-                                    label={localize(data_fields[idx + 1]?.label)}
+                                    label={localize(
+                                        isUniqStrategyField ? data_fields[10]?.label : data_fields[idx + 1]?.label
+                                    )}
                                     onChange={e => {
                                         handleChange(e);
-                                        onChangeInputValue(data_fields[idx + 1]?.input_value, e);
+                                        onChangeInputValue(
+                                            isUniqStrategyField
+                                                ? data_fields[10]?.input_value
+                                                : data_fields[idx + 1]?.input_value,
+                                            e
+                                        );
                                     }}
                                     onFocus={e => setCurrentFocus(e.currentTarget.name)}
                                     onBlur={() => setCurrentFocus(null)}
-                                    placeholder={placeholder}
+                                    placeholder={
+                                        isUniqStrategyField
+                                            ? data_fields[10]?.placeholder
+                                            : data_fields[idx + 1]?.placeholder
+                                    }
                                     trailing_icon={
                                         <Popover
                                             alignment={is_mobile ? 'top' : 'bottom'}
-                                            message={localize(data_fields[idx + 1]?.trailing_icon_message)}
-                                            zIndex={data_fields[idx + 1]?.zIndex}
+                                            message={localize(
+                                                isUniqStrategyField
+                                                    ? data_fields[10]?.trailing_icon_message
+                                                    : data_fields[idx + 1]?.trailing_icon_message
+                                            )}
+                                            zIndex={
+                                                isUniqStrategyField
+                                                    ? data_fields[10]?.zIndex
+                                                    : data_fields[idx + 1]?.zIndex
+                                            }
                                         >
                                             <Icon icon='IcInfoOutline' />
                                         </Popover>
@@ -147,61 +239,39 @@ const QStrategyFields = ({
                     </Field>
                 </div>
             ) : (
-                <>
-                    <div className='quick-strategy__form-row'>
-                        <Field name={field_name} key={id}>
-                            {({ field }) => {
-                                return (
-                                    <>
-                                        {is_mobile ? (
-                                            <SelectNative
-                                                list_items={getDropdownList}
-                                                value={getSelectedValue.value}
-                                                label={localize(label)}
-                                                should_show_empty_option={false}
-                                                onChange={e => {
-                                                    onChangeDropdownItem(input_value, e.target.value, setFieldValue);
-                                                }}
-                                            />
-                                        ) : (
-                                            <Autocomplete
-                                                {...field}
-                                                autoComplete='off'
-                                                className={className}
-                                                type='text'
-                                                label={localize(label)}
-                                                list_items={getDropdownList}
-                                                disabled={is_able_disabled && getDropdownList?.length === 1}
-                                                onHideDropdownList={() => {
-                                                    onHideDropdownList(input_value, values[field.name], setFieldValue);
-                                                }}
-                                                onItemSelection={({ value }) => {
-                                                    onChangeDropdownItem(input_value, value, setFieldValue);
-                                                }}
-                                                onScrollStop={() => onScrollStopDropdownList(input_value)}
-                                                leading_icon={
-                                                    (input_value === 'trade-type' && selected_trade_type?.icon && (
-                                                        <Text>
-                                                            <IconTradeTypes type={selected_trade_type.icon[0]} />
-                                                            <IconTradeTypes type={selected_trade_type.icon[1]} />
-                                                        </Text>
-                                                    )) ||
-                                                    (input_value === 'symbol' && selected_symbol?.value && (
-                                                        <Icon icon={`IcUnderlying${selected_symbol.value}`} size={24} />
-                                                    ))
-                                                }
-                                            />
-                                        )}
-                                    </>
-                                );
-                            }}
-                        </Field>
-                    </div>
-                    {name.endsWith('types-strategies') && <div className='q-strategy__description'>{description}</div>}
-                </>
-            ))
+                !isDurationValueField && (
+                    <>
+                        <div className='quick-strategy__form-row'>
+                            <SelectField
+                                field_name={field_name}
+                                id={id}
+                                is_mobile={is_mobile}
+                                getDropdownList={getDropdownList}
+                                getSelectedValue={getSelectedValue}
+                                label={label}
+                                input_value={input_value}
+                                setFieldValue={setFieldValue}
+                                className={className}
+                                is_able_disabled={is_able_disabled}
+                                values={values}
+                                onChangeDropdownItem={onChangeDropdownItem}
+                                onHideDropdownList={onHideDropdownList}
+                                onScrollStopDropdownList={onScrollStopDropdownList}
+                                selected_trade_type={selected_trade_type}
+                                selected_symbol={selected_symbol}
+                            />
+                        </div>
+                        {name.endsWith('types-strategies') && (
+                            <div className='q-strategy__description'>{description}</div>
+                        )}
+                    </>
+                )
+            )
+        ) : (
+            <></>
         );
     });
+
     return <>{fields}</>;
 };
 

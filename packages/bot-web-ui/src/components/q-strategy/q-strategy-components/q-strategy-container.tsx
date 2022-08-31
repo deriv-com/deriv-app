@@ -11,7 +11,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         duration_unit_dropdown,
         types_strategies_dropdown,
         getSizeDesc,
-        getSizeText,
         initial_errors,
         initial_values,
         is_onscreen_keyboard_active,
@@ -27,6 +26,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         setCurrentFocus,
         selected_duration_unit,
         selected_type_strategy,
+        getFieldMap,
     } = props;
 
     const symbol_dropdown_options = symbol_dropdown
@@ -46,7 +46,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
                 duration_unit_dropdown={duration_unit_dropdown}
                 types_strategies_dropdown={types_strategies_dropdown}
                 getSizeDesc={getSizeDesc}
-                getSizeText={getSizeText}
                 initial_errors={initial_errors}
                 initial_values={initial_values}
                 is_onscreen_keyboard_active={is_onscreen_keyboard_active}
@@ -64,6 +63,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
                 selected_duration_unit={selected_duration_unit}
                 selected_type_strategy={selected_type_strategy}
                 setCurrentFocus={setCurrentFocus}
+                getFieldMap={getFieldMap}
             />
         </>
     );

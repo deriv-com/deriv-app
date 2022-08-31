@@ -7,11 +7,11 @@ import InlineNoteWithIcon from '../inline-note-with-icon';
 import { isDesktop, isMobile, getPropertyValue, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
-import ApiTokenArticle from './api-token-article.jsx';
-import ApiTokenCard from './api-token-card.jsx';
-import ApiTokenFooter from './api-token-footer.jsx';
-import ApiTokenOverlay from './api-token-overlay.jsx';
-import ApiTokenTable from './api-token-table.jsx';
+import ApiTokenArticle from './api-token-article';
+import ApiTokenCard from './api-token-card';
+import ApiTokenFooter from './api-token-footer';
+import ApiTokenOverlay from './api-token-overlay';
+import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
 
 const MIN_TOKEN = 2;

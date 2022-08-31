@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ApiTokenClipboard from './api-token-clipboard.jsx';
+import ApiTokenClipboard from './api-token-clipboard';
 
 const HiddenPasswordDots = () => (
     <div className='da-api-token__pass-dot-container'>

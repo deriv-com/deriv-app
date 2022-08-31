@@ -44,8 +44,10 @@ export type TRealAccount = {
 
 export type TApiContext = {
     api_tokens: import('@deriv/api-types').ApiToken[];
-    deleteToken: () => void;
+    deleteToken: (token: string | undefined) => Promise<void>;
     footer_ref: import('react').Ref<unknown>;
     overlay_ref: import('react').Ref<unknown>;
     toggleOverlay: () => void;
 };
+
+export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';

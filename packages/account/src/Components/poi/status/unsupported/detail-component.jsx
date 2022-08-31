@@ -4,7 +4,7 @@ import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
-import PoiUnsupportedFailed from 'Components/poi-unsupported-failed';
+import PoiUploadFailed from 'Components/poi/poi-upload-failed';
 import uploadFile from 'Components/file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view';
 
@@ -97,7 +97,7 @@ const DetailComponent = ({
         case STATUS.IS_COMPLETED:
             return <UploadComplete is_from_external={true} needs_poa={false} />;
         case STATUS.IS_FAILED:
-            return <PoiUnsupportedFailed error={response_error} />;
+            return <PoiUploadFailed error={response_error} />;
         default:
             return (
                 <React.Fragment>

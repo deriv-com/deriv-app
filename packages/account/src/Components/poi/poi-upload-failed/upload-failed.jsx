@@ -4,7 +4,7 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const UnsupportedFailed = ({ error }) => (
+const UploadFailed = ({ error }) => (
     <IconMessageContent
         message={localize('Proof of identity documents upload failed')}
         text={error}
@@ -13,8 +13,8 @@ const UnsupportedFailed = ({ error }) => (
     />
 );
 
-UnsupportedFailed.propTypes = {
+UploadFailed.propTypes = {
     error: PropTypes.string,
 };
 
-export default UnsupportedFailed;
+export default UploadFailed;

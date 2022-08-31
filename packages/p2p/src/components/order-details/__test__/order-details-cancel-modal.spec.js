@@ -60,6 +60,7 @@ describe('<OrderDetailsCancelModal/>', () => {
     });
 
     it('should cancel the order when Cancel this order button is clicked', () => {
+        requestWS.mockResolvedValue({ message: 'Passed' });
         render(<OrderDetailsCancelModal should_show_cancel_modal hideCancelOrderModal={jest.fn()} />);
         fireEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
 

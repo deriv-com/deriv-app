@@ -21,7 +21,7 @@ const SelectPaymentMethod = () => {
     return (
         <Formik enableReinitialize initialValues={{}}>
             {() => (
-                <React.Fragment>
+                <div className='add-payment-method-select'>
                     <Field name='payment_method'>
                         {({ field }) => (
                             <Autocomplete
@@ -53,7 +53,7 @@ const SelectPaymentMethod = () => {
                             ]}
                         />
                     </div>
-                </React.Fragment>
+                </div>
             )}
         </Formik>
     );

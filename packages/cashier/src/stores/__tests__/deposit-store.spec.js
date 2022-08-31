@@ -46,7 +46,7 @@ describe('DepositStore', () => {
             send: jest.fn(() => Promise.resolve({})),
         };
 
-        deposit_store = new DepositStore({ root_store, WS });
+        deposit_store = new DepositStore(WS, root_store);
     });
 
     it('should mount deposit properly', async () => {

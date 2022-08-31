@@ -21,7 +21,7 @@ beforeEach(() => {
             is_mobile: false,
         },
     };
-    iframe_store = new IframeStore({ WS, root_store });
+    iframe_store = new IframeStore(root_store);
 });
 
 describe('IframeStore', () => {

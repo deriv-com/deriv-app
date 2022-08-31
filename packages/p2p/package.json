@@ -48,7 +48,7 @@
         "react-i18next": "^11.11.0",
         "react-simple-star-rating": "^4.0.5",
         "react-svg-loader": "^3.0.3",
-        "react-transition-group": "^4.3.0",
+        "react-transition-group": "4.4.2",
         "sendbird": "~3.0.137",
         "glob": "^7.1.5",
         "commander": "^3.0.2"

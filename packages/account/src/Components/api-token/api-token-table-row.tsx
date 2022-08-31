@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ApiTokenDeleteButton from './api-token-delete-button';
-import ApiTokenTableRowCell from './api-token-table-row-cell.jsx';
-import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell.jsx';
-import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell.jsx';
+import ApiTokenTableRowCell from './api-token-table-row-cell';
+import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
+import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 
-const ApiTokenTableRow = ({ token }) => (
+const ApiTokenTableRow = ({ token }: import('@deriv/api-types').ApiToken['tokens']) => (
     <tr className='da-api-token__table-cell-row'>
         <ApiTokenTableRowCell className='da-api-token__table-cell--name'>{token.display_name}</ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>

@@ -8,7 +8,7 @@ type TApiTokenClipboard = {
     text_copy: string;
     info_message: string;
     success_message: string;
-    popover_alignment: import('Types').TPopoverAlignment;
+    popover_alignment?: import('Types').TPopoverAlignment;
 };
 
 type TWarningNoteBullet = {

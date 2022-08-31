@@ -45,8 +45,12 @@ export type TRealAccount = {
 export type TApiContext = {
     api_tokens: import('@deriv/api-types').ApiToken[];
     deleteToken: (token: string | undefined) => Promise<void>;
-    footer_ref: import('react').Ref<unknown>;
-    overlay_ref: import('react').Ref<unknown>;
+    footer_ref: Element | DocumentFragment;
+    overlay_ref:
+        | ((...args: unknown[]) => unknown)
+        | import('prop-types').InferProps<{
+              current: import('prop-types').Requireable<unknown>;
+          }>;
     toggleOverlay: () => void;
 };
 

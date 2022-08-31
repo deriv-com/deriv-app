@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 
 const ApiTokenFooter = () => {
-    const { footer_ref, toggleOverlay } = React.useContext(ApiTokenContext);
+    const { footer_ref, toggleOverlay } = React.useContext<import('Types').TApiContext>(ApiTokenContext);
 
     return createPortal(
         <AppSettings.Footer>

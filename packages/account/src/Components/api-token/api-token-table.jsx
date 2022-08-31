@@ -4,10 +4,10 @@ import { isMobile, formatDate } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 import ApiTokenDeleteButton from './api-token-delete-button';
-import ApiTokenTableBodyRow from './api-token-table-row.jsx';
-import ApiTokenTableRowHeader from './api-token-table-row-header.jsx';
-import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell.jsx';
-import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell.jsx';
+import ApiTokenTableBodyRow from './api-token-table-row';
+import ApiTokenTableRowHeader from './api-token-table-row-header';
+import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
+import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext(ApiTokenContext);

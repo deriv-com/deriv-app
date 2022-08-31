@@ -142,12 +142,12 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    addVerificationNotifications(identity, document) {
+    addVerificationNotifications(identity, document, is_regulated_mt5_restricted) {
         //identity
         if (identity.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poi_verified);
         } else if (identity.status === 'rejected' && identity?.services.onfido.submissions_left === 0) {
-            this.addNotificationMessage(this.client_notifications.has_reached_poi_upload_limit);
+            this.addNotificationMessage(this.client_notifications.reached_poi_upload_limit);
         } else if (identity.status === 'expired') {
             this.addNotificationMessage(this.client_notifications.poi_expired);
         } else if (!['none', 'pending'].includes(identity.status)) {
@@ -158,6 +158,8 @@ export default class NotificationStore extends BaseStore {
 
         if (document.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poa_verified);
+        } else if (is_regulated_mt5_restricted) {
+            this.addNotificationMessage(this.client_notifications.resticted_mt5);
         } else if (document.status === 'expired') {
             this.addNotificationMessage(this.client_notifications.poa_expired);
         } else if (!['none', 'pending'].includes(document.status)) {
@@ -206,6 +208,7 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
+            is_regulated_mt5_restricted,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -294,7 +297,7 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
-                this.addVerificationNotifications(identity, document);
+                this.addVerificationNotifications(identity, document, is_regulated_mt5_restricted);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
@@ -665,8 +668,8 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Deriv P2P',
                 type: 'news',
             },
-            has_reached_poi_upload_limit: {
-                key: 'has_reached_poi_upload_limit',
+            reached_poi_upload_limit: {
+                key: 'reached_poi_upload_limit',
                 header: localize('Need help?'),
                 message: localize(
                     'It looks like you’ve tried to verify your proof of identity for more than 3 times. Please contact us via live chat for help.'
@@ -852,6 +855,18 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            resticted_mt5: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'poa_failed',
+                header: localize('Your proof of address verification has failed'),
+                message: localize(
+                    'Your proof of address did not pass our verification checks, and we’ve placed some restrictions on your account. Please resubmit your proof of address.'
+                ),
+                type: 'danger',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;

@@ -2,6 +2,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
@@ -10,6 +11,7 @@ import {
     getCurrencyName,
     getPlatformSettings,
     validNumber,
+    routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -398,6 +400,14 @@ const AccountTransferForm = ({
         resetConverter();
     }, [selected_to, selected_from, account_limits]);
 
+    const is_mt5_restricted = value => value.is_mt; //&& value?.poa_status === 'failed';
+    const Mt5RestrictedMsg = () => (
+        <Localize
+            i18n_default_text='Please <0>resubmit</0> your proof of address to transfer funds between MT5 and Deriv accounts.'
+            components={[<Link key={0} to={routes.proof_of_address} className='link dark' />]}
+        />
+    );
+    const is_mt5_transfer_disabled = is_mt5_restricted(selected_from) || is_mt5_restricted(selected_to);
     return (
         <div className='cashier__wrapper account-transfer-form__wrapper'>
             <Text
@@ -450,7 +460,13 @@ const AccountTransferForm = ({
                                             setFieldError('amount', '');
                                             setFieldTouched('amount', false);
                                         }}
-                                        error={selected_from.error}
+                                        error={
+                                            is_mt5_restricted(selected_from) ? (
+                                                <Mt5RestrictedMsg />
+                                            ) : (
+                                                selected_from.error
+                                            )
+                                        }
                                     />
                                     <Dropdown
                                         id='transfer_to'
@@ -473,7 +489,10 @@ const AccountTransferForm = ({
                                             setFieldTouched('amount', false);
                                         }}
                                         hint={transfer_to_hint}
-                                        error={selected_to.error}
+                                        error={
+                                            is_mt5_restricted(selected_to) ? <Mt5RestrictedMsg /> : selected_to.error
+                                        }
+                                        disabled={is_mt5_restricted(selected_from)}
                                     />
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (
@@ -488,7 +507,9 @@ const AccountTransferForm = ({
                                                     setFieldTouched('amount', true, false);
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer-form__input'
-                                                classNameHint='account-transfer-form__hint'
+                                                classNameHint={classNames('account-transfer-form__hint', {
+                                                    'account-transfer-form__hint__disabled': is_mt5_transfer_disabled,
+                                                })}
                                                 type='text'
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount ? errors.amount : ''}
@@ -530,11 +551,16 @@ const AccountTransferForm = ({
                                                         ''
                                                     )
                                                 }
+                                                disabled={is_mt5_transfer_disabled}
                                             />
                                         )}
                                     </Field>
                                 ) : (
-                                    <div>
+                                    <div
+                                        className={
+                                            is_mt5_transfer_disabled ? 'account-transfer-form__crypto--disabled' : ''
+                                        }
+                                    >
                                         <div className='account-transfer-form__crypto--percentage-selector'>
                                             <PercentageSelector
                                                 amount={+selected_from.balance}
@@ -591,7 +617,8 @@ const AccountTransferForm = ({
                                             !!selected_to.error ||
                                             !+selected_from.balance ||
                                             !!converter_from_error ||
-                                            !!converter_to_error
+                                            !!converter_to_error ||
+                                            is_mt5_transfer_disabled
                                         }
                                         primary
                                         large

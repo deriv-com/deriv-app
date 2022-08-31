@@ -12,7 +12,7 @@ import PoaStatusCodes from 'Components/poa/status/status-codes';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
 
-const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications }) => {
+const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, is_regulated_mt5_restricted, refreshNotifications }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
         allow_document_upload: false,
@@ -88,8 +88,13 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
     )
         return <NotRequired />;
     if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
-    if (resubmit_poa || allow_poa_resubmission) {
-        return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
+    if (resubmit_poa || allow_poa_resubmission || is_regulated_mt5_restricted) {
+        return (
+            <ProofOfAddressForm
+                is_regulated_mt5_restricted={is_regulated_mt5_restricted}
+                onSubmit={() => onSubmit({ needs_poi })}
+            />
+        );
     }
 
     switch (document_status) {
@@ -112,6 +117,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
 
 ProofOfAddressContainer.propTypes = {
     is_mx_mlt: PropTypes.bool,
+    is_regulated_mt5_restricted: PropTypes.bool,
     is_switching: PropTypes.bool,
     refreshNotifications: PropTypes.func,
 };

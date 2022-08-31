@@ -108,11 +108,18 @@ const AppNotificationMessages = ({
                   'trustpilot',
                   'close_uk_account',
                   'onfido_failed',
-                  'poa_verified',
-                  'poi_verified',
-                  'poi_name_mismatch',
                   'document_needs_action',
                   'identity',
+                  'poi_name_mismatch',
+                  'poi_expired',
+                  'poi_failed',
+                  'reached_poi_upload_limit',
+                  'poi_verified',
+                  'poa_expired',
+                  'resticted_mt5',
+                  'poa_verified',
+                  'poa_failed',
+                  'resticted_mt5',
               ].includes(message.key)
             : true;
         return is_not_marked_notification && is_non_hidden_notification;

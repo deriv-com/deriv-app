@@ -120,7 +120,7 @@ const AppNotificationMessages = ({
                   'poa_verified',
                   'poa_failed',
                   'resticted_mt5',
-              ].includes(message.key)
+              ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
         return is_not_marked_notification && is_non_hidden_notification;
     });

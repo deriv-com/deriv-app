@@ -17,7 +17,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { action, computed, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import React from 'react';
 import { WS } from 'Services';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
@@ -30,16 +30,48 @@ import {
 } from './Helpers/client-notifications';
 
 export default class NotificationStore extends BaseStore {
-    @observable is_notifications_visible = false;
-    @observable notifications = [];
-    @observable notification_messages = [];
-    @observable marked_notifications = [];
-    @observable push_notifications = [];
-    @observable client_notifications = {};
-    @observable should_show_popups = true;
+    is_notifications_visible = false;
+    notifications = [];
+    notification_messages = [];
+    marked_notifications = [];
+    push_notifications = [];
+    client_notifications = {};
+    should_show_popups = true;
 
     constructor(root_store) {
         super({ root_store });
+
+        makeObservable(this, {
+            is_notifications_visible: observable,
+            notifications: observable,
+            notification_messages: observable,
+            marked_notifications: observable,
+            push_notifications: observable,
+            client_notifications: observable,
+            should_show_popups: observable,
+            custom_notifications: computed,
+            filtered_notifications: computed,
+            addNotificationBar: action.bound,
+            addNotificationMessage: action.bound,
+            addNotificationMessageByKey: action.bound,
+            addVerificationNotifications: action.bound,
+            filterNotificationMessages: action.bound,
+            handleClientNotifications: action.bound,
+            markNotificationMessage: action.bound,
+            refreshNotifications: action.bound,
+            removeAllNotificationMessages: action.bound,
+            removeNotifications: action.bound,
+            removeNotificationByKey: action.bound,
+            removeNotificationMessage: action.bound,
+            removeNotificationMessageByKey: action.bound,
+            resetVirtualBalanceNotification: action.bound,
+            setClientNotifications: action.bound,
+            setShouldShowPopups: action.bound,
+            toggleNotificationsModal: action.bound,
+            unmarkNotificationMessage: action.bound,
+            updateNotifications: action.bound,
+        });
+
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
@@ -56,7 +88,14 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
             ],
-            () => {
+            async () => {
+                if (
+                    root_store.client.is_logged_in &&
+                    Object.keys(root_store.client.account_status).length > 0 &&
+                    Object.keys(root_store.client.landing_companies).length > 0
+                )
+                    await root_store.modules?.cashier?.general_store?.getP2pCompletedOrders();
+
                 if (
                     !root_store.client.is_logged_in ||
                     (Object.keys(root_store.client.account_status).length > 0 &&
@@ -66,12 +105,12 @@ export default class NotificationStore extends BaseStore {
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
                     this.handleClientNotifications();
+                    this.filterNotificationMessages();
                 }
             }
         );
     }
 
-    @computed
     get custom_notifications() {
         const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
         const notification_content = {
@@ -97,18 +136,15 @@ export default class NotificationStore extends BaseStore {
         return notification_content;
     }
 
-    @computed
     get filtered_notifications() {
         return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
-    @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
         this.push_notifications = unique(this.push_notifications, 'msg_type');
     }
 
-    @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
         if (!this.notification_messages.find(item => item.key === notification.key)) {
@@ -136,40 +172,44 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    @action.bound
     addVerificationNotifications(identity, document) {
         if (identity.status === 'expired') this.addNotificationMessage(this.client_notifications.poi_expired);
 
         if (document.status === 'expired') this.addNotificationMessage(this.client_notifications.poa_expired);
     }
 
-    @action.bound
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
-        this.notifications = this.notification_messages.filter(notification => {
-            if (notification.platform === undefined || notification.platform.includes(getPathname())) {
-                return true;
-            } else if (!notification.platform.includes(getPathname())) {
-                if (notification.is_disposable) {
-                    this.removeNotificationMessage({
-                        key: notification.key,
-                        should_show_again: notification.should_show_again,
-                    });
-                    this.removeNotificationByKey({ key: notification.key });
+
+        if (window.location.pathname === routes.cashier_p2p) {
+            this.notification_messages = this.notification_messages.filter(
+                notification => notification.platform === 'P2P'
+            );
+        } else {
+            this.notification_messages = this.notification_messages.filter(notification => {
+                if (notification.platform === undefined || notification.platform.includes(getPathname())) {
+                    return true;
+                } else if (!notification.platform.includes(getPathname())) {
+                    if (notification.is_disposable) {
+                        this.removeNotificationMessage({
+                            key: notification.key,
+                            should_show_again: notification.should_show_again,
+                        });
+                        this.removeNotificationByKey({ key: notification.key });
+                    }
                 }
-            }
-            return false;
-        });
+
+                return false;
+            });
+        }
     }
 
-    @action.bound
-    handleClientNotifications() {
+    async handleClientNotifications() {
         const {
             account_settings,
             account_status,
@@ -192,7 +232,7 @@ export default class NotificationStore extends BaseStore {
             is_risk_client,
             is_financial_assessment_incomplete,
         } = this.root_store.client;
-        const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
+        const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
@@ -374,6 +414,29 @@ export default class NotificationStore extends BaseStore {
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
+
+                    p2p_completed_orders?.map(order => {
+                        const {
+                            advertiser_details,
+                            client_details,
+                            id,
+                            is_reviewable,
+                            status: order_status,
+                            type,
+                        } = order;
+
+                        if (is_reviewable) {
+                            if (type === 'buy' && order_status === 'completed' && client_details.loginid === loginid)
+                                this.showCompletedOrderNotification(advertiser_details.name, id);
+
+                            if (
+                                type === 'sell' &&
+                                order_status === 'completed' &&
+                                advertiser_details.loginid === loginid
+                            )
+                                this.showCompletedOrderNotification(client_details.name, id);
+                        }
+                    });
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
@@ -400,12 +463,31 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
+    showCompletedOrderNotification(advertiser_name, order_id) {
+        const notification_key = `order-${order_id}`;
+
+        this.addNotificationMessage({
+            action: {
+                route: `${routes.cashier_p2p}?order=${order_id}`,
+                text: localize('Give feedback'),
+            },
+            header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
+            key: notification_key,
+            message: (
+                <Localize
+                    i18n_default_text='{{name}} has released your funds. <br/> Would you like to give your feedback?'
+                    values={{ name: advertiser_name }}
+                />
+            ),
+            platform: 'P2P',
+            type: 'p2p_completed_order',
+        });
+    }
+
     markNotificationMessage({ key }) {
         this.marked_notifications.push(key);
     }
 
-    @action.bound
     refreshNotifications() {
         this.removeNotifications(true);
         this.removeAllNotificationMessages();
@@ -413,26 +495,22 @@ export default class NotificationStore extends BaseStore {
         this.handleClientNotifications();
     }
 
-    @action.bound
     removeAllNotificationMessages(should_close_persistent) {
         this.notification_messages = should_close_persistent
             ? []
             : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
     }
 
-    @action.bound
     removeNotifications(should_close_persistent) {
         this.notifications = should_close_persistent
             ? []
             : [...this.notifications.filter(notifs => notifs.is_persistent)];
     }
 
-    @action.bound
     removeNotificationByKey({ key }) {
         this.notifications = this.notifications.filter(n => n.key !== key);
     }
 
-    @action.bound
     removeNotificationMessage({ key, should_show_again } = {}) {
         if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
@@ -459,12 +537,10 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
     removeNotificationMessageByKey({ key }) {
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
     }
 
-    @action.bound
     resetVirtualBalanceNotification(loginid) {
         const { accounts, is_logged_in } = this.root_store.client;
         if (!is_logged_in) return;
@@ -491,7 +567,6 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
@@ -1064,22 +1139,18 @@ export default class NotificationStore extends BaseStore {
         this.client_notifications = notifications;
     }
 
-    @action.bound
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }
 
-    @action.bound
     toggleNotificationsModal() {
         this.is_notifications_visible = !this.is_notifications_visible;
     }
 
-    @action.bound
     unmarkNotificationMessage({ key }) {
         this.marked_notifications = this.marked_notifications.filter(item => key !== item);
     }
 
-    @action.bound
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }

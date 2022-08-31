@@ -52,7 +52,7 @@ const CashierLocked = ({
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
     let icon = 'IcCashierLocked';
     let title = localize('Cashier is locked');
-    let message: string | Element = localize(
+    let message: string | JSX.Element = localize(
         'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
     );
 

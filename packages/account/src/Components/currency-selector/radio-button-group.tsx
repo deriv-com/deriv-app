@@ -27,7 +27,7 @@ const RadioButtonGroup = ({
     description,
     has_fiat,
 }: Partial<TRadioButtonGroup>) => {
-    const [is_currency_selected, setIsCurrencySelected] = useState(false);
+    const [is_currency_selected, setIsCurrencySelected] = useState<boolean>(false);
 
     const onCurrencyClicked = () => {
         setIsCurrencySelected(true);

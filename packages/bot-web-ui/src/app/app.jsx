@@ -92,12 +92,13 @@ const App = ({ passthrough }) => {
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className={show_dashboard ? 'bot-dashboard' : 'bot'}>
+                <BotNotificationMessages />
+                <NetworkToastPopup />
+
                 {show_dashboard ? (
                     <Dashboard />
                 ) : (
                     <>
-                        <BotNotificationMessages />
-                        <NetworkToastPopup />
                         <Toolbar />
                         <MainContent />
                         <RunPanel />

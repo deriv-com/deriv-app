@@ -4,13 +4,13 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { TRootStore } from 'Types';
 
-type TResetEmailButtonWrapperProp = {
+type TResetEmailButtonWrapperProps = {
     is_withdrawal: boolean;
     resend_timeout: number;
     resendVerificationEmail: () => void;
 };
 
-const ResendEmailButtonWrapper = ({ resend_timeout, resendVerificationEmail }: TResetEmailButtonWrapperProp) => (
+const ResendEmailButtonWrapper = ({ resend_timeout, resendVerificationEmail }: TResetEmailButtonWrapperProps) => (
     <Button
         className='verification-email__resend-button'
         classNameSpan='verification-email__resend-button-text'
@@ -29,7 +29,7 @@ const ResendEmailButtonWrapper = ({ resend_timeout, resendVerificationEmail }: T
     />
 );
 
-export default connect(({ modules }: TRootStore, props: TResetEmailButtonWrapperProp) => ({
+export default connect(({ modules }: TRootStore, props: TResetEmailButtonWrapperProps) => ({
     resend_timeout: props.is_withdrawal
         ? modules.cashier.withdraw.verification.resend_timeout
         : modules.cashier.payment_agent.verification.resend_timeout,

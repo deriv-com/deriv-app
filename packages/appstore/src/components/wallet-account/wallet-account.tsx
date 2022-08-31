@@ -8,19 +8,31 @@ import WalletCard from 'Components/wallet';
 import WalletActionButton from 'Components/wallet-action-button';
 import AppsLauncher from 'Components/app-launcher';
 import { WS } from '@deriv/shared';
+import { useStores } from 'Stores';
 
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
 };
 
 const WalletAccount = ({ account }: WalletAccountProps) => {
-    const apiCall = async () => {
-        const response = await WS.authorized.storage.send({
+    const { client } = useStores();
+
+    // should we keep the api call here in the component or move it to Stores ?
+    const addDemoDerivAppAccount = async () => {
+        const demo_trading_account = await WS.authorized.storage.send({
             new_account_virtual: 1,
             type: 'trading',
         });
 
-        // console.log(response);
+        if (!demo_trading_account.error) {
+            const link_to_wallet = await WS.authorized.storage.send({
+                link_wallet: 1,
+                client_id: demo_trading_account.new_account_virtual.client_id,
+                wallet_id: client.loginid,
+            });
+            alert('You have added a Demo Deriv App account');
+            // we need to show a modal instead of alerting the user
+        }
     };
 
     return (
@@ -144,7 +156,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
-                                handleClick={apiCall}
+                                handleClick={addDemoDerivAppAccount}
                                 description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
                             />
                             <div className='test'>apps</div>

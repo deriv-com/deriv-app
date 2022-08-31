@@ -1,3 +1,8 @@
+.bot-dashboard {
+    .toolbar__section {
+        justify-content: end;
+    }
+}
 .dashboard {
     &__container {
         border: none;
@@ -24,7 +29,16 @@
             &__item {
                 border-radius: 1rem 1rem 0px 0px;
                 height: 48px;
-                width: 10.4rem;
+                width: 14.4rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg {
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    padding-right: 0;
+                    margin-right: 0.8rem;
+                }
             }
 
             &__content_group {
@@ -127,6 +141,9 @@
 }
 .w-100 {
     width: 100%;
+}
+.nm-48 {
+    margin-top: -48px;
 }
 .side_bar_container_block {
     display: block;

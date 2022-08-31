@@ -20,6 +20,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
+    const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [selected_residence, setSelectedResidence] = React.useState('');
     const [selected_citizenship, setSelectedCitizenship] = React.useState('');
@@ -110,6 +111,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     setFieldValue={setFieldValue}
                                     residence_list={residence_list}
                                     default_value={country}
+                                    history_value={history_value.current}
                                 >
                                     <Button
                                         className={classNames('account-signup__btn', {
@@ -119,6 +121,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         is_disabled={!values.residence || !!errors.residence}
                                         onClick={() => {
                                             onResidenceSelection(values.residence);
+                                            history_value.current = values.residence;
                                         }}
                                         primary
                                         large

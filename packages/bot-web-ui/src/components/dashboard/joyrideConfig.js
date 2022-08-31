@@ -1,15 +1,22 @@
 import React from 'react';
+import { localize } from '@deriv/translations';
 
-const TourGuideComponent = data => {
-    const { Header, Para } = data;
+const TourGuideComponent = ({ Header, Para }) => {
     return (
         <div>
-            <h1>{Header}</h1>
-            <p>{Para}</p>
+            <h1>{localize(Header)}</h1>
+            <p>{localize(Para)}</p>
         </div>
     );
 };
+const common_joyride_proprties = {
+    showProgress: true,
+    showSkipButton: true,
+    spotlightClicks: true,
+    disableBeacon: false,
+};
 
+//Todo need to make a dynamic config
 export default {
     DashBorardSteps: [
         {
@@ -22,10 +29,7 @@ export default {
                     }
                 />
             ),
-            showProgress: true,
-            showSkipButton: true,
-            spotlightClicks: true,
-            disableBeacon: true,
+            ...common_joyride_proprties,
         },
         {
             target: '#id-quick-strategy',
@@ -37,10 +41,7 @@ export default {
                     }
                 />
             ),
-            showProgress: true,
-            showSkipButton: true,
-            spotlightClicks: true,
-            disableBeacon: true,
+            ...common_joyride_proprties,
         },
         {
             target: '#id-bot-builder',
@@ -52,10 +53,7 @@ export default {
                     }
                 />
             ),
-            showProgress: true,
-            spotlightClicks: true,
-            showSkipButton: false,
-            disableBeacon: true,
+            ...common_joyride_proprties,
         },
         {
             target: '#id-charts',
@@ -67,10 +65,7 @@ export default {
                     }
                 />
             ),
-            showProgress: true,
-            showSkipButton: false,
-            spotlightClicks: true,
-            disableBeacon: true,
+            ...common_joyride_proprties,
         },
         {
             target: '#id-tutorials',
@@ -82,10 +77,7 @@ export default {
                     }
                 />
             ),
-            showProgress: true,
-            showSkipButton: false,
-            spotlightClicks: true,
-            disableBeacon: true,
+            ...common_joyride_proprties,
         },
         {
             target: '#dc-tabs__content_group_tiles',
@@ -97,10 +89,7 @@ export default {
                     }
                 />
             ),
-            showProgress: true,
-            showSkipButton: false,
-            spotlightClicks: true,
-            disableBeacon: true,
+            ...common_joyride_proprties,
         },
     ],
 };

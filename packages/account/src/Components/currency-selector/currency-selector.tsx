@@ -1,14 +1,7 @@
 import classNames from 'classnames';
 import React, { HTMLAttributes, RefObject } from 'react';
 import { Field, Formik, FormikProps } from 'formik';
-import {
-    AutoHeightWrapper,
-    FormSubmitButton,
-    Div100vhContainer,
-    Modal,
-    ThemedScrollbars,
-    Button,
-} from '@deriv/components';
+import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group';
@@ -190,7 +183,7 @@ const CurrencySelector = ({
             }}
             validate={handleValidate}
         >
-            {({ handleSubmit, values, errors, touched }) => (
+            {({ handleSubmit, values }) => (
                 <AutoHeightWrapper default_height={450}>
                     {({ setRef, height }: { setRef: string; height: number }) => (
                         <form

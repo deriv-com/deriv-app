@@ -4,10 +4,7 @@ import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
 
 export default class DepositStore {
-    root_store: TRootStore;
-    WS: TWebSocket;
-
-    constructor({ WS, root_store }: { WS: TWebSocket; root_store: TRootStore }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             container: observable,
             error: observable,
@@ -15,9 +12,6 @@ export default class DepositStore {
             is_deposit_locked: computed,
             submitFundsProtection: action.bound,
         });
-
-        this.root_store = root_store;
-        this.WS = WS;
     }
 
     container = Constants.containers.deposit;

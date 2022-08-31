@@ -5,14 +5,13 @@ import { TRootStore } from 'Types';
 type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
 export default class IframeStore {
-    root_store: TRootStore;
     iframe_height = 0;
     iframe_url = '';
     is_session_timeout = true;
     onIframeLoaded: TOnIframeLoadedCallback | null = null;
     timeout_session: NodeJS.Timeout | null = null;
 
-    constructor({ root_store }: { root_store: TRootStore }) {
+    constructor(public root_store: TRootStore) {
         makeObservable(this, {
             iframe_height: observable,
             iframe_url: observable,
@@ -26,8 +25,6 @@ export default class IframeStore {
             setContainerHeight: action.bound,
             clearIframe: action.bound,
         });
-
-        this.root_store = root_store;
     }
 
     setSessionTimeout(is_session_time_out: boolean): void {

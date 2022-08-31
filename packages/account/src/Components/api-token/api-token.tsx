@@ -12,14 +12,12 @@ import ApiTokenFooter from './api-token-footer';
 import ApiTokenOverlay from './api-token-overlay';
 import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
-import { ApiToken, APITokenResponse } from '@deriv/api-types';
-import { TToken } from 'Types';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
 
 type AptTokenState = {
-    api_tokens: NonNullable<TToken[]>;
+    api_tokens: NonNullable<import('Types').TToken[]>;
     is_loading: boolean;
     is_success: boolean;
     is_overlay_shown: boolean;
@@ -145,7 +143,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
         setSubmitting(false);
     };
 
-    const populateTokenResponse = (response: APITokenResponse) => {
+    const populateTokenResponse = (response: import('@deriv/api-types').APITokenResponse) => {
         if (!isMounted()) return;
         if (response.error) {
             setState({

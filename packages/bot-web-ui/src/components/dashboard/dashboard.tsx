@@ -6,7 +6,6 @@ import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
-import BotBuilder from './bot-builder';
 
 interface SideBarProps {
     checkIfSidebarOpen: boolean;
@@ -35,7 +34,7 @@ const Dashboard = (props: SideBarProps) => {
                     </div>
                     <div label='Quick Strategy' id='id-quick-strategy' onTabItemClick={handleClick} />
                     <div label='Bot Builder' id='id-bot-builder'>
-                        <BotBuilder />
+                        <div>Contennt 3</div>
                     </div>
                     <div label='Charts' id='id-charts'>
                         <div className='dashboard__chart-wrapper'>

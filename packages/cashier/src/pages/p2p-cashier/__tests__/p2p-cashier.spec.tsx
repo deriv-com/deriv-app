@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import P2PCashier from '../p2p-cashier';
@@ -17,8 +16,7 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-// eslint-disable-next-line react/display-name
-jest.mock('@deriv/p2p', () => () => <div>P2P</div>);
+jest.mock('@deriv/p2p', () => jest.fn(() => 'P2P'));
 
 describe('<P2PCashier />', () => {
     const history = createBrowserHistory();

@@ -1,34 +1,14 @@
 /** Add types that are shared between components */
 
-type TradingAccountDetail = {
-    linked_to: {
-        account_id: string;
-        balance: string;
-        currency: string;
-        payment_method: string;
-    };
-};
-
-export type TAuthAccountInfo = {
-    account_type: 'trading' | 'wallet';
-    balance: number;
-    country: string | undefined;
-    created_at: number;
-    currency: string;
-    email: string;
-    is_disabled: 0 | 1;
-    is_virtual: 0 | 1;
-    landing_company_name: string;
-    landing_company_shortcode: string;
-    residence: string;
-    trading: TradingAccountDetail;
+export type TAuthAccountInfo = NonNullable<import('@deriv/api-types').Authorize['account_list']>[0] & {
+    landing_company_shortcode?: string;
 };
 
 export type TPlatformContext = {
     is_appstore: boolean;
 };
 
-export type TCurrencyInfo = {
+export type TCurrencyConfig = {
     fractional_digits: number;
     is_deposit_suspended: 0 | 1;
     is_suspended: 0 | 1;

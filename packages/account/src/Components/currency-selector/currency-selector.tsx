@@ -14,7 +14,7 @@ import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group';
 import RadioButton from './radio-button';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import { TAuthAccountInfo, TCurrencyInfo, TPlatformContext, TRealAccount, TFormValidation } from 'Types';
+import { TAuthAccountInfo, TCurrencyConfig, TPlatformContext, TRealAccount, TFormValidation } from 'Types';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -24,7 +24,7 @@ type TCurrencySelectorForm = {
 
 type TCurrencySelectorExtend = {
     accounts: { [key: string]: TAuthAccountInfo };
-    available_crypto_currencies: TCurrencyInfo[];
+    available_crypto_currencies: TCurrencyConfig[];
     children: never;
     getCurrentStep: () => number;
     goToNextStep: () => void;
@@ -38,7 +38,7 @@ type TCurrencySelectorExtend = {
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
     is_mt5_allowed: boolean;
-    legal_allowed_currencies: TCurrencyInfo[];
+    legal_allowed_currencies: TCurrencyConfig[];
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
     onSave: (current_step: number, values: TCurrencySelectorForm) => void;
     onSubmit: (
@@ -87,8 +87,8 @@ const CurrencySelector = ({
     ...props
 }: TCurrencySelector) => {
     const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
-    const crypto = legal_allowed_currencies.filter((currency: TCurrencyInfo) => currency.type === 'crypto');
-    const fiat = legal_allowed_currencies.filter((currency: TCurrencyInfo) => currency.type === 'fiat');
+    const crypto = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'crypto');
+    const fiat = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
     const is_submit_disabled_ref = React.useRef<boolean>(true);
 
@@ -218,7 +218,7 @@ const CurrencySelector = ({
                                                 description={description}
                                                 has_fiat={should_disable_fiat && has_fiat}
                                             >
-                                                {reorderCurrencies(fiat).map((currency: TCurrencyInfo) => (
+                                                {reorderCurrencies(fiat).map((currency: TCurrencyConfig) => (
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
@@ -240,20 +240,23 @@ const CurrencySelector = ({
                                                 item_count={reorderCurrencies(crypto, 'crypto').length}
                                                 description={description}
                                             >
-                                                {reorderCurrencies(crypto, 'crypto').map((currency: TCurrencyInfo) => (
-                                                    <Field
-                                                        key={currency.value}
-                                                        component={RadioButton}
-                                                        selected={
-                                                            available_crypto_currencies?.filter(
-                                                                ({ value }: TCurrencyInfo) => value === currency.value
-                                                            )?.length === 0
-                                                        }
-                                                        name='currency'
-                                                        id={currency.value}
-                                                        label={currency.name}
-                                                    />
-                                                ))}
+                                                {reorderCurrencies(crypto, 'crypto').map(
+                                                    (currency: TCurrencyConfig) => (
+                                                        <Field
+                                                            key={currency.value}
+                                                            component={RadioButton}
+                                                            selected={
+                                                                available_crypto_currencies?.filter(
+                                                                    ({ value }: TCurrencyConfig) =>
+                                                                        value === currency.value
+                                                                )?.length === 0
+                                                            }
+                                                            name='currency'
+                                                            id={currency.value}
+                                                            label={currency.name}
+                                                        />
+                                                    )
+                                                )}
                                             </RadioButtonGroup>
                                         </React.Fragment>
                                     )}

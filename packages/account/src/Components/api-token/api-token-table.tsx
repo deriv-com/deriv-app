@@ -8,19 +8,27 @@ import ApiTokenTableBodyRow from './api-token-table-row';
 import ApiTokenTableRowHeader from './api-token-table-row-header';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
+import { TApiContext, TToken } from 'Types';
+
+// type TTokenValue = {
+//     display_name: string;
+//     scopes: string[];
+//     last_used: string;
+//     token: string;
+// };
 
 const ApiTokenTable = () => {
-    const { api_tokens } = React.useContext(ApiTokenContext);
+    const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
 
-    const formatTokenScopes = str => {
+    const formatTokenScopes = (str: string) => {
         const string = str || '';
         const replace_filter = string.replace(/-|_/g, ' ');
         const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
         return sentenced_case;
     };
 
-    const getScopeValue = token => {
-        const titled_scopes = token.scopes.map(scope => formatTokenScopes(scope));
+    const getScopeValue = (token: TToken) => {
+        const titled_scopes = token.scopes?.map((scope: string) => formatTokenScopes(scope));
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {
@@ -31,8 +39,8 @@ const ApiTokenTable = () => {
         };
     };
     if (isMobile()) {
-        return api_tokens.map(token_data => {
-            const token = getScopeValue(token_data);
+        return api_tokens.map((token_data: TToken) => {
+            const token: TToken = getScopeValue(token_data);
 
             return (
                 <div key={token.token} className='da-api-token__scope'>
@@ -57,7 +65,10 @@ const ApiTokenTable = () => {
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                 <Localize i18n_default_text='Token' />
                             </Text>
-                            <ApiTokenTableRowTokenCell token={token.token} scopes={token.scopes} />
+                            <ApiTokenTableRowTokenCell
+                                token={token.token as string}
+                                scopes={token.scopes as string[]}
+                            />
                         </div>
                         <div>
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
@@ -73,10 +84,10 @@ const ApiTokenTable = () => {
                             <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                 <Localize i18n_default_text='Scopes' />
                             </Text>
-                            <ApiTokenTableRowScopesCell scopes={token.scopes} />
+                            <ApiTokenTableRowScopesCell scopes={token.scopes as string[]} />
                         </div>
                         <div>
-                            <ApiTokenDeleteButton token={token} />
+                            <ApiTokenDeleteButton token={token as TToken} />
                         </div>
                     </div>
                 </div>

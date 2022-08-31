@@ -6,8 +6,8 @@ import ApiTokenContext from './api-token-context';
 
 type TApiTokenDeleteButton = {
     children: never;
-    popover_alignment: import('Types').TPopoverAlignment;
-    token: NonNullable<import('@deriv/api-types').ApiToken['tokens']>[0];
+    popover_alignment?: import('Types').TPopoverAlignment;
+    token: import('Types').TToken;
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {

@@ -42,8 +42,15 @@ export type TRealAccount = {
     error_code: number;
 };
 
+export type TToken = {
+    display_name: string;
+    last_used: string;
+    scopes: string[];
+    token: string;
+};
+
 export type TApiContext = {
-    api_tokens: import('@deriv/api-types').ApiToken[];
+    api_tokens: TToken[];
     deleteToken: (token: string | undefined) => Promise<void>;
     footer_ref: Element | DocumentFragment;
     overlay_ref:

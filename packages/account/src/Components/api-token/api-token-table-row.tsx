@@ -1,18 +1,21 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ApiTokenDeleteButton from './api-token-delete-button';
 import ApiTokenTableRowCell from './api-token-table-row-cell';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 
-const ApiTokenTableRow = ({ token }: import('@deriv/api-types').ApiToken['tokens']) => (
+type TApiTokenTableRow = {
+    token: import('Types').TToken;
+};
+
+const ApiTokenTableRow = ({ token }: TApiTokenTableRow) => (
     <tr className='da-api-token__table-cell-row'>
         <ApiTokenTableRowCell className='da-api-token__table-cell--name'>{token.display_name}</ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>
-            <ApiTokenTableRowTokenCell token={token.token} scopes={token.scopes} />
+            <ApiTokenTableRowTokenCell token={token.token as string} scopes={token.scopes as string[]} />
         </ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>
-            <ApiTokenTableRowScopesCell scopes={token.scopes} />
+            <ApiTokenTableRowScopesCell scopes={token.scopes as string[]} />
         </ApiTokenTableRowCell>
         <ApiTokenTableRowCell>{token.last_used}</ApiTokenTableRowCell>
         <ApiTokenTableRowCell should_bypass_text>
@@ -20,14 +23,5 @@ const ApiTokenTableRow = ({ token }: import('@deriv/api-types').ApiToken['tokens
         </ApiTokenTableRowCell>
     </tr>
 );
-
-ApiTokenTableRow.propTypes = {
-    token: PropTypes.shape({
-        display_name: PropTypes.string.isRequired,
-        last_used: PropTypes.string.isRequired,
-        scopes: PropTypes.array.isRequired,
-        token: PropTypes.string.isRequired,
-    }).isRequired,
-};
 
 export default ApiTokenTableRow;

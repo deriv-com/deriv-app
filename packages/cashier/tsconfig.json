@@ -14,8 +14,7 @@
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
-        "baseUrl": "./",
-        "experimentalDecorators": true
+        "baseUrl": "./"
     },
     "include": ["src", "globals.d.ts"]
 }

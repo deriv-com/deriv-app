@@ -38,7 +38,7 @@ const EmailVerificationModal = ({
                         values={{ email_address }}
                     />
                 </Text>
-                <Text color='prominent' size='s'>
+                <Text align='center' color='prominent' size='s'>
                     {/* TODO: Uncomment when time is available in BE response */}
                     <Localize i18n_default_text='The verification link expires in 10 minutes' />
                 </Text>

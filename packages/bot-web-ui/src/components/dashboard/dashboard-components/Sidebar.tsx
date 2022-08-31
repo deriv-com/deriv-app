@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import Translations from './Translations';
+import { localize } from '@deriv/translations';
 
 const { IntroSideBarContentText } = Translations;
 
@@ -32,10 +33,10 @@ const Sidebar = (props: SideBarProps) => {
                 const { headerText, ParaText, ParaSubText, ParaSubTextTwo } = IntroSideBar;
                 return (
                     <div className='side_bar_container_para' key={index}>
-                        <h1>{headerText}</h1>
-                        <p>{ParaText}</p>
-                        <p>{ParaSubText}</p>
-                        <p>{ParaSubTextTwo}</p>
+                        <h1>{localize(headerText)}</h1>
+                        <p>{localize(ParaText)}</p>
+                        <p>{localize(ParaSubText)}</p>
+                        <p>{localize(ParaSubTextTwo)}</p>
                     </div>
                 );
             })}

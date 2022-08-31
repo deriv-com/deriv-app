@@ -1,12 +1,6 @@
 @import '../dashboard/dashboard-components/index.scss';
 
 .dashboard {
-    &__container {
-        padding: 1.2rem;
-        max-width: 100%;
-        border: solid 1px var(--general-section-1);
-    }
-
     &__chart-wrapper {
         position: relative;
         height: calc(100vh - 150px);

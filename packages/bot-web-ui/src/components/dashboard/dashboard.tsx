@@ -6,6 +6,7 @@ import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
+import Translations from './dashboard-components/Translations';
 
 interface SideBarProps {
     checkIfSidebarOpen: boolean;
@@ -28,22 +29,38 @@ const Dashboard = (props: SideBarProps) => {
             <div className={dashBoradClass + sidebarClasstoggle}>
                 <ReactJoyride steps={DashBorardSteps} run={tourRun} continuous={true} showProgress={true} />
                 <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
-                    {/* [Todo] needs to update tabs component children instead of using label property */}
-                    <div label={localize('Dashboard')}>
+                    {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
+                    <div icon='IcGoogleDriveDbot' label={localize('Dashboard')}>
                         <DashboardComponents />
                     </div>
-                    <div label='Quick Strategy' id='id-quick-strategy' onTabItemClick={handleClick} />
-                    <div label='Bot Builder' id='id-bot-builder'>
+                    <div
+                        icon='IcGoogleDriveDbot'
+                        label='Quick Strategy'
+                        id='id-quick-strategy'
+                        onTabItemClick={handleClick}
+                    />
+                    <div icon='IcGoogleDriveDbot' label='Bot Builder' id='id-bot-builder'>
                         <div>Contennt 3</div>
                     </div>
-                    <div label='Charts' id='id-charts'>
+                    <div icon='IcGoogleDriveDbot' label='Charts' id='id-charts'>
                         <div className='dashboard__chart-wrapper'>
                             <Chart />
                         </div>
                     </div>
-                    <div label='Tutorial' id='id-tutorials'>
+                    <div icon='IcGoogleDriveDbot' label='Tutorial' id='id-tutorials'>
                         <div>Contennt 4</div>
                     </div>
+                    {/* need to pull values dynamically TODO */}
+                    {/* {Translations.DashBoardIcons.map((data, index) => {
+                        const { label, component, icon, onClick, className } = data;
+                        return (
+                            <>
+                                <div key={index} label={localize(icon + label)} onTabItemClick={onClick}>
+                                        <div className={className}>{component}</div>
+                                </div> 
+                            </>
+                        );
+                    })} */}
                 </Tabs>
             </div>
             <SideBar checkIfSidebarOpen={showSideBar} setSideBarState={setshowSideBar} />

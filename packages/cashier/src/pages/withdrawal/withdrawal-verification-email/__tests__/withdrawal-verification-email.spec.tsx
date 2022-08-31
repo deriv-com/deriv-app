@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WithdrawalVerificationEmail from '../withdrawal-verification-email';
@@ -9,8 +8,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-// eslint-disable-next-line react/display-name
-jest.mock('Components/verification-email', () => () => <div>VerificationEmail</div>);
+jest.mock('Components/verification-email', () => jest.fn(() => 'VerificationEmail'));
 
 describe('<WithdrawalVerificationEmail />', () => {
     const props = {

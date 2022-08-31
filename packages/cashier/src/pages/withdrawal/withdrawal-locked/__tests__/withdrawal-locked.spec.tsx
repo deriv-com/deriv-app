@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -14,8 +13,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-// eslint-disable-next-line react/display-name
-jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
+jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 
 const fireButtonEvent = (button: 'proof_of_identity_btn' | 'proof_of_address_btn' | 'financial_assessment_btn') => {
     const [proof_of_identity_btn, proof_of_address_btn, financial_assessment_btn] = screen.getAllByTestId(

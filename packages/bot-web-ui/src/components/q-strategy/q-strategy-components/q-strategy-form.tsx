@@ -27,6 +27,7 @@ const QStrategyForm = ({
     selected_duration_unit,
     setCurrentFocus,
     selected_type_strategy,
+    getFieldMap,
 }: any) => (
     <Formik
         initialValues={initial_values}
@@ -52,7 +53,7 @@ const QStrategyForm = ({
                         'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                     })}
                 >
-                    <ThemedScrollbars height='430px' autohide is_bypassed={is_mobile}>
+                    <ThemedScrollbars height='535px' width='700px' autohide is_bypassed={is_mobile}>
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
@@ -83,6 +84,7 @@ const QStrategyForm = ({
                                 setCurrentFocus={setCurrentFocus}
                                 values={values}
                                 description={description}
+                                getFieldMap={getFieldMap}
                             />
                         </div>
                     </ThemedScrollbars>

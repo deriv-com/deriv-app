@@ -4,7 +4,6 @@ export type TQuickStrategyProps = {
     duration_unit_dropdown: any;
     types_strategies_dropdown: any;
     getSizeDesc: any;
-    getSizeText: any;
     initial_errors: any;
     initial_values: any;
     is_onscreen_keyboard_active: any;
@@ -25,4 +24,5 @@ export type TQuickStrategyProps = {
     trade_type_dropdown: any;
     validateQuickStrategy: any;
     setCurrentFocus: any;
+    getFieldMap: any;
 };

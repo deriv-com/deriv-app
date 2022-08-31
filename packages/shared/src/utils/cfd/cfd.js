@@ -168,8 +168,6 @@ export const getAuthenticationStatusInfo = account_status => {
     const acknowledged_status = ['pending', 'verified'];
     const failed_cases = ['rejected', 'expired', 'suspected'];
 
-    const poi_failed = failed_cases.includes(poi_status);
-
     const poa_not_submitted = poa_status === 'none';
     const poa_acknowledged = acknowledged_status.includes(poa_status);
     const need_poa_submission = !poa_acknowledged;
@@ -206,7 +204,6 @@ export const getAuthenticationStatusInfo = account_status => {
         (idv_status && acknowledged_status.includes(idv_status)) ||
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
-    const need_poi_for_bvi_labuan_maltainvest = !poi_acknowledged_for_bvi_labuan_maltainvest;
 
     const poi_verified_for_bvi_labuan_maltainvest =
         idv_status === 'verified' || onfido_status === 'verified' || manual_status === 'verified';
@@ -237,7 +234,6 @@ export const getAuthenticationStatusInfo = account_status => {
         poi_poa_verified_for_bvi_labuan_maltainvest,
         poa_acknowledged,
         poi_poa_verified_for_vanuatu,
-        need_poi_for_bvi_labuan_maltainvest,
         need_poa_submission,
         poi_verified_for_vanuatu,
         poi_acknowledged_for_bvi_labuan_maltainvest,
@@ -247,7 +243,6 @@ export const getAuthenticationStatusInfo = account_status => {
         need_poa_resubmission,
         poa_not_submitted,
         poi_not_submitted,
-        poi_failed,
         need_poi_for_vanuatu,
         poi_not_submitted_for_vanuatu,
         poi_pending_for_bvi_labuan_maltainvest,

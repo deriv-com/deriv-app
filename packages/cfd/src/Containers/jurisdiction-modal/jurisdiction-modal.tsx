@@ -34,7 +34,6 @@ const JurisdictionModal = ({
 
     const {
         poi_status,
-        poi_poa_verified_for_bvi_labuan_maltainvest,
         poi_pending_for_vanuatu,
         poi_verified_for_vanuatu,
         poi_acknowledged_for_vanuatu,

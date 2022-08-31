@@ -474,7 +474,7 @@ Dropdown.propTypes = {
     placeholder: PropTypes.string,
     suffix_icon: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    error: PropTypes.string,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     handleBlur: PropTypes.func,
     hint: PropTypes.string,
     is_alignment_top: PropTypes.bool,

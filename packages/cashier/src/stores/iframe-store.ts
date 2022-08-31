@@ -75,16 +75,20 @@ export default class IframeStore {
         }, 60000);
     }
 
-    setIframeUrl(
-        url: string,
-        container: 'withdraw' | 'payment_agent' = this.root_store.modules.cashier.general_store.active_container
-    ): void {
+    setIframeUrl(url: string): void {
         const { client, ui } = this.root_store;
 
         if (url) {
             this.iframe_url = `${url}&theme=${ui.is_dark_mode_on ? 'dark' : 'light'}`;
-            // after we set iframe url we can clear verification code
-            client.setVerificationCode('', Constants.map_action[container]);
+
+            const container = this.root_store.modules.cashier.general_store.active_container;
+
+            if (container in Constants.map_action) {
+                const container_key = container as keyof typeof Constants.map_action;
+
+                // after we set iframe url we can clear verification code
+                client.setVerificationCode('', Constants.map_action[container_key]);
+            }
         } else {
             this.iframe_url = url;
         }

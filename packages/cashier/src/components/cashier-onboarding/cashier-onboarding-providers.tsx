@@ -1,5 +1,14 @@
 import { localize } from '@deriv/translations';
 
+type TProviderReturnTypes = {
+    detail_click: () => void;
+    detail_description: string;
+    detail_header: string;
+    detail_contents?: {
+        icons: { light: string; dark: string }[];
+    }[];
+};
+
 const cash_contents = [
     {
         icons: [
@@ -32,7 +41,7 @@ const onramp_contents = [
     },
 ];
 
-const createCashProvider = onClick => {
+const createCashProvider = (onClick: () => void): TProviderReturnTypes => {
     return {
         detail_click: onClick,
         detail_description: localize('Deposit via the following payment methods:'),
@@ -41,7 +50,7 @@ const createCashProvider = onClick => {
     };
 };
 
-const createCryptoProvider = onClick => {
+const createCryptoProvider = (onClick: () => void): TProviderReturnTypes => {
     return {
         detail_click: onClick,
         detail_description: localize('We accept the following cryptocurrencies:'),
@@ -50,7 +59,7 @@ const createCryptoProvider = onClick => {
     };
 };
 
-const createOnrampProvider = (onClick, is_crypto) => {
+const createOnrampProvider = (onClick: () => void, is_crypto: boolean): TProviderReturnTypes => {
     return {
         detail_click: onClick,
         detail_description: localize('Choose any of these exchanges to buy cryptocurrencies:'),
@@ -59,7 +68,7 @@ const createOnrampProvider = (onClick, is_crypto) => {
     };
 };
 
-const createPaymentAgentProvider = onClick => {
+const createPaymentAgentProvider = (onClick: () => void): TProviderReturnTypes => {
     return {
         detail_click: onClick,
         detail_description: localize(
@@ -69,7 +78,7 @@ const createPaymentAgentProvider = onClick => {
     };
 };
 
-const createDp2pProvider = onClick => {
+const createDp2pProvider = (onClick: () => void): TProviderReturnTypes => {
     return {
         detail_click: onClick,
         detail_description: localize(

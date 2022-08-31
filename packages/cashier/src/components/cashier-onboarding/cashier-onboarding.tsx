@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
@@ -6,9 +5,46 @@ import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from './cashier-onboarding-providers';
-import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
-import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
+import CashierOnboardingDetails from './cashier-onboarding-details';
+import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
+import { TClientStore, TCommonStore, TRootStore, TUiStore } from 'Types';
+
+type TAccountList = {
+    balance: string;
+    currency: string;
+    is_crypto: boolean;
+    is_dxtrade: boolean;
+    is_mt: boolean;
+    text: string;
+    value: string;
+};
+
+type TCashierOnboardingProps = {
+    available_crypto_currencies: TClientStore['available_crypto_currencies'];
+    accounts_list: TAccountList[];
+    can_change_fiat_currency: TClientStore['can_change_fiat_currency'];
+    currency: TClientStore['currency'];
+    has_set_currency: boolean;
+    is_dark_mode_on: TUiStore['is_dark_mode_on'];
+    is_landing_company_loaded: TClientStore['is_landing_company_loaded'];
+    is_mobile: TUiStore['is_mobile'];
+    is_from_derivgo: TCommonStore['is_from_derivgo'];
+    is_payment_agent_visible_in_onboarding: boolean;
+    is_switching: TClientStore['is_switching'];
+    onMountCashierOnboarding: () => void;
+    openRealAccountSignup: TUiStore['openRealAccountSignup'];
+    shouldNavigateAfterChooseCrypto: TUiStore['shouldNavigateAfterChooseCrypto'];
+    shouldNavigateAfterPrompt: (next_location: string, current_location: string) => void;
+    setIsCashierOnboarding: (value: boolean) => void;
+    setIsDeposit: (value: boolean) => void;
+    setDepositTarget: (path: string) => void;
+    setShouldShowAllAvailableCurrencies: (value: boolean) => void;
+    setSideNotes: (component: React.ReactElement[]) => void;
+    showP2pInCashierOnboarding: () => void;
+    show_p2p_in_cashier_onboarding: boolean;
+    toggleSetCurrencyModal: TUiStore['toggleSetCurrencyModal'];
+};
 
 const CashierOnboarding = ({
     available_crypto_currencies,
@@ -34,7 +70,7 @@ const CashierOnboarding = ({
     showP2pInCashierOnboarding,
     show_p2p_in_cashier_onboarding,
     toggleSetCurrencyModal,
-}) => {
+}: TCashierOnboardingProps) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = accounts_list.some(x => x.is_crypto);
@@ -67,12 +103,12 @@ const CashierOnboarding = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts_list, is_landing_company_loaded]);
 
-    const openRealAccount = target => {
+    const openRealAccount = (target: string) => {
         openRealAccountSignup('choose');
         shouldNavigateAfterChooseCrypto(target);
     };
 
-    const openTarget = target => {
+    const openTarget = (target: string) => {
         setDepositTarget(target);
         if (is_crypto || has_crypto_account) {
             openRealAccount(target);
@@ -81,7 +117,7 @@ const CashierOnboarding = ({
         }
     };
 
-    const fiatAccountConditions = (next_location, current_location) => {
+    const fiatAccountConditions = (next_location: string, current_location: string) => {
         if (has_fiat_account) {
             shouldNavigateAfterPrompt(next_location, current_location);
         } else {
@@ -162,6 +198,7 @@ const CashierOnboarding = ({
                     <div
                         className='cashier-onboarding-header-learn-more'
                         onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                        data-testid='dt_cashier_onboarding_header_learn_more'
                     >
                         <Text size='xs' color='red'>
                             <Localize i18n_default_text='Learn more about payment methods' />
@@ -188,33 +225,7 @@ const CashierOnboarding = ({
     );
 };
 
-CashierOnboarding.propTypes = {
-    accounts_list: PropTypes.array,
-    available_crypto_currencies: PropTypes.array,
-    can_change_fiat_currency: PropTypes.bool,
-    currency: PropTypes.string,
-    has_set_currency: PropTypes.bool,
-    is_dark_mode_on: PropTypes.bool,
-    is_landing_company_loaded: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
-    is_payment_agent_visible_in_onboarding: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    onMountCashierOnboarding: PropTypes.func,
-    openRealAccountSignup: PropTypes.func,
-    shouldNavigateAfterChooseCrypto: PropTypes.func,
-    shouldNavigateAfterPrompt: PropTypes.func,
-    setIsCashierOnboarding: PropTypes.func,
-    setIsDeposit: PropTypes.func,
-    setDepositTarget: PropTypes.func,
-    setShouldShowAllAvailableCurrencies: PropTypes.func,
-    setSideNotes: PropTypes.func,
-    showP2pInCashierOnboarding: PropTypes.func,
-    show_p2p_in_cashier_onboarding: PropTypes.bool,
-    toggleSetCurrencyModal: PropTypes.func,
-};
-
-export default connect(({ client, common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }: TRootStore) => ({
     accounts_list: modules.cashier.account_transfer.accounts_list,
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,

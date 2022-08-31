@@ -4,6 +4,9 @@ export type TUiStore = {
     is_mobile: boolean;
     disableApp: () => void;
     enableApp: () => void;
+    openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
+    shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
+    toggleSetCurrencyModal: () => void;
 };

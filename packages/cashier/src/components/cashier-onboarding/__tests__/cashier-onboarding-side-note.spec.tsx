@@ -19,14 +19,14 @@ describe('<CashierOnboardingSideNote />', () => {
     });
 
     it('should trigger onClick callback when the client clicks the "live chat" link', () => {
-        window.LC_API = {
+        (window as any).LC_API = {
             open_chat_window: jest.fn(),
         };
         render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
 
         const live_chat_link = screen.getByText('live chat');
         fireEvent.click(live_chat_link);
-        expect(window.LC_API.open_chat_window).toHaveBeenCalledTimes(1);
+        expect((window as any).LC_API.open_chat_window).toHaveBeenCalledTimes(1);
     });
 
     it('should show the proper messages when is_crypto is true', () => {
@@ -42,7 +42,7 @@ describe('<CashierOnboardingSideNote />', () => {
     it('should trigger onClick callbacks when the client clicks on "Manage your accounts" link', () => {
         const openRealAccountSignup = jest.fn();
         const setDepositTarget = jest.fn();
-        const { container } = render(
+        render(
             <CashierOnboardingSideNote
                 currency={'BTC'}
                 is_crypto
@@ -51,7 +51,7 @@ describe('<CashierOnboardingSideNote />', () => {
             />
         );
 
-        const link = container.querySelector('.cashier-onboarding-side-note__link');
+        const link = screen.getByTestId('dt_cashier_onboarding_side_note_link');
         fireEvent.click(link);
         expect(openRealAccountSignup).toHaveBeenCalledTimes(1);
         expect(setDepositTarget).toHaveBeenCalledTimes(1);

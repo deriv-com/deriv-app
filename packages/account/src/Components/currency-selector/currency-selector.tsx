@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { HTMLAttributes, RefObject } from 'react';
-import { Field, Formik, FormikProps } from 'formik';
+import { Field, Formik, FormikHandlers, FormikProps, FormikState, FormikValues } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -10,10 +10,6 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import { TAuthAccountInfo, TCurrencyConfig, TPlatformContext, TRealAccount, TFormValidation } from 'Types';
 
 export const Hr = () => <div className='currency-hr' />;
-
-type TCurrencySelectorForm = {
-    currency: string;
-};
 
 type TCurrencySelectorExtend = {
     accounts: { [key: string]: TAuthAccountInfo };
@@ -33,10 +29,10 @@ type TCurrencySelectorExtend = {
     is_mt5_allowed: boolean;
     legal_allowed_currencies: TCurrencyConfig[];
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
-    onSave: (current_step: number, values: TCurrencySelectorForm) => void;
+    onSave: (current_step: number, values: FormikValues) => void;
     onSubmit: (
         current_step: number | null,
-        values: TCurrencySelectorForm,
+        values: FormikValues,
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
@@ -44,10 +40,10 @@ type TCurrencySelectorExtend = {
     real_account_signup: TRealAccount;
     real_account_signup_target: string;
     resetRealAccountSignupParams: () => void;
-    selected_step_ref?: RefObject<FormikProps<TCurrencySelectorForm>>;
+    selected_step_ref?: RefObject<FormikProps<FormikValues>>;
     set_currency: boolean;
-    validate: (values: TCurrencySelectorForm) => TCurrencySelectorForm;
-    value: TCurrencySelectorForm;
+    validate: (values: FormikValues) => FormikValues;
+    value: FormikValues;
 };
 
 type TCurrencySelector = HTMLAttributes<HTMLInputElement | HTMLLabelElement> & TCurrencySelectorExtend;
@@ -89,11 +85,11 @@ const CurrencySelector = ({
         item => item.landing_company_shortcode === real_account_signup_target
     ).length;
 
-    const isSubmitDisabled = (values: TCurrencySelectorForm) => {
+    const isSubmitDisabled = (values: FormikValues) => {
         return selected_step_ref?.current?.isSubmitting || !values.currency;
     };
 
-    const checkSubmitStatus = (values: TCurrencySelectorForm) => {
+    const checkSubmitStatus = (values: FormikValues) => {
         const is_submit_disabled = isSubmitDisabled(values);
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
@@ -102,13 +98,13 @@ const CurrencySelector = ({
         }
     };
 
-    const handleCancel = (values: TCurrencySelectorForm) => {
+    const handleCancel = (values: FormikValues) => {
         const current_step = getCurrentStep() - 1;
         onSave(current_step, values);
         onCancel(current_step, goToPreviousStep);
     };
 
-    const handleValidate = (values: TCurrencySelectorForm) => {
+    const handleValidate = (values: FormikValues) => {
         checkSubmitStatus(values);
         const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
         return errors;
@@ -183,7 +179,7 @@ const CurrencySelector = ({
             }}
             validate={handleValidate}
         >
-            {({ handleSubmit, values }) => (
+            {({ handleSubmit, values }: FormikState<FormikValues> & FormikHandlers) => (
                 <AutoHeightWrapper default_height={450}>
                     {({ setRef, height }: { setRef: string; height: number }) => (
                         <form

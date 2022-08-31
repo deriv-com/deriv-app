@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from '@deriv/components';
 
 type TApiTokenTableRowHeader = {
-    children: never;
     text: string;
 };
 

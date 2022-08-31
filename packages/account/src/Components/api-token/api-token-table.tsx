@@ -10,13 +10,6 @@ import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 import { TApiContext, TToken } from 'Types';
 
-// type TTokenValue = {
-//     display_name: string;
-//     scopes: string[];
-//     last_used: string;
-//     token: string;
-// };
-
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
 
@@ -39,60 +32,63 @@ const ApiTokenTable = () => {
         };
     };
     if (isMobile()) {
-        return api_tokens.map((token_data: TToken) => {
-            const token: TToken = getScopeValue(token_data);
-
-            return (
-                <div key={token.token} className='da-api-token__scope'>
-                    <div className='da-api-token__scope-item'>
-                        <div>
-                            <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
-                                <Localize i18n_default_text='Name' />
-                            </Text>
-                            <Text
-                                className='da-api-token__scope-item--name'
-                                as='p'
-                                size='s'
-                                color='general'
-                                line_height='m'
-                            >
-                                {token.display_name}
-                            </Text>
+        return (
+            <React.Fragment>
+                {api_tokens?.map((token_data: TToken) => {
+                    const token: TToken = getScopeValue(token_data);
+                    return (
+                        <div key={token.token} className='da-api-token__scope'>
+                            <div className='da-api-token__scope-item'>
+                                <div>
+                                    <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
+                                        <Localize i18n_default_text='Name' />
+                                    </Text>
+                                    <Text
+                                        className='da-api-token__scope-item--name'
+                                        as='p'
+                                        size='s'
+                                        color='general'
+                                        line_height='m'
+                                    >
+                                        {token.display_name}
+                                    </Text>
+                                </div>
+                            </div>
+                            <div className='da-api-token__scope-item'>
+                                <div>
+                                    <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
+                                        <Localize i18n_default_text='Token' />
+                                    </Text>
+                                    <ApiTokenTableRowTokenCell
+                                        token={token.token as string}
+                                        scopes={token.scopes as string[]}
+                                    />
+                                </div>
+                                <div>
+                                    <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
+                                        <Localize i18n_default_text='Last Used' />
+                                    </Text>
+                                    <Text as='p' size='s' color='general' line_height='m'>
+                                        {token.last_used}
+                                    </Text>
+                                </div>
+                            </div>
+                            <div className='da-api-token__scope-item'>
+                                <div>
+                                    <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
+                                        <Localize i18n_default_text='Scopes' />
+                                    </Text>
+                                    <ApiTokenTableRowScopesCell scopes={token.scopes as string[]} />
+                                </div>
+                                <div>
+                                    <ApiTokenDeleteButton token={token as TToken} />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className='da-api-token__scope-item'>
-                        <div>
-                            <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
-                                <Localize i18n_default_text='Token' />
-                            </Text>
-                            <ApiTokenTableRowTokenCell
-                                token={token.token as string}
-                                scopes={token.scopes as string[]}
-                            />
-                        </div>
-                        <div>
-                            <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
-                                <Localize i18n_default_text='Last Used' />
-                            </Text>
-                            <Text as='p' size='s' color='general' line_height='m'>
-                                {token.last_used}
-                            </Text>
-                        </div>
-                    </div>
-                    <div className='da-api-token__scope-item'>
-                        <div>
-                            <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
-                                <Localize i18n_default_text='Scopes' />
-                            </Text>
-                            <ApiTokenTableRowScopesCell scopes={token.scopes as string[]} />
-                        </div>
-                        <div>
-                            <ApiTokenDeleteButton token={token as TToken} />
-                        </div>
-                    </div>
-                </div>
-            );
-        });
+                    );
+                })}
+            </React.Fragment>
+        );
     }
 
     return (
@@ -107,7 +103,7 @@ const ApiTokenTable = () => {
                 </tr>
             </thead>
             <tbody>
-                {api_tokens.map(api_token => (
+                {api_tokens?.map((api_token: TToken) => (
                     <ApiTokenTableBodyRow key={api_token.token} token={getScopeValue(api_token)} />
                 ))}
             </tbody>

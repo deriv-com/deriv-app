@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 
 type TApiTokenTableRowScopesCell = {
-    children: never;
     scopes: string[];
 };
 

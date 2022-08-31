@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 
 type TApiTokenDeleteButton = {
-    children: never;
     popover_alignment?: import('Types').TPopoverAlignment;
     token: import('Types').TToken;
 };

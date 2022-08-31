@@ -50,8 +50,8 @@ export type TToken = {
 };
 
 export type TApiContext = {
-    api_tokens: TToken[];
-    deleteToken: (token: string | undefined) => Promise<void>;
+    api_tokens: NonNullable<TToken[]> | undefined;
+    deleteToken: (token: string) => Promise<void>;
     footer_ref: Element | DocumentFragment;
     overlay_ref:
         | ((...args: unknown[]) => unknown)

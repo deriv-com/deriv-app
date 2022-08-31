@@ -3,7 +3,7 @@ import { Field, FieldProps } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 
 type TApiTokenCard = {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     description: string;
     display_name: string;
     name: string;

@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {
     Button,
     DesktopWrapper,
+    Div100vhContainer,
     FadeWrapper,
     MobileWrapper,
     PageOverlay,
@@ -13,7 +14,7 @@ import {
 import { localize } from '@deriv/translations';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import AccountPromptDialog from './account-prompt-dialog';
+import AccountPromptDialog from 'Components/account-prompt-dialog';
 import ErrorDialog from 'Components/error-dialog';
 import './cashier.scss';
 
@@ -162,7 +163,7 @@ const Cashier = ({
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <div className='cashier__wrapper--is-mobile'>
+                        <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
                             {selected_route && (
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
@@ -170,7 +171,7 @@ const Cashier = ({
                                     menu_options={getMenuOptions()}
                                 />
                             )}
-                        </div>
+                        </Div100vhContainer>
                     </MobileWrapper>
                 </PageOverlay>
             </div>

@@ -36,6 +36,13 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
         message: '',
     });
 
+    const dismissError = React.useCallback(() => {
+        if (error.setErrorMessage) {
+            error.setErrorMessage('');
+        }
+        setErrorVisibility(false);
+    }, [error]);
+
     const mapErrorToDetails = React.useCallback(
         (error_code?: string, error_message?: string) => {
             if (
@@ -117,13 +124,6 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
     const setErrorVisibility = (is_error_visible: boolean) => {
         setIsVisible(is_error_visible);
     };
-
-    const dismissError = React.useCallback(() => {
-        if (error.setErrorMessage) {
-            error.setErrorMessage('');
-        }
-        setErrorVisibility(false);
-    }, [error]);
 
     return (
         <Dialog

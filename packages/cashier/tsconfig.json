@@ -4,7 +4,7 @@
         "paths": {
             "Components/*": ["src/components/*"],
             "Config/*": ["src/config/*"],
-            "Constants/*":["src/constants/*"],
+            "Constants/*": ["src/constants/*"],
             "Containers/*": ["src/containers/*"],
             "Images/*": ["src/public/images/*"],
             "Pages/*": ["src/pages/*"],
@@ -15,6 +15,7 @@
         },
         "outDir": "./dist",
         "baseUrl": "./",
+        "experimentalDecorators": true
     },
-    "include": ["src"]
+    "include": ["src", "globals.d.ts"]
 }

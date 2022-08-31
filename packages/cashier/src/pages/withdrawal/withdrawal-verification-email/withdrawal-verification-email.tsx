@@ -9,7 +9,7 @@ import VerificationEmail from 'Components/verification-email';
 import './withdrawal-verification-email.scss';
 
 type TWithdrawalVerificationEmailProps = {
-    crypto_transactions: Array<TCryptoTransactionDetails>;
+    crypto_transactions: TCryptoTransactionDetails[];
     currency: TClientStore['currency'];
     is_email_sent: boolean;
     is_resend_clicked: boolean;

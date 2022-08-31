@@ -20,7 +20,7 @@ type TCryptoWithdrawFormProps = {
     balance: TClientStore['balance'];
     blockchain_address: string;
     crypto_currency: TClientStore['currency'];
-    crypto_transactions: Array<TCryptoTransactionDetails>;
+    crypto_transactions: TCryptoTransactionDetails[];
     converter_to_error: string;
     converter_from_error: string;
     currency: TClientStore['currency'];

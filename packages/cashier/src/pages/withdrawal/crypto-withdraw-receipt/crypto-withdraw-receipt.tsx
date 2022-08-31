@@ -23,7 +23,7 @@ type TAccount = {
 type TCryptoWithdrawReceiptProps = {
     account: TAccount;
     blockchain_address: string;
-    crypto_transactions: Array<TCryptoTransactionDetails>;
+    crypto_transactions: TCryptoTransactionDetails[];
     currency: TClientStore['currency'];
     is_switching: TClientStore['is_switching'];
     tab_index: number;

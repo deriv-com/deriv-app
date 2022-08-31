@@ -43,7 +43,7 @@ type TWithdrawalSideNoteProps = {
 type TWithdrawalProps = {
     balance: TClientStore['balance'];
     container: string;
-    crypto_transactions: Array<TCryptoTransactionDetails>;
+    crypto_transactions: TCryptoTransactionDetails[];
     current_currency_type: TClientStore['current_currency_type'];
     currency: TClientStore['currency'];
     error: TErrorFull;

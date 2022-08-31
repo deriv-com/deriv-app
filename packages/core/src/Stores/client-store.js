@@ -879,7 +879,6 @@ export default class ClientStore extends BaseStore {
             ? account.market_type === market_type || account.market_type === 'gaming'
             : account.market_type === 'financial';
 
-    @action.bound
     isEligibleForMoreDemoMt5Svg(market_type) {
         const existing_demo_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)

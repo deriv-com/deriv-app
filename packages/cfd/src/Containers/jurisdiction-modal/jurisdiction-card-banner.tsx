@@ -82,12 +82,10 @@ const JurisdictionCardBanner = ({
         } else if (poi_or_poa_not_submitted) {
             // if poi or poa is not submitted
             return (
-                <div className={`${card_classname}__verification-status`}>
-                    <div className={`${card_classname}__verification-status--not_submitted`}>
-                        <Text as='p' size='xxs' align='center' color='prominent'>
-                            <Localize i18n_default_text='Proof of identity and address are required' />
-                        </Text>
-                    </div>
+                <div className={`${card_classname}__verification-status--not_submitted`}>
+                    <Text as='p' size='xxs' align='center' color='prominent'>
+                        <Localize i18n_default_text='Proof of identity and address are required' />
+                    </Text>
                 </div>
             );
         } else if (

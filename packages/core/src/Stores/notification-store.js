@@ -176,7 +176,6 @@ export default class NotificationStore extends BaseStore {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    @action.bound
     addVerificationNotifications(identity, document, is_regulated_mt5_restricted) {
         //identity
         if (identity.status === 'verified') {

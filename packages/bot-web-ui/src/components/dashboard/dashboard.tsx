@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import QStrategy from 'Components/q-strategy';
+import QStrategy from 'Components/dashboard/q-strategy';
 
 const Dashboard: React.FC = () => {
     //! later change to '0'

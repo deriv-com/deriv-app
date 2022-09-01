@@ -9,7 +9,7 @@ const data_uniq_input_obj: Array<any> = [
         id: 'martingale__size',
         name: 'martingale__size',
         field_name: 'martingale__size',
-        input_value: 'input_size',
+        input_value: 'input_martingale_size',
         label: 'Size',
         placeholder: '2',
         trailing_icon_message: quick_strategy_store.getSizeDesc(0),

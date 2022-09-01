@@ -1,6 +1,6 @@
 import { data_uniq_input_obj, common_inputs_properties } from '.';
 
-const getMessage = property => `The bot will stop trading if your total ${property} exceeds this amount.`;
+const getMessage = (property: string) => `The bot will stop trading if your total ${property} exceeds this amount.`;
 
 const data_fields: Array<any> = [
     Object.freeze({

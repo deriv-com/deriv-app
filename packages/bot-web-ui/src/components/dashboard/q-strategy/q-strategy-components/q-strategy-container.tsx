@@ -1,5 +1,5 @@
 import React from 'react';
-import { TQuickStrategyProps } from '../q-strategy.types';
+import { TQuickStrategyProps, TSymbolItem } from '../q-strategy.types';
 import { QStrategyForm, MarketOption, TradeTypeOption } from '.';
 
 const QStrategyContainer = (props: TQuickStrategyProps) => {
@@ -31,7 +31,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
     } = props;
 
     const symbol_dropdown_options = symbol_dropdown
-        .map(symbol => ({ component: <MarketOption symbol={symbol} />, ...symbol }))
+        .map((symbol: TSymbolItem) => ({ component: <MarketOption symbol={symbol} />, ...symbol }))
         .filter(option => option.group !== 'Cryptocurrencies'); // Until Crypto enabled for Dbot
 
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({

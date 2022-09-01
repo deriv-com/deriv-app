@@ -47,7 +47,7 @@ const EmailLinkVerifiedModal = ({
 };
 
 EmailLinkVerifiedModal.propTypes = {
-    amount: PropTypes.number,
+    amount: PropTypes.string,
     currency: PropTypes.string,
     is_email_link_verified_modal_open: PropTypes.bool,
     onClickConfirm: PropTypes.func,

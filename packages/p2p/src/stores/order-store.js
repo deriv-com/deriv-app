@@ -5,70 +5,6 @@ import { requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 
 export default class OrderStore {
-    constructor(root_store) {
-        makeObservable(this, {
-            api_error_message: observable,
-            cancellation_block_duration: observable,
-            cancellation_count_period: observable,
-            cancellation_limit: observable,
-            cancels_remaining: observable,
-            error_message: observable,
-            has_more_items_to_load: observable,
-            is_loading: observable,
-            is_rating_modal_open: observable,
-            is_recommended: observable,
-            orders: observable,
-            order_id: observable,
-            order_payment_method_details: observable,
-            order_rerender_timeout: observable,
-            rating_value: observable,
-            has_order_payment_method_details: computed,
-            order_information: computed,
-            nav: computed,
-            confirmOrderRequest: action.bound,
-            getAdvertiserInfo: action.bound,
-            getWebsiteStatus: action.bound,
-            handleRating: action.bound,
-            hideDetails: action.bound,
-            loadMoreOrders: action.bound,
-            onOrderIdUpdate: action.bound,
-            onOrdersUpdate: action.bound,
-            onUnmount: action.bound,
-            setForceRerenderOrders: action.bound,
-            setApiErrorMessage: action.bound,
-            setCancellationBlockDuration: action.bound,
-            setCancellationCountPeriod: action.bound,
-            setCancellationLimit: action.bound,
-            setCancelsRemaining: action.bound,
-            setErrorMessage: action.bound,
-            setHasMoreItemsToLoad: action.bound,
-            setIsLoading: action.bound,
-            setIsRatingModalOpen: action.bound,
-            setIsRecommended: action.bound,
-            setOrderPaymentMethodDetails: action.bound,
-            setOrderDetails: action.bound,
-            setOrderId: action.bound,
-            setOrders: action.bound,
-            setOrderRendererTimeout: action.bound,
-            setQueryDetails: action.bound,
-            setData: action.bound,
-            setOrderRating: action.bound,
-            subscribeToCurrentOrder: action.bound,
-            syncOrder: action.bound,
-            unsubscribeFromCurrentOrder: action.bound,
-            setRatingValue: action.bound,
-        });
-
-        this.root_store = root_store;
-
-        reaction(
-            () => this.orders,
-            orders => {
-                this.root_store.general_store.handleNotifications(this.previous_orders, orders);
-            }
-        );
-    }
-
     api_error_message = '';
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
@@ -91,6 +27,84 @@ export default class OrderStore {
     rating_value = 0;
     user_email_address = '';
     verification_link_error_message = '';
+
+    constructor(root_store) {
+        makeObservable(this, {
+            api_error_message: observable,
+            cancellation_block_duration: observable,
+            cancellation_count_period: observable,
+            cancellation_limit: observable,
+            cancels_remaining: observable,
+            error_message: observable,
+            has_more_items_to_load: observable,
+            is_email_link_blocked_modal_open: observable,
+            is_email_link_verified_modal_open: observable,
+            is_email_verification_modal_open: observable,
+            is_invalid_verification_link_modal_open: observable,
+            is_loading: observable,
+            is_loading_modal_open: observable,
+            is_rating_modal_open: observable,
+            is_recommended: observable,
+            orders: observable,
+            order_id: observable,
+            order_payment_method_details: observable,
+            order_rerender_timeout: observable,
+            rating_value: observable,
+            user_email_address: observable,
+            verification_link_error_message: observable,
+            has_order_payment_method_details: computed,
+            order_information: computed,
+            nav: computed,
+            confirmOrderRequest: action.bound,
+            getAdvertiserInfo: action.bound,
+            getWebsiteStatus: action.bound,
+            handleRating: action.bound,
+            hideDetails: action.bound,
+            loadMoreOrders: action.bound,
+            onOrderIdUpdate: action.bound,
+            onOrdersUpdate: action.bound,
+            onUnmount: action.bound,
+            setForceRerenderOrders: action.bound,
+            setApiErrorMessage: action.bound,
+            setCancellationBlockDuration: action.bound,
+            setCancellationCountPeriod: action.bound,
+            setCancellationLimit: action.bound,
+            setCancelsRemaining: action.bound,
+            setErrorMessage: action.bound,
+            setHasMoreItemsToLoad: action.bound,
+            setIsEmailLinkBlockedModalOpen: action.bound,
+            setIsEmailLinkVerifiedModalOpen: action.bound,
+            setIsEmailVerificationModalOpen: action.bound,
+            setIsInvalidVerificationLinkModalOpen: action.bound,
+            setIsLoading: action.bound,
+            setIsLoadingModalOpen: action.bound,
+            setIsRatingModalOpen: action.bound,
+            setIsRecommended: action.bound,
+            setOrderPaymentMethodDetails: action.bound,
+            setOrderDetails: action.bound,
+            setOrderId: action.bound,
+            setOrders: action.bound,
+            setOrderRendererTimeout: action.bound,
+            setQueryDetails: action.bound,
+            setData: action.bound,
+            setOrderRating: action.bound,
+            setUserEmailAddress: action.bound,
+            setVerificationLinkErrorMessage: action.bound,
+            subscribeToCurrentOrder: action.bound,
+            syncOrder: action.bound,
+            unsubscribeFromCurrentOrder: action.bound,
+            setRatingValue: action.bound,
+        });
+
+        this.root_store = root_store;
+
+        reaction(
+            () => this.orders,
+            orders => {
+                this.root_store.general_store.handleNotifications(this.previous_orders, orders);
+            }
+        );
+    }
 
     interval;
     order_info_subscription = {};
@@ -129,6 +143,9 @@ export default class OrderStore {
                     response?.error.code === 'ExcessiveVerificationRequests'
                 ) {
                     clearTimeout(wait);
+                    if (this.is_email_verification_modal_open) {
+                        this.setIsEmailVerificationModalOpen(false);
+                    }
                     this.setVerificationLinkErrorMessage(response.error.message);
                     const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
                 } else if (response?.error.code === 'ExcessiveVerificationFailures') {
@@ -149,28 +166,13 @@ export default class OrderStore {
             id: this.order_id,
             verification_code: general_store.props?.verification_code,
         }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    if (!is_buy_order_for_user) {
-                        clearTimeout(wait);
+            if (response && !response.error) {
+                if (!is_buy_order_for_user) {
+                    clearTimeout(wait);
 
-                        const wait = setTimeout(() => {
-                            this.setIsRatingModalOpen(true);
-                        }, 230);
-                    }
-                } else if (
-                    (response.error.code === 'InvalidVerificationToken' ||
-                        response.error.code === 'ExcessiveVerificationRequests') &&
-                    // This is for an issue when both error codes are received simultaneously. DO NOT REMOVE.
-                    !response?.error.code === 'ExcessiveVerificationFailures'
-                ) {
-                    clearTimeout(wait);
-                    this.setVerificationLinkErrorMessage(response.error.message);
-                    const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 700);
-                } else if (response.error.code === 'ExcessiveVerificationFailures') {
-                    clearTimeout(wait);
-                    this.setVerificationLinkErrorMessage(response.error.message);
-                    const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
+                    const wait = setTimeout(() => {
+                        this.setIsRatingModalOpen(true);
+                    }, 230);
                 }
             }
         });

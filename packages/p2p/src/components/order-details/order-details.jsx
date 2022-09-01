@@ -92,6 +92,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
             disposeListeners();
             disposeReactions();
             order_store.setOrderPaymentMethodDetails(undefined);
+            order_store.setOrderId(null);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

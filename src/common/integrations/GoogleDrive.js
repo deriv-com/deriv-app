@@ -69,7 +69,7 @@ class GoogleDriveUtil {
                             if (error.error === "idpiframe_initialization_failed" && error.details.includes('Cookies')) {
                               $.notify(
                                 translate(
-                                  "Please enable cookies in your browser setting to use google drive."
+                                  "To use Google Drive, enable cookies in your browser settings."
                                 ),
                                 { position: "bottom left" }
                               );

@@ -43,8 +43,7 @@
         transform: translate(-50%);
 
         @include mobile {
-            width: calc(95vw - 20px);
-            height: 36.5rem !important;
+            width: calc(90vw - 10px);
             padding: 6rem 4rem;
             background-color: var(--general-main-2);
         }
@@ -164,7 +163,10 @@
         width: 100%;
     }
     @include mobile {
-        width: calc(95vw - 20px);
+        &__password-selection {
+            height: 36.5rem !important;
+        }
+        width: calc(90vw - 10px);
         border-radius: 1rem;
         position: relative;
         left: 50%;

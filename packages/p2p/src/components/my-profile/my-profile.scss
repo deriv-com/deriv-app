@@ -5,7 +5,7 @@
             min-width: 672px;
         }
         @include mobile {
-            padding: 1.6rem;
+            padding: 0 1.6rem;
             width: 100vw;
 
             .dc-mobile-full-page-modal {

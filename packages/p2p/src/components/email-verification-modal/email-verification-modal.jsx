@@ -17,13 +17,14 @@ const EmailVerificationModal = ({
 
     return (
         <Modal
+            className='email-verification-modal'
             has_close_icon
             is_open={is_email_verification_modal_open}
             renderTitle={() => <></>}
             toggleModal={() => setIsEmailVerificationModalOpen(false)}
             width='440px'
         >
-            <Modal.Body className='email-verification-modal'>
+            <Modal.Body className='email-verification-modal--body'>
                 <Icon icon='IcEmailSentP2p' size='128' />
                 <Text
                     align='center'

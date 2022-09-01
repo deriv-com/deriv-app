@@ -1,11 +1,15 @@
-.email-verification-modal {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-
+.dc-modal__container_email-verification-modal {
     @include mobile {
         max-height: 80vh;
         overflow: auto;
+    }
+}
+
+.email-verification-modal {
+    &--body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
     }
 
     &--email_text {

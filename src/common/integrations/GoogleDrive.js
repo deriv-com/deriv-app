@@ -69,8 +69,8 @@ class GoogleDriveUtil {
                             if (error.error === "idpiframe_initialization_failed" && error.details.includes('Cookies')) {
                               $.notify(
                                 translate(
-                                  "There was an error initialising Google Drive. Cookies are not enabled in current environment."
-                                ),
+                                    "There was an error initialising Google Drive. Please enable Cookies on your browser settings to use this feature."
+                                    ),
                                 { position: "bottom left" }
                               );
                             } else{

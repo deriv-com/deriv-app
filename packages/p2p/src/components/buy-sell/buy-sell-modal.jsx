@@ -124,26 +124,24 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
     const formik_ref = React.useRef();
 
-    const BuySellFormError = () => {
-        return (
-            <div className='buy-sell__modal--error-message'>
-                <HintBox
-                    className='buy-sell__modal-danger'
-                    icon='IcAlertDanger'
-                    message={
-                        <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                            {buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
-                                <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                            ) : (
-                                error_message
-                            )}
-                        </Text>
-                    }
-                    is_danger
-                />
-            </div>
-        );
-    };
+    const BuySellFormError = () => (
+        <div className='buy-sell__modal--error-message'>
+            <HintBox
+                className='buy-sell__modal-danger'
+                icon='IcAlertDanger'
+                message={
+                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                        {buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
+                            <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                        ) : (
+                            error_message
+                        )}
+                    </Text>
+                }
+                is_danger
+            />
+        </div>
+    );
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {

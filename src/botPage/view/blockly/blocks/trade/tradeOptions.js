@@ -117,7 +117,7 @@ export default () => {
                     // Register an event and use as a lock to avoid spamming API
                     const event = `contractsLoaded.${symbol}`;
                     if (!globalObserver.isRegistered(event)) {
-                        globalObserver.register(event, () => {});
+                        globalObserver.register(event, () => { });
                         getContractsAvailableForSymbol(symbol).then(contracts => {
                             globalObserver.unregisterAll(event); // Release the lock
                             resolveContracts(contracts);

@@ -11,12 +11,12 @@ type TProgressBarOnboarding = {
 const ProgressBarOnboarding = ({ step, amount_of_steps, setStep }: TProgressBarOnboarding) => {
     return (
         <div className='progress-bar'>
-            {amount_of_steps.map((_, index) => {
+            {amount_of_steps.map((st, index) => {
                 const active = step === index + 1;
 
                 return (
                     <div
-                        key={index}
+                        key={st}
                         onClick={() => setStep(index + 1)}
                         className={active ? 'progress-bar-rectangle' : 'progress-bar-circle'}
                     />

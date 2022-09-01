@@ -225,6 +225,7 @@ export default class ClientStore extends BaseStore {
             should_allow_authentication: computed,
             is_risk_client: computed,
             is_financial_assessment_incomplete: computed,
+            is_financial_information_not_complete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
             is_tnc_needed: computed,
@@ -637,6 +638,10 @@ export default class ClientStore extends BaseStore {
 
     get is_financial_assessment_incomplete() {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
+    }
+
+    get is_financial_information_not_complete() {
+        return this.account_status?.status?.includes('financial_information_not_complete');
     }
 
     get is_authentication_needed() {

@@ -42,6 +42,7 @@ const WithdrawalSideNote = ({ is_mobile, currency }) => {
 };
 
 const Withdrawal = ({
+    active_account_landing_company,
     balance,
     check10kLimit,
     container,
@@ -67,7 +68,6 @@ const Withdrawal = ({
     verification_code,
     willMountWithdraw,
     recentTransactionOnMount,
-    is_risk_client,
     is_financial_assessment_incomplete,
 }) => {
     const [is_withdrawal_blocked, setIsWithdrawalBlocked] = React.useState(false);
@@ -116,7 +116,11 @@ const Withdrawal = ({
     }, [currency, tab_index, crypto_transactions]);
 
     React.useEffect(() => {
-        setIsWithdrawalBlocked(is_risk_client && is_financial_assessment_incomplete);
+        setIsWithdrawalBlocked(
+            active_account_landing_company === 'maltainvest' &&
+                is_withdrawal_locked &&
+                is_financial_assessment_incomplete
+        );
     }, []);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
@@ -191,6 +195,7 @@ const Withdrawal = ({
 };
 
 Withdrawal.propTypes = {
+    active_account_landing_company: PropTypes.bool,
     balance: PropTypes.string,
     check10kLimit: PropTypes.func,
     container: PropTypes.string,
@@ -204,7 +209,6 @@ Withdrawal.propTypes = {
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
-    is_risk_client: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -221,6 +225,7 @@ Withdrawal.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    active_account_landing_company: client.active_account_landing_company,
     balance: client.balance,
     check10kLimit: modules.cashier.withdraw.check10kLimit,
     container: modules.cashier.withdraw.container,
@@ -233,7 +238,6 @@ export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
     is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_risk_client: client.is_risk_client,
     is_financial_assessment_incomplete: client.is_financial_assessment_incomplete,
     is_switching: client.is_switching,
     is_system_maintenance: modules.cashier.general_store.is_system_maintenance,

@@ -142,6 +142,15 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    should_show_risk_warning_modal = false;
+    should_show_appropriateness_warning_modal = false;
+    should_show_cooldown_modal = false;
+    should_show_trading_assessment_modal = false;
+    should_show_trade_assessment_form = false;
+    is_trading_assessment_for_existing_user_enabled = false;
+    is_trading_assessment_for_new_user_enabled = false;
+    should_show_assessment_complete_modal = false;
+
     is_deriv_account_needed_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
@@ -316,6 +325,22 @@ export default class UIStore extends BaseStore {
             shouldNavigateAfterChooseCrypto: action.bound,
             continueRouteAfterChooseCrypto: action.bound,
             openDerivRealAccountNeededModal: action.bound,
+            should_show_risk_warning_modal: observable,
+            setShouldShowRiskWarningModal: action.bound,
+            should_show_appropriateness_warning_modal: observable,
+            setShouldShowAppropriatenessWarningModal: action.bound,
+            should_show_cooldown_modal: observable,
+            setShouldShowCooldownModal: action.bound,
+            should_show_trading_assessment_modal: observable,
+            setShouldShowTradingAssessmentModal: action.bound,
+            should_show_trade_assessment_form: observable,
+            setShouldShowTradeAssessmentForm: action.bound,
+            is_trading_assessment_for_existing_user_enabled: observable,
+            setIsTradingAssessmentForExistingUserEnabled: action.bound,
+            is_trading_assessment_for_new_user_enabled: observable,
+            setIsTradingAssessmentForNewUserEnabled: action.bound,
+            should_show_assessment_complete_modal: observable,
+            setShouldShowAssessmentCompleteModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -748,5 +773,37 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setShouldShowRiskWarningModal(value) {
+        this.should_show_risk_warning_modal = value;
+    }
+
+    setIsTradingAssessmentForExistingUserEnabled(value) {
+        this.is_trading_assessment_for_existing_user_enabled = value;
+    }
+
+    setIsTradingAssessmentForNewUserEnabled(value) {
+        this.is_trading_assessment_for_new_user_enabled = value;
+    }
+
+    setShouldShowAppropriatenessWarningModal(value) {
+        this.should_show_appropriateness_warning_modal = value;
+    }
+
+    setShouldShowAssessmentCompleteModal(value) {
+        this.should_show_assessment_complete_modal = value;
+    }
+
+    setShouldShowCooldownModal(value) {
+        this.should_show_cooldown_modal = value;
+    }
+
+    setShouldShowTradingAssessmentModal(value) {
+        this.should_show_trading_assessment_modal = value;
+    }
+
+    setShouldShowTradeAssessmentForm(value) {
+        this.should_show_trade_assessment_form = value;
     }
 }

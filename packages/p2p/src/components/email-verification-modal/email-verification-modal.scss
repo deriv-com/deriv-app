@@ -21,5 +21,9 @@
     &--receive_email_text {
         cursor: pointer;
         margin: 3rem 0 0.6rem;
+
+        @include mobile {
+            margin: 3rem 0 2.6rem;
+        }
     }
 }

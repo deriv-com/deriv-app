@@ -59,6 +59,7 @@ const Trade = ({
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
+    const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
@@ -126,6 +127,16 @@ const Trade = ({
         }
     };
 
+    const topWidgets = ({ ...params }) => (
+        <ChartTopWidgets
+            open_market={open_market}
+            open={try_synthetic_indices || try_open_markets}
+            charts_ref={charts_ref}
+            is_digits_widget_active={is_digits_widget_active}
+            {...params}
+        />
+    );
+
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
 
     return (
@@ -149,11 +160,7 @@ const Trade = ({
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                            <ChartTrade
-                                try_synthetic_indices={try_synthetic_indices}
-                                try_open_markets={try_open_markets}
-                                open_market={open_market}
-                            />
+                            <ChartTrade topWidgets={topWidgets} charts_ref={charts_ref} />
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -176,11 +183,9 @@ const Trade = ({
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <ChartTrade
+                                topWidgets={topWidgets}
+                                charts_ref={charts_ref}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
-                                is_digits_widget_active={show_digits_stats ? is_digits_widget_active : undefined}
-                                try_synthetic_indices={try_synthetic_indices}
-                                try_open_markets={try_open_markets}
-                                open_market={open_market}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -269,6 +274,8 @@ const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
 
 const Chart = props => {
     const {
+        topWidgets,
+        charts_ref,
         updateGranularity,
         updateChartType,
         active_symbols,
@@ -294,30 +301,10 @@ const Chart = props => {
         wsSubscribe,
     } = props;
 
-    const charts_ref = React.useRef();
-    const props_ref = React.useRef();
-    props_ref.current = props;
-
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
         []
     );
-
-    const topWidgets = React.useCallback(({ ...params }) => {
-        // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
-        // so, using props_ref to get current props value
-        const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = props_ref.current;
-
-        return (
-            <ChartTopWidgets
-                open_market={open_market}
-                open={try_synthetic_indices || try_open_markets}
-                charts_ref={charts_ref}
-                is_digits_widget_active={is_digits_widget_active}
-                {...params}
-            />
-        );
-    }, []);
 
     const getMarketsOrder = active_symbols => {
         const synthetic_index = 'synthetic_index';
@@ -398,6 +385,8 @@ const Chart = props => {
 };
 
 Chart.propTypes = {
+    topWidgets: PropTypes.func,
+    charts_ref: PropTypes.object,
     bottomWidgets: PropTypes.func,
     chart_type: PropTypes.string,
     chart_layout: PropTypes.any,
@@ -405,7 +394,6 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
-    is_digits_widget_active: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -414,7 +402,6 @@ Chart.propTypes = {
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
     symbol: PropTypes.string,
-    try_synthetic_indices: PropTypes.bool,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,

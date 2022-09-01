@@ -409,7 +409,11 @@ const EditAdForm = () => {
                                                         <Localize i18n_default_text='Payment methods' />
                                                     </Text>
                                                     <Text color='less-prominent'>
-                                                        <Localize i18n_default_text='You may choose up to 3.' />
+                                                        {is_sell_advert ? (
+                                                            <Localize i18n_default_text='You may tap and choose up to 3.' />
+                                                        ) : (
+                                                            <Localize i18n_default_text='You may choose up to 3.' />
+                                                        )}
                                                     </Text>
                                                 </div>
                                                 <EditAdFormPaymentMethods

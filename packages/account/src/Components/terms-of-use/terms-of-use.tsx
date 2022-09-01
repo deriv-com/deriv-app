@@ -1,5 +1,5 @@
-import { Field, Formik } from 'formik';
-import React from 'react';
+import { Field, Formik, FormikValues } from 'formik';
+import React, { HtmlHTMLAttributes } from 'react';
 import cn from 'classnames';
 import {
     Div100vhContainer,
@@ -11,27 +11,46 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CheckboxField from './checkbox-field.jsx';
-import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
+import CheckboxField from './checkbox-field';
+import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages';
 import './terms-of-use.scss';
+import { TPlatformContext } from 'Types';
+
+type TTermsOfUseExtend = {
+    getCurrentStep: () => number;
+    goToPreviousStep: () => void;
+    goToNextStep: () => void;
+    onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    onSubmit: (
+        current_step: number | null,
+        values: FormikValues,
+        action: (isSubmitting: boolean) => void,
+        next_step: () => void
+    ) => void;
+    real_account_signup_target: string;
+    value: FormikValues;
+    form_error: string;
+    isDesktop?: string | number | undefined;
+};
+
+type TTermsOfUse = HtmlHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TTermsOfUseExtend;
 
 const TermsOfUse = ({
-    getCurrentStep,
     onCancel,
+    getCurrentStep,
     goToPreviousStep,
     goToNextStep,
     onSubmit,
     value,
     real_account_signup_target,
     ...props
-}) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+}: TTermsOfUse) => {
+    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
         onCancel(current_step, goToPreviousStep);
     };
-
     const getSubmitButtonLabel = () => {
         if (is_appstore) {
             return localize('Finish');
@@ -48,7 +67,7 @@ const TermsOfUse = ({
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
-                    {({ setRef }) => (
+                    {({ setRef }: { setRef: string }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer
                                 className='details-form'
@@ -58,7 +77,7 @@ const TermsOfUse = ({
                                 <ThemedScrollbars>
                                     <div
                                         className={cn('details-form__elements', 'terms-of-use')}
-                                        style={{ paddingBottom: isDesktop() ? 'unset' : null }}
+                                        style={{ paddingBottom: isDesktop() ? 'unset' : '0' }}
                                     >
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
@@ -102,8 +121,9 @@ const TermsOfUse = ({
                                     is_absolute={isMobile()}
                                     onCancel={() => handleCancel()}
                                     cancel_label={localize('Previous')}
-                                    form_error={props.form_error}
+                                    form_errors={props.form_error}
                                 />
+                                console.log(agreed_tnc)
                             </Modal.Footer>
                         </form>
                     )}

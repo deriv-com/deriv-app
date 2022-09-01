@@ -42,9 +42,10 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
     return (
         <div className='settings-language'>
             <div className='settings-language__language-header'>
-                <Text size='xs' color='prominent' weight='bold'>
+                <Text size='xs' color='prominent' weight='bold' className='settings-language__language-text'>
                     <Localize i18n_default_text='Select language' />
                 </Text>
+                <div className='settings-language__language-borderline' />
             </div>
             <div className='settings-language__language-container'>
                 {Object.keys(getAllowedLanguages()).map(key =>

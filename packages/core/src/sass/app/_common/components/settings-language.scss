@@ -2,6 +2,9 @@
 .settings-language {
     &__language-header {
         margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
     }
     &__language-container {
         display: grid;
@@ -41,5 +44,15 @@
                 color: var(--text-prominent);
             }
         }
+    }
+
+    &__language-borderline {
+        border: solid 0.5px $color-grey-2;
+        width: 60%;
+        height: 0;
+        margin-right: 3rem;
+    }
+    &__language-text {
+        width: 15%;
     }
 }

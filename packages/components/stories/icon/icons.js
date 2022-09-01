@@ -144,10 +144,12 @@ export const icons =
         'IcCashier',
     ],
     'common': [
+        'IcAccountCross',
         'IcAccountError',
         'IcAccountLimits',
         'IcAccountMissingDetailsDashboard',
         'IcAccountMissingDetails',
+        'IcAccountTick',
         'IcAccountTransferColored',
         'IcAccountTransfer',
         'IcAccountTrashCanDashboard',

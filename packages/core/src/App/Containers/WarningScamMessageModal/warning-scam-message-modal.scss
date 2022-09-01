@@ -1,0 +1,123 @@
+@mixin link-container-gaps {
+    padding: 16px 8px;
+    margin-right: 8px;
+}
+
+.warning-scam-message {
+    &--content {
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // margin: 20px 0px 20px 0px;
+        padding: 1.5rem 0;
+
+        @media screen and (max-width: 375px) {
+            height: 80vh;
+        }
+
+        &__title {
+            display: flex;
+            flex-direction: column;
+
+            @media screen and (max-width: 400px) {
+                width: 80%;
+            }
+        }
+
+        &__info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: solid #e6e9e9;
+            border-radius: 8px;
+            margin-top: 10px;
+            padding: 0.98rem 0 0.98rem 0.63rem;
+            background-color: #f2f3f4;
+            width: 90%;
+
+            @include mobile {
+                border: solid rgb(0, 0, 0);
+                background-color: var(--general-main-2);
+            }
+
+            &--title {
+                margin-bottom: 10px;
+            }
+
+            &--message {
+                display: flex;
+                padding: 8px;
+            }
+        }
+    }
+
+    &__checkbox-container {
+        display: flex;
+        width: 85%;
+        margin: 10px 0px;
+
+        &--checkbox {
+            margin-right: 1rem;
+        }
+    }
+
+    &__button {
+        @media screen and (max-width: 375px) {
+            padding: 1.2rem 0;
+        }
+    }
+
+    &__icon {
+        margin: 0.5rem;
+
+        &--cross {
+            margin: 0 0.5rem;
+        }
+    }
+}
+
+.correct-link {
+    &__container {
+        display: flex;
+        background-color: #4bb4b329;
+        @include link-container-gaps;
+    }
+
+    &__message-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__link-container {
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        margin-top: 10px;
+    }
+}
+
+.fake-link {
+    &__container {
+        display: flex;
+        background-color: #ec3f3f29;
+        @include link-container-gaps;
+        margin-top: 10px;
+    }
+
+    &__message-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__link-container {
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        margin-top: 10px;
+    }
+}

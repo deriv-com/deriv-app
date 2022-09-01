@@ -52,7 +52,7 @@ export default class BuySellStore extends BaseStore {
     get sort_list() {
         return [
             { text: localize('Exchange rate (Default)'), value: 'rate' },
-            { text: localize('Completion rate'), value: 'completion' },
+            { text: localize('User rating'), value: 'rating' },
         ];
     }
 

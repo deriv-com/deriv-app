@@ -1,6 +1,6 @@
-import React from 'react';
-import { observer as globalObserver } from '../../../../../../common/utils/observer';
-import api from '../../../api';
+import React from "react";
+import { observer as globalObserver } from "../../../../../../common/utils/observer";
+import api from "../../../api";
 import Popover from '../../../components/popover';
 
 const ServerTime = () => {
@@ -26,15 +26,13 @@ const ServerTime = () => {
     const getServerTime = () => {
         if (!navigator.onLine || api.connection.readyState !== 1) setHasApiResponse(false);
 
-        api.send({ time: 1 })
-            .then(response => {
-                const newDate = new Date(response.time * 1000);
-                setDate(newDate);
-                setHasApiResponse(true);
-            })
-            .catch(e => {
-                globalObserver.emit('Error', e);
-            });
+        api.send({ time: 1 }).then(response => {
+            const newDate = new Date(response.time * 1000);
+            setDate(newDate);
+            setHasApiResponse(true);
+        }).catch(e => {
+            globalObserver.emit('Error', e);
+        });
     };
 
     React.useEffect(() => {
@@ -53,11 +51,9 @@ const ServerTime = () => {
 
     return (
         <Popover content={<>{dateString}</>}>
-            <div id='server-time' className='server-time'>
-                {dateString}
-            </div>
+            <div id="server-time" className="server-time">{dateString}</div>
         </Popover>
-    );
+    )
 };
 
 export default ServerTime;

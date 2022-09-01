@@ -42,7 +42,7 @@ const AccountSwitcher = props => {
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
     const [exchanged_rate, setExchangedRate] = React.useState('');
-    const [exchanged_rate_mt5_dxtrade, setExchangedRateMT5Dxtrade] = React.useState({ mt5_demo: '', dxtrade: '' });
+    const [exchanged_rate_mt5_dxtrade, setExchangedRateMT5Dxtrade] = React.useState({ mt5_demo: '', dxtrade_demo: '' });
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
@@ -74,7 +74,7 @@ const AccountSwitcher = props => {
 
         if (dxtrade_demo_currency) {
             getExchangeRate(dxtrade_demo_currency, props.obj_total_balance.currency).then(res =>
-                setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, dxtrade: res }))
+                setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, dxtrade_demo: res }))
             );
         }
     }, []);
@@ -386,7 +386,7 @@ const AccountSwitcher = props => {
 
             total +=
                 dxtrade_demo_currency !== props.obj_total_balance.currency
-                    ? dxtrade_demo_total.balance * exchanged_rate_mt5_dxtrade.dxtrade
+                    ? dxtrade_demo_total.balance * exchanged_rate_mt5_dxtrade.dxtrade_demo
                     : dxtrade_demo_total.balance;
         }
 

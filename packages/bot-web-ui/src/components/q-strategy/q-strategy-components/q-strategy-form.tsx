@@ -28,6 +28,7 @@ const QStrategyForm = ({
     setCurrentFocus,
     selected_type_strategy,
     getFieldMap,
+    description,
 }: any) => (
     <Formik
         initialValues={initial_values}
@@ -43,9 +44,6 @@ const QStrategyForm = ({
             const is_valid = true; //!remove later
 
             const is_submit_enabled = !isSubmitting && is_valid;
-            const description = types_strategies_dropdown.find(
-                strategy => strategy.value === selected_type_strategy.value
-            )?.description;
 
             return (
                 <Form

@@ -7,6 +7,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         symbol_dropdown,
         trade_type_dropdown,
         active_index,
+        description,
         createStrategy,
         duration_unit_dropdown,
         types_strategies_dropdown,
@@ -42,6 +43,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         <>
             <QStrategyForm
                 active_index={active_index}
+                description={description}
                 createStrategy={createStrategy}
                 duration_unit_dropdown={duration_unit_dropdown}
                 types_strategies_dropdown={types_strategies_dropdown}

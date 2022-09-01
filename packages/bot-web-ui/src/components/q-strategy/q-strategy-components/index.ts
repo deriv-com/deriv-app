@@ -4,5 +4,8 @@ export { default as MarketOption } from './market-option';
 export { default as TradeTypeOption } from './trade-type-option';
 export { default as QStrategyFooter } from './q-strategy-footer';
 export { default as QStrategyFields } from './q-strategy-fields';
+export { default as data_uniq_input_obj } from './data-uniq-input-obj';
+export { default as common_inputs_properties } from './common-input-properties';
 export { default as data_fields } from './data-fields';
 export { default as SelectField } from './select-field';
+export { default as SecondInputField } from './second-input-field';

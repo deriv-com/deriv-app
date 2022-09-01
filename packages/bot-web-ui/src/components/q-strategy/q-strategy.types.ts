@@ -1,5 +1,6 @@
 export type TQuickStrategyProps = {
     active_index: number;
+    description: string;
     createStrategy: any;
     duration_unit_dropdown: any;
     types_strategies_dropdown: any;

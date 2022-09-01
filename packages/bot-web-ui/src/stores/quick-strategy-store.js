@@ -1,9 +1,9 @@
-import { computed, observable, action, runInAction } from 'mobx';
-import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { localize } from '@deriv/translations';
+import { action, computed, observable, runInAction } from 'mobx';
 import GTM from 'Utils/gtm';
-import { storeSetting, getSetting } from 'Utils/settings';
+import { getSetting, storeSetting } from 'Utils/settings';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -24,6 +24,7 @@ export default class QuickStrategyStore {
 
     @observable is_strategy_modal_open = false;
     @observable active_index = this.selected_type_strategy.index || 0;
+    @observable description = this.qs_cache.selected_type_strategy.description || '';
     @observable types_strategies_dropdown = [];
     @observable symbol_dropdown = [];
     @observable trade_type_dropdown = [];
@@ -65,6 +66,13 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
+    setDescription(type_strategy) {
+        this.description = this.types_strategies_dropdown.find(
+            strategy => strategy.value === type_strategy.value
+        )?.description;
+    }
+
+    @action.bound
     setDurationUnitDropdown(duration_unit_options) {
         this.duration_unit_dropdown = duration_unit_options;
     }
@@ -94,6 +102,7 @@ export default class QuickStrategyStore {
     setSelectedTypeStrategy(type_strategy) {
         this.qs_cache.selected_type_strategy = type_strategy;
         this.selected_type_strategy = type_strategy;
+        this.setDescription(type_strategy);
         delete this.qs_cache.selected_symbol;
         delete this.qs_cache.selected_trade_type;
         delete this.qs_cache.selected_duration_unit;

@@ -31,6 +31,7 @@ const QStrategy = (props: TQuickStrategyProps) => {
 
 export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     active_index: quick_strategy.active_index,
+    description: quick_strategy.description,
     createStrategy: quick_strategy.createStrategy,
     duration_unit_dropdown: quick_strategy.duration_unit_dropdown,
     types_strategies_dropdown: quick_strategy.types_strategies_dropdown,

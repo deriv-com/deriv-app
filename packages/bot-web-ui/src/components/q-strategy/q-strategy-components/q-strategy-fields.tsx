@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Input, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { data_fields, SelectField } from '.';
+import { SelectField, SecondInputField, data_fields, data_uniq_input_obj } from '.';
 
 const QStrategyFields = ({
     is_mobile,
@@ -28,9 +28,10 @@ const QStrategyFields = ({
 }: any) => {
     let tempIsDoubleIdx: number;
 
+    const uniq_selected_input = data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0];
+
     const fields = data_fields.map((item, idx) => {
         const {
-            index,
             id,
             name,
             field_name,
@@ -45,36 +46,40 @@ const QStrategyFields = ({
             is_able_disabled,
         } = item;
 
-        const isInputField = input_value.startsWith('input_');
+        const isUniqStrategyField = Array.isArray(item);
 
-        const getDropdownList = name.endsWith('types-strategies')
-            ? types_strategies_dropdown
-            : name.endsWith('symbol')
-            ? symbol_dropdown
-            : name.endsWith('trade-type')
-            ? trade_type_dropdown
-            : name.endsWith('duration-unit')
-            ? duration_unit_dropdown
+        const isInputField = isUniqStrategyField || input_value.startsWith('input_');
+
+        const getDropdownList = !isUniqStrategyField
+            ? name.endsWith('types-strategies')
+                ? types_strategies_dropdown
+                : name.endsWith('symbol')
+                ? symbol_dropdown
+                : name.endsWith('trade-type')
+                ? trade_type_dropdown
+                : name.endsWith('duration-unit')
+                ? duration_unit_dropdown
+                : ''
             : '';
 
-        const getSelectedValue = name.endsWith('types-strategies')
-            ? selected_type_strategy
-            : name.endsWith('symbol')
-            ? selected_symbol
-            : name.endsWith('trade-type')
-            ? selected_trade_type
-            : name.endsWith('duration-unit')
-            ? selected_duration_unit
+        const getSelectedValue = !isUniqStrategyField
+            ? name.endsWith('types-strategies')
+                ? selected_type_strategy
+                : name.endsWith('symbol')
+                ? selected_symbol
+                : name.endsWith('trade-type')
+                ? selected_trade_type
+                : name.endsWith('duration-unit')
+                ? selected_duration_unit
+                : ''
             : '';
 
-        const isBaseField = name.startsWith('base__');
-        const isUniqStrategyField = index === selected_type_strategy.index;
+        const isBaseField = !isUniqStrategyField && name.startsWith('base__');
         const isCurrentStrategyFields = isBaseField || isUniqStrategyField;
 
-        const isDurationUnitField = name.endsWith('duration-unit');
-        const isDurationValueField = name.endsWith('duration-value');
-        const isProfitField = name.endsWith('profit');
-        if (tempIsDoubleIdx === idx || isDurationValueField || isProfitField) return;
+        const isDurationUnitField = !isUniqStrategyField && name.endsWith('duration-unit');
+        const isDurationValueField = !isUniqStrategyField && name.endsWith('duration-value');
+        if (tempIsDoubleIdx === idx || isDurationValueField) return;
 
         if (isCurrentStrategyFields && isInputField) {
             tempIsDoubleIdx = idx + 1;
@@ -106,36 +111,13 @@ const QStrategyFields = ({
                         selected_trade_type={selected_trade_type}
                         selected_symbol={selected_symbol}
                     />
-                    <Field name={data_fields[4]?.field_name} key={data_fields[4]?.id}>
-                        {({ field }) => {
-                            return (
-                                <Input
-                                    {...field}
-                                    className={data_fields[4]?.className}
-                                    label_className={data_fields[4]?.label_className}
-                                    field_className={data_fields[4]?.field_className}
-                                    type='text'
-                                    label={localize(data_fields[4]?.label)}
-                                    onChange={e => {
-                                        handleChange(e);
-                                        onChangeInputValue(data_fields[4]?.input_value, e);
-                                    }}
-                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                    onBlur={() => setCurrentFocus(null)}
-                                    placeholder={data_fields[4]?.placeholder}
-                                    trailing_icon={
-                                        <Popover
-                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                            message={localize(data_fields[4]?.trailing_icon_message)}
-                                            zIndex={data_fields[4]?.zIndex}
-                                        >
-                                            <Icon icon='IcInfoOutline' />
-                                        </Popover>
-                                    }
-                                />
-                            );
-                        }}
-                    </Field>
+                    <SecondInputField
+                        idx={idx}
+                        handleChange={handleChange}
+                        onChangeInputValue={onChangeInputValue}
+                        setCurrentFocus={setCurrentFocus}
+                        is_mobile={is_mobile}
+                    />
                 </div>
             ) : isInputField && !isDurationValueField ? (
                 <div
@@ -143,92 +125,42 @@ const QStrategyFields = ({
                         'quick-strategy__form-row--multiple': !is_mobile,
                     })}
                 >
-                    <Field name={field_name} key={id}>
-                        {({ field }) => {
-                            return (
-                                <Input
-                                    {...field}
-                                    className={className}
-                                    label_className={label_className}
-                                    field_className={field_className}
-                                    type='text'
-                                    label={localize(label)}
-                                    onChange={e => {
-                                        handleChange(e);
-                                        onChangeInputValue(input_value, e);
-                                    }}
-                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                    onBlur={() => setCurrentFocus(null)}
-                                    placeholder={placeholder}
-                                    trailing_icon={
-                                        <Popover
-                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                            message={localize(trailing_icon_message)}
-                                            zIndex={zIndex}
-                                        >
-                                            <Icon icon='IcInfoOutline' />
-                                        </Popover>
-                                    }
-                                />
-                            );
-                        }}
-                    </Field>
                     <Field
-                        name={isUniqStrategyField ? data_fields[10]?.field_name : data_fields[idx + 1]?.field_name}
-                        key={isUniqStrategyField ? data_fields[10]?.id : data_fields[idx + 1]?.id}
+                        name={isUniqStrategyField ? uniq_selected_input.field_name : field_name}
+                        key={isUniqStrategyField ? uniq_selected_input.id : id}
                     >
                         {({ field }) => {
                             return (
                                 <Input
                                     {...field}
-                                    className={
-                                        isUniqStrategyField
-                                            ? data_fields[10]?.className
-                                            : data_fields[idx + 1]?.className
-                                    }
+                                    className={isUniqStrategyField ? uniq_selected_input.className : className}
                                     label_className={
-                                        isUniqStrategyField
-                                            ? data_fields[10]?.label_className
-                                            : data_fields[idx + 1]?.label_className
+                                        isUniqStrategyField ? uniq_selected_input.label_className : label_className
                                     }
                                     field_className={
-                                        isUniqStrategyField
-                                            ? data_fields[10]?.field_className
-                                            : data_fields[idx + 1]?.field_className
+                                        isUniqStrategyField ? uniq_selected_input.field_className : field_className
                                     }
                                     type='text'
-                                    label={localize(
-                                        isUniqStrategyField ? data_fields[10]?.label : data_fields[idx + 1]?.label
-                                    )}
+                                    label={localize(isUniqStrategyField ? uniq_selected_input.label : label)}
                                     onChange={e => {
                                         handleChange(e);
                                         onChangeInputValue(
-                                            isUniqStrategyField
-                                                ? data_fields[10]?.input_value
-                                                : data_fields[idx + 1]?.input_value,
+                                            isUniqStrategyField ? uniq_selected_input.input_value : input_value,
                                             e
                                         );
                                     }}
                                     onFocus={e => setCurrentFocus(e.currentTarget.name)}
                                     onBlur={() => setCurrentFocus(null)}
-                                    placeholder={
-                                        isUniqStrategyField
-                                            ? data_fields[10]?.placeholder
-                                            : data_fields[idx + 1]?.placeholder
-                                    }
+                                    placeholder={isUniqStrategyField ? uniq_selected_input.placeholder : placeholder}
                                     trailing_icon={
                                         <Popover
                                             alignment={is_mobile ? 'top' : 'bottom'}
                                             message={localize(
                                                 isUniqStrategyField
-                                                    ? data_fields[10]?.trailing_icon_message
-                                                    : data_fields[idx + 1]?.trailing_icon_message
+                                                    ? uniq_selected_input.trailing_icon_message
+                                                    : trailing_icon_message
                                             )}
-                                            zIndex={
-                                                isUniqStrategyField
-                                                    ? data_fields[10]?.zIndex
-                                                    : data_fields[idx + 1]?.zIndex
-                                            }
+                                            zIndex={isUniqStrategyField ? uniq_selected_input.zIndex : zIndex}
                                         >
                                             <Icon icon='IcInfoOutline' />
                                         </Popover>
@@ -237,6 +169,13 @@ const QStrategyFields = ({
                             );
                         }}
                     </Field>
+                    <SecondInputField
+                        idx={idx}
+                        handleChange={handleChange}
+                        onChangeInputValue={onChangeInputValue}
+                        setCurrentFocus={setCurrentFocus}
+                        is_mobile={is_mobile}
+                    />
                 </div>
             ) : (
                 !isDurationValueField && (

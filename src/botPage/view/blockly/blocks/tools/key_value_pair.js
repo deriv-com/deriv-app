@@ -4,7 +4,7 @@ Blockly.Blocks.key_value_pair = {
     init() {
         this.jsonInit({
             message0: translate('Key: %1 Value: %2'),
-            args0   : [
+            args0: [
                 {
                     type: 'field_input',
                     name: 'KEY',
@@ -15,8 +15,8 @@ Blockly.Blocks.key_value_pair = {
                     name: 'VALUE',
                 },
             ],
-            colour : '#dedede',
-            output : null,
+            colour: '#dedede',
+            output: null,
             tooltip: translate('Returns a string representation of a key value pair'),
         });
     },

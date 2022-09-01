@@ -5,7 +5,9 @@ import { mainScope } from '../../../relationChecker';
 Blockly.Blocks.timeout = {
     init: function init() {
         this.appendStatementInput('TIMEOUTSTACK').setCheck(null);
-        this.appendValueInput('SECONDS').setCheck(null).appendField(translate('Run After'));
+        this.appendValueInput('SECONDS')
+            .setCheck(null)
+            .appendField(translate('Run After'));
         this.appendDummyInput().appendField(translate('Second(s)'));
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

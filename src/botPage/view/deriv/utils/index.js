@@ -1,2 +1,2 @@
-export * from "./account-methods";
-export * from "./deriv-links";
+export * from './account-methods';
+export * from './deriv-links';

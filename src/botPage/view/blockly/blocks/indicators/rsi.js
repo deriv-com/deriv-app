@@ -5,8 +5,12 @@ import { expectValue } from '../shared';
 Blockly.Blocks.rsi = {
     init: function init() {
         this.appendDummyInput().appendField(translate('Relative Strength Index'));
-        this.appendValueInput('INPUT').setCheck('Array').appendField(translate('Input List'));
-        this.appendValueInput('PERIOD').setCheck('Number').appendField(translate('Period'));
+        this.appendValueInput('INPUT')
+            .setCheck('Array')
+            .appendField(translate('Input List'));
+        this.appendValueInput('PERIOD')
+            .setCheck('Number')
+            .appendField(translate('Period'));
         this.setOutput(true, 'Number');
         this.setColour('#dedede');
         this.setTooltip(translate('Relative Strength Index (RSI) from a list with a period'));

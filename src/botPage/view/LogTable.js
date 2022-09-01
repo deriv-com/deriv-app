@@ -59,12 +59,12 @@ const Logtable = () => {
 
         return (
             <React.Fragment key={dataKey}>
-                <div className="ReactVirtualized__Table__headerTruncatedText">{label}</div>
+                <div className='ReactVirtualized__Table__headerTruncatedText'>{label}</div>
                 {!is_last_column && (
                     <Draggable
-                        axis="x"
-                        defaultClassName="DragHandle"
-                        defaultClassNameDragging="DragHandleActive"
+                        axis='x'
+                        defaultClassName='DragHandle'
+                        defaultClassNameDragging='DragHandleActive'
                         onDrag={(e, { deltaX }) =>
                             resizeRow({
                                 dataKey,
@@ -74,7 +74,7 @@ const Logtable = () => {
                         position={{ x: 0 }}
                         zIndex={999}
                     >
-                        <span className="DragHandleIcon log-table" />
+                        <span className='DragHandleIcon log-table' />
                     </Draggable>
                 )}
             </React.Fragment>
@@ -102,11 +102,11 @@ const Logtable = () => {
     );
 
     return (
-        <span id="logPanel" className="draggable-dialog" title={translate("Log")}>
-            <div id="logTable" className="logTable-scroll">
-                <div className="content-row">
+        <span id='logPanel' className='draggable-dialog' title={translate('Log')}>
+            <div id='logTable' className='logTable-scroll'>
+                <div className='content-row'>
                     <div>
-                        <div className="content-row-table">
+                        <div className='content-row-table'>
                             <div style={{ height: min_height }}>
                                 <Table
                                     width={760}

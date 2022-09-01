@@ -5,7 +5,9 @@ import { disable } from '../../../utils';
 Blockly.Blocks.interval = {
     init: function init() {
         this.appendStatementInput('TIMERSTACK').setCheck(null);
-        this.appendValueInput('SECONDS').setCheck(null).appendField(translate('Run Every'));
+        this.appendValueInput('SECONDS')
+            .setCheck(null)
+            .appendField(translate('Run Every'));
         this.appendDummyInput().appendField(translate('Second(s)'));
         this.setInputsInline(true);
         this.setColour('#fef1cf');

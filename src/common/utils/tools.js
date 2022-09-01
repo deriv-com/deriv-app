@@ -2,8 +2,8 @@ import RenderHTML from 'react-render-html';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
-import { trackJSTrack } from "../../common/integrations/trackJSTrack";
-import { TrackJSError } from "../../botPage/view/logger";
+import { trackJSTrack } from '../../common/integrations/trackJSTrack';
+import { TrackJSError } from '../../botPage/view/logger';
 
 export const MAX_MOBILE_WIDTH = 813;
 
@@ -26,7 +26,7 @@ export const getQueryParams = (qs = '') => {
         data[a1] = a3;
     });
     return data;
-}
+};
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 

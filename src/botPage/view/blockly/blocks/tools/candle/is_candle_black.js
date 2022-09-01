@@ -4,7 +4,9 @@ import { expectValue } from '../../shared';
 
 Blockly.Blocks.is_candle_black = {
     init: function init() {
-        this.appendValueInput('OHLCOBJ').setCheck('Candle').appendField(translate('is candle black?'));
+        this.appendValueInput('OHLCOBJ')
+            .setCheck('Candle')
+            .appendField(translate('is candle black?'));
         this.setInputsInline(false);
         this.setOutput(true, 'Boolean');
         this.setColour('#dedede');

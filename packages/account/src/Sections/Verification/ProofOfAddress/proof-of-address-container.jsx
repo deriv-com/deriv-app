@@ -89,12 +89,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, has_restricted_mt5_a
         return <NotRequired />;
     if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
     if (resubmit_poa || allow_poa_resubmission || has_restricted_mt5_account) {
-        return (
-            <ProofOfAddressForm
-                has_restricted_mt5_account={has_restricted_mt5_account}
-                onSubmit={() => onSubmit({ needs_poi })}
-            />
-        );
+        return <ProofOfAddressForm is_resubmit onSubmit={() => onSubmit({ needs_poi })} />;
     }
 
     switch (document_status) {

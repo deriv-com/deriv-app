@@ -39,7 +39,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
             const pathname = removeBranchName(location.pathname);
             result = (
                 <React.Fragment>
-                    {default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
+                    {!!default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
                     <route.component {...props} routes={route.routes} />
                 </React.Fragment>
             );

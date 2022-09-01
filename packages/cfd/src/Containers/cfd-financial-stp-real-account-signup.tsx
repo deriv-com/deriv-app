@@ -60,7 +60,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const state_index = step;
     const height = 'auto';
     let is_mounted = React.useRef(true).current;
-    const { need_poi_for_vanuatu } = getAuthenticationStatusInfo(props.account_status);
+    const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(
+        props.account_status
+    );
 
     const poi_config: TItemsState = {
         header: {
@@ -102,9 +104,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         if (props.jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
             return true;
         }
-        return !(
-            authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified'
-        );
+        return need_poi_for_bvi_labuan_maltainvest;
     };
     const should_show_poa = !(
         authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'

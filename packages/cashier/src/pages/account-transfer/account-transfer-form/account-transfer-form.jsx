@@ -201,6 +201,7 @@ const AccountTransferForm = ({
     account_limits,
     accounts_list,
     account_transfer_amount,
+    authentication_status,
     converter_from_amount,
     converter_from_error,
     converter_to_amount,
@@ -399,15 +400,27 @@ const AccountTransferForm = ({
         setTransferToHint(hint);
         resetConverter();
     }, [selected_to, selected_from, account_limits]);
-
-    const is_mt5_restricted = value => value.is_mt; //&& value?.poa_status === 'failed';
+    const is_mt5_restricted = selected_from?.is_mt && selected_from?.status?.includes('poa_failed');
+    const poa_pending_msg = localize(
+        'You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.'
+    );
     const Mt5RestrictedMsg = () => (
         <Localize
             i18n_default_text='Please <0>resubmit</0> your proof of address to transfer funds between MT5 and Deriv accounts.'
             components={[<Link key={0} to={routes.proof_of_address} className='link dark' />]}
         />
     );
-    const is_mt5_transfer_disabled = is_mt5_restricted(selected_from) || is_mt5_restricted(selected_to);
+
+    const getMt5Error = () => {
+        if (is_mt5_restricted) {
+            if (authentication_status?.document_status === 'pending') {
+                return poa_pending_msg;
+            }
+            return <Mt5RestrictedMsg />;
+        }
+        return null;
+    };
+
     return (
         <div className='cashier__wrapper account-transfer-form__wrapper'>
             <Text
@@ -460,13 +473,6 @@ const AccountTransferForm = ({
                                             setFieldError('amount', '');
                                             setFieldTouched('amount', false);
                                         }}
-                                        error={
-                                            is_mt5_restricted(selected_from) ? (
-                                                <Mt5RestrictedMsg />
-                                            ) : (
-                                                selected_from.error
-                                            )
-                                        }
                                     />
                                     <Dropdown
                                         id='transfer_to'
@@ -489,10 +495,7 @@ const AccountTransferForm = ({
                                             setFieldTouched('amount', false);
                                         }}
                                         hint={transfer_to_hint}
-                                        error={
-                                            is_mt5_restricted(selected_to) ? <Mt5RestrictedMsg /> : selected_to.error
-                                        }
-                                        disabled={is_mt5_restricted(selected_from)}
+                                        error={getMt5Error() ? getMt5Error() : selected_to.error}
                                     />
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (
@@ -508,7 +511,7 @@ const AccountTransferForm = ({
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer-form__input'
                                                 classNameHint={classNames('account-transfer-form__hint', {
-                                                    'account-transfer-form__hint__disabled': is_mt5_transfer_disabled,
+                                                    'account-transfer-form__hint__disabled': is_mt5_restricted,
                                                 })}
                                                 type='text'
                                                 label={localize('Amount')}
@@ -551,16 +554,12 @@ const AccountTransferForm = ({
                                                         ''
                                                     )
                                                 }
-                                                disabled={is_mt5_transfer_disabled}
+                                                disabled={is_mt5_restricted}
                                             />
                                         )}
                                     </Field>
                                 ) : (
-                                    <div
-                                        className={
-                                            is_mt5_transfer_disabled ? 'account-transfer-form__crypto--disabled' : ''
-                                        }
-                                    >
+                                    <div className={is_mt5_restricted ? 'account-transfer-form__crypto--disabled' : ''}>
                                         <div className='account-transfer-form__crypto--percentage-selector'>
                                             <PercentageSelector
                                                 amount={+selected_from.balance}
@@ -618,7 +617,7 @@ const AccountTransferForm = ({
                                             !+selected_from.balance ||
                                             !!converter_from_error ||
                                             !!converter_to_error ||
-                                            is_mt5_transfer_disabled
+                                            is_mt5_restricted
                                         }
                                         primary
                                         large
@@ -657,6 +656,7 @@ AccountTransferForm.propTypes = {
     account_limits: PropTypes.object,
     accounts_list: PropTypes.array,
     account_transfer_amount: PropTypes.string,
+    authentication_status: PropTypes.object,
     converter_from_amount: PropTypes.string,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
@@ -694,6 +694,7 @@ export default connect(({ client, modules }) => ({
     account_limits: client.account_limits,
     accounts_list: modules.cashier.account_transfer.accounts_list,
     account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
+    authentication_status: client.authentication_status,
     converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
     converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
     converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,

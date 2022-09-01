@@ -343,6 +343,7 @@ export default class ClientStore extends BaseStore {
             syncWithLegacyPlatforms: action.bound,
             is_high_risk: computed,
             has_residence: computed,
+            has_restricted_mt5_account: computed,
             setVisibilityRealityCheck: action.bound,
             clearRealityCheckTimeout: action.bound,
             setRealityCheckDuration: action.bound,
@@ -725,8 +726,8 @@ export default class ClientStore extends BaseStore {
         );
     }
 
-    get is_regulated_mt5_restricted() {
-        return !!this.mt5_login_list.filter(account => account.currency === 'USD').length;
+    get has_restricted_mt5_account() {
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
     }
 
     get is_virtual() {

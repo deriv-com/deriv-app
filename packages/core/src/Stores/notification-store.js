@@ -176,7 +176,7 @@ export default class NotificationStore extends BaseStore {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    addVerificationNotifications(identity, document, is_regulated_mt5_restricted) {
+    addVerificationNotifications(identity, document, has_restricted_mt5_account) {
         //identity
         if (identity.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poi_verified);
@@ -192,7 +192,7 @@ export default class NotificationStore extends BaseStore {
 
         if (document.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poa_verified);
-        } else if (is_regulated_mt5_restricted) {
+        } else if (has_restricted_mt5_account) {
             this.addNotificationMessage(this.client_notifications.resticted_mt5);
         } else if (document.status === 'expired') {
             this.addNotificationMessage(this.client_notifications.poa_expired);
@@ -248,7 +248,7 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
-            is_regulated_mt5_restricted,
+            has_restricted_mt5_account,
         } = this.root_store.client;
         const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -337,7 +337,7 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
-                this.addVerificationNotifications(identity, document, is_regulated_mt5_restricted);
+                this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);

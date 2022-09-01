@@ -57,7 +57,7 @@ const ProofOfAddressForm = ({
     account_settings,
     addNotificationByKey,
     is_eu,
-    is_regulated_mt5_restricted,
+    has_restricted_mt5_account,
     fetchResidenceList,
     fetchStatesList,
     onSubmit,
@@ -283,7 +283,7 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
-                                {is_regulated_mt5_restricted && (
+                                {has_restricted_mt5_account && (
                                     <Text size='xs' align='left' color='loss-danger'>
                                         {localize(
                                             'We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.'
@@ -466,7 +466,7 @@ ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     is_eu: PropTypes.bool,
-    is_regulated_mt5_restricted: PropTypes.bool,
+    has_restricted_mt5_account: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,

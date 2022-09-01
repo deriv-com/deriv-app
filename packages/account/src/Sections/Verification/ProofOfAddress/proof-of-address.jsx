@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import DemoMessage from 'Components/demo-message';
 import ProofOfAddressContainer from './proof-of-address-container.jsx';
 
-const ProofOfAddress = ({ is_virtual, is_mx_mlt, is_switching, is_regulated_mt5_restricted, refreshNotifications }) => {
+const ProofOfAddress = ({ is_virtual, is_mx_mlt, is_switching, has_restricted_mt5_account, refreshNotifications }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={true} />;
 
@@ -14,7 +14,7 @@ const ProofOfAddress = ({ is_virtual, is_mx_mlt, is_switching, is_regulated_mt5_
             is_mx_mlt={is_mx_mlt}
             is_switching={is_switching}
             refreshNotifications={refreshNotifications}
-            is_regulated_mt5_restricted={is_regulated_mt5_restricted}
+            has_restricted_mt5_account={has_restricted_mt5_account}
         />
     );
 };
@@ -24,7 +24,7 @@ ProofOfAddress.propTypes = {
     is_switching: PropTypes.bool,
     is_virtual: PropTypes.bool,
     refreshNotifications: PropTypes.func,
-    is_regulated_mt5_restricted: PropTypes.bool,
+    has_restricted_mt5_account: PropTypes.bool,
 };
 
 export default connect(({ client, notifications }) => ({
@@ -32,5 +32,5 @@ export default connect(({ client, notifications }) => ({
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     refreshNotifications: notifications.refreshNotifications,
-    is_regulated_mt5_restricted: client.is_regulated_mt5_restricted,
+    has_restricted_mt5_account: client.has_restricted_mt5_account,
 }))(ProofOfAddress);

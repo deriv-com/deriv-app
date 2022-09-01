@@ -205,6 +205,8 @@ export const getAuthenticationStatusInfo = account_status => {
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
 
+    const need_poi_for_bvi_labuan_maltainvest = !poi_acknowledged_for_bvi_labuan_maltainvest;
+
     const poi_verified_for_bvi_labuan_maltainvest =
         idv_status === 'verified' || onfido_status === 'verified' || manual_status === 'verified';
     const poi_pending_for_bvi_labuan_maltainvest =
@@ -244,6 +246,7 @@ export const getAuthenticationStatusInfo = account_status => {
         poa_not_submitted,
         poi_not_submitted,
         need_poi_for_vanuatu,
+        need_poi_for_bvi_labuan_maltainvest,
         poi_not_submitted_for_vanuatu,
         poi_pending_for_bvi_labuan_maltainvest,
         poi_pending_for_vanuatu,

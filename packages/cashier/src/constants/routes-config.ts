@@ -1,14 +1,33 @@
 import React from 'react';
 import { routes, moduleLoader } from '@deriv/shared';
+import { Redirect } from 'react-router-dom';
 import { localize } from '@deriv/translations';
 import { Cashier } from '../containers';
 import { AccountTransfer, Deposit, OnRamp, P2PCashier, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
+
+export type TRoute = {
+    default?: boolean;
+    exact?: boolean;
+    id?: string;
+    icon_component?: string;
+    is_invisible?: boolean;
+    path?: string;
+    to?: string;
+    component: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Page404 | typeof Redirect;
+    getTitle?: () => string;
+};
+
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: TRoute[];
+};
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Components/page-404')));
 
 // Order matters
-const initRoutesConfig = () => [
+const initRoutesConfig = (): TRouteConfig[] => [
     {
         path: routes.cashier,
         component: Cashier,
@@ -72,14 +91,14 @@ const initRoutesConfig = () => [
     },
 ];
 
-let routesConfig;
+let routesConfig: undefined | TRouteConfig[];
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, getTitle: () => localize('Error 404') };
+const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }) => {
+const getRoutesConfig = (): TRouteConfig[] => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
     }
     return routesConfig;

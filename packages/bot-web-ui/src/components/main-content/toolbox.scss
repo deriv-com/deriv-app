@@ -2,9 +2,10 @@
     $toolbox: &;
     $category-text-spacing: 10px;
 
-    height: var(--bot-content-height) !important;
-    top: 10.4rem !important;
     width: 25.6rem !important;
+    position: absolute;
+    top: 0 !important;
+    height: 100%;
 
     &__search {
         padding: 0.8rem;

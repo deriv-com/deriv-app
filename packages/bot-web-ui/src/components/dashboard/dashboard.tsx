@@ -6,6 +6,7 @@ import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
+import BotBuilder from './bot-builder';
 import Translations from './dashboard-components/Translations';
 
 interface SideBarProps {
@@ -41,6 +42,7 @@ const Dashboard = (props: SideBarProps) => {
                     />
                     <div icon='IcGoogleDriveDbot' label='Bot Builder' id='id-bot-builder'>
                         <div>Contennt 3</div>
+                        <BotBuilder />
                     </div>
                     <div icon='IcGoogleDriveDbot' label='Charts' id='id-charts'>
                         <div className='dashboard__chart-wrapper'>

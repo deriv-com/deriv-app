@@ -40,7 +40,9 @@ Below is a simple example that could easily be extended.
   }
 }
 ```
+
 The `publish_package` command first removes local `@deriv` packages using prepublish, then it publishes the package to the npm registry and restores the local `@deriv` packages to package.json using postpublish
+
 ## Install
 
 ```

@@ -112,7 +112,7 @@ const AppNotificationMessages = ({
                   'poi_name_mismatch',
                   'document_needs_action',
                   'identity',
-              ].includes(message.key)
+              ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
         return is_not_marked_notification && is_non_hidden_notification;
     });

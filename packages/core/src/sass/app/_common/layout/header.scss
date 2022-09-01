@@ -39,6 +39,26 @@
         margin-bottom: 1.6rem;
     }
 
+    &__menu--separator {
+        border-right: 1px solid var(--general-section-1);
+        width: 2rem;
+        height: 3.2rem;
+        margin-right: 1rem;
+    }
+
+    &__menu__redirect {
+        display: flex;
+        margin-right: 3rem;
+
+        &--link {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+    }
+
     &__menu-mobile-link {
         text-decoration: none;
         display: flex;

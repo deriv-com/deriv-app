@@ -6,7 +6,6 @@
             "Config/*": ["src/config/*"],
             "Constants/*": ["src/constants/*"],
             "Containers/*": ["src/containers/*"],
-            "Images/*": ["src/public/images/*"],
             "Pages/*": ["src/pages/*"],
             "Stores/*": ["src/stores/*"],
             "Types": ["src/types"],

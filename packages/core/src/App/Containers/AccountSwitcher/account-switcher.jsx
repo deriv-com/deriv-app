@@ -61,6 +61,7 @@ const AccountSwitcher = props => {
         getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
             setExchangedRate(res)
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

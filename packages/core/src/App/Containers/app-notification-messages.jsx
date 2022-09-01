@@ -112,7 +112,7 @@ const AppNotificationMessages = ({
                   'poi_name_mismatch',
                   'document_needs_action',
                   'identity',
-              ].includes(message.key)
+              ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
         return is_not_marked_notification && is_non_hidden_notification;
     });
@@ -142,7 +142,14 @@ const AppNotificationMessages = ({
 };
 
 AppNotificationMessages.propTypes = {
+    has_iom_account: PropTypes.bool,
+    has_malta_account: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_mt5: PropTypes.bool,
+    is_notification_loaded: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
     marked_notifications: PropTypes.array,
+    markNotificationMessage: PropTypes.func,
     notification_messages: PropTypes.arrayOf(
         PropTypes.shape({
             closeOnClick: PropTypes.func,
@@ -164,6 +171,8 @@ AppNotificationMessages.propTypes = {
         })
     ),
     removeNotificationMessage: PropTypes.func,
+    should_show_popups: PropTypes.bool,
+    stopNotificationLoading: PropTypes.func,
 };
 
 export default connect(({ client, notifications }) => ({

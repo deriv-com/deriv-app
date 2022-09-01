@@ -466,18 +466,15 @@ const CFDAccountCardComponent = ({
                             type.category === 'real' &&
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
-                                    {existing_data?.display_balance && is_logged_in && (
+                                    {existing_data?.display_balance && is_logged_in && !is_eu && (
                                         <div className='cfd-account-card__item--banner'>
                                             <Localize
                                                 i18n_default_text={
                                                     acc.landing_company_short &&
-                                                    (is_eu
-                                                        ? 'MFSA'
-                                                        : acc.landing_company_short !== 'svg' &&
-                                                          acc.landing_company_short !== 'bvi'
+                                                    !['svg', 'bvi'].includes(acc?.landing_company_short)
                                                         ? acc.landing_company_short?.charAt(0).toUpperCase() +
                                                           acc.landing_company_short.slice(1)
-                                                        : acc.landing_company_short?.toUpperCase())
+                                                        : acc.landing_company_short?.toUpperCase()
                                                 }
                                             />
                                         </div>
@@ -516,8 +513,11 @@ const CFDAccountCardComponent = ({
                                             <Button
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data => data.landing_company_short === acc.landing_company_short
+                                                        data =>
+                                                            data.landing_company_short === acc.landing_company_short &&
+                                                            data.login === acc.login
                                                     );
+
                                                     onClickFund(selected_account_data as DetailsOfEachMT5Loginid);
                                                 }}
                                                 type='button'
@@ -532,8 +532,11 @@ const CFDAccountCardComponent = ({
                                                 type='button'
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data => data.landing_company_short === acc.landing_company_short
+                                                        data =>
+                                                            data.landing_company_short === acc.landing_company_short &&
+                                                            data.login === acc.login
                                                     );
+
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(selected_account_data);
                                                 }}

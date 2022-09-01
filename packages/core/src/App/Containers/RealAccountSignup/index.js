@@ -1,1 +1,3 @@
-export default from './real-account-signup.jsx';
+import RealAccountSignup from './real-account-signup.jsx';
+
+export default RealAccountSignup;

@@ -10,6 +10,7 @@ import { default_delay, types } from './constants';
 import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
 import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
+import NotificationOrder from './notification-order.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
@@ -75,6 +76,10 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     message={data.message}
                     onClose={destroy}
                 />
+            );
+        case 'p2p_completed_order':
+            return (
+                <NotificationOrder action={data.action} header={data.header} message={data.message} onClose={destroy} />
             );
         default:
             return (
@@ -161,13 +166,24 @@ Notification.propTypes = {
             route: PropTypes.string,
             text: PropTypes.string,
         }),
+        cta_btn: PropTypes.object,
+        className: PropTypes.string,
         closeOnClick: PropTypes.func,
         delay: PropTypes.number,
         header: PropTypes.string,
+        header_popup: PropTypes.string,
+        img_alt: PropTypes.string,
+        img_src: PropTypes.string,
         is_auto_close: PropTypes.bool,
+        key: PropTypes.string,
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+        message_popup: PropTypes.string,
+        primary_btn: PropTypes.object,
+        secondary_btn: PropTypes.object,
         should_hide_close_btn: PropTypes.bool,
         size: PropTypes.oneOf(['small']),
+        timeout: PropTypes.number,
+        timeoutMessage: PropTypes.func,
         type: PropTypes.oneOf([
             'warning',
             'info',
@@ -179,6 +195,7 @@ Notification.propTypes = {
             'announce',
             'promotions',
             'close_mx_mlt',
+            'p2p_completed_order',
         ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,

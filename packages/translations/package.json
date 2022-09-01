@@ -11,7 +11,7 @@
     "url": "git+https://github.com/binary-com/deriv-app.git"
   },
   "engines": {
-    "node": "^14.17.1"
+    "node": "^16.16.0"
   },
   "scripts": {
     "test": "mocha ./scripts/**/**.spec.js",
@@ -25,7 +25,7 @@
     "deploy:folder": "echo \"No deploy:folder specified\"",
     "deploy:staging": "echo \"No deploy:staging specified\"",
     "deploy:production": "echo \"No deploy:production specified\"",
-    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\""
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"

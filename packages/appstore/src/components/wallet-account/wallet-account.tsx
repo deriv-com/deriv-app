@@ -2,38 +2,39 @@ import * as React from 'react';
 import { Authorize } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Money } from '@deriv/components';
-import { Text, Accordion } from '@deriv/ui';
+import { Text, Accordion, Modal } from '@deriv/ui';
 import { ArrayElement } from 'Types';
 import WalletCard from 'Components/wallet';
 import WalletActionButton from 'Components/wallet-action-button';
+import AppstoreAppCard from 'Components/app-card';
 import AppsLauncher from 'Components/app-launcher';
-import { WS } from '@deriv/shared';
 import { useStores } from 'Stores';
+import { observer } from 'mobx-react-lite';
 
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
 };
 
-const WalletAccount = ({ account }: WalletAccountProps) => {
-    const { client } = useStores();
+type TButtonColor = 'primary' | 'primary-light' | 'secondary' | 'tertiary' | 'monochrome';
+type TModalActionButton = {
+    id: number;
+    text: string;
+    color: TButtonColor;
+    onClick: () => void;
+};
 
-    // should we keep the api call here in the component or move it to Stores ?
-    const addDemoDerivAppAccount = async () => {
-        const demo_trading_account = await WS.authorized.storage.send({
-            new_account_virtual: 1,
-            type: 'trading',
-        });
-
-        if (!demo_trading_account.error) {
-            const link_to_wallet = await WS.authorized.storage.send({
-                link_wallet: 1,
-                client_id: demo_trading_account.new_account_virtual.client_id,
-                wallet_id: client.loginid,
-            });
-            alert('You have added a Demo Deriv App account');
-            // we need to show a modal instead of alerting the user
-        }
-    };
+const WalletAccount = observer(({ account }: WalletAccountProps) => {
+    const { wallet_store } = useStores();
+    const actionButtons: TModalActionButton[] = [
+        {
+            id: 1,
+            text: 'Back to Trading Hub',
+            color: 'secondary',
+            onClick: () => {
+                //your action
+            },
+        },
+    ];
 
     return (
         <>
@@ -156,7 +157,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
-                                handleClick={addDemoDerivAppAccount}
+                                handleClick={wallet_store.installDerivApps}
                                 description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
                             />
                             <div className='test'>apps</div>
@@ -164,8 +165,38 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                     </div>
                 </Accordion.Content>
             </Accordion>
+
+            <Modal open={wallet_store.should_open_modal} onOpenChange={wallet_store.toggleModal}>
+                <Modal.Portal>
+                    <Modal.Overlay />
+                    <Modal.PageContent
+                        title='Trading account added'
+                        has_close_button={true}
+                        has_title_separator={true}
+                        has_footer_separator={false}
+                        action_buttons={actionButtons}
+                        should_prevent_close_on_click_outside={false}
+                        style={{ width: '60rem' }}
+                    >
+                        <div className='wallet-account__app-card-wrapper'>
+                            <AppstoreAppCard
+                                account_type='Demo'
+                                app_card_details={{
+                                    app_icon: 'icDxtradeSynthetic',
+                                    app_name: 'Deriv Apps',
+                                }}
+                                size='large'
+                                linked
+                            />
+                            <Text bold={false} type='paragraph-1' align='right'>
+                                {localize('You have added a Demo Deriv Apps account.')}
+                            </Text>
+                        </div>
+                    </Modal.PageContent>
+                </Modal.Portal>
+            </Modal>
         </>
     );
-};
+});
 
 export default WalletAccount;

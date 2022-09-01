@@ -72,4 +72,13 @@
         align-items: center;
         border-bottom: 1px solid #fff;
     }
+
+    &__app-card-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 3rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+    }
 }

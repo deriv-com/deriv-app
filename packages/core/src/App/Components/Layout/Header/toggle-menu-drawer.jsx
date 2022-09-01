@@ -355,6 +355,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 large
                                                 onClick={() => {
                                                     setIsPreAppStore(false);
+                                                    toggleDrawer();
                                                 }}
                                             >
                                                 <Text className='header__menu--back-to-ui-text' size='xs'>
@@ -504,6 +505,27 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
+                                        <MobileDrawer.Item className='header__menu--tradinghub'>
+                                            <Button
+                                                className='header__menu--exploretradinghub'
+                                                type='button'
+                                                large
+                                                onClick={() => {
+                                                    setIsPreAppStore(true);
+                                                    toggleDrawer();
+                                                }}
+                                            >
+                                                <Text className='header__menu--tradinghub-text' size='xs'>
+                                                    {localize('Explore Trading hub')}
+                                                </Text>
+                                                <Icon
+                                                    className='header__menu-mobile-rightarrow'
+                                                    icon='IcArrowRight'
+                                                    size={18}
+                                                    color='red'
+                                                />
+                                            </Button>
+                                        </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
                                                 link_to={routes.trade}

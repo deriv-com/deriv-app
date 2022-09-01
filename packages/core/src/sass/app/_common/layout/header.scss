@@ -150,12 +150,28 @@
         justify-content: space-between;
     }
 
+    &__menu--tradinghub {
+        padding: 0 2rem 2.5rem;
+    }
+
+    &__menu--exploretradinghub {
+        display: flex;
+        padding: 1rem;
+        margin: 0 auto;
+        border-radius: 1rem;
+    }
+
+    &__menu--tradinghub-text {
+        align-items: flex-start;
+    }
+
     &__menu--back-to-ui-text {
         align-items: flex-start;
     }
 
     &__menu-mobile-rightarrow {
         align-items: flex-end;
+        display: inline-flex;
         margin-left: 9rem;
     }
 

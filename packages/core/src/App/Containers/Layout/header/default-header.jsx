@@ -171,8 +171,10 @@ const DefaultHeader = ({
                     {menu_items && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
-                <ExploreTradingHub />
-                <Divider />
+                <DesktopWrapper>
+                    <ExploreTradingHub />
+                    <Divider />
+                </DesktopWrapper>
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,

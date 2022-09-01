@@ -17,6 +17,7 @@ import {
     LoginHistory,
     AccountClosed,
     DeactivateAccount,
+    LanguageSettings,
 } from 'Sections';
 
 // Error Routes
@@ -57,6 +58,11 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                         path: routes.financial_assessment,
                         component: FinancialAssessment,
                         getTitle: () => localize('Financial assessment'),
+                    },
+                    {
+                        path: routes.languages,
+                        component: LanguageSettings,
+                        getTitle: () => localize('Languages'),
                     },
                 ],
             },

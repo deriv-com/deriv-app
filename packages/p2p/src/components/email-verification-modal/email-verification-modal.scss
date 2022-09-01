@@ -3,8 +3,19 @@
     display: flex;
     flex-direction: column;
 
+    @include mobile {
+        max-height: 80vh;
+        overflow: auto;
+    }
+
     &--email_text {
         margin: 2.4rem 0;
+    }
+
+    &--footer {
+        @include mobile {
+            justify-content: center;
+        }
     }
 
     &--reason {

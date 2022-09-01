@@ -1,6 +1,6 @@
 # End to end testing
 
-[Prerequisite](https://img.shields.io/badge/node-%3E%3D14.15.4-blue.svg)
+[Prerequisite](https://img.shields.io/badge/node-%3E%3D16.16.0-blue.svg)
 
 **In this document:**
 

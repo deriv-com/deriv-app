@@ -14,7 +14,7 @@ import {
     useStateCallback,
     Text,
 } from '@deriv/components';
-import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
+import { PoaFileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
@@ -439,7 +439,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
                                                     />
                                                 </div>
                                                 <div className='cfd-proof-of-address__file-upload'>
-                                                    <FileUploaderContainer
+                                                    <PoaFileUploaderContainer
                                                         onRef={(ref: React.RefObject<(HTMLElement | null) & TUpload>) =>
                                                             (file_uploader_ref = ref)
                                                         }

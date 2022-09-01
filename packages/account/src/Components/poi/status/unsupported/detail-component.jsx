@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
 import PoiUploadFailed from 'Components/poi/poi-upload-failed';
-import uploadFile from 'Components/file-uploader-container/upload-file';
+import uploadFile from 'Components/file-uploader/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view';
 
 import CardDetails from './card-details';

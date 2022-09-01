@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import Expired from 'Components/poa/status/expired';
-import Unverified from 'Components/poa/status/unverified';
-import NeedsReview from 'Components/poa/status/needs-review';
-import Submitted from 'Components/poa/status/submitted';
-import Verified from 'Components/poa/status/verified';
-import NotRequired from 'Components/poa/status/not-required';
+import PoaExpired from 'Components/poa/status/expired';
+import PoaUnverified from 'Components/poa/status/unverified';
+import PoaNeedsReview from 'Components/poa/status/needs-review';
+import PoaSubmitted from 'Components/poa/status/submitted';
+import PoaVerified from 'Components/poa/status/verified';
+import PoaNotRequired from 'Components/poa/status/not-required';
 import PoaStatusCodes from 'Components/poa/status/status-codes';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
@@ -86,8 +86,8 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         !allow_document_upload ||
         (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
     )
-        return <NotRequired />;
-    if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
+        return <PoaNotRequired />;
+    if (has_submitted_poa) return <PoaSubmitted needs_poi={needs_poi} />;
     if (resubmit_poa || allow_poa_resubmission) {
         return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
     }
@@ -96,15 +96,15 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         case PoaStatusCodes.none:
             return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
         case PoaStatusCodes.pending:
-            return <NeedsReview needs_poi={needs_poi} />;
+            return <PoaNeedsReview needs_poi={needs_poi} />;
         case PoaStatusCodes.verified:
-            return <Verified needs_poi={needs_poi} />;
+            return <PoaVerified needs_poi={needs_poi} />;
         case PoaStatusCodes.expired:
-            return <Expired onClick={handleResubmit} />;
+            return <PoaExpired onClick={handleResubmit} />;
         case PoaStatusCodes.rejected:
-            return <Unverified />;
+            return <PoaUnverified />;
         case PoaStatusCodes.suspected:
-            return <Unverified />;
+            return <PoaUnverified />;
         default:
             return null;
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import FileUploaderContainer from '../file-uploader-container';
+import PoaFileUploaderContainer from '../file-uploader-container';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -19,7 +19,7 @@ jest.mock('@deriv/shared', () => ({
     },
 }));
 
-describe('<FileUploaderContainer />', () => {
+describe('<PoaFileUploaderContainer />', () => {
     beforeEach(() => {
         isDesktop.mockReturnValue(true);
         isMobile.mockReturnValue(false);
@@ -46,24 +46,24 @@ describe('<FileUploaderContainer />', () => {
         expect(screen.getByText(file_clear_msg)).toBeInTheDocument();
         expect(screen.getByText(file_address)).toBeInTheDocument();
     };
-    it('should render FileUploaderContainer component', () => {
-        render(<FileUploaderContainer {...props} />);
+    it('should render PoaFileUploaderContainer component', () => {
+        render(<PoaFileUploaderContainer {...props} />);
         expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
     });
 
-    it('should render FileUploaderContainer component if getSocket is not passed as prop', () => {
+    it('should render PoaFileUploaderContainer component if getSocket is not passed as prop', () => {
         const new_props = {
             onFileDrop: jest.fn(),
             onRef: jest.fn(),
         };
-        render(<FileUploaderContainer {...new_props} />);
+        render(<PoaFileUploaderContainer {...new_props} />);
         expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
     });
 
-    it('should not render FileUploaderContainer when is_appstore is true in desktop', () => {
+    it('should not render PoaFileUploaderContainer when is_appstore is true in desktop', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <FileUploaderContainer {...props} />
+                <PoaFileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
         expect(screen.queryByTestId('dt_file_uploader_container')).not.toBeInTheDocument();
@@ -72,7 +72,7 @@ describe('<FileUploaderContainer />', () => {
     it('should show icons and description when is_appstore is true in desktop', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <FileUploaderContainer {...props} />
+                <PoaFileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
         runCommonTests();
@@ -81,7 +81,7 @@ describe('<FileUploaderContainer />', () => {
     it('should show description when is_appstore false in desktop', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: false }}>
-                <FileUploaderContainer {...props} />
+                <PoaFileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
         runCommonTests();
@@ -93,7 +93,7 @@ describe('<FileUploaderContainer />', () => {
 
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <FileUploaderContainer {...props} />
+                <PoaFileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
         runCommonTests();
@@ -105,7 +105,7 @@ describe('<FileUploaderContainer />', () => {
 
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <FileUploaderContainer {...props} is_description_enabled={false} />
+                <PoaFileUploaderContainer {...props} is_description_enabled={false} />
             </PlatformContext.Provider>
         );
 
@@ -120,7 +120,7 @@ describe('<FileUploaderContainer />', () => {
     it('should call ref function on rendering the component', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <FileUploaderContainer onRef={props.onRef} />
+                <PoaFileUploaderContainer onRef={props.onRef} />
             </PlatformContext.Provider>
         );
 

@@ -223,6 +223,8 @@ export default class ClientStore extends BaseStore {
             currency: computed,
             default_currency: computed,
             should_allow_authentication: computed,
+            is_risk_client: computed,
+            is_financial_assessment_incomplete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
             is_tnc_needed: computed,
@@ -622,6 +624,19 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(
             status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
         );
+    }
+
+    get is_risk_client() {
+        if (isEmptyObject(this.account_status)) return false;
+        return (
+            this.is_logged_in &&
+            !this.is_virtual &&
+            ['standard', 'high'].includes(this.account_status.risk_classification)
+        );
+    }
+
+    get is_financial_assessment_incomplete() {
+        return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
 
     get is_authentication_needed() {

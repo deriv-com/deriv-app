@@ -31,38 +31,26 @@ const Dashboard = (props: SideBarProps) => {
                 <ReactJoyride steps={DashBorardSteps} run={tourRun} continuous={true} showProgress={true} />
                 <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
                     {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
-                    <div icon='IcGoogleDriveDbot' label={localize('Dashboard')}>
+                    <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                         <DashboardComponents />
                     </div>
+                    <div icon='IcBotbuilderTabIcon' label='Bot Builder' id='id-bot-builder'>
+                        <BotBuilder />
+                    </div>
                     <div
-                        icon='IcGoogleDriveDbot'
+                        icon='IcQuickStrategyIcon'
                         label='Quick Strategy'
                         id='id-quick-strategy'
                         onTabItemClick={handleClick}
                     />
-                    <div icon='IcGoogleDriveDbot' label='Bot Builder' id='id-bot-builder'>
-                        <div>Contennt 3</div>
-                        <BotBuilder />
-                    </div>
-                    <div icon='IcGoogleDriveDbot' label='Charts' id='id-charts'>
+                    <div icon='IcChartsTabDbot' label='Charts' id='id-charts'>
                         <div className='dashboard__chart-wrapper'>
                             <Chart />
                         </div>
                     </div>
-                    <div icon='IcGoogleDriveDbot' label='Tutorial' id='id-tutorials'>
-                        <div>Contennt 4</div>
+                    <div icon='IcTutorialsTabs' label='Tutorial' id='id-tutorials'>
+                        <div>Under Development</div>
                     </div>
-                    {/* need to pull values dynamically TODO */}
-                    {/* {Translations.DashBoardIcons.map((data, index) => {
-                        const { label, component, icon, onClick, className } = data;
-                        return (
-                            <>
-                                <div key={index} label={localize(icon + label)} onTabItemClick={onClick}>
-                                        <div className={className}>{component}</div>
-                                </div> 
-                            </>
-                        );
-                    })} */}
                 </Tabs>
             </div>
             <SideBar checkIfSidebarOpen={showSideBar} setSideBarState={setshowSideBar} />

@@ -1,3 +1,1 @@
-import RedirectNoticeModal from './redirect-notice-modal.jsx';
-
-export default RedirectNoticeModal;
+export default from './redirect-notice-modal.jsx';

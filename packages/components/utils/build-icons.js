@@ -8,10 +8,9 @@ const fs = require('fs');
 
 const { getFileNameFromPath, getPascalCase } = require('./helper');
 
-const entries_object = require('./icons');
+const entries_object = require('./icons.js');
 
 function buildIcons() {
-    /* eslint-disable no-console */
     console.info('Build icons starting.');
 
     let modules = 0;
@@ -49,7 +48,7 @@ function buildIcons() {
             .replace(/^/, '// auto-generated file. DO NOT MODIFY.\n\nexport const icons =\n')
     );
     fs.writeFileSync(path.join(__dirname, '../src/components/icon/icons.js'), buffer.join(EOL) + EOL);
-    /* eslint-disable no-console */
+
     console.info(`Build icons done. 'components/icon/icons.js' emitted with ${modules} modules.`);
 }
 

@@ -17,7 +17,6 @@ const ProgressTicksMobile = ({ current_tick, getCardLabels, ticks_count }) => {
 ProgressTicksMobile.propTypes = {
     current_tick: PropTypes.number,
     ticks_count: PropTypes.number,
-    getCardLabels: PropTypes.func,
 };
 
 export default ProgressTicksMobile;

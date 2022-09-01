@@ -204,10 +204,7 @@ AddCryptoCurrency.propTypes = {
     value: PropTypes.shape({
         crypto: PropTypes.string,
         fiat: PropTypes.string,
-        currency: PropTypes.string,
     }),
-    onClickBack: PropTypes.func,
-    is_add_fiat: PropTypes.bool,
 };
 
 export default connect(({ client, ui }) => ({

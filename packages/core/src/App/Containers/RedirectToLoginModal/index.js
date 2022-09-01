@@ -1,3 +1,1 @@
-import RedirectToLoginModal from './redirect-to-login-modal.jsx';
-
-export default RedirectToLoginModal;
+export default from './redirect-to-login-modal.jsx';

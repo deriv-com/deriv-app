@@ -20,8 +20,6 @@ const RemainingTime = ({ end_time = null, format, getCardLabels, start_time }) =
 RemainingTime.propTypes = {
     end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     start_time: PropTypes.object,
-    format: PropTypes.string,
-    getCardLabels: PropTypes.func,
 };
 
 export default RemainingTime;

@@ -4,21 +4,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
+import { Icon, DataList, Text } from '@deriv/components';
 import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { connect } from 'Stores/connect';
+import { PositionsDrawerCard } from '@deriv/reports';
 import { filterByContractType } from './helpers';
 
-const PositionsDrawerCardItem = ({
-    row: portfolio_position,
-    measure,
-    onHoverPosition,
-    symbol,
-    is_new_row,
-    ...props
-}) => {
+const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row, ...props }) => {
     const { in_prop } = useNewRowTransition(is_new_row);
 
     React.useEffect(() => {
@@ -41,15 +35,15 @@ const PositionsDrawerCardItem = ({
             <div className='dc-contract-card__wrapper'>
                 <PositionsDrawerCard
                     {...portfolio_position}
-                    {...props}
                     onMouseEnter={() => {
-                        onHoverPosition(true, portfolio_position, symbol);
+                        onHoverPosition(true, portfolio_position);
                     }}
                     onMouseLeave={() => {
-                        onHoverPosition(false, portfolio_position, symbol);
+                        onHoverPosition(false, portfolio_position);
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
+                    {...props}
                 />
             </div>
         </CSSTransition>
@@ -90,9 +84,7 @@ const PositionsDrawer = ({
     const body_content = (
         <DataList
             data_source={positions}
-            rowRenderer={args => (
-                <PositionsDrawerCardItem onHoverPosition={onHoverPosition} symbol={symbol} {...args} {...props} />
-            )}
+            rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} {...props} />}
             keyMapper={row => row.id}
             row_gap={8}
         />

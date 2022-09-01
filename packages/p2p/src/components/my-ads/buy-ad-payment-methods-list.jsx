@@ -18,7 +18,6 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
         setPaymentMethodsList(
             my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
         );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_methods]);
 
     const onClickDeletePaymentMethodItem = value => {
@@ -204,7 +203,6 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
 BuyAdPaymentMethodsList.propTypes = {
     selected_methods: PropTypes.array,
     setSelectedMethods: PropTypes.func,
-    touched: PropTypes.func,
 };
 
 export default observer(BuyAdPaymentMethodsList);

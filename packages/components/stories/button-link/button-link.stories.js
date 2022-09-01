@@ -1,8 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import Wrapper from '../shared/wrapper.jsx';
+import { boolean } from '@storybook/addon-knobs';
+import Wrapper from '../shared/wrapper';
 import ButtonLink from 'Components/button-link';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';

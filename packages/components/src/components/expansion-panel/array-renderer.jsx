@@ -50,8 +50,6 @@ const ArrayRenderer = ({ array, open_ids, setOpenIds }) => {
 
 ArrayRenderer.propTypes = {
     array: PropTypes.Array,
-    open_ids: PropTypes.array,
-    setOpenIds: PropTypes.func,
 };
 
 export default ArrayRenderer;

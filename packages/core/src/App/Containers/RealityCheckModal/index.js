@@ -1,3 +1,1 @@
-import RealityCheckModal from './reality-check-modal.jsx';
-
-export default RealityCheckModal;
+export default from './reality-check-modal.jsx';

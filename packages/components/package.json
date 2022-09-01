@@ -15,7 +15,7 @@
         "build:icons-manifest": "node -e 'require(\"./utils/build-icons-manifest\").buildIconsManifest()'",
         "build:travis": "rimraf lib && webpack --mode=production",
         "test": "node \"./src/components/icon/__tests__/icons.js\"",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -32,10 +32,9 @@
         "@babel/preset-react": "^7.16.7",
         "@storybook/addon-actions": "6.4.22",
         "@storybook/addon-info": "^5.2.4",
-        "@storybook/addon-knobs": "^6.1.0",
         "@storybook/addon-links": "6.4.22",
         "@storybook/addon-notes": "^5.2.4",
-        "@storybook/addon-viewport": "^6.1.0",
+        "@storybook/addon-viewport": "^5.3.9",
         "@storybook/addons": "6.4.22",
         "@storybook/react": "6.4.22",
         "@storybook/source-loader": "6.4.22",
@@ -51,6 +50,7 @@
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
+        "glob": "^7.1.5",
         "lint-staged": "^10.4.0",
         "node-sass": "^7.0.1",
         "react": "^16.14.0",
@@ -82,12 +82,6 @@
         "react-swipeable": "^5.5.1",
         "react-tiny-popover": "^5.1.0",
         "react-transition-group": "^4.3.0",
-        "react-virtualized": "^9.22.2",
-        "@storybook/addons": "^6.1.0",
-        "@storybook/react": "6.4.22",
-        "@storybook/addon-info": "^5.2.4",
-        "@storybook/addon-actions": "^6.1.0",
-        "@storybook/addon-links": "6.4.22",
-        "glob": "^7.1.5"
+        "react-virtualized": "^9.22.2"
     }
 }

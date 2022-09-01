@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
+import { boolean } from '@storybook/addon-knobs';
 import Wrapper from '../shared/wrapper';
 import ButtonToggle from 'Components/button-toggle';
 import React from 'react';

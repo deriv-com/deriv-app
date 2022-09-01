@@ -1,3 +1,1 @@
-import ResetEmailModal from './reset-email-modal.jsx';
-
-export default ResetEmailModal;
+export default from './reset-email-modal.jsx';

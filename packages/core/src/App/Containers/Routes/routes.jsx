@@ -86,8 +86,6 @@ Routes.propTypes = {
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    location: PropTypes.object,
-    passthrough: PropTypes.object,
     setAppRouterHistory: PropTypes.func,
     setInitialRouteHistoryItem: PropTypes.func,
 };

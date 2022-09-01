@@ -56,11 +56,11 @@ export default class DataCollection {
             const content = pako.gzip(this.strategyContent);
 
             return {
-                body   : content,
+                body: content,
                 headers: {
                     'Content-Encoding': 'gzip',
-                    'Content-Type'    : 'application/xml',
-                    Referer           : window.location.hostname,
+                    'Content-Type': 'application/xml',
+                    Referer: window.location.hostname,
                 },
             };
         };
@@ -70,7 +70,7 @@ export default class DataCollection {
             {
                 ...(this.shouldPostXml ? getPayload() : {}),
                 method: 'POST',
-                mode  : 'cors',
+                mode: 'cors',
             }
         )
             .then(() => {

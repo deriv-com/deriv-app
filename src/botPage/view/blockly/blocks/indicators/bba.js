@@ -8,10 +8,18 @@ Blockly.Blocks.bba = {
         this.appendDummyInput()
             .appendField(translate('Bollinger Bands Array'))
             .appendField(new Blockly.FieldDropdown(config.bbResult), 'BBRESULT_LIST');
-        this.appendValueInput('INPUT').setCheck('Array').appendField(translate('Input List'));
-        this.appendValueInput('PERIOD').setCheck('Number').appendField(translate('Period'));
-        this.appendValueInput('UPMULTIPLIER').setCheck('Number').appendField(translate('Std. Dev. Up Multiplier'));
-        this.appendValueInput('DOWNMULTIPLIER').setCheck('Number').appendField(translate('Std. Dev. Down Multiplier'));
+        this.appendValueInput('INPUT')
+            .setCheck('Array')
+            .appendField(translate('Input List'));
+        this.appendValueInput('PERIOD')
+            .setCheck('Number')
+            .appendField(translate('Period'));
+        this.appendValueInput('UPMULTIPLIER')
+            .setCheck('Number')
+            .appendField(translate('Std. Dev. Up Multiplier'));
+        this.appendValueInput('DOWNMULTIPLIER')
+            .setCheck('Number')
+            .appendField(translate('Std. Dev. Down Multiplier'));
         this.setOutput(true, 'Array');
         this.setColour('#dedede');
         this.setTooltip(translate('Calculates Bollinger Bands (BB) list from a list with a period'));

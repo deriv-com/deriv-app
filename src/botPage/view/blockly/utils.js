@@ -531,7 +531,7 @@ export const loadRemote = blockObj =>
                             reject(
                                 Error(
                                     translate(
-                                        'Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'
+                                        "Make sure 'Access-Control-Allow-Origin' exists in the response from the server"
                                     )
                                 )
                             );

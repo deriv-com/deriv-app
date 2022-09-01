@@ -17,7 +17,7 @@ export default class ClearButton extends React.PureComponent {
     confirmClearLog() {
         showDialog({
             title: translate('Are you sure?'),
-            text : [
+            text: [
                 translate(
                     'This will clear all transactions in the summary panel, and all counters will be reset to zero.'
                 ),
@@ -29,9 +29,9 @@ export default class ClearButton extends React.PureComponent {
     render() {
         return (
             <button
-                title="Clear summary log"
-                id="summaryClearButton"
-                className="toolbox-button icon-clear"
+                title='Clear summary log'
+                id='summaryClearButton'
+                className='toolbox-button icon-clear'
                 onClick={this.confirmClearLog}
                 disabled={this.state.isButtonDisabled}
             />

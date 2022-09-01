@@ -249,6 +249,7 @@ const DMT5CompareModalContent = ({
         poi_pending_for_bvi_labuan_maltainvest,
         poi_verified_for_vanuatu,
         poi_verified_for_bvi_labuan_maltainvest,
+        poi_or_poa_not_submitted,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -494,9 +495,9 @@ const DMT5CompareModalContent = ({
         if (type === 'svg') {
             return false;
         } else if (type === 'vanuatu') {
-            return poi_pending_for_vanuatu;
+            return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;
         }
-        return poi_pending_for_bvi_labuan_maltainvest;
+        return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
     };
 
     const should_show_contact_us_button = (item: TFooterButtonData) => {

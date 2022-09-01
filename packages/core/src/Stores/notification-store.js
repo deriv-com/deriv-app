@@ -180,7 +180,7 @@ export default class NotificationStore extends BaseStore {
         //identity
         if (identity.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poi_verified);
-        } else if (identity.status === 'rejected' && identity?.services.onfido.submissions_left === 0) {
+        } else if (identity?.services.onfido.submissions_left === 0) {
             this.addNotificationMessage(this.client_notifications.reached_poi_upload_limit);
         } else if (identity.status === 'expired') {
             this.addNotificationMessage(this.client_notifications.poi_expired);
@@ -341,15 +341,14 @@ export default class NotificationStore extends BaseStore {
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (is_identity_verification_needed) {
-                    this.addNotificationMessage(this.client_notifications.identity);
-                }
-                if (poi_name_mismatch && identity?.services.onfido.last_rejected) {
-                    if (!personal_details_locked && onfido_submissions_left > 0) {
-                        this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
-                    } else {
-                        this.addNotificationMessage(this.client_notifications.onfido_failed);
-                    }
+
+                if (
+                    poi_name_mismatch &&
+                    identity?.services.onfido.last_rejected &&
+                    !personal_details_locked &&
+                    onfido_submissions_left > 0
+                ) {
+                    this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
                 }
 
                 if (system_maintenance) {

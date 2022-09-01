@@ -18,7 +18,6 @@ const JurisdictionModal = ({
     is_eu,
     is_virtual,
     jurisdiction_selected_shortcode,
-    mt5_login_list,
     openPasswordModal,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
@@ -33,7 +32,6 @@ const JurisdictionModal = ({
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     const {
-        poi_status,
         poi_pending_for_vanuatu,
         poi_verified_for_vanuatu,
         poi_acknowledged_for_vanuatu,
@@ -43,28 +41,11 @@ const JurisdictionModal = ({
         poi_resubmit_for_vanuatu,
         no_onfido_left,
         poi_verified_for_bvi_labuan_maltainvest,
+        poi_or_poa_not_submitted,
     } = getAuthenticationStatusInfo(account_status);
 
-    const selectSVGJurisdiction = () => {
-        if (account_type.type && !is_eu) {
-            const created_svg_accounts = mt5_login_list.filter(
-                data =>
-                    data.market_type === account_type.type &&
-                    data.landing_company_short === 'svg' &&
-                    data.account_type === 'real'
-            );
-            if (!created_svg_accounts.length && poi_status === 'pending') {
-                setJurisdictionSelectedShortcode('svg');
-            } else {
-                setJurisdictionSelectedShortcode('');
-            }
-        } else {
-            setJurisdictionSelectedShortcode('');
-        }
-    };
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
-            selectSVGJurisdiction();
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
                 if (!account_settings) {
@@ -122,7 +103,7 @@ const JurisdictionModal = ({
                       );
 
             if (!is_account_created) {
-                if (jurisdiction_selected_shortcode === 'svg') {
+                if (jurisdiction_selected_shortcode === 'svg' || poi_or_poa_not_submitted) {
                     return false;
                 } else if (jurisdiction_selected_shortcode === 'vanuatu') {
                     return poi_pending_for_vanuatu || (poi_verified_for_vanuatu && !checked);
@@ -267,7 +248,6 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
     is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
-    mt5_login_list: client.mt5_login_list,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     setAccountSettings: client.setAccountSettings,

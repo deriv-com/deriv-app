@@ -223,9 +223,7 @@ export const getAuthenticationStatusInfo = account_status => {
         !poi_verified_for_bvi_labuan_maltainvest;
 
     const poi_resubmit_for_bvi_labuan_maltainvest =
-        ((idv_status && failed_cases.includes(idv_status)) ||
-            (onfido_status && failed_cases.includes(onfido_status)) ||
-            (manual_status && failed_cases.includes(manual_status))) &&
+        !poi_pending_for_bvi_labuan_maltainvest &&
         !poi_not_submitted_for_bvi_labuan_maltainvest &&
         !poi_verified_for_bvi_labuan_maltainvest;
     const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poa_verified;

@@ -30,8 +30,6 @@ const BotBuilder = ({ app }: BotBuilderProps) => {
     );
 };
 
-export default connect((store: RootStore) => {
-    return {
-        app: store.app,
-    };
-})(BotBuilder);
+export default connect((store: RootStore) => ({
+    app: store.app,
+}))(BotBuilder);

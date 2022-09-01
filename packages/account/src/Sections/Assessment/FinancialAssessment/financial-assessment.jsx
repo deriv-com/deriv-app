@@ -181,6 +181,7 @@ const FinancialAssessment = ({
     is_svg,
     is_trading_experience_incomplete,
     is_virtual,
+    is_high_risk,
     platform,
     removeNotificationByKey,
     removeNotificationMessage,
@@ -225,7 +226,9 @@ const FinancialAssessment = ({
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
-                    setHasTradingExperience((is_financial_account || is_trading_experience_incomplete) && !is_svg);
+                    setHasTradingExperience(
+                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_high_risk
+                    );
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
                         return;
@@ -235,6 +238,7 @@ const FinancialAssessment = ({
                 });
             });
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -257,7 +261,6 @@ const FinancialAssessment = ({
                 if (isDesktop()) {
                     setTimeout(() => setIsSubmitSuccess(false), 10000);
                 }
-
                 removeNotificationMessage({ key: 'risk' });
                 removeNotificationByKey({ key: 'risk' });
             });
@@ -313,24 +316,24 @@ const FinancialAssessment = ({
         <React.Fragment>
             <Formik
                 initialValues={{
-                    income_source: '' || income_source,
-                    employment_status: '' || employment_status,
-                    employment_industry: '' || employment_industry,
-                    occupation: '' || occupation,
-                    source_of_wealth: '' || source_of_wealth,
-                    education_level: '' || education_level,
-                    net_income: '' || net_income,
-                    estimated_worth: '' || estimated_worth,
-                    account_turnover: '' || account_turnover,
+                    income_source,
+                    employment_status,
+                    employment_industry,
+                    occupation,
+                    source_of_wealth,
+                    education_level,
+                    net_income,
+                    estimated_worth,
+                    account_turnover,
                     ...(has_trading_experience && {
-                        binary_options_trading_experience: '' || binary_options_trading_experience,
-                        binary_options_trading_frequency: '' || binary_options_trading_frequency,
-                        cfd_trading_experience: '' || cfd_trading_experience,
-                        cfd_trading_frequency: '' || cfd_trading_frequency,
-                        forex_trading_experience: '' || forex_trading_experience,
-                        forex_trading_frequency: '' || forex_trading_frequency,
-                        other_instruments_trading_experience: '' || other_instruments_trading_experience,
-                        other_instruments_trading_frequency: '' || other_instruments_trading_frequency,
+                        binary_options_trading_experience,
+                        binary_options_trading_frequency,
+                        cfd_trading_experience,
+                        cfd_trading_frequency,
+                        forex_trading_experience,
+                        forex_trading_frequency,
+                        other_instruments_trading_experience,
+                        other_instruments_trading_frequency,
                     }),
                 }}
                 enableReinitialize
@@ -991,6 +994,7 @@ FinancialAssessment.propTypes = {
     is_svg: PropTypes.bool,
     is_trading_experience_incomplete: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    is_high_risk: PropTypes.bool,
     platform: PropTypes.string,
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
@@ -1003,6 +1007,7 @@ export default connect(({ client, common, notifications }) => ({
     is_svg: client.is_svg,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,
+    is_high_risk: client.is_high_risk,
     platform: common.platform,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,

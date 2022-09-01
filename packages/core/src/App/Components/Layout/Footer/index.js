@@ -1,7 +1,5 @@
 // eslint-disable-next-line import/no-named-as-default
-import NetworkStatus from './network-status.jsx';
-
-export default NetworkStatus;
+export NetworkStatus from './network-status.jsx';
 export * from './go-to-deriv.jsx';
 export * from './endpoint-note.jsx';
 export * from './toggle-fullscreen.jsx';

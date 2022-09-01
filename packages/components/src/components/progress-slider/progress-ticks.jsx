@@ -27,7 +27,6 @@ const ProgressTicks = ({ current_tick, getCardLabels, ticks_count }) => {
 ProgressTicks.propTypes = {
     current_tick: PropTypes.number,
     ticks_count: PropTypes.number,
-    getCardLabels: PropTypes.func,
 };
 
 export default ProgressTicks;

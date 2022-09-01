@@ -102,9 +102,8 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
 };
 
 BuySellHeader.propTypes = {
-    is_visible: PropTypes.bool,
-    setTableType: PropTypes.func,
     table_type: PropTypes.string,
+    setTableType: PropTypes.func,
 };
 
 export default observer(BuySellHeader);

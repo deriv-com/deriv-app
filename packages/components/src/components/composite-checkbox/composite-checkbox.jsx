@@ -44,7 +44,6 @@ CompositeCheckbox.propTypes = {
     label: PropTypes.string.isRequired,
     id: PropTypes.string,
     description: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType(PropTypes.node, PropTypes.arrayOf(PropTypes.node)),
 };
 
 export default CompositeCheckbox;

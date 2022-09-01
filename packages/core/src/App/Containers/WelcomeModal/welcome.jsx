@@ -125,8 +125,6 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
 };
 
 Welcome.propTypes = {
-    can_have_mf_account: PropTypes.bool,
-    can_have_mlt_account: PropTypes.bool,
     country_standpoint: PropTypes.object,
     is_eu: PropTypes.bool,
     switchPlatform: PropTypes.func.isRequired,

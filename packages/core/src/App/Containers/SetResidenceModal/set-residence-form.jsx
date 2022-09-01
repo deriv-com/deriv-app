@@ -75,14 +75,10 @@ const SetResidenceForm = ({
 
 SetResidenceForm.propTypes = {
     children: PropTypes.node,
-    class_prefix: PropTypes.string,
     default_value: PropTypes.string,
-    errors: PropTypes.object,
+    class_prefix: PropTypes.string,
     header_text: PropTypes.string,
     residence_list: PropTypes.arrayOf(PropTypes.object),
-    setFieldTouched: PropTypes.func,
-    setFieldValue: PropTypes.func,
-    touched: PropTypes.object,
 };
 
 export default SetResidenceForm;

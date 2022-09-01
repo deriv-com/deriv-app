@@ -1,3 +1,1 @@
-import CloseMxMltAccountModal from './close-mx-mlt-account-modal.jsx';
-
-export default CloseMxMltAccountModal;
+export default from './close-mx-mlt-account-modal.jsx';

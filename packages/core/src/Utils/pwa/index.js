@@ -1,4 +1,2 @@
-import register from './register-service-worker';
-
-export default register;
+export default from './register-service-worker';
 export { unregister } from './register-service-worker';

@@ -79,6 +79,5 @@ Clipboard.propTypes = {
     className: PropTypes.string,
     popoverClassName: PropTypes.string,
     popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
-    popover_props: PropTypes.object,
 };
 export default Clipboard;

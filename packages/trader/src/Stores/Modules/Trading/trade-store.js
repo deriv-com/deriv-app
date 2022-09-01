@@ -395,6 +395,7 @@ export default class TradeStore extends BaseStore {
                 false
             );
         });
+
         await this.loadActiveSymbols(should_set_default_symbol);
         await this.setContractTypes();
         await this.processNewValuesAsync(
@@ -497,7 +498,7 @@ export default class TradeStore extends BaseStore {
 
         this.hovered_contract_type = is_over ? contract_type : null;
         setLimitOrderBarriers({
-            barriers: this.root_store.portfolio.barriers,
+            barriers: this.barriers,
             is_over,
             contract_type,
             contract_info: this.proposal_info[contract_type],
@@ -508,11 +509,11 @@ export default class TradeStore extends BaseStore {
     setPurchaseSpotBarrier(is_over, position) {
         const key = 'PURCHASE_SPOT_BARRIER';
         if (!is_over) {
-            removeBarrier(this.root_store.portfolio.barriers, key);
+            removeBarrier(this.barriers, key);
             return;
         }
 
-        let purchase_spot_barrier = this.root_store.portfolio.barriers.find(b => b.key === key);
+        let purchase_spot_barrier = this.barriers.find(b => b.key === key);
         if (purchase_spot_barrier) {
             if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
                 purchase_spot_barrier.onChange({
@@ -527,7 +528,6 @@ export default class TradeStore extends BaseStore {
             purchase_spot_barrier.isSingleBarrier = true;
             purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
-            this.root_store.portfolio.barriers.push(purchase_spot_barrier);
         }
     }
 
@@ -566,7 +566,7 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get barriers_flattened() {
-        return this.root_store.portfolio.barriers && toJS(this.root_store.portfolio.barriers);
+        return this.barriers && toJS(this.barriers);
     }
 
     setMainBarrier = proposal_info => {
@@ -953,7 +953,7 @@ export default class TradeStore extends BaseStore {
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);
             setLimitOrderBarriers({
-                barriers: this.root_store.portfolio.barriers,
+                barriers: this.barriers,
                 contract_info: this.proposal_info[this.hovered_contract_type],
                 contract_type,
                 is_over: true,
@@ -1047,12 +1047,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
-        if (this.root_store.common.is_language_changing) {
-            await this.loadActiveSymbols(false, false);
-            this.root_store.common.is_language_changing = false;
-        } else {
-            await this.loadActiveSymbols(true, false);
-        }
+        await this.loadActiveSymbols(true, false);
 
         this.resetErrorServices();
         await this.setContractTypes();
@@ -1079,12 +1074,7 @@ export default class TradeStore extends BaseStore {
         this.clearContracts();
         this.refresh();
         this.resetErrorServices();
-        if (this.root_store.common.is_language_changing) {
-            await this.loadActiveSymbols(false);
-            this.root_store.common.is_language_changing = false;
-        } else {
-            await this.loadActiveSymbols();
-        }
+        await this.loadActiveSymbols();
         await this.setContractTypes();
         this.debouncedProposal();
     }

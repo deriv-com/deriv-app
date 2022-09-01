@@ -142,8 +142,6 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
-    @observable is_deriv_account_needed_modal_visible = false;
-
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -669,10 +667,5 @@ export default class UIStore extends BaseStore {
         if (this.choose_crypto_currency_target === routes.cashier_deposit) {
             this.root_store.modules.cashier.general_store.setIsDeposit(true);
         }
-    }
-
-    @action.bound
-    openDerivRealAccountNeededModal() {
-        this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 }

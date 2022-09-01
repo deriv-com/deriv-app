@@ -15,7 +15,8 @@
             "Modules/*": ["src/Modules/*"],
             "Sections/*": ["src/Sections/*"],
             "Stores/*": ["src/Stores/*"],
-            "Styles/*": ["src/Styles/*"]
+            "Styles/*": ["src/Styles/*"],
+            "Types": ["src/Types"],
         }
     },
     "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"] // *** The files TypeScript should type check ***

@@ -3,9 +3,13 @@ import { Localize } from '@deriv/translations';
 import { getLegalEntityName } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
+type TBrokerSpecificMessage = {
+    target: string;
+};
+
 export const Hr = () => <div className='terms-of-use__hr' />;
 
-export const BrokerSpecificMessage = ({ target }) => (
+export const BrokerSpecificMessage = ({ target }: TBrokerSpecificMessage) => (
     <React.Fragment>
         {target === 'svg' && <SVGDescription />}
         {target === 'iom' && <IOMDescription />}

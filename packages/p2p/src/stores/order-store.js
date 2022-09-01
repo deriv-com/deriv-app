@@ -149,13 +149,28 @@ export default class OrderStore {
             id: this.order_id,
             verification_code: general_store.props?.verification_code,
         }).then(response => {
-            if (response && !response.error) {
-                if (!is_buy_order_for_user) {
-                    clearTimeout(wait);
+            if (response) {
+                if (!response.error) {
+                    if (!is_buy_order_for_user) {
+                        clearTimeout(wait);
 
-                    const wait = setTimeout(() => {
-                        this.setIsRatingModalOpen(true);
-                    }, 230);
+                        const wait = setTimeout(() => {
+                            this.setIsRatingModalOpen(true);
+                        }, 230);
+                    }
+                } else if (
+                    (response.error.code === 'InvalidVerificationToken' ||
+                        response.error.code === 'ExcessiveVerificationRequests') &&
+                    // This is for an issue when both error codes are received simultaneously. DO NOT REMOVE.
+                    !response?.error.code === 'ExcessiveVerificationFailures'
+                ) {
+                    clearTimeout(wait);
+                    this.setVerificationLinkErrorMessage(response.error.message);
+                    const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 700);
+                } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                    clearTimeout(wait);
+                    this.setVerificationLinkErrorMessage(response.error.message);
+                    const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
                 }
             }
         });

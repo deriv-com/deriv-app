@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
     Button,
+    DesktopWrapper,
     HintBox,
     Icon,
     MobileFullPageModal,
+    MobileWrapper,
     Modal,
     Text,
     ThemedScrollbars,
@@ -12,7 +14,7 @@ import {
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { when } from 'mobx';
+import { reaction } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -170,33 +172,23 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
-        const disposer = when(
-            () => buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE,
+        const disposer = reaction(
+            () => buy_sell_store.form_error_code,
             () => {
-                if (!isMobile()) {
-                    buy_sell_store.hidePopup();
-                    setTimeout(() => setShowMarketRateChangeErrorModal(true), 250);
-                } else {
-                    setShowMarketRateChangeErrorModal(true);
+                if (buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE) {
+                    if (!isMobile()) {
+                        buy_sell_store.hidePopup();
+                        setTimeout(() => setShowMarketRateChangeErrorModal(true), 280);
+                    } else {
+                        setShowMarketRateChangeErrorModal(true);
+                    }
+                    buy_sell_store.setFormErrorCode('');
                 }
-                buy_sell_store.setFormErrorCode('');
             }
         );
 
         return disposer;
     }, []);
-
-    // React.useEffect(() => {
-    //     if (buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE) {
-    //         if (!isMobile()) {
-    //             buy_sell_store.hidePopup();
-    //             setTimeout(() => setShowMarketRateChangeErrorModal(true), 250);
-    //         } else {
-    //             setShowMarketRateChangeErrorModal(true);
-    //         }
-    //         buy_sell_store.setFormErrorCode('');
-    //     }
-    // }, [error_message]);
 
     React.useEffect(() => {
         const balance_check =
@@ -227,7 +219,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                     setShowMarketRateChangeErrorModal(false);
                 }}
             />
-            {isMobile() && (
+            <MobileWrapper>
                 <MobileFullPageModal
                     body_className='buy-sell__modal-body'
                     className='buy-sell__modal'
@@ -269,8 +261,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         />
                     )}
                 </MobileFullPageModal>
-            )}
-            {!isMobile() && should_show_popup && (
+            </MobileWrapper>
+            <DesktopWrapper>
                 <Modal
                     className='buy-sell__modal'
                     height={table_type === buy_sell.BUY ? 'auto' : '649px'}
@@ -311,7 +303,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                         </Modal.Footer>
                     )}
                 </Modal>
-            )}
+            </DesktopWrapper>
         </React.Fragment>
     );
 };

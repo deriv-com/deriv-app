@@ -1,3 +1,5 @@
+import { RouteComponentProps } from 'react-router';
+
 type TError = {
     header: string | JSX.Element;
     message: string | JSX.Element;
@@ -12,7 +14,9 @@ type TError = {
 
 export type TCommonStore = {
     error: TError;
+    is_from_derivgo: boolean;
     has_error: boolean;
     platform: string;
+    routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
 };

@@ -9,6 +9,7 @@ export type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
+    is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_identity_verification_needed: boolean;
     is_logged_in: boolean;

@@ -3,8 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
-import getRoutesConfig from 'Constants/routes-config';
-import Cashier from '../cashier.jsx';
+import getRoutesConfig from '../../../constants/routes-config';
+import Cashier from '../cashier';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -58,7 +58,7 @@ describe('<Cashier />', () => {
         is_p2p_enabled: true,
         is_onramp_tab_visible: true,
         is_visible: true,
-        routes: getRoutesConfig({})[0].routes,
+        routes: getRoutesConfig()[0].routes,
         routeBackInApp: jest.fn(),
         onMount: jest.fn(),
         setAccountSwitchListener: jest.fn(),

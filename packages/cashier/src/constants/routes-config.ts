@@ -14,7 +14,7 @@ export type TRoute = {
     path?: string;
     to?: string;
     component: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Page404 | typeof Redirect;
-    getTitle?: () => string;
+    getTitle: () => string;
 };
 
 export type TRouteConfig = TRoute & {

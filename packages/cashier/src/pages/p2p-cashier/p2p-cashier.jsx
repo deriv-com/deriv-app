@@ -6,7 +6,7 @@ import { routes, WS } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
 import { connect } from 'Stores/connect';
-import { get, init, timePromise } from '_common/server_time';
+import { get, init, timePromise } from 'Utils/server_time';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({

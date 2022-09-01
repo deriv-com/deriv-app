@@ -180,6 +180,8 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
+    const exchange_rates = from_currency => deriv_api.send({ exchange_rates: 1, base_currency: from_currency });
+
     const cashierPayments = ({ provider, transaction_type }) =>
         deriv_api.send({ cashier_payments: 1, provider, transaction_type });
 
@@ -253,6 +255,12 @@ const BinarySocketBase = (() => {
         deriv_api.send({
             trading_platform_password_reset: 1,
             ...payload,
+        });
+
+    const tradingPlatformAvailableAccounts = platform =>
+        deriv_api.send({
+            trading_platform_available_accounts: 1,
+            platform,
         });
 
     const paymentAgentList = (country, currency) =>
@@ -418,6 +426,7 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        exchange_rates,
         cashierPayments,
         subscribeCashierPayments,
         cancelCryptoTransaction,
@@ -439,6 +448,7 @@ const BinarySocketBase = (() => {
         verifyEmail,
         tradingPlatformPasswordChange,
         tradingPlatformPasswordReset,
+        tradingPlatformAvailableAccounts,
         tradingPlatformInvestorPasswordChange,
         tradingPlatformInvestorPasswordReset,
         activeSymbols,

@@ -123,6 +123,7 @@ SendEmailTemplate.propTypes = {
     title: PropTypes.string,
     closeEmailModal: PropTypes.func,
     live_chat: PropTypes.object,
+    resend_timeout: PropTypes.number,
 };
 
 export default SendEmailTemplate;

@@ -20,7 +20,7 @@ import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
-import { api_error_codes } from 'Constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell__modal--error-message'>
@@ -138,6 +138,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         order_store.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
         setShouldShowPopup(false);
+        buy_sell_store.setShowAdvertiserPage(false);
     };
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);

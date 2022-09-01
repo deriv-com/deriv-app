@@ -23,7 +23,7 @@ const DataListRow = ({
                 measure?.();
             }
         });
-    }, [show_desc, isMounted, is_dynamic_height, measure]);
+    }, [show_desc, is_dynamic_height, measure]);
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
             {destination_link ? (
@@ -71,6 +71,7 @@ DataListRow.propTypes = {
     row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rowRenderer: PropTypes.func,
     measure: PropTypes.func,
+    is_dynamic_height: PropTypes.bool,
 };
 
 export default React.memo(DataListRow);

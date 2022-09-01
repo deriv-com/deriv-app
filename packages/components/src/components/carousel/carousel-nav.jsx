@@ -61,6 +61,12 @@ Nav.propTypes = {
     list: PropTypes.array,
     show_bullet: PropTypes.bool,
     item_per_window: PropTypes.number,
+    active_bullet_color: PropTypes.string,
+    bullet_color: PropTypes.string,
+    className: PropTypes.string,
+    handleNextClick: PropTypes.func,
+    handlePrevClick: PropTypes.func,
+    show_nav: PropTypes.bool,
 };
 
 export default React.memo(Nav);

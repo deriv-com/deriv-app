@@ -181,7 +181,6 @@ const FinancialAssessment = ({
     is_svg,
     is_trading_experience_incomplete,
     is_virtual,
-    is_risk_client,
     platform,
     removeNotificationByKey,
     removeNotificationMessage,
@@ -226,9 +225,7 @@ const FinancialAssessment = ({
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
-                    setHasTradingExperience(
-                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_risk_client
-                    );
+                    setHasTradingExperience((is_financial_account || is_trading_experience_incomplete) && !is_svg);
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
                         return;
@@ -366,7 +363,7 @@ const FinancialAssessment = ({
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
-                                {!is_svg && is_risk_client(is_trading_experience_incomplete && !is_submit_success) && (
+                                {!is_svg && is_trading_experience_incomplete && !is_submit_success && (
                                     <div className='financial-banner'>
                                         <Icon icon='IcAlertWarning' />
                                         {isMobile() ? (
@@ -994,7 +991,6 @@ FinancialAssessment.propTypes = {
     is_svg: PropTypes.bool,
     is_trading_experience_incomplete: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    is_risk_client: PropTypes.bool,
     platform: PropTypes.string,
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
@@ -1007,7 +1003,6 @@ export default connect(({ client, common, notifications }) => ({
     is_svg: client.is_svg,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,
-    is_risk_client: client.is_risk_client,
     platform: common.platform,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,

@@ -350,6 +350,8 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
+            setCFDScore: action.bound,
+            active_account_landing_company: computed,
         });
 
         reaction(
@@ -870,7 +872,7 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
-    @computed
+    // @computed
     get active_account_landing_company() {
         return this.is_logged_in ? this.getAccount().landing_company_shortcode : null;
     }
@@ -1074,7 +1076,7 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    @action.bound
+    // @action.bound
     setCFDScore(score) {
         this.cfd_score = score;
     }

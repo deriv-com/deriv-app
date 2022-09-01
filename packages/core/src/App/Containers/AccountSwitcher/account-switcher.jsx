@@ -455,7 +455,8 @@ const AccountSwitcher = props => {
     };
 
     const has_reset_balance = account => {
-        return account.is_virtual && account.balance < 10000;
+        const account_init_balance = 10000;
+        return account.is_virtual && account.balance < account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {

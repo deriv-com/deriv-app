@@ -85,7 +85,6 @@ FadeWrapper.propTypes = {
     is_visible: PropTypes.bool,
     keyname: PropTypes.string,
     type: PropTypes.string,
-    className: PropTypes.string,
 };
 
 export default FadeWrapper;

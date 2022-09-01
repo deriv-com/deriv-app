@@ -114,8 +114,6 @@ ContentExpander.propTypes = {
     wrapper_className: PropTypes.string,
     onToggle: PropTypes.func,
     toggleVisibility: PropTypes.func,
-    is_arrow_inverted: PropTypes.bool,
-    is_expanded: PropTypes.bool,
 };
 
 export default ContentExpander;

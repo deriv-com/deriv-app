@@ -120,7 +120,6 @@ const DialogDismissButton = ({ status, landing_company_shortcode, closeModal, sw
 
     return <Button secondary text={label} onClick={action} />;
 };
-
 export const DialogButtons = ({
     status,
     landing_company_shortcode,
@@ -159,7 +158,6 @@ DialogButtons.propTypes = {
     is_fully_authenticated: PropTypes.bool,
     closeModal: PropTypes.func,
     closeModalAndOpenCashier: PropTypes.func,
-    closeModalAndOpenPOA: PropTypes.func,
     closeModalAndOpenPOI: PropTypes.func,
     switchToVirtual: PropTypes.func,
 };

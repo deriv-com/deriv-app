@@ -88,7 +88,6 @@ Icon.propTypes = {
     onMouseLeave: PropTypes.func,
     size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    id: PropTypes.string,
 };
 
 export default React.memo(Icon);

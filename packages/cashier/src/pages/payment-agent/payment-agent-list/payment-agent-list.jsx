@@ -28,13 +28,6 @@ const PaymentAgentList = ({
         onMount();
     }, [onMount]);
 
-    React.useEffect(() => {
-        if (payment_agent_active_tab_index && !verification_code) {
-            sendVerificationEmail();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
             <React.Fragment>

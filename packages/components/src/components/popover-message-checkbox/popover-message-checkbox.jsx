@@ -14,7 +14,6 @@ PopoverMessageCheckbox.propTypes = {
     message: PropTypes.string,
     name: PropTypes.string,
     onChange: PropTypes.func,
-    checkboxLabel: PropTypes.string,
 };
 
 export default PopoverMessageCheckbox;

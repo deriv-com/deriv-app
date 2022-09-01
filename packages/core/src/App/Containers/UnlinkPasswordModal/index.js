@@ -1,3 +1,1 @@
-import UnlinkPasswordModal from './unlink-password-modal.jsx';
-
-export default UnlinkPasswordModal;
+export default from './unlink-password-modal.jsx';

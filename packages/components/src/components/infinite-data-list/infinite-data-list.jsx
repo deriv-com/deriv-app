@@ -57,9 +57,6 @@ InfiniteDataList.propTypes = {
     loadMoreRowsFn: PropTypes.func.isRequired,
     onScroll: PropTypes.func,
     rowRenderer: PropTypes.func.isRequired,
-    has_filler: PropTypes.bool,
-    overscanRowCount: PropTypes.number,
-    getRowSize: PropTypes.func,
 };
 
 export default InfiniteDataList;

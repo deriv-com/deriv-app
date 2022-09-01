@@ -9,6 +9,7 @@ module.exports = function (env) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             reports: path.resolve(__dirname, '../src', 'index.jsx'),
+            'positions-drawer-card': 'Components/Elements/PositionsDrawerCard',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

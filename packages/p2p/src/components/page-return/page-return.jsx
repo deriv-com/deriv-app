@@ -18,7 +18,6 @@ const PageReturn = ({ className, onClick, page_title }) => {
 };
 
 PageReturn.propTypes = {
-    className: PropTypes.string,
     onClick: PropTypes.func,
     page_title: PropTypes.string,
 };

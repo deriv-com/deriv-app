@@ -1,3 +1,1 @@
-import Endpoint from './Endpoint.jsx';
-
-export default Endpoint;
+export default from './Endpoint.jsx';

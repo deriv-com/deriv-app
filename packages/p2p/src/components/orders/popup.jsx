@@ -195,7 +195,6 @@ const Popup = props => {
 
 Popup.propTypes = {
     cancel_text: PropTypes.string,
-    className: PropTypes.string,
     confirm_text: PropTypes.string,
     has_cancel: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),

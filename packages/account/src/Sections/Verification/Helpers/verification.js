@@ -18,14 +18,6 @@ export const populateVerificationStatus = account_status => {
     const identity_last_attempt = attempts.latest;
     const has_attempted_idv = !!(attempts.history.length && attempts.history.find(h => h.service === 'idv'));
 
-    const onfido_status = account_status.authentication?.identity?.services?.onfido?.status;
-    const manual_status = account_status.authentication?.identity?.services?.manual?.status;
-    const acknowledged_status = ['pending', 'verified'];
-    const poi_acknowledged_for_vanuatu =
-        (onfido_status && acknowledged_status.includes(onfido_status)) ||
-        (manual_status && acknowledged_status.includes(manual_status));
-
-    const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
     return {
         allow_document_upload,
         allow_poa_resubmission,
@@ -44,6 +36,5 @@ export const populateVerificationStatus = account_status => {
         needs_poi,
         needs_verification,
         onfido,
-        need_poi_for_vanuatu,
     };
 };

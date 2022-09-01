@@ -1,3 +1,1 @@
-import NotificationsDialog from './notifications-dialog.jsx';
-
-export default NotificationsDialog;
+export default from './notifications-dialog.jsx';

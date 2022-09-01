@@ -18,7 +18,7 @@ const Basic = () => {
             <PopoverComponent
                 message={
                     <PopoverMessageCheckbox
-                        onChange={() => toggleCheck(!is_checked)}
+                        onChange={() => toggleCkeck(!is_checked)}
                         defaultChecked={is_checked}
                         checkboxLabel='Disable a tool'
                         message='Check the box please'

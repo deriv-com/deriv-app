@@ -204,7 +204,6 @@ const Modal = ({
     children,
     className,
     close_icon_color,
-    exit_classname,
     header,
     id,
     is_open,
@@ -238,7 +237,7 @@ const Modal = ({
             appear: 'dc-modal__container--enter',
             enter: 'dc-modal__container--enter',
             enterDone: 'dc-modal__container--enter-done',
-            exit: exit_classname || 'dc-modal__container--exit',
+            exit: 'dc-modal__container--exit',
         }}
         unmountOnExit
         onEntered={onEntered}
@@ -287,7 +286,6 @@ Modal.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     close_icon_color: PropTypes.string,
-    exit_classname: PropTypes.string,
     should_header_stick_body: PropTypes.bool,
     has_close_icon: PropTypes.bool,
     header: PropTypes.node,
@@ -311,7 +309,6 @@ Modal.propTypes = {
     toggleModal: PropTypes.func,
     width: PropTypes.string,
     elements_to_ignore: PropTypes.array,
-    is_risk_warning_visible: PropTypes.bool,
 };
 
 export default Modal;

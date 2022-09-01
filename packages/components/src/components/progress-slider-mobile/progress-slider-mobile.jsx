@@ -59,7 +59,6 @@ ProgressSliderMobile.propTypes = {
     server_time: PropTypes.object,
     start_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     ticks_count: PropTypes.number,
-    getCardLabels: PropTypes.func,
 };
 
 export default ProgressSliderMobile;

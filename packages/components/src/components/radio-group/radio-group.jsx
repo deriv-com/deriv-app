@@ -76,7 +76,6 @@ RadioGroup.propTypes = {
     required: PropTypes.bool,
     selected: PropTypes.any,
     should_wrap_items: PropTypes.bool,
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.array]),
 };
 
 const Item = ({ children, ...props }) => <div {...props}>{children}</div>;

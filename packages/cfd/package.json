@@ -19,7 +19,7 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.16.0"
     },
     "repository": {
         "type": "git",
@@ -95,9 +95,9 @@
         "extend": "^3.0.2",
         "formik": "^2.1.4",
         "i18next": "^20.3.2",
-        "mobx": "^5.15.7",
-        "mobx-react": "6.3.1",
-        "mobx-utils": "^5.5.5",
+        "mobx": "^6.6.1",
+        "mobx-react": "^7.5.1",
+        "mobx-utils": "^6.0.5",
         "moment": "^2.29.2",
         "null-loader": "^4.0.1",
         "object.fromentries": "^2.0.0",
@@ -106,6 +106,6 @@
         "react-dom": "^16.14.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "^4.3.0"
+        "react-transition-group": "4.4.2"
     }
 }

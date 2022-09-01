@@ -19,10 +19,9 @@ describe('<RadioButton />', () => {
     };
 
     const ust_msg =
-        /send only tether omni to this deposit address\.sending tether erc20 to this address will result in the loss of your deposit\./i;
+        /Tether as an Omni token \(USDT\) is a version of Tether that is hosted on the Omni layer on the Bitcoin blockchain./i;
 
-    const usdt_msg =
-        /tether as an erc20 token \(eusdt\) is a version of tether that is hosted on ethereum, an open software platform where anyone can build and deploy decentralised applications\./i;
+    const usdt_msg = /Tether as an ERC20 token \(eUSDT\) is a version of Tether that is hosted on Ethereum./i;
 
     it('should render radiobutton', () => {
         render(<RadioButton {...props} />);

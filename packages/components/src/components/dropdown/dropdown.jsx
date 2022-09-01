@@ -360,7 +360,7 @@ const Dropdown = ({
                 name={name}
                 readOnly='readonly'
                 type='hidden'
-                value={value || 0}
+                value={value ?? 0}
             />
             <div ref={wrapper_ref} className={containerClassName()}>
                 <div
@@ -396,7 +396,7 @@ const Dropdown = ({
                             is_align_text_left={is_align_text_left}
                             is_title={is_list_visible}
                             placeholder={placeholder}
-                            value={value || 0}
+                            value={value ?? 0}
                             list={list}
                         />
                     </div>
@@ -474,6 +474,11 @@ Dropdown.propTypes = {
     placeholder: PropTypes.string,
     suffix_icon: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    error: PropTypes.string,
+    handleBlur: PropTypes.func,
+    hint: PropTypes.string,
+    is_alignment_top: PropTypes.bool,
+    is_align_text_left: PropTypes.bool,
 };
 
 export default Dropdown;

@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -15,7 +14,7 @@ const Routes = ({ error, has_error, is_logged_in, is_logging_in, passthrough }) 
 };
 
 Routes.propTypes = {
-    error: MobxPropTypes.objectOrObservableObject,
+    error: PropTypes.any,
     has_error: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,

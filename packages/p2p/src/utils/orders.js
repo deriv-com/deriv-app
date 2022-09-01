@@ -82,10 +82,38 @@ export default class ExtendedOrderDetails {
         return this.is_completed_order || this.is_buyer_cancelled_order || this.is_refunded_order;
     }
 
+    get has_review_details() {
+        return !!this.order_details?.review_details;
+    }
+
+    get is_order_reviewable() {
+        return this.order_details.is_reviewable;
+    }
+
+    get is_user_rated_previously() {
+        return this.is_buy_order_for_user
+            ? this.order_details.advertiser_details?.is_recommended
+            : this.order_details.client_details?.is_recommended;
+    }
+
+    get previous_recommendation() {
+        return this.is_buy_order_for_user
+            ? this.order_details.advertiser_details.is_recommended
+            : this.order_details.client_details.is_recommended;
+    }
+
+    get rating() {
+        return this.order_details?.review_details?.rating;
+    }
+
     // A happening order describes an order where an action has been taken by either side, i.e.
     // one side confirmed they've paid or received funds.
     get is_ongoing_order() {
         return this.is_buyer_confirmed_order || this.is_buyer_cancelled_order;
+    }
+
+    get is_buy_order_for_user() {
+        return (this.is_buy_order && !this.is_my_ad) || (this.is_sell_order && this.is_my_ad);
     }
 
     // This boolean is used to fix a backend feature where they will only

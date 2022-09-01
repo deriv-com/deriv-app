@@ -12,12 +12,13 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { balance, className, history, lang, order_id, server_time, websocket_api, setOnRemount } = props;
+    const { balance, className, history, lang, Notifications, order_id, server_time, websocket_api, setOnRemount } =
+        props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
         general_store.setWebsocketInit(websocket_api);
-        order_store.setOrderId(order_id);
+        general_store.getWebsiteStatus();
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {
@@ -53,12 +54,14 @@ const App = props => {
     React.useEffect(() => {
         if (order_id) {
             general_store.redirectTo('orders');
+            order_store.setOrderId(order_id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
     React.useEffect(() => {
         general_store.setAccountBalance(balance);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [balance]);
 
     React.useEffect(() => {
@@ -67,12 +70,14 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
+            <Notifications />
             <AppContent />
         </main>
     );
 };
 
 App.propTypes = {
+    className: PropTypes.string,
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,
         is_virtual: PropTypes.bool.isRequired,
@@ -83,13 +88,15 @@ App.propTypes = {
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
+    history: PropTypes.object,
     balance: PropTypes.string,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
+    server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
-    websocket_api: PropTypes.object.isRequired,
     setOnRemount: PropTypes.func,
+    websocket_api: PropTypes.object.isRequired,
 };
 
 export default observer(App);

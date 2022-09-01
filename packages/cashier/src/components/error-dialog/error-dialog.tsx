@@ -4,12 +4,12 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore, TReactElement, TError } from 'Types';
+import { RootStore, TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
     disableApp: () => void;
     enableApp: () => void;
-    error: TError | Partial<TError>;
+    error: TError | Record<string, never>;
 };
 
 type TSetDetails = {

@@ -121,7 +121,7 @@ describe('<Cashier />', () => {
     });
 
     it('should show the selected route page on mobile', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
 
         renderWithRouter(<Cashier {...props} />);
 

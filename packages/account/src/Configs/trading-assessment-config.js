@@ -3,7 +3,9 @@ import { localize } from '@deriv/translations';
 
 export const trading_assessment_questions = [
     {
-        question_text: 'Do you understand that you could potentially lose 100% of the money you use to trade?',
+        question_text: localize(
+            'Do you understand that you could potentially lose 100% of the money you use to trade?'
+        ),
         section: 'risk_tolerance',
         answer_options: [
             { value: 'Yes', text: localize('Yes') },
@@ -13,7 +15,7 @@ export const trading_assessment_questions = [
         field_type: 'radio',
     },
     {
-        question_text: 'How much knowledge and experience do you have in relation to online trading?',
+        question_text: localize('How much knowledge and experience do you have in relation to online trading?'),
         section: 'source_of_experience',
         form_control: 'source_of_experience',
         answer_options: [
@@ -152,7 +154,7 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: 'In your understanding, CFD trading allows you to',
+        question_text: localize('In your understanding, CFD trading allows you to'),
         section: 'trading_knowledge',
         form_control: 'cfd_trading_definition',
         field_type: 'radio',
@@ -178,7 +180,7 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: 'How does leverage affect CFD trading?',
+        question_text: localize('How does leverage affect CFD trading?'),
         section: 'trading_knowledge',
         form_control: 'leverage_impact_trading',
         field_type: 'radio',
@@ -201,8 +203,9 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text:
-            "Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to",
+        question_text: localize(
+            "Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to"
+        ),
         section: 'trading_knowledge',
         form_control: 'leverage_trading_high_risk_stop_loss',
         field_type: 'radio',
@@ -230,7 +233,7 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: 'When do you be required to pay an initial margin?',
+        question_text: localize('When do you be required to pay an initial margin?'),
         section: 'trading_knowledge',
         form_control: 'required_initial_margin',
         field_type: 'radio',

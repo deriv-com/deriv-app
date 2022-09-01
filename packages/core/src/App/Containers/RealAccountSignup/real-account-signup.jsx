@@ -475,12 +475,12 @@ const RealAccountSignup = ({
                 body_content={
                     <Text as='p' size='xs'>
                         <Localize
-                            i18n_default_text='In providing our services to you, we are required to ask you for some information to assess if a given product or service is appropriate for you and whether you have the experience and knowledge to understand the risks involved.<0/><1/>'
-                            components={[<br key={0} />, <br key={1} />]}
+                            i18n_default_text='In providing our services to you, we are required to ask you for some information to assess if a given product or service is appropriate for you and whether you have the experience and knowledge to understand the risks involved.<0/><0/>'
+                            components={[<br key={0} />]}
                         />
                         <Localize
-                            i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
-                            components={[<br key={0} />, <br key={1} />]}
+                            i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><0/>'
+                            components={[<br key={0} />]}
                         />
                         <Localize i18n_default_text='By clicking ‘Accept’ and proceeding with the account opening, you should note that you may be exposing yourself to risks. These risks, which may be significant, include the risk of losing the entire sum invested, and you may not have the knowledge and experience to properly assess or mitigate them.' />
                     </Text>

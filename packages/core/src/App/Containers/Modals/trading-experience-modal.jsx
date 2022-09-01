@@ -11,9 +11,7 @@ const TradingExperienceModal = ({
     setShouldShowTradeAssessmentForm,
 }) => {
     React.useEffect(() => {
-        if (cfd_score === 0) {
-            setShouldShowTradingAssessmentModal(true);
-        } else setShouldShowTradingAssessmentModal(false);
+        setShouldShowTradingAssessmentModal(cfd_score === 0);
     }, []);
 
     const handleOnSubmit = () => {

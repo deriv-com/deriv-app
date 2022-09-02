@@ -135,9 +135,10 @@ commands:
       - run:
           name: Pushing Image to docker hub
           command: |
+            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>
-
+            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >>
+            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG}
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
@@ -184,7 +185,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/node:14.17.1-stretch
+      - image: cimg/node:16.16.0
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -192,7 +193,7 @@ jobs:
 
   release_storybook:
     docker:
-      - image: circleci/node:14.17.1-stretch
+      - image: cimg/node:16.16.0
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -212,7 +213,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: circleci/node:14.17.1-stretch
+      - image: cimg/node:16.16.0
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -231,7 +232,7 @@ jobs:
 
   release_production:
     docker:
-      - image: circleci/node:14.17.1-stretch
+      - image: cimg/node:16.16.0
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -272,7 +273,7 @@ jobs:
 
   build_and_test:
     docker:
-      - image: circleci/node:14.17.1-stretch
+      - image: cimg/node:16.16.0
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -337,3 +338,4 @@ workflows:
                 - gh-pages
             tags:
               ignore: /.*/
+              

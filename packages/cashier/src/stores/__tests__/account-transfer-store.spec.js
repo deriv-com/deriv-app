@@ -232,37 +232,37 @@ describe('AccountTransferStore', () => {
         ]);
     });
 
-    // it('should set has_no_accounts_balance to false, if some balance update has come in since the last mount when calling onMountAccountTransfer method', async () => {
-    //     const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
-    //     account_transfer_store.setHasNoAccountsBalance(true);
-    //     await account_transfer_store.onMountAccountTransfer();
+    it('should set has_no_accounts_balance to false, if some balance update has come in since the last mount when calling onMountAccountTransfer method', async () => {
+        const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
+        account_transfer_store.setHasNoAccountsBalance(true);
+        await account_transfer_store.onMountAccountTransfer();
 
-    //     expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(false);
-    // });
+        expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(false);
+    });
 
-    // it('should set an error message if there is an error field in transfer_between_accounts response when calling onMountAccountTransfer method', async () => {
-    //     const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
-    //     const spySetErrorMessage = jest.spyOn(account_transfer_store.error, 'setErrorMessage');
-    //     account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
-    //     await account_transfer_store.onMountAccountTransfer();
+    it('should set an error message if there is an error field in transfer_between_accounts response when calling onMountAccountTransfer method', async () => {
+        const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
+        const spySetErrorMessage = jest.spyOn(account_transfer_store.error, 'setErrorMessage');
+        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
+        await account_transfer_store.onMountAccountTransfer();
 
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith(
-    //         'Transfer error',
-    //         account_transfer_store.onMountAccountTransfer
-    //     );
-    //     expect(account_transfer_store.root_store.modules.cashier.general_store.setLoading).toHaveBeenCalledWith(false);
-    //     expect(spySortAccountsTransfer).not.toHaveBeenCalled();
-    // });
+        expect(spySetErrorMessage).toHaveBeenCalledWith(
+            'Transfer error',
+            account_transfer_store.onMountAccountTransfer
+        );
+        expect(account_transfer_store.root_store.modules.cashier.general_store.setLoading).toHaveBeenCalledWith(false);
+        expect(spySortAccountsTransfer).not.toHaveBeenCalled();
+    });
 
-    // it('should not call sortAccountsTransfer method if the client can not do account transfer when calling onMountAccountTransfer method', async () => {
-    //     const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
-    //     account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
-    //         accounts: [CR_USD_account],
-    //     });
-    //     await account_transfer_store.onMountAccountTransfer();
+    it('should not call sortAccountsTransfer method if the client can not do account transfer when calling onMountAccountTransfer method', async () => {
+        const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
+        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+            accounts: [CR_USD_account],
+        });
+        await account_transfer_store.onMountAccountTransfer();
 
-    //     expect(spySortAccountsTransfer).not.toHaveBeenCalled();
-    // });
+        expect(spySortAccountsTransfer).not.toHaveBeenCalled();
+    });
 
     it('should set selected_to loginid as a default, if cfd_transfer_to_login_id property exists in session storage when calling onMountAccountTransfer method', async () => {
         window.sessionStorage.setItem('cfd_transfer_to_login_id', 'CR90000103');
@@ -283,29 +283,29 @@ describe('AccountTransferStore', () => {
         window.sessionStorage.clear();
     });
 
-    // it('should call proper methods when calling onMountAccountTransfer method', async () => {
-    //     const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
-    //     const spySetTransferFee = jest.spyOn(account_transfer_store, 'setTransferFee');
-    //     const spySetMinimumFee = jest.spyOn(account_transfer_store, 'setMinimumFee');
-    //     const spySetTransferLimit = jest.spyOn(account_transfer_store, 'setTransferLimit');
-    //     await account_transfer_store.onMountAccountTransfer();
+    it('should call proper methods when calling onMountAccountTransfer method', async () => {
+        const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
+        const spySetTransferFee = jest.spyOn(account_transfer_store, 'setTransferFee');
+        const spySetMinimumFee = jest.spyOn(account_transfer_store, 'setMinimumFee');
+        const spySetTransferLimit = jest.spyOn(account_transfer_store, 'setTransferLimit');
+        await account_transfer_store.onMountAccountTransfer();
 
-    //     expect(account_transfer_store.root_store.modules.cashier.general_store.setOnRemount).toHaveBeenCalledWith(
-    //         account_transfer_store.onMountAccountTransfer
-    //     );
-    //     expect(account_transfer_store.root_store.modules.cashier.general_store.onMountCommon).toHaveBeenCalledTimes(1);
-    //     expect(account_transfer_store.WS.wait).toHaveBeenCalledWith('website_status');
-    //     expect(spySortAccountsTransfer).toHaveBeenCalledTimes(1);
-    //     expect(spySetTransferFee).toHaveBeenCalledTimes(1);
-    //     expect(spySetMinimumFee).toHaveBeenCalledTimes(1);
-    //     expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
-    // });
+        expect(account_transfer_store.root_store.modules.cashier.general_store.setOnRemount).toHaveBeenCalledWith(
+            account_transfer_store.onMountAccountTransfer
+        );
+        expect(account_transfer_store.root_store.modules.cashier.general_store.onMountCommon).toHaveBeenCalledTimes(1);
+        expect(account_transfer_store.WS.wait).toHaveBeenCalledWith('website_status');
+        expect(spySortAccountsTransfer).toHaveBeenCalledTimes(1);
+        expect(spySetTransferFee).toHaveBeenCalledTimes(1);
+        expect(spySetMinimumFee).toHaveBeenCalledTimes(1);
+        expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
+    });
 
-    // it('the client cannot make a transfer if he does not have any account with balance greater then 0 ', () => {
-    //     const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
-    //     expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalsy();
-    //     expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(true);
-    // });
+    it('the client cannot make a transfer if he does not have any account with balance greater then 0 ', () => {
+        const spySetHasNoAccountsBalance = jest.spyOn(account_transfer_store, 'setHasNoAccountsBalance');
+        expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '0' }])).toBeFalsy();
+        expect(spySetHasNoAccountsBalance).toHaveBeenCalledWith(true);
+    });
 
     it('the client cannot make a transfer if he does not have at least two real-money accounts', () => {
         expect(account_transfer_store.canDoAccountTransfer([{ ...CR_USD_account, balance: '10000.00' }])).toBeFalsy();
@@ -414,13 +414,13 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.transfer_limit).toEqual({ min: null, max: '1000.00' });
     });
 
-    // it('should not sort and set accounts if there is an error in transfer_between_accounts response when calling sortAccountsTransfer method', async () => {
-    //     const spySetAccounts = spyOn(account_transfer_store, 'setAccounts');
-    //     account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
-    //     await account_transfer_store.sortAccountsTransfer();
+    it('should not sort and set accounts if there is an error in transfer_between_accounts response when calling sortAccountsTransfer method', async () => {
+        const spySetAccounts = spyOn(account_transfer_store, 'setAccounts');
+        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
+        await account_transfer_store.sortAccountsTransfer();
 
-    //     expect(spySetAccounts).not.toHaveBeenCalled();
-    // });
+        expect(spySetAccounts).not.toHaveBeenCalled();
+    });
 
     it('should sort and set accounts when calling sortAccountsTransfer method', async () => {
         await account_transfer_store.sortAccountsTransfer({
@@ -514,50 +514,50 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.receipt.amount_transferred).toBe(1000);
     });
 
-    // it('should switch the value of selected_from and selected_to, if new value of selected_from is the same as the current selected_to', async () => {
-    //     const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'CR90000103' });
-    //     account_transfer_store.onChangeTransferFrom({ target: { value: 'CR90000103' } });
+    it('should switch the value of selected_from and selected_to, if new value of selected_from is the same as the current selected_to', async () => {
+        const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'CR90000103' });
+        account_transfer_store.onChangeTransferFrom({ target: { value: 'CR90000103' } });
 
-    //     expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
-    // });
+        expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
+    });
 
-    // it('should not allowed transfer between mt5 accounts and select first non cfd account', async () => {
-    //     const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'MTR40000265', is_mt: true });
-    //     account_transfer_store.onChangeTransferFrom({ target: { value: 'MTR111176' } });
+    it('should not allowed transfer between mt5 accounts and select first non cfd account', async () => {
+        const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'MTR40000265', is_mt: true });
+        account_transfer_store.onChangeTransferFrom({ target: { value: 'MTR111176' } });
 
-    //     expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
-    // });
+        expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
+    });
 
-    // it('should not allowed transfer between Dxtrade accounts and select first non cfd account', async () => {
-    //     const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'DXR1003', is_dxtrade: true });
-    //     account_transfer_store.onChangeTransferFrom({ target: { value: 'DXR1002' } });
+    it('should not allowed transfer between Dxtrade accounts and select first non cfd account', async () => {
+        const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'DXR1003', is_dxtrade: true });
+        account_transfer_store.onChangeTransferFrom({ target: { value: 'DXR1002' } });
 
-    //     expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
-    // });
+        expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
+    });
 
-    // it('should not allowed transfer between MT and Dxtrade accounts and select first non cfd account', async () => {
-    //     const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'DXR1003', is_dxtrade: true });
-    //     account_transfer_store.onChangeTransferFrom({ target: { value: 'MTR111176' } });
+    it('should not allowed transfer between MT and Dxtrade accounts and select first non cfd account', async () => {
+        const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'DXR1003', is_dxtrade: true });
+        account_transfer_store.onChangeTransferFrom({ target: { value: 'MTR111176' } });
 
-    //     expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
-    // });
+        expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
+    });
 
-    // it('should not allowed transfer between Dxtrade and MT accounts and select first non cfd account', async () => {
-    //     const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'MTR111176', is_mt: true });
-    //     account_transfer_store.onChangeTransferFrom({ target: { value: 'DXR1002' } });
+    it('should not allowed transfer between Dxtrade and MT accounts and select first non cfd account', async () => {
+        const spyOnChangeTransferTo = jest.spyOn(account_transfer_store, 'onChangeTransferTo');
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'MTR111176', is_mt: true });
+        account_transfer_store.onChangeTransferFrom({ target: { value: 'DXR1002' } });
 
-    //     expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
-    // });
+        expect(spyOnChangeTransferTo).toHaveBeenCalledWith({ target: { value: 'CR90000103' } });
+    });
 
     it('should set an error if target.value loginid is not allowed to transfer when calling onChangeTransferFrom method', async () => {
         await account_transfer_store.sortAccountsTransfer({
@@ -569,19 +569,19 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.selected_from.error).not.toBe(undefined);
     });
 
-    // it('should set transfer fee, minimum fee and transfer limit when calling onChangeTransferFrom method', async () => {
-    //     const spySetTransferFee = jest.spyOn(account_transfer_store, 'setTransferFee');
-    //     const spySetMinimumFee = jest.spyOn(account_transfer_store, 'setMinimumFee');
-    //     const spySetTransferLimit = jest.spyOn(account_transfer_store, 'setTransferLimit');
+    it('should set transfer fee, minimum fee and transfer limit when calling onChangeTransferFrom method', async () => {
+        const spySetTransferFee = jest.spyOn(account_transfer_store, 'setTransferFee');
+        const spySetMinimumFee = jest.spyOn(account_transfer_store, 'setMinimumFee');
+        const spySetTransferLimit = jest.spyOn(account_transfer_store, 'setTransferLimit');
 
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'CR90000113' });
-    //     account_transfer_store.onChangeTransferFrom({ target: { value: 'CR90000103' } });
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'CR90000113' });
+        account_transfer_store.onChangeTransferFrom({ target: { value: 'CR90000103' } });
 
-    //     expect(spySetTransferFee).toHaveBeenCalledTimes(1);
-    //     expect(spySetMinimumFee).toHaveBeenCalledTimes(1);
-    //     expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
-    // });
+        expect(spySetTransferFee).toHaveBeenCalledTimes(1);
+        expect(spySetMinimumFee).toHaveBeenCalledTimes(1);
+        expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
+    });
 
     it('should set an error if target.value loginid is not allowed to transfer when calling onChangeTransferTo method', async () => {
         await account_transfer_store.sortAccountsTransfer({
@@ -592,18 +592,18 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.selected_to.error).not.toBe(undefined);
     });
 
-    // it('should set transfer fee, minimum fee and transfer limit when calling onChangeTransferTo method', async () => {
-    //     const spySetTransferFee = jest.spyOn(account_transfer_store, 'setTransferFee');
-    //     const spySetMinimumFee = jest.spyOn(account_transfer_store, 'setMinimumFee');
-    //     const spySetTransferLimit = jest.spyOn(account_transfer_store, 'setTransferLimit');
+    it('should set transfer fee, minimum fee and transfer limit when calling onChangeTransferTo method', async () => {
+        const spySetTransferFee = jest.spyOn(account_transfer_store, 'setTransferFee');
+        const spySetMinimumFee = jest.spyOn(account_transfer_store, 'setMinimumFee');
+        const spySetTransferLimit = jest.spyOn(account_transfer_store, 'setTransferLimit');
 
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.onChangeTransferTo({ target: { value: 'CR90000103' } });
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.onChangeTransferTo({ target: { value: 'CR90000103' } });
 
-    //     expect(spySetTransferFee).toHaveBeenCalledTimes(1);
-    //     expect(spySetMinimumFee).toHaveBeenCalledTimes(1);
-    //     expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
-    // });
+        expect(spySetTransferFee).toHaveBeenCalledTimes(1);
+        expect(spySetMinimumFee).toHaveBeenCalledTimes(1);
+        expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
+    });
 
     it('should return null if the client is not logged in when calling requestTransferBetweenAccounts method', async () => {
         account_transfer_store.root_store.client.is_logged_in = false;
@@ -612,17 +612,17 @@ describe('AccountTransferStore', () => {
         expect(await account_transfer_store.requestTransferBetweenAccounts({ amount: 1000 })).toBeNull();
     });
 
-    // it('should call setIsMT5TransferInProgress if there is mt5 transfer when calling requestTransferBetweenAccounts method', async () => {
-    //     const spySetIsMT5TransferInProgress = jest.spyOn(account_transfer_store, 'setIsMT5TransferInProgress');
-    //     account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
-    //         accounts: [CR_USD_account, { ...MT_USD_account, loginid: 'MTR111176' }],
-    //     });
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'MTR111176', is_mt: true });
-    //     await account_transfer_store.requestTransferBetweenAccounts({ amount: 1000 });
+    it('should call setIsMT5TransferInProgress if there is mt5 transfer when calling requestTransferBetweenAccounts method', async () => {
+        const spySetIsMT5TransferInProgress = jest.spyOn(account_transfer_store, 'setIsMT5TransferInProgress');
+        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+            accounts: [CR_USD_account, { ...MT_USD_account, loginid: 'MTR111176' }],
+        });
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'MTR111176', is_mt: true });
+        await account_transfer_store.requestTransferBetweenAccounts({ amount: 1000 });
 
-    //     expect(spySetIsMT5TransferInProgress.mock.calls).toEqual([[true], [false]]);
-    // });
+        expect(spySetIsMT5TransferInProgress.mock.calls).toEqual([[true], [false]]);
+    });
 
     it('should set error message if there is an error in transferBetweenAccounts response when calling requestTransferBetweenAccounts method', async () => {
         account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
@@ -644,27 +644,27 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.root_store.client.setAccountStatus).toHaveBeenCalledWith(1);
     });
 
-    // it('should call proper setBalance methods when calling requestTransferBetweenAccounts method', async () => {
-    //     const spySetBalanceSelectedFrom = jest.spyOn(account_transfer_store, 'setBalanceSelectedFrom');
-    //     const spySetBalanceSelectedTo = jest.spyOn(account_transfer_store, 'setBalanceSelectedTo');
+    it('should call proper setBalance methods when calling requestTransferBetweenAccounts method', async () => {
+        const spySetBalanceSelectedFrom = jest.spyOn(account_transfer_store, 'setBalanceSelectedFrom');
+        const spySetBalanceSelectedTo = jest.spyOn(account_transfer_store, 'setBalanceSelectedTo');
 
-    //     account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
-    //         accounts: [
-    //             {
-    //                 ...CR_USD_account,
-    //                 balance: '123',
-    //             },
-    //             { ...MT_USD_account, balance: '999', loginid: 'MTR111176' },
-    //         ],
-    //     });
-    //     await account_transfer_store.sortAccountsTransfer({ accounts });
-    //     account_transfer_store.setSelectedTo({ value: 'MTR111176', is_mt: true });
-    //     account_transfer_store.setSelectedFrom({ value: 'CR90000103' });
-    //     await account_transfer_store.requestTransferBetweenAccounts({ amount: 10 });
+        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+            accounts: [
+                {
+                    ...CR_USD_account,
+                    balance: '123',
+                },
+                { ...MT_USD_account, balance: '999', loginid: 'MTR111176' },
+            ],
+        });
+        await account_transfer_store.sortAccountsTransfer({ accounts });
+        account_transfer_store.setSelectedTo({ value: 'MTR111176', is_mt: true });
+        account_transfer_store.setSelectedFrom({ value: 'CR90000103' });
+        await account_transfer_store.requestTransferBetweenAccounts({ amount: 10 });
 
-    //     expect(spySetBalanceSelectedFrom).toHaveBeenCalledWith('123');
-    //     expect(spySetBalanceSelectedTo).toHaveBeenCalledWith('999');
-    // });
+        expect(spySetBalanceSelectedFrom).toHaveBeenCalledWith('123');
+        expect(spySetBalanceSelectedTo).toHaveBeenCalledWith('999');
+    });
 
     it('should show loader during fetching the data when calling requestTransferBetweenAccounts method', async () => {
         await account_transfer_store.sortAccountsTransfer({ accounts });
@@ -700,40 +700,40 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.WS.balanceAll).toHaveBeenCalledTimes(1);
     });
 
-    // it('should reset account transfer', () => {
-    //     const spySetIsTransferConfirm = spyOn(account_transfer_store, 'setIsTransferConfirm');
-    //     const spySetTransferLimit = spyOn(account_transfer_store, 'setTransferLimit');
-    //     account_transfer_store.resetAccountTransfer();
+    it('should reset account transfer', () => {
+        const spySetIsTransferConfirm = spyOn(account_transfer_store, 'setIsTransferConfirm');
+        const spySetTransferLimit = spyOn(account_transfer_store, 'setTransferLimit');
+        account_transfer_store.resetAccountTransfer();
 
-    //     expect(spySetIsTransferConfirm).toHaveBeenCalledWith(false);
-    //     expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
-    // });
+        expect(spySetIsTransferConfirm).toHaveBeenCalledWith(false);
+        expect(spySetTransferLimit).toHaveBeenCalledTimes(1);
+    });
 
-    // it('should set transfer percentage selector result if amount > 0', () => {
-    //     const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
-    //     account_transfer_store.setSelectedFrom({ currency: 'USD' });
-    //     account_transfer_store.setSelectedTo({ currency: 'BTC' });
-    //     account_transfer_store.setTransferPercentageSelectorResult(10);
-    //     const { onChangeConverterFromAmount, setConverterFromAmount } =
-    //         account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
+    it('should set transfer percentage selector result if amount > 0', () => {
+        const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
+        account_transfer_store.setSelectedFrom({ currency: 'USD' });
+        account_transfer_store.setSelectedTo({ currency: 'BTC' });
+        account_transfer_store.setTransferPercentageSelectorResult(10);
+        const { onChangeConverterFromAmount, setConverterFromAmount } =
+            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-    //     expect(setConverterFromAmount).toHaveBeenCalledWith(10);
-    //     expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-    //     expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
-    // });
+        expect(setConverterFromAmount).toHaveBeenCalledWith(10);
+        expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
+    });
 
-    // it('should set transfer percentage selector result if selected_from.balance = 0', () => {
-    //     const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
-    //     account_transfer_store.setSelectedFrom({ balance: 0, currency: 'USD' });
-    //     account_transfer_store.setSelectedTo({ currency: 'BTC' });
-    //     account_transfer_store.setTransferPercentageSelectorResult(0);
-    //     const { onChangeConverterFromAmount, setConverterFromAmount } =
-    //         account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
+    it('should set transfer percentage selector result if selected_from.balance = 0', () => {
+        const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
+        account_transfer_store.setSelectedFrom({ balance: 0, currency: 'USD' });
+        account_transfer_store.setSelectedTo({ currency: 'BTC' });
+        account_transfer_store.setTransferPercentageSelectorResult(0);
+        const { onChangeConverterFromAmount, setConverterFromAmount } =
+            account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-    //     expect(setConverterFromAmount).toHaveBeenCalledWith(0);
-    //     expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-    //     expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
-    // });
+        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
+    });
 
     it('should reset crypto fiat converter if amount = 0 and selected_from.balance > 0', () => {
         account_transfer_store.setSelectedFrom({ balance: 10, currency: 'USD' });

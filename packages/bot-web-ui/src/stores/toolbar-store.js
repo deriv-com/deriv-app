@@ -1,44 +1,33 @@
-import { action, observable, makeObservable } from 'mobx';
+import { action, observable } from 'mobx';
 import { runGroupedEvents, load, config } from '@deriv/bot-skeleton';
 
 export default class ToolbarStore {
     constructor(root_store) {
-        makeObservable(this, {
-            is_animation_info_modal_open: observable,
-            is_dialog_open: observable,
-            file_name: observable,
-            has_undo_stack: observable,
-            has_redo_stack: observable,
-            toggleAnimationInfoModal: action.bound,
-            onResetClick: action.bound,
-            closeResetDialog: action.bound,
-            onResetOkButtonClick: action.bound,
-            onUndoClick: action.bound,
-            setHasUndoStack: action.bound,
-            setHasRedoStack: action.bound,
-        });
-
         this.root_store = root_store;
     }
 
-    is_animation_info_modal_open = false;
-    is_dialog_open = false;
-    file_name = config.default_file_name;
-    has_undo_stack = false;
-    has_redo_stack = false;
+    @observable is_animation_info_modal_open = false;
+    @observable is_dialog_open = false;
+    @observable file_name = config.default_file_name;
+    @observable has_undo_stack = false;
+    @observable has_redo_stack = false;
 
+    @action.bound
     toggleAnimationInfoModal() {
         this.is_animation_info_modal_open = !this.is_animation_info_modal_open;
     }
 
+    @action.bound
     onResetClick() {
         this.is_dialog_open = true;
     }
 
+    @action.bound
     closeResetDialog() {
         this.is_dialog_open = false;
     }
 
+    @action.bound
     onResetOkButtonClick() {
         runGroupedEvents(
             false,
@@ -65,6 +54,7 @@ export default class ToolbarStore {
         Blockly.derivWorkspace.cleanUp();
     };
 
+    @action.bound
     onUndoClick(is_redo) {
         Blockly.Events.setGroup('undo_clicked');
         Blockly.derivWorkspace.undo(is_redo);
@@ -82,10 +72,12 @@ export default class ToolbarStore {
         workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     };
 
+    @action.bound
     setHasUndoStack() {
         this.has_undo_stack = Blockly.derivWorkspace.hasUndoStack();
     }
 
+    @action.bound
     setHasRedoStack() {
         this.has_redo_stack = Blockly.derivWorkspace?.hasRedoStack();
     }

@@ -17,9 +17,6 @@ const Orders = observer(() => {
     order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {
-        // DO NOT REMOVE. This fixes all P2P order routing issues
-        order_store.setOrderId(general_store.props?.order_id);
-
         const disposeOrderIdReaction = reaction(
             () => order_store.order_id,
             () => {

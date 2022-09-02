@@ -1,14 +1,14 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { connect } from 'Stores/connect';
 import { Modal, DesktopWrapper, MobileWrapper, Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { PropTypes } from 'prop-types';
+import { withRouter } from 'react-router';
+import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
 import WarningScamMessageTitle from './warning-scam-message-title';
 import WarningScamMessageContent from './warning-scam-message-content-info';
 import WarningScamMessageCheckbox from './warning-scam-message-checkbox-content';
-import { connect } from 'Stores/connect';
-import './warning-scam-message-modal.scss';
-import { PropTypes } from 'prop-types';
 
 const WarningScamMessage = ({ is_logged_in, client_country }) => {
     const [read_message, setReadMessage] = React.useState(false);

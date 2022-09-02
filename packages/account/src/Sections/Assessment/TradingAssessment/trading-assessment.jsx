@@ -4,7 +4,15 @@ import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal } from 'Components/trading-assessment';
 import { trading_assessment_questions } from 'Configs/trading-assessment-config.js';
-import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text, FormSubmitButton } from '@deriv/components';
+import {
+    DesktopWrapper,
+    Dropdown,
+    MobileWrapper,
+    SelectNative,
+    Text,
+    FormSubmitButton,
+    Loading,
+} from '@deriv/components';
 import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -32,6 +40,7 @@ const TradingAssessment = ({
     setShouldShowAppropriatenessWarningModal,
 }) => {
     const history = useHistory();
+    const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
@@ -40,11 +49,13 @@ const TradingAssessment = ({
 
     React.useEffect(() => {
         if (is_virtual) {
+            setIsLoading(false);
             history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 // set initial form data
                 setInitialFormValues(() => populateData(data.get_financial_assessment));
+                setIsLoading(false);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,6 +100,7 @@ const TradingAssessment = ({
         handleSubmit({ ...form_data, risk_tolerance: 'Yes' });
     };
 
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (should_accept_risk) {
         return (
             <RiskToleranceWarningModal

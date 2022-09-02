@@ -29,7 +29,7 @@ type TTradeTypeDropdown = Array<TTradeType>;
 
 type TDropdownItems = 'symbol' | 'trade-type' | 'duration-unit' | 'type-strategy';
 
-type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' | 'input_oscar_unit';
+export type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' | 'input_oscar_unit';
 type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
 type TInputCommonFields = TInputBaseFields | TInputUniqFields;
 
@@ -67,13 +67,15 @@ type TFieldMapData = {
     setSelected: TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
 };
 
+export type TGetSizeDesc = (index: number) => string;
+
 export type TQuickStrategyProps = {
     active_index: number;
     description: string;
     createStrategy: (values: TQuickStrategyFormValues, actions: FormikActions<TQuickStrategyFormValues>) => void;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
-    getSizeDesc: (index: number) => string;
+    getSizeDesc: TGetSizeDesc;
     // initial_errors: any;
     // initial_values: any;
     is_onscreen_keyboard_active: boolean;

@@ -1,6 +1,13 @@
 import { popover_zindex } from 'Constants/z-indexes';
 
-const common_inputs_properties: any = Object.freeze({
+export type TCommonInputsProperties = {
+    label_className: string;
+    field_className: string;
+    className: string;
+    zIndex: number;
+};
+
+const common_inputs_properties: TCommonInputsProperties = Object.freeze({
     label_className: 'quick-strategy__input-label',
     field_className: 'quick-strategy__input-field',
     className: 'quick-strategy__input',

@@ -351,6 +351,7 @@ export default class ClientStore extends BaseStore {
             setRealityCheckDuration: action.bound,
             cleanupRealityCheck: action.bound,
             fetchFinancialAssessment: action.bound,
+            setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
             setCFDScore: action.bound,
@@ -2402,6 +2403,11 @@ export default class ClientStore extends BaseStore {
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
         });
+    }
+
+    async setFinancialAndTradingAssessment(payload) {
+        const response = await WS.setFinancialAndTradingAssessment(payload);
+        return response;
     }
 
     setTwoFAStatus(status) {

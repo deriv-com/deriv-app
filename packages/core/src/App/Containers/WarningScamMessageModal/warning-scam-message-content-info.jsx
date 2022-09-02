@@ -7,6 +7,7 @@ import FakeMessageModal from './fake-message-modal';
 const WarningScamMessageContentInfo = () => (
     <div className='warning-scam-message--content__info'>
         <div className='warning-scam-message--content__info--title'>
+            <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={18} />
             <Text size='s' weight='bold'>
                 <Localize i18n_default_text='Do not get lured to fake "Deriv" pages!' />
             </Text>

@@ -154,6 +154,7 @@ export const icons =
         'IcAccountTransfer',
         'IcAccountTrashCanDashboard',
         'IcAccountTrashCan',
+        'IcAccountWebsite',
         'IcAddAccount',
         'IcAddBold',
         'IcAddCircle',

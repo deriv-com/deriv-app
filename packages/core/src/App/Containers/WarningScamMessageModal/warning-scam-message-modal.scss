@@ -43,6 +43,8 @@
 
             &--title {
                 margin-bottom: 10px;
+                display: flex;
+                width: 96%;
             }
 
             &--message {
@@ -74,6 +76,10 @@
         &--cross {
             margin: 0 0.5rem;
         }
+    }
+
+    &__website-icon {
+        margin: 0.5rem 0.5rem 0 0;
     }
 }
 

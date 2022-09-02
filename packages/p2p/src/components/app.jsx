@@ -12,8 +12,19 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { balance, className, history, lang, Notifications, order_id, server_time, websocket_api, setOnRemount } =
-        props;
+    const {
+        balance,
+        className,
+        history,
+        lang,
+        Notifications,
+        order_id,
+        server_time,
+        setOnRemount,
+        verification_action,
+        verification_code,
+        websocket_api,
+    } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -68,6 +79,15 @@ const App = props => {
         setLanguage(lang);
     }, [lang]);
 
+    // This useEffect is here to handle verification on login
+    React.useEffect(() => {
+        if (verification_action && verification_code) {
+            order_store.setIsLoadingModalOpen(true);
+            order_store.verifyEmailVerificationCode(verification_action, verification_code);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [verification_action, verification_code]);
+
     return (
         <main className={classNames('p2p-cashier', className)}>
             <Notifications />
@@ -96,6 +116,8 @@ App.propTypes = {
     server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
     setOnRemount: PropTypes.func,
+    verification_action: PropTypes.string,
+    verification_code: PropTypes.string,
     websocket_api: PropTypes.object.isRequired,
 };
 

@@ -24,7 +24,7 @@ import {
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
-const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
+const initRoutesConfig = ({ is_appstore, is_pre_appstore }, is_social_signup) => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -59,11 +59,15 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                         component: FinancialAssessment,
                         getTitle: () => localize('Financial assessment'),
                     },
-                    {
-                        path: routes.languages,
-                        component: LanguageSettings,
-                        getTitle: () => localize('Languages'),
-                    },
+                    ...(is_pre_appstore
+                        ? [
+                              {
+                                  path: routes.languages,
+                                  component: LanguageSettings,
+                                  getTitle: () => localize('Languages'),
+                              },
+                          ]
+                        : []),
                 ],
             },
             {
@@ -153,8 +157,8 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }, is_social_signup) => {
-    routesConfig = initRoutesConfig({ is_appstore }, is_social_signup);
+const getRoutesConfig = ({ is_appstore, is_pre_appstore }, is_social_signup) => {
+    routesConfig = initRoutesConfig({ is_appstore, is_pre_appstore }, is_social_signup);
     routesConfig.push(route_default);
     return routesConfig;
 };

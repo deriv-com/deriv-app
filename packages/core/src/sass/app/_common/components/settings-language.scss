@@ -1,16 +1,17 @@
 /** @define settings-language */
 .settings-language {
-    &__language-header {
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-    }
+    display: flex;
+
     &__language-container {
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-template-rows: repeat(5, auto);
         grid-gap: 16px;
+        @include mobile {
+            grid-template-columns: repeat(2, minmax(100%, 1fr));
+            grid-gap: 3px;
+            grid-template-rows: auto;
+        }
     }
     &__language {
         &-link {
@@ -33,6 +34,12 @@
         &-flag {
             width: 36px;
             height: 24px;
+
+            @include mobile {
+                margin-top: 1rem;
+                width: 50px;
+                height: 40px;
+            }
         }
         &-name {
             @include typeface(--paragraph-left-normal-black);
@@ -43,16 +50,10 @@
                 font-weight: bold;
                 color: var(--text-prominent);
             }
-        }
-    }
 
-    &__language-borderline {
-        border: solid 0.5px $color-grey-2;
-        width: 60%;
-        height: 0;
-        margin-right: 3rem;
-    }
-    &__language-text {
-        width: 15%;
+            @include mobile {
+                font-size: 1.4rem;
+            }
+        }
     }
 }

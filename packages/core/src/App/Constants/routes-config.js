@@ -131,6 +131,11 @@ const getModules = (_params, is_social_signup) => {
                             component: Account,
                             getTitle: () => localize('Financial assessment'),
                         },
+                        {
+                            path: routes.languages,
+                            component: Account,
+                            getTitle: () => localize('Languages'),
+                        },
                     ],
                 },
                 {

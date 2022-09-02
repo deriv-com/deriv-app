@@ -2,9 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Icon, Text } from '@deriv/components';
-import { Localize, getAllowedLanguages } from '@deriv/translations';
+import { DesktopWrapper, Icon } from '@deriv/components';
+import { localize, getAllowedLanguages } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import FormSubHeader from 'Components/form-sub-header';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 
@@ -41,12 +42,9 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
 
     return (
         <div className='settings-language'>
-            <div className='settings-language__language-header'>
-                <Text size='xs' color='prominent' weight='bold' className='settings-language__language-text'>
-                    <Localize i18n_default_text='Select language' />
-                </Text>
-                <div className='settings-language__language-borderline' />
-            </div>
+            <DesktopWrapper>
+                <FormSubHeader title={localize('Languages')} />
+            </DesktopWrapper>
             <div className='settings-language__language-container'>
                 {Object.keys(getAllowedLanguages()).map(key =>
                     isCurrentLanguage(key) ? (

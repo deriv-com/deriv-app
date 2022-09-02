@@ -406,7 +406,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                         {primary_routes_config.map((route_config, idx) =>
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
-                                        {getLanguageRoutes()}
                                         <MobileDrawer.Item
                                             className='header__menu-mobile-theme--tradinghub'
                                             onClick={e => {

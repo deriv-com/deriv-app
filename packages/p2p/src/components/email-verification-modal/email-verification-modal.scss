@@ -1,8 +1,6 @@
 .dc-modal__container_email-verification-modal {
-    @include mobile {
-        max-height: 80vh;
-        overflow: auto;
-    }
+    max-height: 80vh;
+    overflow: auto;
 }
 
 .email-verification-modal {

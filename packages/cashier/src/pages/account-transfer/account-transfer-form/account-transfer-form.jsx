@@ -473,6 +473,7 @@ const AccountTransferForm = ({
                                             setFieldError('amount', '');
                                             setFieldTouched('amount', false);
                                         }}
+                                        error={selected_from.error}
                                     />
                                     <Dropdown
                                         id='transfer_to'

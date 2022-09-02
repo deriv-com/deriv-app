@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Modal, DesktopWrapper, MobileWrapper, Button } from '@deriv/components';
+import { Modal, DesktopWrapper, MobileWrapper, Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WarningScamMessageModal from './warning-scam-message-modal';
 import WarningScamMessageTitle from './warning-scam-message-title';
@@ -44,6 +44,11 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                                 style={{ width: '85%' }}
                                 is_disabled={!read_message}
                             />
+                            <Icon
+                                icon='IcAccountDontgetscam'
+                                className='warning-scam-message__scam-message-icon'
+                                size={200}
+                            />
                         </WarningScamMessageModal>
                     </Modal>
                 </DesktopWrapper>
@@ -68,6 +73,13 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                                 style={{ width: '85%' }}
                                 is_disabled={!read_message}
                             />
+                            <div>
+                                <Icon
+                                    icon='IcAccountDontgetscam'
+                                    className='warning-scam-message__scam-message-icon'
+                                    size={200}
+                                />
+                            </div>
                         </WarningScamMessageModal>
                     </Modal>
                 </MobileWrapper>

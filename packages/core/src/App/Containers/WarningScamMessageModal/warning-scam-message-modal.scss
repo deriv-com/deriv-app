@@ -49,6 +49,7 @@
 
             &--message {
                 display: flex;
+                width: 100%;
                 padding: 8px;
             }
         }
@@ -78,20 +79,30 @@
         }
     }
 
+    &__small-text-message {
+        width: 96%;
+    }
+
     &__website-icon {
         margin: 0.5rem 0.5rem 0 0;
+    }
+
+    &__scam-message-icon {
+        height: 100px;
     }
 }
 
 .correct-link {
     &__container {
         display: flex;
+        width: 98%;
         background-color: #4bb4b329;
         @include link-container-gaps;
     }
 
     &__message-container {
         display: flex;
+        width: 100%;
         flex-direction: column;
     }
 

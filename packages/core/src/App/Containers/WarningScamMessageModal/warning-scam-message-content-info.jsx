@@ -12,7 +12,7 @@ const WarningScamMessageContentInfo = () => (
                 <Localize i18n_default_text='Do not get lured to fake "Deriv" pages!' />
             </Text>
         </div>
-        <Text size='xxs'>
+        <Text size='xxs' className='warning-scam-message__small-text-message'>
             <Localize i18n_default_text='You may see links to websites with a fake Deriv login page where you’ll get scammed for your money.' />
         </Text>
         <div className='warning-scam-message--content__info--message'>

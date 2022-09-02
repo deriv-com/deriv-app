@@ -138,6 +138,7 @@ import './cashier/ic-cashier-xanpool-small-dark.svg';
 import './cashier/ic-cashier-xanpool-small-light.svg';
 import './cashier/ic-cashier.svg';
 import './common/ic-account-cross.svg';
+import './common/ic-account-dontgetscam.svg';
 import './common/ic-account-error.svg';
 import './common/ic-account-limits.svg';
 import './common/ic-account-missing-details-dashboard.svg';

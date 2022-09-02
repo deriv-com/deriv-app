@@ -130,6 +130,7 @@ export default class ClientStore extends BaseStore {
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
     @observable is_cfd_poi_completed = false;
+    @observable is_financial_information_not_complete = false;
 
     is_mt5_account_list_updated = false;
 
@@ -2344,7 +2345,6 @@ export default class ClientStore extends BaseStore {
             resolve(get_financial_assessment);
         });
     }
-
 
     @action.bound
     async setFinancialAndTradingAssessment(payload) {

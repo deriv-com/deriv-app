@@ -686,34 +686,42 @@ export default class UIStore extends BaseStore {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 
+    @action.bound
     setShouldShowRiskWarningModal(value) {
         this.should_show_risk_warning_modal = value;
     }
 
+    @action.bound
     setIsTradingAssessmentForExistingUserEnabled(value) {
         this.is_trading_assessment_for_existing_user_enabled = value;
     }
 
+    @action.bound
     setIsTradingAssessmentForNewUserEnabled(value) {
         this.is_trading_assessment_for_new_user_enabled = value;
     }
 
+    @action.bound
     setShouldShowAppropriatenessWarningModal(value) {
         this.should_show_appropriateness_warning_modal = value;
     }
 
+    @action.bound
     setShouldShowAssessmentCompleteModal(value) {
         this.should_show_assessment_complete_modal = value;
     }
 
+    @action.bound
     setShouldShowCooldownModal(value) {
         this.should_show_cooldown_modal = value;
     }
 
+    @action.bound
     setShouldShowTradingAssessmentModal(value) {
         this.should_show_trading_assessment_modal = value;
     }
 
+    @action.bound
     setShouldShowTradeAssessmentForm(value) {
         this.should_show_trade_assessment_form = value;
     }

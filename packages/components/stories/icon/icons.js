@@ -145,7 +145,7 @@ export const icons =
     ],
     'common': [
         'IcAccountCross',
-        'IcAccountDontgetscam',
+        'IcAccountDontGetScam',
         'IcAccountError',
         'IcAccountLimits',
         'IcAccountMissingDetailsDashboard',

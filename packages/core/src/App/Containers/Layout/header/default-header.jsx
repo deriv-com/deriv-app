@@ -13,7 +13,7 @@ import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
-import WarningScamMessage from 'App/Containers/WarningScamMessageModal';
+import WarningScamMessageModal from 'App/Containers/WarningScamMessageModal';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -184,7 +184,7 @@ const DefaultHeader = ({
                     </div>
                 </div>
             </div>
-            <WarningScamMessage is_logged_in={is_logged_in} />
+            <WarningScamMessageModal is_logged_in={is_logged_in} />
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />

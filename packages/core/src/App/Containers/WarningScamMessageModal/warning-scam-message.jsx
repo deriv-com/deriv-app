@@ -7,21 +7,21 @@ import { withRouter } from 'react-router';
 import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
 import WarningScamMessageTitle from './warning-scam-message-title';
-import WarningScamMessageContent from './warning-scam-message-content-info';
+import WarningScamMessageContent from './warning-scam-message-content';
 import WarningScamMessageCheckbox from './warning-scam-message-checkbox-content';
 
 const WarningScamMessage = ({ is_logged_in, client_country }) => {
     const [read_message, setReadMessage] = React.useState(false);
     const [is_read, setIsRead] = React.useState(localStorage.getItem('readScamMessage') || false);
 
-    const understoodMessage = () => setReadMessage(!read_message);
+    const acknowledgeMessage = () => setReadMessage(!read_message);
 
     const setLocalStorage = () => {
         setIsRead(!is_read);
         localStorage.setItem('readScamMessage', is_read);
     };
 
-    if (is_logged_in && client_country === 'br' && !is_read) {
+    if (is_logged_in && client_country === 'my' && !is_read) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
@@ -35,7 +35,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                         <WarningScamMessageModal>
                             <WarningScamMessageTitle />
                             <WarningScamMessageContent />
-                            <WarningScamMessageCheckbox understandMessage={understoodMessage} />
+                            <WarningScamMessageCheckbox acknowledgeMessage={acknowledgeMessage} />
                             <Button
                                 primary
                                 large
@@ -45,7 +45,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                                 is_disabled={!read_message}
                             />
                             <Icon
-                                icon='IcAccountDontgetscam'
+                                icon='IcAccountDontGetScam'
                                 className='warning-scam-message__scam-message-icon'
                                 size={200}
                             />
@@ -63,7 +63,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                         <WarningScamMessageModal>
                             <WarningScamMessageTitle />
                             <WarningScamMessageContent />
-                            <WarningScamMessageCheckbox understandMessage={understoodMessage} />
+                            <WarningScamMessageCheckbox acknowledgeMessage={acknowledgeMessage} />
                             <Button
                                 primary
                                 large
@@ -75,7 +75,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                             />
                             <div>
                                 <Icon
-                                    icon='IcAccountDontgetscam'
+                                    icon='IcAccountDontGetScam'
                                     className='warning-scam-message__scam-message-icon'
                                     size={200}
                                 />

@@ -7,7 +7,7 @@ const WarningScamMessageTitle = () => (
         <Text size='m' weight='bold'>
             <Localize i18n_default_text='Beware of fake links.' />
         </Text>
-        <Text size='s'>
+        <Text>
             <Localize i18n_default_text='A link can contain the word "Deriv" and still be fake.' />
         </Text>
     </div>

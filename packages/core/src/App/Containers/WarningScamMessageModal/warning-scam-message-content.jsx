@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import CorrectMessageModal from './correct-message-modal';
-import FakeMessageModal from './fake-message-modal';
+import CorrectMessageContent from './correct-message-content';
+import FakeMessageContent from './fake-message-content';
 
-const WarningScamMessageContentInfo = () => (
+const WarningScamMessageContent = () => (
     <div className='warning-scam-message--content__info'>
         <div className='warning-scam-message--content__info--title'>
             <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={18} />
-            <Text size='s' weight='bold'>
+            <Text weight='bold'>
                 <Localize i18n_default_text='Do not get lured to fake "Deriv" pages!' />
             </Text>
         </div>
@@ -16,14 +16,14 @@ const WarningScamMessageContentInfo = () => (
             <Localize i18n_default_text='You may see links to websites with a fake Deriv login page where you’ll get scammed for your money.' />
         </Text>
         <div className='warning-scam-message--content__info--message'>
-            <Icon icon={'IcAccountCross'} className='warning-scam-message__icon' size={18} />
-            <Text size='s'>
+            <Icon icon='IcAccountCross' className='warning-scam-message__icon' size={18} />
+            <Text>
                 <Localize i18n_default_text='Do not trust and give away your credentials on fake websites, ads or emails.' />
             </Text>
         </div>
-        <CorrectMessageModal />
-        <FakeMessageModal />
+        <CorrectMessageContent />
+        <FakeMessageContent />
     </div>
 );
 
-export default WarningScamMessageContentInfo;
+export default WarningScamMessageContent;

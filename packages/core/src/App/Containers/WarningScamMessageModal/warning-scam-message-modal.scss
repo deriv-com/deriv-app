@@ -1,6 +1,6 @@
 @mixin link-container-gaps {
-    padding: 16px 8px;
-    margin-right: 8px;
+    padding: 1rem 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .warning-scam-message {
@@ -9,7 +9,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        // margin: 20px 0px 20px 0px;
         padding: 1.5rem 0;
 
         @media screen and (max-width: 375px) {
@@ -29,20 +28,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: solid #e6e9e9;
-            border-radius: 8px;
-            margin-top: 10px;
-            padding: 0.98rem 0 0.98rem 0.63rem;
-            background-color: #f2f3f4;
+            border: solid $color-grey-4;
+            border-radius: 0.5rem;
+            margin-top: 0.625rem;
+            padding: 1rem 0 1rem 0.625rem;
+            background-color: $color-grey-2;
             width: 90%;
 
             @include mobile {
-                border: solid rgb(0, 0, 0);
+                border: solid $color-black;
                 background-color: var(--general-main-2);
             }
 
             &--title {
-                margin-bottom: 10px;
+                margin-bottom: 0.625rem;
                 display: flex;
                 width: 96%;
             }
@@ -50,7 +49,7 @@
             &--message {
                 display: flex;
                 width: 100%;
-                padding: 8px;
+                padding: 0.5rem;
             }
         }
     }
@@ -58,7 +57,7 @@
     &__checkbox-container {
         display: flex;
         width: 85%;
-        margin: 10px 0px;
+        margin: 0.625rem 0px;
 
         &--checkbox {
             margin-right: 1rem;
@@ -96,7 +95,7 @@
     &__container {
         display: flex;
         width: 98%;
-        background-color: #4bb4b329;
+        background-color: $color-green-5;
         @include link-container-gaps;
     }
 
@@ -107,21 +106,21 @@
     }
 
     &__link-container {
-        background-color: rgb(255, 255, 255);
+        background-color: $color-white;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 8px;
-        margin-top: 10px;
+        padding: 0.5rem;
+        margin-top: 0.625rem;
     }
 }
 
 .fake-link {
     &__container {
         display: flex;
-        background-color: #ec3f3f29;
+        background-color: $color-red-6;
         @include link-container-gaps;
-        margin-top: 10px;
+        margin-top: 0.625rem;
     }
 
     &__message-container {
@@ -130,11 +129,11 @@
     }
 
     &__link-container {
-        background-color: rgb(255, 255, 255);
+        background-color: $color-white;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 8px;
-        margin-top: 10px;
+        padding: 0.5rem;
+        margin-top: 0.625rem;
     }
 }

@@ -2,20 +2,18 @@ import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const CorrectMessageModal = () => (
+const CorrectMessageContent = () => (
     <div className='correct-link__container'>
-        <Icon icon='IcAccountTick' className='warning-scam-message__icon' />
+        <Icon icon='IcAccountTick' className='warning-scam-message__icon' size={14} />
         <div className='correct-link__message-container'>
-            <Text size='s'>
+            <Text>
                 <Localize i18n_default_text='Only log in to your account at this secure link, never elsewhere.' />
             </Text>
             <div className='correct-link__link-container'>
-                <Text size='s' color='black'>
-                    https://app.deriv.com
-                </Text>
+                <Text color={'var(--text-general)'}>https://app.deriv.com</Text>
             </div>
         </div>
     </div>
 );
 
-export default CorrectMessageModal;
+export default CorrectMessageContent;

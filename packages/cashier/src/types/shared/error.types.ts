@@ -1,8 +1,6 @@
-type TResponseError = {
-    code?: string;
-    message?: string;
-};
+import { TServerError } from 'Types';
 
+// Type of the instance of the ErrorStore
 export type TError = {
     code?: string;
     fields: string;
@@ -14,7 +12,7 @@ export type TError = {
     message?: string;
     onClickButton: (() => void) | null;
     setErrorMessage: (
-        error: TResponseError | string,
+        error: TServerError | string,
         onClickButton: TError['onClickButton'],
         is_show_full_page: boolean
     ) => void;

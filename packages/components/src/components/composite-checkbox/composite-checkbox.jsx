@@ -37,7 +37,7 @@ const CompositeCheckbox = ({ name, value, onChange, className, label, id, descri
 };
 
 CompositeCheckbox.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.array]),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
     className: PropTypes.string,
     description: PropTypes.string.isRequired,
     id: PropTypes.string,

@@ -57,7 +57,7 @@ DisplayText.propTypes = {
     list: listPropType(),
     name: PropTypes.string,
     placeholder: PropTypes.string,
-    value: PropTypes.number,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default DisplayText;

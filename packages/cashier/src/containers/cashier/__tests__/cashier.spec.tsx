@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
-import getRoutesConfig from '../../../constants/routes-config';
+import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
 
 jest.mock('Stores/connect', () => ({

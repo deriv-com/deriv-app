@@ -185,8 +185,8 @@ export const getAuthenticationStatusInfo = account_status => {
         (manual_status && acknowledged_status.includes(manual_status));
 
     const poi_pending_for_vanuatu =
-        (onfido_status && onfido_status === 'pending') ||
-        (manual_status && manual_status === 'pending' && !poi_verified_for_vanuatu);
+        ((onfido_status && onfido_status === 'pending') || (manual_status && manual_status === 'pending')) &&
+        !poi_verified_for_vanuatu;
 
     const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
     const poi_not_submitted_for_vanuatu =

@@ -16,6 +16,7 @@ const JurisdictionModalFootNote = ({
         poi_verified_for_bvi_labuan_maltainvest,
         poi_pending_for_bvi_labuan_maltainvest,
         poi_verified_for_vanuatu,
+        poi_not_submitted_for_vanuatu,
     } = getAuthenticationStatusInfo(account_status);
 
     const account_type_name = account_type && (account_type === 'synthetic' ? 'Synthetics' : 'Financial');
@@ -64,6 +65,10 @@ const JurisdictionModalFootNote = ({
         else if (poi_or_poa_not_submitted && (is_vanuatu_type || is_bvi_labuan_maltainvest_type))
             return (
                 <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
+            );
+        else if (is_vanuatu_type && poi_not_submitted_for_vanuatu)
+            return (
+                <Localize i18n_default_text='To create this account first we need you to resubmit your proof of identity.' />
             );
         else if (
             (is_vanuatu_type && poi_pending_for_vanuatu) ||

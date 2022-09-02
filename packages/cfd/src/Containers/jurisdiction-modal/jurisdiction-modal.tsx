@@ -46,6 +46,7 @@ const JurisdictionModal = ({
 
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
+            setJurisdictionSelectedShortcode('');
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
                 if (!account_settings) {

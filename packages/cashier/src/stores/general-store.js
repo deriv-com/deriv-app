@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
+import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
@@ -9,57 +9,6 @@ import BaseStore from './base-store';
 export default class GeneralStore extends BaseStore {
     constructor({ root_store, WS }) {
         super({ root_store });
-
-        makeObservable(this, {
-            is_loading: observable,
-            is_p2p_visible: observable,
-            p2p_notification_count: observable,
-            cashier_route_tab_index: observable,
-            is_deposit: observable,
-            should_show_all_available_currencies: observable,
-            is_cashier_onboarding: observable,
-            deposit_target: observable,
-            should_set_currency_modal_title_change: observable,
-            p2p_advertiser_error: observable,
-            has_set_currency: observable,
-            should_percentage_reset: observable,
-            percentage: observable,
-            show_p2p_in_cashier_onboarding: observable,
-            onRemount: observable,
-            p2p_completed_orders: observable,
-            setOnRemount: action.bound,
-            is_crypto: computed,
-            is_p2p_enabled: computed,
-            showP2pInCashierOnboarding: action.bound,
-            attachCashierToMenu: action.bound,
-            replaceCashierMenuOnclick: action.bound,
-            setHasSetCurrency: action.bound,
-            changeSetCurrencyModalTitle: action.bound,
-            onMountCashierOnboarding: action.bound,
-            calculatePercentage: action.bound,
-            percentageSelectorSelectionStatus: action.bound,
-            setIsDeposit: action.bound,
-            setShouldShowAllAvailableCurrencies: action.bound,
-            setIsCashierOnboarding: action.bound,
-            setDepositTarget: action.bound,
-            continueRoute: action.bound,
-            setAccountSwitchListener: action.bound,
-            init: action.bound,
-            getAdvertizerError: action.bound,
-            setP2pAdvertiserError: action.bound,
-            checkP2pStatus: action.bound,
-            setP2pCompletedOrders: action.bound,
-            getP2pCompletedOrders: action.bound,
-            onMountCommon: action.bound,
-            setCashierTabIndex: action.bound,
-            setNotificationCount: action.bound,
-            setIsP2pVisible: action.bound,
-            is_cashier_locked: computed,
-            is_system_maintenance: computed,
-            setLoading: action.bound,
-            setActiveTab: action.bound,
-        });
-
         this.WS = WS;
         this.root_store = root_store;
 
@@ -87,39 +36,43 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    is_loading = false;
-    is_p2p_visible = false;
-    p2p_notification_count = 0;
-    cashier_route_tab_index = 0;
-    is_deposit = false;
-    should_show_all_available_currencies = false;
-    is_cashier_onboarding = true;
-    deposit_target = '';
-    should_set_currency_modal_title_change = false;
-    p2p_advertiser_error = undefined;
-    has_set_currency = false;
-    should_percentage_reset = false;
-    percentage = 0;
-    show_p2p_in_cashier_onboarding = false;
-    onRemount = () => {};
-    p2p_completed_orders = null;
+    @observable is_loading = false;
+    @observable is_p2p_visible = false;
+    @observable p2p_notification_count = 0;
+    @observable cashier_route_tab_index = 0;
+    @observable is_deposit = false;
+    @observable should_show_all_available_currencies = false;
+    @observable is_cashier_onboarding = true;
+    @observable deposit_target = '';
+    @observable should_set_currency_modal_title_change = false;
+    @observable p2p_advertiser_error = undefined;
+    @observable has_set_currency = false;
+    @observable should_percentage_reset = false;
+    @observable percentage = 0;
+    @observable show_p2p_in_cashier_onboarding = false;
+    @observable onRemount = () => {};
+    @observable p2p_completed_orders = null;
 
     active_container = Constants.containers.deposit;
     is_populating_values = false;
 
+    @action.bound
     setOnRemount(func) {
         this.onRemount = func;
     }
 
+    @computed
     get is_crypto() {
         const { currency } = this.root_store.client;
         return !!currency && isCryptocurrency(currency);
     }
 
+    @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }
 
+    @action.bound
     showP2pInCashierOnboarding() {
         const { account_list, is_virtual } = this.root_store.client;
 
@@ -136,6 +89,7 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @action.bound
     attachCashierToMenu() {
         const { menu, ui } = this.root_store;
 
@@ -153,6 +107,7 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    @action.bound
     replaceCashierMenuOnclick() {
         const { menu, ui } = this.root_store;
 
@@ -171,6 +126,7 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
+    @action.bound
     setHasSetCurrency() {
         const { account_list, has_active_real_account } = this.root_store.client;
 
@@ -179,10 +135,12 @@ export default class GeneralStore extends BaseStore {
             !has_active_real_account;
     }
 
+    @action.bound
     changeSetCurrencyModalTitle() {
         this.should_set_currency_modal_title_change = true;
     }
 
+    @action.bound
     async onMountCashierOnboarding() {
         const { account_prompt_dialog, payment_agent } = this.root_store.modules.cashier;
 
@@ -200,6 +158,7 @@ export default class GeneralStore extends BaseStore {
         this.setLoading(false);
     }
 
+    @action.bound
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount) {
         const { client, modules } = this.root_store;
         const { account_transfer } = modules.cashier;
@@ -214,6 +173,7 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @action.bound
     percentageSelectorSelectionStatus(should_percentage_reset) {
         this.should_percentage_reset = should_percentage_reset;
 
@@ -222,26 +182,32 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @action.bound
     setIsDeposit(is_deposit) {
         this.is_deposit = is_deposit;
     }
 
+    @action.bound
     setShouldShowAllAvailableCurrencies(value) {
         this.should_show_all_available_currencies = value;
     }
 
+    @action.bound
     setIsCashierOnboarding(is_cashier_onboarding) {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
+    @action.bound
     setDepositTarget(target) {
         this.deposit_target = target;
     }
 
+    @action.bound
     continueRoute() {
         this.root_store.common.routeTo(this.deposit_target);
     }
 
+    @action.bound
     setAccountSwitchListener() {
         // cashier inits once and tries to stay active until switching account
         // since cashier calls take a long time to respond or display in iframe
@@ -251,6 +217,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     // Initialise P2P attributes on app load without mounting the entire cashier
+    @action.bound
     async init() {
         if (this.root_store.modules.cashier) {
             const {
@@ -279,25 +246,30 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @action.bound
     async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
         this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
     }
 
+    @action.bound
     setP2pAdvertiserError(value) {
         this.p2p_advertiser_error = value;
     }
 
+    @action.bound
     checkP2pStatus() {
         const advertiser_error = this.p2p_advertiser_error;
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
         this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
     }
 
+    @action.bound
     setP2pCompletedOrders(p2p_completed_orders) {
         this.p2p_completed_orders = p2p_completed_orders;
     }
 
+    @action.bound
     async getP2pCompletedOrders() {
         await this.WS.authorized.send({ p2p_order_list: 1, active: 0 }).then(response => {
             if (!response?.error) {
@@ -307,6 +279,7 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    @action.bound
     async onMountCommon(should_remount) {
         const { client, common, modules } = this.root_store;
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
@@ -355,14 +328,17 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
     }
 
+    @action.bound
     setNotificationCount(notification_count) {
         this.p2p_notification_count = notification_count;
     }
 
+    @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
@@ -372,6 +348,7 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @computed
     get is_cashier_locked() {
         const { account_status } = this.root_store.client;
 
@@ -379,6 +356,7 @@ export default class GeneralStore extends BaseStore {
         return account_status.status.some(status_name => status_name === 'cashier_locked');
     }
 
+    @computed
     get is_system_maintenance() {
         const { account_status } = this.root_store.client;
 
@@ -386,10 +364,12 @@ export default class GeneralStore extends BaseStore {
         return account_status.cashier_validation.some(validation => validation === 'system_maintenance');
     }
 
+    @action.bound
     setLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
+    @action.bound
     setActiveTab(container) {
         this.active_container = container;
     }

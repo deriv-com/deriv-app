@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { formatDate, isEnded } from '@deriv/shared';
 import { log_types } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
@@ -6,39 +6,29 @@ import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '
 
 export default class TransactionsStore {
     constructor(root_store) {
-        makeObservable(this, {
-            elements: observable,
-            active_transaction_id: observable,
-            transactions: computed,
-            onBotContractEvent: action.bound,
-            pushTransaction: action.bound,
-            setActiveTransactionId: action.bound,
-            onClickOutsideTransaction: action.bound,
-            onMount: action.bound,
-            onUnmount: action.bound,
-            clear: action.bound,
-        });
-
         this.root_store = root_store;
         this.disposeReactionsFn = this.registerReactions();
     }
 
     TRANSACTION_CACHE = 'transaction_cache';
 
-    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store?.core.client.loginid, []);
-    active_transaction_id = null;
+    @observable elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store.core.client.loginid, []);
+    @observable active_transaction_id = null;
     recovered_completed_transactions = [];
     recovered_transactions = [];
     is_called_proposal_open_contract = false;
 
+    @computed
     get transactions() {
         return this.elements.filter(element => element.type === transaction_elements.CONTRACT);
     }
 
+    @action.bound
     onBotContractEvent(data) {
         this.pushTransaction(data);
     }
 
+    @action.bound
     pushTransaction(data) {
         const is_completed = isEnded(data);
         const { run_id } = this.root_store.run_panel;
@@ -103,6 +93,7 @@ export default class TransactionsStore {
         this.elements = this.elements.slice(); // force array update
     }
 
+    @action.bound
     setActiveTransactionId(transaction_id) {
         // Toggle transaction popover if passed transaction_id is the same.
         if (transaction_id && this.active_transaction_id === transaction_id) {
@@ -112,6 +103,7 @@ export default class TransactionsStore {
         }
     }
 
+    @action.bound
     onClickOutsideTransaction(event) {
         const path = event.path || (event.composedPath && event.composedPath());
         const is_transaction_click = path.some(
@@ -122,15 +114,18 @@ export default class TransactionsStore {
         }
     }
 
+    @action.bound
     onMount() {
         window.addEventListener('click', this.onClickOutsideTransaction);
         this.recoverPendingContracts();
     }
 
+    @action.bound
     onUnmount() {
         window.removeEventListener('click', this.onClickOutsideTransaction);
     }
 
+    @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0);
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
@@ -138,7 +133,7 @@ export default class TransactionsStore {
     }
 
     registerReactions() {
-        const { client } = this.root_store?.core;
+        const { client } = this.root_store.core;
 
         // Write transactions to session storage on each change in transaction elements.
         const disposeTransactionElementsListener = reaction(

@@ -21,7 +21,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
         localStorage.setItem('readScamMessage', is_read);
     };
 
-    if (is_logged_in && client_country === 'my' && !is_read) {
+    if (is_logged_in && client_country === 'br' && !is_read) {
         return (
             <React.Fragment>
                 <DesktopWrapper>

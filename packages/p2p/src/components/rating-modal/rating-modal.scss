@@ -1,0 +1,24 @@
+.rating-modal {
+    &--body {
+        padding: 0.8rem 2.4rem;
+
+        @include mobile {
+            &__star {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    &--footer {
+        padding: 2.4rem;
+    }
+
+    &--star {
+        pointer-events: none;
+
+        > svg {
+            margin-right: 1.9rem;
+        }
+    }
+}

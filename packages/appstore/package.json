@@ -5,7 +5,7 @@
     "main": "dist/appstore/js/index.js",
     "private": true,
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.16.0"
     },
     "scripts": {
         "build": "rimraf dist && webpack --progress",
@@ -33,8 +33,8 @@
         "@deriv/ui": "^0.0.13",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
-        "mobx": "^5.15.7",
-        "mobx-react-lite": "^2.2.2",
+        "mobx": "^6.6.1",
+        "mobx-react-lite": "^3.4.0",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
@@ -46,12 +46,12 @@
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
         "@deriv/publisher": "^0.0.1-beta4",
-        "@storybook/addon-docs": "6.4.22",
-        "@storybook/addon-essentials": "6.4.22",
-        "@storybook/addon-links": "6.4.22",
-        "@storybook/builder-webpack5": "6.4.22",
-        "@storybook/manager-webpack5": "6.4.22",
-        "@storybook/react": "6.4.22",
+        "@storybook/addon-docs": "^6.5.10",
+        "@storybook/addon-essentials": "^6.5.10",
+        "@storybook/addon-links": "^6.5.10",
+        "@storybook/builder-webpack5": "^6.5.10",
+        "@storybook/manager-webpack5": "^6.5.10",
+        "@storybook/react": "^6.5.10",
         "@testing-library/react": "^12.0.0",
         "@types/classnames": "^2.2.11",
         "@types/object.fromentries": "^2.0.0",

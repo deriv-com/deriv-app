@@ -114,18 +114,18 @@ const CardText = ({ balance, currency, demo, wallet_name }: CardText) => {
     if (balance) {
         return (
             <div>
-                <Text type='extra-small' bold={false}>
+                <Text as='div' type='extra-small' bold={false}>
                     {demo ? 'Demo' : wallet_title} {fiat_wallets.every(f => wallet_name !== f) && wallet_currency}{' '}
                     wallet
                 </Text>
-                <Text type='paragraph-2' bold>
+                <Text as='div' type='paragraph-2' bold>
                     {balance} {wallet_currency}
                 </Text>
             </div>
         );
     }
     return (
-        <Text type='paragraph-2' bold={false}>
+        <Text as='div' type='paragraph-2' bold={false}>
             {demo ? 'Demo' : wallet_title} wallet
         </Text>
     );
@@ -166,7 +166,6 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
             </div>
             {active && !disabled && (
                 <Icon
-                    data_testid='ic-checkmark-circle'
                     icon='IcCheckmarkCircle'
                     style={{ '--fill-color1': 'var(--brand-red-coral)', '--fill-color3': 'white' }}
                     className='wallet-card__active-icon'

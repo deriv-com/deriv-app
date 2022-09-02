@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
 import SideBar from './dashboard-components/Sidebar';
+import RunPanel from '../run-panel';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';
@@ -54,6 +55,7 @@ const Dashboard = (props: SideBarProps) => {
                 </Tabs>
             </div>
             <SideBar checkIfSidebarOpen={showSideBar} setSideBarState={setshowSideBar} />
+            <RunPanel />
         </div>
     );
 };

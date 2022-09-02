@@ -2,6 +2,17 @@
     .toolbar__section {
         justify-content: end;
     }
+    .run-panel__container {
+        height: 100% !important;
+        position: unset !important;
+        transform: unset !important;
+        margin-right: -350px;
+        transition: all 0.4s;
+        margin-top: 48px;
+    }
+    .dc-drawer--open {
+        margin-right: 0 !important;
+    }
 }
 .dashboard {
     &__container {
@@ -151,4 +162,5 @@
 
 .main_dashboard_container {
     display: flex;
+    overflow: hidden;
 }

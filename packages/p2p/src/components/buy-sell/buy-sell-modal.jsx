@@ -138,6 +138,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         order_store.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
         setShouldShowPopup(false);
+        buy_sell_store.setShowAdvertiserPage(false);
     };
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);

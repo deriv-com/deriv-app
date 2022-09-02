@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Label, Money, ContractCard } from '@deriv/components';
+import { Icon, Label, Money, ContractCard, Popover } from '@deriv/components';
 import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream.jsx';
@@ -48,6 +48,16 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         title: localize('Ref. ID'),
         col_index: 'refid',
+        renderCellContent: ({ cell_value, row_obj }) => {
+            return (
+                <Popover
+                    alignment={'top'}
+                    message={localize('Transaction performed by (App ID: {{app_id}})', { app_id: row_obj.app_id })}
+                >
+                    {cell_value}
+                </Popover>
+            );
+        },
     },
     {
         title: localize('Currency'),

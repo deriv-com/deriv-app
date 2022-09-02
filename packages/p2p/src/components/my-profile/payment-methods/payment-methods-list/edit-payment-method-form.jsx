@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import { useFormHistory, usePaymentMethodValidator } from 'Components/hooks';
+import { useFormHistory } from 'Components/hooks';
 import { useStores } from 'Stores';
 import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -11,7 +11,6 @@ import classNames from 'classnames';
 
 const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
-    const validateFields = usePaymentMethodValidator();
     const { formikRef, FormHistory } = useFormHistory();
 
     React.useEffect(() => {
@@ -34,7 +33,7 @@ const EditPaymentMethodForm = () => {
                 innerRef={formikRef}
                 initialValues={my_profile_store.initial_values}
                 onSubmit={my_profile_store.updatePaymentMethod}
-                validate={validateFields}
+                validate={my_profile_store.validatePaymentMethodFields}
             >
                 {({ dirty, handleChange, isSubmitting, errors }) => {
                     return (

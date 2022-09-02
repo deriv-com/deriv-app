@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import AccountArticle from 'Components/article/article.jsx';
+import AccountArticle from 'Components/article';
 
 const AccountLimitsArticle = ({ is_from_derivgo }) => {
     const getDescription = () => {

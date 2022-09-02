@@ -149,6 +149,9 @@ export default class OrderStore {
                     this.setVerificationLinkErrorMessage(response.error.message);
                     const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
                 } else if (response?.error.code === 'ExcessiveVerificationFailures') {
+                    if (this.is_invalid_verification_link_modal_open) {
+                        this.setIsInvalidVerificationLinkModalOpen(false);
+                    }
                     clearTimeout(wait);
                     this.setVerificationLinkErrorMessage(response.error.message);
                     const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
@@ -455,10 +458,6 @@ export default class OrderStore {
                     if (!response.error) {
                         clearTimeout(wait);
                         const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
-                    } else if (response.error.code === 'ExcessiveVerificationFailures') {
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
                     } else if (
                         response.error.code === 'InvalidVerificationToken' ||
                         response.error.code === 'ExcessiveVerificationRequests'
@@ -466,6 +465,13 @@ export default class OrderStore {
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 750);
+                    } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                        if (this.is_invalid_verification_link_modal_open) {
+                            this.setIsInvalidVerificationLinkModalOpen(false);
+                        }
+                        clearTimeout(wait);
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
                     }
                 }
             });

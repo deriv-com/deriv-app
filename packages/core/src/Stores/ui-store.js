@@ -1,109 +1,109 @@
 import { getPlatformInformation, isMobile, isTouchDevice, LocalStore, platform_name, routes } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
-import { action, autorun, computed, observable, makeObservable } from 'mobx';
+import { action, autorun, computed, observable } from 'mobx';
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    is_account_settings_visible = false;
-    is_positions_drawer_on = false;
-    is_reports_visible = false;
-    reports_route_tab_index = 0;
-    is_cashier_visible = false;
-    is_history_tab_active = false;
+    @observable is_account_settings_visible = false;
+    @observable is_positions_drawer_on = false;
+    @observable is_reports_visible = false;
+    @observable reports_route_tab_index = 0;
+    @observable is_cashier_visible = false;
+    @observable is_history_tab_active = false;
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
-    should_show_cancellation_warning = true;
+    @observable should_show_cancellation_warning = true;
 
     // Extensions
-    footer_extensions = [];
-    header_extension = undefined;
-    settings_extension = undefined;
-    notification_messages_ui = undefined;
+    @observable footer_extensions = [];
+    @observable header_extension = undefined;
+    @observable settings_extension = undefined;
+    @observable notification_messages_ui = undefined;
 
-    is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
-    is_settings_modal_on = false;
-    is_accounts_switcher_on = false;
-    account_switcher_disabled_message = '';
+    @observable is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
+    @observable is_settings_modal_on = false;
+    @observable is_accounts_switcher_on = false;
+    @observable account_switcher_disabled_message = '';
 
-    has_only_forward_starting_contracts = false;
+    @observable has_only_forward_starting_contracts = false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
-    is_services_error_visible = false;
-    is_unsupported_contract_modal_visible = false;
-    is_account_signup_modal_visible = false;
-    is_set_residence_modal_visible = false;
-    is_reset_password_modal_visible = false;
-    is_reset_email_modal_visible = false;
-    is_update_email_modal_visible = false;
-    is_reset_trading_password_modal_visible = false;
+    @observable is_services_error_visible = false;
+    @observable is_unsupported_contract_modal_visible = false;
+    @observable is_account_signup_modal_visible = false;
+    @observable is_set_residence_modal_visible = false;
+    @observable is_reset_password_modal_visible = false;
+    @observable is_reset_email_modal_visible = false;
+    @observable is_update_email_modal_visible = false;
+    @observable is_reset_trading_password_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
     // TODO: enable asset information
     // @observable is_chart_asset_info_visible = true;
-    is_chart_countdown_visible = false;
-    is_chart_layout_default = true;
+    @observable is_chart_countdown_visible = false;
+    @observable is_chart_layout_default = true;
 
     // PWA event and config
-    pwa_prompt_event = null;
+    @observable pwa_prompt_event = null;
 
-    screen_width = window.innerWidth;
-    screen_height = window.innerHeight;
-    is_onscreen_keyboard_active = false;
+    @observable screen_width = window.innerWidth;
+    @observable screen_height = window.innerHeight;
+    @observable is_onscreen_keyboard_active = false;
 
-    is_advanced_duration = false;
-    advanced_duration_unit = 't';
-    advanced_expiry_type = 'duration';
-    simple_duration_unit = 't';
-    duration_t = 5;
-    duration_s = 15;
-    duration_m = 3;
-    duration_h = 1;
-    duration_d = 1;
+    @observable is_advanced_duration = false;
+    @observable advanced_duration_unit = 't';
+    @observable advanced_expiry_type = 'duration';
+    @observable simple_duration_unit = 't';
+    @observable duration_t = 5;
+    @observable duration_s = 15;
+    @observable duration_m = 3;
+    @observable duration_h = 1;
+    @observable duration_d = 1;
 
     // purchase button states
-    purchase_states = [false, false];
+    @observable purchase_states = [false, false];
 
     // app states for modal
-    is_app_disabled = false;
-    is_route_modal_on = false;
+    @observable is_app_disabled = false;
+    @observable is_route_modal_on = false;
 
     // real account signup
-    is_real_acc_signup_on = false;
-    real_account_signup_target = undefined;
-    deposit_real_account_signup_target = undefined;
-    has_real_account_signup_ended = false;
+    @observable is_real_acc_signup_on = false;
+    @observable real_account_signup_target = undefined;
+    @observable deposit_real_account_signup_target = undefined;
+    @observable has_real_account_signup_ended = false;
 
     // Welcome modal
-    is_welcome_modal_visible = false;
+    @observable is_welcome_modal_visible = false;
 
     // Remove MX & MLT
-    is_close_mx_mlt_account_modal_visible = false;
+    @observable is_close_mx_mlt_account_modal_visible = false;
 
     // Remove MF account modal
-    is_close_uk_account_modal_visible = false;
+    @observable is_close_uk_account_modal_visible = false;
 
     // set currency modal
-    is_set_currency_modal_visible = false;
+    @observable is_set_currency_modal_visible = false;
 
     // position states
-    show_positions_toggle = true;
+    @observable show_positions_toggle = true;
 
-    modal_index = 0;
+    @observable modal_index = 0;
 
     // Mt5 topup
-    is_top_up_virtual_open = false;
-    is_top_up_virtual_in_progress = false;
-    is_top_up_virtual_success = false;
+    @observable is_top_up_virtual_open = false;
+    @observable is_top_up_virtual_in_progress = false;
+    @observable is_top_up_virtual_success = false;
 
     // MT5 create real STP from demo, show only real accounts from switcher
-    should_show_real_accounts_list = false;
+    @observable should_show_real_accounts_list = false;
 
     // Real account signup
-    real_account_signup = {
+    @observable real_account_signup = {
         active_modal_index: -1,
         previous_currency: '',
         current_currency: '',
@@ -112,37 +112,37 @@ export default class UIStore extends BaseStore {
     };
 
     // UI Focus retention
-    current_focus = null;
+    @observable current_focus = null;
 
     // Mobile
     mobile_toast_timeout = 3500;
-    toasts = [];
+    @observable.shallow toasts = [];
 
-    is_cfd_page = false;
-    is_nativepicker_visible = false;
-    is_landscape = false;
+    @observable is_cfd_page = false;
+    @observable is_nativepicker_visible = false;
+    @observable is_landscape = false;
 
-    prompt_when = false;
-    promptFn = () => {};
+    @observable prompt_when = false;
+    @observable promptFn = () => {};
 
     // MT5 account needed modal
-    is_account_needed_modal_on = false;
-    account_needed_modal_props = {
+    @observable is_account_needed_modal_on = false;
+    @observable account_needed_modal_props = {
         target: '',
         target_label: '',
         target_dmt5_label: '',
     };
 
-    manage_real_account_tab_index = 0;
+    @observable manage_real_account_tab_index = 0;
 
     // onboarding
-    should_show_multipliers_onboarding = false;
-    choose_crypto_currency_target = null;
+    @observable should_show_multipliers_onboarding = false;
+    @observable choose_crypto_currency_target = null;
 
     // add crypto accounts
-    should_show_cancel = false;
+    @observable should_show_cancel = false;
 
-    is_deriv_account_needed_modal_visible = false;
+    @observable is_deriv_account_needed_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -171,153 +171,6 @@ export default class UIStore extends BaseStore {
 
         super({ root_store, local_storage_properties, store_name });
 
-        makeObservable(this, {
-            is_account_settings_visible: observable,
-            is_positions_drawer_on: observable,
-            is_reports_visible: observable,
-            reports_route_tab_index: observable,
-            is_cashier_visible: observable,
-            is_history_tab_active: observable,
-            should_show_cancellation_warning: observable,
-            footer_extensions: observable,
-            header_extension: observable,
-            settings_extension: observable,
-            notification_messages_ui: observable,
-            is_dark_mode_on: observable,
-            is_settings_modal_on: observable,
-            is_accounts_switcher_on: observable,
-            account_switcher_disabled_message: observable,
-            has_only_forward_starting_contracts: observable,
-            is_services_error_visible: observable,
-            is_unsupported_contract_modal_visible: observable,
-            is_account_signup_modal_visible: observable,
-            is_set_residence_modal_visible: observable,
-            is_reset_password_modal_visible: observable,
-            is_reset_email_modal_visible: observable,
-            is_update_email_modal_visible: observable,
-            is_reset_trading_password_modal_visible: observable,
-            is_chart_countdown_visible: observable,
-            is_chart_layout_default: observable,
-            pwa_prompt_event: observable,
-            screen_width: observable,
-            screen_height: observable,
-            is_onscreen_keyboard_active: observable,
-            is_advanced_duration: observable,
-            advanced_duration_unit: observable,
-            advanced_expiry_type: observable,
-            simple_duration_unit: observable,
-            duration_t: observable,
-            duration_s: observable,
-            duration_m: observable,
-            duration_h: observable,
-            duration_d: observable,
-            purchase_states: observable,
-            is_app_disabled: observable,
-            is_route_modal_on: observable,
-            is_real_acc_signup_on: observable,
-            real_account_signup_target: observable,
-            deposit_real_account_signup_target: observable,
-            has_real_account_signup_ended: observable,
-            is_welcome_modal_visible: observable,
-            is_close_mx_mlt_account_modal_visible: observable,
-            is_close_uk_account_modal_visible: observable,
-            is_set_currency_modal_visible: observable,
-            show_positions_toggle: observable,
-            modal_index: observable,
-            is_top_up_virtual_open: observable,
-            is_top_up_virtual_in_progress: observable,
-            is_top_up_virtual_success: observable,
-            should_show_real_accounts_list: observable,
-            real_account_signup: observable,
-            current_focus: observable,
-            toasts: observable.shallow,
-            is_cfd_page: observable,
-            is_nativepicker_visible: observable,
-            is_landscape: observable,
-            prompt_when: observable,
-            promptFn: observable,
-            is_account_needed_modal_on: observable,
-            account_needed_modal_props: observable,
-            manage_real_account_tab_index: observable,
-            should_show_multipliers_onboarding: observable,
-            choose_crypto_currency_target: observable,
-            should_show_cancel: observable,
-            is_deriv_account_needed_modal_visible: observable,
-            init: action.bound,
-            populateFooterExtensions: action.bound,
-            populateHeaderExtensions: action.bound,
-            populateSettingsExtensions: action.bound,
-            onChangeUiStore: action.bound,
-            handleResize: action.bound,
-            setPromptHandler: action.bound,
-            showCloseMxMltAccountPopup: action.bound,
-            showCloseUKAccountPopup: action.bound,
-            is_mobile: computed,
-            is_tablet: computed,
-            is_account_switcher_disabled: computed,
-            setRouteModal: action.bound,
-            disableRouteModal: action.bound,
-            disableApp: action.bound,
-            enableApp: action.bound,
-            toggleAccountsDialog: action.bound,
-            setAccountSwitcherDisabledMessage: action.bound,
-            setPurchaseState: action.bound,
-            resetPurchaseStates: action.bound,
-            setChartLayout: action.bound,
-            setChartCountdown: action.bound,
-            setDarkMode: action.bound,
-            toggleSetCurrencyModal: action.bound,
-            toggleCashier: action.bound,
-            setModalIndex: action.bound,
-            toggleSettingsModal: action.bound,
-            openPositionsDrawer: action.bound,
-            openRealAccountSignup: action.bound,
-            setShouldShowCancel: action.bound,
-            resetRealAccountSignupTarget: action.bound,
-            setManageRealAccountActiveTabIndex: action.bound,
-            closeRealAccountSignup: action.bound,
-            openAccountNeededModal: action.bound,
-            closeAccountNeededModal: action.bound,
-            togglePositionsDrawer: action.bound,
-            toggleAccountSettings: action.bound,
-            toggleReports: action.bound,
-            toggleServicesErrorModal: action.bound,
-            removePWAPromptEvent: action.bound,
-            setPWAPromptEvent: action.bound,
-            setHasOnlyForwardingContracts: action.bound,
-            toggleUnsupportedContractModal: action.bound,
-            toggleAccountSignupModal: action.bound,
-            toggleSetResidenceModal: action.bound,
-            toggleCancellationWarning: action.bound,
-            toggleHistoryTab: action.bound,
-            setTopUpInProgress: action.bound,
-            closeTopUpModal: action.bound,
-            openTopUpModal: action.bound,
-            closeSuccessTopUpModal: action.bound,
-            toggleResetPasswordModal: action.bound,
-            toggleResetEmailModal: action.bound,
-            toggleUpdateEmailModal: action.bound,
-            setResetTradingPasswordModalOpen: action.bound,
-            setRealAccountSignupParams: action.bound,
-            setRealAccountSignupEnd: action.bound,
-            resetRealAccountSignupParams: action.bound,
-            onOrientationChange: action.bound,
-            toggleOnScreenKeyboard: action.bound,
-            setCurrentFocus: action.bound,
-            addToast: action.bound,
-            removeToast: action.bound,
-            setIsNativepickerVisible: action.bound,
-            setReportsTabIndex: action.bound,
-            toggleWelcomeModal: action.bound,
-            notifyAppInstall: action.bound,
-            installWithDeferredPrompt: action.bound,
-            toggleShouldShowRealAccountsList: action.bound,
-            toggleShouldShowMultipliersOnboarding: action.bound,
-            shouldNavigateAfterChooseCrypto: action.bound,
-            continueRouteAfterChooseCrypto: action.bound,
-            openDerivRealAccountNeededModal: action.bound,
-        });
-
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             this.changeTheme();
@@ -342,22 +195,27 @@ export default class UIStore extends BaseStore {
         }
     };
 
+    @action.bound
     init(notification_messages) {
         this.notification_messages_ui = notification_messages;
     }
 
+    @action.bound
     populateFooterExtensions(footer_extensions) {
         this.footer_extensions = footer_extensions;
     }
 
+    @action.bound
     populateHeaderExtensions(component) {
         this.header_extension = component;
     }
 
+    @action.bound
     populateSettingsExtensions(menu_items) {
         this.settings_extension = menu_items;
     }
 
+    @action.bound
     onChangeUiStore({ name, value }) {
         if (!(name in this)) {
             throw new Error(`Invalid Argument: ${name}`);
@@ -365,56 +223,69 @@ export default class UIStore extends BaseStore {
         this[name] = value;
     }
 
+    @action.bound
     handleResize() {
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
     }
 
+    @action.bound
     setPromptHandler(condition, cb = () => {}) {
         this.prompt_when = condition;
         this.promptFn = cb;
     }
 
+    @action.bound
     showCloseMxMltAccountPopup(is_open) {
         this.is_close_mx_mlt_account_modal_visible = is_open;
     }
 
+    @action.bound
     showCloseUKAccountPopup(is_open) {
         this.is_close_uk_account_modal_visible = is_open;
     }
 
+    @computed
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
     }
 
+    @computed
     get is_tablet() {
         return this.screen_width <= MAX_TABLET_WIDTH;
     }
 
+    @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
     }
 
+    @action.bound
     setRouteModal() {
         this.is_route_modal_on = true;
     }
 
+    @action.bound
     disableRouteModal() {
         this.is_route_modal_on = false;
     }
 
+    @action.bound
     disableApp() {
         this.is_app_disabled = true;
     }
 
+    @action.bound
     enableApp() {
         this.is_app_disabled = false;
     }
 
+    @action.bound
     toggleAccountsDialog(status = !this.is_accounts_switcher_on) {
         this.is_accounts_switcher_on = status;
     }
 
+    @action.bound
     setAccountSwitcherDisabledMessage(message) {
         if (message) {
             this.is_accounts_switcher_on = false;
@@ -424,6 +295,7 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
     setPurchaseState(index) {
         this.purchase_states[index] = true;
 
@@ -442,10 +314,12 @@ export default class UIStore extends BaseStore {
         }, 250);
     }
 
+    @action.bound
     resetPurchaseStates() {
         this.purchase_states = [false, false];
     }
 
+    @action.bound
     setChartLayout(is_default) {
         this.is_chart_layout_default = is_default;
     }
@@ -456,6 +330,7 @@ export default class UIStore extends BaseStore {
     //     this.is_chart_asset_info_visible = is_visible;
     // }
 
+    @action.bound
     setChartCountdown(is_visible) {
         this.is_chart_countdown_visible = is_visible;
     }
@@ -475,6 +350,7 @@ export default class UIStore extends BaseStore {
     //     this.is_purchase_confirm_on = !this.is_purchase_confirm_on;
     // }
 
+    @action.bound
     setDarkMode(is_dark_mode_on) {
         if (this.is_dark_mode_on !== is_dark_mode_on) {
             this.is_dark_mode_on = is_dark_mode_on;
@@ -485,46 +361,56 @@ export default class UIStore extends BaseStore {
         return this.is_dark_mode_on;
     }
 
+    @action.bound
     toggleSetCurrencyModal() {
         this.is_set_currency_modal_visible = !this.is_set_currency_modal_visible;
     }
 
+    @action.bound
     toggleCashier() {
         this.is_cashier_visible = !this.is_cashier_visible;
     }
 
+    @action.bound
     setModalIndex(index = 0) {
         this.modal_index = index;
     }
 
+    @action.bound
     toggleSettingsModal() {
         this.is_settings_modal_on = !this.is_settings_modal_on;
     }
 
+    @action.bound
     openPositionsDrawer() {
         // show and hide Positions Drawer
         this.is_positions_drawer_on = true;
     }
 
+    @action.bound
     openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
     }
 
+    @action.bound
     setShouldShowCancel(value) {
         this.should_show_cancel = value;
     }
 
+    @action.bound
     resetRealAccountSignupTarget() {
         this.deposit_real_account_signup_target = this.real_account_signup_target;
         this.real_account_signup_target = '';
     }
 
+    @action.bound
     setManageRealAccountActiveTabIndex(index) {
         this.manage_real_account_tab_index = index;
     }
 
+    @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
         this.resetRealAccountSignupTarget();
@@ -534,6 +420,7 @@ export default class UIStore extends BaseStore {
         }, 300);
     }
 
+    @action.bound
     openAccountNeededModal(target, target_label, target_dmt5_label) {
         this.is_account_needed_modal_on = true;
         this.account_needed_modal_props = {
@@ -543,6 +430,7 @@ export default class UIStore extends BaseStore {
         };
     }
 
+    @action.bound
     closeAccountNeededModal() {
         this.is_account_needed_modal_on = false;
         this.account_needed_modal_props = {
@@ -552,87 +440,108 @@ export default class UIStore extends BaseStore {
         };
     }
 
+    @action.bound
     togglePositionsDrawer() {
         // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
     }
 
+    @action.bound
     toggleAccountSettings(is_visible) {
         this.is_account_settings_visible = is_visible;
     }
 
+    @action.bound
     toggleReports(is_visible) {
         this.is_reports_visible = is_visible;
     }
 
+    @action.bound
     toggleServicesErrorModal(is_visible) {
         this.is_services_error_visible = is_visible;
     }
 
+    @action.bound
     removePWAPromptEvent() {
         this.pwa_prompt_event = null;
     }
 
+    @action.bound
     setPWAPromptEvent(e) {
         this.pwa_prompt_event = e;
     }
 
+    @action.bound
     setHasOnlyForwardingContracts(has_only_forward_starting_contracts) {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
     }
 
+    @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_unsupported_contract_modal_visible = state_change;
     }
 
+    @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
     }
 
+    @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
     }
 
+    @action.bound
     toggleCancellationWarning(state_change = !this.should_show_cancellation_warning) {
         this.should_show_cancellation_warning = state_change;
     }
 
+    @action.bound
     toggleHistoryTab(state_change = !this.is_history_tab_active) {
         this.is_history_tab_active = state_change;
     }
 
+    @action.bound
     setTopUpInProgress(bool) {
         this.is_top_up_virtual_in_progress = bool;
     }
 
+    @action.bound
     closeTopUpModal() {
         this.is_top_up_virtual_open = false;
     }
 
+    @action.bound
     openTopUpModal() {
         this.is_top_up_virtual_open = true;
     }
 
+    @action.bound
     closeSuccessTopUpModal() {
         this.is_top_up_virtual_success = false;
     }
 
+    @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
     }
 
+    @action.bound
     toggleResetEmailModal(state_change = !this.is_reset_email_modal_visible) {
         this.is_reset_email_modal_visible = state_change;
     }
 
+    @action.bound
     toggleUpdateEmailModal(state_change = !this.is_update_email_modal_visible) {
         this.is_update_email_modal_visible = state_change;
     }
 
+    @action.bound
     setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
         this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
     }
 
+    @action.bound
     setRealAccountSignupParams(params) {
         this.real_account_signup = {
             ...this.real_account_signup,
@@ -640,10 +549,12 @@ export default class UIStore extends BaseStore {
         };
     }
 
+    @action.bound
     setRealAccountSignupEnd(has_ended) {
         this.has_real_account_signup_ended = has_ended;
     }
 
+    @action.bound
     resetRealAccountSignupParams() {
         this.real_account_signup = {
             active_modal_index: -1,
@@ -654,19 +565,23 @@ export default class UIStore extends BaseStore {
         };
     }
 
+    @action.bound
     onOrientationChange({ is_landscape_orientation }) {
         this.is_landscape = is_landscape_orientation;
     }
 
+    @action.bound
     toggleOnScreenKeyboard() {
         this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
     }
 
+    @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
         this.toggleOnScreenKeyboard();
     }
 
+    @action.bound
     addToast(toast_config) {
         toast_config.key = toast_config.key ?? toast_config.content;
         const toast_index = this.toasts.findIndex(t => t.key === toast_config.key);
@@ -682,6 +597,7 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
     removeToast(key) {
         const index = this.toasts.findIndex(t => t.key === key);
         if (index > -1) {
@@ -689,14 +605,17 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
     setIsNativepickerVisible(is_nativepicker_visible) {
         this.is_nativepicker_visible = is_nativepicker_visible;
     }
 
+    @action.bound
     setReportsTabIndex(tab_index = 0) {
         this.reports_route_tab_index = tab_index;
     }
 
+    @action.bound
     toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
         if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
         this.is_welcome_modal_visible = is_visible;
@@ -706,6 +625,7 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
     notifyAppInstall(prompt) {
         this.deferred_prompt = prompt;
         setTimeout(() => {
@@ -713,6 +633,7 @@ export default class UIStore extends BaseStore {
         }, 10000);
     }
 
+    @action.bound
     async installWithDeferredPrompt() {
         this.deferred_prompt.prompt();
         const choice = await this.deferred_prompt.userChoice;
@@ -726,18 +647,22 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
     toggleShouldShowRealAccountsList(value) {
         this.should_show_real_accounts_list = value;
     }
 
+    @action.bound
     toggleShouldShowMultipliersOnboarding(value) {
         this.should_show_multipliers_onboarding = value;
     }
 
+    @action.bound
     shouldNavigateAfterChooseCrypto(next_location) {
         this.choose_crypto_currency_target = next_location;
     }
 
+    @action.bound
     continueRouteAfterChooseCrypto() {
         this.root_store.common.routeTo(this.choose_crypto_currency_target);
 
@@ -746,6 +671,7 @@ export default class UIStore extends BaseStore {
         }
     }
 
+    @action.bound
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }

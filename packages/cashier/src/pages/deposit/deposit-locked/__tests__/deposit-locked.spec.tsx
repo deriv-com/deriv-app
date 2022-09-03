@@ -136,7 +136,7 @@ describe('<DepositLocked />', () => {
             },
         ];
         render(<Checklist className='cashier-locked__checklist' items={items} />);
-        const btn = screen.getByTestId('dc-checklist__item-status--action');
+        const btn = screen.getByTestId('dt_checklist_item_status_action');
 
         fireEvent.click(btn);
         expect(onClick).toHaveBeenCalled();

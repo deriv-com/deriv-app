@@ -45,7 +45,7 @@
         "extend": "^3.0.2",
         "i18next": "^20.3.2",
         "js-cookie": "^2.2.1",
-        "mobx": "^6.6.1",
+        "mobx": "^5.15.7",
         "moment": "^2.29.2",
         "object.fromentries": "^2.0.0",
         "react": "^16.14.0",

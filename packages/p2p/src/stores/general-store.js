@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
@@ -10,31 +10,31 @@ import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
 
 export default class GeneralStore extends BaseStore {
-    active_index = 0;
-    active_notification_count = 0;
-    advertiser_id = null;
-    balance;
-    inactive_notification_count = 0;
-    is_advertiser = false;
-    is_blocked = false;
-    is_listed = false;
-    is_loading = false;
-    is_p2p_blocked_for_pa = false;
-    is_restricted = false;
-    nickname = null;
-    nickname_error = '';
-    notification_count = 0;
-    order_table_type = order_list.ACTIVE;
-    orders = [];
-    parameters = null;
-    poi_status = null;
-    props = {};
-    review_period;
-    should_show_real_name = false;
-    should_show_popup = false;
-    user_blocked_until = null;
-    is_high_risk_fully_authed_without_fa = false;
-    is_modal_open = false;
+    @observable active_index = 0;
+    @observable active_notification_count = 0;
+    @observable advertiser_id = null;
+    @observable balance;
+    @observable inactive_notification_count = 0;
+    @observable is_advertiser = false;
+    @observable is_blocked = false;
+    @observable is_listed = false;
+    @observable is_loading = false;
+    @observable is_p2p_blocked_for_pa = false;
+    @observable is_restricted = false;
+    @observable nickname = null;
+    @observable nickname_error = '';
+    @observable notification_count = 0;
+    @observable order_table_type = order_list.ACTIVE;
+    @observable orders = [];
+    @observable parameters = null;
+    @observable poi_status = null;
+    @observable.ref props = {};
+    @observable review_period;
+    @observable should_show_real_name = false;
+    @observable should_show_popup = false;
+    @observable user_blocked_until = null;
+    @observable is_high_risk_fully_authed_without_fa = false;
+    @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -46,117 +46,47 @@ export default class GeneralStore extends BaseStore {
     ws_subscriptions = {};
     service_token_timeout;
 
-    constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super(root_store);
-
-        makeObservable(this, {
-            active_index: observable,
-            active_notification_count: observable,
-            advertiser_id: observable,
-            balance: observable,
-            inactive_notification_count: observable,
-            is_advertiser: observable,
-            is_blocked: observable,
-            is_listed: observable,
-            is_loading: observable,
-            is_p2p_blocked_for_pa: observable,
-            is_restricted: observable,
-            nickname: observable,
-            nickname_error: observable,
-            notification_count: observable,
-            order_table_type: observable,
-            orders: observable,
-            parameters: observable,
-            poi_status: observable,
-            props: observable.ref,
-            review_period: observable,
-            should_show_real_name: observable,
-            should_show_popup: observable,
-            user_blocked_until: observable,
-            is_high_risk_fully_authed_without_fa: observable,
-            is_modal_open: observable,
-            client: computed,
-            current_focus: computed,
-            setCurrentFocus: computed,
-            blocked_until_date_time: computed,
-            is_active_tab: computed,
-            is_barred: computed,
-            is_my_profile_tab_visible: computed,
-            should_show_dp2p_blocked: computed,
-            createAdvertiser: action.bound,
-            getWebsiteStatus: action.bound,
-            handleNotifications: action.bound,
-            handleTabClick: action.bound,
-            onMount: action.bound,
-            onUnmount: action.bound,
-            onNicknamePopupClose: action.bound,
-            redirectTo: action.bound,
-            setActiveIndex: action.bound,
-            setActiveNotificationCount: action.bound,
-            setAccountBalance: action.bound,
-            setAdvertiserId: action.bound,
-            setAppProps: action.bound,
-            setInactiveNotificationCount: action.bound,
-            setIsAdvertiser: action.bound,
-            setIsBlocked: action.bound,
-            setIsHighRiskFullyAuthedWithoutFa: action.bound,
-            setIsListed: action.bound,
-            setIsLoading: action.bound,
-            setIsP2pBlockedForPa: action.bound,
-            setIsRestricted: action.bound,
-            setIsModalOpen: action.bound,
-            setNickname: action.bound,
-            setNicknameError: action.bound,
-            setNotificationCount: action.bound,
-            setOrderTableType: action.bound,
-            setP2PConfig: action.bound,
-            setP2pOrderList: action.bound,
-            setParameters: action.bound,
-            setPoiStatus: action.bound,
-            setReviewPeriod: action.bound,
-            setShouldShowRealName: action.bound,
-            setShouldShowPopup: action.bound,
-            setUserBlockedUntil: action.bound,
-            setWebsocketInit: action.bound,
-            toggleNicknamePopup: action.bound,
-            updateAdvertiserInfo: action.bound,
-            updateP2pNotifications: action.bound,
-        });
-    }
-
+    @computed
     get client() {
         return { ...this.props?.client } || {};
     }
 
+    @computed
     get current_focus() {
         return this.props?.current_focus;
     }
 
+    @computed
     get setCurrentFocus() {
         return this.props?.setCurrentFocus;
     }
 
+    @computed
     get blocked_until_date_time() {
         return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), false, true);
     }
 
+    @computed
     get is_active_tab() {
         return this.order_table_type === order_list.ACTIVE;
     }
 
+    @computed
     get is_barred() {
         return !!this.user_blocked_until;
     }
 
+    @computed
     get is_my_profile_tab_visible() {
         return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
     }
 
+    @computed
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
     }
 
+    @action.bound
     createAdvertiser(name) {
         requestWS({
             p2p_advertiser_create: 1,
@@ -193,6 +123,7 @@ export default class GeneralStore extends BaseStore {
         return local_storage_settings;
     }
 
+    @action.bound
     getWebsiteStatus() {
         requestWS({ website_status: 1 }).then(response => {
             if (response && !response.error) {
@@ -203,6 +134,7 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    @action.bound
     handleNotifications(old_orders, new_orders) {
         const { order_store } = this.root_store;
         const { client, props } = this;
@@ -294,11 +226,13 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    @action.bound
     handleTabClick(idx) {
         this.setActiveIndex(idx);
         this.setParameters(null);
     }
 
+    @action.bound
     onMount() {
         this.setIsLoading(true);
         this.setIsBlocked(false);
@@ -399,6 +333,7 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    @action.bound
     onUnmount() {
         clearTimeout(this.service_token_timeout);
         clearTimeout(this.user_blocked_timeout);
@@ -414,6 +349,7 @@ export default class GeneralStore extends BaseStore {
         this.props.filterNotificationMessages();
     }
 
+    @action.bound
     onNicknamePopupClose() {
         this.setShouldShowPopup(false);
     }
@@ -433,85 +369,106 @@ export default class GeneralStore extends BaseStore {
         }
     };
 
+    @action.bound
     redirectTo(path_name, params = null) {
         this.setActiveIndex(this.path[path_name]);
         this.setParameters(params);
     }
 
+    @action.bound
     setActiveIndex(active_index) {
         this.active_index = active_index;
     }
 
+    @action.bound
     setActiveNotificationCount(active_notification_count) {
         this.active_notification_count = active_notification_count;
     }
 
+    @action.bound
     setAccountBalance(value) {
         this.balance = value;
     }
 
+    @action.bound
     setAdvertiserId(advertiser_id) {
         this.advertiser_id = advertiser_id;
     }
 
+    @action.bound
     setAppProps(props) {
         this.props = props;
     }
 
+    @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
 
+    @action.bound
     setIsAdvertiser(is_advertiser) {
         this.is_advertiser = is_advertiser;
     }
 
+    @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
     }
 
+    @action.bound
     setIsHighRiskFullyAuthedWithoutFa(is_high_risk_fully_authed_without_fa) {
         this.is_high_risk_fully_authed_without_fa = is_high_risk_fully_authed_without_fa;
     }
 
+    @action.bound
     setIsListed(is_listed) {
         this.is_listed = is_listed;
     }
 
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
+    @action.bound
     setIsP2pBlockedForPa(is_p2p_blocked_for_pa) {
         this.is_p2p_blocked_for_pa = is_p2p_blocked_for_pa;
     }
 
+    @action.bound
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
     }
 
+    @action.bound
     setIsModalOpen(is_modal_open) {
         this.is_modal_open = is_modal_open;
     }
 
+    @action.bound
     setNickname(nickname) {
         this.nickname = nickname;
     }
 
+    @action.bound
     setNicknameError(nickname_error) {
         this.nickname_error = nickname_error;
     }
 
+    @action.bound
     setNotificationCount(notification_count) {
         this.notification_count = notification_count;
     }
 
+    @action.bound
     setOrderTableType(order_table_type) {
         const { order_store } = this.root_store;
+
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
     }
 
+    @action.bound
     setP2PConfig() {
         const { floating_rate_store } = this.root_store;
         requestWS({ website_status: 1 }).then(response => {
@@ -529,6 +486,7 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    @action.bound
     setP2pOrderList(order_response) {
         if (order_response.error) {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
@@ -560,39 +518,48 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    @action.bound
     setParameters(parameters) {
         this.parameters = parameters;
     }
 
+    @action.bound
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
     }
 
+    @action.bound
     setReviewPeriod(review_period) {
         this.review_period = review_period;
     }
 
+    @action.bound
     setShouldShowRealName(should_show_real_name) {
         this.should_show_real_name = should_show_real_name;
     }
 
+    @action.bound
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
     }
 
+    @action.bound
     setUserBlockedUntil(user_blocked_until) {
         this.user_blocked_until = user_blocked_until;
     }
 
+    @action.bound
     setWebsocketInit = websocket => {
         WebsocketInit(websocket);
     };
 
+    @action.bound
     toggleNicknamePopup() {
         this.setShouldShowPopup(!this.should_show_popup);
         this.setNicknameError(undefined);
     }
 
+    @action.bound
     updateAdvertiserInfo(response) {
         const { p2p_advertiser_info } = response;
         if (!response.error) {
@@ -629,6 +596,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsLoading(false);
     }
 
+    @action.bound
     updateP2pNotifications(notifications) {
         const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
         const notification_count = unseen_notifications.length;

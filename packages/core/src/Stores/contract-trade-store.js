@@ -24,9 +24,7 @@ export default class ContractTradeStore extends BaseStore {
     chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
     constructor(root_store) {
-        super({
-            root_store,
-        });
+        super({ root_store });
 
         makeObservable(this, {
             contracts: observable.shallow,

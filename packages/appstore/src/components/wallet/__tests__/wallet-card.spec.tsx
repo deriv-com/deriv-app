@@ -7,7 +7,6 @@ const setHookState = (is_content_shown: boolean) => jest.fn().mockImplementation
 React.useState = setHookState(true);
 
 jest.mock('@deriv/ui', () => ({
-    ...jest.requireActual('@deriv/ui'),
     Text: ({ children }) => <span>{children}</span>,
 }));
 

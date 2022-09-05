@@ -163,6 +163,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
             </div>
             {active && !disabled && (
                 <Icon
+                    data_testid='ic-checkmark-circle'
                     icon='IcCheckmarkCircle'
                     style={{ '--fill-color1': 'var(--brand-red-coral)', '--fill-color3': 'white' }}
                     className='wallet-card__active-icon'

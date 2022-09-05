@@ -44,7 +44,7 @@ const Orders = observer(() => {
     if (order_store.order_information) {
         return (
             <div className='orders'>
-                <OrderDetails onPageReturn={() => order_store.hideDetails(true)} />
+                <OrderDetails />
             </div>
         );
     }

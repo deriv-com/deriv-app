@@ -37,6 +37,7 @@ export default class OrderStore {
     @observable order_rerender_timeout = null;
     @observable rating_value = 0;
     @observable user_email_address = '';
+    @observable verification_code = '';
     @observable verification_link_error_message = '';
 
     interval;
@@ -99,11 +100,10 @@ export default class OrderStore {
 
     @action.bound
     confirmOrder(is_buy_order_for_user) {
-        const { general_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id: this.order_id,
-            verification_code: general_store.props?.verification_code,
+            verification_code: this.verification_code,
         }).then(response => {
             if (response && !response.error) {
                 if (!is_buy_order_for_user) {
@@ -239,6 +239,14 @@ export default class OrderStore {
                 }
             });
         }
+    }
+
+    @action.bound
+    onPageReturn() {
+        const { general_store } = this.root_store;
+
+        general_store.props?.deleteParams();
+        this.hideDetails(true);
     }
 
     @action.bound
@@ -392,7 +400,7 @@ export default class OrderStore {
 
     @action.bound
     verifyEmailVerificationCode(verification_action, verification_code) {
-        if (verification_action === 'p2p_order_confirm') {
+        if (verification_action === 'p2p_order_confirm' && verification_code) {
             requestWS({
                 p2p_order_confirm: 1,
                 id: this.order_id,
@@ -544,6 +552,13 @@ export default class OrderStore {
     @action.bound
     setUserEmailAddress(user_email_address) {
         this.user_email_address = user_email_address;
+    }
+
+    // This is only for the order confirmation request,
+    // since on confirmation the code is removed from the query params
+    @action.bound
+    setVerificationCode(verification_code) {
+        this.verification_code = verification_code;
     }
 
     @action.bound

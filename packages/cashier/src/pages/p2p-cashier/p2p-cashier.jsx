@@ -48,7 +48,12 @@ const P2PCashier = ({
         let passed_order_id;
 
         setActionParam(url_params.get('action'));
-        setCodeParam(url_params.get('code'));
+
+        if (url_params.has('code')) {
+            setCodeParam(url_params.get('code'));
+        } else if (localStorage.getItem('verification_code.p2p_order_confirm')) {
+            setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+        }
 
         // Different emails give us different params (order / order_id),
         // don't remove order_id since it's consistent for mobile and web for 2FA
@@ -68,6 +73,10 @@ const P2PCashier = ({
     const setQueryOrder = React.useCallback(
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
+            if (is_mobile) {
+                current_query_params.delete('action');
+                current_query_params.delete('code');
+            }
 
             if (current_query_params.has('order_id') || current_query_params.has('order')) {
                 current_query_params.delete('order');
@@ -85,6 +94,7 @@ const P2PCashier = ({
                 });
 
                 setOrderId(null);
+                deleteParams();
             } else if (order_id !== input_order_id) {
                 // Changing query params
                 history.push({
@@ -99,6 +109,14 @@ const P2PCashier = ({
         [history, location.hash, location.search, order_id]
     );
 
+    const deleteParams = () => {
+        const url_params = new URLSearchParams(window.location.search);
+
+        url_params.delete('action');
+        url_params.delete('code');
+        localStorage.removeItem('verification_code.p2p_order_confirm');
+    };
+
     if (is_logging_in) {
         return <Loading is_fullscreen />;
     }
@@ -109,6 +127,7 @@ const P2PCashier = ({
             balance={balance}
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
             current_focus={current_focus}
+            deleteParams={deleteParams}
             filterNotificationMessages={filterNotificationMessages}
             history={history}
             is_dark_mode_on={is_dark_mode_on}

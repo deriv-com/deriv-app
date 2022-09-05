@@ -1,5 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-add-rounded.svg';
 import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
@@ -285,12 +286,14 @@ import './common/ic-email-typo.svg';
 import './common/ic-email-verified.svg';
 import './common/ic-email.svg';
 import './common/ic-empty-folder.svg';
+import './common/ic-empty-star.svg';
 import './common/ic-eye.svg';
 import './common/ic-filter.svg';
 import './common/ic-folder-open-filled.svg';
 import './common/ic-folder-open.svg';
 import './common/ic-full-screen-restore.svg';
 import './common/ic-full-screen.svg';
+import './common/ic-full-star.svg';
 import './common/ic-gear-light.svg';
 import './common/ic-gear.svg';
 import './common/ic-get-platform.svg';
@@ -418,6 +421,8 @@ import './common/ic-stop.svg';
 import './common/ic-success-reset-trading-password.svg';
 import './common/ic-success.svg';
 import './common/ic-theme.svg';
+import './common/ic-thumbs-down.svg';
+import './common/ic-thumbs-up.svg';
 import './common/ic-trade.svg';
 import './common/ic-transactions.svg';
 import './common/ic-unarchive.svg';

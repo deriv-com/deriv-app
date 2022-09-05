@@ -8,6 +8,7 @@ const SetResidenceForm = ({
     class_prefix = 'set-residence',
     children,
     default_value,
+    history_value,
     header_text,
     errors,
     touched,
@@ -42,6 +43,7 @@ const SetResidenceForm = ({
                                 className={`${class_prefix}__residence-field`}
                                 type='text'
                                 label={localize('Choose country')}
+                                historyValue={history_value}
                                 error={touched.residence && errors.residence}
                                 required
                                 list_items={residence_list}
@@ -77,6 +79,7 @@ SetResidenceForm.propTypes = {
     children: PropTypes.node,
     class_prefix: PropTypes.string,
     default_value: PropTypes.string,
+    history_value: PropTypes.string,
     errors: PropTypes.object,
     header_text: PropTypes.string,
     residence_list: PropTypes.arrayOf(PropTypes.object),

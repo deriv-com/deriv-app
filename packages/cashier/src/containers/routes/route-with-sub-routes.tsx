@@ -10,8 +10,7 @@ import {
     default_title,
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { TRouteConfig, TRoute } from 'Constants/routes-config';
-import { TClientStore } from 'Types';
+import { TClientStore, TRouteConfig, TRoute } from 'Types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & {
     is_logged_in: TClientStore['is_logged_in'];

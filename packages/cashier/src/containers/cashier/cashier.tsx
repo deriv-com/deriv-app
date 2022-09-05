@@ -15,9 +15,8 @@ import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/sha
 import { localize } from '@deriv/translations';
 import AccountPromptDialog from 'Components/account-prompt-dialog';
 import ErrorDialog from 'Components/error-dialog';
-import { TRoute } from 'Constants/routes-config';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCommonStore, TError, TRootStore, TUiStore } from 'Types';
+import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from 'Types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {

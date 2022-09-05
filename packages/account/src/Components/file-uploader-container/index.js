@@ -1,3 +1,3 @@
-import FileUploaderContainer from './file-uploader-container.jsx';
+import FileUploaderContainer from './file-uploader-container';
 
 export default FileUploaderContainer;

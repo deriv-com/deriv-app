@@ -24,7 +24,6 @@ const Cashier = ({
     is_account_transfer_visible,
     is_account_setting_loaded,
     is_cashier_onboarding,
-    is_crypto,
     is_crypto_transactions_visible,
     is_loading,
     is_logged_in,
@@ -109,10 +108,6 @@ const Cashier = ({
         return selected_route.getTitle();
     };
 
-    const getSideNoteClassName = () => {
-        return location.pathname?.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
-    };
-
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <AccountPromptDialog />
@@ -123,7 +118,6 @@ const Cashier = ({
                         <VerticalTab
                             alignment='center'
                             id='cashier'
-                            side_note_class_name={getSideNoteClassName()}
                             classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating
@@ -185,7 +179,6 @@ Cashier.propTypes = {
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
     is_cashier_onboarding: PropTypes.bool,
-    is_crypto: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -213,7 +206,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
-    is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,
     is_logged_in: client.is_logged_in,

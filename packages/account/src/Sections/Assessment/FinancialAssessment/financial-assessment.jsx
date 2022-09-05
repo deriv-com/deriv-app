@@ -178,7 +178,7 @@ const SubmittedPage = ({ platform, routeBackInApp }) => {
 const FinancialAssessment = ({
     is_authentication_needed,
     is_financial_account,
-    is_svg,
+    is_mf,
     is_trading_experience_incomplete,
     is_financial_information_not_complete,
     is_virtual,
@@ -226,7 +226,7 @@ const FinancialAssessment = ({
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
-                    setHasTradingExperience((is_financial_account || is_trading_experience_incomplete) && !is_svg);
+                    setHasTradingExperience((is_financial_account || is_trading_experience_incomplete) && !is_mf);
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
                         return;
@@ -364,7 +364,7 @@ const FinancialAssessment = ({
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
-                                {!is_svg && is_financial_information_not_complete && !is_submit_success && (
+                                {!is_mf && is_financial_information_not_complete && !is_submit_success && (
                                     <div className='financial-banner'>
                                         <Icon icon='IcAlertWarning' />
                                         {isMobile() ? (
@@ -989,7 +989,7 @@ const FinancialAssessment = ({
 FinancialAssessment.propTypes = {
     is_authentication_needed: PropTypes.bool,
     is_financial_account: PropTypes.bool,
-    is_svg: PropTypes.bool,
+    is_mf: PropTypes.bool,
     is_trading_experience_incomplete: PropTypes.bool,
     is_financial_information_not_complete: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -1002,7 +1002,7 @@ FinancialAssessment.propTypes = {
 export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
-    is_svg: client.is_svg,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     is_financial_information_not_complete: client.is_trading_experience_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,

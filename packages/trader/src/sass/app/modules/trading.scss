@@ -397,6 +397,7 @@
         flex-direction: column;
 
         &-dropdown {
+            margin-top: 0.8rem;
             /* postcss-bem-linter: ignore */
             .dc-dropdown__display-text {
                 padding-right: unset;

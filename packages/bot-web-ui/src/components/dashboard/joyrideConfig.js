@@ -32,10 +32,10 @@ export default {
             ...common_joyride_proprties,
         },
         {
-            target: '#id-quick-strategy',
+            target: '#id-bot-builder',
             content: (
                 <TourGuideComponent
-                    Header={'Start with a tempplate'}
+                    Header={'Start with a BotBuilder'}
                     Para={
                         'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                     }
@@ -44,10 +44,10 @@ export default {
             ...common_joyride_proprties,
         },
         {
-            target: '#id-bot-builder',
+            target: '#id-quick-strategy',
             content: (
                 <TourGuideComponent
-                    Header={'Start with a BotBuilder'}
+                    Header={'Start with a tempplate'}
                     Para={
                         'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                     }

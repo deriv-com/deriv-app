@@ -1,0 +1,36 @@
+.bot-dashboard {
+    .dc-tabs {
+        &__content {
+            &_side_bar_wrapper {
+                padding: 1.6rem 0.8rem;
+                .dc-vertical-tab {
+                    &__tab {
+                        padding: 0.8rem;
+                    }
+                    &__content {
+                        height: calc(100vh - 15rem);
+                        padding: 1.6rem 0.8rem;
+                    }
+
+                    &__tab-meta-wrapper {
+                        width: 25%;
+                        height: calc(100vh - 15rem);
+                    }
+
+                    &__header--active {
+                        background: #d6dadb;
+                    }
+
+                    &__header--highlight {
+                        border: none;
+                        background: none;
+                    }
+                }
+
+                .dc-vertical-tab:not(.dc-vertical-tab--floating) {
+                    background-color: unset;
+                }
+            }
+        }
+    }
+}

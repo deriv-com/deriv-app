@@ -8,7 +8,7 @@ import RunPanel from '../run-panel';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';
-import Translations from './dashboard-components/Translations';
+import Tutorial from './tutorial-components';
 
 interface SideBarProps {
     checkIfSidebarOpen: boolean;
@@ -50,7 +50,9 @@ const Dashboard = (props: SideBarProps) => {
                         </div>
                     </div>
                     <div icon='IcTutorialsTabs' label='Tutorial' id='id-tutorials'>
-                        <div>Under Development</div>
+                        <div>
+                            <Tutorial />
+                        </div>
                     </div>
                 </Tabs>
             </div>

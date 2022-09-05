@@ -20,10 +20,10 @@ const App = props => {
         Notifications,
         order_id,
         server_time,
-        setOnRemount,
         verification_action,
         verification_code,
         websocket_api,
+        setOnRemount,
     } = props;
 
     React.useEffect(() => {
@@ -79,7 +79,6 @@ const App = props => {
         setLanguage(lang);
     }, [lang]);
 
-    // This useEffect is here to handle verification on login
     React.useEffect(() => {
         if (verification_action && verification_code) {
             order_store.setIsLoadingModalOpen(true);
@@ -116,8 +115,6 @@ App.propTypes = {
     server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
     setOnRemount: PropTypes.func,
-    verification_action: PropTypes.string,
-    verification_code: PropTypes.string,
     websocket_api: PropTypes.object.isRequired,
 };
 

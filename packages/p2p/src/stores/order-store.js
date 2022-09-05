@@ -38,13 +38,16 @@ export default class OrderStore {
     @observable rating_value = 0;
     @observable user_email_address = '';
     @observable verification_link_error_message = '';
+
     interval;
     order_info_subscription = {};
     previous_orders = [];
+
     @computed
     get has_order_payment_method_details() {
         return !!this.order_payment_method_details;
     }
+
     @computed
     get order_information() {
         const { general_store } = this.root_store;
@@ -53,10 +56,12 @@ export default class OrderStore {
             ? createExtendedOrderDetails(order, general_store.client.loginid, general_store.props.server_time)
             : null;
     }
+
     @computed
     get nav() {
         return this.root_store.general_store.parameters?.nav;
     }
+
     @action.bound
     confirmOrderRequest(id) {
         const { order_details_store } = this.root_store;
@@ -91,6 +96,7 @@ export default class OrderStore {
             }
         });
     }
+
     @action.bound
     confirmOrder(is_buy_order_for_user) {
         const { general_store } = this.root_store;
@@ -109,6 +115,7 @@ export default class OrderStore {
             }
         });
     }
+
     @action.bound
     getAdvertiserInfo(setShouldShowCancelModal) {
         requestWS({ p2p_advertiser_info: 1 }).then(response => {
@@ -120,6 +127,7 @@ export default class OrderStore {
         });
         this.getWebsiteStatus(setShouldShowCancelModal);
     }
+
     @action.bound
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
@@ -128,6 +136,7 @@ export default class OrderStore {
             }
         });
     }
+
     @action.bound
     getWebsiteStatus(setShouldShowCancelModal) {
         requestWS({ website_status: 1 }).then(response => {
@@ -144,10 +153,12 @@ export default class OrderStore {
             }
         });
     }
+
     @action.bound
     handleRating(rate) {
         this.setRatingValue(rate);
     }
+
     @action.bound
     hideDetails(should_navigate) {
         if (should_navigate && this.nav) {
@@ -155,6 +166,7 @@ export default class OrderStore {
         }
         this.setOrderId(null);
     }
+
     @action.bound
     loadMoreOrders({ startIndex }) {
         this.setApiErrorMessage('');

@@ -7,7 +7,7 @@
         "cacheableOperations": [
           "build",
           "test",
-          "lint",
+          "test:eslint",
           "package",
           "prepare"
         ],

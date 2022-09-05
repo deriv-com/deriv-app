@@ -16,7 +16,7 @@ import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
-const DefaultHeader = ({
+const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_status,
     account_type,
@@ -246,7 +246,7 @@ const DefaultHeader = ({
     );
 };
 
-DefaultHeader.propTypes = {
+DTraderHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
@@ -343,4 +343,4 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
-}))(withRouter(DefaultHeader));
+}))(withRouter(DTraderHeader));

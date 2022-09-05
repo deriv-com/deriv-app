@@ -190,6 +190,7 @@ export const icons =
         'IcCalendarForwardToday',
         'IcCalendarToday',
         'IcCalendar',
+        'IcCatAccumulator',
         'IcCatAll',
         'IcCatMultiplier',
         'IcCatOptions',
@@ -579,6 +580,7 @@ export const icons =
         'IcStockZoom',
     ],
     'tradetype': [
+        'IcTradetypeAccu',
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',

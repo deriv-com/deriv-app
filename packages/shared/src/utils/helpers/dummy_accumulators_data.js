@@ -24,8 +24,8 @@ const profit_loss = +0.15;
 const profit_percentage = +1.5;
 const tick_size_barrier = 0.000409;
 const stake = '10.00';
-const contract_type = 'ACCU'; // 'ACCU' or 'DECCU'
-const shortcode = 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'; // 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620' or 'DECCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'
+const contract_type = 'ACCU'; // 'ACCU'
+const shortcode = 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'; // 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'
 
 export const getDummyPOCResponseForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
@@ -339,25 +339,6 @@ export const dummy_accu_in_contracts_for_available = {
     underlying_symbol: 'frxAUDJPY',
 };
 
-export const dummy_deccu_in_contracts_for_available = {
-    accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
-    barrier_category: 'american',
-    barriers: 2,
-    contract_category: 'accumulator',
-    contract_category_display: 'Stay in/Break out',
-    contract_display: 'Break out',
-    contract_type: 'DECCU',
-    exchange_name: 'FOREX',
-    expiry_type: 'daily',
-    market: 'forex',
-    max_contract_duration: '1d',
-    min_contract_duration: '1m',
-    sentiment: 'inside',
-    start_type: 'spot',
-    submarket: 'major_pairs',
-    underlying_symbol: 'frxAUDJPY',
-};
-
 export const dummy_accumulators_proposals = {
     ACCU: {
         proposal: 1,
@@ -365,16 +346,6 @@ export const dummy_accumulators_proposals = {
         amount: 10,
         basis: 'stake',
         contract_type: 'ACCU',
-        currency: 'USD',
-        symbol: 'frxAUDJPY',
-        multiplier: 30,
-    },
-    DECCU: {
-        proposal: 1,
-        subscribe: 1,
-        amount: 10,
-        basis: 'stake',
-        contract_type: 'DECCU',
         currency: 'USD',
         symbol: 'frxAUDJPY',
         multiplier: 30,

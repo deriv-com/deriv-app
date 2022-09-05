@@ -214,9 +214,6 @@ const IconTradeCategory = ({ category, className }) => {
                         <div className='category-wrapper'>
                             <Icon icon='IcTradetypeCall' className='category-type' color='brand' />
                         </div>
-                        <div className='category-wrapper'>
-                            <Icon icon='IcTradetypePut' className='category-type' color='brand' />
-                        </div>
                     </React.Fragment>
                 );
                 break;

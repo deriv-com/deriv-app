@@ -16,7 +16,6 @@ import {
     getContractTypesConfig,
     getLocalizedBasis,
     dummy_accu_in_contracts_for_available,
-    dummy_deccu_in_contracts_for_available,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -45,7 +44,6 @@ export const ContractType = (() => {
             const dummy_available_contracts_with_accu = [
                 ...r.contracts_for.available,
                 dummy_accu_in_contracts_for_available,
-                dummy_deccu_in_contracts_for_available,
             ];
 
             dummy_available_contracts_with_accu.forEach(contract => {

@@ -1,10 +1,26 @@
-import { Field } from 'formik';
+import { Field, FieldProps, FormikProps } from 'formik';
 import React from 'react';
 import { Icon, Input, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { data_fields } from '.';
+import { TDataFields } from './data/data-fields';
+import { TFormValues, TOnChangeInputValue, TSetCurrentFocus } from '../q-strategy.types';
 
-const SecondInputField = ({ idx, handleChange, onChangeInputValue, setCurrentFocus, is_mobile }: any) => {
+type TSecondInputFieldProps = {
+    idx: number;
+    handleChange: FormikProps<TFormValues>['handleChange'];
+    onChangeInputValue: TOnChangeInputValue;
+    setCurrentFocus: TSetCurrentFocus;
+    is_mobile: boolean;
+};
+
+const SecondInputField = ({
+    idx,
+    handleChange,
+    onChangeInputValue,
+    setCurrentFocus,
+    is_mobile,
+}: TSecondInputFieldProps) => {
     const {
         field_name,
         id,
@@ -16,10 +32,10 @@ const SecondInputField = ({ idx, handleChange, onChangeInputValue, setCurrentFoc
         placeholder,
         trailing_icon_message,
         zIndex,
-    } = data_fields[idx + 1];
+    } = data_fields[idx + 1] as TDataFields;
     return (
         <Field name={field_name} key={id}>
-            {({ field }) => {
+            {({ field }: FieldProps<string, TFormValues>) => {
                 return (
                     <Input
                         {...field}
@@ -28,11 +44,11 @@ const SecondInputField = ({ idx, handleChange, onChangeInputValue, setCurrentFoc
                         field_className={field_className}
                         type='text'
                         label={localize(label)}
-                        onChange={e => {
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(e);
                             onChangeInputValue(input_value, e);
                         }}
-                        onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                        onFocus={(e: React.FocusEvent<HTMLInputElement>) => setCurrentFocus(e.currentTarget.name)}
                         onBlur={() => setCurrentFocus(null)}
                         placeholder={placeholder}
                         trailing_icon={

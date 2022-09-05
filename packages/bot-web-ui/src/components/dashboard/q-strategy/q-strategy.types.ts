@@ -3,20 +3,20 @@ import { FormikHelpers as FormikActions } from 'formik';
 
 type TQuickStrategyFormValues = { button: 'run' | 'edit' };
 
-type TDurationOptions = {
+export type TDurationOptions = {
     max: number;
     min: number;
     text: string;
     value: string;
 };
 
-type TTypeStrategy = {
+export type TTypeStrategy = {
     description: string;
     index: number;
     text: string;
     value: string;
 };
-type TIconTradeType = Record<'CALLE' | 'PUTE', string[]>;
+type TIconTradeType = Array<'CALLE' | 'PUTE'>;
 
 export type TTradeType = {
     group: string;
@@ -25,21 +25,33 @@ export type TTradeType = {
     value: string;
 };
 
-type TTradeTypeDropdown = Array<TTradeType>;
+export type TMarketOption = {
+    group: string;
+    text: string;
+    value: string;
+};
 
-type TDropdownItems = 'symbol' | 'trade-type' | 'duration-unit' | 'type-strategy';
+export type TTradeTypeDropdown = Array<TTradeType>;
+
+export type TDropdownItems = 'symbol' | 'trade-type' | 'duration-unit' | 'type-strategy';
 
 export type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' | 'input_oscar_unit';
-type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
+export type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
 type TInputCommonFields = TInputBaseFields | TInputUniqFields;
 
-type TSetFieldValue = (value: 'button' | 'edit') => void;
+export type TSetFieldValue = (element: 'button', action: 'run' | 'edit') => void;
 
-type TSelectsFieldNames =
+export type TSelectsFieldNames =
     | 'quick-strategy__types-strategies'
     | 'quick-strategy__symbol'
     | 'quick-strategy__trade-type'
     | 'quick-strategy__duration-unit';
+
+export type TInputsFieldNames =
+    | 'quick-strategy__duration-value'
+    | 'quick-strategy__stake'
+    | 'quick-strategy__loss'
+    | 'quick-strategy__profit';
 
 export type TSymbolDropdownValue = 'group' | 'text' | 'value';
 
@@ -47,13 +59,13 @@ export type TSymbolDropdownValue = 'group' | 'text' | 'value';
 export type TSymbolItem = Record<TSymbolDropdownValue, string>;
 export type TSymbolDropdown = Array<TSymbolItem>;
 
-type TDurationUnitDropdown = Array<TDurationOptions>;
+export type TDurationUnitDropdown = Array<TDurationOptions>;
 
-type TTypeStrategiesDropdown = Array<TTypeStrategy>;
+export type TTypeStrategiesDropdown = Array<TTypeStrategy>;
 
-type TDropdowns = TSymbolDropdown | TTradeTypeDropdown | TDurationUnitDropdown | TTypeStrategiesDropdown;
+export type TDropdowns = TSymbolDropdown | TTradeTypeDropdown | TDurationUnitDropdown | TTypeStrategiesDropdown;
 
-type TSelectedValuesSelect = TTypeStrategy | string | TTradeType | TDurationOptions;
+export type TSelectedValuesSelect = TTypeStrategy | TTradeType | TDurationOptions | string;
 
 type TSetSelectedTradeType = (trade_type: TTradeType) => void;
 type TSetSelectedSymbol = (symbol: string) => void;
@@ -67,12 +79,29 @@ type TFieldMapData = {
     setSelected: TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
 };
 
-export type TGetSizeDesc = (index: number) => string;
+type TGetSizeDesc = (index: number) => string;
+
+export type TFormValues = { [key: string]: string };
+
+export type TOnChangeInputValue = (field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>) => void;
+export type TSetCurrentFocus = (value: string | null) => void;
+export type TOnChangeDropdownItem = (type: TDropdownItems, value: string, setFieldValue: TSetFieldValue) => void;
+export type TOnHideDropdownList = (
+    type: TDropdownItems,
+    value: TSelectsFieldNames,
+    setFieldValue: TSetFieldValue
+) => void;
+export type TOnScrollStopDropdownList = (type: TDropdownItems) => void;
+export type TCreateStrategy = (
+    values: TQuickStrategyFormValues,
+    actions: FormikActions<TQuickStrategyFormValues>
+) => void;
+export type TGetFieldMap = (type: TDropdownItems) => TFieldMapData;
 
 export type TQuickStrategyProps = {
     active_index: number;
     description: string;
-    createStrategy: (values: TQuickStrategyFormValues, actions: FormikActions<TQuickStrategyFormValues>) => void;
+    createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     getSizeDesc: TGetSizeDesc;
@@ -82,10 +111,10 @@ export type TQuickStrategyProps = {
     is_mobile: boolean;
     is_stop_button_visible: boolean;
     is_strategy_modal_open: boolean;
-    onChangeDropdownItem: (type: TDropdownItems, value: string, setFieldValue: TSetFieldValue) => void;
-    onChangeInputValue: (field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>) => void;
-    onHideDropdownList: (type: TDropdownItems, value: TSelectsFieldNames, setFieldValue: TSetFieldValue) => void;
-    onScrollStopDropdownList: (type: TDropdownItems) => void;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onChangeInputValue: TOnChangeInputValue;
+    onHideDropdownList: TOnHideDropdownList;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
     setActiveTypeStrategyIndex: (index: number) => void;
     selected_symbol: string;
     selected_trade_type: TTradeType;
@@ -95,6 +124,6 @@ export type TQuickStrategyProps = {
     toggleStrategyModal: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
     // validateQuickStrategy: any;
-    setCurrentFocus: (value: string) => void;
-    getFieldMap: (type: TDropdownItems) => TFieldMapData;
+    setCurrentFocus: TSetCurrentFocus;
+    getFieldMap: TGetFieldMap;
 };

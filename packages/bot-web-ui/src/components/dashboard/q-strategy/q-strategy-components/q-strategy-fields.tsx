@@ -4,6 +4,8 @@ import { Icon, Input, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { SelectField, SecondInputField, data_fields, data_uniq_input_obj } from '.';
+import { TDataFields } from './data/data-fields';
+import { TQStrategyFields } from './q-strategy-components.types';
 
 const QStrategyFields = ({
     is_mobile,
@@ -25,11 +27,12 @@ const QStrategyFields = ({
     values,
     description,
     getFieldMap,
-}: any) => {
+}: TQStrategyFields) => {
     let tempIsDoubleIdx: number;
 
     const uniq_selected_input = data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0];
 
+    // const fields = (data_fields as ReadonlyArray<TDataFields>).map((item, idx) => {
     const fields = data_fields.map((item, idx) => {
         const {
             id,

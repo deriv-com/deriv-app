@@ -1,7 +1,18 @@
 import React from 'react';
+import { FormikProps } from 'formik';
 import { Button } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
+import { TSetFieldValue, TFormValues } from '../q-strategy.types';
+
+type TQStrategyFooter = {
+    is_onscreen_keyboard_active: boolean;
+    is_mobile: boolean;
+    is_submit_enabled: boolean;
+    is_stop_button_visible: boolean;
+    setFieldValue: TSetFieldValue;
+    submitForm: FormikProps<TFormValues>['submitForm'];
+};
 
 const QStrategyFooter = ({
     is_onscreen_keyboard_active,
@@ -10,7 +21,7 @@ const QStrategyFooter = ({
     is_stop_button_visible,
     setFieldValue,
     submitForm,
-}: any) => (
+}: TQStrategyFooter) => (
     <div
         className={classNames('quick-strategy__form-footer', {
             'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,

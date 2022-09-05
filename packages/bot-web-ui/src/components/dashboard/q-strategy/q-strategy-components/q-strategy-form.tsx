@@ -3,14 +3,16 @@ import { ThemedScrollbars } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { isSafari } from '@deriv/shared';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikProps } from 'formik';
 import { QStrategyFooter, QStrategyFields } from '.';
+import { TFormValues } from '../q-strategy.types';
+import { TQStrategyForm } from './q-strategy-components.types';
 
 const QStrategyForm = ({
     createStrategy,
     duration_unit_dropdown,
     types_strategies_dropdown,
-    initial_errors,
+    // initial_errors,
     initial_values,
     is_onscreen_keyboard_active,
     is_stop_button_visible,
@@ -20,7 +22,7 @@ const QStrategyForm = ({
     onScrollStopDropdownList,
     symbol_dropdown,
     trade_type_dropdown,
-    validateQuickStrategy,
+    // validateQuickStrategy,
     is_mobile,
     selected_symbol,
     selected_trade_type,
@@ -29,14 +31,22 @@ const QStrategyForm = ({
     selected_type_strategy,
     getFieldMap,
     description,
-}: any) => (
+}: TQStrategyForm) => (
     <Formik
         initialValues={initial_values}
         // validate={validateQuickStrategy}
         onSubmit={createStrategy}
         enableReinitialize={true}
     >
-        {({ errors, handleChange, values, isSubmitting, setFieldValue, touched, submitForm }) => {
+        {({
+            errors,
+            handleChange,
+            values,
+            isSubmitting,
+            setFieldValue,
+            touched,
+            submitForm,
+        }: FormikProps<TFormValues>) => {
             // Check values in favour of isValid, this is a hack to persist validation through tab switching.
 
             // const validation_errors = validateQuickStrategy(values);

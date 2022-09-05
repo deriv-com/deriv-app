@@ -1,7 +1,39 @@
-import { Field } from 'formik';
+import { Field, FieldProps } from 'formik';
 import React from 'react';
 import { Autocomplete, SelectNative, Icon, IconTradeTypes, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import {
+    TFormValues,
+    TSelectsFieldNames,
+    TDropdowns,
+    TSelectedValuesSelect,
+    TTradeType,
+    TDropdownItems,
+    TSetFieldValue,
+    TOnChangeDropdownItem,
+    TOnHideDropdownList,
+    TOnScrollStopDropdownList,
+    TMarketOption,
+} from '../q-strategy.types';
+
+type TSelectField = {
+    field_name: TSelectsFieldNames;
+    id: string;
+    is_mobile: boolean;
+    getDropdownList: TDropdowns;
+    getSelectedValue: TSelectedValuesSelect;
+    label: string;
+    input_value: TDropdownItems;
+    setFieldValue: TSetFieldValue;
+    className: string;
+    is_able_disabled?: boolean;
+    values: TFormValues;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onHideDropdownList: TOnHideDropdownList;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
+    selected_trade_type: TTradeType;
+    selected_symbol: TMarketOption;
+};
 
 const SelectField = ({
     field_name,
@@ -20,9 +52,9 @@ const SelectField = ({
     onScrollStopDropdownList,
     selected_trade_type,
     selected_symbol,
-}: any) => (
+}: TSelectField) => (
     <Field name={field_name} key={id}>
-        {({ field }) => {
+        {({ field }: FieldProps<string, TFormValues>) => {
             return (
                 <>
                     {is_mobile ? (
@@ -31,7 +63,7 @@ const SelectField = ({
                             value={getSelectedValue.value}
                             label={localize(label)}
                             should_show_empty_option={false}
-                            onChange={e => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 onChangeDropdownItem(input_value, e.target.value, setFieldValue);
                             }}
                         />
@@ -45,9 +77,13 @@ const SelectField = ({
                             list_items={getDropdownList}
                             disabled={is_able_disabled && getDropdownList?.length === 1}
                             onHideDropdownList={() => {
-                                onHideDropdownList(input_value, values[field.name], setFieldValue);
+                                onHideDropdownList(
+                                    input_value,
+                                    values[field.name] as TSelectsFieldNames,
+                                    setFieldValue
+                                );
                             }}
-                            onItemSelection={({ value }) => {
+                            onItemSelection={({ value }: { value: string }) => {
                                 onChangeDropdownItem(input_value, value, setFieldValue);
                             }}
                             onScrollStop={() => onScrollStopDropdownList(input_value)}

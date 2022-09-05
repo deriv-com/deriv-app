@@ -1,63 +1,36 @@
 import SendBird from 'sendbird';
 import { epochToMoment } from '@deriv/shared';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
 import { requestWS } from 'Utils/websocket';
 
 export default class SendbirdStore extends BaseStore {
-    active_chat_channel = null;
-    chat_channel_url = null;
-    chat_info = { app_id: null, user_id: null, token: null };
-    chat_messages = [];
-    has_chat_error = null;
-    is_chat_loading = true;
-    should_show_chat_modal = false;
-    should_show_chat_on_orders = false;
+    @observable active_chat_channel = null;
+    @observable.ref chat_channel_url = null;
+    @observable.ref chat_info = { app_id: null, user_id: null, token: null };
+    @observable.shallow chat_messages = [];
+    @observable has_chat_error = null;
+    @observable is_chat_loading = true;
+    @observable should_show_chat_modal = false;
+    @observable should_show_chat_on_orders = false;
 
     messages_ref = null;
     sendbird_api = null;
     service_token_timeout = null;
     scroll_debounce = null;
 
-    constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super(root_store);
-
-        makeObservable(this, {
-            active_chat_channel: observable,
-            chat_channel_url: observable.ref,
-            chat_info: observable.ref,
-            chat_messages: observable.shallow,
-            has_chat_error: observable,
-            is_chat_loading: observable,
-            should_show_chat_modal: observable,
-            should_show_chat_on_orders: observable,
-            has_chat_info: computed,
-            is_chat_frozen: computed,
-            last_other_user_activity: computed,
-            addChannelMessage: action.bound,
-            createChatForNewOrder: action.bound,
-            replaceChannelMessage: action.bound,
-            setActiveChatChannel: action.bound,
-            setChatChannelUrl: action.bound,
-            setChatInfo: action.bound,
-            setHasChatError: action.bound,
-            setIsChatLoading: action.bound,
-            setChannelMessages: action.bound,
-            setShouldShowChatModal: action.bound,
-            setShouldShowChatOnOrders: action.bound,
-        });
-    }
-
+    @computed
     get has_chat_info() {
         return this.chat_info.app_id && this.chat_info.user_id && this.chat_info.token;
     }
 
+    @computed
     get is_chat_frozen() {
         return this.active_chat_channel?.isFrozen;
     }
 
+    @computed
     get last_other_user_activity() {
         const message = this.chat_messages
             .slice()
@@ -67,10 +40,12 @@ export default class SendbirdStore extends BaseStore {
         return message ? epochToMoment(Math.floor(message.created_at / 1000)).fromNow() : null;
     }
 
+    @action.bound
     addChannelMessage(chat_message) {
         this.chat_messages.push(chat_message);
     }
 
+    @action.bound
     createChatForNewOrder(id) {
         if (!this.chat_channel_url) {
             // If order_information doesn't have chat_channel_url this is a new order
@@ -86,38 +61,47 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
+    @action.bound
     replaceChannelMessage(idx_to_replace, num_items_to_delete, chat_message) {
         this.chat_messages.splice(idx_to_replace, num_items_to_delete, chat_message);
     }
 
+    @action.bound
     setActiveChatChannel(active_chat_channel) {
         this.active_chat_channel = active_chat_channel;
     }
 
+    @action.bound
     setChatChannelUrl(chat_channel_url) {
         this.chat_channel_url = chat_channel_url;
     }
 
+    @action.bound
     setChatInfo(chat_info) {
         this.chat_info = chat_info;
     }
 
+    @action.bound
     setHasChatError(has_chat_error) {
         this.has_chat_error = has_chat_error;
     }
 
+    @action.bound
     setIsChatLoading(is_chat_loading) {
         this.is_chat_loading = is_chat_loading;
     }
 
+    @action.bound
     setChannelMessages(chat_messages) {
         this.chat_messages = chat_messages;
     }
 
+    @action.bound
     setShouldShowChatModal(should_show_chat_modal) {
         this.should_show_chat_modal = should_show_chat_modal;
     }
 
+    @action.bound
     setShouldShowChatOnOrders(should_show_chat_on_orders) {
         this.should_show_chat_on_orders = should_show_chat_on_orders;
     }

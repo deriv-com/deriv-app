@@ -1,0 +1,61 @@
+import React from 'react';
+import { Icon, Text, Button } from '@deriv/components';
+import './empty-state.scss';
+
+type TAction = {
+    label: string;
+    onClick?: () => void;
+    primary?: boolean;
+    tertiary?: boolean;
+    disabled?: boolean;
+};
+
+type TEmptyStateProps = {
+    icon?: string;
+    title?: string | React.ReactNode;
+    description?: string | React.ReactNode;
+    action?: TAction;
+} & ({ title: string | React.ReactNode } | { description: string | React.ReactNode });
+
+const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
+    <div className='cashier-empty-state'>
+        {icon && <Icon icon={icon} data_testid='empty-state-icon' className='cashier-empty-state__icon' />}
+        {title && (
+            <Text
+                as='h2'
+                weight='bold'
+                align='center'
+                data-testid='empty-state-title'
+                className='cashier-empty-state__title'
+            >
+                {title}
+            </Text>
+        )}
+        {description && (
+            <Text
+                as='p'
+                size='xs'
+                align='center'
+                data-testid='empty-state-description'
+                className='cashier-empty-state__desc'
+            >
+                {description}
+            </Text>
+        )}
+        {action && (
+            <Button
+                has_effect
+                text={action.label}
+                onClick={action.onClick}
+                primary={action.primary || true}
+                tertiary={action.tertiary}
+                is_disabled={action.disabled}
+                large
+                data-testid='empty-state-action'
+                className='cashier-empty-state__action'
+            />
+        )}
+    </div>
+);
+
+export default EmptyState;

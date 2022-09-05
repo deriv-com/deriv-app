@@ -1,8 +1,8 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons =
-{
-    'appstore': [
+export const icons = {
+    appstore: [
+        'IcAppstoreAddRounded',
         'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',
         'IcAppstoreCfdsTradeType',
@@ -623,7 +623,7 @@ export const icons =
         'IcStockWaltDisney',
         'IcStockZoom',
     ],
-    'tradetype': [
+    tradetype: [
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',

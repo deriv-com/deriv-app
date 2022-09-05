@@ -1,22 +1,4 @@
 export default {
-    IconArray: [
-        {
-            icon: 'IcMyComputer',
-            content: 'My computer',
-        },
-        {
-            icon: 'IcGoogleDriveDbot',
-            content: 'Google Drive',
-        },
-        {
-            icon: 'IcBotBuilder',
-            content: 'Bot Builder',
-        },
-        {
-            icon: 'IcQuickStrategy',
-            content: 'Quick Strategy',
-        },
-    ],
     IntroSideBarContentText: [
         {
             headerText: 'Welcome to DBot, [name]!',

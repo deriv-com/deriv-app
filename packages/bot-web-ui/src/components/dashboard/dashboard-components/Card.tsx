@@ -1,13 +1,10 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
 import { Icon } from '@deriv/components';
-import Translations from './Translations';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
-
-const { IconArray } = Translations;
 
 interface CardProps {
     load_modal: LoadModalStore;
@@ -15,11 +12,43 @@ interface CardProps {
 
 const Card = ({ load_modal }: CardProps) => {
     //console.log(load_modal, 'load_modal');
+    const { onDriveConnect } = load_modal;
+    // todo for the file input
+    // const file_input_ref = React.useRef(null);
+    // const [is_file_supported, setIsFileSupported] = React.useState(true);
+
+    const IconArray = [
+        {
+            icon: 'IcMyComputer',
+            content: 'My computer',
+        },
+        {
+            icon: 'IcGoogleDriveDbot',
+            content: 'Google Drive',
+            method: onDriveConnect,
+        },
+        {
+            icon: 'IcBotBuilder',
+            content: 'Bot Builder',
+            //need to use react hooks to switch TODO need to use method created from store
+            method: () => {
+                return document.getElementById('id-bot-builder')?.click();
+            },
+        },
+        {
+            icon: 'IcQuickStrategy',
+            content: 'Quick Strategy',
+            //need to use react hooks to switch TODO need to use method created from store
+            method: () => {
+                return document.getElementById('id-quick-strategy')?.click();
+            },
+        },
+    ];
 
     return (
         <div className='dc-tabs__content_group_tiles' id='dc-tabs__content_group_tiles'>
             {IconArray.map((icons, index) => {
-                const { icon, content } = icons;
+                const { icon, content, method } = icons;
                 return (
                     <div key={index} className='dc-tabs__content_group_tiles_block'>
                         <Icon
@@ -29,8 +58,16 @@ const Card = ({ load_modal }: CardProps) => {
                             style={{ backgroundColor: `#F2F3F4` }}
                             icon={icon}
                             id={icon}
-                            //onClick={load_modal.onDriveConnect}
+                            onClick={method}
                         />
+                        {/* TODO file input for */}
+                        {/* <input
+                            type='file'
+                            ref={file_input_ref}
+                            accept='.xml'
+                            style={{ display: 'none' }}
+                            onChange={e => setIsFileSupported(handleFileChange(e, false))}
+                        /> */}
                         <span className='dc-tabs__content_group_tiles_content'>{localize(content)}</span>
                     </div>
                 );

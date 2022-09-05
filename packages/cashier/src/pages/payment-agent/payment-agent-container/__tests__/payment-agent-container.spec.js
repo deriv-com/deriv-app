@@ -84,7 +84,7 @@ describe('<PaymentAgentContainer />', () => {
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
         ).toBeInTheDocument();
         expect(screen.getByText('PaymentAgentSearchBox')).toBeInTheDocument();
-        expect(screen.getByText('All payment methods')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_dropdown_container')).toBeInTheDocument();
         expect(screen.getByText('Payment Agent of CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Further information CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Payment Agent of CR90000002')).toBeInTheDocument();

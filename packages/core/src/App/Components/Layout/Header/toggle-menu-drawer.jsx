@@ -132,14 +132,9 @@ const ToggleMenuDrawer = React.forwardRef(
 
         const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
 
-        const disablePreAppstore = () => {
-            setIsPreAppStore(false);
-            toggleDrawer();
-        };
-
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore, is_pre_appstore }, is_social_signup);
+                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup, is_pre_appstore);
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -152,6 +147,9 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.trade_types,
                         routes.markets,
                     ];
+                    secondary_routes = [];
+                } else if (is_pre_appstore) {
+                    primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {
                     primary_routes = [routes.reports, routes.account, routes.cashier];
@@ -394,15 +392,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.trade}
-                                                icon='IcTrade'
-                                                text={localize('Trade')}
-                                                onClickLink={disablePreAppstore}
-                                                changeCurrentLanguage={changeCurrentLanguage}
-                                            />
-                                        </MobileDrawer.Item>
+
                                         {primary_routes_config.map((route_config, idx) =>
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
@@ -477,6 +467,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         logoutClient();
                                                         toggleDrawer();
                                                     }}
+                                                    className='dc-mobile-drawer__item--logout'
                                                 >
                                                     <MenuLink
                                                         link_to={routes.index}
@@ -484,6 +475,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         text={localize('Log out')}
                                                     />
                                                 </MobileDrawer.Item>
+                                                <MobileDrawer.Footer className='dc-mobile-drawer__footer--servertime'>
+                                                    <ServerTime is_mobile />
+                                                    <NetworkStatus is_mobile />
+                                                </MobileDrawer.Footer>
                                             </>
                                         )}
                                     </MobileDrawer.Body>
@@ -577,10 +572,12 @@ const ToggleMenuDrawer = React.forwardRef(
                                 </React.Fragment>
                             )}
                         </div>
-                        <MobileDrawer.Footer>
-                            <ServerTime is_mobile />
-                            <NetworkStatus is_mobile />
-                        </MobileDrawer.Footer>
+                        {!is_pre_appstore && (
+                            <MobileDrawer.Footer>
+                                <ServerTime is_mobile />
+                                <NetworkStatus is_mobile />
+                            </MobileDrawer.Footer>
+                        )}
                     </Div100vhContainer>
                 </MobileDrawer>
             </React.Fragment>

@@ -6,7 +6,7 @@ import DashboardHeader from './dashboard-header.jsx';
 import TradingHubHeader from './trading-hub-header.jsx';
 import { connect } from 'Stores/connect';
 
-const Header = ({ is_logged_in }) => {
+const Header = () => {
     const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     if (is_appstore) {
         /**
@@ -14,8 +14,10 @@ const Header = ({ is_logged_in }) => {
          */
         if (/myapps.deriv/.test(window.location.pathname)) return <DashboardPlatformHeader />;
         return <DashboardHeader />;
-    } else if (is_pre_appstore && is_logged_in) {
-        if (window.location.pathname === routes.trading_hub) return <TradingHubHeader />;
+    } else if (is_pre_appstore) {
+        const location = window.location.pathname;
+        if (location === routes.trading_hub || location === routes.cashier || location === routes.account)
+            return <TradingHubHeader />;
         return <TradingHubHeader />;
     }
     return <DefaultHeader />;

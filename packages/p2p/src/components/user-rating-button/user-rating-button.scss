@@ -1,0 +1,22 @@
+.user-rating-button {
+    margin-left: auto;
+    height: 3rem;
+
+    > span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &--big {
+        padding: 1.4rem;
+    }
+
+    &--icon {
+        margin-right: 0.5rem;
+    }
+
+    .dc-btn__text {
+        line-height: inherit;
+    }
+}

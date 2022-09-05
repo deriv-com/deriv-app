@@ -94,7 +94,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
 };
 
 const getTitle = (market_type: string, is_eu_user: boolean) => {
-    if (is_eu_user) localize('MT5 CFDs MFSA');
+    if (is_eu_user) localize('MT5 CFDs');
     return market_type;
 };
 

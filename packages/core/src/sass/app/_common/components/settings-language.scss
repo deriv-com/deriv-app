@@ -1,6 +1,8 @@
 /** @define settings-language */
 .settings-language {
-    display: flex;
+    @include mobile {
+        display: flex;
+    }
 
     &__language-container {
         display: grid;

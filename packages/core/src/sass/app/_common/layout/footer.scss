@@ -44,6 +44,11 @@
             align-items: center;
             position: relative;
         }
+
+        &--dark-mode {
+            padding: 0.8rem;
+            cursor: pointer;
+        }
     }
     &__link {
         padding: 0 0.8em;

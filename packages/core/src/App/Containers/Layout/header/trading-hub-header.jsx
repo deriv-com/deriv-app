@@ -15,7 +15,7 @@ const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
 };
 
-export const PreAppstoreMenuHomepage = () => {
+const PreAppstoreMenuHomepage = () => {
     const history = useHistory();
 
     return (

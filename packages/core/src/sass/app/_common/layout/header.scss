@@ -45,6 +45,15 @@
         height: 3.2rem;
         margin-right: 1rem;
     }
+    &__menu--dtrader--separator {
+        border-right: 1px solid var(--general-section-1);
+        margin-top: 0.8rem;
+        height: 3.2rem;
+
+        &--account {
+            margin-right: 1rem;
+        }
+    }
 
     &__menu__redirect {
         display: flex;
@@ -54,6 +63,19 @@
             display: flex;
             align-items: center;
             margin-right: 1rem;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+    }
+
+    &__redirect--dtratder {
+        display: flex;
+        margin-left: 50rem;
+
+        &--link {
+            display: flex;
+            align-items: center;
+            margin-right: 5rem;
             padding: 0.5rem;
             text-decoration: none;
         }
@@ -109,6 +131,10 @@
             padding: 0.5em 1em;
             width: 2em;
         }
+    }
+
+    &__menu-divider {
+        margin-left: 20rem;
     }
 
     &__menu-left {

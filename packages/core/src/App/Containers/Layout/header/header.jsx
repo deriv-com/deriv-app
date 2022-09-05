@@ -4,6 +4,7 @@ import DefaultHeader from './default-header.jsx';
 import DashboardPlatformHeader from './dashboard-platform-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
 import TradingHubHeader from './trading-hub-header.jsx';
+import DTraderHeader from './dtrader-header.jsx';
 import { connect } from 'Stores/connect';
 
 const Header = () => {
@@ -18,6 +19,9 @@ const Header = () => {
         const location = window.location.pathname;
         if (location === routes.trading_hub || location === routes.cashier || location === routes.account)
             return <TradingHubHeader />;
+        if (location === routes.trade) {
+            return <DTraderHeader />;
+        }
         return <TradingHubHeader />;
     }
     return <DefaultHeader />;

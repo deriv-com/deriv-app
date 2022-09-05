@@ -95,6 +95,8 @@ import WechatPayDark from 'Assets/svgs/wallet/wechat-pay-dark.svg';
 import WechatPayLight from 'Assets/svgs/wallet/wechat-pay-light.svg';
 import ZingpayDark from 'Assets/svgs/wallet/zingpay-dark.svg';
 import ZingpayLight from 'Assets/svgs/wallet/zingpay-light.svg';
+import CurrencyUSD from 'Assets/svgs/wallet/currency-usd.svg';
+import Demo from 'Assets/svgs/wallet/ic-brand-demo.svg';
 
 const Icons = {
     '1foryouDark': OneforyouDark,
@@ -193,6 +195,8 @@ const Icons = {
     WechatPayLight,
     ZingpayDark,
     ZingpayLight,
+    CurrencyUSD,
+    Demo,
 };
 
 const WalletIcon = ({ icon, className }: { icon: string; className?: string }) => {

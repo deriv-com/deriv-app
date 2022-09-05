@@ -348,7 +348,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                             })}
                                         >
                                             <Button
-                                                className='header__menu--back-to-ui'
+                                                className={classNames({
+                                                    'header__menu--back-to-ui': !is_dark_mode,
+                                                    'header__menu--back-to-ui--dark': is_dark_mode,
+                                                })}
                                                 type='button'
                                                 large
                                                 onClick={() => {
@@ -356,7 +359,13 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     toggleDrawer();
                                                 }}
                                             >
-                                                <Text className='header__menu--back-to-ui-text' size='xs'>
+                                                <Text
+                                                    className={classNames({
+                                                        'header__menu--back-to-ui-text': !is_dark_mode,
+                                                        'header__menu--back-to-ui-text--dark': is_dark_mode,
+                                                    })}
+                                                    size='xs'
+                                                >
                                                     {localize('Back to old interface')}
                                                 </Text>
                                                 <Icon
@@ -501,7 +510,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                         />
                                         <MobileDrawer.Item className='header__menu--tradinghub'>
                                             <Button
-                                                className='header__menu--exploretradinghub'
+                                                className={classNames({
+                                                    'header__menu--exploretradinghub': !is_dark_mode,
+                                                    'header__menu--exploretradinghub--dark': is_dark_mode,
+                                                })}
                                                 type='button'
                                                 large
                                                 onClick={() => {

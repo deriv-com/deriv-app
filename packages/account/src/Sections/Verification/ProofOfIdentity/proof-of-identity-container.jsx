@@ -153,16 +153,6 @@ const ProofOfIdentityContainer = ({
                 break;
         }
     }
-    // else if (identity_status === identity_status_codes.pending && manual?.status === identity_status_codes.pending) {
-    //     // The last attempt status for manual is not provided by API
-    //     return (
-    //         <UploadComplete
-    //             is_from_external={is_from_external}
-    //             needs_poa={needs_poa}
-    //             redirect_button={redirect_button}
-    //         />
-    //     );
-    // }
 
     switch (identity_last_attempt.service) {
         case service_code.idv:

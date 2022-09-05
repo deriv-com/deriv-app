@@ -6,6 +6,7 @@ import { isMobile } from '@deriv/shared';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
+import UploadComplete from '../upload-complete';
 
 const checkNimcStep = documents => {
     let has_nimc = false;
@@ -19,11 +20,17 @@ const checkNimcStep = documents => {
 
 const Unsupported = ({ country_code, ...props }) => {
     const [detail, setDetail] = React.useState(null);
-    const toggleDetail = index => setDetail(index);
+    const toggleDetail = index => {
+        setDetail(index);
+    };
     const documents = getDocumentIndex({
         setDetail,
         country_code,
     });
+
+    if (props.manual.status === 'pending') {
+        return <UploadComplete is_from_external={true} needs_poa={false} />;
+    }
 
     if (detail !== null) {
         return (

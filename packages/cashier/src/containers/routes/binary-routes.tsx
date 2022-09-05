@@ -9,15 +9,17 @@ type TBinaryRoutesProps = {
     is_logging_in: boolean;
 };
 
+const Loading = () => {
+    return (
+        <div>
+            <Localize i18n_default_text='Loading...' />
+        </div>
+    );
+};
+
 const BinaryRoutes = (props: TBinaryRoutesProps) => {
     return (
-        <React.Suspense
-            fallback={
-                <div>
-                    <Localize i18n_default_text='Loading...' />
-                </div>
-            }
-        >
+        <React.Suspense fallback={<Loading />}>
             <Switch>
                 {getRoutesConfig().map((route, idx: number) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />

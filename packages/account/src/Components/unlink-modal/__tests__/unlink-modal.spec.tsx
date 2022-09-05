@@ -8,9 +8,9 @@ document.body.appendChild(modalRoot);
 
 describe('<UnlinkModal />', () => {
     const mock_props: TUnlinkModal = {
-        onClose: jest.fn(),
         identifier_title: 'test title',
         is_open: true,
+        onClose: jest.fn(),
         onClickSendEmail: jest.fn(),
     };
 

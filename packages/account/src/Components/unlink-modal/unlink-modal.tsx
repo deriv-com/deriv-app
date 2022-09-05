@@ -3,13 +3,13 @@ import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 export type TUnlinkModal = {
-    onClose: () => void;
     identifier_title: string;
     is_open: boolean;
+    onClose: () => void;
     onClickSendEmail: () => void;
 };
 
-export const UnlinkModal = ({ onClose, identifier_title, is_open, onClickSendEmail }: TUnlinkModal) => {
+export const UnlinkModal = ({ identifier_title, is_open, onClickSendEmail, onClose }: TUnlinkModal) => {
     return (
         <Modal
             is_open={is_open}

@@ -23,7 +23,7 @@ type WalletCardProps = {
     demo?: boolean;
     disabled?: boolean;
     faded?: boolean;
-    size?: 'small' | 'sm' | 'medium' | 'large';
+    size?: 'xsmall' | 'small' | 'medium' | 'large';
     wallet_name: string;
 };
 
@@ -142,7 +142,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
     };
 
     const getBackgroundIcon = () => {
-        if (['small', 'sm'].includes(size || '')) return 'IcAppstoreWalletSmall';
+        if (['xsmall', 'small'].includes(size || '')) return 'IcAppstoreWalletSmall';
         return isDemo() ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
     };
 
@@ -184,7 +184,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
                 ) : (
                     <div className={classNames('wallet-card__logo', 'wallet-card__logo--placeholder')} />
                 )}
-                {!['small', 'sm'].includes(size || '') && (
+                {!['xsmall', 'small'].includes(size || '') && (
                     <CardText balance={balance} currency={currency} demo={demo} wallet_name={wallet_name} />
                 )}
             </div>

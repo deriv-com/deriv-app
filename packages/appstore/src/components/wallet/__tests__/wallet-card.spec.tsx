@@ -59,7 +59,7 @@ describe('WalletCard Component', () => {
     });
 
     it('Small WalletCard renders properly', () => {
-        render(<WalletCard {...props} size='small' balance='0.00' />);
+        render(<WalletCard {...props} size='xsmall' balance='0.00' />);
 
         expect(screen.getByTestId('wallet-card')).toHaveClass('container small');
         expect(screen.getByLabelText('payment_method_logo')).toBeInTheDocument();

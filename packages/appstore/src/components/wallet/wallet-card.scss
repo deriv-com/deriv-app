@@ -82,7 +82,7 @@
         }
     }
 
-    &--small {
+    &--xsmall {
         height: 40px;
         width: 64px;
         border-radius: 4px;
@@ -103,7 +103,7 @@
         }
     }
 
-    &--sm {
+    &--small {
         height: 80px;
         width: 128px;
         border-radius: 4px;
@@ -173,7 +173,7 @@
         }
     }
 
-    &:not(&--small) {
+    &:not(&--xsmall) {
         #{$parent}__active-icon {
             top: calc(50% - 32px / 2);
             right: calc(50% - 32px / 2);

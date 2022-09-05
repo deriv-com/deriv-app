@@ -92,10 +92,10 @@ export default {
             description: 'Optional. Controls the sizing of the wallet card.',
             control: {
                 type: 'radio',
-                options: ['small', 'medium', 'large'],
+                options: ['xsmall', 'small', 'medium', 'large'],
             },
             table: {
-                type: { summary: '"small" | "medium" | "large" | undefined' },
+                type: { summary: '"xsmall" | "small" | "medium" | "large" | undefined' },
                 defaultValue: { summary: 'large' },
             },
         },
@@ -233,8 +233,8 @@ CryptoCurrencyLightLarge.args = {
     wallet_name: 'bitcoin',
 };
 
-export const CryptoCurrencyLightSmall = Template.bind({});
-CryptoCurrencyLightSmall.args = {
+export const CryptoCurrencyLightXSmall = Template.bind({});
+CryptoCurrencyLightXSmall.args = {
     active: false,
     balance: '50.00',
     currency: 'BTC',
@@ -242,7 +242,7 @@ CryptoCurrencyLightSmall.args = {
     demo: undefined,
     disabled: false,
     faded: false,
-    size: 'small',
+    size: 'xsmall',
     wallet_name: 'bitcoin',
 };
 

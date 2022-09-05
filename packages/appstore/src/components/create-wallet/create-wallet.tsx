@@ -97,7 +97,7 @@ const CreateWallet = ({ is_dark_mode_on, should_show_fiat, wallets }: TProps) =>
                                                             </div>
                                                         )}
                                                         {!should_show_fiat && (
-                                                            <WalletCard size='small' wallet_name={wallet_name} />
+                                                            <WalletCard size='xsmall' wallet_name={wallet_name} />
                                                         )}
                                                     </div>
                                                 </div>

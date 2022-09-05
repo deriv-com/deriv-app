@@ -52,7 +52,7 @@ const WalletAccount = observer(({ account }: WalletAccountProps) => {
                     <div className='wallet-account__header'>
                         <div className='wallet-account__details'>
                             <div className='wallet-account__logo'>
-                                <WalletCard wallet_name={account.is_virtual === 1 ? 'demo' : ''} size='sm' />
+                                <WalletCard wallet_name={account.is_virtual === 1 ? 'demo' : ''} size='small' />
                             </div>
                             <div className='wallet-account__info'>
                                 <Text bold type='subtitle-2'>

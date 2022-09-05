@@ -61,10 +61,10 @@ describe('WalletCard Component', () => {
         expect(screen.queryByText('Ethereum wallet')).not.toBeInTheDocument();
     });
 
-    it('Small WalletCard renders properly', () => {
+    it('XSmall WalletCard renders properly', () => {
         render(<WalletCard {...props} size='xsmall' balance='0.00' />);
 
-        expect(screen.getByTestId('wallet-card')).toHaveClass('wallet-card wallet-card--small');
+        expect(screen.getByTestId('wallet-card')).toHaveClass('wallet-card wallet-card--xsmall');
         expect(screen.getByLabelText('payment_method_logo')).toBeInTheDocument();
         expect(screen.queryByText('Ethereum ETH wallet')).not.toBeInTheDocument();
         expect(screen.queryByText('0.00 ETH')).not.toBeInTheDocument();

@@ -1,0 +1,12 @@
+.add-derived {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    & > p {
+        color: $color-black-7;
+        margin-left: 0.4rem;
+    }
+}

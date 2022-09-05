@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'Stores/connect';
-import { Modal, DesktopWrapper, MobileWrapper, Button, Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Modal, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { PropTypes } from 'prop-types';
 import { withRouter } from 'react-router';
 import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
-import WarningScamMessageTitle from './warning-scam-message-title';
-import WarningScamMessageContent from './warning-scam-message-content';
-import WarningScamMessageCheckbox from './warning-scam-message-checkbox-content';
 
 const WarningScamMessage = ({ is_logged_in, client_country }) => {
-    const [read_message, setReadMessage] = React.useState(false);
+    const [is_message_read, setIsMessageRead] = React.useState(false);
     const [is_read, setIsRead] = React.useState(localStorage.getItem('readScamMessage') || false);
 
-    const acknowledgeMessage = () => setReadMessage(!read_message);
+    const acknowledgeMessage = () => setIsMessageRead(!is_message_read);
 
     const setLocalStorage = () => {
         setIsRead(!is_read);
@@ -29,27 +25,14 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                         id='warning_scam_message'
                         className='warning-scam-message'
                         is_open={!is_read}
-                        width='300px'
+                        width='30rem'
                         small
                     >
-                        <WarningScamMessageModal>
-                            <WarningScamMessageTitle />
-                            <WarningScamMessageContent />
-                            <WarningScamMessageCheckbox acknowledgeMessage={acknowledgeMessage} />
-                            <Button
-                                primary
-                                large
-                                text={localize('OK, got it')}
-                                onClick={setLocalStorage}
-                                style={{ width: '85%' }}
-                                is_disabled={!read_message}
-                            />
-                            <Icon
-                                icon='IcAccountDontGetScam'
-                                className='warning-scam-message__scam-message-icon'
-                                size={200}
-                            />
-                        </WarningScamMessageModal>
+                        <WarningScamMessageModal
+                            acknowledgeMessage={acknowledgeMessage}
+                            setLocalStorage={setLocalStorage}
+                            is_message_read={!is_message_read}
+                        />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -60,27 +43,11 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                         width='100vw'
                         small
                     >
-                        <WarningScamMessageModal>
-                            <WarningScamMessageTitle />
-                            <WarningScamMessageContent />
-                            <WarningScamMessageCheckbox acknowledgeMessage={acknowledgeMessage} />
-                            <Button
-                                primary
-                                large
-                                className='warning-scam-message__button'
-                                text={localize('OK, got it')}
-                                onClick={setLocalStorage}
-                                style={{ width: '85%' }}
-                                is_disabled={!read_message}
-                            />
-                            <div>
-                                <Icon
-                                    icon='IcAccountDontGetScam'
-                                    className='warning-scam-message__scam-message-icon'
-                                    size={200}
-                                />
-                            </div>
-                        </WarningScamMessageModal>
+                        <WarningScamMessageModal
+                            acknowledgeMessage={acknowledgeMessage}
+                            setLocalStorage={setLocalStorage}
+                            is_message_read={!is_message_read}
+                        />
                     </Modal>
                 </MobileWrapper>
             </React.Fragment>

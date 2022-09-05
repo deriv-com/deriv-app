@@ -9,9 +9,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 1.5rem 0;
+        padding: 2.4rem 0;
 
-        @media screen and (max-width: 375px) {
+        @media screen and (max-width: 430px) {
             height: 80vh;
         }
 

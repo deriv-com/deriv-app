@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Icon, Tab } from '@deriv/components';
+import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';

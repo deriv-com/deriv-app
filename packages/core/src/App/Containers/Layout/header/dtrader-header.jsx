@@ -186,12 +186,7 @@ const DTraderHeader = ({
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
-                {/* {is_logged_in && (
-                    <DesktopWrapper>
-                        <RedirectToOldInterface className='header__menu--right-backtooldui' />
-                        <Divider />
-                    </DesktopWrapper>
-                )} */}
+
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,
@@ -206,9 +201,9 @@ const DTraderHeader = ({
                     {is_logging_in && (
                         <div
                             id='dt_core_header_acc-info-preloader'
-                            className={classNames('acc-info__preloader', {
-                                'acc-info__preloader--no-currency': !currency,
-                                'acc-info__preloader--is-crypto': getDecimalPlaces(currency) > 2,
+                            className={classNames('acc-info__preloader__dtrader', {
+                                'acc-info__preloader__dtrader--no-currency': !currency,
+                                'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
                             })}
                         >
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />

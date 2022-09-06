@@ -23,6 +23,7 @@ export type TClientStore = {
     residence: string;
     verification_code: {
         payment_withdraw: string;
+        payment_agent_withdraw: string;
     };
     email: string;
 };

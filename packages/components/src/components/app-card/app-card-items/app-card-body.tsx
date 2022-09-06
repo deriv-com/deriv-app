@@ -1,10 +1,26 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
 import Icon from '../../icon';
 import Money from '../../money';
 import Text from '../../text';
+import { TCardLables, TVariant } from '../../../types';
+
+type TAppCardBodyProps = {
+    amount: string;
+    app_icon: string;
+    app_name: string;
+    currency: string;
+    card_labels: TCardLables;
+    getFontColor: () => void;
+    is_swap_free: boolean;
+    is_virtual: boolean;
+    linked_wallet: string;
+    onPlayClick: () => void;
+    show_footer: boolean;
+    show_hover_actions: boolean;
+    variant: TVariant;
+};
 
 const AppCardBody = ({
     amount,
@@ -20,7 +36,7 @@ const AppCardBody = ({
     show_footer,
     show_hover_actions,
     variant,
-}) => {
+}: TAppCardBodyProps) => {
     const is_real_swap_free = !is_virtual && is_swap_free && variant === 'default';
 
     const getAppNameFontSize = () => {
@@ -112,22 +128,6 @@ const AppCardBody = ({
             </div>
         </div>
     );
-};
-
-AppCardBody.propTypes = {
-    amount: PropTypes.string,
-    app_icon: PropTypes.string,
-    app_name: PropTypes.string,
-    currency: PropTypes.string,
-    card_labels: PropTypes.object,
-    getFontColor: PropTypes.func,
-    is_swap_free: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    linked_wallet: PropTypes.string,
-    onPlayClick: PropTypes.func,
-    show_footer: PropTypes.bool,
-    show_hover_actions: PropTypes.bool,
-    variant: PropTypes.oneOf(['default', 'mini', 'micro']),
 };
 
 export default AppCardBody;

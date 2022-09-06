@@ -1,8 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import AppCardActionItem from './app-card-action-item.jsx';
+import AppCardActionItem from './app-card-action-item';
 import Icon from '../../icon';
 import { useHover } from '../../../hooks/use-hover';
+import { TCardLables } from '../../../types';
+
+type TAppCardActionsProps = {
+    card_labels: TCardLables;
+    is_virtual: boolean;
+    onDepositClick: () => void;
+    onPlayClick: () => void;
+    onSettingsClick: () => void;
+    onTransactionsClick: () => void;
+    onWithdrawClick: () => void;
+};
 
 const AppCardActions = ({
     card_labels,
@@ -12,7 +22,7 @@ const AppCardActions = ({
     onSettingsClick,
     onTransactionsClick,
     onWithdrawClick,
-}) => {
+}: TAppCardActionsProps) => {
     const [deposit_ref, is_deposit_hovered] = useHover(null, true);
     const [withdraw_ref, is_withdraw_hovered] = useHover(null, true);
     const [transactions_ref, is_transactions_hovered] = useHover(null, true);
@@ -61,16 +71,6 @@ const AppCardActions = ({
             </div>
         </div>
     );
-};
-
-AppCardActions.propTypes = {
-    card_labels: PropTypes.object,
-    is_virtual: PropTypes.bool,
-    onDepositClick: PropTypes.func,
-    onPlayClick: PropTypes.func,
-    onSettingsClick: PropTypes.func,
-    onTransactionsClick: PropTypes.func,
-    onWithdrawClick: PropTypes.func,
 };
 
 export default AppCardActions;

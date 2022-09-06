@@ -1,10 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Icon from '../../icon';
 import Text from '../../text';
+import { TCardLables } from '../../../types';
 
-const AppCardHeader = ({ card_labels, is_swap_free, onAddRealClick }) => (
+type TAppCardHeaderProps = {
+    card_labels: TCardLables;
+    is_swap_free: boolean;
+    onAddRealClick: () => void;
+};
+
+const AppCardHeader = ({ card_labels, is_swap_free, onAddRealClick }: TAppCardHeaderProps) => (
     <div className='dc-app-card-header__wrapper'>
         <div className='dc-app-card-header__container'>
             <div className={classNames('dc-app-card__badge', 'dc-app-card-header__badge--demo')}>
@@ -41,11 +47,5 @@ const AppCardHeader = ({ card_labels, is_swap_free, onAddRealClick }) => (
         </div>
     </div>
 );
-
-AppCardHeader.propTypes = {
-    card_labels: PropTypes.object,
-    is_swap_free: PropTypes.bool,
-    onAddRealClick: PropTypes.func,
-};
 
 export default AppCardHeader;

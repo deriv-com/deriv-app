@@ -1,9 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
 import Text from '../../text';
 
-const AppCardFooterItem = ({ info, getFontColor, label }) => {
+type TAppCardFooterItemProps = {
+    info: string;
+    getFontColor: () => string;
+    label: string;
+};
+
+const AppCardFooterItem = ({ info, getFontColor, label }: TAppCardFooterItemProps) => {
     return (
         <div className='dc-app-card-footer__info'>
             <Text color={getFontColor()} size={isMobile() ? 'xxxxs' : 'xxxs'}>
@@ -14,12 +19,6 @@ const AppCardFooterItem = ({ info, getFontColor, label }) => {
             </Text>
         </div>
     );
-};
-
-AppCardFooterItem.propTypes = {
-    info: PropTypes.string,
-    getFontColor: PropTypes.func,
-    label: PropTypes.string,
 };
 
 export default AppCardFooterItem;

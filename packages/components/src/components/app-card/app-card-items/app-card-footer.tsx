@@ -1,9 +1,18 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
-import AppCardFooterItem from './app-card-footer-item.jsx';
+import AppCardFooterItem from './app-card-footer-item';
+import { TCardLables, TVariant } from '../../../types';
 
-const AppCardFooter = ({ broker, card_labels, getFontColor, login_id, server, variant }) => (
+type TAppCardFooterProps = {
+    broker: string;
+    card_labels: TCardLables;
+    getFontColor: () => string;
+    login_id: string;
+    server: string;
+    variant: TVariant;
+};
+
+const AppCardFooter = ({ broker, card_labels, getFontColor, login_id, server, variant }: TAppCardFooterProps) => (
     <div
         className={classNames('dc-app-card-footer__wrapper', {
             'dc-app-card-footer__wrapper--default': variant === 'default',
@@ -16,14 +25,5 @@ const AppCardFooter = ({ broker, card_labels, getFontColor, login_id, server, va
         <AppCardFooterItem info={server} getFontColor={getFontColor} label={card_labels.SERVER} />
     </div>
 );
-
-AppCardFooter.propTypes = {
-    broker: PropTypes.string,
-    card_labels: PropTypes.object,
-    getFontColor: PropTypes.func,
-    login_id: PropTypes.string,
-    server: PropTypes.string,
-    variant: PropTypes.oneOf(['default', 'mini', 'micro']),
-};
 
 export default AppCardFooter;

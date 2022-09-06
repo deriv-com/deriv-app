@@ -1,13 +1,36 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
-import RealAppCardBackground from './app-card-items/real-app-card-background.jsx';
-import AppCardHeader from './app-card-items/app-card-header.jsx';
-import AppCardBody from './app-card-items/app-card-body.jsx';
-import AppCardActions from './app-card-items/app-card-actions.jsx';
-import AppCardFooter from './app-card-items/app-card-footer.jsx';
+import RealAppCardBackground from './app-card-items/real-app-card-background';
+import AppCardHeader from './app-card-items/app-card-header';
+import AppCardBody from './app-card-items/app-card-body';
+import AppCardActions from './app-card-items/app-card-actions';
+import AppCardFooter from './app-card-items/app-card-footer';
 import { useHover } from '../../hooks/use-hover';
+import { TCardLables, TVariant } from '../../types';
+
+type TAppCardProps = {
+    amount: string;
+    app_icon: string;
+    app_name: string;
+    broker: string;
+    currency: string;
+    getCardLabels: () => TCardLables;
+    is_swap_free: boolean;
+    is_virtual: boolean;
+    linked_wallet: string;
+    login_id: string;
+    onAddRealClick: () => void;
+    onDepositClick: () => void;
+    onPlayClick: () => void;
+    onSettingsClick: () => void;
+    onTransactionsClick: () => void;
+    onWithdrawClick: () => void;
+    server: string;
+    show_footer: boolean;
+    show_hover_actions: boolean;
+    variant: TVariant;
+};
 
 const AppCard = ({
     amount,
@@ -30,7 +53,7 @@ const AppCard = ({
     show_footer,
     show_hover_actions,
     variant = 'default',
-}) => {
+}: TAppCardProps) => {
     const [card_ref, is_hovered] = useHover(null, true);
     const getFontColor = () => {
         if (is_virtual) return 'colored-background';
@@ -92,29 +115,6 @@ const AppCard = ({
             )}
         </div>
     );
-};
-
-AppCard.propTypes = {
-    amount: PropTypes.string,
-    app_icon: PropTypes.string,
-    app_name: PropTypes.string,
-    broker: PropTypes.string,
-    currency: PropTypes.string,
-    getCardLabels: PropTypes.func.isRequired,
-    is_swap_free: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    linked_wallet: PropTypes.string,
-    login_id: PropTypes.string,
-    onAddRealClick: PropTypes.func,
-    onDepositClick: PropTypes.func,
-    onPlayClick: PropTypes.func,
-    onSettingsClick: PropTypes.func,
-    onTransactionsClick: PropTypes.func,
-    onWithdrawClick: PropTypes.func,
-    server: PropTypes.string,
-    show_footer: PropTypes.bool,
-    show_hover_actions: PropTypes.bool,
-    variant: PropTypes.oneOf(['default', 'mini', 'micro']),
 };
 
 export default AppCard;

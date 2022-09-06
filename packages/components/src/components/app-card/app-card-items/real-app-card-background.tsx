@@ -1,8 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
+import { TVariant } from '../../../types';
 
-const RealAppCardBackground = ({ is_swap_free, variant }) => {
+type TRealAppCardBackgroundProps = {
+    is_swap_free: boolean;
+    variant: TVariant;
+};
+
+const RealAppCardBackground = ({ is_swap_free, variant }: TRealAppCardBackgroundProps) => {
     const getSVGForegroundPath = () => {
         if (variant === 'default') {
             return isMobile() ? 'M0 0h272v12L0 30V0z' : 'M0 0h280v16L0 40V0z';
@@ -23,11 +28,6 @@ const RealAppCardBackground = ({ is_swap_free, variant }) => {
             <path d={getSVGForegroundPath()} fill={is_swap_free ? '#BDD2D5' : '#F9F9F9'} />
         </svg>
     );
-};
-
-RealAppCardBackground.propTypes = {
-    is_swap_free: PropTypes.bool,
-    variant: PropTypes.oneOf(['default', 'mini', 'micro']),
 };
 
 export default RealAppCardBackground;

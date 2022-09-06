@@ -6,6 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import RecentTransaction from 'Components/recent-transaction';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
 import EmptyState from 'Components/empty-state';
+import Error from 'Components/error';
 import { useStore, useVerifyEmail } from '../../../hooks';
 
 const WithdrawalVerificationEmail = () => {
@@ -17,9 +18,9 @@ const WithdrawalVerificationEmail = () => {
         transaction_history.onMount();
     }, [transaction_history]);
 
-    if (verify.hasBeenSent) {
-        return <EmailVerificationEmptyState type={'payment_withdraw'} />;
-    }
+    if (verify.error) return <Error error={verify.error} />;
+
+    if (verify.hasBeenSent) return <EmailVerificationEmptyState type={'payment_withdraw'} />;
 
     return (
         <>
@@ -39,11 +40,7 @@ const WithdrawalVerificationEmail = () => {
                     onClick: verify.send,
                 }}
             />
-            <MobileWrapper>
-                {isCryptocurrency(client.currency) && transaction_history.crypto_transactions?.length ? (
-                    <RecentTransaction />
-                ) : null}
-            </MobileWrapper>
+            <MobileWrapper>{isCryptocurrency(client.currency) && <RecentTransaction />}</MobileWrapper>
         </>
     );
 };

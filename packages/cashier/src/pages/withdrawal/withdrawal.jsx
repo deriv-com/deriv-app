@@ -61,9 +61,7 @@ const Withdrawal = ({
     setErrorMessage,
     setSideNotes,
     tab_index,
-    verify_error,
     verification_code,
-    willMountWithdraw,
     recentTransactionOnMount,
 }) => {
     React.useEffect(() => {
@@ -82,11 +80,6 @@ const Withdrawal = ({
     React.useEffect(() => {
         check10kLimit();
     }, [check10kLimit]);
-
-    React.useEffect(() => {
-        return () => willMountWithdraw(verification_code);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [willMountWithdraw]);
 
     React.useEffect(() => {
         if (isDesktop()) {
@@ -113,18 +106,23 @@ const Withdrawal = ({
             return <CashierLocked />;
         }
     }
+
     if (is_switching || is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen={false} />;
     }
+
     if (is_virtual) {
         return <Virtual />;
     }
+
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
+
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
+
     if (!+balance) {
         return (
             <>
@@ -133,15 +131,15 @@ const Withdrawal = ({
             </>
         );
     }
+
     if (error.is_show_full_page && error.message) {
         return <Error error={error} />;
     }
-    if (verify_error.message) {
-        return <Error error={verify_error} />;
-    }
+
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
     }
+
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return (
             <>
@@ -150,9 +148,11 @@ const Withdrawal = ({
             </>
         );
     }
+
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
     }
+
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
@@ -189,8 +189,6 @@ Withdrawal.propTypes = {
     setSideNotes: PropTypes.func,
     tab_index: PropTypes.number,
     verification_code: PropTypes.string,
-    verify_error: PropTypes.object,
-    willMountWithdraw: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
@@ -216,6 +214,4 @@ export default connect(({ client, modules }) => ({
     setErrorMessage: modules.cashier.withdraw.error.setErrorMessage,
     tab_index: modules.cashier.general_store.cashier_route_tab_index,
     verification_code: client.verification_code.payment_withdraw,
-    verify_error: modules.cashier.withdraw.verification.error,
-    willMountWithdraw: modules.cashier.withdraw.willMountWithdraw,
 }))(Withdrawal);

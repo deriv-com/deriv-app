@@ -3,30 +3,26 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-const defaultProps = {
-    is_title_enabled: true,
-};
-
 type TRadioButtonGroup = {
-    label: string;
     className: string;
-    children: React.ReactElement;
     is_fiat: boolean;
+    is_title_enabled?: boolean;
     item_count: number;
+    label: string;
     description: React.ReactNode;
-    has_fiat: boolean;
-} & typeof defaultProps;
+    has_fiat?: boolean;
+};
 
 const RadioButtonGroup = ({
     label,
     className,
     children,
-    is_title_enabled,
+    is_title_enabled = true,
     is_fiat,
     item_count,
     description,
     has_fiat,
-}: Partial<TRadioButtonGroup>) => {
+}: React.PropsWithChildren<TRadioButtonGroup>) => {
     const [is_currency_selected, setIsCurrencySelected] = useState<boolean>(false);
 
     const onCurrencyClicked = () => {
@@ -62,7 +58,5 @@ const RadioButtonGroup = ({
         </div>
     );
 };
-
-RadioButtonGroup.defaultProps = defaultProps;
 
 export default RadioButtonGroup;

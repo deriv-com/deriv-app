@@ -9,10 +9,9 @@ type TUSTPopover = {
 };
 
 type TRadioButtonExtend = {
-    children: never;
     field: InputHTMLAttributes<HTMLInputElement>;
-    icon: string;
-    second_line_label: string;
+    icon?: string;
+    second_line_label?: string;
 };
 
 type TRadioButton = AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TRadioButtonExtend;

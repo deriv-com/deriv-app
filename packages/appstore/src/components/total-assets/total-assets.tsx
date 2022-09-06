@@ -6,10 +6,10 @@ import { formatMoney } from '@deriv/shared';
 type TTotalAssets = {
     amount: string;
     currency: string;
-    platform: 'real' | 'demo';
+    category: 'real' | 'demo';
 };
 
-const TotalAssets = ({ amount, currency, platform }: TTotalAssets) => {
+const TotalAssets = ({ amount, currency, category }: TTotalAssets) => {
     return (
         <div className='total-assets'>
             <Text size='sm' weight='bold' className='total-assets-amount'>
@@ -26,7 +26,7 @@ const TotalAssets = ({ amount, currency, platform }: TTotalAssets) => {
                     icon='info'
                     disable_message_icon
                     is_bubble_hover_enabled
-                    message={localize(`Total assets in your Options, DMT5 and Deriv X ${platform} accounts`)}
+                    message={localize(`Total assets in your Options, DMT5 and Deriv X ${category} accounts`)}
                     zIndex={9999}
                 />
             </div>

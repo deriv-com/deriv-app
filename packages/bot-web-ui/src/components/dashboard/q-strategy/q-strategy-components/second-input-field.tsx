@@ -4,7 +4,7 @@ import { Icon, Input, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { data_fields } from '.';
 import { TDataFields } from './data/data-fields';
-import { TFormValues, TOnChangeInputValue, TSetCurrentFocus } from '../q-strategy.types';
+import { TFormValues, TOnChangeInputValue, TSetCurrentFocus, TInputBaseFields } from '../q-strategy.types';
 
 type TSecondInputFieldProps = {
     idx: number;
@@ -46,7 +46,7 @@ const SecondInputField = ({
                         label={localize(label)}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(e);
-                            onChangeInputValue(input_value, e);
+                            onChangeInputValue(input_value as TInputBaseFields, e);
                         }}
                         onFocus={(e: React.FocusEvent<HTMLInputElement>) => setCurrentFocus(e.currentTarget.name)}
                         onBlur={() => setCurrentFocus(null)}

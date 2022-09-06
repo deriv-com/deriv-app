@@ -16,14 +16,18 @@ import {
     TGetFieldMap,
     TSetFieldValue,
     TFormValues,
+    TMarketOption,
+    TGetSizeDesc,
 } from '../q-strategy.types';
 
 export type TQStrategyForm = {
+    active_index: number;
     createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
-    // initial_errors,
-    // initial_values: any;
+    initial_errors: any; //!
+    initial_values: any; //!
+    getSizeDesc: TGetSizeDesc;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;
     onChangeDropdownItem: TOnChangeDropdownItem;
@@ -32,9 +36,9 @@ export type TQStrategyForm = {
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
-    // validateQuickStrategy,
+    validateQuickStrategy: any; //!
     is_mobile: boolean;
-    selected_symbol: string;
+    selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;
     setCurrentFocus: TSetCurrentFocus;
@@ -51,7 +55,7 @@ export type TQStrategyFields = {
     duration_unit_dropdown: TDurationUnitDropdown;
     selected_type_strategy: TTypeStrategy;
     selected_trade_type: TTradeType;
-    selected_symbol: string;
+    selected_symbol: TMarketOption;
     selected_duration_unit: TDurationOptions;
     onChangeDropdownItem: TOnChangeDropdownItem;
     onHideDropdownList: TOnHideDropdownList;

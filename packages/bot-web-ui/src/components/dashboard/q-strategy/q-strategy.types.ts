@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikHelpers as FormikActions } from 'formik';
 
-type TQuickStrategyFormValues = { button: 'run' | 'edit' };
+export type TQuickStrategyFormValues = { button: 'run' | 'edit' };
 
 export type TDurationOptions = {
     max: number;
@@ -63,9 +63,14 @@ export type TDurationUnitDropdown = Array<TDurationOptions>;
 
 export type TTypeStrategiesDropdown = Array<TTypeStrategy>;
 
-export type TDropdowns = TSymbolDropdown | TTradeTypeDropdown | TDurationUnitDropdown | TTypeStrategiesDropdown;
+export type TDropdowns =
+    | TSymbolDropdown
+    | TTradeTypeDropdown
+    | TDurationUnitDropdown
+    | TTypeStrategiesDropdown
+    | string;
 
-export type TSelectedValuesSelect = TTypeStrategy | TTradeType | TDurationOptions | string;
+export type TSelectedValuesSelect = TTypeStrategy | TTradeType | TDurationOptions | TMarketOption | string;
 
 type TSetSelectedTradeType = (trade_type: TTradeType) => void;
 type TSetSelectedSymbol = (symbol: string) => void;
@@ -79,7 +84,7 @@ type TFieldMapData = {
     setSelected: TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
 };
 
-type TGetSizeDesc = (index: number) => string;
+export type TGetSizeDesc = (index: number) => string;
 
 export type TFormValues = { [key: string]: string };
 
@@ -105,8 +110,8 @@ export type TQuickStrategyProps = {
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     getSizeDesc: TGetSizeDesc;
-    // initial_errors: any;
-    // initial_values: any;
+    initial_errors: any; //!
+    initial_values: any; //!
     is_onscreen_keyboard_active: boolean;
     is_mobile: boolean;
     is_stop_button_visible: boolean;
@@ -116,14 +121,14 @@ export type TQuickStrategyProps = {
     onHideDropdownList: TOnHideDropdownList;
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     setActiveTypeStrategyIndex: (index: number) => void;
-    selected_symbol: string;
+    selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;
     selected_type_strategy: TTypeStrategy;
     symbol_dropdown: TSymbolDropdown;
     toggleStrategyModal: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
-    // validateQuickStrategy: any;
+    validateQuickStrategy: any; //!
     setCurrentFocus: TSetCurrentFocus;
     getFieldMap: TGetFieldMap;
 };

@@ -25,7 +25,7 @@ type TSelectField = {
     label: string;
     input_value: TDropdownItems;
     setFieldValue: TSetFieldValue;
-    className: string;
+    className?: string;
     is_able_disabled?: boolean;
     values: TFormValues;
     onChangeDropdownItem: TOnChangeDropdownItem;
@@ -60,7 +60,7 @@ const SelectField = ({
                     {is_mobile ? (
                         <SelectNative
                             list_items={getDropdownList}
-                            value={getSelectedValue.value}
+                            value={typeof getSelectedValue === 'string' ? getSelectedValue : getSelectedValue.value}
                             label={localize(label)}
                             should_show_empty_option={false}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,12 +90,12 @@ const SelectField = ({
                             leading_icon={
                                 (input_value === 'trade-type' && selected_trade_type?.icon && (
                                     <Text>
-                                        <IconTradeTypes type={selected_trade_type.icon[0]} />
-                                        <IconTradeTypes type={selected_trade_type.icon[1]} />
+                                        <IconTradeTypes type={selected_trade_type?.icon[0]} />
+                                        <IconTradeTypes type={selected_trade_type?.icon[1]} />
                                     </Text>
                                 )) ||
-                                (input_value === 'symbol' && selected_symbol?.value && (
-                                    <Icon icon={`IcUnderlying${selected_symbol.value}`} size={24} />
+                                (input_value === 'symbol' && (selected_symbol?.value as string) && (
+                                    <Icon icon={`IcUnderlying${selected_symbol?.value}`} size={24} />
                                 ))
                             }
                         />

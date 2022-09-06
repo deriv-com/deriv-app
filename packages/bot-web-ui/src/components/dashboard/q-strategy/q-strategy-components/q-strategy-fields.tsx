@@ -1,10 +1,18 @@
-import { Field } from 'formik';
+import { Field, FieldProps } from 'formik';
 import React from 'react';
 import { Icon, Input, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { SelectField, SecondInputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
+import {
+    TFormValues,
+    TDropdowns,
+    TSelectedValuesSelect,
+    TSelectsFieldNames,
+    TDropdownItems,
+    TInputBaseFields,
+} from '../q-strategy.types';
 import { TQStrategyFields } from './q-strategy-components.types';
 
 const QStrategyFields = ({
@@ -32,7 +40,6 @@ const QStrategyFields = ({
 
     const uniq_selected_input = data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0];
 
-    // const fields = (data_fields as ReadonlyArray<TDataFields>).map((item, idx) => {
     const fields = data_fields.map((item, idx) => {
         const {
             id,
@@ -47,13 +54,13 @@ const QStrategyFields = ({
             trailing_icon_message,
             zIndex,
             is_able_disabled,
-        } = item;
+        } = item as TDataFields;
 
         const isUniqStrategyField = Array.isArray(item);
 
         const isInputField = isUniqStrategyField || input_value.startsWith('input_');
 
-        const getDropdownList = !isUniqStrategyField
+        const getDropdownList: TDropdowns = !isUniqStrategyField
             ? name.endsWith('types-strategies')
                 ? types_strategies_dropdown
                 : name.endsWith('symbol')
@@ -65,7 +72,7 @@ const QStrategyFields = ({
                 : ''
             : '';
 
-        const getSelectedValue = !isUniqStrategyField
+        const getSelectedValue: TSelectedValuesSelect = !isUniqStrategyField
             ? name.endsWith('types-strategies')
                 ? selected_type_strategy
                 : name.endsWith('symbol')
@@ -87,7 +94,6 @@ const QStrategyFields = ({
         if (isCurrentStrategyFields && isInputField) {
             tempIsDoubleIdx = idx + 1;
         }
-
         /* eslint consistent-return: off */
         return isCurrentStrategyFields ? (
             isDurationUnitField ? (
@@ -97,13 +103,13 @@ const QStrategyFields = ({
                     })}
                 >
                     <SelectField
-                        field_name={field_name}
+                        field_name={field_name as TSelectsFieldNames}
                         id={id}
                         is_mobile={is_mobile}
                         getDropdownList={getDropdownList}
                         getSelectedValue={getSelectedValue}
                         label={label}
-                        input_value={input_value}
+                        input_value={input_value as TDropdownItems}
                         setFieldValue={setFieldValue}
                         className={className}
                         is_able_disabled={is_able_disabled}
@@ -132,7 +138,7 @@ const QStrategyFields = ({
                         name={isUniqStrategyField ? uniq_selected_input.field_name : field_name}
                         key={isUniqStrategyField ? uniq_selected_input.id : id}
                     >
-                        {({ field }) => {
+                        {({ field }: FieldProps<string, TFormValues>) => {
                             return (
                                 <Input
                                     {...field}
@@ -145,14 +151,18 @@ const QStrategyFields = ({
                                     }
                                     type='text'
                                     label={localize(isUniqStrategyField ? uniq_selected_input.label : label)}
-                                    onChange={e => {
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         handleChange(e);
                                         onChangeInputValue(
-                                            isUniqStrategyField ? uniq_selected_input.input_value : input_value,
+                                            isUniqStrategyField
+                                                ? (uniq_selected_input.input_value as TInputBaseFields)
+                                                : (input_value as TInputBaseFields),
                                             e
                                         );
                                     }}
-                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                    onFocus={(e: React.FocusEvent<HTMLInputElement>) =>
+                                        setCurrentFocus(e.currentTarget.name)
+                                    }
                                     onBlur={() => setCurrentFocus(null)}
                                     placeholder={isUniqStrategyField ? uniq_selected_input.placeholder : placeholder}
                                     trailing_icon={
@@ -185,13 +195,13 @@ const QStrategyFields = ({
                     <>
                         <div className='quick-strategy__form-row'>
                             <SelectField
-                                field_name={field_name}
+                                field_name={field_name as TSelectsFieldNames}
                                 id={id}
                                 is_mobile={is_mobile}
                                 getDropdownList={getDropdownList}
                                 getSelectedValue={getSelectedValue}
                                 label={label}
-                                input_value={input_value}
+                                input_value={input_value as TDropdownItems}
                                 setFieldValue={setFieldValue}
                                 className={className}
                                 is_able_disabled={is_able_disabled}

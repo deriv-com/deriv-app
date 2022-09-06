@@ -59,7 +59,7 @@ interface ToolboxProps {
     is_mobile: boolean;
     is_search_loading: boolean;
     is_toolbox_open: boolean;
-    onMount: (param?: any) => void;
+    onMount: (param?: React.RefObject<typeof ToolboxItems>) => void;
     onSearch: () => void;
     onSearchBlur: () => void;
     onSearchClear: () => void;
@@ -67,7 +67,7 @@ interface ToolboxProps {
     onToolboxItemClick: () => void;
     onToolboxItemExpand: (index: number) => void;
     onUnmount: () => void;
-    sub_category_index: any[];
+    sub_category_index: any;
     toggleDrawer: () => void;
     toolbox_dom: React.ReactElement[];
 }

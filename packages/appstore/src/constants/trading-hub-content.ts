@@ -1,50 +1,15 @@
 import { localize } from '@deriv/translations';
 import React from 'react';
 
-type TTradingHubContents = {
-    step1: {
-        component: React.ReactNode;
-        footer_header: string;
-        footer_text: string;
-        next_content?: string;
-        has_next_content: boolean;
-    };
-    step2: {
-        component: React.ReactNode;
-        footer_header: string;
-        footer_text: string;
-        next_content?: string;
-        has_next_content: boolean;
-    };
-    step3: {
-        component: React.ReactNode;
-        footer_header: string;
-        footer_text: string;
-        next_content?: string;
-        has_next_content: boolean;
-    };
-    step4: {
-        component: React.ReactNode;
-        footer_header: string;
-        footer_text: string;
-        next_content?: string;
-        has_next_content: boolean;
-    };
-    step5: {
-        component: React.ReactNode;
-        footer_header: string;
-        footer_text: string;
-        next_content?: string;
-        has_next_content: boolean;
-    };
-    step6: {
-        component: React.ReactNode;
-        footer_header: string;
-        footer_text: string;
-        next_content?: string;
-        has_next_content: boolean;
-    };
+type TStep = {
+    component: React.ReactNode;
+    footer_header: string;
+    footer_text: string;
+    next_content?: string;
+    has_next_content: boolean;
 };
+
+type TTradingHubContents = Record<'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'step6', TStep>;
 
 export const trading_hub_contents: TTradingHubContents = {
     step1: {

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 
-import './onboarding.scss';
-
 type TOnboardingProps = {
     contents: Record<
         string,

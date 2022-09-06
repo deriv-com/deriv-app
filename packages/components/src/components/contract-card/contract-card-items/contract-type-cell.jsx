@@ -15,7 +15,7 @@ const ContractTypeCell = ({ getContractTypeDisplay, growth_rate, is_high_low, mu
         <div className='dc-contract-type__type-label'>
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
             {(multiplier || growth_rate) && (
-                <div className='dc-contract-type__type-label-parameter'>
+                <div className='dc-contract-type__type-label-trade-param'>
                     {multiplier ? `x${multiplier}` : `${getGrowthRatePercentage(growth_rate)}%`}
                 </div>
             )}

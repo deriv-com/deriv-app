@@ -20,7 +20,7 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_
     return (
         <Fieldset
             className={classNames('trade-container__fieldset', 'accumulator')}
-            header={localize('Accumulators')}
+            header={localize('Accumulator')}
             is_center
             header_tooltip={localize(
                 'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed ± {{tick_size_barrier}}% of the previous tick.',

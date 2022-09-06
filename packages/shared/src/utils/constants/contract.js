@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
-    accumulator: localize('Accumulators'),
+    accumulator: localize('Accumulator'),
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -106,7 +106,7 @@ export const getContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulators'),
+        title: localize('Stay in'),
         trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],

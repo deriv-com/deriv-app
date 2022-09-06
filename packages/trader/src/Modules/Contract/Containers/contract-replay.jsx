@@ -11,6 +11,7 @@ import {
     FadeWrapper,
 } from '@deriv/components';
 import {
+    isAccumulatorContract,
     isDesktop,
     isMobile,
     isMultiplierContract,
@@ -73,6 +74,7 @@ const ContractReplay = ({
 
     if (!contract_info.underlying) return null;
 
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
     const contract_drawer_el = (
@@ -80,6 +82,7 @@ const ContractReplay = ({
             contract_info={contract_info}
             contract_update={contract_update}
             contract_update_history={contract_update_history}
+            is_accumulator={is_accumulator}
             is_chart_loading={is_chart_loading}
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}

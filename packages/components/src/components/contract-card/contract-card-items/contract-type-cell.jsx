@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconTradeTypes from '../../icon-trade-types';
+import { getGrowthRatePercentage } from '@deriv/shared';
 
-const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, type }) => (
+const ContractTypeCell = ({ getContractTypeDisplay, growth_rate, is_high_low, multiplier, type }) => (
     <div className='dc-contract-type'>
         <div className='dc-contract-type__type-wrapper'>
             <IconTradeTypes
@@ -13,7 +14,11 @@ const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, typ
         </div>
         <div className='dc-contract-type__type-label'>
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-            {multiplier && <div className='dc-contract-type__type-label-multiplier'>x{multiplier}</div>}
+            {(multiplier || growth_rate) && (
+                <div className='dc-contract-type__type-label-trade-param'>
+                    {multiplier ? `x${multiplier}` : `${getGrowthRatePercentage(growth_rate)}%`}
+                </div>
+            )}
         </div>
     </div>
 );

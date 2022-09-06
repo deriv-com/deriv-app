@@ -123,8 +123,8 @@
         }
     }
     &__wrapper {
-        margin: 0 1em;
-        max-width: 218px;
+        margin: 0 auto;
+        max-width: 22.4rem;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
@@ -325,6 +325,10 @@
         &__header {
             max-width: calc(100% - 2.4rem);
             line-height: 1.4;
+
+            &-long {
+                max-width: unset;
+            }
         }
         &__body {
             @include typeface(--small-left-bold-black);
@@ -466,6 +470,9 @@
             padding-bottom: 0.4rem;
         }
     }
+    &__take-profit {
+        position: relative;
+    }
     &__buy-price {
         grid-area: buy-price;
     }
@@ -548,7 +555,7 @@
         line-height: 1.5;
         text-align: left;
 
-        &-multiplier {
+        &-trade-param {
             font-size: 1rem;
             line-height: 1rem;
             color: var(--text-less-prominent);

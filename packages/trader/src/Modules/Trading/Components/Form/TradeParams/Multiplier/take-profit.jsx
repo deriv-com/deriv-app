@@ -51,7 +51,7 @@ const TakeProfit = ({
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
                 tooltip_label={localize(
-                    'Your contract is closed automatically when your profit is more than or equals to this amount.'
+                    'Your contract is closed automatically when your profit is more than or equal to this amount.'
                 )}
                 tooltip_alignment='left'
                 error_message_alignment='left'

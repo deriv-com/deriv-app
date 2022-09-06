@@ -147,6 +147,108 @@ const MultiplierCardBody = ({
     );
 };
 
+const AccumulatorCardBody = ({
+    addToast,
+    connectWithContractUpdate,
+    contract_info,
+    contract_update,
+    currency,
+    current_focus,
+    error_message_alignment,
+    getCardLabels,
+    getContractById,
+    is_mobile,
+    is_sold,
+    has_progress_slider,
+    onMouseLeave,
+    removeToast,
+    setCurrentFocus,
+    status,
+    is_positions,
+}) => {
+    const { buy_price, bid_price, profit, limit_order, tick_count, tick_stream } = contract_info;
+
+    const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
+    const ticks_remaining = tick_count - tick_stream.length;
+    const is_valid_to_sell = isValidToSell(contract_info);
+
+    return (
+        <React.Fragment>
+            <div
+                className={classNames({
+                    'dc-contract-card-items-wrapper--mobile': is_mobile,
+                    'dc-contract-card-items-wrapper': !is_mobile,
+                    'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
+                })}
+            >
+                <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
+                    <Money amount={buy_price} currency={currency} />
+                </ContractCardItem>
+                <ContractCardItem
+                    header={is_positions ? getCardLabels().CURRENT_PRICE : getCardLabels().SELL_PRICE}
+                    className='dc-contract-card__current-stake'
+                >
+                    <div
+                        className={classNames({
+                            'dc-contract-card--profit': +profit > 0,
+                            'dc-contract-card--loss': +profit < 0,
+                        })}
+                    >
+                        <Money amount={bid_price} currency={currency} />
+                    </div>
+                </ContractCardItem>
+                <ContractCardItem header={is_sold ? getCardLabels().NUMBER_OF_TICKS : getCardLabels().TICKS_PASSED}>
+                    <strong>{tick_stream.length}</strong>
+                </ContractCardItem>
+                {is_sold ? (
+                    <ContractCardItem header={getCardLabels().MAX_TICK_DURATION} is_long>
+                        <strong>{tick_count}</strong>
+                    </ContractCardItem>
+                ) : (
+                    <ContractCardItem header={getCardLabels().TICKS_REMAINING}>
+                        <strong>{ticks_remaining}</strong>
+                    </ContractCardItem>
+                )}
+                <ContractCardItem
+                    header={getCardLabels().TOTAL_PROFIT_LOSS}
+                    is_crypto={isCryptocurrency(currency)}
+                    is_loss={+profit < 0}
+                    is_won={+profit > 0}
+                >
+                    <Money amount={profit} currency={currency} />
+                    <div
+                        className={classNames('dc-contract-card__indicative--movement', {
+                            'dc-contract-card__indicative--movement-complete': is_sold,
+                        })}
+                    >
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss' && <Icon icon='IcLoss' />}
+                    </div>
+                </ContractCardItem>
+                <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                    {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                    {is_valid_to_sell && (
+                        <ToggleCardDialog
+                            addToast={addToast}
+                            connectWithContractUpdate={connectWithContractUpdate}
+                            contract_id={contract_info.contract_id}
+                            current_focus={current_focus}
+                            error_message_alignment={error_message_alignment}
+                            getCardLabels={getCardLabels}
+                            getContractById={getContractById}
+                            is_accumulator
+                            onMouseLeave={onMouseLeave}
+                            removeToast={removeToast}
+                            setCurrentFocus={setCurrentFocus}
+                            status={status}
+                        />
+                    )}
+                </ContractCardItem>
+            </div>
+        </React.Fragment>
+    );
+};
+
 const ContractCardBody = ({
     addToast,
     connectWithContractUpdate,
@@ -158,8 +260,10 @@ const ContractCardBody = ({
     getCardLabels,
     getContractById,
     has_progress_slider,
+    is_accumulator,
     is_mobile,
     is_multiplier,
+    is_positions,
     is_sold,
     onMouseLeave,
     removeToast,
@@ -185,79 +289,107 @@ const ContractCardBody = ({
         />
     );
 
-    const card_body = is_multiplier ? (
-        <MultiplierCardBody
-            addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
-            contract_info={contract_info}
-            contract_update={contract_update}
-            currency={currency}
-            current_focus={current_focus}
-            error_message_alignment={error_message_alignment}
-            getCardLabels={getCardLabels}
-            getContractById={getContractById}
-            has_progress_slider={has_progress_slider}
-            progress_slider={progress_slider_mobile_el}
-            is_mobile={is_mobile}
-            is_sold={is_sold}
-            onMouseLeave={onMouseLeave}
-            status={status}
-            removeToast={removeToast}
-            setCurrentFocus={setCurrentFocus}
-            should_show_cancellation_warning={should_show_cancellation_warning}
-            toggleCancellationWarning={toggleCancellationWarning}
-        />
-    ) : (
-        <React.Fragment>
-            <div className='dc-contract-card-items-wrapper'>
-                <ContractCardItem
-                    header={is_sold ? getCardLabels().PROFIT_LOSS : getCardLabels().POTENTIAL_PROFIT_LOSS}
-                    is_crypto={isCryptocurrency(currency)}
-                    is_loss={+profit < 0}
-                    is_won={+profit > 0}
-                >
-                    <Money amount={profit} currency={currency} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
+    let card_body;
+
+    if (is_multiplier) {
+        card_body = (
+            <MultiplierCardBody
+                addToast={addToast}
+                connectWithContractUpdate={connectWithContractUpdate}
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                current_focus={current_focus}
+                error_message_alignment={error_message_alignment}
+                getCardLabels={getCardLabels}
+                getContractById={getContractById}
+                has_progress_slider={has_progress_slider}
+                progress_slider={progress_slider_mobile_el}
+                is_mobile={is_mobile}
+                is_sold={is_sold}
+                onMouseLeave={onMouseLeave}
+                status={status}
+                removeToast={removeToast}
+                setCurrentFocus={setCurrentFocus}
+                should_show_cancellation_warning={should_show_cancellation_warning}
+                toggleCancellationWarning={toggleCancellationWarning}
+            />
+        );
+    } else if (is_accumulator) {
+        card_body = (
+            <AccumulatorCardBody
+                addToast={addToast}
+                connectWithContractUpdate={connectWithContractUpdate}
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                current_focus={current_focus}
+                error_message_alignment={error_message_alignment}
+                getCardLabels={getCardLabels}
+                getContractById={getContractById}
+                has_progress_slider={has_progress_slider}
+                is_mobile={is_mobile}
+                is_sold={is_sold}
+                onMouseLeave={onMouseLeave}
+                status={status}
+                removeToast={removeToast}
+                setCurrentFocus={setCurrentFocus}
+                is_positions={is_positions}
+            />
+        );
+    } else {
+        card_body = (
+            <React.Fragment>
+                <div className='dc-contract-card-items-wrapper'>
+                    <ContractCardItem
+                        header={is_sold ? getCardLabels().PROFIT_LOSS : getCardLabels().POTENTIAL_PROFIT_LOSS}
+                        is_crypto={isCryptocurrency(currency)}
+                        is_loss={+profit < 0}
+                        is_won={+profit > 0}
                     >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
-                    </div>
-                </ContractCardItem>
-                <ContractCardItem header={is_sold ? getCardLabels().PAYOUT : getCardLabels().INDICATIVE_PRICE}>
-                    <Money currency={currency} amount={sell_price || indicative} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                    >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
-                    </div>
-                </ContractCardItem>
-                <ContractCardItem header={getCardLabels().PURCHASE_PRICE}>
-                    <Money amount={buy_price} currency={currency} />
-                </ContractCardItem>
-                <ContractCardItem header={getCardLabels().POTENTIAL_PAYOUT}>
-                    <Money currency={currency} amount={payout} />
-                </ContractCardItem>
-            </div>
-            <MobileWrapper>
-                <div className='dc-contract-card__status'>
-                    {is_sold ? (
-                        <ResultStatusIcon
-                            getCardLabels={getCardLabels}
-                            is_contract_won={getDisplayStatus(contract_info) === 'won'}
-                        />
-                    ) : (
-                        progress_slider_mobile_el
-                    )}
+                        <Money amount={profit} currency={currency} />
+                        <div
+                            className={classNames('dc-contract-card__indicative--movement', {
+                                'dc-contract-card__indicative--movement-complete': is_sold,
+                            })}
+                        >
+                            {status === 'profit' && <Icon icon='IcProfit' />}
+                            {status === 'loss' && <Icon icon='IcLoss' />}
+                        </div>
+                    </ContractCardItem>
+                    <ContractCardItem header={is_sold ? getCardLabels().PAYOUT : getCardLabels().INDICATIVE_PRICE}>
+                        <Money currency={currency} amount={sell_price || indicative} />
+                        <div
+                            className={classNames('dc-contract-card__indicative--movement', {
+                                'dc-contract-card__indicative--movement-complete': is_sold,
+                            })}
+                        >
+                            {status === 'profit' && <Icon icon='IcProfit' />}
+                            {status === 'loss' && <Icon icon='IcLoss' />}
+                        </div>
+                    </ContractCardItem>
+                    <ContractCardItem header={getCardLabels().PURCHASE_PRICE}>
+                        <Money amount={buy_price} currency={currency} />
+                    </ContractCardItem>
+                    <ContractCardItem header={getCardLabels().POTENTIAL_PAYOUT}>
+                        <Money currency={currency} amount={payout} />
+                    </ContractCardItem>
                 </div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
+                <MobileWrapper>
+                    <div className='dc-contract-card__status'>
+                        {is_sold ? (
+                            <ResultStatusIcon
+                                getCardLabels={getCardLabels}
+                                is_contract_won={getDisplayStatus(contract_info) === 'won'}
+                            />
+                        ) : (
+                            progress_slider_mobile_el
+                        )}
+                    </div>
+                </MobileWrapper>
+            </React.Fragment>
+        );
+    }
 
     return (
         <React.Fragment>
@@ -289,8 +421,10 @@ ContractCardBody.propTypes = {
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_positions: PropTypes.bool,
     is_sold: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,

@@ -1,4 +1,10 @@
-import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+import {
+    getDecimalPlaces,
+    getPropertyValue,
+    convertToUnix,
+    toMoment,
+    getDummyProposalInfoForACCU,
+} from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -42,6 +48,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const commission = proposal.commission;
     const cancellation = proposal.cancellation;
 
+    if (store.contract_type === 'accumulator') {
+        // maryia: temporary dummy proposal info for accumulators:
+        return getDummyProposalInfoForACCU(store.growth_rate, response);
+    }
     return {
         commission,
         cancellation,
@@ -87,7 +97,12 @@ const setProposalMultiplier = (store, obj_multiplier) => {
     }
 };
 
+const setProposalAccumulator = (store, obj_accumulator) => {
+    obj_accumulator.growth_rate = store.growth_rate;
+};
+
 const createProposalRequestForContract = (store, type_of_contract) => {
+    const obj_accumulator = {};
     const obj_expiry = {};
     const obj_multiplier = {};
 
@@ -98,6 +113,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
 
     if (store.contract_type === 'multiplier') {
         setProposalMultiplier(store, obj_multiplier);
+    }
+
+    if (store.contract_type === 'accumulator') {
+        setProposalAccumulator(store, obj_accumulator);
     }
 
     return {
@@ -115,10 +134,12 @@ const createProposalRequestForContract = (store, type_of_contract) => {
                   duration_unit: store.duration_unit,
               }
             : obj_expiry),
-        ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) && {
-            barrier: store.barrier_1 || store.last_digit,
-        }),
+        ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) &&
+            store.contract_type !== 'accumulator' && {
+                barrier: store.barrier_1 || store.last_digit,
+            }),
         ...(store.barrier_count === 2 && { barrier2: store.barrier_2 }),
+        ...obj_accumulator,
         ...obj_multiplier,
     };
 };

@@ -7,9 +7,9 @@ import {
     switch_to_tick_chart,
     isCallPut,
     getContractTypesConfig,
+    getDummyPOCResponseForACCU,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
-
 import BaseStore from './base-store';
 
 export default class ContractTradeStore extends BaseStore {
@@ -161,7 +161,15 @@ export default class ContractTradeStore extends BaseStore {
 
     // Called from portfolio
     @action.bound
-    updateProposal(response) {
+    updateProposal(_response) {
+        // maryia: temporary dummy data for accumulators
+        const dummy_response = getDummyPOCResponseForACCU(Date.now());
+        let response;
+        if (this.root_store.portfolio.is_accumulator) {
+            response = dummy_response;
+        } else {
+            response = _response;
+        }
         if ('error' in response) {
             this.has_error = true;
             this.error_message = response.error.message;

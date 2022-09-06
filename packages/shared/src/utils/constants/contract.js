@@ -3,6 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
+    accumulator: localize('Accumulator'),
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -104,6 +105,14 @@ export const getContractTypesConfig = symbol => ({
         basis: [],
         components: [],
     },
+    accumulator: {
+        title: localize('Stay in'),
+        trade_types: ['ACCU'],
+        basis: ['stake'],
+        components: ['take_profit', 'accumulator', 'accu_info_display'],
+        barrier_count: 2,
+        config: { hide_duration: true },
+    },
     multiplier: {
         title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
@@ -125,6 +134,7 @@ export const getContractCategoriesConfig = () => ({
     [localize('Ins & Outs')]: ['end', 'stay'],
     [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
+    [localize('Accumulators')]: ['accumulator'],
 });
 
 export const unsupported_contract_types_list = [
@@ -146,6 +156,7 @@ export const getCardLabels = () => ({
     STAKE: localize('Stake:'),
     CLOSE: localize('Close'),
     CANCEL: localize('Cancel'),
+    CURRENT_PRICE: localize('Current price:'),
     CURRENT_STAKE: localize('Current stake:'),
     DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
     TAKE_PROFIT: localize('Take profit:'),
@@ -155,15 +166,20 @@ export const getCardLabels = () => ({
     PROFIT_LOSS: localize('Profit/Loss:'),
     POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
     INDICATIVE_PRICE: localize('Indicative price:'),
+    MAX_TICK_DURATION: localize('Max tick duration:'),
+    NUMBER_OF_TICKS: localize('Number of ticks:'),
     PAYOUT: localize('Sell price:'),
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
     TICK: localize('Tick '),
+    TICKS_PASSED: localize('Ticks passed:'),
+    TICKS_REMAINING: localize('Ticks remaining:'),
     WON: localize('Won'),
     LOST: localize('Lost'),
     DAYS: localize('days'),
     DAY: localize('day'),
     SELL: localize('Sell'),
+    SELL_PRICE: localize('Sell price:'),
     INCREMENT_VALUE: localize('Increment value'),
     DECREMENT_VALUE: localize('Decrement value'),
     TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
@@ -341,6 +357,10 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        name: <Localize i18n_default_text='Stay in' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',

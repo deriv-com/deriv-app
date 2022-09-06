@@ -31,6 +31,8 @@ export const isValidToSell = contract_info =>
 
 export const hasContractEntered = contract_info => !!contract_info.entry_spot;
 
+export const isAccumulatorContract = contract_type => /ACCU/i.test(contract_type);
+
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 
 export const isCryptoContract = underlying => /^cry/.test(underlying);
@@ -100,6 +102,10 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
 
     return Math.round(percentage);
 };
+
+export const getRoundedTickSizeBarrier = tick_size_barrier => (tick_size_barrier + Number.EPSILON).toFixed(5);
+
+export const getGrowthRatePercentage = growth_rate => growth_rate * 100;
 
 export const getDisplayStatus = contract_info => {
     let status = 'purchased';

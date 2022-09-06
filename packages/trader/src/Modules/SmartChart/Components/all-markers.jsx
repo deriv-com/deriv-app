@@ -131,6 +131,46 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
+const draw_partial_shade = ({ ctx, start_left, top, bottom, is_between_shade, is_bottom_shade, color, scale }) => {
+    const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
+    const gradient = ctx.createLinearGradient(start_left, top, start_left, bottom);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = color;
+
+    if (is_between_shade || is_bottom_shade) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.arc(start_left, top, 1.5, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.setLineDash([2, 3]);
+        ctx.moveTo(start_left + 1.5 * scale, top);
+        ctx.lineTo(end_left, top);
+        ctx.stroke();
+    }
+    if (is_between_shade || !is_bottom_shade) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.arc(start_left, bottom, 1.5, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.setLineDash([2, 3]);
+        ctx.moveTo(start_left + 1.5 * scale, bottom);
+        ctx.lineTo(end_left, bottom);
+        ctx.stroke();
+    }
+
+    if (!is_between_shade) {
+        gradient.addColorStop(0.01, is_bottom_shade ? 'rgba(236, 63, 63, 0.16)' : 'rgba(236, 63, 63, 0)');
+        gradient.addColorStop(0.98, is_bottom_shade ? 'rgba(236, 63, 63, 0)' : 'rgba(236, 63, 63, 0.16)');
+    }
+
+    ctx.fillStyle = is_between_shade ? 'rgba(0, 167, 158, 0.08)' : gradient;
+    ctx.fillRect(start_left, top, end_left - start_left, Math.abs(bottom - top));
+};
+
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     const scale = calc_scale(zoom);
     const size = Math.floor(scale * 3 + 7);
@@ -141,10 +181,11 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
-    ctx.textAlign = 'center';
+const shadowed_text = ({ ctx, color, font, is_dark_theme, text, text_align, left, top, scale }) => {
+    ctx.textAlign = text_align || 'center';
     const size = Math.floor(scale * 12);
-    ctx.font = `bold ${size}px BinarySymbols, Roboto`;
+    ctx.font = font || `bold ${size}px BinarySymbols, Roboto`;
+    if (color) ctx.fillStyle = color;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
@@ -159,16 +200,18 @@ const TickContract = RawMarkerMaker(
     ({
         ctx: context,
         canvas_height: canvas_fixed_height,
-        points: [start, ...ticks],
-        prices: [barrier], // TODO: support two barrier contracts
+        points: [start, current_spot_time, ...ticks],
+        prices: [barrier, barrier_2], // TODO: support two barrier contracts
         is_last_contract,
         is_dark_theme,
         granularity,
         contract_info: {
-            // contract_type,
+            contract_type,
             // exit_tick_time,
+            currency,
             status,
             profit,
+            profit_percentage,
             is_sold,
             is_expired,
             // tick_stream,
@@ -192,20 +235,23 @@ const TickContract = RawMarkerMaker(
         const scale = calc_scale(start.zoom);
 
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
-        if (barrier) {
-            barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
-        }
+
+        [barrier, barrier_2].filter(Boolean).forEach(b => {
+            b = Math.min(Math.max(b, 2), canvas_height - 32); // eslint-disable-line
+        });
 
         if (draw_start_line) {
             render_label({
                 ctx,
                 text: 'Start\nTime',
-                tick: { zom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
+                tick: { zoom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
             });
             ctx.beginPath();
-            ctx.setLineDash([3, 3]);
+            if (contract_type === 'ACCU') {
+                ctx.setLineDash([]);
+            } else ctx.setLineDash([3, 3]);
             ctx.moveTo(start.left - 1 * scale, 0);
-            if (ticks.length && barrier) {
+            if (ticks.length && barrier && contract_type !== 'ACCU') {
                 ctx.lineTo(start.left - 1 * scale, barrier - 34 * scale);
                 ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
             }
@@ -218,25 +264,38 @@ const TickContract = RawMarkerMaker(
             return;
         }
         const entry = ticks[0];
+        const current_tick_index = ticks.findIndex(t => t.epoch === current_spot_time.epoch);
+        const current_tick = ticks[current_tick_index];
+        const previous_tick = ticks[current_tick_index - 1] || ticks[0];
         const exit = ticks[ticks.length - 1];
+        const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
         // barrier line
-        const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
         if (start.visible || entry.visible || exit.visible) {
-            ctx.strokeStyle = color + opacity;
-            ctx.beginPath();
-            ctx.setLineDash([1, 1]);
-            ctx.moveTo(start.left, barrier);
-            ctx.lineTo(entry.left, barrier);
-            ctx.stroke();
+            if (contract_type === 'ACCU' && (status === 'lost' || status === 'won')) {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.setLineDash([]);
+                ctx.moveTo(start.left, barrier);
+                ctx.lineTo(exit.left, barrier);
+                ctx.stroke();
+            } else if (contract_type !== 'ACCU') {
+                ctx.strokeStyle = color + opacity;
+                ctx.beginPath();
+                ctx.setLineDash([1, 1]);
+                ctx.moveTo(start.left, barrier);
+                ctx.lineTo(entry.left, barrier);
+                ctx.stroke();
 
-            ctx.beginPath();
-            ctx.setLineDash([]);
-            ctx.moveTo(entry.left, barrier);
-            ctx.lineTo(exit.left, barrier);
-            ctx.stroke();
-            ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.setLineDash([]);
+                ctx.moveTo(entry.left, barrier);
+                ctx.lineTo(exit.left, barrier);
+                ctx.stroke();
+                ctx.strokeStyle = color;
+            }
         }
+
         // ticks for last contract
         if (is_last_contract && granularity === 0 && !is_sold) {
             ticks
@@ -258,7 +317,10 @@ const TickContract = RawMarkerMaker(
                     ctx.setLineDash([2, 2]);
                     ctx.beginPath();
                     ctx.moveTo(tick.left - 1 * scale, tick.top);
-                    ctx.lineTo(tick.left - 1 * scale, barrier);
+                    if (tick === entry && contract_type === 'ACCU') {
+                        // draw line to start marker having the same y-coordinates:
+                        ctx.lineTo(start.left - 1 * scale, entry.top);
+                    } else ctx.lineTo(tick.left - 1 * scale, barrier);
                     ctx.stroke();
 
                     ctx.fillStyle = color + opacity;
@@ -278,7 +340,7 @@ const TickContract = RawMarkerMaker(
             ctx.fillStyle = color;
         }
         // count down
-        if (start.visible && !is_sold) {
+        if (start.visible && !is_sold && contract_type !== 'ACCU') {
             shadowed_text({
                 ctx,
                 scale,
@@ -288,10 +350,11 @@ const TickContract = RawMarkerMaker(
                 top: barrier - 27 * scale,
             });
         }
+
         // start-time marker
         if (start.visible) {
             draw_path(ctx, {
-                top: barrier - 9 * scale,
+                top: contract_type === 'ACCU' ? entry.top : barrier - 9 * scale,
                 left: start.left - 1 * scale,
                 zoom: start.zoom,
                 icon: ICONS.START.with_color(
@@ -310,6 +373,91 @@ const TickContract = RawMarkerMaker(
             });
         }
         ctx.restore();
+
+        if ((start.visible || entry.visible || exit.visible) && contract_type === 'ACCU') {
+            const dashed_line_color = is_dark_theme ? '#6E6E6E' : '#999999';
+            const profit_text_color = profit > 0 ? '#4BB4B3' : '#EC3F3F';
+            const sign = profit > 0 ? '+' : '-';
+            const profit_text = `${sign}${profit}`;
+            ctx.save();
+            // draw 3 text items with different font size and weight:
+            shadowed_text({
+                ctx,
+                scale,
+                is_dark_theme,
+                text: profit_text,
+                font: `bold 20px IBM Plex Sans`,
+                text_align: 'start',
+                color: profit_text_color,
+                left: current_tick.left + 33 * scale,
+                top: current_tick.top,
+            });
+            const profit_text_width = ctx.measureText(profit_text).width;
+            shadowed_text({
+                ctx,
+                scale,
+                is_dark_theme,
+                text: `${currency}`,
+                font: '10px IBM Plex Sans',
+                text_align: 'start',
+                color: profit_text_color,
+                left: current_tick.left + profit_text_width + 35 * scale,
+                top: current_tick.top + 1.5 * scale,
+            });
+            shadowed_text({
+                ctx,
+                scale,
+                is_dark_theme,
+                text: `${sign}${profit_percentage}%`,
+                font: '12px IBM Plex Sans',
+                text_align: 'start',
+                color: profit_text_color,
+                left: current_tick.left + profit_text_width + 29 * scale,
+                top: current_tick.top + 16 * scale,
+            });
+            ctx.restore();
+            if (entry === current_tick && profit > 0) {
+                // draw vertical dashed line between barriers
+                ctx.strokeStyle = dashed_line_color;
+                ctx.setLineDash([3, 1]);
+                ctx.beginPath();
+                ctx.moveTo(entry.left, barrier + 1.5 * scale);
+                ctx.lineTo(entry.left, barrier_2 - 1.5 * scale);
+                ctx.stroke();
+            }
+            const start_left =
+                start === current_tick || entry === current_tick ? current_tick.left : previous_tick.left;
+            // draw custom barrier shadows with borders:
+            if (profit > 0) {
+                draw_partial_shade({
+                    ctx,
+                    start_left,
+                    color: dashed_line_color,
+                    top: barrier,
+                    bottom: barrier_2,
+                    is_between_shade: true,
+                    scale,
+                });
+            } else {
+                draw_partial_shade({
+                    ctx,
+                    start_left,
+                    color: dashed_line_color,
+                    top: barrier - 165 * scale,
+                    bottom: barrier,
+                    scale,
+                });
+                draw_partial_shade({
+                    ctx,
+                    start_left,
+                    color: dashed_line_color,
+                    top: barrier_2,
+                    bottom: barrier_2 + 165 * scale,
+                    is_bottom_shade: true,
+                    scale,
+                });
+            }
+        }
     }
 );
 
@@ -380,7 +528,7 @@ const NonTickContract = RawMarkerMaker(
                 ctx,
                 text: 'Start\nTime',
                 tick: {
-                    zom: start.zoom,
+                    zoom: start.zoom,
                     left: start.left - 1 * scale,
                     top: canvas_height - 50,
                 },

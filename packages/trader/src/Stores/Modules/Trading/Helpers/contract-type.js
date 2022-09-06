@@ -15,6 +15,7 @@ import {
     getContractCategoriesConfig,
     getContractTypesConfig,
     getLocalizedBasis,
+    dummy_accu_in_contracts_for_available,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -40,7 +41,12 @@ export const ContractType = (() => {
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
-            r.contracts_for.available.forEach(contract => {
+            const dummy_available_contracts_with_accu = [
+                ...r.contracts_for.available,
+                dummy_accu_in_contracts_for_available,
+            ];
+
+            dummy_available_contracts_with_accu.forEach(contract => {
                 const type = Object.keys(contract_types).find(
                     key =>
                         contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&
@@ -121,6 +127,7 @@ export const ContractType = (() => {
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
+                config.accumulator_growth_rates = contract.accumulator_growth_rates;
                 config.multiplier_range = contract.multiplier_range;
                 config.cancellation_range = contract.cancellation_range;
 
@@ -151,6 +158,7 @@ export const ContractType = (() => {
             basis,
             duration_unit,
             expiry_type,
+            growth_rate,
             multiplier,
             start_date,
             cancellation_duration,
@@ -170,6 +178,7 @@ export const ContractType = (() => {
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
+        const obj_accumulator_rates_list = getAccumulatorRates(contract_type, growth_rate);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -186,6 +195,7 @@ export const ContractType = (() => {
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
+            ...obj_accumulator_rates_list,
             ...obj_multiplier_range_list,
             ...obj_cancellation,
             ...obj_equal,
@@ -530,6 +540,16 @@ export const ContractType = (() => {
         return {
             basis_list,
             basis: getArrayDefaultValue(arr_basis, basis),
+        };
+    };
+
+    const getAccumulatorRates = (contract_type, growth_rate) => {
+        const arr_growth_rates =
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'accumulator_growth_rates']) || [];
+
+        return {
+            accumulator_rates_list: arr_growth_rates,
+            growth_rate: getArrayDefaultValue(arr_growth_rates, growth_rate),
         };
     };
 

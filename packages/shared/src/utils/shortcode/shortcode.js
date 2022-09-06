@@ -2,6 +2,9 @@
 const base_pattern =
     '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+[A-Z]?)|(?:cry_[A-Z]+)|(?:JD[0-9]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
 
+// category_underlying_amount_payouttick_growthrate_growthfrequency_ticksizebarrier_starttime
+const accumulators_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d*\\.?\\d*)_(\\d+)_(\\d*\\.?\\d*)_(\\d+)`);
+
 // category_underlying_amount_multiplier_starttime
 const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 
@@ -15,9 +18,13 @@ export const extractInfoFromShortcode = shortcode => {
         barrier_1: '',
     };
 
+    const is_accumulators = /^ACCU/i.test(shortcode);
     const is_multipliers = /^MULT/i.test(shortcode);
     // First group of regex pattern captures the trade category, second group captures the market's underlying
-    const pattern = is_multipliers ? multipliers_regex : options_regex;
+    let pattern;
+    if (is_multipliers) {
+        pattern = multipliers_regex;
+    } else pattern = is_accumulators ? accumulators_regex : options_regex;
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
         info_from_shortcode.category = extracted[1].toLowerCase();
@@ -26,6 +33,12 @@ export const extractInfoFromShortcode = shortcode => {
         if (is_multipliers) {
             info_from_shortcode.multiplier = extracted[4];
             info_from_shortcode.start_time = extracted[5];
+        } else if (is_accumulators) {
+            info_from_shortcode.payout_tick = extracted[4];
+            info_from_shortcode.growth_rate = extracted[5];
+            info_from_shortcode.growth_frequency = extracted[6];
+            info_from_shortcode.tick_size_barrier = extracted[7];
+            info_from_shortcode.start_time = extracted[8];
         } else {
             info_from_shortcode.start_time = extracted[4];
         }

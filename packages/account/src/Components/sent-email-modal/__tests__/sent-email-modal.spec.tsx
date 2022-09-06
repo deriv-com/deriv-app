@@ -13,8 +13,10 @@ describe('<SentEmailModal/>', () => {
     const onClose = jest.fn();
     const onClickSendEmail = jest.fn();
 
+    let modal_root_el: HTMLDivElement;
+
     beforeAll(() => {
-        const modal_root_el = document.createElement('div');
+        modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
@@ -74,14 +76,15 @@ describe('<SentEmailModal/>', () => {
 
     it('should trigger onClose function when modal close button is clicked', () => {
         render(<SentEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
-        const btn = screen.getByTestId('dt_send_email_template_close');
+
+        const btn: HTMLElement = screen.getByTestId('dt_send_email_template_close');
         fireEvent.click(btn);
 
         expect(onClose).toBeCalledTimes(1);
     });
 
     it('should render SentEmailModal component when isMobile is true', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         render(
             <SentEmailModal
                 identifier_title='Change_Email'
@@ -119,6 +122,7 @@ describe('<SentEmailModal/>', () => {
                 onClickSendEmail={onClickSendEmail}
             />
         );
+
         fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
 
         expect(screen.getByText(/live chat/i)).toBeInTheDocument();
@@ -134,6 +138,7 @@ describe('<SentEmailModal/>', () => {
                 onClickSendEmail={onClickSendEmail}
             />
         );
+
         fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
         fireEvent.click(screen.getByText(/live chat/i));
 
@@ -150,6 +155,7 @@ describe('<SentEmailModal/>', () => {
                 onClickSendEmail={onClickSendEmail}
             />
         );
+
         fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
         fireEvent.click(screen.getByRole('button', { name: /resend email/i }));
 

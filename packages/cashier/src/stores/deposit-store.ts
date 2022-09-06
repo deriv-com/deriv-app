@@ -4,7 +4,7 @@ import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
 
 export default class DepositStore {
-    constructor({ WS, root_store }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         this.root_store = root_store;
         this.WS = WS;
     }

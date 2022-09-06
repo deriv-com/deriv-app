@@ -5,11 +5,17 @@ import { TRootStore } from 'Types';
 type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
 export default class IframeStore {
-    constructor({ WS, root_store }) {
+    constructor(public root_store: TRootStore) {
         this.root_store = root_store;
-        this.WS = WS;
     }
 
+    @observable iframe_height = 0;
+    @observable iframe_url = '';
+    @observable is_session_timeout = true;
+    onIframeLoaded: TOnIframeLoadedCallback | null = null;
+    @observable timeout_session: NodeJS.Timeout | null = null;
+
+    @action.bound
     setSessionTimeout(is_session_time_out: boolean): void {
         this.is_session_timeout = is_session_time_out;
         if (is_session_time_out) {

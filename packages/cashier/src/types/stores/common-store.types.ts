@@ -1,5 +1,5 @@
 export type TCommonStore = {
-    platform: string;
     is_from_derivgo: boolean;
+    platform: string;
     routeTo: (pathname: string) => void;
 };

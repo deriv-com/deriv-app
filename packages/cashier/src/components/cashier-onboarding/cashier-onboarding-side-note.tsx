@@ -39,7 +39,7 @@ const CashierOnboardingSideNote = ({
                     <span
                         key={0}
                         className='link link--orange cashier-onboarding-side-note__text-nowrap'
-                        onClick={() => (window as any).LC_API.open_chat_window()}
+                        onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
                 values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}

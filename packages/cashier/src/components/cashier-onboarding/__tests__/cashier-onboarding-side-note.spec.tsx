@@ -2,6 +2,14 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
 
+declare global {
+    interface Window {
+        LC_API: {
+            open_chat_window: VoidFunction;
+        };
+    }
+}
+
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
@@ -19,14 +27,14 @@ describe('<CashierOnboardingSideNote />', () => {
     });
 
     it('should trigger onClick callback when the client clicks the "live chat" link', () => {
-        (window as any).LC_API = {
+        window.LC_API = {
             open_chat_window: jest.fn(),
         };
         render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
 
         const live_chat_link = screen.getByText('live chat');
         fireEvent.click(live_chat_link);
-        expect((window as any).LC_API.open_chat_window).toHaveBeenCalledTimes(1);
+        expect(window.LC_API.open_chat_window).toHaveBeenCalledTimes(1);
     });
 
     it('should show the proper messages when is_crypto is true', () => {

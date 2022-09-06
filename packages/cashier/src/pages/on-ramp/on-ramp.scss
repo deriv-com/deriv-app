@@ -61,7 +61,7 @@
         &-description {
             grid-area: description;
             width: 390px;
-            height: 60px;
+            min-height: 60px;
 
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
             @media (max-width: 926px) {

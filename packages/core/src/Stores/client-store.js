@@ -132,6 +132,8 @@ export default class ClientStore extends BaseStore {
     @observable is_cfd_poi_completed = false;
     @observable is_financial_information_not_complete = false;
 
+    @observable cfd_score = 0;
+
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {

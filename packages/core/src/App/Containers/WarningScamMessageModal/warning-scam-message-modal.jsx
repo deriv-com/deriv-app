@@ -5,11 +5,11 @@ import WarningScamMessageTitle from './warning-scam-message-title';
 import WarningScamMessageContent from './warning-scam-message-content';
 import WarningScamMessageCheckbox from './warning-scam-message-checkbox-content';
 
-const WarningScamMessageModal = ({ acknowledgeMessage, setLocalStorage, is_message_read }) => (
+const WarningScamMessageModal = ({ acknowledgeMessage, setLocalStorage, is_message_read, is_dark_mode_on }) => (
     <div className='warning-scam-message'>
         <div className='warning-scam-message--content'>
             <WarningScamMessageTitle />
-            <WarningScamMessageContent />
+            <WarningScamMessageContent is_dark_mode_on={is_dark_mode_on} />
             <WarningScamMessageCheckbox acknowledgeMessage={acknowledgeMessage} />
             <Button
                 primary

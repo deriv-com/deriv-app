@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
 
-const WarningScamMessage = ({ is_logged_in, client_country }) => {
+const WarningScamMessage = ({ is_logged_in, client_country, is_dark_mode_on }) => {
     const [is_message_read, setIsMessageRead] = React.useState(false);
     const [is_read, setIsRead] = React.useState(localStorage.getItem('readScamMessage') || false);
 
@@ -17,7 +17,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
         localStorage.setItem('readScamMessage', is_read);
     };
 
-    if (is_logged_in && client_country === 'my' && !is_read) {
+    if (is_logged_in && client_country === 'br' && !is_read) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
@@ -32,6 +32,7 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
                             acknowledgeMessage={acknowledgeMessage}
                             setLocalStorage={setLocalStorage}
                             is_message_read={!is_message_read}
+                            is_dark_mode_on={is_dark_mode_on}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -59,9 +60,11 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
 WarningScamMessage.propTypes = {
     client_country: PropTypes.string,
     is_logged_in: PropTypes.bool,
+    is_dark_mode_on: PropTypes.bool,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     client_country: client.website_status.clients_country,
     is_logged_in: client.is_logged_in,
+    is_dark_mode_on: ui.is_dark_mode_on,
 }))(withRouter(WarningScamMessage));

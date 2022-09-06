@@ -8,6 +8,6 @@ module.exports = {
         },
     },
     rules: {
-        'import/no-extraneous-dependencies': ['off', { devDependencies: ['__test__/**'] }],
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*'] }],
     },
 };

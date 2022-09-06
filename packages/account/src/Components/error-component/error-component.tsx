@@ -3,18 +3,21 @@ import { PageError } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 
-const defaultProps = {
-    should_show_refresh: true,
-};
-
 type TErrorComponent = {
     header: React.ReactElement;
     message: React.ReactNode;
     redirect_label: React.ReactElement;
     redirectOnClick: () => void;
-} & typeof defaultProps;
+    should_show_refresh: boolean;
+};
 
-const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, should_show_refresh }: TErrorComponent) => {
+const ErrorComponent = ({
+    header,
+    message,
+    redirect_label,
+    redirectOnClick,
+    should_show_refresh = true,
+}: Partial<TErrorComponent>) => {
     const refresh_message: string = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     return (
@@ -31,7 +34,5 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
         />
     );
 };
-
-ErrorComponent.defaultProps = defaultProps;
 
 export default ErrorComponent;

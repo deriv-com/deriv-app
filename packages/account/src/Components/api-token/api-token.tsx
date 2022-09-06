@@ -38,6 +38,7 @@ type TApiToken = {
               current: import('prop-types').Requireable<unknown>;
           }>;
     setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ws: any;
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
-import ErrorComponent from '../error-component.jsx';
+import ErrorComponent from '../error-component';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
@@ -11,7 +11,7 @@ describe('<ErrorComponent/>', () => {
         return render(<Router history={history}>{component}</Router>);
     };
     const reloadFn = () => {
-        window.location.reload(true);
+        window.location.reload();
     };
     beforeAll(() => {
         Object.defineProperty(window, 'location', {
@@ -40,7 +40,7 @@ describe('<ErrorComponent/>', () => {
     it('do not show refresh message when should_show_refresh is false', () => {
         const refreshRequestText = screen.queryByText('Please refresh this page to continue.');
         renderWithRouter(<ErrorComponent {...props} should_show_refresh={false} />);
-        expect(refreshRequestText).toBeNull();
+        expect(refreshRequestText).not.toBeInTheDocument();
     });
     it('should show default message when header message is not passed', () => {
         const header = '';
@@ -66,13 +66,9 @@ describe('<ErrorComponent/>', () => {
     });
     it('should trigger the history.listen and call the setError function when redirect button get clicked', () => {
         const redirectOnClick = jest.fn();
-        const history = createBrowserHistory();
         const setError = jest.fn();
-        render(
-            <Router history={history}>
-                <ErrorComponent {...props} buttonOnClick={redirectOnClick} setError={setError} />
-            </Router>
-        );
+        renderWithRouter(<ErrorComponent {...props} buttonOnClick={redirectOnClick} setError={setError} />);
+
         fireEvent.click(screen.getByText('testlabel'));
         if (typeof setError === 'function') {
             expect(setError).toHaveBeenCalledTimes(1);

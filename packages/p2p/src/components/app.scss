@@ -8,6 +8,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     &__barred-user {
         .dc-hint-box {
@@ -35,6 +36,10 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+
+            @include mobile {
+                overflow: hidden;
+            }
         }
 
         .dc-themed-scrollbars-wrapper li {
@@ -47,6 +52,11 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+
+            @include mobile {
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
         }
     }
     & .dc-button-menu {

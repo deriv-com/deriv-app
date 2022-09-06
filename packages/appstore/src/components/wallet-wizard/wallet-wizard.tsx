@@ -4,8 +4,8 @@ import { useStores } from 'Stores';
 import { Wizard } from '@deriv/ui';
 import { localize } from '@deriv/translations';
 import {
-    PersonalDetailsStep,
     AddressDetailsStep,
+    PersonalDetailsStep,
     TermsOfUseStep,
     WalletStep,
     SelectedWallet,
@@ -41,6 +41,7 @@ const WalletWizard = ({ close }: WalletWizardProps) => {
     const { currency } = create_wallet_state;
 
     const onComplete = () => {
+        wallet_store.setSelectedWalletName(currency);
         wallet_store.createRealWalletAccount(create_wallet_state);
         close();
     };

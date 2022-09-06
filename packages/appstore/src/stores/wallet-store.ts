@@ -18,6 +18,7 @@ export default class WalletStore extends BaseStore {
     @observable account_types: any;
     @observable real_wallet_account: any;
     @observable is_loading: any;
+    @observable selected_wallet_name: any;
 
     @computed
     get wallet_names() {
@@ -114,6 +115,11 @@ export default class WalletStore extends BaseStore {
     @action.bound
     setRealWalletAcount(real_wallet_account: any) {
         this.real_wallet_account = real_wallet_account;
+    }
+
+    @action.bound
+    setSelectedWalletName(selected_wallet_name: any) {
+        this.selected_wallet_name = selected_wallet_name;
     }
 
     @action.bound

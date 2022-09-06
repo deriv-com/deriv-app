@@ -4,7 +4,7 @@ import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { TRootStore } from 'Types';
 import { getStatus } from 'Constants/transaction-status';
 import './recent-transaction.scss';
 
@@ -132,7 +132,7 @@ const RecentTransaction = ({
     );
 };
 
-export default connect(({ modules, client }: RootStore) => ({
+export default connect(({ modules, client }: TRootStore) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     onMount: modules.cashier.transaction_history.onMount,

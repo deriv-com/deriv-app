@@ -28,7 +28,7 @@ const Unsupported = ({ country_code, ...props }) => {
         country_code,
     });
 
-    if (props.manual.status === 'pending') {
+    if (props?.manual && props.manual.status === 'pending') {
         return <UploadComplete is_from_external={true} needs_poa={false} />;
     }
 

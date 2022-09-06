@@ -279,6 +279,8 @@ const ToggleMenuDrawer = React.forwardRef(
             );
         };
 
+        const location = window.location.pathname;
+
         const getLanguageRoutes = () => {
             const currentLanguage = getLanguage();
 
@@ -341,7 +343,7 @@ const ToggleMenuDrawer = React.forwardRef(
                             )}
                             {is_pre_appstore && (
                                 <React.Fragment>
-                                    {is_logged_in ? (
+                                    {is_logged_in && location !== routes.trade && location !== routes.reports ? (
                                         <MobileDrawer.SubHeader
                                             className={classNames({
                                                 'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -390,6 +392,38 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
+                                        {is_logged_in && location === routes.trade && location === routes.reports && (
+                                            <MobileDrawer.Item className='header__menu--backtooldui--dtrader'>
+                                                <Button
+                                                    className={classNames({
+                                                        'header__menu--back-to-ui': !is_dark_mode,
+                                                        'header__menu--back-to-ui--dark': is_dark_mode,
+                                                    })}
+                                                    type='button'
+                                                    large
+                                                    onClick={() => {
+                                                        setIsPreAppStore(false);
+                                                        toggleDrawer();
+                                                    }}
+                                                >
+                                                    <Text
+                                                        className={classNames({
+                                                            'header__menu--back-to-ui-text': !is_dark_mode,
+                                                            'header__menu--back-to-ui-text--dark': is_dark_mode,
+                                                        })}
+                                                        size='xs'
+                                                    >
+                                                        {localize('Back to old interface')}
+                                                    </Text>
+                                                    <Icon
+                                                        className='header__menu-mobile-rightarrow'
+                                                        icon='IcArrowRight'
+                                                        size={18}
+                                                        color='red'
+                                                    />
+                                                </Button>
+                                            </MobileDrawer.Item>
+                                        )}
                                         {is_logged_in && (
                                             <MobileDrawer.Item>
                                                 <MenuLink
@@ -401,7 +435,17 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-
+                                        {is_logged_in && location === routes.trade && location === routes.trade && (
+                                            <MobileDrawer.Item>
+                                                <MenuLink
+                                                    link_to={routes.trade}
+                                                    icon='IcTrade'
+                                                    text={localize('Trade')}
+                                                    onClickLink={toggleDrawer}
+                                                    changeCurrentLanguage={changeCurrentLanguage}
+                                                />
+                                            </MobileDrawer.Item>
+                                        )}
                                         {primary_routes_config.map((route_config, idx) =>
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}

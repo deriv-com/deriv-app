@@ -1,14 +1,44 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
+import SideNote from 'Components/side-note';
+import { TCommonStore, TClientStore, TProviderDetails, TReactFormEvent, TRootStore } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
-import SideNote from 'Components/side-note';
 import './on-ramp.scss';
+
+type TMenuOption = {
+    count?: number;
+    default: boolean;
+    icon: string;
+    label: string;
+    value: string;
+    path: string;
+    has_side_note: boolean;
+};
+
+type TOnRampProps = {
+    filtered_onramp_providers: TProviderDetails[];
+    is_cashier_locked: boolean;
+    is_cashier_onboarding: boolean;
+    is_deposit_locked: boolean;
+    is_onramp_modal_open: boolean;
+    is_switching: TClientStore['is_switching'];
+    is_loading: boolean;
+    menu_options: TMenuOption[];
+    onMountOnramp: () => void;
+    onUnmountOnramp: () => void;
+    onramp_popup_modal_title: string;
+    resetPopup: () => void;
+    routeTo: TCommonStore['routeTo'];
+    setIsOnRampModalOpen: (set_is_on_ramp_modal_open: boolean) => void;
+    setSideNotes: (ReactComponent: React.ReactElement[]) => void;
+    should_show_dialog: boolean;
+    tab_index: number;
+};
 
 const OnRampSideNote = () => {
     const notes = [
@@ -20,6 +50,7 @@ const OnRampSideNote = () => {
 
     return <SideNote side_notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
 };
+
 const OnRampInfo = () => (
     <div className='on-ramp__info'>
         <Text color='prominent' size='s' weight='bold' className='on-ramp__info-header' as='p'>
@@ -56,7 +87,7 @@ const OnRamp = ({
     should_show_dialog,
     setSideNotes,
     tab_index,
-}) => {
+}: TOnRampProps) => {
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 
     React.useEffect(() => {
@@ -93,11 +124,12 @@ const OnRamp = ({
                 {isMobile() && (
                     <React.Fragment>
                         <SelectNative
+                            data_testid='dt_on_ramp_select_native'
                             className='on-ramp__selector'
                             list_items={getActivePaths()}
                             value={selected_cashier_path}
                             should_show_empty_option={false}
-                            onChange={e => {
+                            onChange={(e: TReactFormEvent) => {
                                 if (e.currentTarget.value !== selected_cashier_path) {
                                     setSelectedCashierPath(e.currentTarget.value);
                                 }
@@ -138,27 +170,7 @@ const OnRamp = ({
     );
 };
 
-OnRamp.propTypes = {
-    filtered_onramp_providers: PropTypes.array,
-    is_cashier_onboarding: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
-    is_deposit_locked: PropTypes.bool,
-    is_onramp_modal_open: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    menu_options: PropTypes.array,
-    onMountOnramp: PropTypes.func,
-    onUnmountOnramp: PropTypes.func,
-    onramp_popup_modal_title: PropTypes.string,
-    resetPopup: PropTypes.func,
-    routeTo: PropTypes.func,
-    setIsOnRampModalOpen: PropTypes.func,
-    setSideNotes: PropTypes.func,
-    should_show_dialog: PropTypes.bool,
-    tab_index: PropTypes.number,
-};
-
-export default connect(({ modules, common, client }) => ({
+export default connect(({ modules, common, client }: TRootStore) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_cashier_locked: modules.cashier.general_store.is_cashier_locked,

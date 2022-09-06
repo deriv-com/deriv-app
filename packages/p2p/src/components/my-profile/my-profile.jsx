@@ -1,5 +1,6 @@
 import React from 'react';
-import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
+import { AutoSizer, DesktopWrapper, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -32,11 +33,13 @@ const MyProfile = () => {
             {({ height, width }) => (
                 <div className='my-profile' height={height} style={{ width }}>
                     <div className='my-profile__content'>
-                        <MyProfileDetailsContainer />
-                        <DesktopWrapper>
-                            <MyProfileHeader />
-                        </DesktopWrapper>
-                        <MyProfileContent />
+                        <ThemedScrollbars height={height} is_scrollbar_hidden={isMobile()}>
+                            <MyProfileDetailsContainer />
+                            <DesktopWrapper>
+                                <MyProfileHeader />
+                            </DesktopWrapper>
+                            <MyProfileContent />
+                        </ThemedScrollbars>
                     </div>
                 </div>
             )}

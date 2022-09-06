@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import CryptoWithdrawForm from '../crypto-withdraw-form.jsx';
+import CryptoWithdrawForm from '../crypto-withdraw-form';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -10,7 +10,7 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('<CryptoWithdrawForm />', () => {
-    const mockProps = () => ({
+    const props = {
         account_platform_icon: 'icon',
         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
         currency: 'BTC',
@@ -23,22 +23,19 @@ describe('<CryptoWithdrawForm />', () => {
         requestWithdraw: jest.fn(),
         setBlockchainAddress: jest.fn(),
         setWithdrawPercentageSelectorResult: jest.fn(),
-    });
+    };
 
     it('component and header should be rendered', () => {
-        const props = mockProps();
-        const { container } = render(<CryptoWithdrawForm {...props} />);
+        render(<CryptoWithdrawForm {...props} />);
 
         expect(screen.getByText('Your BTC wallet address')).toBeInTheDocument();
-        expect(container.querySelector('.cashier__wrapper')).toBeInTheDocument();
-        expect(container.querySelector('.cashier__content-header')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_crypto_withdraw_form')).toBeInTheDocument();
     });
 
     it('should show a proper error if address is not provided', async () => {
-        const props = mockProps();
-        const { container } = render(<CryptoWithdrawForm {...props} />);
+        render(<CryptoWithdrawForm {...props} />);
 
-        const address_field = container.querySelector('input[name=address]');
+        const address_field = screen.getByTestId('dt_address_input');
 
         act(() => {
             fireEvent.change(address_field, { target: { value: '1' } });
@@ -52,10 +49,9 @@ describe('<CryptoWithdrawForm />', () => {
     });
 
     it('should show a proper error if provided address has less characters than needed', async () => {
-        const props = mockProps();
-        const { container } = render(<CryptoWithdrawForm {...props} />);
+        render(<CryptoWithdrawForm {...props} />);
 
-        const address_field = container.querySelector('input[name=address]');
+        const address_field = screen.getByTestId('dt_address_input');
 
         act(() => {
             fireEvent.change(address_field, { target: { value: 'address less than 25' } });
@@ -66,10 +62,9 @@ describe('<CryptoWithdrawForm />', () => {
     });
 
     it('should show a proper error if provided address has more characters than needed', async () => {
-        const props = mockProps();
-        const { container } = render(<CryptoWithdrawForm {...props} />);
+        render(<CryptoWithdrawForm {...props} />);
 
-        const address_field = container.querySelector('input[name=address]');
+        const address_field = screen.getByTestId('dt_address_input');
 
         act(() => {
             fireEvent.change(address_field, {
@@ -82,11 +77,10 @@ describe('<CryptoWithdrawForm />', () => {
     });
 
     it("requestWithdraw func should be called if value provided from 'converter_from_amount' input and withdraw button is clicked", async () => {
-        const props = mockProps();
-        const { container } = render(<CryptoWithdrawForm {...props} />);
+        render(<CryptoWithdrawForm {...props} />);
 
-        const address_field = container.querySelector('input[name=address]');
-        const converter_from_amount_field = container.querySelector('input[name=converter_from_amount]');
+        const address_field = screen.getByTestId('dt_address_input');
+        const converter_from_amount_field = screen.getByTestId('dt_converter_from_amount_input');
         const withdraw_button = screen.getByText('Withdraw');
 
         act(() => {
@@ -103,11 +97,10 @@ describe('<CryptoWithdrawForm />', () => {
     });
 
     it("requestWithdraw func should be called if value provided from 'converter_to_amount' input and withdraw button is clicked", async () => {
-        const props = mockProps();
-        const { container } = render(<CryptoWithdrawForm {...props} />);
+        render(<CryptoWithdrawForm {...props} />);
 
-        const address_field = container.querySelector('input[name=address]');
-        const converter_to_amount_field = container.querySelector('input[name=converter_to_amount]');
+        const address_field = screen.getByTestId('dt_address_input');
+        const converter_to_amount_field = screen.getByTestId('dt_converter_to_amount_input');
         const withdraw_button = screen.getByText('Withdraw');
 
         act(() => {

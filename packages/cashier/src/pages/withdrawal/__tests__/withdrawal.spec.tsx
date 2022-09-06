@@ -11,17 +11,17 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Components/cashier-container/virtual', () => () => <div>Virtual</div>);
-jest.mock('../withdrawal-locked', () => () => <div>WithdrawalLocked</div>);
-jest.mock('Components/no-balance', () => () => <div>NoBalance</div>);
-jest.mock('Components/error', () => () => <div>Error</div>);
-jest.mock('../withdraw', () => () => <div>Withdraw</div>);
-jest.mock('../crypto-withdraw-form', () => () => <div>CryptoWithdrawForm</div>);
-jest.mock('../crypto-withdraw-receipt', () => () => <div>CryptoWithdrawReceipt</div>);
-jest.mock('Components/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
-jest.mock('../withdrawal-verification-email', () => () => <div>WithdrawalVerificationEmail</div>);
-jest.mock('Components/recent-transaction', () => () => <div>RecentTransaction</div>);
+jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
+jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
+jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
+jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
+jest.mock('Components/error', () => jest.fn(() => 'Error'));
+jest.mock('../withdraw', () => jest.fn(() => 'Withdraw'));
+jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
+jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
+jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
+jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));
+jest.mock('Components/recent-transaction', () => jest.fn(() => 'RecentTransaction'));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,

@@ -1,15 +1,17 @@
 import React from 'react';
-import Content from './Content';
+import { localize } from '@deriv/translations';
+import Cards from './cards';
 
-interface DashboardProps {
-    checkIfSidebarOpen: boolean;
-    setSideBarState: (state: boolean) => void;
-}
-
-const Dashboard = (props: DashboardProps) => {
+const Dashboard = () => {
     return (
-        <div>
-            <Content />
+        <div className='dc-tabs__content_group'>
+            <span className='dc-tabs__content_group_heading'>{localize('Load or build your bot')}</span>
+            <span className='dc-tabs__content_group_description'>
+                {localize(
+                    'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
+                )}
+            </span>
+            <Cards />
         </div>
     );
 };

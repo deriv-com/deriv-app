@@ -1,10 +1,11 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import AppStore from 'Stores/app-store';
+import { connect } from 'Stores/connect';
 import WorkspaceWrapper from './workspace-wrapper';
 
 interface BotBuilderProps {
-    app: any;
+    app: AppStore;
 }
 
 const BotBuilder = ({ app }: BotBuilderProps) => {

@@ -19,6 +19,7 @@ import BlocklyStore from './blockly-store';
 import SelfExclusionStore from './self-exclusion-store';
 import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
+import DashboardStore from './dashboard-store';
 
 export default class RootStore {
     constructor(core, ws, dbot) {
@@ -47,6 +48,7 @@ export default class RootStore {
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this);
         this.self_exclusion = new SelfExclusionStore(this);
+        this.dashbaord = new DashboardStore(this);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);

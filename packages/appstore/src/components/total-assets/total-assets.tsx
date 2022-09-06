@@ -12,10 +12,10 @@ type TTotalAssets = {
 const TotalAssets = ({ amount, currency, platform }: TTotalAssets) => {
     return (
         <div className='total-assets'>
-            <Text size='sm' weight='bold' color='green' className='total-assets-amount'>
+            <Text size='sm' weight='bold' className='total-assets-amount'>
                 {formatMoney(currency, amount, true)}
             </Text>
-            <Text size='sm' weight='bold' color='green' className='total-assets-currency'>
+            <Text size='sm' weight='bold' className='total-assets-currency'>
                 {currency}
             </Text>
             <div>

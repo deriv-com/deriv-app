@@ -28,6 +28,7 @@ export default class UIStore extends BaseStore {
     @observable account_switcher_disabled_message = '';
 
     @observable has_only_forward_starting_contracts = false;
+    @observable has_read_scam_message = false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
@@ -162,6 +163,7 @@ export default class UIStore extends BaseStore {
             'is_chart_countdown_visible',
             'is_chart_layout_default',
             'is_dark_mode_on',
+            'has_read_scam_message',
             'is_positions_drawer_on',
             'is_reports_visible',
             // 'is_purchase_confirm_on',
@@ -194,6 +196,12 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
+
+    @action.bound
+    setScamMessageLocalStorage() {
+        localStorage.setItem('readScamMessage', !this.has_read_scam_message);
+        this.has_read_scam_message = localStorage.getItem('readScamMessage') || false;
+    }
 
     @action.bound
     init(notification_messages) {

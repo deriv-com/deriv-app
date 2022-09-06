@@ -9,7 +9,7 @@ import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';
 import classNames from 'classnames';
 import RunPanel from './run-panel';
-import RunStretegy from '../toolbar/runStrategy.jsx';
+import RunStretegy from '../toolbar/runStrategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 
@@ -22,7 +22,7 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     const [showSideBar, setshowSideBar] = React.useState<boolean>(true);
     const { DashBorardSteps } = JoyrideConfig;
     const [tourRun, setTourRun] = React.useState<boolean>(true);
-    const handleClick = (e: React.MouseEvent) => {
+    const handleClick = (e: any) => {
         e.preventDefault();
         setTourRun(true);
     };

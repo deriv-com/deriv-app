@@ -49,10 +49,12 @@ const P2PCashier = ({
 
         setActionParam(url_params.get('action'));
 
-        if (url_params.has('code')) {
-            setCodeParam(url_params.get('code'));
-        } else if (localStorage.getItem('verification_code.p2p_order_confirm')) {
-            setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+        if (!code_param) {
+            if (url_params.has('code')) {
+                setCodeParam(url_params.get('code'));
+            } else if (localStorage.getItem('verification_code.p2p_order_confirm')) {
+                setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+            }
         }
 
         // Different emails give us different params (order / order_id),
@@ -73,6 +75,7 @@ const P2PCashier = ({
     const setQueryOrder = React.useCallback(
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
+
             if (is_mobile) {
                 current_query_params.delete('action');
                 current_query_params.delete('code');
@@ -105,6 +108,12 @@ const P2PCashier = ({
 
                 setOrderId(input_order_id);
             }
+
+            // // This is a bit hacky but it's needed
+            // if (!is_mobile) {
+            //     current_query_params.delete('action');
+            //     current_query_params.delete('code');
+            // }
         },
         [history, location.hash, location.search, order_id]
     );

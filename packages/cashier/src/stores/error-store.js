@@ -1,38 +1,18 @@
-import { action, observable, makeObservable } from 'mobx';
+import { action, observable } from 'mobx';
 import { getPropertyValue } from '@deriv/shared';
 
 export default class ErrorStore {
-    message = '';
-    code = '';
-    fields = '';
-    is_show_full_page = false;
-    onClickButton = null;
-    is_ask_uk_funds_protection = false;
-    is_self_exclusion_max_turnover_set = false;
-    is_ask_authentication = false;
-    is_ask_financial_risk_approval = false;
+    @observable message = '';
+    @observable code = '';
+    @observable fields = '';
+    @observable is_show_full_page = false;
+    @observable onClickButton = null;
+    @observable is_ask_uk_funds_protection = false;
+    @observable is_self_exclusion_max_turnover_set = false;
+    @observable is_ask_authentication = false;
+    @observable is_ask_financial_risk_approval = false;
 
-    constructor() {
-        makeObservable(this, {
-            message: observable,
-            code: observable,
-            fields: observable,
-            is_show_full_page: observable,
-            onClickButton: observable,
-            is_ask_uk_funds_protection: observable,
-            is_self_exclusion_max_turnover_set: observable,
-            is_ask_authentication: observable,
-            is_ask_financial_risk_approval: observable,
-            setErrorMessage: action.bound,
-            handleCashierError: action.bound,
-            setMessage: action.bound,
-            setIsAskUkFundsProtection: action.bound,
-            setIsSelfExclusionMaxTurnoverSet: action.bound,
-            setIsAskAuthentication: action.bound,
-            setIsAskFinancialRiskApproval: action.bound,
-        });
-    }
-
+    @action.bound
     setErrorMessage(error, onClickButton, is_show_full_page) {
         // for errors that need to show a button, reset the form
         const error_object = {
@@ -56,6 +36,7 @@ export default class ErrorStore {
         this.is_ask_financial_risk_approval = error_object?.is_ask_financial_risk_approval;
     }
 
+    @action.bound
     handleCashierError(error) {
         switch (error.code) {
             case 'ASK_TNC_APPROVAL':
@@ -86,22 +67,27 @@ export default class ErrorStore {
         }
     }
 
+    @action.bound
     setMessage(value) {
         this.message = value;
     }
 
+    @action.bound
     setIsAskUkFundsProtection(value) {
         this.is_ask_uk_funds_protection = value;
     }
 
+    @action.bound
     setIsSelfExclusionMaxTurnoverSet(value) {
         this.is_self_exclusion_max_turnover_set = value;
     }
 
+    @action.bound
     setIsAskAuthentication(value) {
         this.is_ask_authentication = value;
     }
 
+    @action.bound
     setIsAskFinancialRiskApproval(value) {
         this.is_ask_financial_risk_approval = value;
     }

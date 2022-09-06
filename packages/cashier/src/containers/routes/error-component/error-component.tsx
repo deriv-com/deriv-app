@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { TCommonStore } from 'Types';
 
 const ErrorComponent = ({
     header,
@@ -14,7 +14,7 @@ const ErrorComponent = ({
     setError,
     redirect_to = routes.trade,
     should_show_refresh = true,
-}) => {
+}: TCommonStore['error']) => {
     const history = useHistory();
 
     React.useEffect(() => {
@@ -53,18 +53,6 @@ const ErrorComponent = ({
             setError={setError}
         />
     );
-};
-
-ErrorComponent.propTypes = {
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    redirect_label: PropTypes.string,
-    redirect_to: PropTypes.string,
-    redirectOnClick: PropTypes.func,
-    setError: PropTypes.func,
-    should_clear_error_on_click: PropTypes.bool,
-    should_show_refresh: PropTypes.bool,
-    type: PropTypes.string,
 };
 
 export default ErrorComponent;

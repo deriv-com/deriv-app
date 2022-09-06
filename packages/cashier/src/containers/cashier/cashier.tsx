@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import {
     Button,
@@ -11,12 +11,49 @@ import {
     VerticalTab,
     Loading,
 } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
-import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
 import AccountPromptDialog from 'Components/account-prompt-dialog';
 import ErrorDialog from 'Components/error-dialog';
+import { connect } from 'Stores/connect';
+import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from 'Types';
 import './cashier.scss';
+
+type TCashierProps = RouteComponentProps & {
+    error: TError;
+    is_account_transfer_visible: boolean;
+    is_account_setting_loaded: TClientStore['is_account_setting_loaded'];
+    is_cashier_onboarding: boolean;
+    is_crypto: boolean;
+    is_crypto_transactions_visible: boolean;
+    is_loading: boolean;
+    is_logged_in: TClientStore['is_logged_in'];
+    is_logging_in: TClientStore['is_logging_in'];
+    is_from_derivgo: TCommonStore['is_from_derivgo'];
+    is_onramp_tab_visible: boolean;
+    is_p2p_enabled: boolean;
+    is_payment_agent_transfer_visible: boolean;
+    is_payment_agent_visible: boolean;
+    is_visible: TUiStore['is_cashier_visible'];
+    p2p_notification_count: number;
+    routes: TRoute[];
+    tab_index: number;
+    onMount: (should_remount?: boolean) => void;
+    setAccountSwitchListener: () => void;
+    setTabIndex: (index: number) => void;
+    routeBackInApp: TCommonStore['routeBackInApp'];
+    toggleCashier: TUiStore['toggleCashier'];
+};
+
+type TCashierOptions = {
+    count?: number;
+    default?: boolean;
+    has_side_note: boolean;
+    icon?: string;
+    label: string;
+    path?: string;
+    value: TRoute['component'];
+};
 
 const Cashier = ({
     error,
@@ -45,7 +82,7 @@ const Cashier = ({
     setTabIndex,
     tab_index,
     toggleCashier,
-}) => {
+}: TCashierProps) => {
     React.useEffect(() => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
@@ -65,7 +102,7 @@ const Cashier = ({
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
-        const options = [];
+        const options: TCashierOptions[] = [];
         routes_config.forEach(route => {
             if (
                 !route.is_invisible &&
@@ -179,36 +216,7 @@ const Cashier = ({
     );
 };
 
-Cashier.propTypes = {
-    error: PropTypes.object,
-    history: PropTypes.object,
-    is_account_transfer_visible: PropTypes.bool,
-    is_account_setting_loaded: PropTypes.bool,
-    is_cashier_onboarding: PropTypes.bool,
-    is_crypto: PropTypes.bool,
-    is_crypto_transactions_visible: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    location: PropTypes.object,
-    onMount: PropTypes.func,
-    p2p_notification_count: PropTypes.number,
-    routeBackInApp: PropTypes.func,
-    routes: PropTypes.arrayOf(PropTypes.object),
-    setAccountSwitchListener: PropTypes.func,
-    setTabIndex: PropTypes.func,
-    tab_index: PropTypes.number,
-    toggleCashier: PropTypes.func,
-};
-
-export default connect(({ client, common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }: TRootStore) => ({
     error: modules.cashier.withdraw.error,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,

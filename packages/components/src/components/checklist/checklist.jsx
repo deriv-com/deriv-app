@@ -19,8 +19,8 @@ const ItemStatus = ({ status, onClick, button_text }) => {
             return (
                 <div
                     className='dc-checklist__item-status--action'
-                    onClick={onClick}
                     data-testid='dt_checklist_item_status_action'
+                    onClick={onClick}
                 >
                     <Icon icon='IcArrowRightBold' color='active' />
                 </div>

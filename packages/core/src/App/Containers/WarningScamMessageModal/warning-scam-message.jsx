@@ -19,7 +19,7 @@ const WarningScamMessage = ({
     const acknowledgeMessage = () => setIsMessageRead(!is_message_read);
 
     /* Check whether the account is logged_in, and client from country 'br' = Brazil, and have not yet read the scam message warning pop up */
-    if (is_logged_in && client_country === 'my' && !has_read_scam_message) {
+    if (is_logged_in && client_country === 'br' && !has_read_scam_message) {
         return (
             <React.Fragment>
                 <DesktopWrapper>

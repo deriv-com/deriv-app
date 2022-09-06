@@ -85,7 +85,7 @@ const AppModals = ({
         ComponentToLoad = <CloseUKAccountModal />;
     }
 
-    if (is_logged_in && client_country === 'my' && !has_read_scam_message) {
+    if (is_logged_in && client_country === 'br' && !has_read_scam_message) {
         ComponentToLoad = <WarningScamMessageModal />;
     }
 

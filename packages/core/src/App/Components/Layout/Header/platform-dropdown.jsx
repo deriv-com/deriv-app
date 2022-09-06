@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
+import { routes, isDesktop, isMobile, getActivePlatform, PlatformContext, getPlatformSettings } from '@deriv/shared';
 
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
@@ -35,6 +35,49 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
             closeDrawer();
         }
     };
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+    const getPlatformDropdownContent = platform => {
+        let platform_dropdown_content;
+        if (is_pre_appstore) {
+            if (
+                platform.name !== getPlatformSettings('mt5').name &&
+                platform.name !== getPlatformSettings('dxtrade').name
+            ) {
+                platform_dropdown_content = platform.link_to ? (
+                    <BinaryLink
+                        to={platform.link_to}
+                        // This is here because in routes-config it needs to have children, but not in menu
+                        exact={platform.link_to === routes.trade}
+                        className='platform-dropdown__list-platform'
+                        isActive={() => getActivePlatform(app_routing_history) === platform.name}
+                    >
+                        <PlatformBox platform={platform} />
+                    </BinaryLink>
+                ) : (
+                    <a href={platform.href} className='platform-dropdown__list-platform'>
+                        <PlatformBox platform={platform} />
+                    </a>
+                );
+            }
+        } else {
+            platform_dropdown_content = platform.link_to ? (
+                <BinaryLink
+                    to={platform.link_to}
+                    // This is here because in routes-config it needs to have children, but not in menu
+                    exact={platform.link_to === routes.trade}
+                    className='platform-dropdown__list-platform'
+                    isActive={() => getActivePlatform(app_routing_history) === platform.name}
+                >
+                    <PlatformBox platform={platform} />
+                </BinaryLink>
+            ) : (
+                <a href={platform.href} className='platform-dropdown__list-platform'>
+                    <PlatformBox platform={platform} />
+                </a>
+            );
+        }
+        return platform_dropdown_content;
+    };
 
     useOnClickOutside(ref, handleClickOutside, () => isDesktop());
 
@@ -43,21 +86,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
                 {platform_config.map((platform, idx) => (
                     <div key={idx} onClick={closeDrawer} ref={ref}>
-                        {platform.link_to ? (
-                            <BinaryLink
-                                to={platform.link_to}
-                                // This is here because in routes-config it needs to have children, but not in menu
-                                exact={platform.link_to === routes.trade}
-                                className='platform-dropdown__list-platform'
-                                isActive={() => getActivePlatform(app_routing_history) === platform.name}
-                            >
-                                <PlatformBox platform={platform} />
-                            </BinaryLink>
-                        ) : (
-                            <a href={platform.href} className='platform-dropdown__list-platform'>
-                                <PlatformBox platform={platform} />
-                            </a>
-                        )}
+                        {getPlatformDropdownContent(platform)}
                     </div>
                 ))}
             </Div100vhContainer>

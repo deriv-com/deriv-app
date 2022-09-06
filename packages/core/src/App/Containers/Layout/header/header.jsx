@@ -17,7 +17,7 @@ const Header = () => {
         return <DashboardHeader />;
     } else if (is_pre_appstore) {
         const location = window.location.pathname;
-        if (location === routes.trading_hub || location === routes.cashier || location === routes.account)
+        if (location === routes.trading_hub || location === routes.cashier_deposit || location === routes.account)
             return <TradingHubHeader />;
         if (location === routes.trade) {
             return <DTraderHeader />;

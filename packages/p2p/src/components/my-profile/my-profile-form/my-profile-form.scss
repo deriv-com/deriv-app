@@ -1,4 +1,8 @@
 .my-profile-form {
+    @include mobile {
+        overflow: hidden;
+    }
+
     .dc-input {
         margin-bottom: unset;
 

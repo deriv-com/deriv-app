@@ -58,12 +58,17 @@ export default class NotificationStore extends BaseStore {
             ],
             async () => {
                 if (
+                    root_store.client.is_logged_in &&
+                    Object.keys(root_store.client.account_status).length > 0 &&
+                    Object.keys(root_store.client.landing_companies).length > 0
+                )
+                    await root_store.modules?.cashier?.general_store?.getP2pCompletedOrders();
+
+                if (
                     !root_store.client.is_logged_in ||
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
-                    await root_store.modules?.cashier?.general_store?.getP2pCompletedOrders();
-
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();

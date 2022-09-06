@@ -35,7 +35,14 @@ const CloseUKAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
 );
 
+const WarningScamMessageModal = React.lazy(() =>
+    import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
+);
+
+const is_read = localStorage.getItem('readScamMessage') || false;
+
 const AppModals = ({
+    client_country,
     is_account_needed_modal_on,
     is_welcome_modal_visible,
     is_reality_check_visible,
@@ -79,6 +86,10 @@ const AppModals = ({
         ComponentToLoad = <CloseUKAccountModal />;
     }
 
+    if (is_logged_in && client_country === 'my' && !is_read) {
+        ComponentToLoad = <WarningScamMessageModal />;
+    }
+
     if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     }
@@ -104,6 +115,7 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui }) => ({
+    client_country: client.website_status.clients_country,
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,

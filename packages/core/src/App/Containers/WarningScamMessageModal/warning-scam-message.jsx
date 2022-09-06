@@ -63,4 +63,5 @@ WarningScamMessage.propTypes = {
 
 export default connect(({ client }) => ({
     client_country: client.website_status.clients_country,
+    is_logged_in: client.is_logged_in,
 }))(withRouter(WarningScamMessage));

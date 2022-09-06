@@ -9,6 +9,7 @@ type TOptionsAccountprops = {
     account_number?: string;
     account_balance?: string;
     account_button?: string;
+    currency?: string;
 };
 
 const OptionsAccount = ({
@@ -17,6 +18,7 @@ const OptionsAccount = ({
     account_number,
     account_balance,
     account_button,
+    currency,
 }: TOptionsAccountprops) => {
     return (
         <div className='account__container'>
@@ -35,12 +37,16 @@ const OptionsAccount = ({
 
                 <Text className='account__container--account-details-wrapper--balance'>
                     <Localize i18n_default_text={account_balance} />
+                    {currency}
                 </Text>
             </div>
             <div className='account__container--account-reset-button'>
                 <Text className='account__container--account-reset-button--label'>
                     <Localize i18n_default_text={account_button} />
                 </Text>
+            </div>
+            <div className='account__container--dropdown'>
+                <WalletIcon icon={'DropDown'} />
             </div>
         </div>
     );

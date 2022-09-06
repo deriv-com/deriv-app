@@ -7,16 +7,24 @@
     position: relative;
     width: 24rem;
     height: 7.2rem;
-    background: #f2f3f4;
+    background: $color-grey-2;
     border-radius: 0.6rem 0.6rem 0 0;
     @include mobile {
-        padding: 0.8rem 1.6rem 0.8rem 0.8rem;
+        padding: 0.8rem;
         gap: 0.4rem;
         isolation: isolate;
-        width: 19rem;
+        width: 22rem;
         height: 6.2rem;
-        background: linear-gradient(0deg, #f2f3f4, #f2f3f4), #ffffff;
+        background: linear-gradient(0deg, $color-grey-2, $color-grey-2), #ffffff;
         border-radius: 0.4rem 0.4rem 0 0;
+    }
+    &--dropdown {
+        @include mobile {
+            height: 6rem;
+            position: absolute;
+            right: 0.8rem;
+            top: 3.3rem;
+        }
     }
     &--icon {
         width: 6.4rem;
@@ -46,9 +54,8 @@
                 font-weight: 700;
                 font-size: 1.2rem;
                 line-height: 1.8rem;
-                color: #333333;
+                color: $color-black-1;
                 @include mobile {
-                    width: 2.8rem;
                     height: 1.4rem;
                 }
             }
@@ -59,7 +66,7 @@
                 font-weight: 400;
                 font-size: 1rem;
                 line-height: 1.4rem;
-                color: #999999;
+                color: $color-grey-1;
                 @include mobile {
                     width: 5.4rem;
                     height: 1.2rem;
@@ -76,7 +83,7 @@
             font-weight: 700;
             font-size: 1.6rem;
             line-height: 2.4rem;
-            color: #333333;
+            color: $color-black-1;
             @include mobile {
                 width: 9.9rem;
                 height: 2rem;
@@ -97,12 +104,13 @@
         height: 2.4rem;
         right: 0.8rem;
         top: 0.8rem;
-        border: 0.1rem solid #999999;
+        border: 0.1rem solid $color-grey-1;
         border-radius: 0.4rem;
         @include mobile {
             top: 0.8rem;
-            border: 0.1rem solid #999999;
+            border: 0.1rem solid $color-grey-1;
             border-radius: 0.4rem;
+            right: 3.8rem;
         }
         &--label {
             width: 4.5rem;
@@ -112,7 +120,7 @@
             font-size: 1.2rem;
             line-height: 1.8rem;
             text-align: center;
-            color: #333333;
+            color: $color-black-1;
         }
     }
 }

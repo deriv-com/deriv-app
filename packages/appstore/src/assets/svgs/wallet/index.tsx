@@ -97,6 +97,7 @@ import ZingpayDark from 'Assets/svgs/wallet/zingpay-dark.svg';
 import ZingpayLight from 'Assets/svgs/wallet/zingpay-light.svg';
 import CurrencyUSD from 'Assets/svgs/wallet/currency-usd.svg';
 import Demo from 'Assets/svgs/wallet/ic-brand-demo.svg';
+import DropDown from 'Assets/svgs/wallet/drop-down.svg';
 
 const Icons = {
     '1foryouDark': OneforyouDark,
@@ -197,6 +198,7 @@ const Icons = {
     ZingpayLight,
     CurrencyUSD,
     Demo,
+    DropDown,
 };
 
 const WalletIcon = ({ icon, className }: { icon: string; className?: string }) => {

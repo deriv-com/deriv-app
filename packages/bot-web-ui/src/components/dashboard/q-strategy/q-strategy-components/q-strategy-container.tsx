@@ -12,7 +12,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         duration_unit_dropdown,
         types_strategies_dropdown,
         getSizeDesc,
-        initial_errors,
         initial_values,
         is_onscreen_keyboard_active,
         is_mobile,
@@ -21,7 +20,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         onChangeInputValue,
         onHideDropdownList,
         onScrollStopDropdownList,
-        validateQuickStrategy,
         selected_symbol,
         selected_trade_type,
         setCurrentFocus,
@@ -48,7 +46,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
                 duration_unit_dropdown={duration_unit_dropdown}
                 types_strategies_dropdown={types_strategies_dropdown}
                 getSizeDesc={getSizeDesc}
-                initial_errors={initial_errors}
                 initial_values={initial_values}
                 is_onscreen_keyboard_active={is_onscreen_keyboard_active}
                 is_stop_button_visible={is_stop_button_visible}
@@ -56,7 +53,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
                 onChangeInputValue={onChangeInputValue}
                 onHideDropdownList={onHideDropdownList}
                 onScrollStopDropdownList={onScrollStopDropdownList}
-                validateQuickStrategy={validateQuickStrategy}
                 symbol_dropdown={symbol_dropdown_options}
                 trade_type_dropdown={trade_type_dropdown_options}
                 is_mobile={is_mobile}

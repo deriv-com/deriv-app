@@ -1,10 +1,22 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TProviderDetails, TRootStore, TUiStore } from 'Types';
 
-const OnRampProviderCard = ({ is_dark_mode_on, provider, setSelectedProvider, is_mobile }) => {
+type TOnRampProviderCardProps = {
+    is_dark_mode_on: TUiStore['is_dark_mode_on'];
+    provider: TProviderDetails;
+    setSelectedProvider: (provider: TProviderDetails) => void;
+    is_mobile: TUiStore['is_mobile'];
+};
+
+const OnRampProviderCard = ({
+    is_dark_mode_on,
+    provider,
+    setSelectedProvider,
+    is_mobile,
+}: TOnRampProviderCardProps) => {
     const payment_icons = provider.getPaymentIcons();
     const gtm_identifier = provider.name.toLowerCase().replace(' ', '-');
     const logo_size = is_mobile ? 56 : 128;
@@ -52,14 +64,7 @@ const OnRampProviderCard = ({ is_dark_mode_on, provider, setSelectedProvider, is
     );
 };
 
-OnRampProviderCard.propTypes = {
-    is_dark_mode_on: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    provider: PropTypes.object, // External prop passed by parent.
-    setSelectedProvider: PropTypes.func,
-};
-
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui }: TRootStore) => ({
     setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_mobile: ui.is_mobile,

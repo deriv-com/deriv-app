@@ -41,11 +41,11 @@ describe('AccountTransferLocked', () => {
             {
                 content: 'Complete the financial assessment form',
                 status: 'action',
-                onClick: onClick,
+                onClick,
             },
         ];
-        const wrapper = render(<Checklist className='cashier-locked__checklist' items={items} />);
-        const btn = wrapper.container.querySelector('.dc-checklist__item-status--action');
+        render(<Checklist className='cashier-locked__checklist' items={items} />);
+        const btn = screen.getByTestId('dt_checklist_item_status_action');
 
         fireEvent.click(btn);
         expect(onClick).toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('AccountTransferLocked', () => {
 
     it('Should show the financial assessment form and redirect to account/financial-assessment when "-->" button clicked', () => {
         const history = createBrowserHistory();
-        const wrapper = render(
+        render(
             <Router history={history}>
                 <AccountTransferLocked
                     is_financial_account
@@ -62,7 +62,7 @@ describe('AccountTransferLocked', () => {
                 />
             </Router>
         );
-        const btn = wrapper.container.querySelector('.dc-checklist__item-status--action');
+        const btn = screen.getByTestId('dt_checklist_item_status_action');
         fireEvent.click(btn);
 
         expect(history.location.pathname).toBe(routes.financial_assessment);

@@ -8,18 +8,30 @@ jest.mock('Stores/connect.js', () => ({
     default: 'mockedDefaultExport',
     connect: () => Component => Component,
 }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Loading: () => <div>Loading</div>,
-    ReadMore: () => <div>ReadMore</div>,
-}));
+
+jest.mock('@deriv/components', () => {
+    return {
+        ...(jest.requireActual('@deriv/components') as any),
+        Loading: () => <div>Loading</div>,
+        ReadMore: () => <div>ReadMore</div>,
+    };
+});
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+    ...(jest.requireActual('@deriv/shared/src/utils/screen/responsive') as any),
     isMobile: jest.fn(),
 }));
-jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Pages/on-ramp/on-ramp-provider-card', () => () => <div>OnRampProviderCard</div>);
-jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => () => <div>OnRampProviderPopup</div>);
+jest.mock('Components/cashier-locked', () => {
+    const cashierLocked = () => <div>CashierLocked</div>;
+    return cashierLocked;
+});
+jest.mock('Pages/on-ramp/on-ramp-provider-card', () => {
+    const onRampProviderCard = () => <div>OnRampProviderCard</div>;
+    return onRampProviderCard;
+});
+jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
+    const onRampProviderPopup = () => <div>OnRampProviderPopup</div>;
+    return onRampProviderPopup;
+});
 
 describe('<OnRamp />', () => {
     const props = {
@@ -34,6 +46,16 @@ describe('<OnRamp />', () => {
         setIsOnRampModalOpen: jest.fn(),
         setSideNotes: jest.fn(),
         routeTo: jest.fn(),
+        menu_options: [
+            {
+                label: 'Deposit',
+                path: routes.cashier_deposit,
+            },
+            {
+                label: 'Transfer',
+                path: routes.cashier_acc_transfer,
+            },
+        ],
     };
 
     it('should render <Loading /> component', () => {
@@ -97,7 +119,7 @@ describe('<OnRamp />', () => {
     });
 
     it('should show "What is Fiat onramp?" message and render <ReadMore /> component in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
 
         render(<OnRamp {...props} />);
 
@@ -106,28 +128,18 @@ describe('<OnRamp />', () => {
     });
 
     it('should have proper menu options in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        props.menu_options = [
-            {
-                label: 'Deposit',
-                path: routes.cashier_deposit,
-            },
-            {
-                label: 'Transfer',
-                path: routes.cashier_acc_transfer,
-            },
-        ];
+        (isMobile as jest.Mock).mockReturnValue(true);
 
-        const { container } = render(<OnRamp {...props} />);
-        const select = container.querySelector('#dt_components_select-native_select-tag');
-        const labels = Array.from(select).map(option => option.label);
+        render(<OnRamp {...props} />);
+        const select = screen.getByTestId('dt_on_ramp_select_native');
+        const labels = Array.from(select as any).map((option: any) => option.label);
 
         expect(labels).toContain('Deposit');
         expect(labels).toContain('Transfer');
     });
 
     it('should trigger "routeTo" callback when the user chooses a different from "Fiat onramp" option in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         props.menu_options = [
             {
                 label: 'Deposit',
@@ -143,8 +155,8 @@ describe('<OnRamp />', () => {
             },
         ];
 
-        const { container } = render(<OnRamp {...props} />);
-        const select = container.querySelector('#dt_components_select-native_select-tag');
+        render(<OnRamp {...props} />);
+        const select = screen.getByTestId('dt_on_ramp_select_native');
 
         fireEvent.change(select, { target: { value: routes.cashier_deposit } });
 

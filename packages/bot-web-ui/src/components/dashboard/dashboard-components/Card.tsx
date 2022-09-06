@@ -11,7 +11,6 @@ interface CardProps {
 }
 
 const Card = ({ load_modal }: CardProps) => {
-    //console.log(load_modal, 'load_modal');
     const { onDriveConnect } = load_modal;
     // todo for the file input
     // const file_input_ref = React.useRef(null);
@@ -77,7 +76,6 @@ const Card = ({ load_modal }: CardProps) => {
 };
 
 export default connect((store: RootStore) => {
-    //console.log(store, 'store');
     return {
         load_modal: store.load_modal,
     };

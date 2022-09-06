@@ -22,7 +22,7 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     const [showSideBar, setshowSideBar] = React.useState<boolean>(true);
     const { DashBorardSteps } = JoyrideConfig;
     const [tourRun, setTourRun] = React.useState<boolean>(true);
-    const handleClick = (e: any) => {
+    const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
     };

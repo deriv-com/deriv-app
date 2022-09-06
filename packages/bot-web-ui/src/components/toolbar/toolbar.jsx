@@ -7,7 +7,7 @@ import SaveModal from 'Components/save-modal';
 import { tabs_title } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
-import RunStrategy from './runStrategy.jsx';
+import RunStrategy from './runStrategy.tsx';
 
 const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }) => (
     <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>

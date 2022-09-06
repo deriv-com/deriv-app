@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field as FormField, Formik, Form } from 'formik';
+import { Field as FormField, Formik, Form, FieldProps } from 'formik';
 import { Input, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
@@ -14,6 +14,7 @@ interface SearchBoxProps {
     onSearchClear: (param: (field: string, value: any, shouldValidate?: boolean | undefined) => void) => void;
     onSearchKeyUp: (param: () => void) => void;
 }
+type TFormValues = { [key: string]: string };
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }: SearchBoxProps) => (
     <div className='db-toolbox__search'>
@@ -21,7 +22,7 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
             {({ submitForm, values: { search }, setFieldValue }) => (
                 <Form>
                     <FormField name='search'>
-                        {({ field }: any) => (
+                        {({ field }: FieldProps<string, TFormValues>) => (
                             <Input
                                 {...field}
                                 className='db-toolbox__search-field'
@@ -58,7 +59,7 @@ interface ToolboxProps {
     is_mobile: boolean;
     is_search_loading: boolean;
     is_toolbox_open: boolean;
-    onMount: (param?: any) => void;
+    onMount: (param?: React.RefObject<typeof ToolboxItems>) => void;
     onSearch: () => void;
     onSearchBlur: () => void;
     onSearchClear: () => void;
@@ -66,7 +67,7 @@ interface ToolboxProps {
     onToolboxItemClick: () => void;
     onToolboxItemExpand: (index: number) => void;
     onUnmount: () => void;
-    sub_category_index: any[];
+    sub_category_index: any;
     toggleDrawer: () => void;
     toolbox_dom: React.ReactElement[];
 }
@@ -121,7 +122,6 @@ const Toolbox = ({
                     />
                     <div className='db-toolbox__category-menu'>
                         {toolbox_dom &&
-                            // eslint-disable-next-line consistent-return
                             Array.from(toolbox_dom.childNodes).map((category, index) => {
                                 if (category.tagName.toUpperCase() === 'CATEGORY') {
                                     const has_sub_category = hasSubCategory(category.children);
@@ -178,6 +178,7 @@ const Toolbox = ({
                                         </div>
                                     );
                                 }
+                                return null;
                             })}
                     </div>
                 </div>

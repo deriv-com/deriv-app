@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 type TOptionsAccountprops = {
     account_icon: string;
@@ -37,7 +38,7 @@ const OptionsAccount = ({
 
                 <Text className='account__container--account-details-wrapper--balance'>
                     <Localize i18n_default_text={account_balance} />
-                    {currency}
+                    {` ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>
             <div className='account__container--account-reset-button'>

@@ -9,12 +9,13 @@ import NetworkStatus, {
     HelpCentre,
     RegulatoryInformation,
     ResponsibleTrading,
+    ToggleSettings,
     ToggleFullScreen,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
-import { isBot } from '@deriv/shared';
+import { isBot, routes } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 
@@ -32,13 +33,18 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 };
 
 const TradingHubFooter = ({
+    enableApp,
     footer_extensions,
     is_app_disabled,
     is_eu,
     is_logged_in,
     is_route_modal_on,
+    is_settings_modal_on,
     is_virtual,
+    disableApp,
     landing_company_shortcode,
+    toggleSettingsModal,
+    settings_extension,
     setDarkMode,
     is_dark_mode,
 }) => {
@@ -59,6 +65,8 @@ const TradingHubFooter = ({
         setDarkMode(false);
     };
 
+    const location = window.location.pathname;
+
     return (
         <footer
             className={classNames('footer', {
@@ -70,31 +78,70 @@ const TradingHubFooter = ({
                     {footer_extensions_left.map(FooterExtensionRenderer)}
                 </div>
             )}
-            <EndpointNote />
-            <NetworkStatus />
-            <FooterIconSeparator />
-            <ServerTime />
-            <FooterIconSeparator />
-            <div className='footer__links'>
-                {footer_extensions_right.map(FooterExtensionRenderer)}
-                <LiveChat />
-                <GoToDeriv />
-                <ResponsibleTrading />
-                {is_logged_in && <AccountLimitsFooter />}
-                {is_logged_in && !is_virtual && (
-                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
-                )}
-                <div className='footer__links--dark-mode'>
-                    {is_dark_mode ? (
-                        <LightModeToggleIcon onClick={lightOnClick} />
-                    ) : (
-                        <DarkModeToggleIcon onClick={darkOnClick} />
-                    )}
-                </div>
-                <FooterIconSeparator />
-                <HelpCentre />
-                <ToggleFullScreen />
-            </div>
+            {location === routes.trade ? (
+                <>
+                    <EndpointNote />
+                    <NetworkStatus />
+                    <FooterIconSeparator />
+                    <ServerTime />
+                    <FooterIconSeparator />
+                    <div className='footer__links'>
+                        {footer_extensions_right.map(FooterExtensionRenderer)}
+                        <GoToDeriv />
+                        <ResponsibleTrading />
+                        {is_logged_in && <AccountLimitsFooter />}
+                        {is_logged_in && !is_virtual && (
+                            <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
+                        )}
+                        <FooterIconSeparator />
+                        <LiveChat />
+                        <HelpCentre />
+                        <div className='footer__links--dark-mode'>
+                            {is_dark_mode ? (
+                                <LightModeToggleIcon onClick={lightOnClick} />
+                            ) : (
+                                <DarkModeToggleIcon onClick={darkOnClick} />
+                            )}
+                        </div>
+                        <ToggleSettings
+                            is_settings_visible={is_settings_modal_on}
+                            toggleSettings={toggleSettingsModal}
+                            disableApp={disableApp}
+                            enableApp={enableApp}
+                            settings_extension={settings_extension}
+                        />
+                        <ToggleFullScreen />
+                    </div>
+                </>
+            ) : (
+                <>
+                    <EndpointNote />
+                    <NetworkStatus />
+                    <FooterIconSeparator />
+                    <ServerTime />
+                    <FooterIconSeparator />
+                    <div className='footer__links'>
+                        {footer_extensions_right.map(FooterExtensionRenderer)}
+                        <LiveChat />
+                        <GoToDeriv />
+                        <ResponsibleTrading />
+                        {is_logged_in && <AccountLimitsFooter />}
+                        {is_logged_in && !is_virtual && (
+                            <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
+                        )}
+                        <div className='footer__links--dark-mode'>
+                            {is_dark_mode ? (
+                                <LightModeToggleIcon onClick={lightOnClick} />
+                            ) : (
+                                <DarkModeToggleIcon onClick={darkOnClick} />
+                            )}
+                        </div>
+                        <FooterIconSeparator />
+                        <HelpCentre />
+                        <ToggleFullScreen />
+                    </div>
+                </>
+            )}
         </footer>
     );
 };
@@ -103,10 +150,15 @@ TradingHubFooter.propTypes = {
     is_app_disabled: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
+    is_settings_modal_on: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
+    toggleSettingsModal: PropTypes.func,
+    settings_extension: PropTypes.array,
     is_virtual: PropTypes.bool,
     is_eu: PropTypes.bool,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     footer_extensions: PropTypes.array,
     is_dark_mode: PropTypes.bool,
     setDarkMode: PropTypes.func,
@@ -114,14 +166,19 @@ TradingHubFooter.propTypes = {
 
 export default withRouter(
     connect(({ client, ui }) => ({
+        enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
+        settings_extension: ui.settings_extension,
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
         is_eu: client.is_eu,
         is_loading: ui.is_loading,
+        is_settings_modal_on: ui.is_settings_modal_on,
         is_virtual: client.is_virtual,
         landing_company_shortcode: client.landing_company_shortcode,
+        disableApp: ui.disableApp,
+        toggleSettingsModal: ui.toggleSettingsModal,
         is_dark_mode: ui.is_dark_mode_on,
         setDarkMode: ui.setDarkMode,
     }))(TradingHubFooter)

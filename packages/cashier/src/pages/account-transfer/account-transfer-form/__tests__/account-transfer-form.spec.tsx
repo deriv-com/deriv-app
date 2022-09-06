@@ -21,6 +21,8 @@ describe('<AccountTransferForm />', () => {
         document.body.appendChild(modal_root_el);
     });
     afterAll(() => {
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
         document.body.removeChild(modal_root_el);
     });
     const mockProps = () => ({
@@ -40,6 +42,10 @@ describe('<AccountTransferForm />', () => {
                 mt5: {},
             },
         },
+        error: {
+            code: 'testCode',
+            message: 'testMessage',
+        },
         minimum_fee: '0',
         mt5_login_list: [
             {
@@ -53,8 +59,8 @@ describe('<AccountTransferForm />', () => {
                 },
             },
         ],
-        selected_from: { currency: 'USD', is_mt: false },
-        selected_to: { currency: 'USD', is_mt: false },
+        selected_from: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
+        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
         transfer_fee: 2,
         transfer_limit: {
             min: 0,
@@ -64,14 +70,16 @@ describe('<AccountTransferForm />', () => {
         resetConverter: jest.fn(),
         recentTransactionOnMount: jest.fn(),
         requestTransferBetweenAccounts: jest.fn(),
+        setErrorMessage: jest.fn(),
+        setAccountTransferAmount: jest.fn(),
     });
 
     it('component should be rendered', () => {
         const props = mockProps();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        expect(container.querySelector('.account-transfer-form__wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
         expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
     });
 
@@ -79,22 +87,22 @@ describe('<AccountTransferForm />', () => {
         const props = mockProps();
         props.accounts_list = [];
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        expect(container.querySelector('.cashier__loader-wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_cashier_loader_wrapper')).toBeInTheDocument();
     });
 
     it('should show <Form /> component if account_list.length > 0', () => {
         const props = mockProps();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
         expect(screen.getByText('From')).toBeInTheDocument();
         expect(screen.getByText('To')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__drop-down-wrapper')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__drop-down')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__drop-down--to-dropdown')).toBeInTheDocument();
-        expect(container.querySelector('.account-transfer-form__form-submit')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_drop_down_wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_drop_down')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_to_dropdown')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_submit')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer' })).toBeInTheDocument();
     });
 
@@ -103,13 +111,11 @@ describe('<AccountTransferForm />', () => {
         props.setErrorMessage = jest.fn();
         props.setAccountTransferAmount = jest.fn();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        const amount_field = container.querySelector('input[name=amount]');
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
-
-        fireEvent.change(amount_field, { target: { value: '1' } });
-        fireEvent.change(amount_field, { target: { value: '' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '' } });
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('This field is required.')).toBeInTheDocument();
@@ -123,16 +129,17 @@ describe('<AccountTransferForm />', () => {
         props.setAccountTransferAmount = jest.fn();
         props.selected_from.balance = 100;
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '200' } });
-        fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
+        const submit_button = screen.getByRole('button', { name: 'Transfer' });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '200' } });
+        fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.accounts_list[0].is_mt = true;
         props.selected_from.is_mt = true;
@@ -140,9 +147,9 @@ describe('<AccountTransferForm />', () => {
         props.setAccountTransferAmount = jest.fn();
         props.setErrorMessage = jest.fn();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        fireEvent.change(container.querySelector('input[name=amount]'), { target: { value: '100' } });
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
         expect(props.requestTransferBetweenAccounts).not.toHaveBeenCalled();
@@ -151,9 +158,9 @@ describe('<AccountTransferForm />', () => {
     it('should show input if same currency', () => {
         const props = mockProps();
 
-        const { container } = render(<AccountTransferForm {...props} />);
+        render(<AccountTransferForm {...props} />);
 
-        expect(container.querySelector('.account-transfer-form__input')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_transfer_form_input')).toBeInTheDocument();
     });
 
     it("should show 'Please verify your identity' error if error.code is Fiat2CryptoTransferOverLimit", () => {
@@ -181,7 +188,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show <AccountTransferNote /> component', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
 
         render(<AccountTransferForm {...props} />);
@@ -195,10 +202,12 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about mt5 remained transfers', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.account_limits = {
             daily_transfers: {
+                dxtrade: {},
+                internal: {},
                 mt5: {
                     available: 1,
                 },
@@ -213,17 +222,21 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about dxtrade remained transfers', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.account_limits = {
             daily_transfers: {
                 dxtrade: {
                     available: 1,
                 },
+                internal: {},
+                mt5: {},
             },
         };
-        props.selected_from = { is_dxtrade: true, currency: 'USD' };
-        props.selected_to = { is_dxtrade: true, currency: 'USD' };
+        props.selected_from.is_dxtrade = true;
+        props.selected_from.currency = 'USD';
+        props.selected_to.is_dxtrade = true;
+        props.selected_to.currency = 'USD';
 
         render(<AccountTransferForm {...props} />);
 
@@ -231,13 +244,15 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about internal remained transfers', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.account_limits = {
             daily_transfers: {
+                dxtrade: {},
                 internal: {
                     available: 1,
                 },
+                mt5: {},
             },
         };
 
@@ -247,10 +262,12 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
-        props.selected_from = { currency: 'BTC', is_crypto: true };
-        props.selected_to = { currency: 'BTC', is_crypto: true };
+        props.selected_from.is_crypto = true;
+        props.selected_from.currency = 'BTC';
+        props.selected_to.is_crypto = true;
+        props.selected_to.currency = 'BTC';
         props.transfer_fee = 2;
 
         render(<AccountTransferForm {...props} />);
@@ -263,7 +280,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper note if transfer fee is 2%, is_mt_transfer, and is_dxtrade_allowed is false', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.selected_from.is_mt = true;
         props.selected_to.is_mt = true;
@@ -279,7 +296,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.transfer_fee = 2;
 
@@ -293,7 +310,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper note if transfer fee is null', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const props = mockProps();
         props.transfer_fee = null;
 

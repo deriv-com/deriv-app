@@ -2,15 +2,13 @@ import { render, screen } from '@testing-library/react';
 import WalletCard from '../wallet-card';
 import React from 'react';
 
-// Temp fix. This can be removed after the issues in text component are fixed in @deriv/ui
-jest.mock('@deriv/ui', () => ({
-    ...jest.requireActual('@deriv/ui'),
-    Text: ({ children }) => <span>{children}</span>,
-}));
-
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const setHookState = (is_content_shown: boolean) => jest.fn().mockImplementation(() => [is_content_shown, () => {}]);
 React.useState = setHookState(true);
+
+jest.mock('@deriv/ui', () => ({
+    Text: ({ children }) => <span>{children}</span>,
+}));
 
 describe('WalletCard Component', () => {
     const props = {

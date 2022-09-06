@@ -23,6 +23,7 @@
         &__title {
             display: flex;
             flex-direction: column;
+            margin: 2.6rem 0 2.4rem;
 
             @media screen and (max-width: 768px) {
                 width: 80%;

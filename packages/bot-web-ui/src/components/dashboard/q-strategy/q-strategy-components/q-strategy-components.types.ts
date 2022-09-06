@@ -25,7 +25,6 @@ export type TQStrategyForm = {
     createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
-    initial_errors: any; //!
     initial_values: any; //!
     getSizeDesc: TGetSizeDesc;
     is_onscreen_keyboard_active: boolean;
@@ -36,7 +35,6 @@ export type TQStrategyForm = {
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
-    validateQuickStrategy: any; //!
     is_mobile: boolean;
     selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;

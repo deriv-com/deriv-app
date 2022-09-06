@@ -12,7 +12,6 @@ const QStrategyForm = ({
     createStrategy,
     duration_unit_dropdown,
     types_strategies_dropdown,
-    initial_errors, //!
     initial_values, //!
     is_onscreen_keyboard_active,
     is_stop_button_visible,
@@ -22,7 +21,6 @@ const QStrategyForm = ({
     onScrollStopDropdownList,
     symbol_dropdown,
     trade_type_dropdown,
-    validateQuickStrategy, //!
     is_mobile,
     selected_symbol,
     selected_trade_type,
@@ -32,12 +30,7 @@ const QStrategyForm = ({
     getFieldMap,
     description,
 }: TQStrategyForm) => (
-    <Formik
-        initialValues={initial_values}
-        validate={validateQuickStrategy} //!
-        onSubmit={createStrategy}
-        enableReinitialize={true}
-    >
+    <Formik initialValues={initial_values} onSubmit={createStrategy} enableReinitialize={true}>
         {({
             errors,
             handleChange,
@@ -49,8 +42,6 @@ const QStrategyForm = ({
         }: FormikProps<TQuickStrategyFormValues>) => {
             // Check values in favour of isValid, this is a hack to persist validation through tab switching.
 
-            // const validation_errors = validateQuickStrategy(values);
-            // const is_valid = Object.keys(validation_errors).length === 0;
             const is_valid = true; //!remove later
 
             const is_submit_enabled = !isSubmitting && is_valid;

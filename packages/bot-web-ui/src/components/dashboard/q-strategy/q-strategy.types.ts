@@ -110,7 +110,6 @@ export type TQuickStrategyProps = {
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     getSizeDesc: TGetSizeDesc;
-    initial_errors: any; //!
     initial_values: any; //!
     is_onscreen_keyboard_active: boolean;
     is_mobile: boolean;
@@ -128,7 +127,6 @@ export type TQuickStrategyProps = {
     symbol_dropdown: TSymbolDropdown;
     toggleStrategyModal: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
-    validateQuickStrategy: any; //!
     setCurrentFocus: TSetCurrentFocus;
     getFieldMap: TGetFieldMap;
 };

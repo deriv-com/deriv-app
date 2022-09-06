@@ -82,6 +82,9 @@ export default class OrderStore {
                     if (this.is_email_verification_modal_open) {
                         this.setIsEmailVerificationModalOpen(false);
                     }
+                    if (this.is_email_link_verified_modal_open) {
+                        this.setIsEmailLinkVerifiedModalOpen(false);
+                    }
                     this.setVerificationLinkErrorMessage(response.error.message);
                     const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
                 } else if (response?.error.code === 'ExcessiveVerificationFailures') {

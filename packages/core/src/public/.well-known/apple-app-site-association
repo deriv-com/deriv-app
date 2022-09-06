@@ -1,29 +1,31 @@
 {
     "applinks": {
-    "details":  [{
-        "appID": "36S5Q8S4V5.com.deriv.app",
-        "paths": [
-            "/redirect"
+        "details": [
+            {
+                "appID": "36S5Q8S4V5.com.deriv.app",
+                "paths": [
+                    "/redirect/derivgo"
+                ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.app.dev",
+                "paths": [
+                    "/redirect/derivgo"
+                ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.app.staging",
+                "paths": [
+                    "/redirect/derivgo"
+                ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.dp2p",
+                "paths": [
+                    "/cashier/p2p",
+                    "/redirect/p2p"
+                ]
+            }
         ]
-    },
-        {
-            "appID": "36S5Q8S4V5.com.deriv.app.dev",
-            "paths": [
-                "/redirect"
-            ]
-        },
-        {
-            "appID": "36S5Q8S4V5.com.deriv.app.staging",
-            "paths": [
-                "/redirect"
-            ]
-        },
-        {
-            "appID": "36S5Q8S4V5.com.deriv.dp2p",
-            "paths": [
-                "/cashier/p2p",
-                "/redirect/p2p"
-            ]
-        }]
-}
+    }
 }

@@ -8,7 +8,6 @@ import RunPanel from '../run-panel';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';
-import Translations from './dashboard-components/Translations';
 
 interface SideBarProps {
     checkIfSidebarOpen: boolean;
@@ -22,7 +21,7 @@ const Dashboard = (props: SideBarProps) => {
     const sidebarClasstoggle = showSideBar === false ? 'w-100' : '';
     const { DashBorardSteps } = JoyrideConfig;
     const [tourRun, setTourRun] = React.useState<boolean>(true);
-    const handleClick = (e: any) => {
+    const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
     };

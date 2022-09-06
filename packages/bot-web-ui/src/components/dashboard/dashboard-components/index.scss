@@ -3,7 +3,7 @@
         justify-content: end;
     }
     .run-panel__container {
-        height: 100% !important;
+        height: calc(100vh - 15rem) !important;
         position: unset !important;
         transform: unset !important;
         margin-right: -350px;

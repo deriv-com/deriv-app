@@ -24,6 +24,13 @@ export type TClientStore = {
     loginid?: string;
     residence: string;
     verification_code: {
+        payment_agent_withdraw: string;
         payment_withdraw: string;
+        request_email: string;
+        reset_password: string;
+        signup: string;
+        system_email_change: string;
+        trading_platform_dxtrade_password_reset: string;
+        trading_platform_mt5_password_reset: string;
     };
 };

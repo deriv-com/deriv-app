@@ -1,12 +1,38 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentTransaction from 'Components/recent-transaction';
+import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
 import { getAccountText } from 'Utils/utility';
+import RecentTransaction from 'Components/recent-transaction';
 import './crypto-withdraw-receipt.scss';
+
+type TAccount = {
+    balance: string;
+    currency: string;
+    is_crypto: boolean;
+    is_dxtrade: boolean;
+    is_mt: boolean;
+    market_type: string;
+    platform_icon: string;
+    text: string;
+    value: string;
+};
+
+type TCryptoWithdrawReceiptProps = {
+    account: TAccount;
+    blockchain_address: string;
+    crypto_transactions: TCryptoTransactionDetails[];
+    currency: TClientStore['currency'];
+    is_switching: TClientStore['is_switching'];
+    tab_index: number;
+    withdraw_amount: string;
+    resetWithrawForm: () => void;
+    recentTransactionOnMount: () => void;
+    setIsCryptoTransactionsVisible: (value: boolean) => void;
+    setIsWithdrawConfirmed: (value: boolean) => void;
+};
 
 const Status = () => {
     return (
@@ -22,7 +48,7 @@ const Status = () => {
     );
 };
 
-const AcountInformation = ({ account }) => {
+const AcountInformation = ({ account }: Pick<TCryptoWithdrawReceiptProps, 'account'>) => {
     return (
         <div className='crypto-withdraw-receipt__account-info'>
             <div className='crypto-withdraw-receipt__account-info-detail'>
@@ -49,7 +75,10 @@ const AcountInformation = ({ account }) => {
     );
 };
 
-const WalletInformation = ({ account, blockchain_address }) => {
+const WalletInformation = ({
+    account,
+    blockchain_address,
+}: Pick<TCryptoWithdrawReceiptProps, 'account' | 'blockchain_address'>) => {
     const text = getAccountText(account);
     return (
         <div className='crypto-withdraw-receipt__account-info'>
@@ -94,16 +123,16 @@ const WalletInformation = ({ account, blockchain_address }) => {
 const CryptoWithdrawReceipt = ({
     account,
     blockchain_address,
-    withdraw_amount,
     crypto_transactions,
     currency,
     is_switching,
-    resetWithrawForm,
     recentTransactionOnMount,
+    resetWithrawForm,
     setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed,
     tab_index,
-}) => {
+    withdraw_amount,
+}: TCryptoWithdrawReceiptProps) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -172,21 +201,7 @@ const CryptoWithdrawReceipt = ({
     );
 };
 
-CryptoWithdrawReceipt.propTypes = {
-    account: PropTypes.object,
-    crypto_transactions: PropTypes.array,
-    blockchain_address: PropTypes.string,
-    currency: PropTypes.string,
-    is_switching: PropTypes.bool,
-    resetWithrawForm: PropTypes.func,
-    recentTransactionOnMount: PropTypes.func,
-    setIsCryptoTransactionsVisible: PropTypes.func,
-    setIsWithdrawConfirmed: PropTypes.func,
-    tab_index: PropTypes.number,
-    withdraw_amount: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     account: modules.cashier.account_transfer.selected_from,
     blockchain_address: modules.cashier.withdraw.blockchain_address,
     withdraw_amount: modules.cashier.withdraw.withdraw_amount,

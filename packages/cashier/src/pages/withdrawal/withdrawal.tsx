@@ -1,24 +1,78 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
+import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
+import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
+import CashierLocked from 'Components/cashier-locked';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
-import { Virtual } from 'Components/cashier-container';
-import WithdrawalLocked from './withdrawal-locked';
-import CashierLocked from 'Components/cashier-locked';
+import RecentTransaction from 'Components/recent-transaction';
 import SideNote from 'Components/side-note';
 import USDTSideNote from 'Components/usdt-side-note';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
-import RecentTransaction from 'Components/recent-transaction';
+import { Virtual } from 'Components/cashier-container';
 
-const WithdrawalSideNote = ({ is_mobile, currency }) => {
+type TErrorFull = {
+    code?: string;
+    fields?: string;
+    is_ask_authentication: boolean;
+    is_ask_financial_risk_approval: boolean;
+    is_ask_uk_funds_protection: boolean;
+    is_self_exclusion_max_turnover_set: boolean;
+    is_show_full_page: boolean | null;
+    message?: string;
+    onClickButton?: () => void | null;
+};
+
+type TErrorShort = {
+    code: string;
+    message: string;
+};
+
+type TWithdrawalSideNoteProps = {
+    currency: string;
+    is_mobile?: boolean;
+};
+
+type TWithdrawalProps = {
+    balance: TClientStore['balance'];
+    container: string;
+    crypto_transactions: TCryptoTransactionDetails[];
+    current_currency_type: TClientStore['current_currency_type'];
+    currency: TClientStore['currency'];
+    error: TErrorFull;
+    iframe_url: string;
+    is_10k_withdrawal_limit_reached: boolean;
+    is_cashier_locked: boolean;
+    is_crypto: boolean;
+    is_crypto_transactions_visible: boolean;
+    is_switching: TClientStore['is_switching'];
+    is_system_maintenance: boolean;
+    is_virtual: TClientStore['is_virtual'];
+    is_withdraw_confirmed: boolean;
+    is_withdrawal_locked: boolean;
+    tab_index: number;
+    verification_code: TClientStore['verification_code']['payment_withdraw'];
+    verify_error: TErrorFull;
+    check10kLimit: () => void;
+    setActiveTab: (container: string) => void;
+    setErrorMessage: (
+        error: TErrorShort | string,
+        onClickButton?: () => void | null,
+        is_show_full_page?: boolean | null
+    ) => void;
+    setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
+    willMountWithdraw: (verification_code: TClientStore['verification_code']['payment_withdraw']) => void;
+    recentTransactionOnMount: () => void;
+};
+
+const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) => {
     const notes = [
         <Localize
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
@@ -65,7 +119,7 @@ const Withdrawal = ({
     verification_code,
     willMountWithdraw,
     recentTransactionOnMount,
-}) => {
+}: TWithdrawalProps) => {
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -125,7 +179,7 @@ const Withdrawal = ({
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
-    if (!+balance) {
+    if (!Number(balance)) {
         return (
             <>
                 <NoBalance />
@@ -165,35 +219,7 @@ const Withdrawal = ({
     );
 };
 
-Withdrawal.propTypes = {
-    balance: PropTypes.string,
-    check10kLimit: PropTypes.func,
-    container: PropTypes.string,
-    crypto_transactions: PropTypes.array,
-    currency: PropTypes.string,
-    current_currency_type: PropTypes.string,
-    error: PropTypes.object,
-    iframe_url: PropTypes.string,
-    is_10k_withdrawal_limit_reached: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
-    is_crypto: PropTypes.bool,
-    is_crypto_transactions_visible: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    is_system_maintenance: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    is_withdraw_confirmed: PropTypes.bool,
-    is_withdrawal_locked: PropTypes.bool,
-    recentTransactionOnMount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-    setErrorMessage: PropTypes.func,
-    setSideNotes: PropTypes.func,
-    tab_index: PropTypes.number,
-    verification_code: PropTypes.string,
-    verify_error: PropTypes.object,
-    willMountWithdraw: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     balance: client.balance,
     check10kLimit: modules.cashier.withdraw.check10kLimit,
     container: modules.cashier.withdraw.container,

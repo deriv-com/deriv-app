@@ -17,7 +17,11 @@ const ItemStatus = ({ status, onClick, button_text }) => {
         case 'action':
         default:
             return (
-                <div className='dc-checklist__item-status--action' onClick={onClick}>
+                <div
+                    className='dc-checklist__item-status--action'
+                    data-testid='dt_checklist_item_status_action'
+                    onClick={onClick}
+                >
                     <Icon icon='IcArrowRightBold' color='active' />
                 </div>
             );

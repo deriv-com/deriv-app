@@ -25,22 +25,22 @@ beforeEach(() => {
 });
 
 describe('IframeStore', () => {
-    // it('should set session_timeout and invoke removeOnIframeLoaded function', () => {
-    //     const spyRemoveOnIframeLoaded = jest.spyOn(iframe_store, 'removeOnIframeLoaded');
-    //     iframe_store.setSessionTimeout(true);
+    it('should set session_timeout and invoke removeOnIframeLoaded function', () => {
+        const spyRemoveOnIframeLoaded = jest.spyOn(iframe_store, 'removeOnIframeLoaded');
+        iframe_store.setSessionTimeout(true);
 
-    //     expect(iframe_store.is_session_timeout).toBeTruthy();
-    //     expect(spyRemoveOnIframeLoaded).toHaveBeenCalledTimes(1);
-    // });
+        expect(iframe_store.is_session_timeout).toBeTruthy();
+        expect(spyRemoveOnIframeLoaded).toHaveBeenCalledTimes(1);
+    });
 
-    // it('should remove onIframeLoaded function', () => {
-    //     const removeEventListener = jest.spyOn(window, 'removeEventListener');
-    //     iframe_store.onIframeLoaded = jest.fn();
-    //     iframe_store.removeOnIframeLoaded();
+    it('should remove onIframeLoaded function', () => {
+        const removeEventListener = jest.spyOn(window, 'removeEventListener');
+        iframe_store.onIframeLoaded = jest.fn();
+        iframe_store.removeOnIframeLoaded();
 
-    //     expect(removeEventListener).toHaveBeenCalledWith('message', expect.any(Function), false);
-    //     expect(iframe_store.onIframeLoaded).toBe('');
-    // });
+        expect(removeEventListener).toHaveBeenCalledWith('message', expect.any(Function), false);
+        expect(iframe_store.onIframeLoaded).toBe('');
+    });
 
     it('should clear timeout cashier url', () => {
         jest.useFakeTimers();
@@ -52,20 +52,20 @@ describe('IframeStore', () => {
         jest.useRealTimers();
     });
 
-    // it('should set timeout cashier url', () => {
-    //     jest.useFakeTimers();
+    it('should set timeout cashier url', () => {
+        jest.useFakeTimers();
 
-    //     const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
-    //     const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');
-    //     iframe_store.setTimeoutCashierUrl();
+        const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
+        const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');
+        iframe_store.setTimeoutCashierUrl();
 
-    //     expect(spyClearTimeoutCashierUrl).toHaveBeenCalledTimes(1);
-    //     jest.runAllTimers();
-    //     expect(setTimeout).toHaveBeenCalledTimes(1);
-    //     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 60000);
-    //     expect(spySetSessionTimeout).toHaveBeenCalledWith(true);
-    //     jest.useRealTimers();
-    // });
+        expect(spyClearTimeoutCashierUrl).toHaveBeenCalledTimes(1);
+        jest.runAllTimers();
+        expect(setTimeout).toHaveBeenCalledTimes(1);
+        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 60000);
+        expect(spySetSessionTimeout).toHaveBeenCalledWith(true);
+        jest.useRealTimers();
+    });
 
     it('should set container height', () => {
         iframe_store.setContainerHeight(100);
@@ -73,16 +73,16 @@ describe('IframeStore', () => {
         expect(iframe_store.iframe_height).toBe(100);
     });
 
-    // it('should clear iframe', () => {
-    //     const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
-    //     const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');
-    //     iframe_store.clearIframe();
+    it('should clear iframe', () => {
+        const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
+        const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');
+        iframe_store.clearIframe();
 
-    //     expect(iframe_store.iframe_url).toBe('');
-    //     expect(spyClearTimeoutCashierUrl).toHaveBeenCalledTimes(1);
-    //     expect(spySetSessionTimeout).toHaveBeenCalledTimes(1);
-    //     expect(spySetSessionTimeout).toHaveBeenCalledWith(true);
-    // });
+        expect(iframe_store.iframe_url).toBe('');
+        expect(spyClearTimeoutCashierUrl).toHaveBeenCalledTimes(1);
+        expect(spySetSessionTimeout).toHaveBeenCalledTimes(1);
+        expect(spySetSessionTimeout).toHaveBeenCalledWith(true);
+    });
 
     it('should set the proper iframe url', () => {
         iframe_store.setIframeUrl('iframe_url/');
@@ -97,33 +97,33 @@ describe('IframeStore', () => {
         expect(iframe_store.iframe_url).toBe('');
     });
 
-    // it('should add event listener with proper arguments', async () => {
-    //     const spyAddEventListener = jest.spyOn(window, 'addEventListener');
+    it('should add event listener with proper arguments', async () => {
+        const spyAddEventListener = jest.spyOn(window, 'addEventListener');
 
-    //     await iframe_store.checkIframeLoaded();
+        await iframe_store.checkIframeLoaded();
 
-    //     expect(spyAddEventListener).toHaveBeenCalledWith('message', iframe_store.onIframeLoaded, false);
-    // });
+        expect(spyAddEventListener).toHaveBeenCalledWith('message', iframe_store.onIframeLoaded, false);
+    });
 
-    // it('should set proper iframe_height for desktop and mobile view', async () => {
-    //     const spyRemoveOnIframeLoaded = jest.spyOn(iframe_store, 'removeOnIframeLoaded');
+    it('should set proper iframe_height for desktop and mobile view', async () => {
+        const spyRemoveOnIframeLoaded = jest.spyOn(iframe_store, 'removeOnIframeLoaded');
 
-    //     expect(iframe_store.onIframeLoaded).toBe('');
+        expect(iframe_store.onIframeLoaded).toBe('');
 
-    //     await iframe_store.checkIframeLoaded();
+        await iframe_store.checkIframeLoaded();
 
-    //     expect(spyRemoveOnIframeLoaded).toHaveBeenCalledTimes(1);
+        expect(spyRemoveOnIframeLoaded).toHaveBeenCalledTimes(1);
 
-    //     const spyOnIframeLoaded = jest.spyOn(iframe_store, 'onIframeLoaded');
+        const spyOnIframeLoaded = jest.spyOn(iframe_store, 'onIframeLoaded');
 
-    //     spyOnIframeLoaded({ origin: 'cashier' });
+        spyOnIframeLoaded({ origin: 'cashier' });
 
-    //     expect(iframe_store.iframe_height).toBe(window.innerHeight - 190);
+        expect(iframe_store.iframe_height).toBe(window.innerHeight - 190);
 
-    //     iframe_store.root_store.ui.is_mobile = true;
+        iframe_store.root_store.ui.is_mobile = true;
 
-    //     spyOnIframeLoaded({ origin: 'cashier' });
+        spyOnIframeLoaded({ origin: 'cashier' });
 
-    //     expect(iframe_store.iframe_height).toBe(window.innerHeight - 100);
-    // });
+        expect(iframe_store.iframe_height).toBe(window.innerHeight - 100);
+    });
 });

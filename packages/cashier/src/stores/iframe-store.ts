@@ -1,30 +1,13 @@
-import { action, observable, makeObservable } from 'mobx';
+import { action, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import { TRootStore } from 'Types';
 
 type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
 export default class IframeStore {
-    iframe_height = 0;
-    iframe_url = '';
-    is_session_timeout = true;
-    onIframeLoaded: TOnIframeLoadedCallback | null = null;
-    timeout_session: NodeJS.Timeout | null = null;
-
-    constructor(public root_store: TRootStore) {
-        makeObservable(this, {
-            iframe_height: observable,
-            iframe_url: observable,
-            is_session_timeout: observable,
-            timeout_session: observable,
-            setSessionTimeout: action.bound,
-            checkIframeLoaded: action.bound,
-            clearTimeoutCashierUrl: action.bound,
-            setTimeoutCashierUrl: action.bound,
-            setIframeUrl: action.bound,
-            setContainerHeight: action.bound,
-            clearIframe: action.bound,
-        });
+    constructor({ WS, root_store }) {
+        this.root_store = root_store;
+        this.WS = WS;
     }
 
     setSessionTimeout(is_session_time_out: boolean): void {
@@ -34,6 +17,7 @@ export default class IframeStore {
         }
     }
 
+    @action.bound
     async checkIframeLoaded(): Promise<void> {
         const { modules, ui } = this.root_store;
 
@@ -62,12 +46,14 @@ export default class IframeStore {
         }
     }
 
+    @action.bound
     clearTimeoutCashierUrl(): void {
         if (this.timeout_session) {
             clearTimeout(this.timeout_session);
         }
     }
 
+    @action.bound
     setTimeoutCashierUrl(): void {
         this.clearTimeoutCashierUrl();
         this.timeout_session = setTimeout(() => {
@@ -75,6 +61,7 @@ export default class IframeStore {
         }, 60000);
     }
 
+    @action.bound
     setIframeUrl(url: string): void {
         const { client, ui } = this.root_store;
 
@@ -94,10 +81,12 @@ export default class IframeStore {
         }
     }
 
+    @action.bound
     setContainerHeight(height: number): void {
         this.iframe_height = height;
     }
 
+    @action.bound
     clearIframe(): void {
         this.setContainerHeight(0);
         this.setIframeUrl('');

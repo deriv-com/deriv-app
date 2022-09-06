@@ -1,4 +1,4 @@
-import { observable, action, computed, when, makeObservable } from 'mobx';
+import { observable, action, computed, when } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -6,143 +6,48 @@ import BaseStore from 'Stores/base_store';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 
 export default class MyProfileStore extends BaseStore {
-    active_tab = my_profile_tabs.MY_STATS;
-    add_payment_method_error_message = '';
-    advertiser_info = {};
-    advertiser_payment_methods = {};
-    advertiser_payment_methods_error = '';
-    available_payment_methods = {};
-    balance_available = null;
-    contact_info = '';
-    default_advert_description = '';
-    delete_error_message = '';
-    error_message = '';
-    form_error = '';
-    full_name = '';
-    is_button_loading = false;
-    is_cancel_add_payment_method_modal_open = false;
-    is_cancel_edit_payment_method_modal_open = false;
-    is_confirm_delete_modal_open = false;
-    is_delete_payment_method_error_modal_open = false;
-    is_loading = true;
-    is_submit_success = false;
-    payment_info = '';
-    payment_method_value = undefined;
-    payment_methods_list = [];
-    payment_method_to_delete = {};
-    payment_method_to_edit = {};
-    search_results = [];
-    search_term = '';
-    selected_payment_method = '';
-    selected_payment_method_display_name = '';
-    selected_payment_method_fields = [];
-    selected_payment_method_type = '';
-    should_hide_my_profile_tab = false;
-    should_show_add_payment_method_error_modal = false;
-    should_show_add_payment_method_form = false;
-    should_show_edit_payment_method_form = false;
+    @observable active_tab = my_profile_tabs.MY_STATS;
+    @observable add_payment_method_error_message = '';
+    @observable advertiser_info = {};
+    @observable advertiser_payment_methods = {};
+    @observable advertiser_payment_methods_error = '';
+    @observable available_payment_methods = {};
+    @observable balance_available = null;
+    @observable contact_info = '';
+    @observable default_advert_description = '';
+    @observable delete_error_message = '';
+    @observable error_message = '';
+    @observable form_error = '';
+    @observable full_name = '';
+    @observable is_button_loading = false;
+    @observable is_cancel_add_payment_method_modal_open = false;
+    @observable is_cancel_edit_payment_method_modal_open = false;
+    @observable is_confirm_delete_modal_open = false;
+    @observable is_delete_payment_method_error_modal_open = false;
+    @observable is_loading = true;
+    @observable is_submit_success = false;
+    @observable payment_info = '';
+    @observable payment_method_value = undefined;
+    @observable payment_methods_list = [];
+    @observable payment_method_to_delete = {};
+    @observable payment_method_to_edit = {};
+    @observable search_results = [];
+    @observable search_term = '';
+    @observable selected_payment_method = '';
+    @observable selected_payment_method_display_name = '';
+    @observable selected_payment_method_fields = [];
+    @observable selected_payment_method_type = '';
+    @observable should_hide_my_profile_tab = false;
+    @observable should_show_add_payment_method_error_modal = false;
+    @observable should_show_add_payment_method_form = false;
+    @observable should_show_edit_payment_method_form = false;
 
-    constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super(root_store);
-
-        makeObservable(this, {
-            active_tab: observable,
-            add_payment_method_error_message: observable,
-            advertiser_info: observable,
-            advertiser_payment_methods: observable,
-            advertiser_payment_methods_error: observable,
-            available_payment_methods: observable,
-            balance_available: observable,
-            contact_info: observable,
-            default_advert_description: observable,
-            delete_error_message: observable,
-            error_message: observable,
-            form_error: observable,
-            full_name: observable,
-            is_button_loading: observable,
-            is_cancel_add_payment_method_modal_open: observable,
-            is_cancel_edit_payment_method_modal_open: observable,
-            is_confirm_delete_modal_open: observable,
-            is_delete_payment_method_error_modal_open: observable,
-            is_loading: observable,
-            is_submit_success: observable,
-            payment_info: observable,
-            payment_method_value: observable,
-            payment_methods_list: observable,
-            payment_method_to_delete: observable,
-            payment_method_to_edit: observable,
-            search_results: observable,
-            search_term: observable,
-            selected_payment_method: observable,
-            selected_payment_method_display_name: observable,
-            selected_payment_method_fields: observable,
-            selected_payment_method_type: observable,
-            should_hide_my_profile_tab: observable,
-            should_show_add_payment_method_error_modal: observable,
-            should_show_add_payment_method_form: observable,
-            should_show_edit_payment_method_form: observable,
-            advertiser_has_payment_methods: computed,
-            advertiser_payment_methods_list: computed,
-            payment_method_field_set: computed,
-            initial_values: computed,
-            payment_method_info: computed,
-            payment_methods_list_items: computed,
-            payment_methods_list_methods: computed,
-            payment_methods_list_values: computed,
-            createPaymentMethod: action.bound,
-            getAdvertiserInfo: action.bound,
-            getAdvertiserPaymentMethods: action.bound,
-            getPaymentMethodsList: action.bound,
-            getPaymentMethodDisplayName: action.bound,
-            getPaymentMethodValue: action.bound,
-            getSelectedPaymentMethodDetails: action.bound,
-            handleSubmit: action.bound,
-            handleToggle: action.bound,
-            hideAddPaymentMethodForm: action.bound,
-            onClickDelete: action.bound,
-            showAddPaymentMethodForm: action.bound,
-            updatePaymentMethod: action.bound,
-            setActiveTab: action.bound,
-            setAddPaymentMethodErrorMessage: action.bound,
-            setAdvertiserInfo: action.bound,
-            setAdvertiserPaymentMethods: action.bound,
-            setAdvertiserPaymentMethodsError: action.bound,
-            setAvailablePaymentMethods: action.bound,
-            setBalanceAvailable: action.bound,
-            setContactInfo: action.bound,
-            setDefaultAdvertDescription: action.bound,
-            setDeleteErrorMessage: action.bound,
-            setErrorMessage: action.bound,
-            setFormError: action.bound,
-            setFullName: action.bound,
-            setIsCancelAddPaymentMethodModalOpen: action.bound,
-            setIsCancelEditPaymentMethodModalOpen: action.bound,
-            setIsConfirmDeleteModalOpen: action.bound,
-            setIsDeletePaymentMethodErrorModalOpen: action.bound,
-            setIsLoading: action.bound,
-            setIsSubmitSuccess: action.bound,
-            setPaymentMethodValue: action.bound,
-            setPaymentMethodsList: action.bound,
-            setPaymentMethodToDelete: action.bound,
-            setPaymentMethodToEdit: action.bound,
-            setSearchResults: action.bound,
-            setSearchTerm: action.bound,
-            setSelectedPaymentMethod: action.bound,
-            setSelectedPaymentMethodDisplayName: action.bound,
-            setSelectedPaymentMethodFields: action.bound,
-            setSelectedPaymentMethodType: action.bound,
-            setShouldHideMyProfileTab: action.bound,
-            setShouldShowAddPaymentMethodErrorModal: action.bound,
-            setShouldShowAddPaymentMethodForm: action.bound,
-            setShouldShowEditPaymentMethodForm: action.bound,
-        });
-    }
-
+    @computed
     get advertiser_has_payment_methods() {
         return !!Object.keys(this.advertiser_payment_methods).length;
     }
 
+    @computed
     get advertiser_payment_methods_list() {
         const list = [];
 
@@ -159,6 +64,7 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    @computed
     get payment_method_field_set() {
         // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and its name/required properties
         return this.selected_payment_method_fields.reduce((dict, field_data) => {
@@ -169,6 +75,7 @@ export default class MyProfileStore extends BaseStore {
         }, {});
     }
 
+    @computed
     get initial_values() {
         const object = {};
 
@@ -189,10 +96,12 @@ export default class MyProfileStore extends BaseStore {
         return object;
     }
 
+    @computed
     get payment_method_info() {
         return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit?.ID)[0];
     }
 
+    @computed
     get payment_methods_list_items() {
         const list_items = [];
 
@@ -203,6 +112,7 @@ export default class MyProfileStore extends BaseStore {
         return list_items;
     }
 
+    @computed
     get payment_methods_list_methods() {
         const methods = [];
 
@@ -219,6 +129,7 @@ export default class MyProfileStore extends BaseStore {
         return methods;
     }
 
+    @computed
     get payment_methods_list_values() {
         const list = [];
 
@@ -227,6 +138,7 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
         requestWS({
@@ -267,6 +179,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
         this.setErrorMessage('');
@@ -289,6 +202,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     getAdvertiserPaymentMethods() {
         this.setIsLoading(true);
         requestWS({
@@ -303,6 +217,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     getPaymentMethodsList() {
         requestWS({
             p2p_payment_methods: 1,
@@ -336,11 +251,13 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     getPaymentMethodDisplayName(payment_method) {
         this.setSelectedPaymentMethodDisplayName(this.available_payment_methods[payment_method].display_name);
         return this.selected_payment_method_display_name;
     }
 
+    @action.bound
     getPaymentMethodValue(payment_method) {
         const method = Object.entries(this.available_payment_methods).filter(
             pm => pm[1].display_name === payment_method
@@ -350,6 +267,7 @@ export default class MyProfileStore extends BaseStore {
         return this.payment_method_value;
     }
 
+    @action.bound
     getSelectedPaymentMethodDetails() {
         this.setPaymentMethodValue(undefined);
 
@@ -384,6 +302,7 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     }
+    @action.bound
     handleSubmit(values) {
         requestWS({
             p2p_advertiser_update: 1,
@@ -405,6 +324,7 @@ export default class MyProfileStore extends BaseStore {
             }, 3000);
         });
     }
+    @action.bound
     handleToggle() {
         this.root_store.general_store.setShouldShowRealName(!this.root_store?.general_store?.should_show_real_name);
         requestWS({
@@ -420,10 +340,12 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     hideAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    @action.bound
     onClickDelete() {
         requestWS({
             p2p_advertiser_payment_methods: 1,
@@ -442,10 +364,12 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    @action.bound
     showAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(true);
     }
 
+    @action.bound
     updatePaymentMethod(values, { setSubmitting }) {
         requestWS({
             p2p_advertiser_payment_methods: 1,
@@ -511,6 +435,7 @@ export default class MyProfileStore extends BaseStore {
         return errors;
     };
 
+    @action.bound
     validatePaymentMethodFields = values => {
         const errors = {};
         const no_symbols_regex = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/;
@@ -541,134 +466,167 @@ export default class MyProfileStore extends BaseStore {
         return errors;
     };
 
+    @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
     }
 
+    @action.bound
     setAddPaymentMethodErrorMessage(add_payment_method_error_message) {
         this.add_payment_method_error_message = add_payment_method_error_message;
     }
 
+    @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
     }
 
+    @action.bound
     setAdvertiserPaymentMethods(advertiser_payment_methods) {
         this.advertiser_payment_methods = advertiser_payment_methods;
     }
 
+    @action.bound
     setAdvertiserPaymentMethodsError(advertiser_payment_methods_error) {
         this.advertiser_payment_methods_error = advertiser_payment_methods_error;
     }
 
+    @action.bound
     setAvailablePaymentMethods(available_payment_methods) {
         this.available_payment_methods = available_payment_methods;
     }
 
+    @action.bound
     setBalanceAvailable(balance_available) {
         this.balance_available = balance_available;
     }
 
+    @action.bound
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
     }
 
+    @action.bound
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
     }
 
+    @action.bound
     setDeleteErrorMessage(delete_error_message) {
         this.delete_error_message = delete_error_message;
     }
 
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
 
+    @action.bound
     setFormError(form_error) {
         this.form_error = form_error;
     }
 
+    @action.bound
     setFullName(full_name) {
         this.full_name = full_name;
     }
 
+    @action.bound
     setIsCancelAddPaymentMethodModalOpen(is_cancel_add_payment_method_modal_open) {
         this.is_cancel_add_payment_method_modal_open = is_cancel_add_payment_method_modal_open;
     }
 
+    @action.bound
     setIsCancelEditPaymentMethodModalOpen(is_cancel_edit_payment_method_modal_open) {
         this.is_cancel_edit_payment_method_modal_open = is_cancel_edit_payment_method_modal_open;
     }
 
+    @action.bound
     setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
         this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
     }
 
+    @action.bound
     setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
         this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
+    @action.bound
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
     }
 
+    @action.bound
     setPaymentMethodValue(payment_method_value) {
         this.payment_method_value = payment_method_value;
     }
 
+    @action.bound
     setPaymentMethodsList(payment_methods_list) {
         this.payment_methods_list = payment_methods_list;
     }
 
+    @action.bound
     setPaymentMethodToDelete(payment_method_to_delete) {
         this.payment_method_to_delete = payment_method_to_delete;
     }
 
+    @action.bound
     setPaymentMethodToEdit(payment_method_to_edit) {
         this.payment_method_to_edit = payment_method_to_edit;
     }
 
+    @action.bound
     setSearchResults(search_results) {
         this.search_results = search_results;
     }
 
+    @action.bound
     setSearchTerm(search_term) {
         this.search_term = search_term;
     }
 
+    @action.bound
     setSelectedPaymentMethod(selected_payment_method) {
         this.selected_payment_method = selected_payment_method;
     }
 
+    @action.bound
     setSelectedPaymentMethodDisplayName(selected_payment_method_display_name) {
         this.selected_payment_method_display_name = selected_payment_method_display_name;
     }
 
+    @action.bound
     setSelectedPaymentMethodFields(selected_payment_method_fields) {
         this.selected_payment_method_fields = selected_payment_method_fields;
     }
 
+    @action.bound
     setSelectedPaymentMethodType(selected_payment_method_type) {
         this.selected_payment_method_type = selected_payment_method_type;
     }
 
+    @action.bound
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
     }
 
+    @action.bound
     setShouldShowAddPaymentMethodErrorModal(should_show_add_payment_method_error_modal) {
         this.should_show_add_payment_method_error_modal = should_show_add_payment_method_error_modal;
     }
 
+    @action.bound
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
         this.should_show_add_payment_method_form = should_show_add_payment_method_form;
     }
 
+    @action.bound
     setShouldShowEditPaymentMethodForm(should_show_edit_payment_method_form) {
         this.should_show_edit_payment_method_form = should_show_edit_payment_method_form;
     }

@@ -12,7 +12,7 @@ const QStrategyForm = ({
     createStrategy,
     duration_unit_dropdown,
     types_strategies_dropdown,
-    initial_values, //!
+    initial_values,
     is_onscreen_keyboard_active,
     is_stop_button_visible,
     onChangeDropdownItem,

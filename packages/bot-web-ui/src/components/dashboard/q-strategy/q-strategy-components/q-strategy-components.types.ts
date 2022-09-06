@@ -18,6 +18,8 @@ import {
     TFormValues,
     TMarketOption,
     TGetSizeDesc,
+    TInitialValues,
+    TQuickStrategyFormValues,
 } from '../q-strategy.types';
 
 export type TQStrategyForm = {
@@ -25,7 +27,7 @@ export type TQStrategyForm = {
     createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
-    initial_values: any; //!
+    initial_values: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
     getSizeDesc: TGetSizeDesc;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;

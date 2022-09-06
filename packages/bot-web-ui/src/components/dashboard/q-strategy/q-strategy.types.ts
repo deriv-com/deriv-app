@@ -84,6 +84,12 @@ type TFieldMapData = {
     setSelected: TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
 };
 
+type TInitialUniqKeys = 'martingale__size' | 'alembert-unit' | 'oscar-unit';
+
+type TInitialKeys = TSelectsFieldNames | TInputsFieldNames | TInitialUniqKeys;
+
+export type TInitialValues = Record<TInitialKeys, string>;
+
 export type TGetSizeDesc = (index: number) => string;
 
 export type TFormValues = { [key: string]: string };
@@ -110,7 +116,7 @@ export type TQuickStrategyProps = {
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     getSizeDesc: TGetSizeDesc;
-    initial_values: any; //!
+    initial_values: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
     is_onscreen_keyboard_active: boolean;
     is_mobile: boolean;
     is_stop_button_visible: boolean;

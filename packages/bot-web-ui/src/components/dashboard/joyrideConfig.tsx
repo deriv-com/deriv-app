@@ -2,12 +2,12 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 
 type TCommonJoyrideProprties = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
-interface TourGuideComponent {
+interface ITourGuideComponent {
     Header: string | boolean;
     Para: string;
 }
 
-const TourGuideComponent = ({ Header, Para }: TourGuideComponent) => {
+const TourGuideComponent = ({ Header, Para }: ITourGuideComponent) => {
     return (
         <div>
             <h1>{localize(Header)}</h1>

@@ -112,10 +112,10 @@ describe('<OrderDetailsFooter />', () => {
         fireEvent.click(screen.getByRole('button', { name: "I've received payment" }));
         expect(setShouldShowConfirmModalFn).toHaveBeenCalled();
     });
-    // it('should render empty when state is false', () => {
-    //     useStores.mockClear();
-    //     render(<OrderDetailsFooter />);
+    it('should render empty when state is false', () => {
+        useStores.mockClear();
+        render(<OrderDetailsFooter />);
 
-    //     expect(OrderDetailsFooter.displayName).toBe('');
-    // });
+        expect(OrderDetailsFooter.displayName).toBe('');
+    });
 });

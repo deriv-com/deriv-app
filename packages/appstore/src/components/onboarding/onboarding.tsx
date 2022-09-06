@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Text, Icon } from '@deriv/components';
-import ProgressBar from './progress-bar';
+import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 
 import './onboarding.scss';
 
@@ -55,7 +54,7 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
                         <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
                             Back
                         </Button>
-                        <ProgressBar step={step} amount_of_steps={amount_of_steps} setStep={setStep} />
+                        <ProgressBarOnboarding step={step} amount_of_steps={amount_of_steps} setStep={setStep} />
                         <Button primary onClick={nextStep}>
                             {contents[onboarding_step as keyof typeof contents]?.has_next_content
                                 ? contents[onboarding_step as keyof typeof contents]?.next_content

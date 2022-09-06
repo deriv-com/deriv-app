@@ -111,6 +111,6 @@
         "react-pose": "^4.0.10",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "^4.3.0"
+        "react-transition-group": "4.4.2"
     }
 }

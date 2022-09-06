@@ -22,8 +22,8 @@ const WarningScamMessage = ({ is_logged_in, client_country }) => {
             <React.Fragment>
                 <DesktopWrapper>
                     <Modal
-                        id='warning_scam_message'
-                        className='warning-scam-message'
+                        id='warning_scam_message_modal'
+                        className='warning-scam-message-modal'
                         is_open={!is_read}
                         width='30rem'
                         small

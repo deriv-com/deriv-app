@@ -3,24 +3,33 @@
     margin-right: 0.5rem;
 }
 
+#warning_scam_message_modal {
+    overflow: auto;
+}
+
 .warning-scam-message {
-    &--content {
+    padding: 2.4rem 0;
+
+    @include mobile {
+        height: 80vh;
         overflow: auto;
+    }
+
+    &--content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 2.4rem 0;
-
-        @media screen and (max-width: 430px) {
-            height: 80vh;
-        }
 
         &__title {
             display: flex;
             flex-direction: column;
 
-            @media screen and (max-width: 400px) {
+            @media screen and (max-width: 768px) {
                 width: 80%;
+            }
+
+            @media screen and (max-width: 430px) {
+                width: 90%;
             }
         }
 
@@ -36,6 +45,11 @@
             width: 90%;
 
             @include mobile {
+                border: solid $color-black;
+                background-color: var(--general-main-2);
+            }
+
+            @include tablet {
                 border: solid $color-black;
                 background-color: var(--general-main-2);
             }
@@ -88,7 +102,7 @@
 
     &__scam-message-icon {
         height: 4rem;
-        margin: 2.4rem 0 4rem;
+        margin: 2.4rem 0 2.6rem;
     }
 }
 

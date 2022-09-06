@@ -4,8 +4,8 @@
     --fill-color3: var(--general-section-1);
     --fill-color4: var(--icon-grey-background);
     --fill-color5: var(--text-prominent);
-    --fill-color6: #{$color-grey-13};
-    --fill-color7: #{$color-grey-5};
+    --fill-color6: var(--icon-light-grey-background);
+    --fill-color7: var(--icon-dark-grey-background);
 
     &--disabled {
         --fill-color1: var(--text-disabled);
@@ -14,6 +14,7 @@
     &--active {
         --fill-color1: #{$color-white};
         --fill-color2: #{$color-white};
+        --fill-color6: transparent;
     }
     &--green {
         --fill-color1: var(--text-profit-success);

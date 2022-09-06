@@ -9,7 +9,7 @@ jest.mock('Stores/connect', () => ({
 }));
 
 jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+    ...(jest.requireActual('@deriv/components') as any),
     Loading: () => <div>Loading</div>,
 }));
 

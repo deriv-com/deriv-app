@@ -1,11 +1,21 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon';
 
-const Accordion = ({ className, icon_close, icon_open, list }) => {
-    const [open_idx, setOpenIdx] = React.useState(null);
+type TAccordionItem = {
+    header: string;
+    content: React.ReactNode;
+};
+type TAccordionProps = {
+    className?: string;
+    icon_close?: string;
+    icon_open?: string;
+    list: TAccordionItem[];
+};
+
+const Accordion = ({ className, icon_close, icon_open, list }: TAccordionProps) => {
+    const [open_idx, setOpenIdx] = React.useState<number | null>(null);
 
     const prev_list = usePrevious(list);
 
@@ -14,7 +24,7 @@ const Accordion = ({ className, icon_close, icon_open, list }) => {
     }, [list, prev_list]);
 
     // close if clicking the accordion that's open, otherwise open the new one
-    const onClick = index => setOpenIdx(index === open_idx ? null : index);
+    const onClick = (index: number) => setOpenIdx(index === open_idx ? null : index);
 
     return (
         <div className={classNames('dc-accordion__wrapper', className)}>
@@ -45,13 +55,6 @@ const Accordion = ({ className, icon_close, icon_open, list }) => {
             ))}
         </div>
     );
-};
-
-Accordion.propTypes = {
-    className: PropTypes.string,
-    icon_close: PropTypes.string,
-    icon_open: PropTypes.string,
-    list: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Accordion;

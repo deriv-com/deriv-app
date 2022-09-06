@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from '@deriv/components';
+import { Tabs, Tab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
@@ -8,7 +8,6 @@ import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';
 import classNames from 'classnames';
-import RunPanel from './run-panel';
 import RunStretegy from '../toolbar/runStrategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -36,30 +35,29 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                 <ReactJoyride steps={DashBorardSteps} run={tourRun} continuous={true} showProgress={true} />
                 <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
                     {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
-                    <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
+                    <Tab icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                         <DashboardComponents />
-                    </div>
-                    <div icon='IcBotbuilderTabIcon' label='Bot Builder' id='id-bot-builder'>
+                    </Tab>
+                    <Tab icon='IcBotbuilderTabIcon' label='Bot Builder' id='id-bot-builder'>
                         <BotBuilder />
-                    </div>
-                    <div
+                    </Tab>
+                    <Tab
                         icon='IcQuickStrategyIcon'
                         label='Quick Strategy'
                         id='id-quick-strategy'
                         onTabItemClick={handleClick}
                     />
-                    <div icon='IcChartsTabDbot' label='Charts' id='id-charts'>
+                    <Tab icon='IcChartsTabDbot' label='Charts' id='id-charts'>
                         <div className='dashboard__chart-wrapper'>
                             <Chart />
                         </div>
-                    </div>
-                    <div icon='IcTutorialsTabs' label='Tutorial' id='id-tutorials'>
+                    </Tab>
+                    <Tab icon='IcTutorialsTabs' label='Tutorial' id='id-tutorials'>
                         <div>Under Development</div>
-                    </div>
+                    </Tab>
                 </Tabs>
             </div>
             <SideBar checkIfSidebarOpen={showSideBar} setSideBarState={setshowSideBar} />
-            <RunPanel />
         </div>
     );
 };

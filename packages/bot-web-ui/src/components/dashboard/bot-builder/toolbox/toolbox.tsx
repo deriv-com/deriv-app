@@ -11,7 +11,9 @@ interface SearchBoxProps {
     is_search_loading: boolean;
     onSearch: () => void;
     onSearchBlur: () => void;
-    onSearchClear: (param: (field: string, value: any, shouldValidate?: boolean | undefined) => void) => void;
+    onSearchClear: (
+        param: (field: string, value: number | string, shouldValidate?: boolean | undefined) => void
+    ) => void;
     onSearchKeyUp: (param: () => void) => void;
 }
 type TFormValues = { [key: string]: string };
@@ -64,12 +66,13 @@ interface ToolboxProps {
     onSearchBlur: () => void;
     onSearchClear: () => void;
     onSearchKeyUp: () => void;
-    onToolboxItemClick: () => void;
+    onToolboxItemClick: (category: ChildNode) => void;
     onToolboxItemExpand: (index: number) => void;
     onUnmount: () => void;
-    sub_category_index: any;
+    // TODO: need to fix the type any[]
+    sub_category_index: any[];
     toggleDrawer: () => void;
-    toolbox_dom: React.ReactElement[];
+    toolbox_dom: HTMLElement;
 }
 
 const Toolbox = ({
@@ -78,7 +81,6 @@ const Toolbox = ({
     hasSubCategory,
     is_mobile,
     is_search_loading,
-    is_toolbox_open,
     onSearch,
     onSearchBlur,
     onSearchClear,
@@ -86,7 +88,6 @@ const Toolbox = ({
     onToolboxItemClick,
     onToolboxItemExpand,
     sub_category_index,
-    toggleDrawer,
     toolbox_dom,
 }: ToolboxProps) => {
     const toolbox_ref = React.useRef(ToolboxItems);

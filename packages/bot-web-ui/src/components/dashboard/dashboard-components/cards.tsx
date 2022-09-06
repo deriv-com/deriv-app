@@ -6,11 +6,11 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
 
-interface CardProps {
+interface CardsProps {
     load_modal: LoadModalStore;
 }
 
-const Card = ({ load_modal }: CardProps) => {
+const Cards = ({ load_modal }: CardsProps) => {
     const { onDriveConnect } = load_modal;
     // todo for the file input
     // const file_input_ref = React.useRef(null);
@@ -79,4 +79,4 @@ export default connect((store: RootStore) => {
     return {
         load_modal: store.load_modal,
     };
-})(Card);
+})(Cards);

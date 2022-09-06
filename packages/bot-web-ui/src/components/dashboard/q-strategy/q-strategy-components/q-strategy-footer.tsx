@@ -1,18 +1,8 @@
 import React from 'react';
-import { FormikProps } from 'formik';
 import { Button } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { TSetFieldValue, TFormValues } from '../q-strategy.types';
-
-type TQStrategyFooter = {
-    is_onscreen_keyboard_active: boolean;
-    is_mobile: boolean;
-    is_submit_enabled: boolean;
-    is_stop_button_visible: boolean;
-    setFieldValue: TSetFieldValue;
-    submitForm: FormikProps<TFormValues>['submitForm'];
-};
+import { TQStrategyFooter } from './q-strategy-components.types';
 
 const QStrategyFooter = ({
     is_onscreen_keyboard_active,

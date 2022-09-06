@@ -3,15 +3,15 @@ import React from 'react';
 import { Icon, Input, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { SelectField, SecondInputField, data_fields, data_uniq_input_obj } from '.';
+import { SelectField, InputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
 import {
-    TFormValues,
     TDropdowns,
     TSelectedValuesSelect,
     TSelectsFieldNames,
     TDropdownItems,
     TInputBaseFields,
+    TInputsFieldNames,
 } from '../q-strategy.types';
 import { TQStrategyFields } from './q-strategy-components.types';
 
@@ -120,7 +120,7 @@ const QStrategyFields = ({
                         selected_trade_type={selected_trade_type}
                         selected_symbol={selected_symbol}
                     />
-                    <SecondInputField
+                    <InputField
                         idx={idx}
                         handleChange={handleChange}
                         onChangeInputValue={onChangeInputValue}
@@ -134,55 +134,26 @@ const QStrategyFields = ({
                         'quick-strategy__form-row--multiple': !is_mobile,
                     })}
                 >
-                    <Field
-                        name={isUniqStrategyField ? uniq_selected_input.field_name : field_name}
-                        key={isUniqStrategyField ? uniq_selected_input.id : id}
-                    >
-                        {({ field }: FieldProps<string, TFormValues>) => {
-                            return (
-                                <Input
-                                    {...field}
-                                    className={isUniqStrategyField ? uniq_selected_input.className : className}
-                                    label_className={
-                                        isUniqStrategyField ? uniq_selected_input.label_className : label_className
-                                    }
-                                    field_className={
-                                        isUniqStrategyField ? uniq_selected_input.field_className : field_className
-                                    }
-                                    type='text'
-                                    label={localize(isUniqStrategyField ? uniq_selected_input.label : label)}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        handleChange(e);
-                                        onChangeInputValue(
-                                            isUniqStrategyField
-                                                ? (uniq_selected_input.input_value as TInputBaseFields)
-                                                : (input_value as TInputBaseFields),
-                                            e
-                                        );
-                                    }}
-                                    onFocus={(e: React.FocusEvent<HTMLInputElement>) =>
-                                        setCurrentFocus(e.currentTarget.name)
-                                    }
-                                    onBlur={() => setCurrentFocus(null)}
-                                    placeholder={isUniqStrategyField ? uniq_selected_input.placeholder : placeholder}
-                                    trailing_icon={
-                                        <Popover
-                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                            message={localize(
-                                                isUniqStrategyField
-                                                    ? uniq_selected_input.trailing_icon_message
-                                                    : trailing_icon_message
-                                            )}
-                                            zIndex={isUniqStrategyField ? uniq_selected_input.zIndex : zIndex}
-                                        >
-                                            <Icon icon='IcInfoOutline' />
-                                        </Popover>
-                                    }
-                                />
-                            );
-                        }}
-                    </Field>
-                    <SecondInputField
+                    <InputField
+                        idx={idx}
+                        handleChange={handleChange}
+                        onChangeInputValue={onChangeInputValue}
+                        setCurrentFocus={setCurrentFocus}
+                        is_mobile={is_mobile}
+                        field_name={field_name as TInputsFieldNames}
+                        id={id}
+                        className={className}
+                        label_className={label_className}
+                        field_className={field_className}
+                        label={label}
+                        input_value={input_value as TInputBaseFields}
+                        placeholder={placeholder}
+                        isUniqStrategyField={isUniqStrategyField}
+                        trailing_icon_message={trailing_icon_message}
+                        zIndex={zIndex}
+                        uniq_selected_input={uniq_selected_input}
+                    />
+                    <InputField
                         idx={idx}
                         handleChange={handleChange}
                         onChangeInputValue={onChangeInputValue}

@@ -2,38 +2,8 @@ import { Field, FieldProps } from 'formik';
 import React from 'react';
 import { Autocomplete, SelectNative, Icon, IconTradeTypes, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import {
-    TFormValues,
-    TSelectsFieldNames,
-    TDropdowns,
-    TSelectedValuesSelect,
-    TTradeType,
-    TDropdownItems,
-    TSetFieldValue,
-    TOnChangeDropdownItem,
-    TOnHideDropdownList,
-    TOnScrollStopDropdownList,
-    TMarketOption,
-} from '../q-strategy.types';
-
-type TSelectField = {
-    field_name: TSelectsFieldNames;
-    id: string;
-    is_mobile: boolean;
-    getDropdownList: TDropdowns;
-    getSelectedValue: TSelectedValuesSelect;
-    label: string;
-    input_value: TDropdownItems;
-    setFieldValue: TSetFieldValue;
-    className?: string;
-    is_able_disabled?: boolean;
-    values: TFormValues;
-    onChangeDropdownItem: TOnChangeDropdownItem;
-    onHideDropdownList: TOnHideDropdownList;
-    onScrollStopDropdownList: TOnScrollStopDropdownList;
-    selected_trade_type: TTradeType;
-    selected_symbol: TMarketOption;
-};
+import { TFormValues, TSelectsFieldNames } from '../q-strategy.types';
+import { TSelectFieldProps } from './q-strategy-components.types';
 
 const SelectField = ({
     field_name,
@@ -52,7 +22,7 @@ const SelectField = ({
     onScrollStopDropdownList,
     selected_trade_type,
     selected_symbol,
-}: TSelectField) => (
+}: TSelectFieldProps) => (
     <Field name={field_name} key={id}>
         {({ field }: FieldProps<string, TFormValues>) => {
             return (

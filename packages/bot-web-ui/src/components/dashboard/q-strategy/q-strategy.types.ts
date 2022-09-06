@@ -37,7 +37,7 @@ export type TDropdownItems = 'symbol' | 'trade-type' | 'duration-unit' | 'type-s
 
 export type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' | 'input_oscar_unit';
 export type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
-type TInputCommonFields = TInputBaseFields | TInputUniqFields;
+export type TInputCommonFields = TInputBaseFields | TInputUniqFields;
 
 export type TSetFieldValue = (element: 'button', action: 'run' | 'edit') => void;
 
@@ -55,7 +55,6 @@ export type TInputsFieldNames =
 
 export type TSymbolDropdownValue = 'group' | 'text' | 'value';
 
-// export type TSymbolDropdown = Record<TSymbolDropdownValue, string[]>;
 export type TSymbolItem = Record<TSymbolDropdownValue, string>;
 export type TSymbolDropdown = Array<TSymbolItem>;
 

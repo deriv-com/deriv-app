@@ -1,10 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { TMarketOption } from '../q-strategy.types';
-
-type TMarketOptionProps = {
-    symbol: TMarketOption;
-};
+import { TMarketOptionProps } from './q-strategy-components.types';
 
 const MarketOption = ({ symbol }: TMarketOptionProps) => (
     <div key={symbol.value} className='quick-strategy__option'>

@@ -8,7 +8,6 @@ import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';
 import classNames from 'classnames';
-import RunPanel from './run-panel';
 import RunStretegy from '../toolbar/runStrategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -59,7 +58,6 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                 </Tabs>
             </div>
             <SideBar checkIfSidebarOpen={showSideBar} setSideBarState={setshowSideBar} />
-            <RunPanel />
         </div>
     );
 };

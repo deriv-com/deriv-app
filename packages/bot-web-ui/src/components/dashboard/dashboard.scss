@@ -1,6 +1,9 @@
 @import '../dashboard/dashboard-components/index.scss';
 
 .dashboard {
+    &__container {
+        position: relative;
+    }
     &__chart-wrapper {
         position: relative;
         height: calc(100vh - 150px);
@@ -55,5 +58,17 @@
         background-color: var(--general-main-1);
     }
     &__run-stretegy-wrapper {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 100;
+        .animation {
+            &__button {
+                background-color: var(--purchase-main-1);
+            }
+            &__container {
+                background-color: var(--general-main-1);
+            }
+        }
     }
 }

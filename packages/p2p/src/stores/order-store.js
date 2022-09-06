@@ -97,6 +97,8 @@ export default class OrderStore {
                 } else {
                     order_details_store.setErrorMessage(response.error.message);
                 }
+
+                localStorage.removeItem('verification_code.p2p_order_confirm');
             }
         });
     }
@@ -427,6 +429,7 @@ export default class OrderStore {
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
                     }
+                    localStorage.removeItem('verification_code.p2p_order_confirm');
                 }
             });
         }

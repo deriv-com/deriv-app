@@ -14,7 +14,7 @@ export default class ErrorStore {
     @observable is_ask_financial_risk_approval = false;
 
     @action.bound
-    setErrorMessage(error: TServerError, onClickButton: VoidFunction | null, is_show_full_page: boolean): void {
+    setErrorMessage(error: TServerError, onClickButton?: VoidFunction | null, is_show_full_page?: boolean): void {
         // for errors that need to show a button, reset the form
         const error_object = {
             onClickButton,
@@ -60,7 +60,7 @@ export default class ErrorStore {
                 this.setIsAskFinancialRiskApproval(true);
                 break;
             default:
-                this.setErrorMessage(error, null, false);
+                this.setErrorMessage(error);
                 this.setIsAskUkFundsProtection(false);
                 this.setIsSelfExclusionMaxTurnoverSet(false);
                 this.setIsAskAuthentication(false);

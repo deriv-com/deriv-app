@@ -38,7 +38,6 @@ describe('<Withdrawal />', () => {
         setActiveTab: jest.fn(),
         setErrorMessage: jest.fn(),
         setSideNotes: jest.fn(),
-        willMountWithdraw: jest.fn(),
         balance: '1000',
         currency: 'USD',
         current_currency_type: '',
@@ -134,26 +133,6 @@ describe('<Withdrawal />', () => {
         );
 
         expect(screen.getByText('NoBalance')).toBeInTheDocument();
-    });
-
-    it('should render <Error /> component', () => {
-        const history = createBrowserHistory();
-
-        const { rerender } = render(
-            <Router history={history}>
-                <Withdrawal {...props} error={{ is_show_full_page: true, message: 'Error message' }} />
-            </Router>
-        );
-
-        expect(screen.getByText('Error')).toBeInTheDocument();
-
-        rerender(
-            <Router history={history}>
-                <Withdrawal {...props} verify_error={{ message: 'Error message' }} />
-            </Router>
-        );
-
-        expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <Withdraw /> component', () => {

@@ -52,9 +52,6 @@ beforeEach(() => {
                     is_onramp_tab_visible: false,
                 },
                 payment_agent: {
-                    verification: {
-                        clearVerification: jest.fn(),
-                    },
                     getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
                     setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
@@ -72,9 +69,6 @@ beforeEach(() => {
                 withdraw: {
                     check10kLimit: jest.fn().mockResolvedValueOnce(),
                     setIsWithdrawConfirmed: jest.fn(),
-                    verification: {
-                        clearVerification: jest.fn(),
-                    },
                 },
             },
         },

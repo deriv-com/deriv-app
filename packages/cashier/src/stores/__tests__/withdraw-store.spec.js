@@ -9,7 +9,6 @@ jest.mock('@deriv/shared', () => ({
         return { is_ok: true };
     }),
 }));
-jest.mock('../verification-store');
 
 describe('WithdrawStore', () => {
     let withdraw_store;
@@ -167,11 +166,6 @@ describe('WithdrawStore', () => {
 
         withdraw_store.setBlockchainAddress(blockchain_address);
         expect(withdraw_store.blockchain_address).toBe(blockchain_address);
-    });
-
-    it('will mount withdraw', () => {
-        withdraw_store.willMountWithdraw('aBcDefXa');
-        expect(withdraw_store.verification.clearVerification).toHaveBeenCalled();
     });
 
     it('should set the iframe url if verification code is valid', async () => {

@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import { ReadMore } from '@deriv/components';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import VerificationStore from './verification-store';
 
 export default class WithdrawStore {
     constructor({ WS, root_store }) {
@@ -24,7 +23,6 @@ export default class WithdrawStore {
             saveWithdraw: action.bound,
             resetWithrawForm: action.bound,
             setBlockchainAddress: action.bound,
-            willMountWithdraw: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
             is_withdrawal_locked: computed,
@@ -37,7 +35,6 @@ export default class WithdrawStore {
             account_platform_icon: computed,
         });
 
-        this.verification = new VerificationStore({ root_store, WS });
         this.root_store = root_store;
         this.WS = WS;
     }
@@ -56,10 +53,6 @@ export default class WithdrawStore {
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
         if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
-
-        if (!is_withdraw_confirmed && this.verification) {
-            this.verification.clearVerification();
-        }
     }
 
     setWithdrawAmount(amount) {
@@ -104,10 +97,6 @@ export default class WithdrawStore {
         }).then(response => {
             if (response.error) {
                 this.error.setErrorMessage(response.error);
-                if (verification_code) {
-                    // clear verification code on error
-                    this.verification.clearVerification();
-                }
                 this.resetWithrawForm();
             } else {
                 this.setIsWithdrawConfirmed(true);
@@ -120,17 +109,10 @@ export default class WithdrawStore {
         this.setBlockchainAddress('');
         setConverterFromAmount('');
         setConverterToAmount('');
-        this.verification.clearVerification();
     }
 
     setBlockchainAddress(address) {
         this.blockchain_address = address;
-    }
-
-    willMountWithdraw(verification_code) {
-        if (verification_code) {
-            this.verification.clearVerification();
-        }
     }
 
     async onMountWithdraw(verification_code) {
@@ -185,10 +167,6 @@ export default class WithdrawStore {
             setLoading(false);
             setSessionTimeout(true);
             clearTimeoutCashierUrl();
-            if (verification_code) {
-                // clear verification code on error
-                this.verification.clearVerification();
-            }
         } else if (is_crypto) {
             setLoading(false);
         } else {
@@ -223,10 +201,6 @@ export default class WithdrawStore {
             general_store.setLoading(false);
             iframe.setSessionTimeout(true);
             iframe.clearTimeoutCashierUrl();
-            if (verification_code) {
-                // clear verification code on error
-                this.verification.clearVerification();
-            }
         } else {
             this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
             general_store.setLoading(false);

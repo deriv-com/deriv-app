@@ -1,8 +1,6 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
 
-jest.mock('../verification-store');
-
 describe('PaymentAgentStore', () => {
     let payment_agent_store;
     const mocked_payment_agent_list = {

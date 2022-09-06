@@ -76,11 +76,6 @@ const P2PCashier = ({
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
 
-            if (is_mobile) {
-                current_query_params.delete('action');
-                current_query_params.delete('code');
-            }
-
             if (current_query_params.has('order_id') || current_query_params.has('order')) {
                 current_query_params.delete('order');
                 current_query_params.delete('order_id');
@@ -108,12 +103,6 @@ const P2PCashier = ({
 
                 setOrderId(input_order_id);
             }
-
-            // // This is a bit hacky but it's needed
-            // if (!is_mobile) {
-            //     current_query_params.delete('action');
-            //     current_query_params.delete('code');
-            // }
         },
         [history, location.hash, location.search, order_id]
     );
@@ -123,7 +112,6 @@ const P2PCashier = ({
 
         url_params.delete('action');
         url_params.delete('code');
-        localStorage.removeItem('verification_code.p2p_order_confirm');
     };
 
     if (is_logging_in) {

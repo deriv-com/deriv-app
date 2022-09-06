@@ -40,6 +40,7 @@
         "mobx-react-lite": "^2.2.2",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
+        "react": "^16.14.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0"
     },

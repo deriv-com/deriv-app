@@ -246,9 +246,6 @@ export default class OrderStore {
 
     @action.bound
     onPageReturn() {
-        const { general_store } = this.root_store;
-
-        general_store.props?.deleteParams();
         this.hideDetails(true);
     }
 

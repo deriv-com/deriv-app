@@ -8,7 +8,7 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { general_store, order_store } = useStores();
+    const { order_store } = useStores();
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
@@ -35,7 +35,6 @@ const Orders = observer(() => {
         return () => {
             disposeOrderIdReaction();
             disposeOrdersUpdateReaction();
-            general_store.props?.deleteParams();
             order_store.onUnmount();
         };
 

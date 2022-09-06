@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -9,36 +9,36 @@ import { removeTrailingZeros } from 'Utils/format-value';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
-    api_error_message = '';
-    contact_info = '';
-    error_message = '';
-    form_error_code = '';
-    has_more_items_to_load = false;
-    has_payment_methods = false;
-    is_filter_modal_loading = false;
-    is_filter_modal_open = false;
-    is_loading = true;
-    is_sort_dropdown_open = false;
-    is_submit_disabled = true;
-    items = [];
-    payment_info = '';
-    receive_amount = 0;
-    search_results = [];
-    search_term = '';
-    selected_ad_state = {};
-    selected_payment_method_value = [];
-    selected_payment_method_text = [];
-    selected_value = 'rate';
-    should_show_popup = false;
-    should_show_verification = false;
-    should_use_client_limits = false;
-    show_advertiser_page = false;
-    show_filter_payment_methods = false;
-    show_rate_change_popup = false;
-    sort_by = 'rate';
-    submitForm = () => {};
-    table_type = buy_sell.BUY;
-    form_props = {};
+    @observable api_error_message = '';
+    @observable contact_info = '';
+    @observable error_message = '';
+    @observable form_error_code = '';
+    @observable has_more_items_to_load = false;
+    @observable has_payment_methods = false;
+    @observable is_filter_modal_loading = false;
+    @observable is_filter_modal_open = false;
+    @observable is_loading = true;
+    @observable is_sort_dropdown_open = false;
+    @observable is_submit_disabled = true;
+    @observable items = [];
+    @observable payment_info = '';
+    @observable receive_amount = 0;
+    @observable search_results = [];
+    @observable search_term = '';
+    @observable selected_ad_state = {};
+    @observable selected_payment_method_value = [];
+    @observable selected_payment_method_text = [];
+    @observable selected_value = 'rate';
+    @observable should_show_popup = false;
+    @observable should_show_verification = false;
+    @observable should_use_client_limits = false;
+    @observable show_advertiser_page = false;
+    @observable show_filter_payment_methods = false;
+    @observable show_rate_change_popup = false;
+    @observable sort_by = 'rate';
+    @observable submitForm = () => {};
+    @observable table_type = buy_sell.BUY;
+    @observable form_props = {};
 
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
@@ -48,133 +48,37 @@ export default class BuySellStore extends BaseStore {
     filter_payment_methods = [];
     payment_method_ids = [];
 
-    // eslint-disable-next-line class-methods-use-this
-    get sort_list() {
-        return [
-            { text: localize('Exchange rate (Default)'), value: 'rate' },
-            { text: localize('Completion rate'), value: 'completion' },
-        ];
-    }
-
-    constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super(root_store);
-
-        makeObservable(this, {
-            api_error_message: observable,
-            contact_info: observable,
-            error_message: observable,
-            form_error_code: observable,
-            has_more_items_to_load: observable,
-            has_payment_methods: observable,
-            is_filter_modal_loading: observable,
-            is_filter_modal_open: observable,
-            is_loading: observable,
-            is_sort_dropdown_open: observable,
-            is_submit_disabled: observable,
-            items: observable,
-            payment_info: observable,
-            receive_amount: observable,
-            search_results: observable,
-            search_term: observable,
-            selected_ad_state: observable,
-            selected_payment_method_value: observable,
-            selected_payment_method_text: observable,
-            selected_value: observable,
-            should_show_popup: observable,
-            should_show_verification: observable,
-            should_use_client_limits: observable,
-            show_advertiser_page: observable,
-            show_filter_payment_methods: observable,
-            show_rate_change_popup: observable,
-            sort_by: observable,
-            submitForm: observable,
-            table_type: observable,
-            form_props: observable,
-            account_currency: computed,
-            advert: computed,
-            has_payment_info: computed,
-            is_buy: computed,
-            is_buy_advert: computed,
-            is_sell_advert: computed,
-            modal_title: computed,
-            rendered_items: computed,
-            should_filter_by_payment_method: computed,
-            getAdvertiserInfo: action.bound,
-            handleChange: action.bound,
-            handleSubmit: action.bound,
-            hideAdvertiserPage: action.bound,
-            hideVerification: action.bound,
-            loadMoreItems: action.bound,
-            onCancelClick: action.bound,
-            onChangeTableType: action.bound,
-            onClickApply: action.bound,
-            onClickReset: action.bound,
-            onConfirmClick: action.bound,
-            setApiErrorMessage: action.bound,
-            setContactInfo: action.bound,
-            setErrorMessage: action.bound,
-            setFormErrorCode: action.bound,
-            setFormProps: action.bound,
-            setHasMoreItemsToLoad: action.bound,
-            setHasPaymentMethods: action.bound,
-            setIsFilterModalLoading: action.bound,
-            setIsFilterModalOpen: action.bound,
-            setIsLoading: action.bound,
-            setIsSortDropdownOpen: action.bound,
-            setIsSubmitDisabled: action.bound,
-            setItems: action.bound,
-            setPaymentInfo: action.bound,
-            setInitialReceiveAmount: action.bound,
-            setReceiveAmount: action.bound,
-            setSearchResults: action.bound,
-            setSearchTerm: action.bound,
-            setSelectedAdState: action.bound,
-            setSelectedPaymentMethodValue: action.bound,
-            setSelectedPaymentMethodText: action.bound,
-            setSelectedValue: action.bound,
-            setShouldShowPopup: action.bound,
-            setShouldShowVerification: action.bound,
-            setShouldUseClientLimits: action.bound,
-            setShowAdvertiserPage: action.bound,
-            setShowFilterPaymentMethods: action.bound,
-            setSortBy: action.bound,
-            setTableType: action.bound,
-            setSelectedAdvert: action.bound,
-            setSubmitFormFn: action.bound,
-            showAdvertiserPage: action.bound,
-            showVerification: action.bound,
-            validatePopup: action.bound,
-            sort_list: computed,
-            fetchAdvertiserAdverts: action.bound,
-            setShowRateChangePopup: action.bound,
-        });
-    }
-
+    @computed
     get account_currency() {
         return this.advert?.account_currency;
     }
 
+    @computed
     get advert() {
         return this.form_props?.advert;
     }
 
+    @computed
     get has_payment_info() {
         return this.contact_info.length;
     }
 
+    @computed
     get is_buy() {
         return this.table_type === buy_sell.BUY;
     }
 
+    @computed
     get is_buy_advert() {
         return this.advert?.counterparty_type === buy_sell.BUY;
     }
 
+    @computed
     get is_sell_advert() {
         return this.advert?.counterparty_type === buy_sell.SELL;
     }
 
+    @computed
     get modal_title() {
         if (this.is_buy_advert) {
             return localize('Buy {{ account_currency }}', { account_currency: this.account_currency });
@@ -183,6 +87,7 @@ export default class BuySellStore extends BaseStore {
         return localize('Sell {{ account_currency }}', { account_currency: this.account_currency });
     }
 
+    @computed
     get rendered_items() {
         if (isMobile()) {
             if (this.search_term) {
@@ -206,11 +111,21 @@ export default class BuySellStore extends BaseStore {
         return this.items;
     }
 
+    @computed
     get should_filter_by_payment_method() {
         const { my_profile_store } = this.root_store;
         return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate'), value: 'rate' },
+            { text: localize('User rating'), value: 'rating' },
+        ];
+    }
+
+    @action.bound
     fetchAdvertiserAdverts() {
         this.setItems([]);
         this.setIsLoading(true);
@@ -220,6 +135,7 @@ export default class BuySellStore extends BaseStore {
         }
     }
 
+    @action.bound
     getAdvertiserInfo() {
         requestWS({
             p2p_advertiser_info: 1,
@@ -238,6 +154,7 @@ export default class BuySellStore extends BaseStore {
         });
     }
 
+    @action.bound
     handleChange(e) {
         this.setIsLoading(true);
         this.setSelectedValue(e.target.value);
@@ -247,6 +164,7 @@ export default class BuySellStore extends BaseStore {
         this.setIsSortDropdownOpen(false);
     }
 
+    @action.bound
     handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
         if (isMountedFn()) {
             setSubmitting(true);
@@ -291,14 +209,17 @@ export default class BuySellStore extends BaseStore {
         }
     };
 
+    @action.bound
     hideAdvertiserPage() {
         this.setShowAdvertiserPage(false);
     }
 
+    @action.bound
     hideVerification() {
         this.setShouldShowVerification(false);
     }
 
+    @action.bound
     loadMoreItems({ startIndex }) {
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
@@ -372,14 +293,17 @@ export default class BuySellStore extends BaseStore {
         });
     }
 
+    @action.bound
     onCancelClick() {
         this.setShouldShowPopup(false);
     }
 
+    @action.bound
     onChangeTableType(event) {
         this.setTableType(event.target.value);
     }
 
+    @action.bound
     onClickApply(payment_method_value, payment_method_text) {
         this.setSelectedPaymentMethodValue(payment_method_value);
         this.setSelectedPaymentMethodText(payment_method_text);
@@ -389,10 +313,12 @@ export default class BuySellStore extends BaseStore {
         this.setIsFilterModalOpen(false);
     }
 
+    @action.bound
     onClickReset() {
         this.setShouldUseClientLimits(false);
     }
 
+    @action.bound
     onConfirmClick(order_info) {
         const { general_store, order_store } = this.root_store;
 
@@ -415,94 +341,117 @@ export default class BuySellStore extends BaseStore {
         };
     }
 
+    @action.bound
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
 
+    @action.bound
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
     }
 
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
 
+    @action.bound
     setFormErrorCode(form_error_code) {
         this.form_error_code = form_error_code;
     }
 
+    @action.bound
     setFormProps(props) {
         this.form_props = props;
     }
 
+    @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
     }
 
+    @action.bound
     setHasPaymentMethods(has_payment_methods) {
         this.has_payment_methods = has_payment_methods;
     }
 
+    @action.bound
     setIsFilterModalLoading(is_filter_modal_loading) {
         this.is_filter_modal_loading = is_filter_modal_loading;
     }
 
+    @action.bound
     setIsFilterModalOpen(is_filter_modal_open) {
         this.is_filter_modal_open = is_filter_modal_open;
     }
 
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
+    @action.bound
     setIsSortDropdownOpen(is_sort_dropdown_open) {
         this.is_sort_dropdown_open = is_sort_dropdown_open;
     }
 
+    @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
     }
 
+    @action.bound
     setItems(items) {
         this.items = items;
     }
 
+    @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
     }
 
+    @action.bound
     setInitialReceiveAmount(initial_price) {
         this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
     }
 
+    @action.bound
     setReceiveAmount(receive_amount) {
         this.receive_amount = receive_amount;
     }
 
+    @action.bound
     setSearchResults(search_results) {
         this.search_results = search_results;
     }
 
+    @action.bound
     setSearchTerm(search_term) {
         this.search_term = search_term;
     }
 
+    @action.bound
     setSelectedAdState(selected_ad_state) {
         this.selected_ad_state = selected_ad_state;
     }
 
+    @action.bound
     setSelectedPaymentMethodValue(payment_method_value) {
         this.selected_payment_method_value = [...payment_method_value];
     }
 
+    @action.bound
     setSelectedPaymentMethodText(payment_method_text) {
         this.selected_payment_method_text = [...payment_method_text];
     }
 
+    @action.bound
     setSelectedValue(selected_value) {
         this.selected_value = selected_value;
     }
 
+    @action.bound
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
         if (!this.should_show_popup) {
@@ -510,30 +459,37 @@ export default class BuySellStore extends BaseStore {
         }
     }
 
+    @action.bound
     setShouldShowVerification(should_show_verification) {
         this.should_show_verification = should_show_verification;
     }
 
+    @action.bound
     setShouldUseClientLimits(should_use_client_limits) {
         this.should_use_client_limits = should_use_client_limits;
     }
 
+    @action.bound
     setShowAdvertiserPage(show_advertiser_page) {
         this.show_advertiser_page = show_advertiser_page;
     }
 
+    @action.bound
     setShowFilterPaymentMethods(show_filter_payment_methods) {
         this.show_filter_payment_methods = show_filter_payment_methods;
     }
 
+    @action.bound
     setSortBy(sort_by) {
         this.sort_by = sort_by;
     }
 
+    @action.bound
     setTableType(table_type) {
         this.table_type = table_type;
     }
 
+    @action.bound
     setSelectedAdvert(selected_advert) {
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
@@ -547,23 +503,28 @@ export default class BuySellStore extends BaseStore {
         }
     }
 
+    @action.bound
     setSubmitFormFn(submitFormFn) {
         this.submitForm = submitFormFn;
     }
 
+    @action.bound
     showAdvertiserPage(selected_advert) {
         this.setSelectedAdState(selected_advert);
         this.setShowAdvertiserPage(true);
     }
 
+    @action.bound
     setShowRateChangePopup(show_rate_change_popup) {
         this.show_rate_change_popup = show_rate_change_popup;
     }
 
+    @action.bound
     showVerification() {
         this.setShouldShowVerification(true);
     }
 
+    @action.bound
     validatePopup(values) {
         const validations = {
             amount: [

@@ -1,64 +1,11 @@
 import { cloneObject } from '@deriv/shared';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 
 export default class OrderStore {
     constructor(root_store) {
-        makeObservable(this, {
-            api_error_message: observable,
-            cancellation_block_duration: observable,
-            cancellation_count_period: observable,
-            cancellation_limit: observable,
-            cancels_remaining: observable,
-            error_message: observable,
-            has_more_items_to_load: observable,
-            is_loading: observable,
-            is_rating_modal_open: observable,
-            is_recommended: observable,
-            orders: observable,
-            order_id: observable,
-            order_payment_method_details: observable,
-            order_rerender_timeout: observable,
-            rating_value: observable,
-            has_order_payment_method_details: computed,
-            order_information: computed,
-            nav: computed,
-            confirmOrderRequest: action.bound,
-            getAdvertiserInfo: action.bound,
-            getWebsiteStatus: action.bound,
-            handleRating: action.bound,
-            hideDetails: action.bound,
-            loadMoreOrders: action.bound,
-            onOrderIdUpdate: action.bound,
-            onOrdersUpdate: action.bound,
-            onUnmount: action.bound,
-            setForceRerenderOrders: action.bound,
-            setApiErrorMessage: action.bound,
-            setCancellationBlockDuration: action.bound,
-            setCancellationCountPeriod: action.bound,
-            setCancellationLimit: action.bound,
-            setCancelsRemaining: action.bound,
-            setErrorMessage: action.bound,
-            setHasMoreItemsToLoad: action.bound,
-            setIsLoading: action.bound,
-            setIsRatingModalOpen: action.bound,
-            setIsRecommended: action.bound,
-            setOrderPaymentMethodDetails: action.bound,
-            setOrderDetails: action.bound,
-            setOrderId: action.bound,
-            setOrders: action.bound,
-            setOrderRendererTimeout: action.bound,
-            setQueryDetails: action.bound,
-            setData: action.bound,
-            setOrderRating: action.bound,
-            subscribeToCurrentOrder: action.bound,
-            syncOrder: action.bound,
-            unsubscribeFromCurrentOrder: action.bound,
-            setRatingValue: action.bound,
-        });
-
         this.root_store = root_store;
 
         reaction(
@@ -69,30 +16,32 @@ export default class OrderStore {
         );
     }
 
-    api_error_message = '';
-    cancellation_block_duration = 0;
-    cancellation_count_period = 0;
-    cancellation_limit = 0;
-    cancels_remaining = null;
-    error_message = '';
-    has_more_items_to_load = false;
-    is_loading = false;
-    is_rating_modal_open = false;
-    is_recommended = undefined;
-    orders = [];
-    order_id = null;
-    order_payment_method_details = null;
-    order_rerender_timeout = null;
-    rating_value = 0;
+    @observable api_error_message = '';
+    @observable cancellation_block_duration = 0;
+    @observable cancellation_count_period = 0;
+    @observable cancellation_limit = 0;
+    @observable cancels_remaining = null;
+    @observable error_message = '';
+    @observable has_more_items_to_load = false;
+    @observable is_loading = false;
+    @observable is_rating_modal_open = false;
+    @observable is_recommended = undefined;
+    @observable orders = [];
+    @observable order_id = null;
+    @observable order_payment_method_details = null;
+    @observable order_rerender_timeout = null;
+    @observable rating_value = 0;
 
     interval;
     order_info_subscription = {};
     previous_orders = [];
 
+    @computed
     get has_order_payment_method_details() {
         return !!this.order_payment_method_details;
     }
 
+    @computed
     get order_information() {
         const { general_store } = this.root_store;
         const order = this.orders.find(o => o.id === this.order_id);
@@ -102,10 +51,12 @@ export default class OrderStore {
             : null;
     }
 
+    @computed
     get nav() {
         return this.root_store.general_store.parameters?.nav;
     }
 
+    @action.bound
     confirmOrderRequest(id) {
         const { order_details_store } = this.root_store;
 
@@ -119,6 +70,7 @@ export default class OrderStore {
         });
     }
 
+    @action.bound
     getAdvertiserInfo(setShouldShowCancelModal) {
         requestWS({ p2p_advertiser_info: 1 }).then(response => {
             if (response.error) {
@@ -131,6 +83,7 @@ export default class OrderStore {
         this.getWebsiteStatus(setShouldShowCancelModal);
     }
 
+    @action.bound
     getWebsiteStatus(setShouldShowCancelModal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
@@ -148,10 +101,12 @@ export default class OrderStore {
         });
     }
 
+    @action.bound
     handleRating(rate) {
         this.setRatingValue(rate);
     }
 
+    @action.bound
     hideDetails(should_navigate) {
         if (should_navigate && this.nav) {
             this.root_store.general_store.redirectTo(this.nav.location);
@@ -160,6 +115,7 @@ export default class OrderStore {
         this.setOrderId(null);
     }
 
+    @action.bound
     loadMoreOrders({ startIndex }) {
         this.setApiErrorMessage('');
 
@@ -207,6 +163,7 @@ export default class OrderStore {
         });
     }
 
+    @action.bound
     onOrderIdUpdate() {
         this.unsubscribeFromCurrentOrder();
 
@@ -215,6 +172,7 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     async onOrdersUpdate() {
         if (this.order_id) {
             // If orders was updated, find current viewed order (if any)
@@ -233,12 +191,14 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     onUnmount() {
         clearTimeout(this.order_rerender_timeout);
         this.unsubscribeFromCurrentOrder();
         this.hideDetails(false);
     }
 
+    @action.bound
     setOrderRating(id) {
         const rating = this.rating_value / 20;
 
@@ -257,6 +217,7 @@ export default class OrderStore {
         });
     }
 
+    @action.bound
     subscribeToCurrentOrder() {
         this.order_info_subscription = subscribeWS(
             {
@@ -268,6 +229,7 @@ export default class OrderStore {
         );
     }
 
+    @action.bound
     syncOrder(p2p_order_info) {
         const { general_store } = this.root_store;
 
@@ -309,6 +271,7 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     unsubscribeFromCurrentOrder() {
         clearTimeout(this.order_rerender_timeout);
 
@@ -317,58 +280,72 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     setForceRerenderOrders(forceRerenderFn) {
         this.forceRerenderFn = forceRerenderFn;
     }
 
+    @action.bound
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
 
+    @action.bound
     setCancellationBlockDuration(cancellation_block_duration) {
         this.cancellation_block_duration = cancellation_block_duration;
     }
 
+    @action.bound
     setCancellationCountPeriod(cancellation_count_period) {
         this.cancellation_count_period = cancellation_count_period;
     }
 
+    @action.bound
     setCancellationLimit(cancellation_limit) {
         this.cancellation_limit = cancellation_limit;
     }
 
+    @action.bound
     setCancelsRemaining(cancels_remaining) {
         this.cancels_remaining = cancels_remaining;
     }
 
+    @action.bound
     setData(data) {
         this.data = data;
     }
 
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
 
+    @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
     }
 
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
+    @action.bound
     setIsRatingModalOpen(is_rating_modal_open) {
         this.is_rating_modal_open = is_rating_modal_open;
     }
 
+    @action.bound
     setIsRecommended(is_recommended) {
         this.is_recommended = is_recommended;
     }
 
+    @action.bound
     setOrderPaymentMethodDetails(order_payment_method_details) {
         this.order_payment_method_details = order_payment_method_details;
     }
 
+    @action.bound
     setOrderDetails(response) {
         if (!response.error) {
             const { p2p_order_info } = response;
@@ -379,6 +356,7 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     setOrderId(order_id) {
         this.order_id = order_id;
 
@@ -389,15 +367,18 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     setOrders(orders) {
         this.previous_orders = cloneObject(this.orders);
         this.orders = orders;
     }
 
+    @action.bound
     setOrderRendererTimeout(order_rerender_timeout) {
         this.order_rerender_timeout = order_rerender_timeout;
     }
 
+    @action.bound
     setQueryDetails(input_order) {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
@@ -444,6 +425,7 @@ export default class OrderStore {
         }
     }
 
+    @action.bound
     setRatingValue(rating_value) {
         this.rating_value = rating_value;
     }

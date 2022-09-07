@@ -1,9 +1,26 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { isEmptyObject } from '@deriv/shared';
 
-const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }) => {
+type TStyle = {
+    [key: string]: string;
+};
+
+type TChildren = React.ReactNode | React.ReactNode[];
+
+type TTextProps = {
+    line_height: string;
+    size: string;
+    children: TChildren;
+    color: string;
+    align: string;
+    weight: string;
+    as: string;
+    className: string;
+    styles: TStyle;
+};
+
+const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }: TTextProps) => {
     const class_styles = {
         '--text-size': `var(--text-size-${size || 's'})`,
         '--text-color': `var(--text-${color || 'general'})`,
@@ -23,18 +40,6 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
     }, [size, color, line_height, weight, align]);
     const class_names = classNames('dc-text', className);
     return React.createElement(as || 'span', { className: class_names, style, ...props }, children);
-};
-
-Text.propTypes = {
-    line_height: PropTypes.string,
-    size: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.object]),
-    color: PropTypes.string,
-    align: PropTypes.string,
-    weight: PropTypes.string,
-    as: PropTypes.string,
-    className: PropTypes.string,
-    styles: PropTypes.object,
 };
 
 export default Text;

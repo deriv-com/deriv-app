@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 
 const ContentExpander = ({
     arrow_style,

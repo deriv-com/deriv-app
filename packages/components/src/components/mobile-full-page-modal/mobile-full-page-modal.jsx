@@ -5,7 +5,7 @@ import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
 import PageOverlay from '../page-overlay/page-overlay.jsx';
 import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 
 const MobileFullPageModal = ({
     body_className,

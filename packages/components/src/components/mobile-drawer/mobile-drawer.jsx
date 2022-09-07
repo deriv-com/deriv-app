@@ -9,7 +9,7 @@ import Item from './mobile-drawer-item.jsx';
 import SubMenu from './mobile-drawer-submenu.jsx';
 import SubMenuSection from './mobile-drawer-submenu-section.jsx';
 import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 
 const MobileDrawer = ({
     className,

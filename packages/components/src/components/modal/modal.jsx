@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import Body from './modal-body.jsx';
 import Footer from './modal-footer.jsx';
 import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({

@@ -71,7 +71,7 @@ const P2PCashier = ({
         }
 
         return () => setQueryOrder(null);
-    }, [location.search, setQueryOrder]);
+    }, [setQueryOrder]);
 
     const setQueryOrder = React.useCallback(
         input_order_id => {
@@ -81,6 +81,7 @@ const P2PCashier = ({
                 current_query_params.delete('action');
                 current_query_params.delete('code');
             }
+
             if (current_query_params.has('order_id') || current_query_params.has('order')) {
                 current_query_params.delete('order');
                 current_query_params.delete('order_id');

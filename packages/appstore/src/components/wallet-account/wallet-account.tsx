@@ -25,16 +25,6 @@ type TModalActionButton = {
 
 const WalletAccount = observer(({ account }: WalletAccountProps) => {
     const { wallet_store } = useStores();
-    const actionButtons: TModalActionButton[] = [
-        {
-            id: 1,
-            text: 'Back to Trading Hub',
-            color: 'secondary',
-            onClick: () => {
-                //your action
-            },
-        },
-    ];
 
     return (
         <>
@@ -157,7 +147,6 @@ const WalletAccount = observer(({ account }: WalletAccountProps) => {
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
-                                handleClick={wallet_store.installDerivApps}
                                 description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
                             />
                             <div className='test'>apps</div>
@@ -165,36 +154,6 @@ const WalletAccount = observer(({ account }: WalletAccountProps) => {
                     </div>
                 </Accordion.Content>
             </Accordion>
-
-            <Modal open={wallet_store.should_open_modal} onOpenChange={wallet_store.toggleModal}>
-                <Modal.Portal>
-                    <Modal.Overlay />
-                    <Modal.PageContent
-                        title='Trading account added'
-                        has_close_button={true}
-                        has_title_separator={true}
-                        has_footer_separator={false}
-                        action_buttons={actionButtons}
-                        should_prevent_close_on_click_outside={false}
-                        style={{ width: '60rem' }}
-                    >
-                        <div className='wallet-account__app-card-wrapper'>
-                            <AppstoreAppCard
-                                account_type='Demo'
-                                app_card_details={{
-                                    app_icon: 'icDxtradeSynthetic',
-                                    app_name: 'Deriv Apps',
-                                }}
-                                size='large'
-                                linked
-                            />
-                            <Text bold={false} type='paragraph-1' align='right'>
-                                {localize('You have added a Demo Deriv Apps account.')}
-                            </Text>
-                        </div>
-                    </Modal.PageContent>
-                </Modal.Portal>
-            </Modal>
         </>
     );
 });

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { compressImageFiles, isMobile, isDesktop, readFiles } from '@deriv/shared';
@@ -21,10 +20,14 @@ describe('<FileUploader />', () => {
         jest.clearAllMocks();
     });
 
-    const props: any = {
+    const props: {
+        onFileDrop: (file: File | undefined) => void;
+        getSocket: () => WebSocket;
+        ref: React.RefObject<HTMLElement>;
+    } = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
-        ref: React.createRef<any>(),
+        ref: React.createRef<HTMLElement>(),
     };
 
     const large_file_error_msg = /file size should be 8mb or less/i;

@@ -28,7 +28,7 @@ const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentS
 
         let is_file_error = false;
 
-        compressImageFiles([file]).then((files_to_process: unknown) => {
+        compressImageFiles([file]).then((files_to_process: File[]) => {
             readFiles(files_to_process, fileReadErrorMessage, settings).then((processed_files: TProcessedFile[]) => {
                 processed_files.forEach((item: TProcessedFile) => {
                     if (item.message) {

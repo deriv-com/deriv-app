@@ -33,7 +33,7 @@ const fileReadErrorMessage = (filename: string) => {
 };
 
 const FileUploader = React.forwardRef<
-    HTMLDivElement,
+    HTMLElement,
     { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket }
 >(({ onFileDrop, getSocket }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });

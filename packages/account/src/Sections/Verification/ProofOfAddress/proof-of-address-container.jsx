@@ -102,9 +102,9 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, has_restricted_mt5_a
         case PoaStatusCodes.expired:
             return <Expired onClick={handleResubmit} />;
         case PoaStatusCodes.rejected:
-            return <Unverified />;
+            return <Unverified onClick={handleResubmit} />;
         case PoaStatusCodes.suspected:
-            return <Unverified />;
+            return <Unverified onClick={handleResubmit} />;
         default:
             return null;
     }

@@ -1,25 +1,22 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
-import { Icon } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Button, Icon, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Unverified = () => {
+export const Unverified = ({ onClick }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             message={localize('We could not verify your proof of address')}
-            text={
-                <Localize
-                    i18n_default_text='Please check your email for details.'
-                    // TODO: enable link to Help Center when POA help content is ready
-                    // i18n_default_text='Please check your email for details. If you have any questions, please go to our <0>Help Centre</0>.'
-                    // components={[
-                    //     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='https://www.deriv.com/help-centre/' />,
-                    // ]}
-                />
-            }
+            text={localize('Please check your email for details.')}
             icon={<Icon icon={is_appstore ? 'IcPoaErrorDashboard' : 'IcPoaError'} size={128} />}
-        />
+        >
+            <Button onClick={onClick} has_effect primary>
+                <Text className='dc-btn__text' size='xs' weight='bold' as='p'>
+                    {localize('Resubmit')}
+                </Text>
+            </Button>
+        </IconMessageContent>
     );
 };

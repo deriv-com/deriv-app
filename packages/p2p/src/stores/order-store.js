@@ -90,9 +90,11 @@ export default class OrderStore {
                 if (response.error) {
                     this.setErrorMessage(response.error.message);
                 } else {
-                    this.root_store.general_store.handleNotifications(this.orders, response.p2p_order_list.list);
-                    response.p2p_order_list.list.forEach(order => this.syncOrder(order));
-                    this.setOrders(response.p2p_order_list.list);
+                    const { p2p_order_list } = response;
+
+                    this.root_store.general_store.handleNotifications(this.orders, p2p_order_list.list);
+                    p2p_order_list.list.forEach(order => this.syncOrder(order));
+                    this.setOrders(p2p_order_list.list);
                 }
             }
         });

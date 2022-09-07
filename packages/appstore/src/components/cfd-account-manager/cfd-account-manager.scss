@@ -4,12 +4,12 @@
     align-items: center;
     justify-content: space-between;
 
-    &-details {
+    &__details {
         display: flex;
         flex-direction: column;
     }
 
-    &-buttons {
+    &__buttons {
         display: flex;
         flex-direction: column;
         margin-left: 5rem;

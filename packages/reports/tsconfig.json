@@ -3,17 +3,18 @@
     "compilerOptions": {
         "paths": {
             "_common/*": ["./src/_common/*"],
-            "Constants/*": ["./src/Constants/*"],
             "Components/*": ["./src/Components/*"],
+            "Constants/*": ["./src/Constants/*"],
             "Containers/*": ["./src/Containers/*"],
+            "Helpers/*": ["./src/Helpers/*"],
             "Modules/*": ["./src/Modules/*"],
-            "Sass/*": ["./src/sass/*"],
             "Stores/*": ["./src/Stores/*"],
+            "templates/*": ["./src/templates/*"],
             "Utils/*": ["./src/Utils/*"],
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "include": ["src", "globals.d.ts"]
+    "include": ["src"]
 }

@@ -32,12 +32,12 @@ const OptionsAccount = ({
                         <Localize i18n_default_text={account_title} />
                     </Text>
                     <Text className='account__container--account-details-wrapper--name-number--number'>
-                        <Localize i18n_default_text={account_number} />
+                        {account_number}
                     </Text>
                 </div>
 
                 <Text className='account__container--account-details-wrapper--balance'>
-                    <Localize i18n_default_text={account_balance} />
+                    {account_balance}
                     {` ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>

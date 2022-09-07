@@ -15,7 +15,7 @@ type TSentEmailModal = {
 type TNoEmailContentItem = {
     key: string;
     icon: string;
-    content: React.ReactElement;
+    content: string | React.ReactElement;
 };
 const getNoEmailContentStrings = (): TNoEmailContentItem[] => {
     return [
@@ -89,10 +89,10 @@ const SentEmailModal = ({
     const onLiveChatClick = () => {
         onClose();
 
-        // TODO delete this ignore after implementing ts for livechat in core
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        window.LiveChatWidget?.call('maximize');
+        // TODO replace these types after implementing TS for livechat in core
+        (
+            window as Window & typeof globalThis & { LiveChatWidget?: { call: (param: string) => void } }
+        ).LiveChatWidget?.call('maximize');
     };
 
     const live_chat = has_live_chat ? (

@@ -117,7 +117,7 @@ SendEmailTemplate.propTypes = {
     is_disabled: PropTypes.bool,
     lbl_no_receive: PropTypes.string,
     onClickSendEmail: PropTypes.func,
-    subtitle: PropTypes.string,
+    subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     txt_resend: PropTypes.string,
     txt_resend_in: PropTypes.string,
     title: PropTypes.string,

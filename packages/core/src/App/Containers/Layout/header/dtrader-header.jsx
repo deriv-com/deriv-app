@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -95,9 +95,15 @@ const DTraderHeader = ({
         });
 
     const PreAppstoreMenuHomepage = () => {
+        const redirect = useHistory();
         return (
             <>
-                <div className='dashboard-platform-header__tradinghub' onClick={() => history.push(routes.trading_hub)}>
+                <div
+                    className='dashboard-platform-header__tradinghub'
+                    onClick={() => {
+                        redirect.push(routes.trading_hub);
+                    }}
+                >
                     <Icon icon='IcAppstoreMenuHomepage' size={30} />
                 </div>
             </>

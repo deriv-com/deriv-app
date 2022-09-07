@@ -137,6 +137,7 @@ const ToggleMenuDrawer = React.forwardRef(
                 const routes_config = getRoutesConfig({ is_appstore }, is_social_signup, is_pre_appstore);
                 let primary_routes = [];
                 let secondary_routes = [];
+                const location = window.location.pathname;
 
                 if (is_appstore) {
                     primary_routes = [
@@ -148,7 +149,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.markets,
                     ];
                     secondary_routes = [];
-                } else if (is_pre_appstore) {
+                } else if (is_pre_appstore && location === routes.trading_hub) {
                     primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {

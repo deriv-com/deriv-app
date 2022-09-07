@@ -81,7 +81,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
     );
 };
 
-const DashboardPlatformHeader = ({
+const TradingHubHeader = ({
     account_status,
     app_routing_history,
     disableApp,
@@ -217,7 +217,7 @@ const DashboardPlatformHeader = ({
     );
 };
 
-DashboardPlatformHeader.propTypes = {
+TradingHubHeader.propTypes = {
     account_status: PropTypes.object,
     app_routing_history: PropTypes.array,
     disableApp: PropTypes.func,
@@ -268,4 +268,4 @@ export default connect(({ client, common, modules, notifications, ui, menu }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
-}))(withRouter(DashboardPlatformHeader));
+}))(withRouter(TradingHubHeader));

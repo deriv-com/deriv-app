@@ -22,14 +22,8 @@ const Header = ({ is_logged_in }) => {
         let result;
         if (
             pathname === routes.trading_hub ||
-            pathname === routes.cashier_deposit ||
-            pathname === routes.account ||
-            pathname === routes.cashier ||
-            pathname === routes.cashier_withdrawal ||
-            pathname === routes.cashier_pa ||
-            pathname === routes.cashier_acc_transfer ||
-            pathname === routes.cashier_p2p ||
-            pathname === routes.personal_details
+            pathname.startsWith(routes.cashier) ||
+            pathname.startsWith(routes.account)
         ) {
             result = <TradingHubHeader />;
         } else {

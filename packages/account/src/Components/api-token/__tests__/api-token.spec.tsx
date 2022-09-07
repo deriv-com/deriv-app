@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
-import ApiToken from '../api-token';
+import ApiToken, { TApiToken } from '../api-token';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -48,7 +48,7 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    const mock_props = {
+    const mock_props: TApiToken = {
         footer_ref: undefined,
         is_app_settings: false,
         is_switching: false,
@@ -172,7 +172,7 @@ describe('<ApiToken/>', () => {
 
         const checkboxes = await screen.findAllByRole('checkbox');
         const create_btn = await screen.findByRole('button');
-        const read_checkbox = checkboxes.find(card => card.name === 'read');
+        const read_checkbox = checkboxes.find(card => card.name === 'read') as HTMLInputElement;
         const token_name_input = await screen.findByLabelText('Token name');
 
         expect(checkboxes.length).toBe(5);

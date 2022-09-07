@@ -28,11 +28,12 @@ type AptTokenState = {
     is_delete_success: boolean;
 };
 
-type TApiToken = {
-    footer_ref: Element | DocumentFragment;
+export type TApiToken = {
+    footer_ref: Element | DocumentFragment | undefined;
     is_app_settings: boolean;
     is_switching: boolean;
     overlay_ref:
+        | undefined
         | ((...args: unknown[]) => unknown)
         | import('prop-types').InferProps<{
               current: import('prop-types').Requireable<unknown>;

@@ -34,6 +34,10 @@ const JurisdictionModalFootNote = ({
                     values={{ account_type: account_type_name }}
                 />
             );
+        else if (poi_or_poa_not_submitted && (is_vanuatu_type || is_bvi_labuan_maltainvest_type))
+            return (
+                <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
+            );
         else if (poi_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'bvi')
             return (
                 <Localize
@@ -61,10 +65,6 @@ const JurisdictionModalFootNote = ({
                     i18n_default_text='Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
                     values={{ account_type: account_type_name }}
                 />
-            );
-        else if (poi_or_poa_not_submitted && (is_vanuatu_type || is_bvi_labuan_maltainvest_type))
-            return (
-                <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
             );
         else if (is_vanuatu_type && poi_not_submitted_for_vanuatu)
             return (

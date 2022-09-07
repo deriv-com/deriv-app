@@ -15,5 +15,5 @@
         "rootDir": "./src",
         "baseUrl": "./"
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts","index.d.ts"]
 }

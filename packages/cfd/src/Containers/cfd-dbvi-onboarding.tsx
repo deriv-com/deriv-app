@@ -29,29 +29,24 @@ const CFDDbViOnBoarding = ({
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
-            setIsLoading(false);
             if (get_account_status?.authentication) {
-                const identity_status = get_account_status?.authentication?.identity?.status;
-                const document_status = get_account_status?.authentication?.document?.status;
-                const { need_poi_for_vanuatu } = getAuthenticationStatusInfo(get_account_status);
+                const { need_poi_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
+                    getAuthenticationStatusInfo(get_account_status);
                 if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
                     setShowSubmittedModal(false);
-                } else if (
-                    (identity_status === 'pending' || identity_status === 'verified') &&
-                    (document_status === 'pending' || document_status === 'verified')
-                ) {
+                } else if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged) {
                     setShowSubmittedModal(true);
                 } else {
                     setShowSubmittedModal(false);
                 }
             }
+            setIsLoading(false);
         });
     };
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
-            getAccountStatusFromAPI();
             setIsLoading(true);
-            setShowSubmittedModal(false);
+            getAccountStatusFromAPI();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);

@@ -131,7 +131,7 @@ const JurisdictionModal = ({
         };
 
         if (is_eu && jurisdiction_selected_shortcode === 'maltainvest') {
-            if (poi_verified_for_bvi_labuan_maltainvest) {
+            if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -142,15 +142,15 @@ const JurisdictionModal = ({
             (jurisdiction_selected_shortcode === 'vanuatu' && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
             (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
         ) {
-            (window as any).LC_API.open_chat_window();
+            window.LC_API.open_chat_window();
         } else if (jurisdiction_selected_shortcode === 'vanuatu') {
-            if (poi_verified_for_vanuatu) {
+            if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
         } else if (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') {
-            if (poi_verified_for_bvi_labuan_maltainvest) {
+            if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -165,8 +165,9 @@ const JurisdictionModal = ({
         ) {
             return <Localize i18n_default_text='Contact us via livechat' />;
         } else if (
-            (jurisdiction_selected_shortcode === 'vanuatu' && poi_resubmit_for_vanuatu) ||
-            (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)
+            ((jurisdiction_selected_shortcode === 'vanuatu' && poi_resubmit_for_vanuatu) ||
+                (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)) &&
+            !poi_or_poa_not_submitted
         ) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
         }

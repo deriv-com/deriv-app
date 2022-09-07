@@ -36,10 +36,7 @@ type TOpenAccountTransferMeta = {
 type TDMT5CompareModalContentProps = {
     account_settings: GetSettings;
     setAccountSettings: (get_settings_response: GetSettings) => void;
-    account_type: {
-        type: string;
-        category: string;
-    };
+    account_type: TOpenAccountTransferMeta;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     clearCFDError: () => void;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
@@ -242,9 +239,9 @@ const DMT5CompareModalContent = ({
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
     const {
-        poi_acknowledged_for_vanuatu,
+        need_poi_for_vanuatu,
         no_onfido_left,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
+        need_poi_for_bvi_labuan_maltainvest,
         poi_pending_for_vanuatu,
         poi_pending_for_bvi_labuan_maltainvest,
         poi_verified_for_vanuatu,
@@ -319,6 +316,15 @@ const DMT5CompareModalContent = ({
         }
     };
 
+    const onSelectRegulated = (type_of_account: { category: string; type: string }) => {
+        if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+            return openPersonalDetailsFormOrPasswordForm(type_of_account);
+        } else if (need_poi_for_bvi_labuan_maltainvest && no_onfido_left) {
+            return window.LC_API.open_chat_window();
+        }
+        return toggleCFDVerificationModal();
+    };
+
     const onSelectRealAccount = (item: TFooterButtonData) => {
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
 
@@ -338,44 +344,27 @@ const DMT5CompareModalContent = ({
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setJurisdictionSelectedShortcode('bvi');
-                if (poi_verified_for_bvi_labuan_maltainvest) {
-                    openPersonalDetailsFormOrPasswordForm(type_of_account);
-                } else if (!poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left) {
-                    (window as any).LC_API.open_chat_window();
-                } else {
-                    toggleCFDVerificationModal();
-                }
+                onSelectRegulated(type_of_account);
                 break;
             case 'financial_labuan':
                 setJurisdictionSelectedShortcode('labuan');
-                if (poi_verified_for_bvi_labuan_maltainvest) {
-                    openPersonalDetailsFormOrPasswordForm(type_of_account);
-                } else if (!poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left) {
-                    (window as any).LC_API.open_chat_window();
-                } else {
-                    toggleCFDVerificationModal();
-                }
-                break;
-            case 'financial_vanuatu':
-                setJurisdictionSelectedShortcode('vanuatu');
-                if (poi_verified_for_vanuatu) {
-                    openPersonalDetailsFormOrPasswordForm(type_of_account);
-                } else if (!poi_acknowledged_for_vanuatu && no_onfido_left) {
-                    (window as any).LC_API.open_chat_window();
-                } else {
-                    toggleCFDVerificationModal();
-                }
+                onSelectRegulated(type_of_account);
                 break;
             case 'financial_maltainvest':
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_verified_for_bvi_labuan_maltainvest) {
-                    openPasswordModal(type_of_account);
-                } else if (!poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left) {
-                    (window as any).LC_API.open_chat_window();
+                onSelectRegulated(type_of_account);
+                break;
+            case 'financial_vanuatu':
+                setJurisdictionSelectedShortcode('vanuatu');
+                if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
+                    openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else if (need_poi_for_vanuatu && no_onfido_left) {
+                    window.LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
                 break;
+
             default:
         }
     };
@@ -505,9 +494,9 @@ const DMT5CompareModalContent = ({
         if (type === 'svg') {
             return false;
         } else if (type === 'vanuatu') {
-            return !poi_acknowledged_for_vanuatu && no_onfido_left;
+            return need_poi_for_vanuatu && no_onfido_left;
         }
-        return !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left;
+        return need_poi_for_bvi_labuan_maltainvest && no_onfido_left;
     };
 
     return (

@@ -860,7 +860,7 @@ export default class NotificationStore extends BaseStore {
                 },
                 key: 'poa_failed',
                 header: localize('Please resubmit your proof of address or we may restrict your account.'),
-                message: localize('Please submit your proof of identity.'),
+                message: localize('Please submit your proof of address.'),
                 type: 'danger',
             },
             poa_verified: {

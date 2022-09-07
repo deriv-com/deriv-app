@@ -1,10 +1,29 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover, Text } from '@deriv/components';
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+
+type TOnRampProviderPopupProps = {
+    api_error: string;
+    deposit_address: string;
+    is_dark_mode_on: TUiStore['is_dark_mode_on'];
+    is_deposit_address_loading: boolean;
+    is_deposit_address_popover_open: boolean;
+    is_requesting_widget_html: boolean;
+    onClickCopyDepositAddress: () => void;
+    onClickDisclaimerContinue: () => void;
+    onClickGoToDepositPage: () => void;
+    selected_provider: TProviderDetails;
+    setDepositAddressRef: (ref: HTMLDivElement | null) => void;
+    setIsOnRampModalOpen: (boolean: boolean) => void;
+    should_show_dialog: boolean;
+    should_show_widget: boolean;
+    widget_error: string;
+    widget_html: string;
+};
 
 const OnRampProviderPopup = ({
     api_error,
@@ -23,7 +42,7 @@ const OnRampProviderPopup = ({
     should_show_widget,
     widget_error,
     widget_html,
-}) => {
+}: TOnRampProviderPopupProps) => {
     const el_onramp_widget_container_ref = React.useRef(null);
 
     // JS executed after "on-ramp__widget-container" has been added to the DOM.
@@ -173,26 +192,7 @@ const OnRampProviderPopup = ({
     );
 };
 
-OnRampProviderPopup.propTypes = {
-    api_error: PropTypes.string,
-    deposit_address: PropTypes.string,
-    is_dark_mode_on: PropTypes.bool,
-    is_deposit_address_loading: PropTypes.bool,
-    is_deposit_address_popover_open: PropTypes.bool,
-    is_requesting_widget_html: PropTypes.bool,
-    onClickCopyDepositAddress: PropTypes.func,
-    onClickDisclaimerContinue: PropTypes.func,
-    onClickGoToDepositPage: PropTypes.func,
-    selected_provider: PropTypes.object,
-    setDepositAddressRef: PropTypes.func,
-    setIsOnRampModalOpen: PropTypes.func,
-    should_show_dialog: PropTypes.bool,
-    should_show_widget: PropTypes.bool,
-    widget_error: PropTypes.string,
-    widget_html: PropTypes.string,
-};
-
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui }: TRootStore) => ({
     api_error: modules.cashier.onramp.api_error,
     deposit_address: modules.cashier.onramp.deposit_address,
     is_dark_mode_on: ui.is_dark_mode_on,

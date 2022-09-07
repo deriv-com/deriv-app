@@ -84,6 +84,21 @@ export default class OrderStore {
     }
 
     @action.bound
+    getP2POrderList() {
+        requestWS({ p2p_order_list: 1, passthrough: { order: 'list' } }).then(response => {
+            if (response) {
+                if (response.error) {
+                    this.setErrorMessage(response.error.message);
+                } else {
+                    this.root_store.general_store.handleNotifications(this.orders, response.p2p_order_list.list);
+                    response.p2p_order_list.list.forEach(order => this.syncOrder(order));
+                    this.setOrders(response.p2p_order_list.list);
+                }
+            }
+        });
+    }
+
+    @action.bound
     getWebsiteStatus(setShouldShowCancelModal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
@@ -212,6 +227,7 @@ export default class OrderStore {
                 if (response.error) {
                     this.setErrorMessage(response.error.message);
                 }
+                this.getP2POrderList();
                 this.setIsRatingModalOpen(false);
             }
         });

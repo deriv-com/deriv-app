@@ -278,5 +278,6 @@ const CurrencySelector = ({
         </Formik>
     );
 };
+export type { TCurrencySelector };
 
 export default CurrencySelector;

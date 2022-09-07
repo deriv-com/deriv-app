@@ -1,23 +1,25 @@
 import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 type TCFDAccountManager = {
-    appname: string;
-    platform: string;
+    type: string;
     amount: string;
-    currency: string;
+    appname: string;
     loginid: string;
+    platform: string;
+    currency: string;
     onClickTopUp: () => void;
     onClickTrade: () => void;
 };
 
 const CFDAccountManager = ({
-    appname,
+    type,
     amount,
-    currency,
+    appname,
     loginid,
+    currency,
     platform,
     onClickTopUp,
     onClickTrade,
@@ -25,11 +27,13 @@ const CFDAccountManager = ({
     return (
         <div className='cfd-account-manager'>
             <div className='cfd-account-manager__icon'>
-                {platform === 'financial' ? (
-                    <Icon icon='IcAppstoreFinancial' size={64} />
-                ) : (
-                    <Icon icon='IcAppstoreDerived' size={64} />
-                )}
+                {platform === CFD_PLATFORMS.MT5 &&
+                    (type === 'financial' ? (
+                        <Icon icon='IcAppstoreFinancial' size={64} />
+                    ) : (
+                        <Icon icon='IcAppstoreDerived' size={64} />
+                    ))}
+                {platform === CFD_PLATFORMS.DXTRADE && <Icon icon='IcAppstoreDerivx' size={64} />}
             </div>
             <div className='cfd-account-manager__details'>
                 <Text size='xs'>{appname}</Text>

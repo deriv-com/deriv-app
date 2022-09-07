@@ -4,16 +4,12 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore, TReactElement } from 'Types';
+import { TRootStore, TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
     disableApp: () => void;
     enableApp: () => void;
-    error: {
-        message?: string;
-        code?: string;
-        setErrorMessage?: (message: string) => void;
-    };
+    error: TError | Record<string, never>;
 };
 
 type TSetDetails = {
@@ -38,7 +34,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
 
     const dismissError = React.useCallback(() => {
         if (error.setErrorMessage) {
-            error.setErrorMessage('');
+            error.setErrorMessage('', null, false);
         }
         setErrorVisibility(false);
     }, [error]);
@@ -152,7 +148,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
     );
 };
 
-export default connect(({ ui }: RootStore) => ({
+export default connect(({ ui }: TRootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
 }))(ErrorDialog);

@@ -397,4 +397,21 @@ describe('<CashierLocked />', () => {
             )
         ).toBeInTheDocument();
     });
+
+    it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
+        render(
+            <CashierLocked
+                account_status={{
+                    cashier_validation: ['PACommisionWithdrawalLimit'],
+                }}
+                is_withdrawal_locked
+            />
+        );
+
+        expect(
+            screen.getByText(
+                "It seems that you've no commissions to withdraw at the moment. You can make withdrawals once you receive your commissions."
+            )
+        ).toBeInTheDocument();
+    });
 });

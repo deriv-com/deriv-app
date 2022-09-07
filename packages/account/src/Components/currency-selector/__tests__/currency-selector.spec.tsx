@@ -319,9 +319,9 @@ describe('<CurrencySelector/>', () => {
         expect(set_currency_btn).toBeInTheDocument();
         expect(set_currency_btn).toBeDisabled();
 
-        const tether = screen.getByRole('radio', {
+        const tether: HTMLInputElement = screen.getByRole('radio', {
             name: /tether erc20 \(eusdt\)/i,
-        }) as HTMLInputElement;
+        });
         expect(tether.checked).toEqual(false);
         fireEvent.click(tether);
         expect(tether.checked).toEqual(true);
@@ -388,7 +388,7 @@ describe('<CurrencySelector/>', () => {
     it('should call handleCancel when previous button is called', () => {
         render(<CurrencySelector {...props} has_wallet_account has_cancel />);
 
-        const usdc = screen.getByRole('radio', { name: /usd coin \(usdc\)/i }) as HTMLInputElement;
+        const usdc: HTMLInputElement = screen.getByRole('radio', { name: /usd coin \(usdc\)/i });
         expect(usdc.checked).toEqual(false);
         fireEvent.click(usdc);
         expect(usdc.checked).toEqual(true);

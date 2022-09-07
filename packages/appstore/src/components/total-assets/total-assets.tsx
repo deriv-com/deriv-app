@@ -2,7 +2,7 @@ import React from 'react';
 import { Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
-import { TAccountCategory } from '../../types';
+import { TAccountCategory } from 'Types';
 
 type TTotalAssets = {
     amount: string;

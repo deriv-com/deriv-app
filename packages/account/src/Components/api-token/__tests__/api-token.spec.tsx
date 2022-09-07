@@ -170,18 +170,18 @@ describe('<ApiToken/>', () => {
 
         expect(screen.queryByText('New token name')).not.toBeInTheDocument();
 
-        const checkboxes = await screen.findAllByRole('checkbox');
+        const checkboxes: HTMLInputElement[] = await screen.findAllByRole('checkbox');
         const create_btn = await screen.findByRole('button');
-        const read_checkbox = checkboxes.find(card => card.name === 'read') as HTMLInputElement;
-        const token_name_input = await screen.findByLabelText('Token name');
+        const read_checkbox = checkboxes.find(card => card.name === 'read') as HTMLInputElement; // Typecasting it since find can return undefined as well
+        const token_name_input: HTMLInputElement = await screen.findByLabelText('Token name');
 
         expect(checkboxes.length).toBe(5);
         expect(create_btn).toBeDisabled();
-        expect(read_checkbox.checked).toBeFalsy();
-        expect(token_name_input.value).toBe('');
+        expect(read_checkbox?.checked).toBeFalsy();
+        expect(token_name_input?.value).toBe('');
 
         fireEvent.click(read_checkbox);
-        expect(read_checkbox.checked).toBeTruthy();
+        expect(read_checkbox?.checked).toBeTruthy();
 
         fireEvent.change(token_name_input, { target: { value: '@#$' } });
         expect(await screen.findByText('Only letters, numbers, and underscores are allowed.')).toBeInTheDocument();

@@ -166,7 +166,7 @@ const OrderDetails = observer(() => {
                         setIsEmailVerificationModalOpen={order_store.setIsEmailVerificationModalOpen}
                     />
                     <EmailLinkVerifiedModal
-                        amount={amount_display}
+                        amount={display_payment_amount}
                         currency={local_currency}
                         is_email_link_verified_modal_open={order_store.is_email_link_verified_modal_open}
                         onClickConfirm={() => order_store.confirmOrder(is_buy_order_for_user)}

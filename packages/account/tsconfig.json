@@ -2,7 +2,6 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "./dist",
-        "rootDir": "./src",
         "baseUrl": "./",
         "paths": {
             "Components/*": ["src/Components/*"],
@@ -15,8 +14,9 @@
             "Modules/*": ["src/Modules/*"],
             "Sections/*": ["src/Sections/*"],
             "Stores/*": ["src/Stores/*"],
-            "Styles/*": ["src/Styles/*"]
+            "Styles/*": ["src/Styles/*"],
+            "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"] // *** The files TypeScript should type check ***
+    "include": ["src"]
 }

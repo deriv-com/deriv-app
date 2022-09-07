@@ -1,7 +1,9 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons = {
-    appstore: [
+export const icons =
+{
+    'appstore': [
+        'IcAppstoreAdd',
         'IcAppstoreAddRounded',
         'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',

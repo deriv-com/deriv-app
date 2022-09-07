@@ -1,14 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-
-declare global {
-    interface Window {
-        LC_API: {
-            open_chat_window: VoidFunction;
-        };
-    }
-}
+import '../../../../index';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

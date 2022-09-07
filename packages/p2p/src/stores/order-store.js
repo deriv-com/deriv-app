@@ -64,38 +64,42 @@ export default class OrderStore {
     }
 
     @action.bound
-    confirmOrderRequest(id) {
+    confirmOrderRequest(id, is_buy_order_for_user) {
         const { order_details_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            if (response?.error) {
-                if (response.error.code === 'OrderEmailVerificationRequired') {
-                    clearTimeout(wait);
-                    const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
-                } else if (
-                    response?.error.code === 'InvalidVerificationToken' ||
-                    response?.error.code === 'ExcessiveVerificationRequests'
-                ) {
-                    clearTimeout(wait);
-                    if (this.is_email_verification_modal_open) {
-                        this.setIsEmailVerificationModalOpen(false);
+            if (response) {
+                if (response.error) {
+                    if (response.error.code === 'OrderEmailVerificationRequired') {
+                        clearTimeout(wait);
+                        const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
+                    } else if (
+                        response?.error.code === 'InvalidVerificationToken' ||
+                        response?.error.code === 'ExcessiveVerificationRequests'
+                    ) {
+                        clearTimeout(wait);
+                        if (this.is_email_verification_modal_open) {
+                            this.setIsEmailVerificationModalOpen(false);
+                        }
+                        if (this.is_email_link_verified_modal_open) {
+                            this.setIsEmailLinkVerifiedModalOpen(false);
+                        }
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
+                    } else if (response?.error.code === 'ExcessiveVerificationFailures') {
+                        if (this.is_invalid_verification_link_modal_open) {
+                            this.setIsInvalidVerificationLinkModalOpen(false);
+                        }
+                        clearTimeout(wait);
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
+                    } else {
+                        order_details_store.setErrorMessage(response.error.message);
                     }
-                    if (this.is_email_link_verified_modal_open) {
-                        this.setIsEmailLinkVerifiedModalOpen(false);
-                    }
-                    this.setVerificationLinkErrorMessage(response.error.message);
-                    const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
-                } else if (response?.error.code === 'ExcessiveVerificationFailures') {
-                    if (this.is_invalid_verification_link_modal_open) {
-                        this.setIsInvalidVerificationLinkModalOpen(false);
-                    }
-                    clearTimeout(wait);
-                    this.setVerificationLinkErrorMessage(response.error.message);
-                    const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
-                } else {
-                    order_details_store.setErrorMessage(response.error.message);
+                } else if (!is_buy_order_for_user) {
+                    this.setIsRatingModalOpen(true);
                 }
 
                 localStorage.removeItem('verification_code.p2p_order_confirm');

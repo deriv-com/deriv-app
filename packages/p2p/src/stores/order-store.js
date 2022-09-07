@@ -229,6 +229,7 @@ export default class OrderStore {
                 }
                 this.getP2POrderList();
                 this.setIsRatingModalOpen(false);
+                this.setRatingValue(0);
             }
         });
     }

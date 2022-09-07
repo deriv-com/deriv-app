@@ -2,20 +2,21 @@ import React from 'react';
 import { Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
+import { TAccountCategory } from '../../types';
 
 type TTotalAssets = {
     amount: string;
     currency: string;
-    category: 'real' | 'demo';
+    category: TAccountCategory;
 };
 
 const TotalAssets = ({ amount, currency, category }: TTotalAssets) => {
     return (
         <div className='total-assets'>
-            <Text size='sm' weight='bold' className='total-assets-amount'>
+            <Text weight='bold' className='total-assets-amount'>
                 {formatMoney(currency, amount, true)}
             </Text>
-            <Text size='sm' weight='bold' className='total-assets-currency'>
+            <Text weight='bold' className='total-assets-currency'>
                 {currency}
             </Text>
             <div>

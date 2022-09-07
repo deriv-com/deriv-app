@@ -340,9 +340,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should submit the form when getCurrentStep is not passed ', async () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const new_props: any = { ...props };
-        delete new_props.getCurrentStep;
+        const new_props: TCurrencySelector = { ...props, getCurrentStep: jest.fn() };
         render(<CurrencySelector {...new_props} />);
         runCommonTests(fiat_msg);
         fireEvent.click(screen.getByRole('button', { name: /next/i }));

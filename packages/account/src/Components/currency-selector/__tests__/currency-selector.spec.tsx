@@ -319,7 +319,7 @@ describe('<CurrencySelector/>', () => {
         expect(set_currency_btn).toBeInTheDocument();
         expect(set_currency_btn).toBeDisabled();
 
-        const tether: HTMLInputElement = screen.getByRole('radio', {
+        const tether = screen.getByRole('radio', {
             name: /tether erc20 \(eusdt\)/i,
         }) as HTMLInputElement;
         expect(tether.checked).toEqual(false);

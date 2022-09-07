@@ -17,13 +17,6 @@ type TFileObject = {
     file: TFile;
 };
 
-export type TFileUploader = {
-    onFileDrop: (file: TFile | undefined) => void;
-    getSocket: () => WebSocket;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ref: React.RefObject<any>;
-};
-
 const UploadMessage = () => {
     return (
         <React.Fragment>
@@ -39,7 +32,10 @@ const fileReadErrorMessage = (filename: string) => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const FileUploader = React.forwardRef(({ onFileDrop, getSocket }: TFileUploader, ref) => {
+const FileUploader = React.forwardRef<
+    HTMLDivElement,
+    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket }
+>(({ onFileDrop, getSocket }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 
     const handleAcceptedFiles = (files: TFileObject[]) => {

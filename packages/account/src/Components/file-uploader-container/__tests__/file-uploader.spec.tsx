@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { compressImageFiles, isMobile, isDesktop, readFiles } from '@deriv/shared';
-import FileUploader, { TFileUploader } from '../file-uploader';
+import FileUploader from '../file-uploader';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -21,7 +21,7 @@ describe('<FileUploader />', () => {
         jest.clearAllMocks();
     });
 
-    const props: TFileUploader = {
+    const props: any = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
         ref: React.createRef<any>(),

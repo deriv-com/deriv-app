@@ -19,12 +19,23 @@ const Header = ({ is_logged_in }) => {
         if (/myapps.deriv/.test(window.location.pathname)) return <DashboardPlatformHeader />;
         return <DashboardHeader />;
     } else if (is_logged_in && is_pre_appstore) {
-        if (pathname === routes.trading_hub || pathname === routes.cashier_deposit || pathname === routes.account)
-            return <TradingHubHeader />;
-        if (pathname === routes.trade) {
-            return <DTraderHeader />;
+        let result;
+        if (
+            pathname === routes.trading_hub ||
+            pathname === routes.cashier_deposit ||
+            pathname === routes.account ||
+            pathname === routes.cashier ||
+            pathname === routes.cashier_withdrawal ||
+            pathname === routes.cashier_pa ||
+            pathname === routes.cashier_acc_transfer ||
+            pathname === routes.cashier_p2p ||
+            pathname === routes.personal_details
+        ) {
+            result = <TradingHubHeader />;
+        } else {
+            result = <DTraderHeader />;
         }
-        return <TradingHubHeader />;
+        return result;
     }
     return <DefaultHeader />;
 };

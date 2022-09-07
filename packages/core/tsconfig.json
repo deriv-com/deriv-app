@@ -2,19 +2,12 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
-            // "_common/*": ["./src/_common/*"],
-            "App/*": ["./src/App/*"],
-            // "Constants/*": ["./src/Constants/*"],
-            // "Components/*": ["./src/Components/*"],
-            // "Containers/*": ["./src/Containers/*"],
-            "Modules/*": ["src/Modules/*"],
-            "Stores/*": ["src/Stores/*"],
-            "Utils/*": ["src/Utils/*"],
             "@deriv/*": ["../*/src"]
         },
 
         "outDir": "./dist",
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "experimentalDecorators": true
     },
-    "include": ["src"]
+    "include": ["src", "./globals.d.ts"]
 }

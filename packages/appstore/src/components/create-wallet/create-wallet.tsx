@@ -2,8 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Button, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import WalletCard from 'Components/wallet';
 import WalletIcon from 'Assets/svgs/wallet';
 
@@ -22,15 +23,29 @@ const CreateWallet = ({
     setSeletedWallet,
     selected_wallet,
 }: TCreateWallet) => {
-    const { wallet_store } = useStores();
+    let header_title: string;
+    const {
+        wallet_store: {
+            is_loading,
+            onMount,
+            wallet_provider: { fiat_wallets, wallets },
+        },
+    } = useStores();
 
     React.useEffect(() => {
-        wallet_store.onMount();
+        onMount();
     }, []);
 
-    const wallets = should_show_fiat ? wallet_store.wallet_provider.fiat_wallets : wallet_store.wallet_provider.wallets;
+    const all_wallets = should_show_fiat ? fiat_wallets : wallets;
 
-    const header_title = should_show_fiat ? localize('Fiat currency wallets') : localize('Create a wallet');
+    const getHeaderTitle = () => {
+        if (should_show_fiat) {
+            header_title = localize('Fiat currency wallets');
+        } else if (isDesktop()) {
+            header_title = localize('Choose a wallet');
+        }
+        return header_title;
+    };
     const header_content = should_show_fiat
         ? localize('These are all the options you get when choosing fiat wallet.')
         : localize('Choose a payment method for your wallet.');
@@ -48,7 +63,7 @@ const CreateWallet = ({
             .join('');
     };
 
-    if (wallet_store.is_loading) {
+    if (is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -59,20 +74,25 @@ const CreateWallet = ({
                     <Icon icon='IcArrowLeft' className='create-wallet-back' onClick={() => setShouldShowFiat(false)} />
                 )}
                 <div>
-                    <Text align='left' size='m' as='h2' weight='bold'>
-                        <Localize i18n_default_text={header_title} />
+                    <Text align='left' size={isDesktop() ? 'm' : 'xs'} as='h2' weight='bold'>
+                        {getHeaderTitle()}
                     </Text>
-                    <Text align='left' size='s' as='p' line_height='xxl'>
-                        <Localize i18n_default_text={header_content} />
+                    <Text align='left' size={isDesktop() ? 's' : 'xs'} as='p' line_height='xxl'>
+                        {header_content}
                     </Text>
                 </div>
             </div>
             <ThemedScrollbars className='create-wallet-scroll'>
-                {wallets?.map((wallet, index) => {
+                {all_wallets?.map((wallet, index) => {
                     return (
                         <div key={`${wallet.getTitle()}${index}`} className='create-wallet-detail'>
                             <div className='create-wallet-detail-title'>
-                                <Text align='left' size='s' weight='bold' className='create-wallet-detail-title__text'>
+                                <Text
+                                    align='left'
+                                    size={isDesktop() ? 's' : 'xs'}
+                                    weight='bold'
+                                    className='create-wallet-detail-title__text'
+                                >
                                     {wallet.getTitle()}
                                 </Text>
                                 {wallet?.has_information && (

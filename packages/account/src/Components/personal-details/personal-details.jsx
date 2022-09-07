@@ -1,5 +1,6 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
 import {
     Modal,
     Autocomplete,
@@ -172,30 +173,15 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
-                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
-                                    <Localize
-                                        i18n_default_text={
-                                            'Any information you provide is confidential and will be used for verification purposes only.'
-                                        }
-                                    />
-                                </Text>
                                 <ThemedScrollbars
                                     is_bypassed={is_appstore}
                                     height={height}
                                     onScroll={closeTooltipOnScroll}
                                 >
-                                    {is_appstore && (
-                                        <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                {localize(
-                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                                                )}
-                                            </Text>
-                                        </div>
-                                    )}
-
                                     <div
-                                        className='details-form__elements'
+                                        className={classNames('details-form__elements', {
+                                            'details-form__elements__no-padding': is_appstore,
+                                        })}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
                                         {'salutation' in props.value && (

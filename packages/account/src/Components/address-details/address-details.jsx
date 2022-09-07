@@ -1,5 +1,6 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
 import {
     Modal,
     Autocomplete,
@@ -141,7 +142,11 @@ const AddressDetails = ({
                                     height={height}
                                     className='details-form__scrollbar'
                                 >
-                                    <div className='details-form__elements'>
+                                    <div
+                                        className={classNames('details-form__elements', {
+                                            'details-form__elements__no-padding': is_appstore,
+                                        })}
+                                    >
                                         <InputField
                                             name='address_line_1'
                                             required={is_svg || is_appstore}

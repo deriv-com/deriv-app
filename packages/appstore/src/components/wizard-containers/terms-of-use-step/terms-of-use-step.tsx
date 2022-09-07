@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { termsOfUseConfig, TermsOfUse } from '@deriv/account';
 import { Text } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TermsOfUseStepProps = {
@@ -43,9 +44,11 @@ const TermsOfUseStep = ({ onUpdateState }: TermsOfUseStepProps) => {
 
     return (
         <div className='wizard-step'>
-            <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
-                {localize('Terms of use')}
-            </Text>
+            {isDesktop() && (
+                <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
+                    {localize('Terms of use')}
+                </Text>
+            )}
             <Body
                 value={terms_of_use_config.form_value}
                 onSubmitEnabledChange={setIsSubmitEnabled}

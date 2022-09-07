@@ -82,7 +82,7 @@ export default class WalletStore extends BaseStore {
         };
     }
 
-    @action
+    @action.bound
     onMount() {
         this.getWalletNames();
     }
@@ -107,7 +107,7 @@ export default class WalletStore extends BaseStore {
         }
     }
 
-    @action
+    @action.bound
     onUnmount() {
         this.account_types = null;
     }

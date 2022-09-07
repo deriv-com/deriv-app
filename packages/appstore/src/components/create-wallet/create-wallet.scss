@@ -1,4 +1,5 @@
 .create-wallet {
+    width: 110% !important;
     &-title {
         display: flex;
         flex-direction: row;
@@ -48,19 +49,15 @@
             margin-top: 1.6rem;
             padding: 0px;
 
-            &__center {
-                justify-content: center !important;
-            }
-
             @include desktop {
                 justify-content: flex-start;
             }
 
             @include mobile {
-                display: grid;
+                // display: grid;
                 grid-template-columns: 1fr 1fr;
-                justify-items: center;
-                width: 100%;
+                // justify-items: center;
+                // width: 100%;
             }
         }
     }

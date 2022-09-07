@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { personalDetailsConfig, PersonalDetails } from '@deriv/account';
 import { Text } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type PersonalDetailsStepProps = {
@@ -39,9 +40,11 @@ const PersonalDetailsStep = ({ onUpdateState }: PersonalDetailsStepProps) => {
 
     return (
         <div className='wizard-step'>
-            <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
-                {localize('Personal details')}
-            </Text>
+            {isDesktop() && (
+                <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
+                    {localize('Personal details')}
+                </Text>
+            )}
             <Text className='wizard-step__subheader' as='p' size='xs'>
                 {localize(
                     'Please provide your information for verification purposes. If you give us inaccurate information, you may be unable to make deposits or withdrawals.'

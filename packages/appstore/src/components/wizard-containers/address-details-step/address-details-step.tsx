@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { FormikValues } from 'formik';
 import { addressDetailsConfig, AddressDetails } from '@deriv/account';
 import { Text } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type AddressDetailsStepProps = {
@@ -47,9 +48,11 @@ const AddressDetailsStep = ({ onUpdateState }: AddressDetailsStepProps) => {
 
     return (
         <div className='wizard-step'>
-            <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
-                {localize('Address information')}
-            </Text>
+            {isDesktop() && (
+                <Text className='wizard-step__header' as='h5' weight='bold' size='m'>
+                    {localize('Address information')}
+                </Text>
+            )}
             <Text className='wizard-step__subheader' as='p' size='xs'>
                 {localize(
                     'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'

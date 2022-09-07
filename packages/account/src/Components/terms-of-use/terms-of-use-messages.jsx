@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { getLegalEntityName } from '@deriv/shared';
+import { getLegalEntityName, PlatformContext } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
 export const Hr = () => <div className='terms-of-use__hr' />;
@@ -15,34 +15,42 @@ export const BrokerSpecificMessage = ({ target }) => (
     </React.Fragment>
 );
 
-export const SVGDescription = () => (
-    <React.Fragment>
-        <Text as='h4' size='xs' weight='bold'>
-            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </Text>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'Your account will be opened with {{legal_entity_name}}, and will be subject to the laws of Saint Vincent and the Grenadines.'
-                }
-                values={{
-                    legal_entity_name: getLegalEntityName('svg'),
-                }}
-            />
-        </p>
-        <Hr />
-        <Text as='h4' size='xs' weight='bold'>
-            <Localize i18n_default_text={'Risk warning'} />
-        </Text>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
-                }
-            />
-        </p>
-    </React.Fragment>
-);
+export const SVGDescription = () => {
+    const { is_appstore } = React.useContext(PlatformContext);
+
+    return (
+        <React.Fragment>
+            <Text as='h4' size='xs' weight='bold'>
+                <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+            </Text>
+            <p>
+                <Localize
+                    i18n_default_text={
+                        'Your account will be opened with {{legal_entity_name}}, and will be subject to the laws of Saint Vincent and the Grenadines.'
+                    }
+                    values={{
+                        legal_entity_name: getLegalEntityName('svg'),
+                    }}
+                />
+            </p>
+            {!is_appstore && (
+                <>
+                    <Hr />
+                    <Text as='h4' size='xs' weight='bold'>
+                        <Localize i18n_default_text={'Risk warning'} />
+                    </Text>
+                    <p>
+                        <Localize
+                            i18n_default_text={
+                                'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
+                            }
+                        />
+                    </p>
+                </>
+            )}
+        </React.Fragment>
+    );
+};
 
 export const IOMDescription = () => (
     <React.Fragment>
@@ -109,34 +117,36 @@ export const MaltaInvestDescription = () => (
     </React.Fragment>
 );
 
-export const SamoaDescription = () => (
-    <React.Fragment>
-        <Text as='h4' size='xs' weight='bold'>
-            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </Text>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'Your account will be opened with {{legal_entity_name}} and will be subject to the laws of Samoa.'
-                }
-                values={{
-                    legal_entity_name: getLegalEntityName('samoa'),
-                }}
-            />
-        </p>
-        <Hr />
-        <Text as='h4' size='xs' weight='bold'>
-            <Localize i18n_default_text={'Risk warning'} />
-        </Text>
-        <p>
-            <Localize
-                i18n_default_text={
-                    'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
-                }
-            />
-        </p>
-    </React.Fragment>
-);
+export const SamoaDescription = () => {
+    return (
+        <React.Fragment>
+            <Text as='h4' size='xs' weight='bold'>
+                <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+            </Text>
+            <p>
+                <Localize
+                    i18n_default_text={
+                        'Your account will be opened with {{legal_entity_name}} and will be subject to the laws of Samoa.'
+                    }
+                    values={{
+                        legal_entity_name: getLegalEntityName('samoa'),
+                    }}
+                />
+            </p>
+            <Hr />
+            <Text as='h4' size='xs' weight='bold'>
+                <Localize i18n_default_text={'Risk warning'} />
+            </Text>
+            <p>
+                <Localize
+                    i18n_default_text={
+                        'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
+                    }
+                />
+            </p>
+        </React.Fragment>
+    );
+};
 
 export const SharedMessage = () => (
     <React.Fragment>

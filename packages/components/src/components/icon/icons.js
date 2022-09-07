@@ -1,5 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-add.svg';
+import './appstore/ic-appstore-add-rounded.svg';
 import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
@@ -46,6 +48,7 @@ import './brand/ic-brand-binarybot.svg';
 import './brand/ic-brand-dbot.svg';
 import './brand/ic-brand-deriv-apps.svg';
 import './brand/ic-brand-deriv.svg';
+import './brand/ic-brand-derivgo.svg';
 import './brand/ic-brand-dmt5-financial-stp.svg';
 import './brand/ic-brand-dmt5-financial.svg';
 import './brand/ic-brand-dmt5-synthetics.svg';

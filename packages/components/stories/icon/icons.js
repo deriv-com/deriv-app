@@ -3,6 +3,8 @@
 export const icons =
 {
     'appstore': [
+        'IcAppstoreAdd',
+        'IcAppstoreAddRounded',
         'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',
         'IcAppstoreCfdsTradeType',
@@ -51,6 +53,7 @@ export const icons =
         'IcBrandDbot',
         'IcBrandDerivApps',
         'IcBrandDeriv',
+        'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',
         'IcBrandDmt5Synthetics',

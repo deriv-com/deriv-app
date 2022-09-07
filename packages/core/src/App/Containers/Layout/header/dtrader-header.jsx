@@ -16,6 +16,47 @@ import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
+const PreAppstoreMenuHomepage = () => {
+    const redirect = useHistory();
+    return (
+        <>
+            <div
+                className='dashboard-platform-header__tradinghub'
+                onClick={() => {
+                    redirect.push(routes.trading_hub);
+                }}
+            >
+                <Icon icon='IcAppstoreMenuHomepage' size={30} />
+            </div>
+        </>
+    );
+};
+
+const Divider = () => {
+    return <div className='header__menu--dtrader--separator' />;
+};
+
+const RedirectToOldInterface = () => {
+    const platform_store = React.useContext(PlatformContext);
+    const disablePreAppstore = () => {
+        platform_store.setIsPreAppStore(false);
+    };
+    return (
+        <div className='dashboard-platform-header__dtrader--redirect'>
+            <BinaryLink
+                to={routes.trade}
+                className='dashboard-platform-header__dtrader--redirect--link'
+                onClick={disablePreAppstore}
+            >
+                <Text as='p' size='xs' color='general'>
+                    <Localize i18n_default_text='Back to old interface' />
+                </Text>
+                <Icon icon='IcArrowRight' size={18} color='red' />
+            </BinaryLink>
+        </div>
+    );
+};
+
 const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_status,
@@ -93,47 +134,6 @@ const DTraderHeader = ({
             }
             return true;
         });
-
-    const PreAppstoreMenuHomepage = () => {
-        const redirect = useHistory();
-        return (
-            <>
-                <div
-                    className='dashboard-platform-header__tradinghub'
-                    onClick={() => {
-                        redirect.push(routes.trading_hub);
-                    }}
-                >
-                    <Icon icon='IcAppstoreMenuHomepage' size={30} />
-                </div>
-            </>
-        );
-    };
-
-    const Divider = () => {
-        return <div className='header__menu--dtrader--separator' />;
-    };
-
-    const RedirectToOldInterface = () => {
-        const platform_store = React.useContext(PlatformContext);
-        const disablePreAppstore = () => {
-            platform_store.setIsPreAppStore(false);
-        };
-        return (
-            <div className='dashboard-platform-header__dtrader--redirect'>
-                <BinaryLink
-                    to={routes.trade}
-                    className='dashboard-platform-header__dtrader--redirect--link'
-                    onClick={disablePreAppstore}
-                >
-                    <Text as='p' size='xs' color='general'>
-                        <Localize i18n_default_text='Back to old interface' />
-                    </Text>
-                    <Icon icon='IcArrowRight' size={18} color='red' />
-                </BinaryLink>
-            </div>
-        );
-    };
 
     return (
         <header

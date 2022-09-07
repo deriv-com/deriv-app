@@ -130,7 +130,6 @@ export default class ClientStore extends BaseStore {
     @observable mt5_trading_servers = [];
     @observable dxtrade_trading_servers = [];
     @observable is_cfd_poi_completed = false;
-    @observable is_financial_information_not_complete = false;
 
     @observable cfd_score = 0;
 
@@ -475,9 +474,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get real_account_creation_unlock_date() {
+        const { cooling_off_expiration_date } = this.account_settings;
+        return cooling_off_expiration_date;
+    }
+
+    @computed
     get is_tnc_needed() {
         if (this.is_virtual) return false;
-
         const { client_tnc_status } = this.account_settings;
         const { terms_conditions_version } = this.website_status;
 
@@ -964,7 +968,7 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    // @action.bound
+    @action.bound
     setCFDScore(score) {
         this.cfd_score = score;
     }

@@ -1003,7 +1003,7 @@ export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
     is_mf: client.landing_company_shortcode === 'maltainvest',
-    is_financial_information_not_complete: client.is_trading_experience_incomplete,
+    is_financial_information_not_complete: client.is_financial_information_not_complete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,
     platform: common.platform,

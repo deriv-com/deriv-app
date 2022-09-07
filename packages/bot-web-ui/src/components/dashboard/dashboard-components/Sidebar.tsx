@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import Translations from './Translations';
+import Translations from './translations';
 import { localize } from '@deriv/translations';
 
 const { IntroSideBarContentText } = Translations;

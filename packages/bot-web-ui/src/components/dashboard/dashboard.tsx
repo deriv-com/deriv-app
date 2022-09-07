@@ -3,7 +3,7 @@ import { Tabs, Tab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
-import SideBar from './dashboard-components/Sidebar';
+import SideBar from './dashboard-components/sidebar';
 import ReactJoyride from 'react-joyride';
 import JoyrideConfig from './joyrideConfig';
 import BotBuilder from './bot-builder';

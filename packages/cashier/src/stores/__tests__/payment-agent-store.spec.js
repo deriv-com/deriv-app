@@ -140,7 +140,7 @@ describe('PaymentAgentStore', () => {
     });
 
     it('should clear the list of supported banks', () => {
-        payment_agent_store.clearSuppertedBanks();
+        payment_agent_store.clearSupportedBanks();
         expect(payment_agent_store.supported_banks.length).toBe(0);
     });
 

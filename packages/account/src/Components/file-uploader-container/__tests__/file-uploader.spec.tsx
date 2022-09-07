@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { compressImageFiles, isMobile, isDesktop, readFiles } from '@deriv/shared';
-import FileUploader from '../file-uploader';
+import FileUploader, { TFileUploader } from '../file-uploader';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -20,10 +21,9 @@ describe('<FileUploader />', () => {
         jest.clearAllMocks();
     });
 
-    const props = {
+    const props: TFileUploader = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ref: React.createRef<any>(),
     };
 

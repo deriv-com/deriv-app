@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import FileUploaderContainer from '../file-uploader-container';
+import FileUploaderContainer, { TFileUploaderContainer } from '../file-uploader-container';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -26,7 +26,7 @@ describe('<FileUploaderContainer />', () => {
         jest.clearAllMocks();
     });
 
-    const props = {
+    const props: TFileUploaderContainer = {
         getSocket: jest.fn(),
         onFileDrop: jest.fn(),
         onRef: jest.fn(),

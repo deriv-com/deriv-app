@@ -6,6 +6,13 @@ import { Localize, localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
 import { TFile, TPlatformContext } from 'Types';
 
+export type TFileUploaderContainer = {
+    is_description_enabled?: boolean;
+    getSocket: () => WebSocket;
+    onFileDrop: (file: TFile | undefined) => void;
+    onRef: (ref: React.RefObject<unknown> | undefined) => void;
+};
+
 const FileProperties = () => {
     const properties = [
         { name: 'size', icon: 'IcPoaFileEightMb', text: localize('Less than 8MB') },
@@ -35,13 +42,6 @@ const FileProperties = () => {
             ))}
         </div>
     );
-};
-
-type TFileUploaderContainer = {
-    is_description_enabled?: boolean;
-    getSocket: () => WebSocket;
-    onFileDrop: (file: TFile | undefined) => void;
-    onRef: (ref: React.RefObject<unknown> | undefined) => void;
 };
 
 const FileUploaderContainer = ({

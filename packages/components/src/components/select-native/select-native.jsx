@@ -68,7 +68,7 @@ const SelectNative = ({
     const [is_placeholder_hidden, setIsPlaceholderHidden] = React.useState(false);
 
     React.useEffect(() => {
-        if (!hide_placeholder && value) {
+        if (hide_placeholder && value) {
             setIsPlaceholderHidden(true);
         }
     }, [value]);

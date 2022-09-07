@@ -9,6 +9,7 @@ import {
     tradingAssessmentConfig,
 } from '@deriv/account';
 import TradingExperienceModal from './trading-experience-modal.jsx';
+import { routes } from '@deriv/shared';
 
 const TradingAssessmentExistingUser = ({
     updateAccountStatus,
@@ -62,7 +63,11 @@ const TradingAssessmentExistingUser = ({
 
     const handleAcceptAppropriatenessTestWarning = () => {
         setShouldShowAppropriatenessWarningModal(false);
-        setShouldShowAssessmentCompleteModal(true);
+        if (window.location.href.includes(routes.trading_assessment)) {
+            setShouldShowAssessmentCompleteModal(false);
+        } else {
+            setShouldShowAssessmentCompleteModal(true);
+        }
     };
 
     const handleAcceptRisk = () => {

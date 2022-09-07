@@ -2,13 +2,14 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { TPlatform } from 'Types';
 
 type TCFDAccountManager = {
     type: string;
     amount: string;
     appname: string;
     loginid: string;
-    platform: string;
+    platform: TPlatform;
     currency: string;
     onClickTopUp: () => void;
     onClickTrade: () => void;

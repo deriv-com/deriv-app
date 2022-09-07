@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-import '../../../../index';
+import '../../../../index.d.ts';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

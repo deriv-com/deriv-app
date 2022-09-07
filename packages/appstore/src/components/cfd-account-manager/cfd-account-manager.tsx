@@ -4,16 +4,31 @@ import { formatMoney } from '@deriv/shared';
 
 type TCFDAccountManager = {
     appname: string;
+    platform: string;
     amount: string;
     currency: string;
     loginid: string;
+    onClickTopUp: () => void;
+    onClickTrade: () => void;
 };
 
-const CFDAccountManager = ({ appname, amount, currency, loginid }: TCFDAccountManager) => {
+const CFDAccountManager = ({
+    appname,
+    amount,
+    currency,
+    loginid,
+    platform,
+    onClickTopUp,
+    onClickTrade,
+}: TCFDAccountManager) => {
     return (
         <div className='cfd-account-manager'>
             <div className='cfd-account-manager-icon'>
-                <Icon icon='IcCloseCircle' />
+                {platform === 'financial' ? (
+                    <Icon icon='IcAppstoreFinancial' size={64} />
+                ) : (
+                    <Icon icon='IcAppstoreDerived' size={64} />
+                )}
             </div>
             <div className='cfd-account-manager-details'>
                 <Text size='xs'>{appname}</Text>
@@ -21,10 +36,12 @@ const CFDAccountManager = ({ appname, amount, currency, loginid }: TCFDAccountMa
                 <Text size='xs'>{loginid}</Text>
             </div>
             <div className='cfd-account-manager-buttons'>
-                <Button primary className='cfd-account-manager-buttons-topup'>
+                <Button primary className='cfd-account-manager-buttons-topup' onClick={onClickTopUp}>
                     Top-up
                 </Button>
-                <Button secondary>Trade</Button>
+                <Button secondary onClick={onClickTrade}>
+                    Trade
+                </Button>
             </div>
         </div>
     );

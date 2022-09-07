@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import CurrencySelector from '../currency-selector';
+import CurrencySelector, { TCurrencySelector } from '../currency-selector';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -17,7 +17,7 @@ jest.mock('../../real-account-signup/helpers/utils.js', () => ({
 }));
 
 describe('<CurrencySelector/>', () => {
-    const props = {
+    const props: TCurrencySelector = {
         accounts: {
             VRTC90000010: {
                 account_type: 'trading',

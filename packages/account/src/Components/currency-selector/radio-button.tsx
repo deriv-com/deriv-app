@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 import { Popover, Icon } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 
-type TUSTPopover = {
+export type TUSTPopover = {
     id: string;
 };
 
@@ -14,7 +14,7 @@ type TRadioButtonExtend = {
     second_line_label?: string;
 };
 
-type TRadioButton = AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TRadioButtonExtend;
+export type TRadioButton = AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TRadioButtonExtend;
 
 const USTPopover = ({ id }: TUSTPopover) => {
     let popover_message: ReactElement | undefined;

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-type TRadioButtonGroup = {
+export type TRadioButtonGroup = {
     className: string;
     is_fiat: boolean;
     is_title_enabled?: boolean;

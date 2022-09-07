@@ -25,6 +25,7 @@ type TCurrencySelectorExtend = {
     is_appstore: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_virtual: boolean;
     is_mt5_allowed: boolean;
     legal_allowed_currencies: TCurrencyConfig[];
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;

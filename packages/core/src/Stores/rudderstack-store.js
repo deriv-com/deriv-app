@@ -1,4 +1,4 @@
-import { action, makeObservable } from 'mobx';
+import { action } from 'mobx';
 import { getAppId } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
@@ -12,15 +12,9 @@ export default class RudderStackStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
-
-        makeObservable(this, {
-            identifyEvent: action.bound,
-            pageView: action.bound,
-            reset: action.bound,
-            track: action.bound,
-        });
     }
 
+    @action.bound
     identifyEvent = async data =>
         new Promise(resolve => {
             if (this.is_applicable && !this.has_identified) {
@@ -46,6 +40,7 @@ export default class RudderStackStore extends BaseStore {
     /**
      * Pushes page view track event to rudderstack
      */
+    @action.bound
     pageView() {
         const current_page = window.location.hostname + window.location.pathname;
 
@@ -63,6 +58,7 @@ export default class RudderStackStore extends BaseStore {
     /**
      * Pushes reset event to rudderstack
      */
+    @action.bound
     reset() {
         if (this.is_applicable) {
             window.rudderanalytics.reset();
@@ -73,6 +69,7 @@ export default class RudderStackStore extends BaseStore {
     /**
      * Pushes track event to rudderstack
      */
+    @action.bound
     track(event_name, options) {
         if (this.is_applicable && this.has_identified) {
             window.rudderanalytics.track(event_name, options);

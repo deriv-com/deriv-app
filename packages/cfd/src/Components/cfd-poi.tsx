@@ -30,6 +30,8 @@ export type TCFDPOIProps = {
     height: string;
     is_switching: boolean;
     is_virtual: boolean;
+    is_high_risk: boolean;
+    is_withdrawal_lock: boolean;
     onSave: (index: number, values: TFormValues) => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (key: TCFDNotificationByKey) => void;
@@ -67,6 +69,8 @@ export default connect(({ client, common, notifications }: RootStore) => ({
     fetchResidenceList: client.fetchResidenceList,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
+    is_high_risk: client.is_high_risk,
+    is_withdrawal_lock: client.is_withdrawal_lock,
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,

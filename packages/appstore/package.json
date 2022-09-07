@@ -40,6 +40,7 @@
         "mobx-react-lite": "^2.2.2",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
+        "react": "^16.14.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0"
     },
@@ -50,6 +51,7 @@
         "@types/classnames": "^2.2.11",
         "@types/object.fromentries": "^2.0.0",
         "@types/react-router-dom": "^5.1.6",
+        "@types/react": "^18.0.7",
         "babel-core": "^6.26.3",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",

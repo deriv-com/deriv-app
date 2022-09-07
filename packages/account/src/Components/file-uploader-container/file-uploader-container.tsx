@@ -38,7 +38,7 @@ const FileProperties = () => {
 };
 
 type TFileUploaderContainer = {
-    is_description_enabled: boolean;
+    is_description_enabled?: boolean;
     getSocket: () => WebSocket;
     onFileDrop: (file: TFile | undefined) => void;
     onRef: (ref: React.RefObject<unknown> | undefined) => void;

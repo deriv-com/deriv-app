@@ -23,7 +23,8 @@ describe('<FileUploader />', () => {
     const props = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
-        ref: React.createRef(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ref: React.createRef<any>(),
     };
 
     const large_file_error_msg = /file size should be 8mb or less/i;
@@ -48,11 +49,11 @@ describe('<FileUploader />', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
 
-        const input = screen.getByTestId('dt_file_upload_input');
+        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
         fireEvent.change(input, { target: { files: [file] } });
 
         await waitFor(() => {
-            expect(input.files[0]).toBe(file);
+            expect(input?.files?.length && input.files[0]).toBe(file);
             expect(input.files).toHaveLength(1);
         });
     });
@@ -101,12 +102,12 @@ describe('<FileUploader />', () => {
         render(<FileUploader {...props} />);
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
 
-        const input = screen.getByTestId('dt_file_upload_input');
+        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
         fireEvent.change(input, { target: { files: [file] } });
 
         await waitFor(() => {
             expect(screen.getByText(/hello\.png/i)).toBeInTheDocument();
-            expect(input.files[0]).toBe(file);
+            expect(input?.files?.length && input.files[0]).toBe(file);
             expect(input.files).toHaveLength(1);
         });
 
@@ -133,11 +134,11 @@ describe('<FileUploader />', () => {
         const blob = new Blob(['sample_data']);
         const file = new File([blob], 'hello.pdf', { type: 'application/pdf' });
 
-        const input = screen.getByTestId('dt_file_upload_input');
+        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
         fireEvent.change(input, { target: { files: [file] } });
         await waitFor(() => {
             expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
-            expect(input.files[0]).toBe(file);
+            expect(input?.files?.length && input.files[0]).toBe(file);
         });
         props.ref.current.upload();
         expect(compressImageFiles).toBeCalled();

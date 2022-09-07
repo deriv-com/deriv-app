@@ -458,11 +458,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_financial_information_not_complete() {
-        return this.account_status?.status?.includes('financial_information_not_complete');
-    }
-
-    @computed
     get is_authentication_needed() {
         return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }

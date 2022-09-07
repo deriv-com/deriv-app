@@ -16,7 +16,7 @@ const CircularWrapper = ({ className }) => (
 
 const AnimationInfo = ({ toggleAnimationInfoModal }) => {
     return (
-        <div className='animation__info' onClick={toggleAnimationInfoModal}>
+        <div className='animation__info'>
             <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
         </div>
     );

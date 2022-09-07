@@ -5,7 +5,7 @@ import currency_selector_config from './currency-selector-schema';
 const currencySelectorConfig = ({ real_account_signup_target }, CurrencySelector, is_appstore = false) => {
     return {
         header: {
-            active_title: is_appstore ? localize('Select wallet currency') : localize('Please choose your currency'),
+            active_title: is_appstore ? localize('Select wallet currency') : localize('Please choosee your currency'),
             title: is_appstore ? localize('CURRENCY') : localize('Account currency'),
         },
         body: CurrencySelector,

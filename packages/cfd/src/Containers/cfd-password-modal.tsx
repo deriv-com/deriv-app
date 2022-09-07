@@ -142,7 +142,7 @@ const PasswordModalHeader = ({
         <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
             {!should_set_trading_password && !is_password_reset_error && (
                 <Localize
-                    i18n_default_text='Enter your {{platform}} password'
+                    i18n_default_text='Enter your {{platform}} username'
                     values={{
                         platform: getCFDPlatformLabel(platform),
                     }}
@@ -469,7 +469,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                         {!props.should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
                                 <Localize
-                                    i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
+                                    i18n_default_text='Enter your Dtrader password to add a Dtrader {{account}} account.'
                                     values={{
                                         platform: getCFDPlatformLabel(props.platform),
                                         account: props.account_title,

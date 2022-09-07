@@ -20,6 +20,16 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
 );
 
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
+
+    const links = platform_config.map(item => {
+        if(item.name === 'DTrader') {
+            return {
+                ...item,
+                link_to: '/derivx',
+            }
+        }
+        return item;
+    })
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
 
@@ -41,7 +51,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
-                {platform_config.map((platform, idx) => (
+                {links.map((platform, idx) => (
                     <div key={idx} onClick={closeDrawer} ref={ref}>
                         {platform.link_to ? (
                             <BinaryLink

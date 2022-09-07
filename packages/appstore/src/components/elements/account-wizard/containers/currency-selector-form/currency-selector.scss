@@ -22,6 +22,7 @@
 
         &-code {
             font-weight: normal;
+            text-transform: lowercase;
         }
 
         &--selected {
@@ -72,4 +73,9 @@
     .currency-hr {
         border-top: 0px;
     }
+}
+
+
+.currency-list__item-code {
+    text-transform: lowercase !important;
 }

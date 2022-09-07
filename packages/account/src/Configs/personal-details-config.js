@@ -29,7 +29,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
-                ['req', localize('First name is required.')],
+                ['req', localize('Last name is required.')],
                 ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
             ],
@@ -38,7 +38,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
-                ['req', localize('Last name is required.')],
+                ['req', localize('First name is required.')],
                 ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
             ],

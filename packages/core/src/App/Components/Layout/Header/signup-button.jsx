@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from '@deriv/components';
-import { redirectToSignUp } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
+import { getLanguage , localize } from '@deriv/translations';
+import { DesktopWrapper, MobileWrapper, Button} from '@deriv/components';
 
 const SignupButton = ({ className, is_appstore }) => (
+    <>
+    <DesktopWrapper>
     <Button
         id='dt_signup_button'
         className={className}
@@ -13,6 +15,18 @@ const SignupButton = ({ className, is_appstore }) => (
         onClick={() => redirectToSignUp({ is_appstore })}
         primary
     />
+    </DesktopWrapper>
+    <MobileWrapper>
+    <Button
+        id='dt_signup_button'
+        className={className}
+        has_effect
+        text={localize('Sign up')}
+        onClick={() => redirectToLogin(false, getLanguage())}
+        primary
+    />
+    </MobileWrapper>
+    </>
 );
 
 SignupButton.propTypes = {

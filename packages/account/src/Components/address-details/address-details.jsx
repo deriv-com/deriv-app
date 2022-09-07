@@ -242,7 +242,7 @@ const AddressDetails = ({
                                             label={
                                                 is_appstore ? localize('Postal/ZIP Code*') : localize('Postal/ZIP Code')
                                             }
-                                            placeholder={localize('Postal/ZIP Code')}
+                                            placeholder={localize('Code')}
                                             onChange={e => {
                                                 setFieldTouched('address_postcode', true);
                                                 handleChange(e);

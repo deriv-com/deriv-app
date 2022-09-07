@@ -23,7 +23,7 @@ const PasswordSelectionModal = ({
 }) => (
     <div className='account-signup__password-selection'>
         <Text as='p' weight='bold' className='account-signup__heading' align='center'>
-            <Localize i18n_default_text='Keep your account secure with a password' />
+            <Localize i18n_default_text='Keep your account secure with a passw0rd' />
         </Text>
         <Field name='password'>
             {({ field }) => (

@@ -21,7 +21,7 @@ const PasswordInput = ({
             <Input
                 {...otherProps}
                 autoComplete={autoComplete}
-                type={should_show_password ? 'text' : 'password'}
+                type={!should_show_password ? 'text' : 'password'}
                 input_id={input_id}
                 className={classNames('dc-password-input__field', className)}
                 trailing_icon={

@@ -2,30 +2,18 @@ import * as React from 'react';
 import { Authorize } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Money } from '@deriv/components';
-import { Text, Accordion, Modal } from '@deriv/ui';
+import { Text, Accordion, Button } from '@deriv/ui';
 import { ArrayElement } from 'Types';
 import WalletCard from 'Components/wallet';
 import WalletActionButton from 'Components/wallet-action-button';
-import AppstoreAppCard from 'Components/app-card';
 import AppsLauncher from 'Components/app-launcher';
-import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
 };
 
-type TButtonColor = 'primary' | 'primary-light' | 'secondary' | 'tertiary' | 'monochrome';
-type TModalActionButton = {
-    id: number;
-    text: string;
-    color: TButtonColor;
-    onClick: () => void;
-};
-
 const WalletAccount = observer(({ account }: WalletAccountProps) => {
-    const { wallet_store } = useStores();
-
     return (
         <>
             <Accordion
@@ -52,7 +40,7 @@ const WalletAccount = observer(({ account }: WalletAccountProps) => {
                                     />
                                 </Text>
                                 <div className='wallet-account__actions'>
-                                    <WalletActionButton size='small' label='Reports' icon='icAppstoreTransfer' />
+                                    <WalletActionButton size='small' label='Transfer' icon='icAppstoreTransfer' />
                                     <WalletActionButton size='small' label='Transaction' icon='icAppstoreTransaction' />
                                     <WalletActionButton
                                         size='small'
@@ -84,57 +72,72 @@ const WalletAccount = observer(({ account }: WalletAccountProps) => {
                                 {localize(
                                     'Trade with leverage and tight spreads for better returns on successful trades. '
                                 )}
-                                <a href='#' style={{ color: '#FF444F' }}>
+                                <a href='#' className='link-text'>
                                     {localize('Learn more')}
                                 </a>
                             </Text>
                         </div>
-                        <Text bold type='paragraph-1' style={{ marginTop: '2rem', marginBottom: '-1rem' }}>
-                            {localize('Deriv MT5')}
-                        </Text>
-                        <div className='wallet-account__options'>
-                            <AppsLauncher
-                                app_name='Derived'
-                                icon_name='TradingDerived'
-                                is_app_installed={false}
-                                button_className='wallet-account__app-launcher-button'
-                                jurisdiction=''
-                                description='Trade CFDs on MT5 with synthetic indices that simulate real-world market movements.'
-                            />
 
-                            <AppsLauncher
-                                app_name='Financial'
-                                icon_name='TradingFinancial'
-                                is_app_installed={false}
-                                button_className='wallet-account__app-launcher-button'
-                                jurisdiction=''
-                                description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
-                            />
+                        <div className='wallet-account__apps-wrapper'>
+                            <div className='wallet-account__apps-title'>
+                                <Text bold type='paragraph-1'>
+                                    {localize('Deriv MT5')}
+                                </Text>
+                                <Button className='wallet-account__apps-title--link' size='small' color='tertiary'>
+                                    {localize('Compare accounts')}
+                                </Button>
+                            </div>
+                            <div className='wallet-account__apps '>
+                                <AppsLauncher
+                                    app_name='Derived'
+                                    icon_name='TradingDerived'
+                                    is_app_installed={false}
+                                    button_className='wallet-account__app-launcher-button'
+                                    jurisdiction=''
+                                    description='Trade CFDs on MT5 with synthetic indices that simulate real-world market movements.'
+                                />
+
+                                <AppsLauncher
+                                    app_name='Financial'
+                                    icon_name='TradingFinancial'
+                                    is_app_installed={false}
+                                    button_className='wallet-account__app-launcher-button'
+                                    jurisdiction=''
+                                    description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                                />
+                            </div>
                         </div>
 
-                        <Text bold type='paragraph-1' style={{ marginBottom: '-1.5rem' }}>
-                            {localize('Deriv X')}
-                        </Text>
-                        <AppsLauncher
-                            app_name='Deriv X2'
-                            icon_name='DerivX'
-                            is_app_installed={false}
-                            button_className='wallet-account__app-launcher-button'
-                            jurisdiction=''
-                            description='Trade CFDs on Deriv X with synthetic indices that simulate real-world market movements.'
-                        />
+                        <div className='wallet-account__apps-wrapper'>
+                            <div className='wallet-account__apps-title no-mt'>
+                                <Text bold type='paragraph-1'>
+                                    {localize('Deriv X')}
+                                </Text>
+                            </div>
+                            <div className='wallet-account__apps'>
+                                <AppsLauncher
+                                    app_name='Deriv X2'
+                                    icon_name='DerivX'
+                                    is_app_installed={false}
+                                    button_className='wallet-account__app-launcher-button'
+                                    jurisdiction=''
+                                    description='Trade CFDs on Deriv X with synthetic indices that simulate real-world market movements.'
+                                />
+                            </div>
+                        </div>
+
                         <div>
                             <Text bold type='subtitle-1'>
                                 {localize('Options & Multipliers')}
                             </Text>
                             <Text bold={false} type='paragraph-1'>
                                 {localize('Earn fixed payouts by predicting price movements with ')}
-                                <a href='#' style={{ color: '#FF444F' }}>
+                                <a href='#' className='link-text'>
                                     {localize('Options')}
                                 </a>
                                 {localize(', or combine the upside of CFDs with the simplicity of Options with ')}
 
-                                <a href='#' style={{ color: '#FF444F' }}>
+                                <a href='#' className='link-text'>
                                     {localize('Multipliers')}
                                 </a>
                             </Text>

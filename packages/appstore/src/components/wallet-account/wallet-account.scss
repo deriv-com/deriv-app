@@ -19,7 +19,27 @@
         align-items: center;
     }
 
-    &__options {
+    &__apps-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__apps-title {
+        display: flex;
+        align-items: center;
+        margin-top: 2rem;
+        margin-bottom: -1rem;
+
+        &--link {
+            margin-left: 1.5rem;
+        }
+
+        &.no-mt {
+            margin-top: 0 !important;
+        }
+    }
+
+    &__apps {
         display: flex;
         flex-wrap: wrap;
         gap: 3rem;
@@ -81,4 +101,8 @@
         align-items: center;
         gap: 3rem;
     }
+}
+
+.link-text {
+    color: #ff444f !important;
 }

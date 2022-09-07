@@ -1,8 +1,5 @@
-import { Field, FieldProps } from 'formik';
-import React from 'react';
-import { Icon, Input, Popover } from '@deriv/components';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
 import { SelectField, InputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
 import {
@@ -94,6 +91,7 @@ const QStrategyFields = ({
         if (isCurrentStrategyFields && isInputField) {
             tempIsDoubleIdx = idx + 1;
         }
+
         /* eslint consistent-return: off */
         return isCurrentStrategyFields ? (
             isDurationUnitField ? (
@@ -170,6 +168,7 @@ const QStrategyFields = ({
                                 id={id}
                                 is_mobile={is_mobile}
                                 getDropdownList={getDropdownList}
+                                // getDropdownList={getFieldMap(input_value as TDropdownItems)?.dropdown}
                                 getSelectedValue={getSelectedValue}
                                 label={label}
                                 input_value={input_value as TDropdownItems}
@@ -185,7 +184,7 @@ const QStrategyFields = ({
                             />
                         </div>
                         {name.endsWith('types-strategies') && (
-                            <div className='q-strategy__description'>{description}</div>
+                            <div className='quick-strategy__description'>{description}</div>
                         )}
                     </>
                 )

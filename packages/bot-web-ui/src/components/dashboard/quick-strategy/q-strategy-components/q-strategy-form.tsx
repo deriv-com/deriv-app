@@ -40,9 +40,7 @@ const QStrategyForm = ({
             touched,
             submitForm,
         }: FormikProps<TQuickStrategyFormValues>) => {
-            // Check values in favour of isValid, this is a hack to persist validation through tab switching.
-
-            const is_valid = true; //!remove later
+            const is_valid = true; //!remove after implementation validation
 
             const is_submit_enabled = !isSubmitting && is_valid;
 
@@ -52,15 +50,15 @@ const QStrategyForm = ({
                         'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                     })}
                 >
-                    <ThemedScrollbars height='535px' width='700px' autohide is_bypassed={is_mobile}>
+                    <ThemedScrollbars height='535px' autohide is_bypassed={is_mobile}>
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
                                 'quick-strategy__form-content--safari-fix': isSafari(),
                             })}
                         >
-                            <div className='q-strategy__title'>{localize('Quick strategy')}</div>
-                            <div className='q-strategy__description'>
+                            <div className='quick-strategy__title'>{localize('Quick strategy')}</div>
+                            <div className='quick-strategy__description'>
                                 {localize('Choose a template and set your trade parameters.')}
                             </div>
 
@@ -101,4 +99,4 @@ const QStrategyForm = ({
     </Formik>
 );
 
-export default QStrategyForm;
+export default React.memo(QStrategyForm);

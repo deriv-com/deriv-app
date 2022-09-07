@@ -36,7 +36,7 @@ const data_uniq_input_obj: ReadonlyArray<TDataUniqInput> = [
         name: 'alembert-unit',
         field_name: 'alembert-unit',
         input_value: 'input_alembert_unit',
-        label: '',
+        label: 'Units',
         placeholder: '2',
         trailing_icon_message: quick_strategy_store.getSizeDesc(1),
         ...common_inputs_properties,

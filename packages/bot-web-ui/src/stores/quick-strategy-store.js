@@ -500,7 +500,7 @@ export default class QuickStrategyStore {
         const number_fields = [
             'quick-strategy__duration-value',
             'quick-strategy__stake',
-            ...(this.active_index === 0 ? ['quick-strategy__size'] : []),
+            ...(this.active_index === 0 ? ['martingale__size'] : []),
             ...(this.active_index === 1 ? ['alembert-unit'] : []),
             ...(this.active_index === 2 ? ['oscar-unit'] : []),
             'quick-strategy__profit',
@@ -526,7 +526,7 @@ export default class QuickStrategyStore {
             if (value === '') {
                 errors[key] = localize('Field cannot be empty');
             }
-            if (key === 'quick-strategy__size' && values[key] < 2) {
+            if (key === 'martingale__size' && values[key] < 2) {
                 errors[key] = localize('Value must be higher than 2');
             }
         });

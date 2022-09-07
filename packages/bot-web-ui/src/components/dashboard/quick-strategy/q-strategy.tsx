@@ -4,24 +4,32 @@ import RootStore from 'Stores/index';
 import { TQuickStrategyProps } from './q-strategy.types';
 import { QStrategyContainer } from './q-strategy-components';
 import { localize } from '@deriv/translations';
+import { MobileFullPageModal } from '@deriv/components';
 
 const QStrategy = (props: TQuickStrategyProps) => {
-    const { is_mobile, toggleStrategyModal } = props;
-    /* eslint-disable no-console */
-    console.log('QStrategy props', props);
+    const { is_mobile, is_strategy_modal_open, toggleStrategyModal } = props;
     React.useEffect(() => {
-        toggleStrategyModal();
+        if (!is_mobile) {
+            toggleStrategyModal();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <>
             {is_mobile ? (
-                <div>
-                    <p>{localize('Mobile version is coming soon to DBot')}</p>
-                </div>
+                <MobileFullPageModal
+                    is_modal_open={is_strategy_modal_open}
+                    className='quick-strategy__wrapper'
+                    header={localize('Quick Strategy')}
+                    onClickClose={toggleStrategyModal}
+                    height_offset='80px'
+                    page_overlay
+                >
+                    <QStrategyContainer {...props} />
+                </MobileFullPageModal>
             ) : (
-                <div className='q-strategy__container'>
+                <div className='quick-strategy__container'>
                     <QStrategyContainer {...props} />
                 </div>
             )}

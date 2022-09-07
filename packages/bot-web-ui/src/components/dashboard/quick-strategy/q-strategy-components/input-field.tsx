@@ -42,6 +42,7 @@ const InputField = ({
     } = dataField as TDataUniqInput | TDataFields;
 
     return (
+        // <div key={id || new_id}>
         <Field name={field_name || new_field_name} key={id || new_id}>
             {({ field }: FieldProps<string, TFormValues>) => {
                 return (
@@ -77,6 +78,7 @@ const InputField = ({
                 );
             }}
         </Field>
+        // </div>
     );
 };
 

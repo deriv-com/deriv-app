@@ -1,36 +1,24 @@
-.dc-modal {
-    $strategy-modal: 'modal--strategy';
-
-    &__container {
-        &_#{$strategy-modal} {
-            max-height: 57.1rem !important;
-
-            .modal__scrollbar {
-                max-height: 516px;
-                margin-bottom: 75px;
-            }
-            .modal__content {
-                padding: 1.6rem 2.4rem;
-                height: calc(100% - 200px);
-                max-height: 636px;
-            }
-        }
-    }
-}
-
-.dc-mobile-full-page-modal.quick-strategy__wrapper {
-    height: 100%;
-    overflow-y: visible;
-}
-
 .quick-strategy {
     $quick-strategy: &;
 
+    &__container {
+        width: 70.5rem;
+        transform: translateY(0);
+    }
+
+    &__title {
+        margin: 15px 0;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.43;
+        color: var(--text-general);
+    }
+
     &__description {
         margin: 15px 0;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: normal;
-        line-height: 1.43;
+        line-height: 1.5;
         color: var(--text-general);
     }
     &__tab-content {
@@ -50,7 +38,11 @@
             align-items: flex-end;
             display: flex;
             justify-content: space-between;
-            margin: 4.5rem 0;
+            margin: 3.5rem 0;
+
+            .dc-dropdown-list__item:hover {
+                font-weight: bold;
+            }
 
             > * + * {
                 @include mobile {
@@ -84,6 +76,7 @@
                     font-size: var(--text-size-xxs);
                 }
                 .dc-field-error {
+                    //?
                     left: 0;
                     padding-top: 0.4rem;
                     padding-left: 0.4rem;
@@ -104,10 +97,10 @@
             }
         }
         &-content {
-            margin-bottom: 12rem;
-            padding: 0 1.6rem;
+            margin: 0 1.6rem;
 
             &--active-keyboard {
+                //?
                 margin-bottom: 12rem;
             }
 
@@ -119,7 +112,6 @@
         &-footer {
             border-top: 1px solid var(--general-section-1);
             padding: 1.6rem 2.4rem;
-            position: fixed;
             bottom: 0px;
             left: 0px;
             background: var(--general-main-1);

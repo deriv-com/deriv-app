@@ -6,20 +6,22 @@ import DashboardHeader from './dashboard-header.jsx';
 import TradingHubHeader from './trading-hub-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
 import { connect } from 'Stores/connect';
+import { useLocation } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ is_logged_in }) => {
     const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
+    const { pathname } = useLocation();
+
     if (is_appstore) {
         /**
          * The below line will implement when the new domain myapps.deriv.com added.
          */
         if (/myapps.deriv/.test(window.location.pathname)) return <DashboardPlatformHeader />;
         return <DashboardHeader />;
-    } else if (is_pre_appstore) {
-        const location = window.location.pathname;
-        if (location === routes.trading_hub || location === routes.cashier_deposit || location === routes.account)
+    } else if (is_logged_in && is_pre_appstore) {
+        if (pathname === routes.trading_hub || pathname === routes.cashier_deposit || pathname === routes.account)
             return <TradingHubHeader />;
-        if (location === routes.trade) {
+        if (pathname === routes.trade) {
             return <DTraderHeader />;
         }
         return <TradingHubHeader />;

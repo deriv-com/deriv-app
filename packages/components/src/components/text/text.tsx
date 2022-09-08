@@ -1,24 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isEmptyObject } from '@deriv/shared';
-
-type TStyle = {
-    [key: string]: string;
-};
-
-type TChildren = React.ReactNode | React.ReactNode[];
-
-type TTextProps = {
-    line_height: string;
-    size: string;
-    children: TChildren;
-    color: string;
-    align: string;
-    weight: string;
-    as: string;
-    className: string;
-    styles: TStyle;
-};
+import { TTextProps } from '../types';
 
 const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }: TTextProps) => {
     const class_styles = {

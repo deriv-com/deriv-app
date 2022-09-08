@@ -5,8 +5,6 @@ import { getBrandName } from '@deriv/shared';
 import CorrectMessageContent from './correct-message-content';
 import FakeMessageContent from './fake-message-content';
 
-const brandName = getBrandName();
-
 const WarningScamMessageContent = ({ is_dark_mode_on }) => (
     <div
         className={
@@ -16,12 +14,16 @@ const WarningScamMessageContent = ({ is_dark_mode_on }) => (
         <div className='warning-scam-message--content__info--title'>
             <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={18} />
             <Text weight='bold'>
-                <Localize i18n_default_text={`Do not get lured to fake "${brandName}" pages!`} />
+                <Localize
+                    i18n_default_text={`Do not get lured to fake "{{ brandName }}" pages!`}
+                    values={{ brandName: getBrandName() }}
+                />
             </Text>
         </div>
         <Text size='xxs' className='warning-scam-message__small-text-message'>
             <Localize
-                i18n_default_text={`You may see links to websites with a fake ${brandName} login page where you’ll get scammed for your money.`}
+                i18n_default_text={`You may see links to websites with a fake {{ brandName }} login page where you’ll get scammed for your money.`}
+                values={{ brandName: getBrandName() }}
             />
         </Text>
         <div className='warning-scam-message--content__info--message'>

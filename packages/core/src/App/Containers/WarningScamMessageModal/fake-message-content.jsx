@@ -3,15 +3,14 @@ import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getBrandName } from '@deriv/shared';
 
-const brandName = getBrandName();
-
 const FakeMessageContent = () => (
     <div className='fake-link__container'>
         <Icon icon={'IcAccountCross'} className='warning-scam-message__icon--cross' size={24} />
         <div className='fake-link__message-container'>
             <Text>
                 <Localize
-                    i18n_default_text={`Fake links often contain the word that looks like "${brandName}" but look out for these differences.`}
+                    i18n_default_text={`Fake links often contain the word that looks like "{{ brandName }}" but look out for these differences.`}
+                    values={{ brandName: getBrandName() }}
                 />
             </Text>
             <div className='fake-link__link-container'>

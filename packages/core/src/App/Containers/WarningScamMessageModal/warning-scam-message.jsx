@@ -51,14 +51,12 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
 };
 
 WarningScamMessage.propTypes = {
-    displayWarningScamMessage: PropTypes.func,
     is_dark_mode_on: PropTypes.bool,
     is_warning_scam_message_modal_visible: PropTypes.bool,
     setScamMessageLocalStorage: PropTypes.func,
 };
 
 export default connect(({ ui }) => ({
-    displayWarningScamMessage: ui.displayWarningScamMessage,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     setScamMessageLocalStorage: ui.setScamMessageLocalStorage,

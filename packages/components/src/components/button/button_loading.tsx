@@ -1,8 +1,12 @@
 import React from 'react';
-import Loading from '../loading/loading.jsx';
+import Loading from '../loading/loading';
 import '../loading/loading.scss';
 
-const ButtonLoading = props => {
+type TButtonLoadingProps = {
+    [key: string]: React.ReactNode;
+};
+
+const ButtonLoading = (props: TButtonLoadingProps) => {
     return <Loading {...props} is_fullscreen={false} className='initial-loader--btn' />;
 };
 

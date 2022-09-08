@@ -6,15 +6,15 @@ import { Localize } from 'Components/i18next';
 const EmailLinkVerifiedModal = ({
     amount,
     currency,
-    is_email_verified_modal_open,
+    is_email_link_verified_modal_open,
     onClickConfirm,
     setIsEmailLinkVerifiedModalOpen,
 }) => {
     return (
         <Modal
             has_close_icon
-            is_open={is_email_verified_modal_open}
-            title=''
+            is_open={is_email_link_verified_modal_open}
+            renderTitle={() => <></>}
             toggleModal={() => setIsEmailLinkVerifiedModalOpen(false)}
             width='440px'
         >
@@ -31,7 +31,14 @@ const EmailLinkVerifiedModal = ({
                 </Text>
             </Modal.Body>
             <Modal.Footer className='email-verified-modal--footer'>
-                <Button large primary onClick={onClickConfirm}>
+                <Button
+                    large
+                    primary
+                    onClick={() => {
+                        setIsEmailLinkVerifiedModalOpen(false);
+                        onClickConfirm();
+                    }}
+                >
                     <Localize i18n_default_text='Confirm' />
                 </Button>
             </Modal.Footer>
@@ -40,9 +47,9 @@ const EmailLinkVerifiedModal = ({
 };
 
 EmailLinkVerifiedModal.propTypes = {
-    amount: PropTypes.number,
+    amount: PropTypes.string,
     currency: PropTypes.string,
-    is_email_verified_modal_open: PropTypes.bool,
+    is_email_link_verified_modal_open: PropTypes.bool,
     onClickConfirm: PropTypes.func,
     setIsEmailLinkVerifiedModalOpen: PropTypes.func,
 };

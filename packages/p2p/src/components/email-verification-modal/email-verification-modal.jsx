@@ -1,37 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Loading, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 const EmailVerificationModal = ({
     email_address,
     is_email_verification_modal_open,
-    is_verifying = false,
     onClickResendEmailButton,
-    remaining_time,
     setIsEmailVerificationModalOpen,
-    should_show_resend_email_button = false,
-    verification_link_expiry_time,
+    should_show_resend_email_button = true,
+    // TODO: Uncomment when time is available in BE response
+    // remaining_time,
+    // verification_link_expiry_time,
 }) => {
     const [should_show_reasons_if_no_email, setShouldShowReasonsIfNoEmail] = React.useState(false);
 
-    if (is_verifying) {
-        return (
-            <Modal has_close_icon={false} small width='440px'>
-                <Loading is_fullscreen={false} />
-            </Modal>
-        );
-    }
-
     return (
         <Modal
+            className='email-verification-modal'
             has_close_icon
             is_open={is_email_verification_modal_open}
-            title=''
+            renderTitle={() => <></>}
             toggleModal={() => setIsEmailVerificationModalOpen(false)}
             width='440px'
         >
-            <Modal.Body className='email-verification-modal'>
+            <Modal.Body className='email-verification-modal--body'>
                 <Icon icon='IcEmailSentP2p' size='128' />
                 <Text
                     align='center'
@@ -46,11 +39,9 @@ const EmailVerificationModal = ({
                         values={{ email_address }}
                     />
                 </Text>
-                <Text color='prominent' size='s'>
-                    <Localize
-                        i18n_default_text='The verification link expires in {{verification_link_expiry_time}} minutes'
-                        values={{ verification_link_expiry_time }}
-                    />
+                <Text align='center' color='prominent' size='s'>
+                    {/* TODO: Uncomment when time is available in BE response */}
+                    <Localize i18n_default_text='The verification link expires in 10 minutes' />
                 </Text>
                 <Text
                     className='email-verification-modal--receive_email_text'
@@ -84,16 +75,18 @@ const EmailVerificationModal = ({
                         <div className='email-verification-modal--reason'>
                             <Icon icon='IcEmailFirewall' size={36} />
                             <Text className='email-verification-modal--reason__text' color='prominent' size='xxs'>
-                                <Localize i18n_default_text='We can’t deliver the email to this address (usually because of firewalls or filtering).' />
+                                <Localize i18n_default_text="We can't deliver the email to this address (usually because of firewalls or filtering)." />
                             </Text>
                         </div>
                     </React.Fragment>
                 )}
             </Modal.Body>
-            {should_show_resend_email_button && (
-                <Modal.Footer>
+            {should_show_resend_email_button && should_show_reasons_if_no_email && (
+                <Modal.Footer className='email-verification-modal--footer'>
                     <Button large primary onClick={onClickResendEmailButton}>
-                        <Localize i18n_default_text='Resend email {{remaining_time}}' values={{ remaining_time }} />
+                        <Localize i18n_default_text='Resend email' />
+                        {/* TODO: Uncomment when time is available in BE response
+                        <Localize i18n_default_text='Resend email {{remaining_time}}' values={{ remaining_time }} /> */}
                     </Button>
                 </Modal.Footer>
             )}
@@ -104,12 +97,13 @@ const EmailVerificationModal = ({
 EmailVerificationModal.propTypes = {
     email_address: PropTypes.string,
     is_email_verification_modal_open: PropTypes.bool,
-    is_verifying: PropTypes.bool,
     onClickResendEmailButton: PropTypes.func,
-    remaining_time: PropTypes.string,
+    // TODO: Uncomment when time is available in BE response
+    // remaining_time: PropTypes.string,
     setIsEmailVerificationModalOpen: PropTypes.func,
     should_show_resend_email_button: PropTypes.bool,
-    verification_link_expiry_time: PropTypes.number,
+    // TODO: Uncomment when time is available in BE response
+    // verification_link_expiry_time: PropTypes.number,
 };
 
 export default EmailVerificationModal;

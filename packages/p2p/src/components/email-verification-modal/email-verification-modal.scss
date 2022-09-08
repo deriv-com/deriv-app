@@ -1,10 +1,23 @@
+.dc-modal__container_email-verification-modal {
+    max-height: 80vh;
+    overflow: auto;
+}
+
 .email-verification-modal {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+    &--body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
 
     &--email_text {
         margin: 2.4rem 0;
+    }
+
+    &--footer {
+        @include mobile {
+            justify-content: center;
+        }
     }
 
     &--reason {
@@ -21,5 +34,9 @@
     &--receive_email_text {
         cursor: pointer;
         margin: 3rem 0 0.6rem;
+
+        @include mobile {
+            margin: 3rem 0 2.6rem;
+        }
     }
 }

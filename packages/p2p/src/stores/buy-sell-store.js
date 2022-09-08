@@ -89,6 +89,13 @@ export default class BuySellStore extends BaseStore {
 
     @computed
     get rendered_items() {
+        const filtered_items = this.items.filter(item => {
+            if (this.table_type === 'buy') {
+                return item.type === 'sell';
+            }
+            return item.type === 'buy';
+        });
+
         if (isMobile()) {
             if (this.search_term) {
                 if (this.search_results.length) {
@@ -99,7 +106,7 @@ export default class BuySellStore extends BaseStore {
             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
             // an empty item with an item that holds the same height of the toggle container.
             // Also see: buy-sell-row.jsx
-            return [{ id: 'WATCH_THIS_SPACE' }, ...this.items];
+            return [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
         }
 
         if (this.search_term) {
@@ -108,14 +115,6 @@ export default class BuySellStore extends BaseStore {
             }
             return [{ id: 'NO_MATCH_ROW' }];
         }
-
-        const filtered_items = this.items.filter(item => {
-            if (this.table_type === 'buy') {
-                return item.type === 'sell';
-            } 
-                return item.type === 'buy';
-            
-        });
 
         return filtered_items;
     }

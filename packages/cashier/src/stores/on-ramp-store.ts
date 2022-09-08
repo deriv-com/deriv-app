@@ -2,6 +2,7 @@ import { action, computed, observable, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import OnrampProviders from 'Config/on-ramp-providers';
+import { TRootStore, TWebSocket, TProviderDetails } from 'Types';
 import BaseStore from './base-store';
 
 export default class OnRampStore extends BaseStore {
@@ -19,9 +20,8 @@ export default class OnRampStore extends BaseStore {
 
     deposit_address_ref = null;
 
-    constructor({ WS, root_store }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
-        this.WS = WS;
 
         this.onClientInit(async () => {
             this.setOnrampProviders([
@@ -50,7 +50,7 @@ export default class OnRampStore extends BaseStore {
         return (
             this.onramp_providers
                 // Ensure provider supports this user's account currency.
-                .filter(provider => {
+                .filter((provider: TProviderDetails) => {
                     const to_currencies = provider.getToCurrencies();
                     return to_currencies.includes('*') || to_currencies.includes(client.currency.toLowerCase());
                 })
@@ -84,7 +84,7 @@ export default class OnRampStore extends BaseStore {
     onMountOnramp() {
         this.disposeThirdPartyJsReaction = reaction(
             () => this.selected_provider,
-            async provider => {
+            async (provider: TProviderDetails) => {
                 if (!provider) {
                     return;
                 }

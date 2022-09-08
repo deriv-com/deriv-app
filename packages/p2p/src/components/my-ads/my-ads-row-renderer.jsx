@@ -169,7 +169,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 payment_method_names.map((payment_method, key) => {
                                     return (
                                         <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                            <Text color='general' size='xxxs' line-height='l'>
+                                            <Text
+                                                color={general_store.is_listed ? 'general' : 'less-prominent'}
+                                                size='xxxs'
+                                                line-height='l'
+                                            >
                                                 {payment_method}
                                             </Text>
                                         </div>
@@ -234,7 +238,11 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             payment_method_names.map((payment_method, key) => {
                                 return (
                                     <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                        <Text color='general' size='xs' line-height='l'>
+                                        <Text
+                                            color={general_store.is_listed ? 'general' : 'less-prominent'}
+                                            size='xs'
+                                            line-height='l'
+                                        >
                                             {payment_method}
                                         </Text>
                                     </div>

@@ -108,7 +108,16 @@ export default class BuySellStore extends BaseStore {
             }
             return [{ id: 'NO_MATCH_ROW' }];
         }
-        return this.items;
+
+        const filtered_items = this.items.filter(item => {
+            if (this.table_type === 'buy') {
+                return item.type === 'sell';
+            } 
+                return item.type === 'buy';
+            
+        });
+
+        return filtered_items;
     }
 
     @computed

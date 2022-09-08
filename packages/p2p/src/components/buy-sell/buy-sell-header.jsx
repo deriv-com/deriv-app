@@ -25,10 +25,8 @@ const getBuySellFilters = () => [
     },
 ];
 
-const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
+const BuySellHeader = ({ is_visible, table_type }) => {
     const { buy_sell_store } = useStores();
-
-    const onChangeTableType = event => setTableType(event.target.value);
 
     const returnedFunction = debounce(() => {
         buy_sell_store.loadMoreItems({ startIndex: 0 });
@@ -76,7 +74,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                             className='buy-sell__header-filters'
                             is_animated
                             name='filter'
-                            onChange={onChangeTableType}
+                            onChange={buy_sell_store.onChangeTableType}
                             value={table_type}
                             has_rounded_button
                         />
@@ -104,7 +102,6 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
 BuySellHeader.propTypes = {
     is_visible: PropTypes.bool,
     setTableType: PropTypes.func,
-    table_type: PropTypes.string,
 };
 
 export default observer(BuySellHeader);

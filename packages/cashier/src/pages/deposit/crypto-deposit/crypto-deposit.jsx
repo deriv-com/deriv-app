@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import { connect } from 'Stores/connect';
 import RecentTransaction from 'Components/recent-transaction';
 import './crypto-deposit.scss';
@@ -199,7 +199,7 @@ const CryptoDeposit = ({
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
-                                <QRCode className='qrcode' value={deposit_address} size={160} includeMargin />
+                                <QRCodeSVG className='qrcode' value={deposit_address} size={160} includeMargin />
                                 <div className='crypto-deposit__clipboard-wrapper'>
                                     <Text
                                         className='crypto-deposit__address-hash'

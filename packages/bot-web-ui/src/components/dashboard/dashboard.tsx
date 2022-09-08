@@ -21,7 +21,7 @@ interface DashboardProps {
 const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [tour_run, setTourRun] = React.useState<boolean>(true);
-    const handleClick = (e: any) => {
+    const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
     };

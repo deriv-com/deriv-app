@@ -1,3 +1,3 @@
-import { TChildren, TStyle, TTextProps } from './general.types';
+import { TChildren, TStyle } from './general.types';
 
-export type { TChildren, TStyle, TTextProps };
+export type { TChildren, TStyle };

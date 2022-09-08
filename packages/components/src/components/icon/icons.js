@@ -1,7 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
-import './appstore/ic-appstore-add.svg';
 import './appstore/ic-appstore-add-rounded.svg';
+import './appstore/ic-appstore-add.svg';
 import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
@@ -23,6 +23,7 @@ import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';
 import './appstore/ic-appstore-success.svg';
+import './appstore/ic-appstore-trading-hub-onboarding-dark.svg';
 import './appstore/ic-appstore-trading-hub-onboarding.svg';
 import './appstore/ic-appstore-wallet-aud-light.svg';
 import './appstore/ic-appstore-wallet-bitcoin-light.svg';

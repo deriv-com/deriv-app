@@ -47,10 +47,14 @@ const RedirectToOldInterface = () => {
     );
 };
 
-const TradingHubOnboarding = () => {
+const TradingHubOnboarding = ({ is_dark_mode }) => {
     return (
         <div className='dashboard-platform-header__tradinghub--onboarding'>
-            <Icon icon='IcAppstoreTradingHubOnboarding' size={20} />
+            {is_dark_mode ? (
+                <Icon icon='IcAppstoreTradingHubOnboardingDark' size={20} />
+            ) : (
+                <Icon icon='IcAppstoreTradingHubOnboarding' size={20} />
+            )}
         </div>
     );
 };
@@ -156,7 +160,7 @@ const TradingHubHeader = ({
                 <div className='dashboard-platform-header__menu-right'>
                     <RedirectToOldInterface />
                     <Divider />
-                    <TradingHubOnboarding />
+                    <TradingHubOnboarding is_dark_mode={is_dark_mode} />
                     <ShowNotifications
                         is_notifications_visible={is_notifications_visible}
                         notifications_count={notifications_count}

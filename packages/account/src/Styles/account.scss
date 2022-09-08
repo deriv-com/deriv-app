@@ -1590,6 +1590,31 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+/** @define account-poinc; weak */
+.account-poinc {
+    &-form {
+        width: 100%;
+        padding: 3rem 2rem 0 1rem;
+        @media only screen and (max-width: 926px) {
+            padding-left: 2rem;
+        }
+
+        &__fieldset {
+            margin: -2.5rem 0.6rem 5rem;
+            height: 5rem;
+        }
+
+        &__upload-field {
+            margin-top: -2rem;
+        }
+
+        &__notes-container {
+            margin: 0.8rem;
+            padding: 0.4rem 0;
+        }
+    }
+}
+
 /** @define sent-email; weak */
 .sent-email {
     display: grid;

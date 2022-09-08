@@ -2,21 +2,22 @@ import React from 'react';
 import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
+    Account,
+    AccountClosed,
     AccountLimits,
+    ApiToken,
+    ConnectedApps,
+    ClosingAccount,
+    DeactivateAccount,
+    FinancialAssessment,
+    LoginHistory,
     Passwords,
     PersonalDetails,
-    FinancialAssessment,
-    ProofOfIdentity,
     ProofOfAddress,
-    ApiToken,
-    TwoFactorAuthentication,
+    ProofOfIdentity,
+    ProofOfIncome,
     SelfExclusion,
-    Account,
-    ClosingAccount,
-    ConnectedApps,
-    LoginHistory,
-    AccountClosed,
-    DeactivateAccount,
+    TwoFactorAuthentication,
 } from 'Sections';
 
 // Error Routes
@@ -73,6 +74,11 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                         path: routes.proof_of_address,
                         component: ProofOfAddress,
                         getTitle: () => localize('Proof of address'),
+                    },
+                    {
+                        path: routes.proof_of_income,
+                        component: ProofOfIncome,
+                        getTitle: () => localize('Proof of income'),
                     },
                 ],
             },

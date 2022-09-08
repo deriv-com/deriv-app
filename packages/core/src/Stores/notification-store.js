@@ -20,7 +20,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import { action, computed, observable, reaction } from 'mobx';
 import React from 'react';
 import { WS } from 'Services';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage';
 import BaseStore from './base-store';
 import {
     excluded_notifications,
@@ -220,7 +220,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             const {
-                authentication: { document, identity, needs_verification },
+                authentication: { document, identity, income, needs_verification },
                 status,
                 cashier_validation,
             } = account_status;
@@ -291,12 +291,17 @@ export default class NotificationStore extends BaseStore {
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const needs_poinc =
+                    needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
+                const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
                 this.addVerificationNotifications(identity, document);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (needs_poinc) this.addNotificationMessage(this.client_notifications.needs_poinc);
+                if (poinc_upload_limited) this.addNotificationMessage(this.client_notifications.poinc_upload_limited);
                 if (needs_verification.includes('identity')) {
                     if (
                         poi_name_mismatch &&
@@ -776,16 +781,6 @@ export default class NotificationStore extends BaseStore {
                 message: localize('To continue trading with us, please confirm where you live.'),
                 type: 'danger',
             },
-            needs_poi: {
-                action: {
-                    route: routes.proof_of_identity,
-                    text: localize('Verify identity'),
-                },
-                key: 'needs_poi',
-                header: localize('Please verify your proof of identity'),
-                message: localize('To continue trading with us, please confirm who you are.'),
-                type: 'danger',
-            },
             needs_poa_virtual: {
                 action: {
                     route: routes.proof_of_address,
@@ -796,6 +791,16 @@ export default class NotificationStore extends BaseStore {
                 message: localize(
                     'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
                 ),
+                type: 'danger',
+            },
+            needs_poi: {
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Verify identity'),
+                },
+                key: 'needs_poi',
+                header: localize('Please verify your proof of identity'),
+                message: localize('To continue trading with us, please confirm who you are.'),
                 type: 'danger',
             },
             needs_poi_virtual: {
@@ -813,6 +818,16 @@ export default class NotificationStore extends BaseStore {
                     'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
                 ),
                 type: 'danger',
+            },
+            needs_poinc: {
+                action: {
+                    route: routes.proof_of_income,
+                    text: localize('Go to my account settings'),
+                },
+                key: 'needs_poinc',
+                header: localize('Please verify your proof of income'),
+                message: localize('To continue trading with us, please submit your proof of income.'),
+                type: 'warning',
             },
             new_version_available: {
                 action: {
@@ -889,6 +904,18 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            poinc_upload_limited: {
+                key: 'poinc_upload_limited',
+                header: localize("You've reached the limit for uploading your documents."),
+                message: localize('Please contact us via live chat.'),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to live chat'),
+                },
+                type: 'danger',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;

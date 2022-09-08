@@ -4,22 +4,35 @@
         border-left: var(--brand-red-coral) solid 1px;
         position: relative;
         margin-left: 1.2rem;
+        transition: filter 0.2s linear;
+
+        &--disabled {
+            opacity: 0.32;
+
+            & * {
+                cursor: not-allowed;
+
+                & * {
+                    pointer-events: none;
+                }
+            }
+        }
 
         &--no-border {
-            border-left: unset;
+            border-left: transparent solid 1px;
         }
     }
+
     &__container {
         margin-top: 4px;
         margin-left: 20px;
+        width: 100%;
     }
+
     &__title {
         max-width: 500px;
-
-        @at-root .dc-timeline__flex--disabled & {
-            color: $color-grey-7;
-        }
     }
+
     &__oval {
         width: 24px;
         height: 24px;
@@ -30,16 +43,14 @@
         margin-right: 8px;
         position: absolute;
         padding-left: 1px;
-        left: -12px;
-
-        @at-root .dc-timeline__flex--disabled & {
-            background-color: $color-grey-7;
-        }
+        left: -13px;
     }
+
     &__number {
         position: relative;
         left: -1px;
     }
+
     &__content {
         margin: 16px 0;
         color: var(--text-prominent);

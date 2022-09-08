@@ -90,14 +90,11 @@ describe('WithdrawStore', () => {
     });
 
     it('should set is_withdraw_confirmed', () => {
-        const spyClearVerification = jest.spyOn(withdraw_store.verification, 'clearVerification');
-
         withdraw_store.setIsWithdrawConfirmed(true);
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
 
         withdraw_store.setIsWithdrawConfirmed(false);
-        expect(spyClearVerification).toHaveBeenCalled();
     });
 
     it('should set withdraw_amount', () => {

@@ -337,12 +337,10 @@ describe('PaymentAgentStore', () => {
 
     it('should reset payment agent withdrawal form', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
-        const spyClearVerification = jest.spyOn(payment_agent_store.verification, 'clearVerification');
 
         payment_agent_store.resetPaymentAgent();
         expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
         expect(payment_agent_store.is_withdraw).toBeFalsy();
-        expect(spyClearVerification).toHaveBeenCalled();
         expect(payment_agent_store.active_tab_index).toBe(0);
     });
 

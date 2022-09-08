@@ -516,10 +516,8 @@ describe('GeneralStore', () => {
         const spyOnRemount = jest.spyOn(general_store, 'onRemount');
         general_store.accountSwitcherListener();
 
-        const { iframe, payment_agent, withdraw } = general_store.root_store.modules.cashier;
+        const { iframe, payment_agent } = general_store.root_store.modules.cashier;
 
-        expect(withdraw.verification.clearVerification).toHaveBeenCalledTimes(1);
-        expect(payment_agent.verification.clearVerification).toHaveBeenCalledTimes(1);
         expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
         expect(general_store.payment_agent).toEqual(payment_agent);
         expect(general_store.is_populating_values).toBeFalsy();

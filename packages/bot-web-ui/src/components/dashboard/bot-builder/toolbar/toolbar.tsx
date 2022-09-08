@@ -8,15 +8,15 @@ import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 
-interface IconButtonProps {
+type TIconButton = {
     popover_message: string;
     icon: string;
     icon_id: string;
     iconOnClick: () => void;
     icon_color?: string;
-}
+};
 
-const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }: IconButtonProps) => (
+const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }: TIconButton) => (
     <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>
         <Icon
             icon={icon}
@@ -28,14 +28,14 @@ const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }:
     </Popover>
 );
 
-interface ToolbarButtonProps {
+type ToolbarButton = {
     popover_message?: string;
     button_id: string;
     button_classname: string;
     buttonOnClick: () => void;
     icon: React.ReactElement;
     button_text: string;
-}
+};
 
 const ToolbarButton = ({
     popover_message,
@@ -44,7 +44,7 @@ const ToolbarButton = ({
     buttonOnClick,
     icon,
     button_text,
-}: ToolbarButtonProps) => (
+}: ToolbarButton) => (
     <Popover alignment='bottom' message={popover_message} should_disable_pointer_events>
         <Button id={button_id} className={button_classname} has_effect onClick={buttonOnClick} icon={icon} green>
             {button_text}
@@ -52,7 +52,7 @@ const ToolbarButton = ({
     </Popover>
 );
 
-interface WorkspaceGroupProps {
+type TWorkspaceGroup = {
     has_redo_stack: boolean;
     has_undo_stack: boolean;
     onResetClick: () => void;
@@ -61,7 +61,7 @@ interface WorkspaceGroupProps {
     onZoomInOutClick: (param?: boolean) => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
-}
+};
 
 const WorkspaceGroup = ({
     has_redo_stack,
@@ -72,7 +72,7 @@ const WorkspaceGroup = ({
     onZoomInOutClick,
     toggleLoadModal,
     toggleSaveModal,
-}: WorkspaceGroupProps) => (
+}: TWorkspaceGroup) => (
     <div className='toolbar__group toolbar__group-btn'>
         <IconButton
             popover_message={localize('Reset')}
@@ -128,7 +128,31 @@ const WorkspaceGroup = ({
     </div>
 );
 
-const Toolbar = (props: ToolbarProps) => {
+type TToolbar = {
+    active_tab: string;
+    file_name: string;
+    has_redo_stack: boolean;
+    has_undo_stack: boolean;
+    is_dialog_open: boolean;
+    is_drawer_open: boolean;
+    is_running: boolean;
+    is_stop_button_disabled: boolean;
+    is_stop_button_visible: boolean;
+    closeResetDialog: () => void;
+    onOkButtonClick: () => void;
+    onResetClick: () => void;
+    onRunButtonClick: () => void;
+    onSortClick: () => void;
+    onUndoClick: () => void;
+    onZoomInOutClick: () => void;
+    toggleSaveLoadModal: () => void;
+    is_mobile: boolean;
+    toggleStrategyModal: () => void;
+    toggleLoadModal: () => void;
+    toggleSaveModal: () => void;
+};
+
+const Toolbar = (props: TToolbar) => {
     const {
         is_mobile,
         is_running,
@@ -201,30 +225,6 @@ const Toolbar = (props: ToolbarProps) => {
         </>
     );
 };
-
-interface ToolbarProps {
-    active_tab: string;
-    file_name: string;
-    has_redo_stack: boolean;
-    has_undo_stack: boolean;
-    is_dialog_open: boolean;
-    is_drawer_open: boolean;
-    is_running: boolean;
-    is_stop_button_disabled: boolean;
-    is_stop_button_visible: boolean;
-    closeResetDialog: () => void;
-    onOkButtonClick: () => void;
-    onResetClick: () => void;
-    onRunButtonClick: () => void;
-    onSortClick: () => void;
-    onUndoClick: () => void;
-    onZoomInOutClick: () => void;
-    toggleSaveLoadModal: () => void;
-    is_mobile: boolean;
-    toggleStrategyModal: () => void;
-    toggleLoadModal: () => void;
-    toggleSaveModal: () => void;
-}
 
 export default connect(
     ({ main_content, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }: RootStore) => ({

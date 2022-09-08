@@ -4,18 +4,16 @@ import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
 import WorkspaceWrapper from './workspace-wrapper';
 
-interface BotBuilderProps {
+type TBotBuilder = {
     app: AppStore;
-}
+};
 
-const BotBuilder = ({ app }: BotBuilderProps) => {
+const BotBuilder = ({ app }: TBotBuilder) => {
     const { onMount, onUnmount } = app;
 
     React.useEffect(() => {
         onMount();
-        return () => {
-            onUnmount();
-        };
+        return () => onUnmount();
     }, []);
 
     return (

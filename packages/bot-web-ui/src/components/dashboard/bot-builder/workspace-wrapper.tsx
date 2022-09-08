@@ -5,13 +5,13 @@ import Flyout from 'Components/flyout';
 import Toolbox from './toolbox';
 import Toolbar from './toolbar';
 
-interface WorkspaceWrapperProps {
+type TWorkspaceWrapper = {
     onMount: () => void;
     onUnmount: () => void;
     is_loading: boolean;
-}
+};
 
-const WorkspaceWrapper = ({ onMount, onUnmount, is_loading }: WorkspaceWrapperProps) => {
+const WorkspaceWrapper = ({ onMount, onUnmount, is_loading }: TWorkspaceWrapper) => {
     React.useEffect(() => {
         onMount();
         return () => {

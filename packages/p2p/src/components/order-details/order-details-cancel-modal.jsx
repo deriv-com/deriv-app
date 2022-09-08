@@ -56,7 +56,7 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
                 ) : (
                     <Text color='prominent' size='xs'>
                         <Localize
-                            i18n_default_text='If you cancel this order, you’ll be blocked from using Deriv P2P for {{block_duration}} hours.'
+                            i18n_default_text="If you cancel this order, you'll be blocked from using Deriv P2P for {{block_duration}} hours."
                             values={{
                                 block_duration: order_store.cancellation_block_duration,
                             }}

@@ -35,7 +35,7 @@ export const SIDEBAR_INTRO: TSidebarItem[] = [
 export const JOYRIDE_CONFIG = [
     {
         target: 'body',
-        label: localize('Start with a tempplate'),
+        label: localize('Start with a template'),
         content: localize(
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
         ),
@@ -49,28 +49,28 @@ export const JOYRIDE_CONFIG = [
     },
     {
         target: '#id-bot-builder',
-        label: localize('Start with a tempplate'),
+        label: localize('Start with a template'),
         content: localize(
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
         ),
     },
     {
         target: '#id-charts',
-        label: localize('Start with a tempplate'),
+        label: localize('Start with a template'),
         content: localize(
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
         ),
     },
     {
         target: '#id-tutorials',
-        label: localize('Start with a tempplate'),
+        label: localize('Start with a template'),
         content: localize(
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
         ),
     },
     {
         target: '#dc-tabs__content_group_tiles',
-        label: localize('Start with a tempplate'),
+        label: localize('Start with a template'),
         content: localize(
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
         ),

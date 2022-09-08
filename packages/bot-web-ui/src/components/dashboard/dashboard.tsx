@@ -21,7 +21,7 @@ interface DashboardProps {
 const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [tour_run, setTourRun] = React.useState<boolean>(true);
-    const handleClick = (e: any) => {
+    const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
     };
@@ -29,9 +29,6 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     return (
         <div className='main_dashboard_container'>
             <div className={classNames('dashboard__container', { 'w-100': !show_side_bar })}>
-                <div className='dashboard__run-strategy-wrapper'>
-                    <RunStrategy />
-                </div>
                 <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
                 <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
                     {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
@@ -56,6 +53,9 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                         <div>{localize('Under Developments')}</div>
                     </Tab>
                 </Tabs>
+            </div>
+            <div className='dashboard__run-strategy-wrapper'>
+                <RunStrategy />
             </div>
             <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />
             <RunPanel />

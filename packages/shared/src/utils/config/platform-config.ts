@@ -4,8 +4,21 @@ import { getInitialLanguage } from '@deriv/translations';
 import { initMoment } from '../date';
 import { routes } from '../routes';
 
+type TPlatform = {
+    icon_text: undefined;
+    is_hard_redirect: boolean;
+    platform_name: string;
+    route_to_path: string;
+    url: string;
+};
+
+type TPlatforms = {
+    p2p: TPlatform;
+    derivgo: TPlatform;
+};
+
 // TODO: This should be moved to PlatformContext
-export const platforms = {
+export const platforms: TPlatforms = {
     p2p: {
         icon_text: undefined,
         is_hard_redirect: true,
@@ -23,21 +36,14 @@ export const platforms = {
 };
 
 export const useOnLoadTranslation = () => {
-    const [is_loaded, setLoaded] = React.useState(false);
+    const [is_loaded, setLoaded] = React.useState<boolean>(false);
 
     React.useEffect(() => {
-        if (!i18n.language) {
-            i18n.language = getInitialLanguage();
-        }
-        const is_english = i18n.language === 'EN';
+        if (!i18n.language) i18n.language = getInitialLanguage();
+        const is_english: boolean = i18n.language === 'EN';
 
-        if (is_english) {
-            setLoaded(true);
-        } else {
-            i18n.store.on('added', () => {
-                setLoaded(true);
-            });
-        }
+        if (is_english) setLoaded(true);
+        else i18n.store.on('added', () => setLoaded(true));
 
         return () => i18n.store.off('added');
     }, []);

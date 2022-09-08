@@ -1,4 +1,4 @@
-import { action, intercept, observable, reaction, toJS, when, makeObservable, isObservable } from 'mobx';
+import { action, intercept, observable, reaction, toJS, when } from 'mobx';
 import { isProduction, isEmptyObject } from '@deriv/shared';
 
 import Validator from '../Utils/Validator';
@@ -17,8 +17,10 @@ export default class BaseStore {
         SESSION_STORAGE: Symbol('SESSION_STORAGE'),
     });
 
+    @observable
     validation_errors = {};
 
+    @observable
     validation_rules = {};
 
     preSwitchAccountDisposer = null;
@@ -42,7 +44,7 @@ export default class BaseStore {
     realAccountSignupEndedDisposer = null;
     real_account_signup_ended_listener = null;
 
-    partial_fetch_time = 0;
+    @observable partial_fetch_time = 0;
 
     /**
      * Constructor of the base class that gets properties' name of child which should be saved in storages
@@ -55,34 +57,6 @@ export default class BaseStore {
      *     @property {String}   store_name - Explicit store name for browser application storage (to bypass minification)
      */
     constructor(options = {}) {
-        makeObservable(this, {
-            validation_errors: observable,
-            validation_rules: observable,
-            partial_fetch_time: observable,
-            retrieveFromStorage: action,
-            setValidationErrorMessages: action,
-            setValidationRules: action,
-            addRule: action,
-            validateProperty: action,
-            validateAllProperties: action,
-            onSwitchAccount: action.bound,
-            onPreSwitchAccount: action.bound,
-            onLogout: action.bound,
-            onClientInit: action.bound,
-            onNetworkStatusChange: action.bound,
-            onThemeChange: action.bound,
-            onRealAccountSignupEnd: action.bound,
-            disposePreSwitchAccount: action.bound,
-            disposeSwitchAccount: action.bound,
-            disposeLogout: action.bound,
-            disposeClientInit: action.bound,
-            disposeNetworkStatusChange: action.bound,
-            disposeThemeChange: action.bound,
-            disposeRealAccountSignupEnd: action.bound,
-            onUnmount: action.bound,
-            assertHasValidCache: action.bound,
-        });
-
         const { root_store, local_storage_properties, session_storage_properties, validation_rules, store_name } =
             options;
 
@@ -198,6 +172,7 @@ export default class BaseStore {
      * Retrieves saved snapshot of the store and assigns to the current instance.
      *
      */
+    @action
     retrieveFromStorage() {
         const local_storage_snapshot = JSON.parse(localStorage.getItem(this.store_name, {}));
         const session_storage_snapshot = JSON.parse(sessionStorage.getItem(this.store_name, {}));
@@ -214,6 +189,7 @@ export default class BaseStore {
      * @param [{String}] messages - An array of strings that contains validation error messages for the particular property.
      *
      */
+    @action
     setValidationErrorMessages(propertyName, messages) {
         const is_different = () =>
             !!this.validation_errors[propertyName]
@@ -230,6 +206,7 @@ export default class BaseStore {
      * @param {object} rules
      *
      */
+    @action
     setValidationRules(rules = {}) {
         Object.keys(rules).forEach(key => {
             this.addRule(key, rules[key]);
@@ -243,15 +220,14 @@ export default class BaseStore {
      * @param {String} rules
      *
      */
+    @action
     addRule(property, rules) {
         this.validation_rules[property] = rules;
 
-        if (isObservable(this[property])) {
-            intercept(this, property, change => {
-                this.validateProperty(property, change.newValue);
-                return change;
-            });
-        }
+        intercept(this, property, change => {
+            this.validateProperty(property, change.newValue);
+            return change;
+        });
     }
 
     /**
@@ -261,6 +237,7 @@ export default class BaseStore {
      * @param {object} value    - The value of the property, it can be undefined.
      *
      */
+    @action
     validateProperty(property, value) {
         const trigger = this.validation_rules[property].trigger;
         const inputs = { [property]: value !== undefined ? value : this[property] };
@@ -284,6 +261,7 @@ export default class BaseStore {
      * Validates all properties which validation rule has been set for.
      *
      */
+    @action
     validateAllProperties() {
         const validation_rules = Object.keys(this.validation_rules);
         const validation_errors = Object.keys(this.validation_errors);
@@ -300,6 +278,7 @@ export default class BaseStore {
         });
     }
 
+    @action.bound
     onSwitchAccount(listener) {
         if (listener) {
             this.switch_account_listener = listener;
@@ -329,6 +308,7 @@ export default class BaseStore {
         }
     }
 
+    @action.bound
     onPreSwitchAccount(listener) {
         if (listener) {
             this.pre_switch_account_listener = listener;
@@ -357,6 +337,7 @@ export default class BaseStore {
         }
     }
 
+    @action.bound
     onLogout(listener) {
         this.logoutDisposer = when(
             () => this.root_store.client.has_logged_out,
@@ -383,6 +364,7 @@ export default class BaseStore {
         this.logout_listener = listener;
     }
 
+    @action.bound
     onClientInit(listener) {
         this.clientInitDisposer = when(
             () => this.root_store.client.initialized_broadcast,
@@ -409,6 +391,7 @@ export default class BaseStore {
         this.client_init_listener = listener;
     }
 
+    @action.bound
     onNetworkStatusChange(listener) {
         this.networkStatusChangeDisposer = reaction(
             () => this.root_store.common.is_network_online,
@@ -428,6 +411,7 @@ export default class BaseStore {
         this.network_status_change_listener = listener;
     }
 
+    @action.bound
     onThemeChange(listener) {
         this.themeChangeDisposer = reaction(
             () => this.root_store.ui.is_dark_mode_on,
@@ -447,6 +431,7 @@ export default class BaseStore {
         this.theme_change_listener = listener;
     }
 
+    @action.bound
     onRealAccountSignupEnd(listener) {
         this.realAccountSignupEndedDisposer = when(
             () => this.root_store.ui.has_real_account_signup_ended,
@@ -474,6 +459,7 @@ export default class BaseStore {
         this.real_account_signup_ended_listener = listener;
     }
 
+    @action.bound
     disposePreSwitchAccount() {
         if (typeof this.preSwitchAccountDisposer === 'function') {
             this.preSwitchAccountDisposer();
@@ -481,6 +467,7 @@ export default class BaseStore {
         this.pre_switch_account_listener = null;
     }
 
+    @action.bound
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
@@ -488,6 +475,7 @@ export default class BaseStore {
         this.switch_account_listener = null;
     }
 
+    @action.bound
     disposeLogout() {
         if (typeof this.logoutDisposer === 'function') {
             this.logoutDisposer();
@@ -495,6 +483,7 @@ export default class BaseStore {
         this.logout_listener = null;
     }
 
+    @action.bound
     disposeClientInit() {
         if (typeof this.clientInitDisposer === 'function') {
             this.clientInitDisposer();
@@ -502,6 +491,7 @@ export default class BaseStore {
         this.client_init_listener = null;
     }
 
+    @action.bound
     disposeNetworkStatusChange() {
         if (typeof this.networkStatusChangeDisposer === 'function') {
             this.networkStatusChangeDisposer();
@@ -509,6 +499,7 @@ export default class BaseStore {
         this.network_status_change_listener = null;
     }
 
+    @action.bound
     disposeThemeChange() {
         if (typeof this.themeChangeDisposer === 'function') {
             this.themeChangeDisposer();
@@ -516,6 +507,7 @@ export default class BaseStore {
         this.theme_change_listener = null;
     }
 
+    @action.bound
     disposeRealAccountSignupEnd() {
         if (typeof this.realAccountSignupEndedDisposer === 'function') {
             this.realAccountSignupEndedDisposer();
@@ -523,6 +515,7 @@ export default class BaseStore {
         this.real_account_signup_ended_listener = null;
     }
 
+    @action.bound
     onUnmount() {
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
@@ -533,6 +526,7 @@ export default class BaseStore {
         this.disposeRealAccountSignupEnd();
     }
 
+    @action.bound
     assertHasValidCache(loginid, ...reactions) {
         // account was changed when this was unmounted.
         if (this.root_store.client.loginid !== loginid) {

@@ -13,7 +13,6 @@ import {
     TDurationOptions,
     TSetCurrentFocus,
     TTypeStrategy,
-    TGetFieldMap,
     TSetFieldValue,
     TFormValues,
     TMarketOption,
@@ -51,7 +50,6 @@ export type TQStrategyForm = {
     selected_duration_unit: TDurationOptions;
     setCurrentFocus: TSetCurrentFocus;
     selected_type_strategy: TTypeStrategy;
-    getFieldMap: TGetFieldMap;
     description: string;
 };
 
@@ -74,7 +72,6 @@ export type TQStrategyFields = {
     setCurrentFocus: TSetCurrentFocus;
     values: TFormValues;
     description: string;
-    getFieldMap: TGetFieldMap;
 };
 
 export type TQStrategyFooter = {

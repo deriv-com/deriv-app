@@ -33,7 +33,7 @@ export default class QuickStrategyStore {
     @computed
     get initial_values() {
         const init = {
-            'quick-strategy__types-strategies':
+            'quick-strategy__type-strategy':
                 this.getFieldValue(this.types_strategies_dropdown, this.selected_type_strategy.value) || '',
             'quick-strategy__symbol': this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '',
             'quick-strategy__trade-type':
@@ -170,7 +170,7 @@ export default class QuickStrategyStore {
             this.setSelectedDurationUnit(duration_unit);
 
             if (duration_unit) {
-                setFieldValue('quick-strategy__duration-unit', duration_unit.text);
+                setFieldValue(field_map.field_name, duration_unit.text);
             }
         } else if (type === 'type-strategy') {
             const typeStrategy = this.types_strategies_dropdown.find(item => item.value === value);
@@ -178,7 +178,7 @@ export default class QuickStrategyStore {
             this.setActiveTypeStrategyIndex(typeStrategy.index);
 
             if (typeStrategy) {
-                setFieldValue('quick-strategy__types-strategies', typeStrategy.text);
+                setFieldValue(field_map.field_name, typeStrategy.text);
             }
         }
     }

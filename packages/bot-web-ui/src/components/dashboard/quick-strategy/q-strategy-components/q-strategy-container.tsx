@@ -1,6 +1,6 @@
 import React from 'react';
 import { TQuickStrategyProps, TSymbolItem } from '../q-strategy.types';
-import { QStrategyForm, MarketOption, TradeTypeOption, QStrategyFields } from '.';
+import { QStrategyForm, MarketOption, TradeTypeOption } from '.';
 
 const QStrategyContainer = (props: TQuickStrategyProps) => {
     const {
@@ -25,7 +25,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         setCurrentFocus,
         selected_duration_unit,
         selected_type_strategy,
-        getFieldMap,
     } = props;
 
     const symbol_dropdown_options = symbol_dropdown
@@ -61,7 +60,6 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
                 selected_duration_unit={selected_duration_unit}
                 selected_type_strategy={selected_type_strategy}
                 setCurrentFocus={setCurrentFocus}
-                getFieldMap={getFieldMap}
             />
         </>
     );

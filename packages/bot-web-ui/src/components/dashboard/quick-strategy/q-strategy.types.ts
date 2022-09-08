@@ -42,7 +42,7 @@ export type TInputCommonFields = TInputBaseFields | TInputUniqFields;
 export type TSetFieldValue = (element: 'button', action: 'run' | 'edit') => void;
 
 export type TSelectsFieldNames =
-    | 'quick-strategy__types-strategies'
+    | 'quick-strategy__type-strategy'
     | 'quick-strategy__symbol'
     | 'quick-strategy__trade-type'
     | 'quick-strategy__duration-unit';
@@ -106,7 +106,6 @@ export type TCreateStrategy = (
     values: TQuickStrategyFormValues,
     actions: FormikActions<TQuickStrategyFormValues>
 ) => void;
-export type TGetFieldMap = (type: TDropdownItems) => TFieldMapData;
 
 export type TQuickStrategyProps = {
     active_index: number;
@@ -133,5 +132,4 @@ export type TQuickStrategyProps = {
     toggleStrategyModal: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
     setCurrentFocus: TSetCurrentFocus;
-    getFieldMap: TGetFieldMap;
 };

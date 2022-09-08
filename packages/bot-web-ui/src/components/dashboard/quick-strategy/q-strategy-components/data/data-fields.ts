@@ -21,7 +21,7 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     {
         id: 'base__types-strategies',
         name: 'base__types-strategies',
-        field_name: 'quick-strategy__types-strategies',
+        field_name: 'quick-strategy__type-strategy',
         className: '',
         input_value: 'type-strategy',
         label: '',

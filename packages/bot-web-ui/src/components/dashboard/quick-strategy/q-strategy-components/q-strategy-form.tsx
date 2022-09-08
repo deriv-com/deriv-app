@@ -27,7 +27,6 @@ const QStrategyForm = ({
     selected_duration_unit,
     setCurrentFocus,
     selected_type_strategy,
-    getFieldMap,
     description,
 }: TQStrategyForm) => (
     <Formik initialValues={initial_values} onSubmit={createStrategy} enableReinitialize={true}>
@@ -81,7 +80,6 @@ const QStrategyForm = ({
                                 setCurrentFocus={setCurrentFocus}
                                 values={values}
                                 description={description}
-                                getFieldMap={getFieldMap}
                             />
                         </div>
                     </ThemedScrollbars>
@@ -99,4 +97,4 @@ const QStrategyForm = ({
     </Formik>
 );
 
-export default React.memo(QStrategyForm);
+export default QStrategyForm;

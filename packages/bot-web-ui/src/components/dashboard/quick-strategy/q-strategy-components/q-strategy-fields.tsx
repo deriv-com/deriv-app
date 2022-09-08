@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { SelectField, InputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
@@ -31,7 +31,6 @@ const QStrategyFields = ({
     setCurrentFocus,
     values,
     description,
-    getFieldMap,
 }: TQStrategyFields) => {
     let tempIsDoubleIdx: number;
 
@@ -168,7 +167,6 @@ const QStrategyFields = ({
                                 id={id}
                                 is_mobile={is_mobile}
                                 getDropdownList={getDropdownList}
-                                // getDropdownList={getFieldMap(input_value as TDropdownItems)?.dropdown}
                                 getSelectedValue={getSelectedValue}
                                 label={label}
                                 input_value={input_value as TDropdownItems}

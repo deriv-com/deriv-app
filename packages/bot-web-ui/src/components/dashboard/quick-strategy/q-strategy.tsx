@@ -43,7 +43,6 @@ export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     createStrategy: quick_strategy.createStrategy,
     duration_unit_dropdown: quick_strategy.duration_unit_dropdown,
     types_strategies_dropdown: quick_strategy.types_strategies_dropdown,
-    getFieldMap: quick_strategy.getFieldMap,
     getSizeDesc: quick_strategy.getSizeDesc,
     initial_errors: quick_strategy.initial_errors,
     initial_values: quick_strategy.initial_values,

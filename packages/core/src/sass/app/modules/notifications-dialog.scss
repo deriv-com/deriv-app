@@ -106,6 +106,10 @@
         }
         &--pre-appstore {
             left: calc(-50% - 18rem);
+
+            @include mobile {
+                left: calc(3% - 1rem);
+            }
         }
     }
 

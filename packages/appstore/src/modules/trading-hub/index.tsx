@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useStores } from 'Stores';
-import { Authorize } from '@deriv/api-types';
+import { TWalletAccount } from 'Types';
 
 import WalletAccount from 'Components/wallet-account';
 import './trading-hub.scss';
@@ -8,12 +8,12 @@ import './trading-hub.scss';
 const TradingHub = () => {
     const { client } = useStores();
 
-    const wallet_accounts = (client.wallet_accounts || []) as Required<Authorize>['account_list'];
+    const wallet_accounts: TWalletAccount = client.wallet_accounts || [];
 
     return (
         <div className='trading-hub'>
-            {wallet_accounts.map((account, idx) => (
-                <WalletAccount key={idx} account={account} />
+            {wallet_accounts.map(account => (
+                <WalletAccount key={account.created_at} account={account} />
             ))}
         </div>
     );

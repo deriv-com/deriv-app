@@ -158,14 +158,15 @@ export default class UIStore extends BaseStore {
             'duration_m',
             'duration_h',
             'duration_d',
+            'has_read_scam_message',
             'is_account_settings_visible',
             'is_chart_asset_info_visible',
             'is_chart_countdown_visible',
             'is_chart_layout_default',
             'is_dark_mode_on',
-            'has_read_scam_message',
             'is_positions_drawer_on',
             'is_reports_visible',
+            'is_warning_scam_message_modal_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
             'should_show_cancellation_warning',
@@ -196,6 +197,11 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
+
+    @computed
+    get is_warning_scam_message_modal_visible() {
+        return this.root_store.client.is_logged_in && this.root_store.client.is_brazil && !this.has_read_scam_message;
+    }
 
     @action.bound
     setScamMessageLocalStorage() {

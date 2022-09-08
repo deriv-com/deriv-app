@@ -40,7 +40,6 @@ const WarningScamMessageModal = React.lazy(() =>
 );
 
 const AppModals = ({
-    client_country,
     is_account_needed_modal_on,
     is_welcome_modal_visible,
     is_reality_check_visible,
@@ -50,7 +49,7 @@ const AppModals = ({
     is_eu,
     is_logged_in,
     is_deriv_account_needed_modal_visible,
-    has_read_scam_message,
+    is_warning_scam_message_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -85,7 +84,7 @@ const AppModals = ({
         ComponentToLoad = <CloseUKAccountModal />;
     }
 
-    if (is_logged_in && client_country === 'br' && !has_read_scam_message) {
+    if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     }
 
@@ -114,7 +113,6 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui }) => ({
-    client_country: client.website_status.clients_country,
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
@@ -125,5 +123,5 @@ export default connect(({ client, ui }) => ({
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
-    has_read_scam_message: ui.has_read_scam_message,
+    is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
 }))(AppModals);

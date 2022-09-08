@@ -6,27 +6,20 @@ import { withRouter } from 'react-router';
 import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
 
-const WarningScamMessage = ({
-    is_logged_in,
-    client_country,
-    is_dark_mode_on,
-    has_read_scam_message,
-    setScamMessageLocalStorage,
-}) => {
-    // debugger;
+const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_visible, setScamMessageLocalStorage }) => {
     const [is_message_read, setIsMessageRead] = React.useState(false);
 
     const acknowledgeMessage = () => setIsMessageRead(!is_message_read);
 
     /* Check whether the account is logged_in, and client from country 'br' = Brazil, and have not yet read the scam message warning pop up */
-    if (is_logged_in && client_country === 'br' && !has_read_scam_message) {
+    if (is_warning_scam_message_modal_visible) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
                     <Modal
                         id='warning_scam_message_modal'
                         className='warning-scam-message-modal'
-                        is_open={!has_read_scam_message}
+                        is_open={is_warning_scam_message_modal_visible}
                         width='30rem'
                         small
                     >
@@ -42,7 +35,7 @@ const WarningScamMessage = ({
                     <Modal
                         id='warning_scam_message'
                         className='warning-scam-message'
-                        is_open={!has_read_scam_message}
+                        is_open={is_warning_scam_message_modal_visible}
                         width='100vw'
                         small
                     >
@@ -56,21 +49,19 @@ const WarningScamMessage = ({
             </React.Fragment>
         );
     }
-    return <></>;
+    return null;
 };
 
 WarningScamMessage.propTypes = {
-    client_country: PropTypes.string,
-    is_logged_in: PropTypes.bool,
+    displayWarningScamMessage: PropTypes.func,
     is_dark_mode_on: PropTypes.bool,
-    has_read_scam_message: PropTypes.bool,
+    is_warning_scam_message_modal_visible: PropTypes.bool,
     setScamMessageLocalStorage: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
-    client_country: client.website_status.clients_country,
-    is_logged_in: client.is_logged_in,
+export default connect(({ ui }) => ({
+    displayWarningScamMessage: ui.displayWarningScamMessage,
     is_dark_mode_on: ui.is_dark_mode_on,
-    has_read_scam_message: ui.has_read_scam_message,
+    is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     setScamMessageLocalStorage: ui.setScamMessageLocalStorage,
 }))(withRouter(WarningScamMessage));

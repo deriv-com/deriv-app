@@ -7,7 +7,7 @@ import { ToolboxItems } from './toolbox-items';
 import { connect } from '../../../../stores/connect';
 import RootStore from 'Stores/index.js';
 
-interface SearchBoxProps {
+type TSearchBox = {
     is_search_loading: boolean;
     onSearch: () => void;
     onSearchBlur: () => void;
@@ -15,10 +15,11 @@ interface SearchBoxProps {
         param: (field: string, value: number | string, shouldValidate?: boolean | undefined) => void
     ) => void;
     onSearchKeyUp: (param: () => void) => void;
-}
+};
+
 type TFormValues = { [key: string]: string };
 
-const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }: SearchBoxProps) => (
+const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }: TSearchBox) => (
     <div className='db-toolbox__search'>
         <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
             {({ submitForm, values: { search }, setFieldValue }) => (
@@ -56,8 +57,8 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
     </div>
 );
 
-interface ToolboxProps {
-    hasSubCategory: () => boolean;
+type TToolbox = {
+    hasSubCategory: (param: HTMLCollection) => boolean;
     is_mobile: boolean;
     is_search_loading: boolean;
     is_toolbox_open: boolean;
@@ -69,11 +70,10 @@ interface ToolboxProps {
     onToolboxItemClick: (category: ChildNode) => void;
     onToolboxItemExpand: (index: number) => void;
     onUnmount: () => void;
-    // TODO: need to fix the type any[]
-    sub_category_index: any[];
+    sub_category_index: number[];
     toggleDrawer: () => void;
     toolbox_dom: HTMLElement;
-}
+};
 
 const Toolbox = ({
     onMount,
@@ -89,7 +89,7 @@ const Toolbox = ({
     onToolboxItemExpand,
     sub_category_index,
     toolbox_dom,
-}: ToolboxProps) => {
+}: TToolbox) => {
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
 
@@ -123,7 +123,7 @@ const Toolbox = ({
                     />
                     <div className='db-toolbox__category-menu'>
                         {toolbox_dom &&
-                            Array.from(toolbox_dom.childNodes).map((category, index) => {
+                            (Array.from(toolbox_dom.childNodes) as HTMLElement[]).map((category, index) => {
                                 if (category.tagName.toUpperCase() === 'CATEGORY') {
                                     const has_sub_category = hasSubCategory(category.children);
                                     const is_sub_category_open = sub_category_index.includes(index);
@@ -159,7 +159,7 @@ const Toolbox = ({
                                             </div>
                                             {has_sub_category &&
                                                 is_sub_category_open &&
-                                                Array.from(category.childNodes).map(subCategory => {
+                                                (Array.from(category.childNodes) as HTMLElement[]).map(subCategory => {
                                                     return (
                                                         <div
                                                             key={`db-toolbox__sub-category-row--${subCategory.getAttribute(

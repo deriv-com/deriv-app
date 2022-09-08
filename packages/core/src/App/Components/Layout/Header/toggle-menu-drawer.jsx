@@ -9,6 +9,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import { useLocation } from 'react-router-dom';
 
 const MenuLink = ({
     changeCurrentLanguage,
@@ -309,6 +310,7 @@ const ToggleMenuDrawer = React.forwardRef(
                 </MobileDrawer.SubMenu>
             );
         };
+        const { pathname } = useLocation();
 
         return (
             <React.Fragment>
@@ -344,7 +346,9 @@ const ToggleMenuDrawer = React.forwardRef(
                             )}
                             {is_pre_appstore && (
                                 <React.Fragment>
-                                    {is_logged_in && location !== routes.trade && location !== routes.reports ? (
+                                    {is_logged_in &&
+                                    location !== routes.trade &&
+                                    !pathname.startsWith(routes.reports) ? (
                                         <MobileDrawer.SubHeader
                                             className={classNames({
                                                 'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -393,7 +397,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        {is_logged_in && location === routes.trade && location === routes.reports && (
+                                        {is_logged_in && pathname === routes.trade && pathname === routes.reports && (
                                             <MobileDrawer.Item className='header__menu--backtooldui--dtrader'>
                                                 <Button
                                                     className={classNames({
@@ -436,17 +440,20 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        {is_logged_in && location === routes.trade && location === routes.trade && (
-                                            <MobileDrawer.Item>
-                                                <MenuLink
-                                                    link_to={routes.trade}
-                                                    icon='IcTrade'
-                                                    text={localize('Trade')}
-                                                    onClickLink={toggleDrawer}
-                                                    changeCurrentLanguage={changeCurrentLanguage}
-                                                />
-                                            </MobileDrawer.Item>
-                                        )}
+                                        {is_logged_in &&
+                                            !pathname.startsWith(routes.trading_hub) &&
+                                            !pathname.startsWith(routes.cashier) &&
+                                            !pathname.startsWith(routes.account) && (
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to={routes.trade}
+                                                        icon='IcTrade'
+                                                        text={localize('Trade')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
+                                                    />
+                                                </MobileDrawer.Item>
+                                            )}
                                         {primary_routes_config.map((route_config, idx) =>
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}

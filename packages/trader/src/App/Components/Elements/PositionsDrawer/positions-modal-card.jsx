@@ -2,7 +2,16 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
+import {
+    ContractCard,
+    CurrencyBadge,
+    Icon,
+    Money,
+    ProgressSliderMobile,
+    Text,
+    MobileWrapper,
+    DesktopWrapper,
+} from '@deriv/components';
 import {
     getContractPath,
     isCryptoContract,
@@ -166,9 +175,16 @@ const PositionsModalCard = ({
                         </Text>
                     </div>
                     <div className='positions-modal-card__payout-price'>
-                        <Text size='xxxs' className='positions-modal-card__payout-label'>
-                            {localize('Potential payout:')}
-                        </Text>
+                        <MobileWrapper>
+                            <Text size='xxxs' className='positions-modal-card__payout-label'>
+                                {localize('price:')}
+                            </Text>
+                        </MobileWrapper>
+                        <DesktopWrapper>
+                            <Text size='xxxs' className='positions-modal-card__payout-label'>
+                                {localize('Potential payout:')}
+                            </Text>
+                        </DesktopWrapper>
                         <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
                             {contract_info.payout ? (
                                 <Money amount={contract_info.payout} currency={currency} />

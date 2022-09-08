@@ -7,7 +7,6 @@ import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradePar
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 
 const MobileWidget = ({
-    amount,
     basis,
     currency,
     duration,
@@ -49,7 +48,6 @@ const MobileWidget = ({
         const lookup = {
             t: [localize('tick'), localize('ticks')],
             s: [localize('second'), localize('seconds')],
-            m: [localize('min'), localize('mins')],
             h: [localize('hour'), localize('hours')],
             d: [localize('day'), localize('days')],
         };
@@ -89,7 +87,7 @@ const MobileWidget = ({
                 <div id='duration_amount_selector' className='mobile-widget' onClick={toggleWidget}>
                     <div className='mobile-widget__duration'>{getHumanReadableDuration()}</div>
                     <div className='mobile-widget__amount'>
-                        <Money amount={amount} currency={currency} show_currency />
+                        <Money amount='100' currency={currency} show_currency />
                     </div>
                     <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                 </div>

@@ -128,6 +128,7 @@ export default class WalletStore extends BaseStore {
 
         const response = await WS().authorized.send({
             new_account_wallet: 1,
+            account_type: '',
             ...create_wallet_data,
         });
 

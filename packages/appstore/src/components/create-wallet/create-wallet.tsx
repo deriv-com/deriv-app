@@ -28,6 +28,7 @@ const CreateWallet = ({
         wallet_store: {
             is_loading,
             onMount,
+            setSelectedWalletName,
             wallet_provider: { fiat_wallets, wallets },
         },
     } = useStores();
@@ -53,6 +54,7 @@ const CreateWallet = ({
     const onWalletClicked = (wallet: string) => {
         if (!should_show_fiat) {
             setSeletedWallet(wallet);
+            setSelectedWalletName(wallet);
         }
     };
 
@@ -105,11 +107,7 @@ const CreateWallet = ({
                                     />
                                 )}
                             </div>
-                            <div
-                                className={classNames('create-wallet-list__items', {
-                                    'create-wallet-list__items__center': wallet.content?.length < 5,
-                                })}
-                            >
+                            <div className={classNames('create-wallet-list__items')}>
                                 {wallet.content?.sort()?.map((wallet_name: string, id: number) => {
                                     const name = snakeToPascal(wallet_name || '');
                                     const wallet_logo = `${name}${dark ? 'Dark' : 'Light'}`;

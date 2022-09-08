@@ -8,7 +8,7 @@ import SubHeader from './mobile-drawer-subheader.jsx';
 import Item from './mobile-drawer-item.jsx';
 import SubMenu from './mobile-drawer-submenu.jsx';
 import SubMenuSection from './mobile-drawer-submenu-section.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 import Text from '../text/text.jsx';
 
 const MobileDrawer = ({

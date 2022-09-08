@@ -1,42 +1,41 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import Translations from './translations';
-import { localize } from '@deriv/translations';
-
-const { IntroSideBarContentText } = Translations;
+import classNames from 'classnames';
+import { SIDEBAR_INTRO } from './constants';
 
 interface SideBarProps {
-    checkIfSidebarOpen: boolean;
+    is_sidebar_open: boolean;
     setSideBarState: (state: boolean) => void;
 }
 
 const Sidebar = (props: SideBarProps) => {
-    const { setSideBarState, checkIfSidebarOpen } = props;
-    const sidebarClass = 'side_bar_container ';
-    const sidebarClasstoggle = checkIfSidebarOpen ? 'side_bar_container_block' : 'side_bar_container_none';
+    const { setSideBarState, is_sidebar_open } = props;
 
     return (
-        <div className={sidebarClass + sidebarClasstoggle}>
-            <div className='side_bar_container_close_sidebar'>
+        <div
+            className={classNames('db-sidebar', {
+                'db-sidebar--block': is_sidebar_open,
+            })}
+        >
+            <div className='db-sidebar__close-action'>
                 <Icon
-                    className='dc-tabs__content_group_tiles_images'
+                    className='db-sidebar__images'
                     width='1rem'
                     height='1rem'
-                    style={{ backgroundColor: `#F2F3F4` }}
                     icon='IcCloseIconDbot'
                     onClick={() => {
                         setSideBarState(false);
                     }}
                 />
             </div>
-            {IntroSideBarContentText.map((IntroSideBar, index) => {
-                const { headerText, ParaText, ParaSubText, ParaSubTextTwo } = IntroSideBar;
+            {SIDEBAR_INTRO.map((sidebar_item, index) => {
+                const { label, content } = sidebar_item;
                 return (
-                    <div className='side_bar_container_para' key={index}>
-                        <h1>{localize(headerText)}</h1>
-                        <p>{localize(ParaText)}</p>
-                        <p>{localize(ParaSubText)}</p>
-                        <p>{localize(ParaSubTextTwo)}</p>
+                    <div className='db-sidebar__card' key={index}>
+                        <h1>{label}</h1>
+                        {content.map((text, key) => (
+                            <p key={`sidebar-tour${key}`}>{text}</p>
+                        ))}
                     </div>
                 );
             })}

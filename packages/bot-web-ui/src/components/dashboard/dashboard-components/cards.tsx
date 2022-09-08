@@ -8,14 +8,12 @@ import LoadModalStore from 'Stores/load-modal-store';
 
 interface CardsProps {
     load_modal: LoadModalStore;
+    active_tab: number;
+    setActiveTab: (active_tab: number) => void;
 }
 
-const Cards = ({ load_modal }: CardsProps) => {
+const Cards = ({ load_modal, setActiveTab }: CardsProps) => {
     const { onDriveConnect } = load_modal;
-    // todo for the file input
-    // const file_input_ref = React.useRef(null);
-    // const [is_file_supported, setIsFileSupported] = React.useState(true);
-
     const IconArray = [
         {
             icon: 'IcMyComputer',
@@ -29,18 +27,12 @@ const Cards = ({ load_modal }: CardsProps) => {
         {
             icon: 'IcBotBuilder',
             content: 'Bot Builder',
-            //need to use react hooks to switch TODO need to use method created from store
-            method: () => {
-                return document.getElementById('id-bot-builder')?.click();
-            },
+            method: () => setActiveTab(1),
         },
         {
             icon: 'IcQuickStrategy',
             content: 'Quick Strategy',
-            //need to use react hooks to switch TODO need to use method created from store
-            method: () => {
-                return document.getElementById('id-quick-strategy')?.click();
-            },
+            method: () => setActiveTab(2),
         },
     ];
 
@@ -59,14 +51,6 @@ const Cards = ({ load_modal }: CardsProps) => {
                             id={icon}
                             onClick={method}
                         />
-                        {/* TODO file input for */}
-                        {/* <input
-                            type='file'
-                            ref={file_input_ref}
-                            accept='.xml'
-                            style={{ display: 'none' }}
-                            onChange={e => setIsFileSupported(handleFileChange(e, false))}
-                        /> */}
                         <span className='dc-tabs__content_group_tiles_content'>{localize(content)}</span>
                     </div>
                 );
@@ -75,8 +59,8 @@ const Cards = ({ load_modal }: CardsProps) => {
     );
 };
 
-export default connect((store: RootStore) => {
-    return {
-        load_modal: store.load_modal,
-    };
-})(Cards);
+export default connect((store: RootStore) => ({
+    load_modal: store.load_modal,
+    active_tab: store.dashbaord.active_tab,
+    setActiveTab: store.dashbaord.setActiveTab,
+}))(Cards);

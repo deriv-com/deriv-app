@@ -16,11 +16,11 @@ const PlatformLauncher = ({ app_icon, app_title, app_desc }: TPlatformLauncherPr
                 <div className='platform-launcher__container--icon'>
                     <WalletIcon icon={app_icon} />
                 </div>
-                <div className='platform-launcher__container--title-desc-container'>
-                    <Text className='platform-launcher__container--title-desc-container--title' weight='bold'>
+                <div className='platform-launcher__container--title-desc-wrapper'>
+                    <Text className='platform-launcher__container--title-desc-wrapper--title' weight='bold'>
                         <Localize i18n_default_text={app_title} />
                     </Text>
-                    <Text className='platform-launcher__container--title-desc-container--description'>
+                    <Text className='platform-launcher__container--title-desc-wrapper--description'>
                         <Localize i18n_default_text={app_desc} />
                     </Text>
                 </div>

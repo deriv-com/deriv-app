@@ -95,6 +95,9 @@ import WechatPayDark from 'Assets/svgs/wallet/wechat-pay-dark.svg';
 import WechatPayLight from 'Assets/svgs/wallet/wechat-pay-light.svg';
 import ZingpayDark from 'Assets/svgs/wallet/zingpay-dark.svg';
 import ZingpayLight from 'Assets/svgs/wallet/zingpay-light.svg';
+import CurrencyUSD from 'Assets/svgs/wallet/currency-usd.svg';
+import Demo from 'Assets/svgs/wallet/ic-brand-demo.svg';
+import DropDown from 'Assets/svgs/wallet/drop-down.svg';
 import DerivGo from 'Assets/svgs/wallet/ic-brand-derivgo.svg';
 import BinaryBot from 'Assets/svgs/wallet/ic-brand-binarybot.svg';
 import DBot from 'Assets/svgs/wallet/ic-brand-dbot.svg';
@@ -198,6 +201,9 @@ const Icons = {
     WechatPayLight,
     ZingpayDark,
     ZingpayLight,
+    CurrencyUSD,
+    Demo,
+    DropDown,
     DerivGo,
     BinaryBot,
     DBot,

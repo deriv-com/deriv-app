@@ -3,16 +3,15 @@
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        padding: 0rem;
+        padding: 0;
         height: 5.6rem;
     }
     &__container {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0rem;
+        padding: 0;
         gap: 1.6rem;
-
         width: 18.32rem;
         height: 5.4rem;
         margin-bottom: 1.6rem;
@@ -20,18 +19,16 @@
             width: 3.2rem;
             height: 3.2rem;
         }
-        &--title-desc-container {
+        &--title-desc-wrapper {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 0rem;
-
+            padding: 0;
             width: 13.52rem;
             height: 5.4rem;
             &--title {
                 width: 13.52rem;
                 height: 1.8rem;
-
                 font-style: normal;
                 font-weight: 700;
                 font-size: 1.2rem;
@@ -40,7 +37,6 @@
             &--description {
                 width: 16rem;
                 height: 3.6rem;
-
                 font-style: normal;
                 font-weight: 400;
                 font-size: 1.2rem;
@@ -49,9 +45,8 @@
             @include mobile {
                 width: 18.3rem;
                 height: 2.8rem;
-                left: 0rem;
-                top: 0rem;
-
+                left: 0;
+                top: 0;
                 &--title {
                     width: 16.4rem;
                     height: 1.4rem;
@@ -60,25 +55,19 @@
                 &--description {
                     width: 18.3rem;
                     height: 1.4rem;
-
                     font-family: 'IBM Plex Sans';
                     font-style: normal;
                     font-weight: 400;
                     font-size: 0.96rem;
                     line-height: 1.4rem;
-                    /* or 150% */
-
-                    /* system/light/2 - general (text) */
-
                     color: $color-black-1;
                 }
             }
         }
         @include mobile {
             justify-content: center;
-            padding: 0rem 0rem 0rem 0.8rem;
+            padding: 0 0 0 0.8rem;
             gap: 1.2rem;
-
             width: 27.8rem;
             height: 3.2rem;
         }
@@ -100,18 +89,12 @@
         &--label {
             width: 3.8rem;
             height: 2rem;
-
             font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: 700;
             font-size: 1.4rem;
             line-height: 2rem;
-            /* identical to box height, or 143% */
-
             text-align: center;
-
-            /* dark/1 - prominent (text) */
-
             color: $color-white;
         }
 
@@ -121,14 +104,10 @@
             height: 2.4rem;
             left: 21.9rem;
             top: 0.2rem;
-
-            /* brand/coral */
             border-radius: 0.4rem;
-
             &--label {
                 width: 3.3rem;
                 height: 1.8rem;
-
                 font-size: 1.2rem;
                 line-height: 1.8rem;
             }

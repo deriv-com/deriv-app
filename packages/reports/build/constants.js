@@ -34,7 +34,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
               {
-                  test: /\.(js|jsx)$/,
+                  test: /\.(js|jsx|ts|tsx)$/,
                   exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
                   include: /src/,
                   loader: 'eslint-loader',

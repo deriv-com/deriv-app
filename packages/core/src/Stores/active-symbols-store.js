@@ -1,20 +1,11 @@
 import { WS } from '@deriv/shared';
-import { observable, action, runInAction, makeObservable } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import BaseStore from './base-store';
 
 export default class ActiveSymbolsStore extends BaseStore {
-    active_symbols = [];
+    @observable active_symbols = [];
 
-    constructor() {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super();
-
-        makeObservable(this, {
-            active_symbols: observable,
-            setActiveSymbols: action.bound,
-        });
-    }
-
+    @action.bound
     async setActiveSymbols() {
         const { active_symbols, error } = await WS.authorized.activeSymbols();
         runInAction(() => {

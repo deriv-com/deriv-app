@@ -9,10 +9,16 @@ import { connect } from 'Stores/connect';
 const ThemeSelectSettings = ({ is_dark_mode, setDarkMode }) => {
     const darkOnClick = () => {
         setDarkMode(true);
+        // if (isBot()){
+        //     location.reload();
+        // }
     };
 
     const lightOnClick = () => {
         setDarkMode(false);
+        // if (isBot()){
+        //     location.reload();
+        // }
     };
 
     return (

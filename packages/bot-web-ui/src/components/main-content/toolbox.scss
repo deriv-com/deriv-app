@@ -108,13 +108,13 @@
     }
     &__row {
         cursor: pointer;
-        border-top: 1px solid var(--general-section-1);
+        border-top: 1px solid var(--general-section-6);
 
         #{$toolbox}__category--selected {
             background-color: var(--general-active);
         }
         &:last-of-type {
-            border-bottom: 1px solid var(--general-section-1);
+            border-bottom: 1px solid var(--general-section-6);
         }
     }
     &__button.dc-btn {

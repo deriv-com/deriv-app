@@ -289,6 +289,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyPath {',
     'stroke-width: 0.3px;',
+
     '}',
 
     '.blocklySelected>.blocklyPath {',
@@ -372,7 +373,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyText {',
-    'fill: $color-white',
+    'fill: #333333;',
     'font-family: inherit;',
     'font-size: var(--text-size-s);',
     'font-weight: normal;',
@@ -392,16 +393,16 @@ Blockly.Css.CONTENT = [
 
     '.blocklyNonEditableText>text,',
     '.blocklyEditableText>text {',
-    // 'fill: $colour_text;',
+    'fill: var(--text-prominent);',
     // 'fill: #575E75 !important;',
     '}',
 
     '.blocklyEditableText>.blocklyEditableLabel {',
-    'fill: $color-black-1;',
+    'fill: var(--text-prominent);',
     '}',
 
     '.blocklyDropdownText {',
-    'fill: $color-black-1 !important;',
+    'fill: var(--text-prominent)!important;',
     '}',
 
     '.blocklyBubbleText {',
@@ -633,6 +634,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyMainBackground {',
     'stroke-width: 0;',
+    'fill: var(--general-main-1) !important',
     // 'stroke: #c6c6c6;',  /* Equates to #ddd due to border being off-pixel. */
     '}',
 

@@ -3,7 +3,7 @@ import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/comp
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore, TCryptoTransactionDetails } from 'Types';
+import { RootStore, TCryptoTransactionDetails } from 'Types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
@@ -102,7 +102,7 @@ const CryptoTransactionsHistory = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
+export default connect(({ client, modules }: RootStore) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,

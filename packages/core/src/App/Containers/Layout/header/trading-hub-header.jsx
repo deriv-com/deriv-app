@@ -10,6 +10,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
+import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
@@ -141,7 +142,11 @@ const TradingHubHeader = ({
                 <DesktopWrapper>
                     <PreAppstoreMenuHomepage />
                 </DesktopWrapper>
-                <DerivBrandLogo className='dashboard-platform-header__logo' />
+                {is_dark_mode ? (
+                    <DerivBrandLogoDark className='dashboard-platform-header__logo' />
+                ) : (
+                    <DerivBrandLogo className='dashboard-platform-header__logo' />
+                )}
 
                 <Divider />
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}

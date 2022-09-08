@@ -134,6 +134,10 @@ const CardText = ({ balance, currency, demo, wallet_name }: CardText) => {
 const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, size, wallet_name }: WalletCardProps) => {
     const isDemo = () => demo || wallet_name === 'demo';
 
+    const isIconSmall = () => {
+        return ['xsmall', 'small'].includes(size || '');
+    };
+
     const style = {
         '--primary-color': wallet_card_data[wallet_name]?.colors.primary || '#CFCFCF',
         '--secondary-color': wallet_card_data[wallet_name]?.colors.secondary || '#D6DADB',
@@ -142,7 +146,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
     };
 
     const getBackgroundIcon = () => {
-        if (['xsmall', 'small'].includes(size || '')) return 'IcAppstoreWalletSmall';
+        if (isIconSmall()) return 'IcAppstoreWalletSmall';
         return isDemo() ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
     };
 
@@ -185,7 +189,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
                 ) : (
                     <div className={classNames('wallet-card__logo', 'wallet-card__logo--placeholder')} />
                 )}
-                {!['xsmall', 'small'].includes(size || '') && (
+                {!isIconSmall() && (
                     <CardText balance={balance} currency={currency} demo={demo} wallet_name={wallet_name} />
                 )}
             </div>

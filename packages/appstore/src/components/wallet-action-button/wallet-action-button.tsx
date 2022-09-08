@@ -7,7 +7,7 @@ type TWalletActionButtonProps = {
     size: 'small' | 'medium' | 'large';
     icon: string;
     label?: string;
-    onClick?: (e: any) => void;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const WalletActionButton = ({ icon, label, onClick, size }: TWalletActionButtonProps) => {

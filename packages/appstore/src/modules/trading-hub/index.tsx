@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useStores } from 'Stores';
 import { Authorize } from '@deriv/api-types';
+
 import WalletAccount from 'Components/wallet-account';
 import './trading-hub.scss';
 
@@ -11,9 +12,9 @@ const TradingHub = () => {
 
     return (
         <div className='trading-hub'>
-            {wallet_accounts.map(account => {
-                return <WalletAccount key={client.loginid} account={account} />;
-            })}
+            {wallet_accounts.map((account, idx) => (
+                <WalletAccount key={idx} account={account} />
+            ))}
         </div>
     );
 };

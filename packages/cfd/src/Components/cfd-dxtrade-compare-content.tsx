@@ -2,7 +2,74 @@ import React from 'react';
 import { Table, Text, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, CFD_PLATFORMS } from '@deriv/shared';
-import { LandingCompany } from '@deriv/api-types';
+import { LandingCompany, CurrencyConfigStructure } from '@deriv/api-types';
+
+// TODO: Remove this temporary type when api-types updates
+type TLandingCompany = LandingCompany & {
+    /**
+     * Available Deriv X financial account types (all except Synthetic Indices).
+     */
+    dxtrade_all_company?: {
+        /**
+         * Landing Company details.
+         */
+        standard?: {
+            /**
+             * Landing Company address
+             */
+            address?: string[] | null;
+            /**
+             * Special conditions for changing sensitive fields
+             */
+            changeable_fields?: {
+                [k: string]: unknown;
+            };
+            /**
+             * Landing Company country of incorporation
+             */
+            country?: string;
+            currency_config?: CurrencyConfigStructure;
+            /**
+             * Flag to indicate whether reality check is applicable for this Landing Company. `1`: applicable, `0`: not applicable. The Reality Check is a feature that gives a summary of the client's trades and account balances on a regular basis throughout his session, and is a regulatory requirement for certain Landing Companies.
+             */
+            has_reality_check?: 0 | 1;
+            /**
+             * Allowed contract types
+             */
+            legal_allowed_contract_categories?: string[];
+            /**
+             * Allowable currencies
+             */
+            legal_allowed_currencies?: string[];
+            /**
+             * Allowable markets
+             */
+            legal_allowed_markets?: string[];
+            /**
+             * Default account currency
+             */
+            legal_default_currency?: string;
+            /**
+             * Landing Company legal name
+             */
+            name?: string;
+            /**
+             * Legal requirements for the Landing Company
+             */
+            requirements?: {
+                [k: string]: unknown;
+            };
+            /**
+             * Landing Company short code
+             */
+            shortcode?: string;
+            /**
+             * Flag that indicates whether the landing company supports professional accounts or not
+             */
+            support_professional_client?: 0 | 1;
+        };
+    };
+};
 
 type TCFDAttributeDescriberProps = {
     name: string;
@@ -10,7 +77,7 @@ type TCFDAttributeDescriberProps = {
 };
 
 type TFilterAvailableAccounts = (
-    landing_companies: LandingCompany,
+    landing_companies: TLandingCompany,
     table: TAccountsDescription[],
     is_logged_in: boolean,
     show_eu_related: boolean,
@@ -29,7 +96,7 @@ type TDxTradeAccountsDescription = {
 };
 
 type TCompareAccountsReusedProps = {
-    landing_companies: LandingCompany;
+    landing_companies: TLandingCompany;
     platform: string;
     is_logged_in: boolean;
     is_uk: boolean;
@@ -52,7 +119,7 @@ type TModalContentProps = TCompareAccountsReusedProps & {
 
 type TGetAccounts = (params: TCompareAccountsReusedProps) => TAccountsDescription[];
 
-type TAccountTypesToFilter = (LandingCompany['dxtrade_all_company'] | boolean | undefined)[];
+type TAccountTypesToFilter = (TLandingCompany['dxtrade_all_company'] | boolean | undefined)[];
 
 const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
     const getLoggedInTypesCount = () =>

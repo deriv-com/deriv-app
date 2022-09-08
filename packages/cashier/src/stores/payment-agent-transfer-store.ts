@@ -95,9 +95,6 @@ export default class PaymentAgentTransferStore {
         return current_payment_agent ?? {};
     }
 
-    // GEORGE
-    // refactor transfer_limit variable, refactor account-transfer-form (replace min, max to min_withdrawal, max_withdrawal)
-
     @action.bound
     setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }: TTransferLimit): void {
         this.transfer_limit = {
@@ -105,9 +102,6 @@ export default class PaymentAgentTransferStore {
             max_withdrawal,
         };
     }
-
-    // GEORGE
-    // add if (current_payment_agent?.min_withdrawal) check
 
     @action.bound
     async onMountPaymentAgentTransfer(): Promise<void> {

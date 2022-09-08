@@ -6,11 +6,11 @@ import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
 import {
     TAgent,
-    TPaymentAgentWithdrawConfirm,
-    TPaymentAgentWithdrawRequest,
-    TPartialPaymentAgentList,
     TExtendedPaymentAgentList,
     TExtendedPaymentAgentListResponse,
+    TPartialPaymentAgentList,
+    TPaymentAgentWithdrawConfirm,
+    TPaymentAgentWithdrawRequest,
     TPaymentAgentWithdrawReceipt,
     TRootStore,
     TSupportedBank,
@@ -23,9 +23,6 @@ export default class PaymentAgentStore {
         this.root_store = root_store;
         this.WS = WS;
     }
-
-    // GEORGE
-    // all_payment_agent_list is not an array!
 
     @observable list: IObservableArray<TPartialPaymentAgentList> = [];
     @observable agents: IObservableArray<TAgent> = [];
@@ -120,11 +117,6 @@ export default class PaymentAgentStore {
         this.list = [] as unknown as IObservableArray<TPartialPaymentAgentList>;
     }
 
-    // GEORGE
-    // remove pa_list argument from setPaymentAgentList becasue we don't use it in the codebase
-    // remove payment_agent?.telephone and payment_agent?.url because we don't use it now
-    // refactor supported_banks_array variable
-
     @action.bound
     async setPaymentAgentList(): Promise<void> {
         const payment_agent_list = await this.getPaymentAgentList();
@@ -149,9 +141,6 @@ export default class PaymentAgentStore {
 
         this.sortSupportedBanks();
     }
-
-    // GEORGE
-    // cahnge logic for bank_index variable
 
     @action.bound
     filterPaymentAgentList(bank?: number | string): void {
@@ -221,9 +210,6 @@ export default class PaymentAgentStore {
         };
     }
 
-    // GEORGE
-    // change phone and url from this PR: https://github.com/binary-com/deriv-app/pull/6337/files#:~:text=phone%3A%20payment_agent.phone_numbers,%3A%20payment_agent.urls%2C
-
     @action.bound
     addPaymentAgent(payment_agent: TExtendedPaymentAgentList[0]): void {
         this.agents.push({
@@ -236,9 +222,6 @@ export default class PaymentAgentStore {
             url: payment_agent.urls,
         });
     }
-
-    // GEORGE
-    // add onRemount property
 
     @action.bound
     async onMountPaymentAgentWithdraw(): Promise<void> {
@@ -267,9 +250,6 @@ export default class PaymentAgentStore {
         }
         setLoading(false);
     }
-
-    // GEORGE
-    // code refactoring: add payment_agent_withdraw.paymentagent_withdraw checking
 
     @action.bound
     async requestTryPaymentAgentWithdraw({

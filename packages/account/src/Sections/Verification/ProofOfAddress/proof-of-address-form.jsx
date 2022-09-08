@@ -163,7 +163,6 @@ const ProofOfAddressForm = ({
 
         WS.setSettings(settings_values).then(data => {
             if (data.error) {
-                addNotificationByKey('needs_poi');
                 setStatus({ msg: data.error.message });
                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
             } else {
@@ -443,9 +442,6 @@ const ProofOfAddressForm = ({
                                     has_effect
                                     is_loading={form_state.is_btn_loading}
                                     is_submit_success={form_state.is_submit_success}
-                                    onClick={() => {
-                                        addNotificationByKey('needs_poi');
-                                    }}
                                     text={localize('Save and submit')}
                                     primary
                                 />

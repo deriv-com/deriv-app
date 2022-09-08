@@ -366,16 +366,20 @@ const FinancialAssessment = ({
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
                                 {is_mf && is_financial_information_incomplete && !is_submit_success && (
                                     <div className='financial-banner'>
-                                        <Icon icon='IcAlertWarning' />
-                                        {isMobile() ? (
-                                            <Text size='xxxs' line_height='s'>
-                                                <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
-                                            </Text>
-                                        ) : (
-                                            <Text size='xxs' line_height='l'>
-                                                <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
-                                            </Text>
-                                        )}
+                                        <div className='financial-banner__frame'>
+                                            <div className='financial-banner__container'>
+                                                <Icon icon='IcAlertWarning' />
+                                                {isMobile() ? (
+                                                    <Text size='xxxs' line_height='s'>
+                                                        <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
+                                                    </Text>
+                                                ) : (
+                                                    <Text size='xxs' line_height='l'>
+                                                        <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                                                    </Text>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
                                 <FormBody scroll_offset={getScrollOffset()}>

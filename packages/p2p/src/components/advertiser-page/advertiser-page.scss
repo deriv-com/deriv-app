@@ -22,6 +22,11 @@
 
                 .dp2p-avatar {
                     align-self: center;
+
+                    @include mobile {
+                        align-self: flex-start;
+                        margin-top: 0.4rem;
+                    }
                 }
             }
         }

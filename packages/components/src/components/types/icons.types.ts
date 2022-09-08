@@ -1,3 +1,5 @@
+import { TGenericObjectType } from './common.types';
+
 export interface IIconsManifest {
     // If a new icon category is added, be sure to add it here as well. This is part of the fix for ts(7053)
     readonly brand: string;
@@ -15,7 +17,7 @@ export interface IIconsManifest {
     readonly wallet: string;
 }
 export type TIconProps = {
-    className?: string;
+    className?: string | TGenericObjectType;
     color?: string;
     custom_color?: string;
     data_testid?: string;

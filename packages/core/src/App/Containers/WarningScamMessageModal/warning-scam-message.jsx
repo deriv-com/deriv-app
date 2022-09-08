@@ -20,7 +20,6 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                         id='warning_scam_message_modal'
                         className='warning-scam-message-modal'
                         is_open={is_warning_scam_message_modal_visible}
-                        width='30rem'
                         small
                     >
                         <WarningScamMessageModal
@@ -36,7 +35,6 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                         id='warning_scam_message'
                         className='warning-scam-message'
                         is_open={is_warning_scam_message_modal_visible}
-                        width='100vw'
                         small
                     >
                         <WarningScamMessageModal

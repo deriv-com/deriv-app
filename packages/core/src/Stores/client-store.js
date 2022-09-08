@@ -585,7 +585,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_brazil() {
-        return this.clients_country === 'br';
+        return this.clients_country === 'my';
     }
 
     @computed

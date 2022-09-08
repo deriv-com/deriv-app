@@ -339,6 +339,7 @@ export default class CFDStore extends BaseStore {
         }
     }
 
+    @action.bound
     async createMT5Password(values, actions) {
         const response = await WS.tradingPlatformPasswordChange({
             new_password: values.password,

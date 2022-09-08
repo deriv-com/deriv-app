@@ -1,26 +1,6 @@
 import { localize } from '@deriv/translations';
-import { TProviderDetails, TServerError } from 'Types';
 
-type TProviderStore = {
-    WS: () => {
-        serviceToken: {
-            service_token: number;
-            service: string;
-            referrer: string;
-        };
-    };
-};
-
-type TResponse = {
-    error: TServerError;
-    service_token: {
-        [key: string]: {
-            url: string;
-        };
-    };
-};
-
-const createBanxaProvider = (store: any): TProviderDetails => ({
+const createBanxaProvider = store => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
     name: 'Banxa',
     getDescription: () =>
@@ -53,7 +33,7 @@ const createBanxaProvider = (store: any): TProviderDetails => ({
                 service_token: 1,
                 service: 'banxa',
                 referrer: window.location.href,
-            }).then((response: TResponse) => {
+            }).then(response => {
                 if (response.error) {
                     reject(response.error.message);
                 } else {
@@ -69,11 +49,11 @@ const createBanxaProvider = (store: any): TProviderDetails => ({
             });
         });
     },
-    onMountWidgetContainer: () => undefined,
+    onMountWidgetContainer: () => {},
     should_show_deposit_address: false,
 });
 
-const createChangellyProvider = (store: any): TProviderDetails => ({
+const createChangellyProvider = store => ({
     icon: { dark: 'IcCashierChangellyDark', light: 'IcCashierChangellyLight' },
     name: 'Changelly',
     getDescription: () =>
@@ -92,7 +72,7 @@ const createChangellyProvider = (store: any): TProviderDetails => ({
     getWidgetHtml() {
         return new Promise(resolve => {
             const url = new URL('https://widget.changelly.com/?v=3&theme=default');
-            url.searchParams.append('fromDefault', this.getDefaultFromCurrency?.());
+            url.searchParams.append('fromDefault', this.getDefaultFromCurrency());
             const currency = store.root_store.client.currency.toLowerCase();
             if (this.getToCurrencies().includes(currency)) {
                 const to_currency = currency === 'ust' ? 'usdt' : currency;
@@ -106,11 +86,11 @@ const createChangellyProvider = (store: any): TProviderDetails => ({
             resolve();
         });
     },
-    onMountWidgetContainer: () => undefined,
+    onMountWidgetContainer: () => {},
     should_show_deposit_address: true,
 });
 
-const createXanPoolProvider = (store: any): TProviderDetails => ({
+const createXanPoolProvider = store => ({
     icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
     name: 'XanPool',
     getDescription: () =>
@@ -148,7 +128,7 @@ const createXanPoolProvider = (store: any): TProviderDetails => ({
             resolve();
         });
     },
-    onMountWidgetContainer: () => undefined,
+    onMountWidgetContainer: () => {},
     should_show_deposit_address: false,
 });
 

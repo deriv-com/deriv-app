@@ -3,12 +3,3 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
 };
-
-type TWebSocketCall = {
-    cashier: (action: any, parameters: any) => Promise<any>;
-};
-
-export type TWebSocket = {
-    send: (obj: any) => Promise<any>;
-    authorized: TWebSocketCall;
-};

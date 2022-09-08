@@ -28,7 +28,7 @@ const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }:
     </Popover>
 );
 
-type ToolbarButton = {
+type TToolbarButton = {
     popover_message?: string;
     button_id: string;
     button_classname: string;
@@ -44,7 +44,7 @@ const ToolbarButton = ({
     buttonOnClick,
     icon,
     button_text,
-}: ToolbarButton) => (
+}: TToolbarButton) => (
     <Popover alignment='bottom' message={popover_message} should_disable_pointer_events>
         <Button id={button_id} className={button_classname} has_effect onClick={buttonOnClick} icon={icon} green>
             {button_text}

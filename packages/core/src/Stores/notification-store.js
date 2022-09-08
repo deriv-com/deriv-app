@@ -61,14 +61,17 @@ export default class NotificationStore extends BaseStore {
                     root_store.client.is_logged_in &&
                     Object.keys(root_store.client.account_status).length > 0 &&
                     Object.keys(root_store.client.landing_companies).length > 0
-                )
+                ) {
+                    console.log('reaction getP2Pcompletedorders');
                     await root_store.modules?.cashier?.general_store?.getP2pCompletedOrders();
+                }
 
                 if (
                     !root_store.client.is_logged_in ||
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
+                    console.log('reaction other if');
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
@@ -107,7 +110,12 @@ export default class NotificationStore extends BaseStore {
 
     @computed
     get filtered_notifications() {
-        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
+        // console.log(
+        //     'filtered notifications',
+        //     this.notifications,
+        //     this.notifications.filter(message => !message.type || !['news', 'promotions'].includes(message.type))
+        // );
+        return this.notifications.filter(message => !message.type || !['news', 'promotions'].includes(message.type));
     }
 
     @action.bound
@@ -118,6 +126,7 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     addNotificationMessage(notification) {
+        // console.log('before adding notifications', this.notification_messages);
         if (!notification) return;
         if (!this.notification_messages.find(item => item.key === notification.key)) {
             // Remove notification messages if it was already closed by user and exists in LocalStore
@@ -140,6 +149,7 @@ export default class NotificationStore extends BaseStore {
                 if (!excluded_notifications.includes(notification.key)) {
                     this.updateNotifications(this.notification_messages);
                 }
+                // console.log('after adding notifications', this.notification_messages);
             }
         }
     }
@@ -161,11 +171,17 @@ export default class NotificationStore extends BaseStore {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
 
-        if (window.location.pathname === routes.cashier_p2p) {
-            this.notification_messages = this.notification_messages.filter(
-                notification => notification.platform === 'P2P'
-            );
-        } else {
+        // if (window.location.pathname === routes.cashier_p2p) {
+        //     // console.log(
+        //     //     'filtered notification messages HERE',
+        //     //     this.notification_messages.filter(notification => notification.platform === 'P2P')
+        //     // );
+        //     // this.notification_messages = this.notification_messages.filter(
+        //     //     notification => notification.platform === 'P2P'
+        //     // );
+        // } else {
+        if (window.location.pathname !== routes.cashier_p2p) {
+            console.log('IM BEING CALLED filterNotificationMessages');
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -186,6 +202,7 @@ export default class NotificationStore extends BaseStore {
 
     @action.bound
     async handleClientNotifications() {
+        // console.log('handleClientNotifications called');
         const {
             account_settings,
             account_status,

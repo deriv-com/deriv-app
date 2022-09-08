@@ -134,6 +134,11 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    // @computed
+    // getNotificationMessages() {
+    //     return JSON.parse(localStorage.getItem('notification_messages') || '{}');
+    // }
+
     @action.bound
     handleNotifications(old_orders, new_orders) {
         const { order_store } = this.root_store;
@@ -203,7 +208,6 @@ export default class GeneralStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
-
         this.props.addNotificationMessage({
             action: {
                 onClick: () => {

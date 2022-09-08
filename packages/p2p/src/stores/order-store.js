@@ -177,7 +177,6 @@ export default class OrderStore {
         if (this.order_id) {
             // If orders was updated, find current viewed order (if any)
             // and trigger a re-render (in case status was updated).
-
             await requestWS({ p2p_order_info: 1, id: this.order_id }).then(response => {
                 if (!response?.error) {
                     const { p2p_order_info } = response;
@@ -265,6 +264,7 @@ export default class OrderStore {
 
         if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
             // Remove notification once order review period is finished
+            console.log('removing notifications review period', notification_key);
             const notification_key = `order-${p2p_order_info.id}`;
             general_store.props.removeNotificationMessage({ key: notification_key });
             general_store.props.removeNotificationByKey({ key: notification_key });
@@ -397,6 +397,8 @@ export default class OrderStore {
         }
         // When viewing specific order, update its read state in localStorage.
         const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
+
+        console.log('[setQueryDetails]', notifications);
 
         if (notifications.length) {
             const notification = notifications.find(n => n.order_id === order_information.id);

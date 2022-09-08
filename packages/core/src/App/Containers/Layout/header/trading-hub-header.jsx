@@ -4,7 +4,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { getPlatformInformation, routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
+import { PlatformSwitcher, ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
@@ -21,20 +21,6 @@ const PreAppstoreMenuHomepage = () => {
     return (
         <div className='dashboard-platform-header__tradinghub' onClick={() => history.push(routes.trading_hub)}>
             <Icon icon='IcAppstoreMenuHomepage' size={30} />
-        </div>
-    );
-};
-
-const ShowCashier = () => {
-    const history = useHistory();
-    return (
-        <div className='dashboard-platform-header__cashier' onClick={() => history.push(routes.cashier_deposit)}>
-            <BinaryLink to={routes.trade} className='dashboard-platform-header__redirect--cashierlink'>
-                <Icon icon='IcCashier' size={16} />
-                <Text as='p' size='s' color='general' className='dashboard-platform-header__redirect--cashiertext'>
-                    <Localize i18n_default_text='Cashier' />
-                </Text>
-            </BinaryLink>
         </div>
     );
 };
@@ -104,6 +90,8 @@ const TradingHubHeader = ({
     should_allow_authentication,
     toggleNotifications,
     is_social_signup,
+    replaceCashierMenuOnclick,
+    menu_items,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
@@ -114,6 +102,7 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
+    const { is_pre_appstore } = React.useContext(PlatformContext);
 
     return (
         <header className='dashboard-platform-header'>
@@ -153,10 +142,10 @@ const TradingHubHeader = ({
                     <PreAppstoreMenuHomepage />
                 </DesktopWrapper>
                 <DerivBrandLogo className='dashboard-platform-header__logo' />
-                <DesktopWrapper>
-                    <Divider />
-                    <ShowCashier />
-                </DesktopWrapper>
+
+                <Divider />
+                {menu_items && is_logged_in && replaceCashierMenuOnclick()}
+                <MenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>
             <DesktopWrapper>
                 <div className='dashboard-platform-header__menu-right'>
@@ -204,11 +193,8 @@ const TradingHubHeader = ({
                         </Popover>
                     </div>
                     <div className='dashboard-platform-header__cashier-button'>
-                        <Button primary small>
-                            <Localize
-                                i18n_default_text='Cashier'
-                                onClick={() => history.push(routes.cashier_deposit)}
-                            />
+                        <Button primary small onClick={() => history.push(routes.cashier_deposit)}>
+                            <Localize i18n_default_text='Cashier' />
                         </Button>
                     </div>
                 </div>
@@ -243,6 +229,7 @@ TradingHubHeader.propTypes = {
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
     menu_items: PropTypes.array,
+    replaceCashierMenuOnclick: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, notifications, ui, menu }) => ({
@@ -268,4 +255,5 @@ export default connect(({ client, common, modules, notifications, ui, menu }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
+    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
 }))(withRouter(TradingHubHeader));

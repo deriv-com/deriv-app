@@ -1,6 +1,7 @@
 import { TClientStore } from './client-store.types';
 import { TCommonStore } from './common-store.types';
 import { TUiStore } from './ui-store.types';
+import { TNotificationStore } from './notification-store.types';
 import CashierStore from '../../stores/cashier-store';
 
 export type TRootStore = {
@@ -9,10 +10,6 @@ export type TRootStore = {
     modules: {
         cashier: CashierStore;
     };
+    notifications: TNotificationStore;
     ui: TUiStore;
 };
-
-/**
- * @deprecated Please use `TRootStore` instead.
- */
-export type RootStore = TRootStore;

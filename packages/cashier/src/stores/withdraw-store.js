@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, computed, observable, makeObservable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ReadMore } from '@deriv/components';
@@ -8,46 +8,20 @@ import ErrorStore from './error-store';
 
 export default class WithdrawStore {
     constructor({ WS, root_store }) {
-        makeObservable(this, {
-            blockchain_address: observable,
-            container: observable,
-            error: observable,
-            is_10k_withdrawal_limit_reached: observable,
-            is_withdraw_confirmed: observable,
-            withdraw_amount: observable,
-            max_withdraw_amount: observable,
-            crypto_config: observable,
-            setIsWithdrawConfirmed: action.bound,
-            setWithdrawAmount: action.bound,
-            requestWithdraw: action.bound,
-            saveWithdraw: action.bound,
-            resetWithrawForm: action.bound,
-            setBlockchainAddress: action.bound,
-            onMountWithdraw: action.bound,
-            onMountCryptoWithdraw: action.bound,
-            is_withdrawal_locked: computed,
-            setMaxWithdrawAmount: action.bound,
-            check10kLimit: action.bound,
-            set10kLimitation: action.bound,
-            setWithdrawPercentageSelectorResult: action.bound,
-            validateWithdrawFromAmount: action.bound,
-            validateWithdrawToAmount: action.bound,
-            account_platform_icon: computed,
-        });
-
         this.root_store = root_store;
         this.WS = WS;
     }
 
-    blockchain_address = '';
-    container = Constants.containers.withdraw;
-    error = new ErrorStore();
-    is_10k_withdrawal_limit_reached = undefined;
-    is_withdraw_confirmed = false;
-    withdraw_amount = '';
-    max_withdraw_amount = 0;
-    crypto_config = {};
+    @observable blockchain_address = '';
+    @observable container = Constants.containers.withdraw;
+    @observable error = new ErrorStore();
+    @observable is_10k_withdrawal_limit_reached = undefined;
+    @observable is_withdraw_confirmed = false;
+    @observable withdraw_amount = '';
+    @observable max_withdraw_amount = 0;
+    @observable crypto_config = {};
 
+    @action.bound
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.is_withdraw_confirmed = is_withdraw_confirmed;
@@ -55,10 +29,12 @@ export default class WithdrawStore {
         if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
     }
 
+    @action.bound
     setWithdrawAmount(amount) {
         this.withdraw_amount = amount;
     }
 
+    @action.bound
     async requestWithdraw(verification_code) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter } = modules.cashier;
@@ -86,6 +62,7 @@ export default class WithdrawStore {
         });
     }
 
+    @action.bound
     async saveWithdraw(verification_code) {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
 
@@ -104,6 +81,7 @@ export default class WithdrawStore {
         });
     }
 
+    @action.bound
     resetWithrawForm() {
         const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.setBlockchainAddress('');
@@ -111,10 +89,12 @@ export default class WithdrawStore {
         setConverterToAmount('');
     }
 
+    @action.bound
     setBlockchainAddress(address) {
         this.blockchain_address = address;
     }
 
+    @action.bound
     async onMountWithdraw(verification_code) {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
@@ -178,6 +158,7 @@ export default class WithdrawStore {
         }
     }
 
+    @action.bound
     async onMountCryptoWithdraw(verification_code) {
         const { crypto_fiat_converter, general_store, iframe } = this.root_store.modules.cashier;
 
@@ -207,6 +188,7 @@ export default class WithdrawStore {
         }
     }
 
+    @computed
     get is_withdrawal_locked() {
         const { client } = this.root_store;
         const { authentication } = client.account_status;
@@ -218,10 +200,12 @@ export default class WithdrawStore {
         return client.is_withdrawal_lock || need_authentication || this.error.is_ask_financial_risk_approval;
     }
 
+    @action.bound
     setMaxWithdrawAmount(amount) {
         this.max_withdraw_amount = amount;
     }
 
+    @action.bound
     async check10kLimit() {
         const { client } = this.root_store;
 
@@ -232,10 +216,12 @@ export default class WithdrawStore {
         this.set10kLimitation(is_limit_reached);
     }
 
+    @action.bound
     set10kLimitation(is_limit_reached) {
         this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
+    @action.bound
     setWithdrawPercentageSelectorResult(amount) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
@@ -256,6 +242,7 @@ export default class WithdrawStore {
         general_store.percentageSelectorSelectionStatus(false);
     }
 
+    @action.bound
     validateWithdrawFromAmount() {
         let error_message = '';
 
@@ -308,6 +295,7 @@ export default class WithdrawStore {
         setConverterFromError(error_message);
     }
 
+    @action.bound
     validateWithdrawToAmount() {
         let error_message = '';
         const { client, modules } = this.root_store;
@@ -325,6 +313,7 @@ export default class WithdrawStore {
         setConverterToError(error_message);
     }
 
+    @computed
     get account_platform_icon() {
         const { account_list, loginid } = this.root_store.client;
         const platform_icon = account_list.find(acc => loginid === acc.loginid).icon;

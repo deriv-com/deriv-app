@@ -172,11 +172,7 @@ const Withdrawal = ({
     }, [currency, tab_index, crypto_transactions]);
 
     React.useEffect(() => {
-        setIsWithdrawalBlocked(
-            active_account_landing_company === 'maltainvest' &&
-                is_withdrawal_locked &&
-                is_financial_information_incomplete
-        );
+        setIsWithdrawalBlocked(active_account_landing_company === 'maltainvest' && is_financial_information_incomplete);
     }, []);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible

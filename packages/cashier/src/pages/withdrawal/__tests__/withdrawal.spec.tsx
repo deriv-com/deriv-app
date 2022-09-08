@@ -56,7 +56,7 @@ describe('<Withdrawal />', () => {
         verification_code: '',
         verify_error: {},
         is_risk_client: false,
-        is_financial_assessment_incomplete: false,
+        is_financial_information_incomplete: false,
     };
 
     beforeAll(() => {
@@ -267,7 +267,12 @@ describe('<Withdrawal />', () => {
 
         render(
             <Router history={history}>
-                <Withdrawal {...props} is_risk_client is_financial_assessment_incomplete />
+                <Withdrawal
+                    {...props}
+                    is_risk_client
+                    is_financial_information_incomplete
+                    active_account_landing_company='maltainvest'
+                />
             </Router>
         );
 
@@ -279,7 +284,12 @@ describe('<Withdrawal />', () => {
 
         render(
             <Router history={history}>
-                <Withdrawal {...props} is_risk_client is_financial_assessment_incomplete />
+                <Withdrawal
+                    {...props}
+                    is_risk_client
+                    is_financial_information_incomplete
+                    active_account_landing_company='maltainvest'
+                />
             </Router>
         );
 

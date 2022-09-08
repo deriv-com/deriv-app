@@ -158,7 +158,6 @@ export default class UIStore extends BaseStore {
             'duration_m',
             'duration_h',
             'duration_d',
-            'has_read_scam_message',
             'is_account_settings_visible',
             'is_chart_asset_info_visible',
             'is_chart_countdown_visible',

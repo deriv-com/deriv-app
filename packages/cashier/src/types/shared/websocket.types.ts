@@ -1,10 +1,15 @@
-import { PaymentAgentDetailsResponse, PaymentAgentWithdrawResponse } from '@deriv/api-types';
+import {
+    GetAccountSettingsResponse,
+    PaymentAgentDetailsResponse,
+    PaymentAgentTransferResponse,
+    PaymentAgentWithdrawResponse,
+} from '@deriv/api-types';
 import { TExtendedPaymentAgentListResponse } from 'Types';
 
 export type TServerError = {
     code: string;
-    message: string;
     details?: { [key: string]: string };
+    message: string;
 };
 
 type TPassthrough = {
@@ -12,17 +17,36 @@ type TPassthrough = {
 };
 
 export type TPaymentAgentWithdrawRequest = {
-    loginid: string;
-    currency: string;
     amount: string;
-    verification_code: string;
+    currency: string;
     dry_run?: number;
+    loginid: string;
+    verification_code: string;
+};
+
+type TStorage = {
+    getSettings: () => Promise<GetAccountSettingsResponse>;
+};
+
+export type TPaymentAgentTransferRequest = {
+    amount: string;
+    currency: string;
+    description: string;
+    dry_run?: number;
+    transfer_to: string;
 };
 
 type TWebSocketCall = {
     cashier: (action: any, parameters: any) => Promise<any>;
     paymentAgentDetails: (passthrough?: TPassthrough, req_id?: number) => Promise<PaymentAgentDetailsResponse>;
     paymentAgentList: (residence: string, currency: string) => Promise<TExtendedPaymentAgentListResponse>;
+    paymentAgentTransfer: ({
+        amount,
+        currency,
+        description,
+        transfer_to,
+        dry_run,
+    }: TPaymentAgentTransferRequest) => Promise<PaymentAgentTransferResponse>;
     paymentAgentWithdraw: ({
         loginid,
         currency,
@@ -30,6 +54,7 @@ type TWebSocketCall = {
         verification_code,
         dry_run,
     }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
+    storage: TStorage;
 };
 
 export type TWebSocket = {

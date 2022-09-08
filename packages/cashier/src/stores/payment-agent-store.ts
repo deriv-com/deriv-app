@@ -6,12 +6,12 @@ import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
 import {
     TAgent,
-    TConfirm,
+    TPaymentAgentWithdrawConfirm,
     TPaymentAgentWithdrawRequest,
     TPartialPaymentAgentList,
     TExtendedPaymentAgentList,
     TExtendedPaymentAgentListResponse,
-    TReceipt,
+    TPaymentAgentWithdrawReceipt,
     TRootStore,
     TSupportedBank,
     TTarget,
@@ -36,8 +36,8 @@ export default class PaymentAgentStore {
     @observable is_withdraw = false;
     @observable is_try_withdraw_successful = false;
     @observable is_withdraw_successful = false;
-    @observable confirm: TConfirm = {};
-    @observable receipt: TReceipt = {};
+    @observable confirm: TPaymentAgentWithdrawConfirm = {};
+    @observable receipt: TPaymentAgentWithdrawReceipt = {};
     @observable selected_bank: number | string = 0;
     @observable supported_banks: IObservableArray<TSupportedBank> = [];
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
@@ -193,7 +193,7 @@ export default class PaymentAgentStore {
     }
 
     @action.bound
-    setConfirmation({ amount, currency, loginid, payment_agent_name }: TConfirm): void {
+    setConfirmation({ amount, currency, loginid, payment_agent_name }: TPaymentAgentWithdrawConfirm): void {
         this.confirm = {
             amount,
             currency,
@@ -210,7 +210,7 @@ export default class PaymentAgentStore {
         payment_agent_name,
         payment_agent_phone,
         payment_agent_url,
-    }: TReceipt): void {
+    }: TPaymentAgentWithdrawReceipt): void {
         this.receipt = {
             amount_transferred,
             payment_agent_email,
@@ -286,19 +286,18 @@ export default class PaymentAgentStore {
             verification_code,
             dry_run: 1,
         });
-        if (payment_agent_withdraw.paymentagent_withdraw) {
-            if (+payment_agent_withdraw.paymentagent_withdraw === 2) {
-                const selected_agent = this.agents.find(agent => agent.value === loginid);
-                this.setConfirmation({
-                    amount,
-                    currency,
-                    loginid,
-                    ...(selected_agent && { payment_agent_name: selected_agent.text }),
-                });
-                this.setIsTryWithdrawSuccessful(true);
-            } else {
-                this.error.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
-            }
+
+        if (Number(payment_agent_withdraw?.paymentagent_withdraw) === 2) {
+            const selected_agent = this.agents.find(agent => agent.value === loginid);
+            this.setConfirmation({
+                amount,
+                currency,
+                loginid,
+                ...(selected_agent && { payment_agent_name: selected_agent.text }),
+            });
+            this.setIsTryWithdrawSuccessful(true);
+        } else {
+            this.error.setErrorMessage(payment_agent_withdraw?.error, this.resetPaymentAgent);
         }
     }
 
@@ -351,28 +350,26 @@ export default class PaymentAgentStore {
             amount,
             verification_code,
         });
-        if (payment_agent_withdraw.paymentagent_withdraw) {
-            if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
-                const selected_agent = this.agents.find(agent => agent.value === loginid);
-                this.setReceipt({
-                    amount_transferred: formatMoney(currency, amount, true),
-                    ...(selected_agent && {
-                        payment_agent_email: selected_agent.email,
-                        payment_agent_id: selected_agent.value,
-                        payment_agent_name: selected_agent.text,
-                        payment_agent_phone: selected_agent.phone,
-                        payment_agent_url: selected_agent.url,
-                    }),
-                    ...(!selected_agent && {
-                        payment_agent_id: loginid,
-                    }),
-                });
-                this.setIsWithdrawSuccessful(true);
-                this.setIsTryWithdrawSuccessful(false);
-                this.setConfirmation({});
-            } else {
-                this.error.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
-            }
+        if (Number(payment_agent_withdraw?.paymentagent_withdraw) === 1) {
+            const selected_agent = this.agents.find(agent => agent.value === loginid);
+            this.setReceipt({
+                amount_transferred: formatMoney(currency, amount, true),
+                ...(selected_agent && {
+                    payment_agent_email: selected_agent.email,
+                    payment_agent_id: selected_agent.value,
+                    payment_agent_name: selected_agent.text,
+                    payment_agent_phone: selected_agent.phone,
+                    payment_agent_url: selected_agent.url,
+                }),
+                ...(!selected_agent && {
+                    payment_agent_id: loginid,
+                }),
+            });
+            this.setIsWithdrawSuccessful(true);
+            this.setIsTryWithdrawSuccessful(false);
+            this.setConfirmation({});
+        } else {
+            this.error.setErrorMessage(payment_agent_withdraw?.error, this.resetPaymentAgent);
         }
     }
 }

@@ -22,14 +22,14 @@ export type TAgent = {
     value?: string;
 };
 
-export type TConfirm = {
+export type TPaymentAgentWithdrawConfirm = {
     amount?: string;
     currency?: string;
     loginid?: string;
     payment_agent_name?: string;
 };
 
-export type TReceipt = {
+export type TPaymentAgentWithdrawReceipt = {
     amount_transferred?: string;
     payment_agent_email?: string;
     payment_agent_id?: string;
@@ -58,6 +58,8 @@ type TExtendedPaymentAgentFields = {
 };
 
 export type TExtendedPaymentAgentList = (PaymentagentList['list'][0] & TExtendedPaymentAgentFields)[];
+
+export type TPaymentAgent = TExtendedPaymentAgentList[0];
 
 interface TExtendedPaymentagentList extends PaymentagentList {
     list: TExtendedPaymentAgentList;

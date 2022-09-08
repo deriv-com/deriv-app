@@ -7,7 +7,7 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
-import CfdDxtradeCompareContent from 'Components/cfd-dxtrade-compare-content';
+import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;

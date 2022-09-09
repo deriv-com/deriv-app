@@ -310,7 +310,7 @@ const ToggleMenuDrawer = React.forwardRef(
                 </MobileDrawer.SubMenu>
             );
         };
-        const { pathname } = useLocation();
+        const { pathname: route } = useLocation();
 
         return (
             <React.Fragment>
@@ -347,8 +347,8 @@ const ToggleMenuDrawer = React.forwardRef(
                             {is_pre_appstore && (
                                 <React.Fragment>
                                     {is_logged_in &&
-                                    location !== routes.trade &&
-                                    !pathname.startsWith(routes.reports) ? (
+                                    location === routes.trading_hub &&
+                                    !route.startsWith(routes.reports) ? (
                                         <MobileDrawer.SubHeader
                                             className={classNames({
                                                 'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -397,12 +397,12 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        {is_logged_in && pathname === routes.trade && pathname === routes.reports && (
+                                        {is_logged_in && route !== routes.trading_hub && route === routes.trade && (
                                             <MobileDrawer.Item className='header__menu--backtooldui--dtrader'>
                                                 <Button
                                                     className={classNames({
                                                         'header__menu--back-to-ui': !is_dark_mode,
-                                                        'header__menu--back-to-ui--dark': is_dark_mode,
+                                                        'header__menu--back-tso-ui--dark': is_dark_mode,
                                                     })}
                                                     type='button'
                                                     large
@@ -441,9 +441,9 @@ const ToggleMenuDrawer = React.forwardRef(
                                             </MobileDrawer.Item>
                                         )}
                                         {is_logged_in &&
-                                            !pathname.startsWith(routes.trading_hub) &&
-                                            !pathname.startsWith(routes.cashier) &&
-                                            !pathname.startsWith(routes.account) && (
+                                            !route.startsWith(routes.trading_hub) &&
+                                            !route.startsWith(routes.cashier) &&
+                                            !route.startsWith(routes.account) && (
                                                 <MobileDrawer.Item>
                                                     <MenuLink
                                                         link_to={routes.trade}

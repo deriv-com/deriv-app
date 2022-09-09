@@ -89,12 +89,9 @@ export default class BuySellStore extends BaseStore {
 
     @computed
     get rendered_items() {
-        const filtered_items = this.items.filter(item => {
-            if (this.table_type === 'buy') {
-                return item.type === 'sell';
-            }
-            return item.type === 'buy';
-        });
+        const filtered_items = this.items.filter(item =>
+            this.table_type === buy_sell.BUY ? item.type === buy_sell.SELL : item.type === buy_sell.BUY
+        );
 
         if (isMobile()) {
             if (this.search_term) {

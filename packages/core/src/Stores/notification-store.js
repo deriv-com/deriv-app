@@ -907,7 +907,7 @@ export default class NotificationStore extends BaseStore {
             },
             poinc_upload_limited: {
                 key: 'poinc_upload_limited',
-                header: localize("You've reached the limit for uploading your documents."),
+                header: localize("You've reached the limit of uploading your documents."),
                 message: localize('Please contact us via live chat.'),
                 action: {
                     onClick: () => {

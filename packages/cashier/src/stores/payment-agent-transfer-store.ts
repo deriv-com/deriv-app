@@ -37,7 +37,7 @@ export default class PaymentAgentTransferStore {
 
     async checkIsPaymentAgent(): Promise<void> {
         const get_settings = (await this.WS.authorized.storage.getSettings()).get_settings;
-        this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
+        this.setIsPaymentAgent(!!get_settings?.is_authenticated_payment_agent ?? false);
     }
 
     @action.bound
@@ -46,7 +46,7 @@ export default class PaymentAgentTransferStore {
     }
 
     @action.bound
-    setIsPaymentAgent(is_payment_agent: number | boolean): void {
+    setIsPaymentAgent(is_payment_agent: boolean): void {
         if (!is_payment_agent && window.location.pathname.endsWith(routes.cashier_pa_transfer)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }

@@ -35,12 +35,7 @@ const Icon = React.forwardRef(
             : getKebabCase(icon);
 
         const filename = icons_manifest[category];
-        let style = {};
-        if (custom_color) {
-            style = {
-                '--fill-color1': custom_color,
-            };
-        }
+
         return (
             <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -63,7 +58,13 @@ const Icon = React.forwardRef(
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 ref={ref}
-                style={style}
+                style={
+                    (custom_color
+                        ? {
+                              '--fill-color1': custom_color,
+                          }
+                        : undefined) as React.CSSProperties & { '--fill-color1': string }
+                }
             >
                 <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
             </svg>

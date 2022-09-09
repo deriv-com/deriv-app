@@ -9,6 +9,11 @@
         display: flex;
         flex-direction: column;
         flex: 1;
+        overflow-x: hidden;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         & .p2p-toggle-container {
             margin-bottom: 3.4rem;
@@ -20,7 +25,7 @@
         }
         @include mobile {
             display: block;
-            padding: 1.6rem;
+            padding: 0 1.6rem;
             width: 100vw;
 
             .dc-mobile-full-page-modal {

@@ -6,7 +6,7 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 
-const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
+const OrderDetailsWrapper = ({ children, page_title }) => {
     const { order_store, sendbird_store } = useStores();
     return isMobile() ? (
         <div data-testid='order-details-wrapper-mobile'>
@@ -16,7 +16,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
                 height_offset='80px'
                 is_flex
                 is_modal_open
-                pageHeaderReturnFn={onPageReturn}
+                pageHeaderReturnFn={order_store.onPageReturn}
                 page_header_text={page_title}
                 renderPageHeaderTrailingIcon={() => (
                     <Icon
@@ -38,7 +38,7 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
         </div>
     ) : (
         <React.Fragment>
-            <PageReturn onClick={onPageReturn} page_title={page_title} />
+            <PageReturn onClick={order_store.onPageReturn} page_title={page_title} />
             <ThemedScrollbars height='70vh'>{children}</ThemedScrollbars>
         </React.Fragment>
     );
@@ -46,7 +46,6 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
 
 OrderDetailsWrapper.propTypes = {
     children: PropTypes.any,
-    onPageReturn: PropTypes.func,
     page_title: PropTypes.string,
 };
 

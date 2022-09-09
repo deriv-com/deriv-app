@@ -29,7 +29,7 @@ const Unsupported = ({ country_code, ...props }) => {
     });
 
     if (props?.manual && props.manual.status === 'pending') {
-        return <UploadComplete is_from_external={true} needs_poa={false} />;
+        return <UploadComplete is_from_external />;
     }
 
     if (detail !== null) {

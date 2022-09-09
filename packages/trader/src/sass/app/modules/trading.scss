@@ -548,14 +548,15 @@
 }
 
 /** @define purchase-container; weak */
-.purchase-container {
+.purchase-container,
+.purchase-container--accumulator {
     position: relative;
 
     &__option {
         padding-top: 8px;
         padding-bottom: 8px;
 
-        &:not(:only-child) {
+        &:not(:only-of-type) {
             &:nth-last-child(2) {
                 border-bottom-width: 0;
                 border-bottom-left-radius: 0;
@@ -612,7 +613,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--general-main-1);
+        background-color: var(--general-section-1);
         opacity: 0.9;
 
         &__caption {
@@ -620,6 +621,9 @@
             height: 4rem;
             color: var(--text-less-prominent);
             text-align: center;
+        }
+        &__one-button {
+            padding-top: 0.5rem;
         }
     }
 

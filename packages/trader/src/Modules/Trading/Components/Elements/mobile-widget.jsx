@@ -14,7 +14,6 @@ const MobileWidget = ({
     duration_min_max,
     duration_unit,
     form_components,
-    is_accumulator,
     is_collapsed,
     is_multiplier,
     last_digit,
@@ -84,7 +83,7 @@ const MobileWidget = ({
 
     return (
         <div className='mobile-widget__wrapper'>
-            {is_multiplier || is_accumulator ? (
+            {is_multiplier ? (
                 <MultiplierAmountWidget />
             ) : (
                 <div id='duration_amount_selector' className='mobile-widget' onClick={toggleWidget}>
@@ -115,7 +114,6 @@ export default connect(({ modules, ui }) => ({
     duration_min_max: modules.trade.duration_min_max,
     duration_unit: modules.trade.duration_unit,
     form_components: modules.trade.form_components,
-    is_accumulator: modules.trade.is_accumulator,
     is_multiplier: modules.trade.is_multiplier,
     last_digit: modules.trade.last_digit,
     onChange: modules.trade.onChange,

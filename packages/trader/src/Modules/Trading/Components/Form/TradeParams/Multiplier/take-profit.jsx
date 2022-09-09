@@ -11,6 +11,7 @@ const TakeProfit = ({
     removeToast,
     currency,
     current_focus,
+    has_info,
     has_take_profit,
     is_single_currency,
     onChange,
@@ -50,9 +51,13 @@ const TakeProfit = ({
                 name='take_profit'
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
-                tooltip_label={localize(
-                    'Your contract is closed automatically when your profit is more than or equal to this amount.'
-                )}
+                tooltip_label={
+                    has_info
+                        ? localize(
+                              'Your contract is closed automatically when your profit is more than or equal to this amount.'
+                          )
+                        : ''
+                }
                 tooltip_alignment='left'
                 error_message_alignment='left'
                 value={take_profit}
@@ -65,6 +70,7 @@ TakeProfit.propTypes = {
     addToast: PropTypes.func,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    has_info: PropTypes.bool,
     has_take_profit: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,

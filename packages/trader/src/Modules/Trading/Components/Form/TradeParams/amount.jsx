@@ -11,7 +11,7 @@ import AllowEquals from './allow-equals.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
 
-const Input = ({
+export const Input = ({
     amount,
     currency,
     current_focus,

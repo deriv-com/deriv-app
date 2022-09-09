@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmptyObject } from '@deriv/shared';
-import OneContractLimitOverlay from 'Modules/Trading/Components/Form/Purchase/one-contract-limit-overlay.jsx';
+import { localize } from '@deriv/translations';
+import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -89,7 +90,13 @@ const Purchase = ({
         }
     });
     if (is_accumulator && last_contract_status === 'open') {
-        components.unshift(<OneContractLimitOverlay />);
+        components.unshift(
+            <PurchaseButtonsOverlay
+                key='overlay'
+                message={localize('You can only purchase one contract at a time')}
+                is_to_cover_one_button
+            />
+        );
     }
     return components;
 };

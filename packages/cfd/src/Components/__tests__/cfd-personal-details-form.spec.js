@@ -158,7 +158,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should show an error message received from server that is passed via props as form_error', () => {
-        const form_error = 'Form submission failed.';
+        const form_error = 'Input validation failed: citizen!';
         render(<CFDPersonalDetailsForm {...props} form_error={form_error} />);
 
         expect(screen.getByTestId('form_submit_error')).toHaveClass('dc-icon');

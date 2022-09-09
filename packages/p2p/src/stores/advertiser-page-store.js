@@ -61,7 +61,6 @@ export default class AdvertiserPageStore extends BaseStore {
     loadMoreAdvertiserAdverts({ startIndex }) {
         const { general_store } = this.root_store;
         this.setIsLoadingAdverts(true);
-
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
@@ -77,7 +76,6 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
-
                 this.setIsLoadingAdverts(false);
                 resolve();
             });
@@ -87,14 +85,12 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
-
         requestWS({
             p2p_advertiser_info: 1,
             id: this.advertiser_details_id,
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
-
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);

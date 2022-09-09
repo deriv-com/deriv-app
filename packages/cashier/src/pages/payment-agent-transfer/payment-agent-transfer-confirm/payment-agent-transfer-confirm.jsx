@@ -4,7 +4,7 @@ import { Icon, Money, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import Confirm from 'Components/confirm';
+import TransferConfirm from 'Components/transfer-confirm';
 import './payment-agent-transfer-confirm.scss';
 
 const PaymentAgentTransferConfirm = ({
@@ -20,7 +20,7 @@ const PaymentAgentTransferConfirm = ({
 }) => {
     const payment_agent_transfer_warning_messages = [
         <Localize
-            i18n_default_text='<0>Remember</0>, it’s solely your responsibility to ensure the transfer is made to the correct account.'
+            i18n_default_text='Please ensure <0>all details</0> are <0>correct</0> before making your transfer.'
             components={[<strong key={0} />]}
             key={0}
         />,
@@ -45,13 +45,13 @@ const PaymentAgentTransferConfirm = ({
                 className='payment-agent-transfer-confirm__warning-icon__description'
                 size={isMobile() ? 'xs' : ''}
             >
-                {localize('Check Transfer Information')}
+                {localize('Check transfer information')}
             </Text>
-            <Confirm
+            <TransferConfirm
                 data={[
-                    { label: localize('Transfer from'), value: loginid, key: 'transfer_from' },
+                    { label: localize('From account number'), value: loginid, key: 'transfer_from' },
                     {
-                        label: localize('Transfer to'),
+                        label: [localize('To account number'), localize('Account holder name')],
                         value: [transfer_to.toUpperCase(), transfer_to_name],
                         key: 'transfer_to',
                     },

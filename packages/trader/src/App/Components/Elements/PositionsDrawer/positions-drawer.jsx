@@ -4,15 +4,21 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, DataList, Text } from '@deriv/components';
+import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
 import { routes, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
+import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { connect } from 'Stores/connect';
-import PositionsDrawerCard from './PositionsDrawerCard';
 import { filterByContractType } from './helpers';
 
-const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row }) => {
+const PositionsDrawerCardItem = ({
+    row: portfolio_position,
+    measure,
+    onHoverPosition,
+    symbol,
+    is_new_row,
+    ...props
+}) => {
     const { in_prop } = useNewRowTransition(is_new_row);
 
     React.useEffect(() => {
@@ -35,11 +41,12 @@ const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosi
             <div className='dc-contract-card__wrapper'>
                 <PositionsDrawerCard
                     {...portfolio_position}
+                    {...props}
                     onMouseEnter={() => {
-                        onHoverPosition(true, portfolio_position);
+                        onHoverPosition(true, portfolio_position, symbol);
                     }}
                     onMouseLeave={() => {
-                        onHoverPosition(false, portfolio_position);
+                        onHoverPosition(false, portfolio_position, symbol);
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
@@ -58,6 +65,7 @@ const PositionsDrawer = ({
     toggleDrawer,
     trade_contract_type,
     onMount,
+    ...props
 }) => {
     const drawer_ref = React.useRef(null);
     const list_ref = React.useRef(null);
@@ -82,7 +90,9 @@ const PositionsDrawer = ({
     const body_content = (
         <DataList
             data_source={positions}
-            rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} />}
+            rowRenderer={args => (
+                <PositionsDrawerCardItem onHoverPosition={onHoverPosition} symbol={symbol} {...args} {...props} />
+            )}
             keyMapper={row => row.id}
             row_gap={8}
         />
@@ -130,30 +140,57 @@ const PositionsDrawer = ({
             </div>
         </React.Fragment>
     );
-    // }
 };
 
 PositionsDrawer.propTypes = {
     all_positions: MobxPropTypes.arrayOrObservableArray,
-    children: PropTypes.any,
+    children: PropTypes.node,
     error: PropTypes.string,
     is_mobile: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
+    onHoverPosition: PropTypes.func,
     onMount: PropTypes.func,
     symbol: PropTypes.string,
     toggleDrawer: PropTypes.func,
+    currency: PropTypes.string,
+    server_time: PropTypes.object,
+    addToast: PropTypes.func,
+    current_focus: PropTypes.string,
+    onClickCancel: PropTypes.func,
+    onClickSell: PropTypes.func,
+    onClickRemove: PropTypes.func,
+    getContractById: PropTypes.func,
+    removeToast: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    toggleCancellationWarning: PropTypes.func,
+    toggleUnsupportedContractModal: PropTypes.func,
+    trade_contract_type: PropTypes.string,
 };
 
-export default connect(({ modules, ui }) => ({
-    all_positions: modules.portfolio.all_positions,
-    error: modules.portfolio.error,
-    onHoverPosition: modules.portfolio.onHoverPosition,
-    onMount: modules.portfolio.onMount,
+export default connect(({ modules, ui, client, common, portfolio, contract_trade }) => ({
+    all_positions: portfolio.all_positions,
+    error: portfolio.error,
+    onHoverPosition: portfolio.onHoverPosition,
+    onMount: portfolio.onMount,
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
     is_mobile: ui.is_mobile,
     is_positions_drawer_on: ui.is_positions_drawer_on,
     toggleDrawer: ui.togglePositionsDrawer,
+    currency: client.currency,
+    server_time: common.server_time,
+    addToast: ui.addToast,
+    current_focus: ui.current_focus,
+    onClickCancel: portfolio.onClickCancel,
+    onClickSell: portfolio.onClickSell,
+    onClickRemove: portfolio.removePositionById,
+    getContractById: contract_trade.getContractById,
+    removeToast: ui.removeToast,
+    setCurrentFocus: ui.setCurrentFocus,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
 }))(PositionsDrawer);

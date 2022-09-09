@@ -116,7 +116,6 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable account_limits = {};
-    @observable account_limits = {};
 
     @observable self_exclusion = {};
 

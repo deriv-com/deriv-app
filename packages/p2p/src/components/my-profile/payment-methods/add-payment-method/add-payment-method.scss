@@ -16,6 +16,14 @@
         display: none;
     }
 
+    &-select {
+        height: 30vh;
+
+        @include mobile {
+            height: 100%;
+        }
+    }
+
     &-hint {
         padding: 0.2rem 0 0 1.6rem;
     }

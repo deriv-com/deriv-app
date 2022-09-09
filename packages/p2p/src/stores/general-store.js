@@ -6,7 +6,8 @@ import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from '../constants/order-list';
+import { order_list } from 'Constants/order-list';
+import { buy_sell } from 'Constants/buy-sell';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
@@ -32,6 +33,7 @@ export default class GeneralStore extends BaseStore {
     @observable parameters = null;
     @observable poi_status = null;
     @observable.ref props = {};
+    @observable review_period;
     @observable should_show_real_name = false;
     @observable should_show_popup = false;
     @observable user_blocked_until = null;
@@ -151,6 +153,17 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    getWebsiteStatus() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response && !response.error) {
+                const { p2p_config } = response.website_status;
+
+                this.setReviewPeriod(p2p_config.review_period);
+            }
+        });
+    }
+
+    @action.bound
     handleNotifications(old_orders, new_orders) {
         const { order_store } = this.root_store;
         const { client, props } = this;
@@ -173,6 +186,23 @@ export default class GeneralStore extends BaseStore {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
                         notification.is_active = order_info.is_active_order;
+
+                        // Push notification for successful order completion
+                        const { advertiser_details, client_details, id, status, type } = new_order;
+
+                        if (
+                            type === buy_sell.BUY &&
+                            status === 'completed' &&
+                            client_details.loginid === client.loginid
+                        )
+                            this.showCompletedOrderNotification(advertiser_details.name, id);
+
+                        if (
+                            type === buy_sell.SELL &&
+                            status === 'completed' &&
+                            advertiser_details.loginid === client.loginid
+                        )
+                            this.showCompletedOrderNotification(client_details.name, id);
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);
@@ -198,6 +228,31 @@ export default class GeneralStore extends BaseStore {
         });
 
         this.updateP2pNotifications(notifications);
+    }
+
+    showCompletedOrderNotification(advertiser_name, order_id) {
+        const notification_key = `order-${order_id}`;
+
+        this.props.addNotificationMessage({
+            action: {
+                onClick: () => {
+                    this.redirectTo('orders');
+                    this.setOrderTableType(order_list.INACTIVE);
+                    this.root_store.order_store.setOrderId(order_id);
+                },
+                text: localize('Give feedback'),
+            },
+            header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
+            key: notification_key,
+            message: (
+                <Localize
+                    i18n_default_text='{{name}} has released your funds. <br/> Would you like to give your feedback?'
+                    values={{ name: advertiser_name }}
+                />
+            ),
+            platform: 'P2P',
+            type: 'p2p_completed_order',
+        });
     }
 
     @action.bound
@@ -317,6 +372,10 @@ export default class GeneralStore extends BaseStore {
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();
         }
+
+        this.setActiveIndex(0);
+        this.props.refreshNotifications();
+        this.props.filterNotificationMessages();
     }
 
     @action.bound
@@ -516,6 +575,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
+    }
+
+    @action.bound
+    setReviewPeriod(review_period) {
+        this.review_period = review_period;
     }
 
     @action.bound

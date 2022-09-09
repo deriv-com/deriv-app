@@ -3,6 +3,7 @@ import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import BuySell from './buy-sell/buy-sell.jsx';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
@@ -12,7 +13,6 @@ import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import Verification from './verification/verification.jsx';
-import AdvertiserPage from './advertiser-page/advertiser-page';
 
 const AppContent = () => {
     const { buy_sell_store, general_store } = useStores();
@@ -33,7 +33,6 @@ const AppContent = () => {
         return <Verification should_wrap />;
     }
 
-    // TOOD: Refactor and change this on next release alongside discussion with design team regarding the tabs on advertiser page
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return <AdvertiserPage />;
     }

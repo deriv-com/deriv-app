@@ -144,6 +144,7 @@ export default class UIStore extends BaseStore {
 
     @observable should_show_risk_warning_modal = false;
     @observable should_show_appropriateness_warning_modal = false;
+    @observable should_show_warning_modal = false;
     @observable should_show_cooldown_modal = false;
     @observable should_show_trading_assessment_modal = false;
     @observable should_show_trade_assessment_form = false;
@@ -704,6 +705,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     setShouldShowAppropriatenessWarningModal(value) {
         this.should_show_appropriateness_warning_modal = value;
+    }
+
+    @action.bound
+    setShouldShowWarningModal(value) {
+        this.should_show_warning_modal = value;
     }
 
     @action.bound

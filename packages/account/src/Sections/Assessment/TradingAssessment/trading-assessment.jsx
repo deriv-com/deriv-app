@@ -34,11 +34,7 @@ const populateData = form_data => {
     };
 };
 
-const TradingAssessment = ({
-    is_virtual,
-    setFinancialAndTradingAssessment,
-    setShouldShowAppropriatenessWarningModal,
-}) => {
+const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setShouldShowWarningModal }) => {
     const history = useHistory();
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
@@ -56,12 +52,16 @@ const TradingAssessment = ({
                 // set initial form data
                 setInitialFormValues(() => populateData(data.get_financial_assessment));
                 setIsLoading(false);
+                setIsSubmitSuccess(false);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = async values => {
+        setFormData(values);
+        setIsBtnLoading(false);
+        setIsSubmitSuccess(true);
         if (values.risk_tolerance === 'No') {
             setShouldAcceptRisk(true);
         } else {
@@ -81,23 +81,23 @@ const TradingAssessment = ({
                 },
             };
             const data = await setFinancialAndTradingAssessment(form_payload);
-            const { trading_score } = data.set_financial_assessment ?? {};
-            if (trading_score === 0) {
-                setShouldShowAppropriatenessWarningModal(true);
+            const { trading_score } = data?.set_financial_assessment;
+            if (trading_score === 0 && !should_accept_risk) {
+                setShouldShowWarningModal(true);
             }
-            setIsBtnLoading(false);
-            setIsSubmitSuccess(true);
             WS.authorized.storage.getFinancialAssessment().then(res_data => {
                 setInitialFormValues(res_data.get_financial_assessment);
-                setIsSubmitSuccess(false);
             });
+            setIsBtnLoading(false);
+            setTimeout(() => setIsSubmitSuccess(false), 10000);
         }
     };
 
     const handleAcceptRisk = () => {
-        setFormData(prev_data => ({ ...prev_data, risk_tolerance: 'Yes' }));
-        setShouldAcceptRisk(false);
         handleSubmit({ ...form_data, risk_tolerance: 'Yes' });
+        setShouldAcceptRisk(false);
+        setIsBtnLoading(false);
+        setIsSubmitSuccess(false);
     };
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -124,7 +124,6 @@ const TradingAssessment = ({
             enableReinitialize
             initialTouched={false}
             onSubmit={values => {
-                setFormData(values);
                 handleSubmit(values);
             }}
         >
@@ -238,9 +237,12 @@ const TradingAssessment = ({
                         </FormBody>
                         <FormFooter>
                             <FormSubmitButton
-                                is_disabled={isSubmitting || !dirty || is_submit_success}
+                                is_disabled={isSubmitting || !dirty || is_btn_loading}
                                 is_loading={is_btn_loading}
+                                has_effect
                                 is_absolute={isMobile()}
+                                is_submit_success={is_submit_success && !dirty}
+                                green={is_submit_success && !dirty}
                                 label={localize('Submit')}
                             />
                         </FormFooter>
@@ -252,7 +254,7 @@ const TradingAssessment = ({
 };
 
 export default connect(({ client, ui }) => ({
-    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+    setShouldShowWarningModal: ui.setShouldShowWarningModal,
     is_virtual: client.is_virtual,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,

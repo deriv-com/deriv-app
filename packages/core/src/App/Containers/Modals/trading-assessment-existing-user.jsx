@@ -19,8 +19,8 @@ const TradingAssessmentExistingUser = ({
     setFinancialAndTradingAssessment,
     should_show_risk_warning_modal,
     setShouldShowRiskWarningModal,
-    should_show_appropriateness_warning_modal,
-    setShouldShowAppropriatenessWarningModal,
+    should_show_warning_modal,
+    setShouldShowWarningModal,
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
 }) => {
@@ -54,7 +54,7 @@ const TradingAssessmentExistingUser = ({
             await updateAccountStatus();
             setShouldShowTradeAssessmentForm(false);
             if (trading_score === 0) {
-                setShouldShowAppropriatenessWarningModal(true);
+                setShouldShowWarningModal(true);
             } else {
                 setShouldShowAssessmentCompleteModal(true);
             }
@@ -62,7 +62,7 @@ const TradingAssessmentExistingUser = ({
     };
 
     const handleAcceptAppropriatenessTestWarning = () => {
-        setShouldShowAppropriatenessWarningModal(false);
+        setShouldShowWarningModal(false);
         if (window.location.href.includes(routes.trading_assessment)) {
             setShouldShowAssessmentCompleteModal(false);
         } else {
@@ -92,10 +92,10 @@ const TradingAssessmentExistingUser = ({
                 }
             />
         );
-    } else if (should_show_appropriateness_warning_modal) {
+    } else if (should_show_warning_modal) {
         return (
             <TestWarningModal
-                show_risk_modal={should_show_appropriateness_warning_modal}
+                show_risk_modal={should_show_warning_modal}
                 body_content={
                     <Text as='p' size='xs'>
                         <Localize
@@ -168,8 +168,8 @@ export default connect(({ client, ui }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
-    should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
-    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+    should_show_warning_modal: ui.should_show_warning_modal,
+    setShouldShowWarningModal: ui.setShouldShowWarningModal,
     should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
     setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,

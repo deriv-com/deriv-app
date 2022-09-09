@@ -9,6 +9,7 @@ import TradeBadge from '../../../trade-badge';
 import MyProfilePrivacy from '../my-profile-privacy';
 import StarRating from 'Components/star-rating';
 import RecommendedBy from 'Components/recommended-by';
+import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
 
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
@@ -80,6 +81,9 @@ const MyProfileName = () => {
                                             recommended_average={recommended_average}
                                             recommended_count={recommended_count}
                                         />
+                                    </div>
+                                    <div className='my-profile-name--rating__row'>
+                                        <BlockUserCount />
                                     </div>
                                 </React.Fragment>
                             ) : (

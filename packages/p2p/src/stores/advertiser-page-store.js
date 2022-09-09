@@ -15,6 +15,8 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable api_error_message = '';
     @observable form_error_message = '';
     @observable has_more_adverts_to_load = false;
+    @observable is_counterparty_advertiser_blocked = false;
+    @observable is_dropdown_menu_visible = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
@@ -59,7 +61,6 @@ export default class AdvertiserPageStore extends BaseStore {
     loadMoreAdvertiserAdverts({ startIndex }) {
         const { general_store } = this.root_store;
         this.setIsLoadingAdverts(true);
-
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
@@ -75,7 +76,6 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
-
                 this.setIsLoadingAdverts(false);
                 resolve();
             });
@@ -85,15 +85,14 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
-
         requestWS({
             p2p_advertiser_info: 1,
             id: this.advertiser_details_id,
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
-
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
@@ -114,6 +113,12 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    onCancel() {
+        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        this.setIsDropdownMenuVisible(false);
+    }
+
+    @action.bound
     onCancelClick() {
         this.setShowAdPopup(false);
     }
@@ -127,6 +132,15 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     onMount() {
         this.getAdvertiserInfo();
+    }
+
+    @action.bound
+    onSubmit() {
+        this.root_store.general_store.blockUnblockUser(
+            !this.is_counterparty_advertiser_blocked,
+            this.advertiser_details_id
+        );
+        this.setIsDropdownMenuVisible(false);
     }
 
     onTabChange() {
@@ -165,6 +179,11 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    setIsCounterpartyAdvertiserBlocked(is_counterparty_advertiser_blocked) {
+        this.is_counterparty_advertiser_blocked = is_counterparty_advertiser_blocked;
+    }
+
+    @action.bound
     setCounterpartyType(counterparty_type) {
         this.counterparty_type = counterparty_type;
     }
@@ -182,6 +201,11 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
         this.has_more_adverts_to_load = has_more_adverts_to_load;
+    }
+
+    @action.bound
+    setIsDropdownMenuVisible(is_dropdown_menu_visible) {
+        this.is_dropdown_menu_visible = is_dropdown_menu_visible;
     }
 
     @action.bound
@@ -215,6 +239,16 @@ export default class AdvertiserPageStore extends BaseStore {
             this.root_store.buy_sell_store.showVerification();
         } else {
             this.setShowAdPopup(true);
+        }
+    }
+
+    @action.bound
+    showBlockUserModal() {
+        if (
+            !this.is_counterparty_advertiser_blocked &&
+            this.advertiser_info.id !== this.root_store.general_store.advertiser_id
+        ) {
+            this.root_store.general_store.setIsBlockUserModalOpen(true);
         }
     }
 }

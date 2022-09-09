@@ -22,6 +22,10 @@ const MyProfileHeader = () => {
             text: localize('Ad details'),
             value: my_profile_tabs.AD_TEMPLATE,
         },
+        {
+            text: localize('Blocked advertisers'),
+            value: my_profile_tabs.BLOCKED_ADVERTISERS,
+        },
     ];
 
     const onChangeTab = event => my_profile_store.setActiveTab(event.target.value);

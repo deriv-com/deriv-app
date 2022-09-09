@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isEmptyObject } from '@deriv/shared';
-import { TChildren, TStyle } from '../types';
+import { TChildren, TGenericStringValueObject } from '../types';
 
 export type TTextProps = {
     line_height?: string;
@@ -12,16 +12,27 @@ export type TTextProps = {
     weight?: string;
     as?: string;
     className?: string;
-    styles?: TStyle;
+    styles?: TGenericStringValueObject;
 };
 
-const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }: TTextProps) => {
+const Text = ({
+    children,
+    size = 's',
+    color = 'general',
+    align = 'left',
+    weight = 'normal',
+    line_height = 'm',
+    as,
+    className,
+    styles,
+    ...props
+}: TTextProps) => {
     const class_styles = {
-        '--text-size': `var(--text-size-${size || 's'})`,
-        '--text-color': `var(--text-${color || 'general'})`,
-        '--text-lh': `var(--text-lh-${line_height || 'm'})`,
-        '--text-weight': `var(--text-weight-${weight || 'normal'})`,
-        '--text-align': `var(--text-align-${align || 'left'})`,
+        '--text-size': `var(--text-size-${size})`,
+        '--text-color': `var(--text-${color})`,
+        '--text-lh': `var(--text-lh-${line_height})`,
+        '--text-weight': `var(--text-weight-${weight})`,
+        '--text-align': `var(--text-align-${align})`,
     };
     const [style, setStyle] = React.useState(class_styles);
     React.useEffect(() => {

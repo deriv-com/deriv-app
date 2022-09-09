@@ -1,4 +1,4 @@
-export type TStyle = {
+export type TGenericStringValueObject = {
     [key: string]: string;
 };
 

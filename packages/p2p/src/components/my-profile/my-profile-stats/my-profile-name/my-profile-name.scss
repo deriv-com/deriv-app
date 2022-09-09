@@ -8,6 +8,13 @@
         margin: 0 0 2.4rem;
     }
 
+    &__avatar {
+        @include mobile {
+            align-self: flex-start;
+            margin: 0 0 1;
+        }
+    }
+
     &--column {
         display: flex;
         flex-direction: column;
@@ -44,6 +51,12 @@
             display: flex;
             padding: 0 0.8rem;
 
+            &--last {
+                @include mobile {
+                    border-right: none;
+                }
+            }
+
             &:first-child {
                 padding-left: unset;
             }
@@ -67,5 +80,8 @@
     &--row {
         display: flex;
         flex-direction: row;
+        @include mobile {
+            margin-top: 1rem;
+        }
     }
 }

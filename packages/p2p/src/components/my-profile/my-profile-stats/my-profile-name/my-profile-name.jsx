@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
@@ -76,15 +76,17 @@ const MyProfileName = () => {
                                             </Text>
                                         </div>
                                     </div>
-                                    <div className='my-profile-name--rating__row'>
+                                    <div className='my-profile-name--rating__row my-profile-name--rating__row--last'>
                                         <RecommendedBy
                                             recommended_average={recommended_average}
                                             recommended_count={recommended_count}
                                         />
                                     </div>
-                                    <div className='my-profile-name--rating__row'>
-                                        <BlockUserCount />
-                                    </div>
+                                    <DesktopWrapper>
+                                        <div className='my-profile-name--rating__row'>
+                                            <BlockUserCount />
+                                        </div>
+                                    </DesktopWrapper>
                                 </React.Fragment>
                             ) : (
                                 <div className='my-profile-name--rating__row'>
@@ -93,20 +95,43 @@ const MyProfileName = () => {
                                     </Text>
                                 </div>
                             )}
-                            <Text
-                                className='my-profile-name--rating__row'
-                                color='less-prominent'
-                                size={isMobile() ? 'xxxs' : 'xs'}
-                            >
-                                {joined_since > 0 ? (
-                                    <Localize
-                                        i18n_default_text='Joined {{days_since_joined}}d'
-                                        values={{ days_since_joined: joined_since }}
-                                    />
-                                ) : (
-                                    <Localize i18n_default_text='Joined today' />
-                                )}
-                            </Text>
+                            <DesktopWrapper>
+                                <Text
+                                    className='my-profile-name--rating__row'
+                                    color='less-prominent'
+                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                >
+                                    {joined_since > 0 ? (
+                                        <Localize
+                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                            values={{ days_since_joined: joined_since }}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text='Joined today' />
+                                    )}
+                                </Text>
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <div className='my-profile-name--row'>
+                                    <div className='my-profile-name--rating__row'>
+                                        <BlockUserCount />
+                                    </div>
+                                    <Text
+                                        className='my-profile-name--rating__row'
+                                        color='less-prominent'
+                                        size={isMobile() ? 'xxxs' : 'xs'}
+                                    >
+                                        {joined_since > 0 ? (
+                                            <Localize
+                                                i18n_default_text='Joined {{days_since_joined}}d'
+                                                values={{ days_since_joined: joined_since }}
+                                            />
+                                        ) : (
+                                            <Localize i18n_default_text='Joined today' />
+                                        )}
+                                    </Text>
+                                </div>
+                            </MobileWrapper>
                         </div>
                         <div className='my-profile-name--row'>
                             <TradeBadge

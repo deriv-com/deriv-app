@@ -1,4 +1,4 @@
-import ButtonToggle from './button-toggle.jsx';
+import ButtonToggle from './button-toggle';
 import './button-toggle.scss';
 
 export default ButtonToggle;

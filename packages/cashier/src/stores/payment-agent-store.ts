@@ -40,7 +40,12 @@ export default class PaymentAgentStore {
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable active_tab_index = 0;
     @observable all_payment_agent_list: TExtendedPaymentAgentListResponse = null;
-    @observable onRemount: () => Promise<void> = null;
+    @observable onRemount: VoidFunction = null;
+
+    @action.bound
+    setOnRemount(func: VoidFunction): void {
+        this.onRemount = func;
+    }
 
     @action.bound
     setActiveTabIndex(index: number): void {
@@ -229,7 +234,7 @@ export default class PaymentAgentStore {
         const { setLoading, onMountCommon } = modules.cashier.general_store;
 
         setLoading(true);
-        this.onRemount = this.onMountPaymentAgentWithdraw;
+        this.setOnRemount(this.onMountPaymentAgentWithdraw);
         onMountCommon();
 
         this.setIsWithdraw(true);
@@ -294,7 +299,7 @@ export default class PaymentAgentStore {
         const { setLoading, onMountCommon } = this.root_store.modules.cashier.general_store;
 
         setLoading(true);
-        this.onRemount = this.onMountPaymentAgentList;
+        this.setOnRemount(this.onMountPaymentAgentList);
         await onMountCommon();
         await this.getPaymentAgentList();
 

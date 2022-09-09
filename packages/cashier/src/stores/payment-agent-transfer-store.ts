@@ -28,7 +28,7 @@ export default class PaymentAgentTransferStore {
     @observable confirm: TPaymentAgentTransferConfirm = {};
     @observable receipt: TPaymentAgentTransferReceipt = {};
     @observable transfer_limit: TTransferLimit = {};
-    @observable onRemount: () => void = null;
+    @observable onRemount: VoidFunction = null;
 
     @computed
     get is_payment_agent_transfer_visible(): boolean {
@@ -38,6 +38,11 @@ export default class PaymentAgentTransferStore {
     async checkIsPaymentAgent(): Promise<void> {
         const get_settings = (await this.WS.authorized.storage.getSettings()).get_settings;
         this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
+    }
+
+    @action.bound
+    setOnRemount(func: VoidFunction): void {
+        this.onRemount = func;
     }
 
     @action.bound
@@ -108,7 +113,7 @@ export default class PaymentAgentTransferStore {
         const { general_store, payment_agent } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
-        this.onRemount = this.onMountPaymentAgentTransfer;
+        this.setOnRemount(this.onMountPaymentAgentTransfer);
         await general_store.onMountCommon();
         if (!this.transfer_limit.min_withdrawal) {
             const response = await payment_agent.getPaymentAgentList();

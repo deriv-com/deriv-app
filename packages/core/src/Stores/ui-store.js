@@ -28,7 +28,7 @@ export default class UIStore extends BaseStore {
     @observable account_switcher_disabled_message = '';
 
     @observable has_only_forward_starting_contracts = false;
-    @observable has_read_scam_message = false;
+    @observable has_read_scam_message = localStorage.getItem('readScamMessage') || false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;

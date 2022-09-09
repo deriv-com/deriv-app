@@ -11,4 +11,4 @@ const MarketOption = ({ symbol }: TMarketOptionProps) => (
     </div>
 );
 
-export default MarketOption;
+export default React.memo(MarketOption);

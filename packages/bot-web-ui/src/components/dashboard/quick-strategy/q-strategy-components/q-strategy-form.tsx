@@ -7,6 +7,7 @@ import { Formik, Form, FormikProps } from 'formik';
 import { QStrategyFooter, QStrategyFields } from '.';
 import { TQuickStrategyFormValues } from '../q-strategy.types';
 import { TQStrategyForm } from './q-strategy-components.types';
+import { SchemaFields } from './schema-form';
 
 const QStrategyForm = ({
     createStrategy,
@@ -29,7 +30,12 @@ const QStrategyForm = ({
     selected_type_strategy,
     description,
 }: TQStrategyForm) => (
-    <Formik initialValues={initial_values} onSubmit={createStrategy} enableReinitialize={true}>
+    <Formik
+        initialValues={initial_values}
+        validationSchema={SchemaFields}
+        onSubmit={createStrategy}
+        enableReinitialize={true}
+    >
         {({
             errors,
             handleChange,
@@ -97,4 +103,4 @@ const QStrategyForm = ({
     </Formik>
 );
 
-export default QStrategyForm;
+export default React.memo(QStrategyForm);

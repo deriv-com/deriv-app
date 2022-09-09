@@ -48,4 +48,4 @@ const QStrategyFooter = ({
     </div>
 );
 
-export default QStrategyFooter;
+export default React.memo(QStrategyFooter);

@@ -12,4 +12,4 @@ const TradeTypeOption = ({ trade_type }: TTradeTypeOptionProps) => (
     </div>
 );
 
-export default TradeTypeOption;
+export default React.memo(TradeTypeOption);

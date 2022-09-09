@@ -9,6 +9,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         active_index,
         description,
         createStrategy,
+        is_strategy_modal_open,
         duration_unit_dropdown,
         types_strategies_dropdown,
         getSizeDesc,
@@ -27,14 +28,22 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         selected_type_strategy,
     } = props;
 
-    const symbol_dropdown_options = symbol_dropdown
-        .map((symbol: TSymbolItem) => ({ component: <MarketOption symbol={symbol} />, ...symbol }))
-        .filter(option => option.group !== 'Cryptocurrencies'); // Until Crypto enabled for Dbot
+    const symbol_dropdown_options = React.useMemo(
+        () =>
+            symbol_dropdown
+                .map((symbol: TSymbolItem) => ({ component: <MarketOption symbol={symbol} />, ...symbol }))
+                .filter(option => option.group !== 'Cryptocurrencies'), // Until Crypto enabled for Dbot
+        [is_strategy_modal_open, symbol_dropdown]
+    );
 
-    const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
-        component: <TradeTypeOption trade_type={trade_type} />,
-        ...trade_type,
-    }));
+    const trade_type_dropdown_options = React.useMemo(
+        () =>
+            trade_type_dropdown.map(trade_type => ({
+                component: <TradeTypeOption trade_type={trade_type} />,
+                ...trade_type,
+            })),
+        [is_strategy_modal_open, selected_symbol, trade_type_dropdown]
+    );
 
     return (
         <>
@@ -65,4 +74,4 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
     );
 };
 
-export default QStrategyContainer;
+export default React.memo(QStrategyContainer);

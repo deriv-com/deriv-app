@@ -7,15 +7,28 @@ import { daysSince, isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import TradeBadge from '../../../trade-badge';
 import MyProfilePrivacy from '../my-profile-privacy';
+import StarRating from 'Components/star-rating';
+import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
 
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
 
-    const { basic_verification, buy_orders_count, created_time, full_verification, sell_orders_count } =
-        my_profile_store.advertiser_info;
+    const {
+        basic_verification,
+        buy_orders_count,
+        created_time,
+        full_verification,
+        rating_average,
+        rating_count,
+        recommended_average,
+        recommended_count,
+        sell_orders_count,
+    } = my_profile_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
+    // rating_average_decimal converts rating_average to 1 d.p number
+    const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
     return (
         <div className='my-profile-name'>
@@ -31,9 +44,60 @@ const MyProfileName = () => {
                         <Text color='prominent' weight='bold' size='s' line_height='m'>
                             {general_store.nickname}
                         </Text>
-                        <div className='my-profile-name--row'>
-                            <BlockUserCount />
-                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                        <div className='my-profile-name--rating'>
+                            {rating_average ? (
+                                <React.Fragment>
+                                    <div className='my-profile-name--rating__row'>
+                                        <StarRating
+                                            empty_star_icon='IcEmptyStar'
+                                            full_star_icon='IcFullStar'
+                                            initial_value={rating_average_decimal}
+                                            is_readonly
+                                            number_of_stars={5}
+                                            should_allow_hover_effect={false}
+                                            star_size={isMobile() ? 17 : 20}
+                                        />
+                                        <div className='my-profile-name--rating__text'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_count === 1 ? (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} rating)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='({{number_of_ratings}} ratings)'
+                                                        values={{ number_of_ratings: rating_count }}
+                                                    />
+                                                )}
+                                            </Text>
+                                        </div>
+                                    </div>
+                                    <div className='my-profile-name--rating__row'>
+                                        <RecommendedBy
+                                            recommended_average={recommended_average}
+                                            recommended_count={recommended_count}
+                                        />
+                                    </div>
+                                    <div className='my-profile-name--rating__row'>
+                                        <BlockUserCount />
+                                    </div>
+                                </React.Fragment>
+                            ) : (
+                                <div className='my-profile-name--rating__row'>
+                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                        <Localize i18n_default_text='Not rated yet' />
+                                    </Text>
+                                </div>
+                            )}
+                            <Text
+                                className='my-profile-name--rating__row'
+                                color='less-prominent'
+                                size={isMobile() ? 'xxxs' : 'xs'}
+                            >
                                 {joined_since > 0 ? (
                                     <Localize
                                         i18n_default_text='Joined {{days_since_joined}}d'

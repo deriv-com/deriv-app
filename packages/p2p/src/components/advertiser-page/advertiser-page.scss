@@ -87,7 +87,7 @@
             display: flex;
 
             @include mobile {
-                margin: 0 1.6rem;
+                margin: 0 0 1rem;
 
                 .dp2p-avatar {
                     align-self: center;
@@ -154,6 +154,51 @@
         @include mobile {
             max-width: 100vw;
         }
+    }
+
+    &__rating {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 0.7rem;
+
+        @include mobile {
+            padding-top: 0.7rem;
+        }
+
+        &--row {
+            align-items: center;
+            border-left: 1px solid var(--general-section-1);
+            display: flex;
+            padding: 0 0.8rem;
+
+            &:first-child {
+                padding-left: unset;
+                border-left: unset;
+            }
+        }
+
+        &--star {
+            pointer-events: none;
+
+            > svg {
+                margin-right: 0.1rem;
+            }
+        }
+
+        &--text {
+            display: flex;
+            gap: 0.8rem;
+            margin-left: 0.4rem;
+        }
+    }
+
+    &__row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__joined-since {
+        margin-bottom: 0.7rem;
     }
 
     &__stats {
@@ -293,6 +338,7 @@
             @include mobile {
                 display: flex;
                 flex-flow: column;
+                margin-top: 1rem;
                 width: 100vw;
             }
 

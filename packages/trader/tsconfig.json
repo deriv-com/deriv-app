@@ -13,11 +13,11 @@
             "Services/*": ["src/Services/*"],
             "Stores/*": ["src/Stores/*"],
             "Translations/*": ["src/public/translations/*"],
-            "Utils/*": ["src/Utils/*"]
+            "Utils/*": ["src/Utils/*"],
+            "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
-        "rootDir": "./src",
         "baseUrl": "./"
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["src"]
 }

@@ -144,10 +144,7 @@ export default class MyProfileStore extends BaseStore {
     @computed
     get rendered_blocked_advertisers_list() {
         if (this.search_term) {
-            if (this.search_results.length) {
-                return this.search_results;
-            }
-            return [];
+            return this.search_results;
         }
         return this.blocked_advertisers_list;
     }
@@ -380,6 +377,11 @@ export default class MyProfileStore extends BaseStore {
             const search_results = this.blocked_advertisers_list.filter(blocked_advertiser =>
                 blocked_advertiser.name.toLowerCase().includes(this.search_term.toLowerCase().trim())
             );
+
+            // if user deletes the last blocked advertiser while searching, display 'You have no blocked advertisers' message condition
+            if (this.search_term && search_results.length === 0 && this.blocked_advertisers_list.length === 0) {
+                this.setSearchTerm('');
+            }
 
             this.setSearchResults(search_results);
         }

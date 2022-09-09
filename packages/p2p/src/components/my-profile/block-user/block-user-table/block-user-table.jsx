@@ -27,7 +27,7 @@ const BlockUserTable = () => {
         return <TableError message={general_store.block_unblock_user_error} />;
     }
 
-    if (my_profile_store.search_term && my_profile_store.rendered_blocked_advertisers_list.length === 0) {
+    if (my_profile_store.search_term && my_profile_store.search_results.length === 0) {
         return (
             <Text align='center' className='block-user__text' line_height='m' size='s' weight='normal'>
                 {localize('There are no matching name.')}

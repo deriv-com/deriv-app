@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
+import EmailVerificationModal from 'Components/email-verification-modal';
 import RatingModal from 'Components/rating-modal';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
@@ -20,9 +20,13 @@ import PaymentMethodAccordionContent from './payment-method-accordion-content.js
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
+import LoadingModal from '../loading-modal';
+import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
+import EmailLinkBlockedModal from '../email-link-blocked-modal';
+import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 
-const OrderDetails = observer(({ onPageReturn }) => {
+const OrderDetails = observer(() => {
     const { general_store, order_store, sendbird_store } = useStores();
 
     const {
@@ -72,6 +76,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
 
+        order_store.getSettings();
+        order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
 
@@ -85,6 +91,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
             disposeListeners();
             disposeReactions();
             order_store.setOrderPaymentMethodDetails(undefined);
+            order_store.setOrderId(null);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -110,7 +117,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
             : client_details?.is_recommended;
 
     return (
-        <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
+        <OrderDetailsWrapper page_title={page_title}>
             {is_active_order && (
                 <RatingModal
                     is_buy_order_for_user={is_buy_order_for_user}
@@ -149,6 +156,35 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         is_warn
                     />
                 </div>
+            )}
+            {!is_buy_order_for_user && (
+                <React.Fragment>
+                    <EmailVerificationModal
+                        email_address={order_store.user_email_address}
+                        is_email_verification_modal_open={order_store.is_email_verification_modal_open}
+                        onClickResendEmailButton={() => order_store.confirmOrderRequest(id)}
+                        setIsEmailVerificationModalOpen={order_store.setIsEmailVerificationModalOpen}
+                    />
+                    <EmailLinkVerifiedModal
+                        amount={display_payment_amount}
+                        currency={local_currency}
+                        is_email_link_verified_modal_open={order_store.is_email_link_verified_modal_open}
+                        onClickConfirm={() => order_store.confirmOrder(is_buy_order_for_user)}
+                        setIsEmailLinkVerifiedModalOpen={order_store.setIsEmailLinkVerifiedModalOpen}
+                    />
+                    <InvalidVerificationLinkModal
+                        invalid_verification_link_error_message={order_store.verification_link_error_message}
+                        is_invalid_verification_link_modal_open={order_store.is_invalid_verification_link_modal_open}
+                        setIsInvalidVerificationLinkModalOpen={order_store.setIsInvalidVerificationLinkModalOpen}
+                        onClickGetNewLinkButton={() => order_store.confirmOrderRequest(id)}
+                    />
+                    <EmailLinkBlockedModal
+                        email_link_blocked_modal_error_message={order_store.verification_link_error_message}
+                        is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
+                        setIsEmailLinkBlockedModalOpen={order_store.setIsEmailLinkBlockedModalOpen}
+                    />
+                    <LoadingModal is_loading_modal_open={order_store.is_loading_modal_open} />
+                </React.Fragment>
             )}
             <div className='order-details'>
                 <div className='order-details-card'>
@@ -394,9 +430,5 @@ const OrderDetails = observer(({ onPageReturn }) => {
         </OrderDetailsWrapper>
     );
 });
-
-OrderDetails.propTypes = {
-    onPageReturn: PropTypes.func,
-};
 
 export default OrderDetails;

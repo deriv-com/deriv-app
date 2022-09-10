@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCode } from 'react-qrcode';
 import { Icon, Text, DesktopWrapper } from '@deriv/components';
 import { CFD_PLATFORMS, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -147,11 +147,11 @@ const MobileDownload = ({ is_dark_mode_on, platform }: Partial<TCFDDashboardCont
     );
 };
 
-const QRCode = () => {
+const QRCodeBox = () => {
     return (
         <DesktopWrapper>
             <div className='cfd-dashboard__download-container__qrcode'>
-                <QRCodeSVG value='https://deriv.com/' size={160} />
+                <QRCode value='https://deriv.com/' size={160} />
                 <span className='cfd-dashboard__download-container__qrcode__hint'>
                     {localize('Scan the QR code to download the Deriv X Mobile App')}
                 </span>
@@ -192,7 +192,7 @@ const CFDDownloadContainer = ({ platform, is_dark_mode_on, active_index, dxtrade
                 </div>
             </div>
 
-            {platform === CFD_PLATFORMS.DXTRADE && <QRCode />}
+            {platform === CFD_PLATFORMS.DXTRADE && <QRCodeBox />}
         </div>
     );
 };

@@ -127,7 +127,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Landing company shortcode of the DXTrade account.
      */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
+    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
     /**
      * Login of DXTrade account.
      */

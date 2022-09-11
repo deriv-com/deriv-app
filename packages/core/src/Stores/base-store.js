@@ -118,11 +118,14 @@ export default class BaseStore {
         this.root_store = root_store;
         this.local_storage_properties = local_storage_properties || [];
         this.session_storage_properties = session_storage_properties || [];
-        this.setValidationRules(validation_rules);
 
-        this.setupReactionForLocalStorage();
-        this.setupReactionForSessionStorage();
-        this.retrieveFromStorage();
+        setTimeout(() => {
+            this.setValidationRules(validation_rules);
+
+            this.setupReactionForLocalStorage();
+            this.setupReactionForSessionStorage();
+            this.retrieveFromStorage();
+        }, 0);
     }
 
     /**

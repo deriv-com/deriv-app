@@ -23,7 +23,12 @@ export default class OrderStore {
     @observable cancels_remaining = null;
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable is_email_link_blocked_modal_open = false;
+    @observable is_email_link_verified_modal_open = false;
+    @observable is_email_verification_modal_open = false;
+    @observable is_invalid_verification_link_modal_open = false;
     @observable is_loading = false;
+    @observable is_loading_modal_open = false;
     @observable is_rating_modal_open = false;
     @observable is_recommended = undefined;
     @observable orders = [];
@@ -31,6 +36,9 @@ export default class OrderStore {
     @observable order_payment_method_details = null;
     @observable order_rerender_timeout = null;
     @observable rating_value = 0;
+    @observable user_email_address = '';
+    @observable verification_code = '';
+    @observable verification_link_error_message = '';
 
     interval;
     order_info_subscription = {};
@@ -45,7 +53,6 @@ export default class OrderStore {
     get order_information() {
         const { general_store } = this.root_store;
         const order = this.orders.find(o => o.id === this.order_id);
-
         return order
             ? createExtendedOrderDetails(order, general_store.client.loginid, general_store.props.server_time)
             : null;
@@ -57,15 +64,63 @@ export default class OrderStore {
     }
 
     @action.bound
-    confirmOrderRequest(id) {
+    confirmOrderRequest(id, is_buy_order_for_user) {
         const { order_details_store } = this.root_store;
-
         requestWS({
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            if (response && response.error) {
-                order_details_store.setErrorMessage(response.error.message);
+            if (response) {
+                if (response.error) {
+                    if (response.error.code === 'OrderEmailVerificationRequired') {
+                        clearTimeout(wait);
+                        const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
+                    } else if (
+                        response?.error.code === 'InvalidVerificationToken' ||
+                        response?.error.code === 'ExcessiveVerificationRequests'
+                    ) {
+                        clearTimeout(wait);
+                        if (this.is_email_verification_modal_open) {
+                            this.setIsEmailVerificationModalOpen(false);
+                        }
+                        if (this.is_email_link_verified_modal_open) {
+                            this.setIsEmailLinkVerifiedModalOpen(false);
+                        }
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
+                    } else if (response?.error.code === 'ExcessiveVerificationFailures') {
+                        if (this.is_invalid_verification_link_modal_open) {
+                            this.setIsInvalidVerificationLinkModalOpen(false);
+                        }
+                        clearTimeout(wait);
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
+                    } else {
+                        order_details_store.setErrorMessage(response.error.message);
+                    }
+                } else if (!is_buy_order_for_user) {
+                    this.setIsRatingModalOpen(true);
+                }
+
+                localStorage.removeItem('verification_code.p2p_order_confirm');
+            }
+        });
+    }
+
+    @action.bound
+    confirmOrder(is_buy_order_for_user) {
+        requestWS({
+            p2p_order_confirm: 1,
+            id: this.order_id,
+            verification_code: this.verification_code,
+        }).then(response => {
+            if (response && !response.error) {
+                if (!is_buy_order_for_user) {
+                    clearTimeout(wait);
+                    const wait = setTimeout(() => {
+                        this.setIsRatingModalOpen(true);
+                    }, 230);
+                }
             }
         });
     }
@@ -79,8 +134,16 @@ export default class OrderStore {
                 this.setCancelsRemaining(response.p2p_advertiser_info.cancels_remaining);
             }
         });
-
         this.getWebsiteStatus(setShouldShowCancelModal);
+    }
+
+    @action.bound
+    getSettings() {
+        requestWS({ get_settings: 1 }).then(response => {
+            if (response && !response.error) {
+                this.setUserEmailAddress(response.get_settings.email);
+            }
+        });
     }
 
     @action.bound
@@ -94,7 +157,6 @@ export default class OrderStore {
                 this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
-
             if (typeof setShouldShowCancelModal === 'function') {
                 setShouldShowCancelModal(true);
             }
@@ -111,18 +173,15 @@ export default class OrderStore {
         if (should_navigate && this.nav) {
             this.root_store.general_store.redirectTo(this.nav.location);
         }
-
         this.setOrderId(null);
     }
 
     @action.bound
     loadMoreOrders({ startIndex }) {
         this.setApiErrorMessage('');
-
         return new Promise(resolve => {
             const { general_store } = this.root_store;
             const active = general_store.is_active_tab ? 1 : 0;
-
             requestWS({
                 p2p_order_list: 1,
                 active,
@@ -192,10 +251,28 @@ export default class OrderStore {
     }
 
     @action.bound
+    onPageReturn() {
+        this.hideDetails(true);
+    }
+
+    @action.bound
     onUnmount() {
         clearTimeout(this.order_rerender_timeout);
         this.unsubscribeFromCurrentOrder();
         this.hideDetails(false);
+    }
+
+    @action.bound
+    setOrderDetails(response) {
+        if (response) {
+            if (!response?.error) {
+                const { p2p_order_info } = response;
+
+                this.setQueryDetails(p2p_order_info);
+            } else {
+                this.unsubscribeFromCurrentOrder();
+            }
+        }
     }
 
     @action.bound
@@ -215,6 +292,53 @@ export default class OrderStore {
                 this.setIsRatingModalOpen(false);
             }
         });
+    }
+
+    @action.bound
+    setQueryDetails(input_order) {
+        const { general_store } = this.root_store;
+        const order_information = createExtendedOrderDetails(
+            input_order,
+            general_store.client.loginid,
+            general_store.props.server_time
+        );
+        this.setOrderId(order_information.id); // Sets the id in URL
+        if (order_information.is_active_order) {
+            general_store.setOrderTableType(order_list.ACTIVE);
+        } else {
+            general_store.setOrderTableType(order_list.INACTIVE);
+        }
+        if (order_information?.payment_method_details) {
+            this.setOrderPaymentMethodDetails(Object.values(order_information?.payment_method_details));
+        }
+        // When viewing specific order, update its read state in localStorage.
+        const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
+
+        if (notifications.length) {
+            const notification = notifications.find(n => n.order_id === order_information.id);
+
+            if (notification) {
+                notification.is_seen = true;
+                this.root_store.general_store.updateP2pNotifications(notifications);
+            }
+        }
+
+        // Force a refresh of this order when it's expired to correctly
+        // reflect the status of the order. This is to work around a BE issue
+        // where they only expire contracts once a minute rather than on expiry time.
+        const { remaining_seconds } = order_information;
+
+        if (remaining_seconds > 0) {
+            clearTimeout(this.order_rerender_timeout);
+
+            this.setOrderRendererTimeout(
+                setTimeout(() => {
+                    if (typeof this.forceRerenderFn === 'function') {
+                        this.forceRerenderFn(order_information.id);
+                    }
+                }, (remaining_seconds + 1) * 1000)
+            );
+        }
     }
 
     @action.bound
@@ -281,8 +405,38 @@ export default class OrderStore {
     }
 
     @action.bound
-    setForceRerenderOrders(forceRerenderFn) {
-        this.forceRerenderFn = forceRerenderFn;
+    verifyEmailVerificationCode(verification_action, verification_code) {
+        if (verification_action === 'p2p_order_confirm' && verification_code) {
+            requestWS({
+                p2p_order_confirm: 1,
+                id: this.order_id,
+                verification_code,
+                dry_run: 1,
+            }).then(response => {
+                this.setIsLoadingModalOpen(false);
+                if (response) {
+                    if (!response.error) {
+                        clearTimeout(wait);
+                        const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
+                    } else if (
+                        response.error.code === 'InvalidVerificationToken' ||
+                        response.error.code === 'ExcessiveVerificationRequests'
+                    ) {
+                        clearTimeout(wait);
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 750);
+                    } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                        if (this.is_invalid_verification_link_modal_open) {
+                            this.setIsInvalidVerificationLinkModalOpen(false);
+                        }
+                        clearTimeout(wait);
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
+                    }
+                    localStorage.removeItem('verification_code.p2p_order_confirm');
+                }
+            });
+        }
     }
 
     @action.bound
@@ -321,13 +475,43 @@ export default class OrderStore {
     }
 
     @action.bound
+    setForceRerenderOrders(forceRerenderFn) {
+        this.forceRerenderFn = forceRerenderFn;
+    }
+
+    @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
     }
 
     @action.bound
+    setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
+        this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
+    }
+
+    @action.bound
+    setIsEmailLinkVerifiedModalOpen(is_email_link_verified_modal_open) {
+        this.is_email_link_verified_modal_open = is_email_link_verified_modal_open;
+    }
+
+    @action.bound
+    setIsEmailVerificationModalOpen(is_email_verification_modal_open) {
+        this.is_email_verification_modal_open = is_email_verification_modal_open;
+    }
+
+    @action.bound
+    setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
+        this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsLoadingModalOpen(is_loading_modal_open) {
+        this.is_loading_modal_open = is_loading_modal_open;
     }
 
     @action.bound
@@ -341,19 +525,9 @@ export default class OrderStore {
     }
 
     @action.bound
-    setOrderPaymentMethodDetails(order_payment_method_details) {
-        this.order_payment_method_details = order_payment_method_details;
-    }
-
-    @action.bound
-    setOrderDetails(response) {
-        if (!response.error) {
-            const { p2p_order_info } = response;
-
-            this.setQueryDetails(p2p_order_info);
-        } else {
-            this.unsubscribeFromCurrentOrder();
-        }
+    setOrders(orders) {
+        this.previous_orders = cloneObject(this.orders);
+        this.orders = orders;
     }
 
     @action.bound
@@ -368,9 +542,8 @@ export default class OrderStore {
     }
 
     @action.bound
-    setOrders(orders) {
-        this.previous_orders = cloneObject(this.orders);
-        this.orders = orders;
+    setOrderPaymentMethodDetails(order_payment_method_details) {
+        this.order_payment_method_details = order_payment_method_details;
     }
 
     @action.bound
@@ -379,54 +552,24 @@ export default class OrderStore {
     }
 
     @action.bound
-    setQueryDetails(input_order) {
-        const { general_store } = this.root_store;
-        const order_information = createExtendedOrderDetails(
-            input_order,
-            general_store.client.loginid,
-            general_store.props.server_time
-        );
-        this.setOrderId(order_information.id); // Sets the id in URL
-        if (order_information.is_active_order) {
-            general_store.setOrderTableType(order_list.ACTIVE);
-        } else {
-            general_store.setOrderTableType(order_list.INACTIVE);
-        }
-        if (order_information?.payment_method_details) {
-            this.setOrderPaymentMethodDetails(Object.values(order_information?.payment_method_details));
-        }
-        // When viewing specific order, update its read state in localStorage.
-        const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
-
-        if (notifications.length) {
-            const notification = notifications.find(n => n.order_id === order_information.id);
-
-            if (notification) {
-                notification.is_seen = true;
-                this.root_store.general_store.updateP2pNotifications(notifications);
-            }
-        }
-
-        // Force a refresh of this order when it's expired to correctly
-        // reflect the status of the order. This is to work around a BE issue
-        // where they only expire contracts once a minute rather than on expiry time.
-        const { remaining_seconds } = order_information;
-
-        if (remaining_seconds > 0) {
-            clearTimeout(this.order_rerender_timeout);
-
-            this.setOrderRendererTimeout(
-                setTimeout(() => {
-                    if (typeof this.forceRerenderFn === 'function') {
-                        this.forceRerenderFn(order_information.id);
-                    }
-                }, (remaining_seconds + 1) * 1000)
-            );
-        }
+    setRatingValue(rating_value) {
+        this.rating_value = rating_value;
     }
 
     @action.bound
-    setRatingValue(rating_value) {
-        this.rating_value = rating_value;
+    setUserEmailAddress(user_email_address) {
+        this.user_email_address = user_email_address;
+    }
+
+    // This is only for the order confirmation request,
+    // since on confirmation the code is removed from the query params
+    @action.bound
+    setVerificationCode(verification_code) {
+        this.verification_code = verification_code;
+    }
+
+    @action.bound
+    setVerificationLinkErrorMessage(verification_link_error_message) {
+        this.verification_link_error_message = verification_link_error_message;
     }
 }

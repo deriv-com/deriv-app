@@ -4,7 +4,7 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore, TReactChangeEvent, TReactChildren } from 'Types';
+import { RootStore, TReactChangeEvent, TReactChildren } from 'Types';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -170,7 +170,7 @@ const CryptoFiatConverter = ({
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
+export default connect(({ modules }: RootStore) => ({
     converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
     converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,

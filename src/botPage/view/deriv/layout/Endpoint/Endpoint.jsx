@@ -31,7 +31,7 @@ const Endpoint = () => {
 				api.disconnect();
 			}
 
-			const socket_url = `wss://${apiUrl || getServerAddressFallback()}/websockets/v3?app_id=${appId || getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+			const socket_url = `wss://${apiUrl || getServerAddressFallback()}/websockets/v3?app_id=${appId || getAppIdFallback()}&l=${getLanguage().toUpperCase()}&brand=deriv`;
 
 			api = new DerivAPIBasic({
 				connection: new WebSocket(socket_url),

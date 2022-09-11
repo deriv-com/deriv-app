@@ -94,7 +94,7 @@ describe('OnRampStore', () => {
     it('should have returned from onMountOnramp method if there is no selected_provider', () => {
         const spyOnMountOnramp = jest.spyOn(onramp_store, 'onMountOnramp');
         onramp_store.onMountOnramp();
-        changelly_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependecy']);
+        changelly_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependency']);
         onramp_store.setSelectedProvider(changelly_provider);
         onramp_store.setSelectedProvider();
 
@@ -276,8 +276,8 @@ describe('OnRampStore', () => {
         onramp_store.resetPopup();
 
         expect(onramp_store.api_error).toBeNull();
-        expect(onramp_store.deposit_address).toBeNull();
-        expect(onramp_store.deposit_address_ref).toBeNull();
+        expect(onramp_store.deposit_address).toBe('');
+        expect(onramp_store.deposit_address_ref).toStrictEqual({});
         expect(onramp_store.is_deposit_address_loading).toBeTruthy();
         expect(onramp_store.selected_provider).toBeNull();
         expect(onramp_store.should_show_widget).toBeFalsy();
@@ -289,12 +289,6 @@ describe('OnRampStore', () => {
         onramp_store.setApiError('API error');
 
         expect(onramp_store.api_error).toBe('API error');
-    });
-
-    it('should set copy icon ref', () => {
-        onramp_store.setCopyIconRef('icon ref');
-
-        expect(onramp_store.copy_icon_ref).toBe('icon ref');
     });
 
     it('should set deposit address', () => {

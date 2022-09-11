@@ -1,6 +1,16 @@
 import { localize } from '@deriv/translations';
+import { TProviderDetails, TProviderDetailsWithoutFrom, TServerError, TClientStore } from 'Types';
 
-const createBanxaProvider = store => ({
+export type TProviderResponse = {
+    error: TServerError;
+    service_token: {
+        banxa: {
+            url: string;
+        };
+    };
+};
+
+const createBanxaProvider = (store: any): TProviderDetails => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
     name: 'Banxa',
     getDescription: () =>
@@ -33,7 +43,7 @@ const createBanxaProvider = store => ({
                 service_token: 1,
                 service: 'banxa',
                 referrer: window.location.href,
-            }).then(response => {
+            }).then((response: TProviderResponse) => {
                 if (response.error) {
                     reject(response.error.message);
                 } else {
@@ -44,16 +54,18 @@ const createBanxaProvider = store => ({
                     }
 
                     // Resolving empty will/should redirect user.
-                    resolve();
+                    resolve('');
                 }
             });
         });
     },
-    onMountWidgetContainer: () => {},
+    onMountWidgetContainer: () => undefined,
     should_show_deposit_address: false,
 });
 
-const createChangellyProvider = store => ({
+const createChangellyProvider = (store: {
+    root_store: { client: { currency: TClientStore['currency'] } };
+}): TProviderDetails => ({
     icon: { dark: 'IcCashierChangellyDark', light: 'IcCashierChangellyLight' },
     name: 'Changelly',
     getDescription: () =>
@@ -80,17 +92,20 @@ const createChangellyProvider = store => ({
                 url.searchParams.append('toDefault', to_currency);
             }
 
-            url.searchParams.append('amount', 1);
+            url.searchParams.append('amount', String(1));
             url.searchParams.append('merchant_id', 'iiq3jdt2p44yrfbx');
             window.open(url);
-            resolve();
+            resolve('');
         });
     },
-    onMountWidgetContainer: () => {},
+    onMountWidgetContainer: () => undefined,
     should_show_deposit_address: true,
 });
 
-const createXanPoolProvider = store => ({
+const createXanPoolProvider = (store: {
+    root_store: { client: { currency: TClientStore['currency'] } };
+    deposit_address: string | null;
+}): TProviderDetailsWithoutFrom => ({
     icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
     name: 'XanPool',
     getDescription: () =>
@@ -125,10 +140,10 @@ const createXanPoolProvider = store => ({
             url += `&transactionType=buy`;
 
             window.open(url);
-            resolve();
+            resolve('');
         });
     },
-    onMountWidgetContainer: () => {},
+    onMountWidgetContainer: () => undefined,
     should_show_deposit_address: false,
 });
 

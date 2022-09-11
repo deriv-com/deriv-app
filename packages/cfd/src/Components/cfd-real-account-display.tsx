@@ -7,7 +7,7 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts } from './props.types';
+import { TExistingData, TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
@@ -43,7 +43,7 @@ type TCFDRealAccountDisplayProps = {
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
-    platform: string;
+    platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
         account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
     ) => boolean;

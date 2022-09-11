@@ -54,17 +54,21 @@ const DxtradeCompareAccountContent = ({
     is_eu,
     is_uk,
 }: TDxtradeCompareAccountContent) => {
-    return is_demo_tab ? (
-        <CfdDxtradeCompareContent
-            is_logged_in={is_logged_in}
-            landing_companies={landing_companies}
-            platform={platform}
-            show_eu_related={show_eu_related}
-            residence={residence}
-            is_eu={is_eu}
-            is_uk={is_uk}
-        />
-    ) : (
+    if (is_demo_tab) {
+        return (
+            <CfdDxtradeCompareContent
+                is_logged_in={is_logged_in}
+                landing_companies={landing_companies}
+                platform={platform}
+                show_eu_related={show_eu_related}
+                residence={residence}
+                is_eu={is_eu}
+                is_uk={is_uk}
+            />
+        );
+    }
+
+    return (
         <ModalContent
             is_logged_in={is_logged_in}
             landing_companies={landing_companies}

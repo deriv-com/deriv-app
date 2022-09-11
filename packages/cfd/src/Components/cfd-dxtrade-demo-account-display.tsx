@@ -4,7 +4,7 @@ import { CFDAccountCard } from 'Components/cfd-account-card';
 import specifications, { TSpecifications } from 'Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
-import { TTradingPlatformAccounts } from 'Components/props.types';
+import { TTradingPlatformAccounts, TCFDPlatform } from 'Components/props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
@@ -31,7 +31,7 @@ type TCFDDemoAccountDisplayProps = {
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
-    platform: string;
+    platform: TCFDPlatform;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     landing_companies?: LandingCompany;

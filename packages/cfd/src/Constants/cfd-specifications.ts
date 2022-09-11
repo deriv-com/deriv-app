@@ -61,6 +61,8 @@ const mt5 = {
         'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('70+') },
     },
 };
+
+// TODO: Edit this after real accounts release
 const dxtrade = {
     real_synthetic_specs: {
         leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:1000') },

@@ -16,14 +16,15 @@ const getTopUpConfig = () => {
 };
 
 const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
-    if (platform === 'ios') {
-        return DXTRADE_IOS_APP_URL;
+    switch (platform) {
+        case 'ios':
+            return DXTRADE_IOS_APP_URL;
+        case 'huawei':
+            // TODO: Add link of the huawei of the dxtrader
+            return '';
+        default:
+            return DXTRADE_ANDROID_APP_URL;
     }
-    if (platform === 'huawei') {
-        // TODO: Add link of the huawei of the dxtrader
-        return '';
-    }
-    return DXTRADE_ANDROID_APP_URL;
 };
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {

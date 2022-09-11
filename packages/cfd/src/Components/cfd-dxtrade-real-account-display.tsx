@@ -6,7 +6,7 @@ import { getAccountListKey, getCFDAccountKey } from '@deriv/shared';
 import specifications, { TSpecifications } from 'Constants/cfd-specifications';
 import { CFDAccountCard } from 'Components/cfd-account-card';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts } from 'Components/props.types';
+import { TExistingData, TTradingPlatformAccounts, TCFDPlatform } from 'Components/props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TOpenAccountTransferMeta = {
@@ -26,7 +26,7 @@ type TCFDRealAccountDisplayProps = {
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
-    platform: string;
+    platform: TCFDPlatform;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;

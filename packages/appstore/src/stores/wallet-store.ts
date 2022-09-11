@@ -18,6 +18,9 @@ export default class WalletStore extends BaseStore {
     @observable
     account_types: any;
 
+    @observable
+    should_open_modal = false;
+
     @computed
     get wallet_names() {
         return this.account_types?.wallet;
@@ -88,5 +91,28 @@ export default class WalletStore extends BaseStore {
     @action
     onUnmount() {
         this.account_types = null;
+    }
+
+    @action.bound
+    toggleModal() {
+        this.should_open_modal = !this.should_open_modal;
+    }
+
+    @action.bound
+    async installDerivApps() {
+        const demo_trading_account = await WS.authorized.storage.send({
+            new_account_virtual: 1,
+            type: 'trading',
+        });
+
+        if (!demo_trading_account.error) {
+            const link_wallet = WS.authorized.storage.send({
+                link_wallet: 1,
+                client_id: this.root_store.client.loginid,
+                wallet_id: demo_trading_account.new_account_virtual.client_id,
+            });
+
+            if (!link_wallet.error) this.toggleModal();
+        }
     }
 }

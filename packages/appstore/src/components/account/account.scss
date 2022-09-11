@@ -1,0 +1,125 @@
+.account__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.4rem 0;
+    isolation: isolate;
+    position: relative;
+    width: 24rem;
+    height: 7.2rem;
+    background: $color-grey-2;
+    border-radius: 0.6rem 0.6rem 0 0;
+    @include mobile {
+        padding: 0.8rem;
+        gap: 0.4rem;
+        isolation: isolate;
+        width: 22rem;
+        height: 6.2rem;
+        border-radius: 0.4rem 0.4rem 0 0;
+    }
+    &--dropdown {
+        @include mobile {
+            height: 6rem;
+            position: absolute;
+            right: 0.8rem;
+            top: 3.3rem;
+        }
+    }
+    &--icon {
+        width: 6.4rem;
+        @include mobile {
+            width: 6.4rem;
+            height: 6rem;
+        }
+    }
+    &--account-details-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        width: 13.3rem;
+        height: 5.6rem;
+        &--name-number {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0;
+            width: 6.9rem;
+            height: 3.2rem;
+            &--name {
+                height: 1.8rem;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                color: $color-black-1;
+                @include mobile {
+                    height: 1.4rem;
+                }
+            }
+            &--number {
+                width: 6.9rem;
+                height: 1.4rem;
+                font-style: normal;
+                font-weight: 400;
+                font-size: 1rem;
+                line-height: 1.4rem;
+                color: $color-grey-1;
+                @include mobile {
+                    width: 5.4rem;
+                    height: 1.2rem;
+                    font-weight: 700;
+                    font-size: 0.8rem;
+                    line-height: 1.2rem;
+                }
+            }
+        }
+        &--balance {
+            width: 11.4rem;
+            height: 2.4rem;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.6rem;
+            line-height: 2.4rem;
+            color: $color-black-1;
+            @include mobile {
+                width: 9.9rem;
+                height: 2rem;
+                font-size: 1.4rem;
+                line-height: 2rem;
+            }
+        }
+    }
+    &--account-reset-button {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0.3rem 0.8rem;
+        position: absolute;
+        width: 6rem;
+        height: 2.4rem;
+        right: 0.8rem;
+        top: 0.8rem;
+        border: 0.1rem solid $color-grey-1;
+        border-radius: 0.4rem;
+        @include mobile {
+            top: 0.8rem;
+            border: 0.1rem solid $color-grey-1;
+            border-radius: 0.4rem;
+            right: 3.8rem;
+        }
+        &--label {
+            width: 4.5rem;
+            height: 1.8rem;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+            text-align: center;
+            color: $color-black-1;
+        }
+    }
+}

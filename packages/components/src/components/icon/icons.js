@@ -1,7 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
-import './appstore/ic-appstore-add.svg';
 import './appstore/ic-appstore-add-rounded.svg';
+import './appstore/ic-appstore-add.svg';
 import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';
 import './appstore/ic-appstore-cfds-trade-type.svg';
@@ -12,8 +12,11 @@ import './appstore/ic-appstore-checked.svg';
 import './appstore/ic-appstore-circle.svg';
 import './appstore/ic-appstore-close-dark.svg';
 import './appstore/ic-appstore-close-light.svg';
+import './appstore/ic-appstore-derived.svg';
+import './appstore/ic-appstore-derivx.svg';
 import './appstore/ic-appstore-ellipse.svg';
 import './appstore/ic-appstore-error.svg';
+import './appstore/ic-appstore-financial.svg';
 import './appstore/ic-appstore-information.svg';
 import './appstore/ic-appstore-link-wallet.svg';
 import './appstore/ic-appstore-linked-wallets.svg';

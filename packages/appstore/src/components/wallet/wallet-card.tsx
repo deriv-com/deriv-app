@@ -139,12 +139,12 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
         '--primary-color': wallet_card_data[wallet_name]?.colors.primary || '#CFCFCF',
         '--secondary-color': wallet_card_data[wallet_name]?.colors.secondary || '#D6DADB',
         '--stroke-theme-color-1': dark ? '#fff' : '#0E0E0E',
-        ...(isDemo() ? { '--base-color': dark ? '#fff' : '#151717' } : { '--base-color': dark ? '#151717' : '#fff' }),
+        ...(isDemo ? { '--base-color': dark ? '#fff' : '#151717' } : { '--base-color': dark ? '#151717' : '#fff' }),
     };
 
     const getBackgroundIcon = () => {
-        if (isIconSmall()) return 'IcAppstoreWalletSmall';
-        return isDemo() ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
+        if (isIconSmall) return 'IcAppstoreWalletSmall';
+        return isDemo ? 'IcAppstoreWalletDemo' : 'IcAppstoreWalletDefault';
     };
 
     const name = snakeToPascal(wallet_name || '');
@@ -186,7 +186,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, si
                 ) : (
                     <div className={classNames('wallet-card__logo', 'wallet-card__logo--placeholder')} />
                 )}
-                {!isIconSmall() && (
+                {!isIconSmall && (
                     <CardText balance={balance} currency={currency} demo={demo} wallet_name={wallet_name} />
                 )}
             </div>

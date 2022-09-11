@@ -31,7 +31,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                 <div className='wallet-account__header'>
                     <div className='wallet-account__details'>
                         <div className='wallet-account__logo'>
-                            <WalletCard wallet_name={isAccountVirtual() ? 'demo' : ''} size='small' />
+                            <WalletCard wallet_name={isAccountVirtual ? 'demo' : ''} size='small' />
                         </div>
                         <div className='wallet-account__info'>
                             <Text bold type='subtitle-2'>
@@ -48,7 +48,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                         </div>
                     </div>
                     <div className='wallet-account__balance'>
-                        {isAccountVirtual() && (
+                        {isAccountVirtual && (
                             <Text bold={false} type='small' align='right'>
                                 {localize('Virtual balance')}
                             </Text>

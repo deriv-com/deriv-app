@@ -132,11 +132,8 @@ const CardText = ({ balance, currency, demo, wallet_name }: CardText) => {
 };
 
 const WalletCard = ({ active, balance, currency, dark, demo, disabled, faded, size, wallet_name }: WalletCardProps) => {
-    const isDemo = () => demo || wallet_name === 'demo';
-
-    const isIconSmall = () => {
-        return ['xsmall', 'small'].includes(size || '');
-    };
+    const isDemo = demo || wallet_name === 'demo';
+    const isIconSmall = ['xsmall', 'small'].includes(size || '');
 
     const style = {
         '--primary-color': wallet_card_data[wallet_name]?.colors.primary || '#CFCFCF',

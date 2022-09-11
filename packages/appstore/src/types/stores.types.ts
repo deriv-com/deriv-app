@@ -1,6 +1,6 @@
 import ConfigStore from 'Stores/config-store';
 import WalletStore from 'Stores/wallet-store';
-import { Authorize } from '@deriv/api-types';
+import { Authorize as TAuthorize } from '@deriv/api-types';
 
 export type TRootStore = {
     ui: Record<string, any>;
@@ -9,6 +9,13 @@ export type TRootStore = {
     wallet_store: WalletStore;
 };
 
-export type TWalletAccount = Required<Authorize>['account_list'] & {
+type TAccountList = NonNullable<TAuthorize['account_list']>[number];
+export type TExtendedAccountList = TAccountList & {
     created_at: number;
 };
+
+type TExtendedAuthorize = TAuthorize & {
+    account_list: TExtendedAccountList[];
+};
+
+export type Authorize = TExtendedAuthorize;

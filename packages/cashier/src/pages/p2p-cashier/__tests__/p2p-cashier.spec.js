@@ -16,7 +16,7 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv/p2p', () => jest.fn(() => 'P2P'));
+jest.mock('@deriv/p2p', () => () => <div>P2P</div>);
 
 describe('<P2PCashier />', () => {
     const history = createBrowserHistory();

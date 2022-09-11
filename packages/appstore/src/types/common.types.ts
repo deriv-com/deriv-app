@@ -7,3 +7,4 @@ export type RequiredAndNotNull<T> = {
 };
 
 export type TAccountCategory = 'real' | 'demo';
+export type TPlatform = 'dxtrade' | 'mt5';

@@ -14,7 +14,7 @@ type WalletAccountProps = {
 };
 
 const WalletAccount = ({ account }: WalletAccountProps) => {
-    const isAccountVirtual = () => account.is_virtual;
+    const isAccountVirtual = account.is_virtual === 1;
 
     return (
         <Accordion

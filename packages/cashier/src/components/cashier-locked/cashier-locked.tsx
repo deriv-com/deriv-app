@@ -1,7 +1,7 @@
 import React from 'react';
 import { Authorize, GetAccountStatus } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { RootStore } from 'Types';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
 
@@ -44,7 +44,7 @@ const CashierLocked = ({
     return <EmptyState icon={state.icon} title={state.title} description={state.description} />;
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
+export default connect(({ client, modules }: RootStore) => ({
     account_status: client.account_status,
     accounts: client.accounts,
     current_currency_type: client.current_currency_type,

@@ -1,47 +1,16 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import P2P from '@deriv/p2p';
-import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { get, init, timePromise } from 'Utils/server_time';
+import { routes, WS } from '@deriv/shared';
+import { Loading } from '@deriv/components';
+import P2P from '@deriv/p2p';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCommonStore, TNotificationStore, TRootStore, TUiStore } from 'Types';
-
-type TLocalCurrencyConfig = {
-    currency: string;
-    decimal_places: number;
-};
-
-type TP2PCashierProps = RouteComponentProps & {
-    addNotificationMessage: TNotificationStore['addNotificationMessage'];
-    balance: TClientStore['balance'];
-    currency: TClientStore['currency'];
-    current_focus: TUiStore['current_focus'];
-    filterNotificationMessages: TNotificationStore['filterNotificationMessages'];
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    is_logging_in: TClientStore['is_logging_in'];
-    is_mobile: TUiStore['is_mobile'];
-    is_virtual: TClientStore['is_virtual'];
-    local_currency_config: TLocalCurrencyConfig;
-    loginid: TClientStore['loginid'];
-    Notifications: TUiStore['notification_messages_ui'];
-    platform: TCommonStore['platform'];
-    refreshNotifications: TNotificationStore['refreshNotifications'];
-    removeNotificationByKey: TNotificationStore['removeNotificationByKey'];
-    removeNotificationMessage: TNotificationStore['removeNotificationMessage'];
-    residence: TClientStore['residence'];
-    setCurrentFocus: TUiStore['setCurrentFocus'];
-    // TODO: replace setNotificationCount and setOnRemount types when cashier.general_store will be typed
-    setNotificationCount: (value: number) => void;
-    setOnRemount: (func: () => void) => void;
-};
+import { get, init, timePromise } from 'Utils/server_time';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
     addNotificationMessage,
-    balance,
     currency,
     current_focus,
     filterNotificationMessages,
@@ -59,23 +28,63 @@ const P2PCashier = ({
     removeNotificationByKey,
     removeNotificationMessage,
     residence,
-    setCurrentFocus,
     setNotificationCount,
+    setCurrentFocus,
+    balance,
     setOnRemount,
-}: TP2PCashierProps) => {
-    const [order_id, setOrderId] = React.useState<string | null>(null);
+}) => {
+    const [order_id, setOrderId] = React.useState(null);
+    const [action_param, setActionParam] = React.useState();
+    const [code_param, setCodeParam] = React.useState();
+
     const server_time = {
         get,
         init,
         timePromise,
     };
 
+    React.useEffect(() => {
+        const url_params = new URLSearchParams(location.search);
+        let passed_order_id;
+
+        setActionParam(url_params.get('action'));
+        if (is_mobile) {
+            setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+        } else if (!code_param) {
+            if (url_params.has('code')) {
+                setCodeParam(url_params.get('code'));
+            } else if (localStorage.getItem('verification_code.p2p_order_confirm')) {
+                setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+            }
+        }
+
+        // Different emails give us different params (order / order_id),
+        // don't remove order_id since it's consistent for mobile and web for 2FA
+        if (url_params.has('order_id')) {
+            passed_order_id = url_params.get('order_id');
+        } else if (url_params.has('order')) {
+            passed_order_id = url_params.get('order');
+        }
+
+        if (passed_order_id) {
+            setQueryOrder(passed_order_id);
+        }
+
+        return () => setQueryOrder(null);
+    }, [setQueryOrder]);
+
     const setQueryOrder = React.useCallback(
-        (input_order_id: string | null) => {
+        input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
 
-            if (current_query_params.has('order')) {
+            if (is_mobile) {
+                current_query_params.delete('action');
+                current_query_params.delete('code');
+            }
+
+            if (current_query_params.has('order_id') || current_query_params.has('order')) {
                 current_query_params.delete('order');
+                current_query_params.delete('order_id');
             }
 
             if (input_order_id) {
@@ -103,17 +112,6 @@ const P2PCashier = ({
         [history, location.hash, location.search, order_id]
     );
 
-    React.useEffect(() => {
-        const url_params = new URLSearchParams(location.search);
-        const passed_order_id = url_params.get('order');
-
-        if (passed_order_id) {
-            setQueryOrder(passed_order_id);
-        }
-
-        return () => setQueryOrder(null);
-    }, [location.search, setQueryOrder]);
-
     if (is_logging_in) {
         return <Loading is_fullscreen />;
     }
@@ -121,8 +119,9 @@ const P2PCashier = ({
     return (
         <P2P
             addNotificationMessage={addNotificationMessage}
-            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
             balance={balance}
+            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            current_focus={current_focus}
             filterNotificationMessages={filterNotificationMessages}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
@@ -137,18 +136,42 @@ const P2PCashier = ({
             removeNotificationByKey={removeNotificationByKey}
             removeNotificationMessage={removeNotificationMessage}
             server_time={server_time}
-            setNotificationCount={setNotificationCount}
-            setOnRemount={setOnRemount}
-            setOrderId={setQueryOrder}
-            should_show_verification={/verification/.test(location.hash)}
-            websocket_api={WS}
-            current_focus={current_focus}
             setCurrentFocus={setCurrentFocus}
+            setNotificationCount={setNotificationCount}
+            setOrderId={setQueryOrder}
+            setOnRemount={setOnRemount}
+            should_show_verification={/verification/.test(location.hash)}
+            verification_action={action_param}
+            verification_code={code_param}
+            websocket_api={WS}
         />
     );
 };
 
-export default connect(({ client, common, modules, notifications, ui }: TRootStore) => ({
+P2PCashier.propTypes = {
+    addNotificationMessage: PropTypes.func,
+    balance: PropTypes.string,
+    currency: PropTypes.string,
+    current_focus: PropTypes.string,
+    filterNotificationMessages: PropTypes.func,
+    history: PropTypes.object,
+    is_dark_mode_on: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
+    is_mobile: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    local_currency_config: PropTypes.object,
+    location: PropTypes.object,
+    loginid: PropTypes.string,
+    platform: PropTypes.any,
+    refreshNotifications: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    residence: PropTypes.string,
+    setNotificationCount: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+};
+
+export default connect(({ client, common, modules, notifications, ui }) => ({
     addNotificationMessage: notifications.addNotificationMessage,
     balance: client.balance,
     currency: client.currency,

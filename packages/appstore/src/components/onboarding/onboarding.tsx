@@ -1,4 +1,5 @@
 import React from 'react';
+import { localize } from '@deriv/translations';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 
 type TOnboardingProps = {
@@ -50,13 +51,13 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
                     </Text>
                     <div className='onboarding-footer-buttons'>
                         <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
-                            Back
+                            {localize('Back')}
                         </Button>
                         <ProgressBarOnboarding step={step} amount_of_steps={amount_of_steps} setStep={setStep} />
                         <Button primary onClick={nextStep}>
                             {contents[onboarding_step as keyof typeof contents]?.has_next_content
                                 ? contents[onboarding_step as keyof typeof contents]?.next_content
-                                : 'Next'}
+                                : localize('Next')}
                         </Button>
                     </div>
                 </div>

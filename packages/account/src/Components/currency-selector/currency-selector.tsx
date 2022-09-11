@@ -14,7 +14,7 @@ export const Hr = () => <div className='currency-hr' />;
 type TCurrencySelectorExtend = {
     accounts: { [key: string]: TAuthAccountInfo };
     available_crypto_currencies: TCurrencyConfig[];
-    getCurrentStep: () => number;
+    getCurrentStep?: () => number;
     goToNextStep: () => void;
     goToPreviousStep: () => void;
     has_cancel: boolean;

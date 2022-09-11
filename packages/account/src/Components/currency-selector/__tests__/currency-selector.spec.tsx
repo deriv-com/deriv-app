@@ -340,18 +340,12 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should submit the form when getCurrentStep is not passed ', async () => {
-        const new_props: TCurrencySelector = { ...props, getCurrentStep: jest.fn() };
+        const new_props: TCurrencySelector = { ...props };
         render(<CurrencySelector {...new_props} />);
         runCommonTests(fiat_msg);
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
             expect(props.onSubmit).toHaveBeenCalled();
-            expect(props.onSubmit).toHaveBeenCalledWith(
-                null,
-                { currency: 'USD' },
-                expect.any(Function),
-                props.goToNextStep
-            );
         });
     });
 

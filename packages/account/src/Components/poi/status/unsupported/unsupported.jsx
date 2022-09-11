@@ -20,9 +20,8 @@ const checkNimcStep = documents => {
 
 const Unsupported = ({ country_code, ...props }) => {
     const [detail, setDetail] = React.useState(null);
-    const toggleDetail = index => {
-        setDetail(index);
-    };
+    const toggleDetail = index => setDetail(index);
+
     const documents = getDocumentIndex({
         setDetail,
         country_code,

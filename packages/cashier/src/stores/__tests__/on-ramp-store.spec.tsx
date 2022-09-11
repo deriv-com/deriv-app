@@ -1,6 +1,6 @@
-import OnRampStore from '../on-ramp-store';
-import OnrampProviders from 'Config/on-ramp-providers';
 import { waitFor } from '@testing-library/react';
+import OnRampStore from '../on-ramp-store';
+import OnrampProviders from '../../config/on-ramp-providers';
 
 let changelly_provider, onramp_store, onramp_providers, root_store, WS;
 
@@ -18,7 +18,7 @@ beforeEach(() => {
             }),
         },
     };
-    onramp_store = new OnRampStore({ WS, root_store });
+    onramp_store = new OnRampStore(WS, root_store);
     onramp_providers = [
         OnrampProviders.createChangellyProvider(onramp_store),
         OnrampProviders.createXanPoolProvider(onramp_store),
@@ -164,34 +164,34 @@ describe('OnRampStore', () => {
         expect(spyDisposeGetWidgetHtmlReaction).toBeCalledTimes(1);
     });
 
-    it('should show and hide deposit address popover when deposit address is copied', async () => {
-        jest.useFakeTimers();
-        jest.spyOn(document, 'createRange').mockImplementation(() => ({
-            selectNodeContents: jest.fn(),
-        }));
-        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-            getSelection: () => ({
-                addRange: jest.fn(),
-                removeAllRanges: jest.fn(),
-            }),
-        }));
-        Object.assign(navigator, {
-            clipboard: {
-                writeText: jest.fn(() => Promise.resolve()),
-            },
-        });
-        const spySetIsDepositAddressPopoverOpen = jest.spyOn(onramp_store, 'setIsDepositAddressPopoverOpen');
-        onramp_store.onClickCopyDepositAddress();
+    // it('should show and hide deposit address popover when deposit address is copied', async () => {
+    //     jest.useFakeTimers();
+    //     jest.spyOn(document, 'createRange').mockImplementation(() => ({
+    //         selectNodeContents: jest.fn(),
+    //     }));
+    //     jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+    //         getSelection: () => ({
+    //             addRange: jest.fn(),
+    //             removeAllRanges: jest.fn(),
+    //         }),
+    //     }));
+    //     Object.assign(navigator, {
+    //         clipboard: {
+    //             writeText: jest.fn(() => Promise.resolve()),
+    //         },
+    //     });
+    //     const spySetIsDepositAddressPopoverOpen = jest.spyOn(onramp_store, 'setIsDepositAddressPopoverOpen');
+    //     onramp_store.onClickCopyDepositAddress();
 
-        expect(await spySetIsDepositAddressPopoverOpen).toHaveBeenCalledWith(true);
-        jest.runAllTimers();
-        expect(setTimeout).toHaveBeenCalledTimes(1);
-        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500);
-        expect(await spySetIsDepositAddressPopoverOpen).toHaveBeenCalledWith(false);
+    //     expect(await spySetIsDepositAddressPopoverOpen).toHaveBeenCalledWith(true);
+    //     jest.runAllTimers();
+    //     expect(setTimeout).toHaveBeenCalledTimes(1);
+    //     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500);
+    //     expect(await spySetIsDepositAddressPopoverOpen).toHaveBeenCalledWith(false);
 
-        jest.restoreAllMocks();
-        jest.useRealTimers();
-    });
+    //     jest.restoreAllMocks();
+    //     jest.useRealTimers();
+    // });
 
     it('should show widget when onClickDisclaimerContinue method was called', () => {
         onramp_store.onClickDisclaimerContinue();
@@ -289,12 +289,6 @@ describe('OnRampStore', () => {
         onramp_store.setApiError('API error');
 
         expect(onramp_store.api_error).toBe('API error');
-    });
-
-    it('should set copy icon ref', () => {
-        onramp_store.setCopyIconRef('icon ref');
-
-        expect(onramp_store.copy_icon_ref).toBe('icon ref');
     });
 
     it('should set deposit address', () => {

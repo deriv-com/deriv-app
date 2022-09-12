@@ -13,8 +13,8 @@ import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
-import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import StarRating from 'Components/star-rating';
+import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
 import BlockUserModal from 'Components/block-user/block-user-modal';
@@ -120,100 +120,93 @@ const AdvertiserPage = () => {
                                     </div>
                                 )}
                             </div>
-                            {first_name && last_name && (
-                                <div className='advertiser-page__header-real-name'>
-                                    <Text color='less-prominent' line_height='xs' size='xs'>
-                                        {`(${first_name} ${last_name})`}
-                                    </Text>
-                                </div>
-                            )}
-                        </div>
-                        <div className='advertiser-page__rating'>
-                            {rating_average ? (
-                                <React.Fragment>
-                                    <div className='advertiser-page__rating--row'>
-                                        <StarRating
-                                            empty_star_className='advertiser-page__rating--star'
-                                            empty_star_icon='IcEmptyStar'
-                                            full_star_className='advertiser-page__rating--star'
-                                            full_star_icon='IcFullStar'
-                                            initial_value={rating_average_decimal}
-                                            is_readonly
-                                            number_of_stars={5}
-                                            should_allow_hover_effect={false}
-                                            star_size={isMobile() ? 17 : 20}
-                                        />
-                                        <div className='advertiser-page__rating--text'>
-                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                {rating_average_decimal}
-                                            </Text>
-                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                {rating_count === 1 ? (
-                                                    <Localize
-                                                        i18n_default_text='({{number_of_ratings}} rating)'
-                                                        values={{ number_of_ratings: rating_count }}
-                                                    />
-                                                ) : (
-                                                    <Localize
-                                                        i18n_default_text='({{number_of_ratings}} ratings)'
-                                                        values={{ number_of_ratings: rating_count }}
-                                                    />
-                                                )}
-                                            </Text>
-                                        </div>
-                                    </div>
-                                    <div className='advertiser-page__rating--row'>
-                                        <RecommendedBy
-                                            recommended_average={recommended_average}
-                                            recommended_count={recommended_count}
-                                        />
-                                    </div>
-                                </React.Fragment>
-                            ) : (
-                                <div className='advertiser-page__rating--row'>
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                        <Localize i18n_default_text='Not rated yet' />
-                                    </Text>
-                                </div>
-                            )}
-                            {!isMobile() && (
-                                <div className='advertiser-page__rating--row'>
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                        {joined_since > 0 ? (
-                                            <Localize
-                                                i18n_default_text='Joined {{days_since_joined}}d'
-                                                values={{ days_since_joined: joined_since }}
+                            <div className='advertiser-page__rating'>
+                                {rating_average ? (
+                                    <React.Fragment>
+                                        <div className='advertiser-page__rating--row'>
+                                            <StarRating
+                                                empty_star_className='advertiser-page__rating--star'
+                                                empty_star_icon='IcEmptyStar'
+                                                full_star_className='advertiser-page__rating--star'
+                                                full_star_icon='IcFullStar'
+                                                initial_value={rating_average_decimal}
+                                                is_readonly
+                                                number_of_stars={5}
+                                                should_allow_hover_effect={false}
+                                                star_size={isMobile() ? 17 : 20}
                                             />
-                                        ) : (
-                                            <Localize i18n_default_text='Joined today' />
-                                        )}
-                                    </Text>
-                                </div>
-                            )}
-                        </div>
-                        {isMobile() && (
-                            <Text
-                                className='advertiser-page__joined-since'
-                                color='less-prominent'
-                                size={isMobile() ? 'xxxs' : 'xs'}
-                            >
-                                {joined_since > 0 ? (
-                                    <Localize
-                                        i18n_default_text='Joined {{days_since_joined}}d'
-                                        values={{ days_since_joined: joined_since }}
-                                    />
+                                            <div className='advertiser-page__rating--text'>
+                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    {rating_average_decimal}
+                                                </Text>
+                                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    {rating_count === 1 ? (
+                                                        <Localize
+                                                            i18n_default_text='({{number_of_ratings}} rating)'
+                                                            values={{ number_of_ratings: rating_count }}
+                                                        />
+                                                    ) : (
+                                                        <Localize
+                                                            i18n_default_text='({{number_of_ratings}} ratings)'
+                                                            values={{ number_of_ratings: rating_count }}
+                                                        />
+                                                    )}
+                                                </Text>
+                                            </div>
+                                        </div>
+                                        <div className='advertiser-page__rating--row'>
+                                            <RecommendedBy
+                                                recommended_average={recommended_average}
+                                                recommended_count={recommended_count}
+                                            />
+                                        </div>
+                                    </React.Fragment>
                                 ) : (
-                                    <Localize i18n_default_text='Joined today' />
+                                    <div className='advertiser-page__rating--row'>
+                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            <Localize i18n_default_text='Not rated yet' />
+                                        </Text>
+                                    </div>
                                 )}
-                            </Text>
-                        )}
-                        <div className='advertiser-page__row'>
-                            <TradeBadge
-                                is_poa_verified={!!full_verification}
-                                is_poi_verified={!!basic_verification}
-                                trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
-                                large
-                            />
+                                {!isMobile() && (
+                                    <div className='advertiser-page__rating--row'>
+                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            {joined_since > 0 ? (
+                                                <Localize
+                                                    i18n_default_text='Joined {{days_since_joined}}d'
+                                                    values={{ days_since_joined: joined_since }}
+                                                />
+                                            ) : (
+                                                <Localize i18n_default_text='Joined today' />
+                                            )}
+                                        </Text>
+                                    </div>
+                                )}
+                            </div>
+                            {isMobile() && (
+                                <Text
+                                    className='advertiser-page__joined-since'
+                                    color='less-prominent'
+                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                >
+                                    {joined_since > 0 ? (
+                                        <Localize
+                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                            values={{ days_since_joined: joined_since }}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text='Joined today' />
+                                    )}
+                                </Text>
+                            )}
+                            <div className='advertiser-page__row'>
+                                <TradeBadge
+                                    is_poa_verified={!!full_verification}
+                                    is_poi_verified={!!basic_verification}
+                                    trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
+                                    large
+                                />
+                            </div>
                         </div>
                         <DesktopWrapper>
                             <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />

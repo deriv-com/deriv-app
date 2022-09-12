@@ -1751,6 +1751,7 @@ export default class ClientStore extends BaseStore {
         const response = await requestLogout();
 
         if (response?.logout === 1) {
+            localStorage.removeItem('readScamMessage');
             this.cleanUp();
 
             this.root_store.rudderstack.reset();

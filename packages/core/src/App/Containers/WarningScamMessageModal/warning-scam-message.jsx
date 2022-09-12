@@ -8,6 +8,7 @@ import WarningScamMessageModal from './warning-scam-message-modal';
 
 const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_visible, setScamMessageLocalStorage }) => {
     const [is_message_read, setIsMessageRead] = React.useState(false);
+    const toggleModal = () => false;
 
     const acknowledgeMessage = () => setIsMessageRead(!is_message_read);
 
@@ -21,8 +22,7 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                         className='warning-scam-message-modal'
                         is_open={is_warning_scam_message_modal_visible}
                         small
-                        /*On Toggle Modal Do Nothing*/
-                        toggleModal={() => false}
+                        toggleModal={toggleModal}
                     >
                         <WarningScamMessageModal
                             acknowledgeMessage={acknowledgeMessage}
@@ -38,8 +38,7 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                         className='warning-scam-message'
                         is_open={is_warning_scam_message_modal_visible}
                         small
-                        /*On Toggle Modal Do Nothing*/
-                        toggleModal={() => false}
+                        toggleModal={toggleModal}
                     >
                         <WarningScamMessageModal
                             acknowledgeMessage={acknowledgeMessage}

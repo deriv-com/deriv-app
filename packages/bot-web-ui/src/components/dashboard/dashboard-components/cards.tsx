@@ -44,7 +44,6 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
                         className='dc-tabs__dashboard-card-image'
                         width='8rem'
                         height='8rem'
-                        style={{ backgroundColor: `#F2F3F4` }}
                         icon={icon}
                         id={icon}
                         onClick={method}

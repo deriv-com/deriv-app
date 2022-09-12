@@ -21,6 +21,8 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                         className='warning-scam-message-modal'
                         is_open={is_warning_scam_message_modal_visible}
                         small
+                        /*On Toggle Modal Do Nothing*/
+                        toggleModal={() => false}
                     >
                         <WarningScamMessageModal
                             acknowledgeMessage={acknowledgeMessage}
@@ -36,6 +38,8 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                         className='warning-scam-message'
                         is_open={is_warning_scam_message_modal_visible}
                         small
+                        /*On Toggle Modal Do Nothing*/
+                        toggleModal={() => false}
                     >
                         <WarningScamMessageModal
                             acknowledgeMessage={acknowledgeMessage}

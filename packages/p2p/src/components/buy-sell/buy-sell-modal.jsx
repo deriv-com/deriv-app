@@ -209,8 +209,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             <MarketRateChangeErrorModal
                 is_open={show_market_rate_change_error_modal}
                 closeModal={() => {
-                    if (!isMobile()) {
-                        setTimeout(() => setShouldShowPopup(true), 350);
+                    if (isDesktop()) {
+                        setTimeout(() => setShouldShowPopup(true), my_profile_store.MODAL_TRANSITION_DURATION);
                     }
                     setShowMarketRateChangeErrorModal(false);
                 }}

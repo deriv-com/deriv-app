@@ -431,7 +431,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             <MobileDrawer.Item>
                                                 <MenuLink
                                                     link_to={routes.trading_hub}
-                                                    icon='IcAppstoreHome'
+                                                    icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
                                                     text={localize('Trading Hub')}
                                                     onClickLink={toggleDrawer}
                                                     changeCurrentLanguage={changeCurrentLanguage}

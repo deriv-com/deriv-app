@@ -20,6 +20,8 @@ export const icons =
         'IcAppstoreEllipse',
         'IcAppstoreError',
         'IcAppstoreFinancial',
+        'IcAppstoreHomeDark',
+        'IcAppstoreHome',
         'IcAppstoreInformation',
         'IcAppstoreLinkWallet',
         'IcAppstoreLinkedWallets',
@@ -629,7 +631,7 @@ export const icons =
         'IcStockWaltDisney',
         'IcStockZoom',
     ],
-    tradetype: [
+    'tradetype': [
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',

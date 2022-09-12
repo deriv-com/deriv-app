@@ -7,11 +7,11 @@ import { TReactMouseEvent } from 'Types';
 type TPercentageSelectorProps = {
     amount: number;
     currency: string;
-    from_account: string;
+    from_account?: string;
     getCalculatedAmount: (amount: string) => void;
     percentage: number;
     should_percentage_reset: boolean;
-    to_account: string;
+    to_account?: string;
 };
 
 type TCalculateAmountInputEvent = { target: { id: number } };

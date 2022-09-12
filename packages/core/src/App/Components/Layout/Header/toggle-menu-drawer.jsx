@@ -281,8 +281,6 @@ const ToggleMenuDrawer = React.forwardRef(
             );
         };
 
-        const location = window.location.pathname;
-
         const getLanguageRoutes = () => {
             const currentLanguage = getLanguage();
 
@@ -346,9 +344,8 @@ const ToggleMenuDrawer = React.forwardRef(
                             )}
                             {is_pre_appstore && (
                                 <React.Fragment>
-                                    {is_logged_in &&
-                                    location === routes.trading_hub &&
-                                    !route.startsWith(routes.reports) ? (
+                                    {(is_logged_in && route.startsWith(routes.cashier)) ||
+                                    route === routes.trading_hub ? (
                                         <MobileDrawer.SubHeader
                                             className={classNames({
                                                 'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -397,7 +394,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        {is_logged_in && route !== routes.trading_hub && route === routes.trade && (
+                                        {is_logged_in && route === routes.trade && (
                                             <MobileDrawer.Item className='header__menu--backtooldui--dtrader'>
                                                 <Button
                                                     className={classNames({

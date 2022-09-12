@@ -54,11 +54,16 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                     </Tab>
                 </Tabs>
             </div>
-            <div className='dashboard__run-strategy-wrapper'>
+
+            <div
+                className={classNames('dashboard__run-strategy-wrapper', {
+                    'dashboard__sidebar-wrapper--active': !show_side_bar || active_tab !== 0,
+                })}
+            >
                 <RunStrategy />
+                {active_tab === 0 && <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />}
+                {(active_tab === 1 || active_tab === 2) && <RunPanel />}
             </div>
-            <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />
-            <RunPanel />
         </div>
     );
 };

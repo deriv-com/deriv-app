@@ -2,10 +2,11 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 
 type TOptionsAccountprops = {
     account_icon: string;
+    account_icon_mobile: string;
     account_title?: string;
     account_number?: string;
     account_balance?: string;
@@ -15,6 +16,7 @@ type TOptionsAccountprops = {
 
 const OptionsAccount = ({
     account_icon,
+    account_icon_mobile,
     account_title,
     account_number,
     account_balance,
@@ -24,7 +26,7 @@ const OptionsAccount = ({
     return (
         <div className='account__container'>
             <div className='account__container--icon'>
-                <WalletIcon icon={account_icon} />
+                {isMobile() ? <WalletIcon icon={account_icon_mobile} /> : <WalletIcon icon={account_icon} />}
             </div>
             <div className='account__container--account-details-wrapper'>
                 <div className='account__container--account-details-wrapper--name-number'>
@@ -46,9 +48,11 @@ const OptionsAccount = ({
                     <Localize i18n_default_text={account_button} />
                 </Text>
             </div>
-            <div className='account__container--dropdown'>
-                <WalletIcon icon={'DropDown'} />
-            </div>
+            {isMobile() && account_title !== 'Demo' && (
+                <div className='account__container--dropdown'>
+                    <WalletIcon icon={'DropDown'} />
+                </div>
+            )}
         </div>
     );
 };

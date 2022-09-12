@@ -103,6 +103,7 @@ import BinaryBot from 'Assets/svgs/wallet/ic-brand-binarybot.svg';
 import DBot from 'Assets/svgs/wallet/ic-brand-dbot.svg';
 import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
+import DemoMobile from 'Assets/svgs/wallet/account-demo-mobile.svg';
 
 const Icons = {
     '1foryouDark': OneforyouDark,
@@ -209,6 +210,7 @@ const Icons = {
     DBot,
     DTrader,
     SmartTrader,
+    DemoMobile,
 };
 
 const WalletIcon = ({ icon, className }: { icon: string; className?: string }) => {

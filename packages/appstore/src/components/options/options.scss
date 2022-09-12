@@ -8,6 +8,17 @@
     width: 1152px;
     height: 303px;
 
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px;
+
+        position: absolute;
+        width: 328px;
+        height: 280px;
+    }
+
     &__title-description-container {
         display: flex;
         flex-direction: column;
@@ -16,7 +27,18 @@
 
         width: 1152px;
         height: 60px;
+        @include mobile {
+            width: 328px;
+            height: 54px;
 
+            /* mobile/paragraph/P2 - regular */
+
+            font-family: 'IBM Plex Sans';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 18px;
+        }
         &--title {
             width: 1152px;
             height: 36px;
@@ -32,6 +54,18 @@
             /* system/light/1 - prominent (text) */
 
             color: #333333;
+            @include mobile {
+                width: 164px;
+                height: 14px;
+
+                /* mobile/small/S - bold */
+
+                font-family: 'IBM Plex Sans';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 10px;
+                line-height: 14px;
+            }
         }
         &--description {
             display: flex;
@@ -39,32 +73,78 @@
             align-items: flex-start;
             padding: 0px;
             gap: 4px;
-
+            font-weight: 340;
+            font-size: 16px;
+            line-height: 24px;
             width: 1070px;
             height: 24px;
+            @include mobile {
+                width: 328px;
+                height: 54px;
+
+                /* mobile/small/S - regular */
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 18px;
+            }
         }
     }
     &__accounts-platform-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
         padding: 0px;
-
         width: 1152px;
         height: 219px;
 
         background: #ffffff;
         border-radius: 16px;
-        &--accounts {
+        @include mobile {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
+            padding: 0px;
+
+            width: 328px;
+            height: 56px;
+
+            border-radius: 0px 6px 0px 0px;
+            margin-left: 19px;
+        }
+        &--accounts {
+            display: flex;
+            flex-direction: row;
             align-items: flex-start;
             padding: 0px;
             gap: 16px;
 
             width: 1152px;
             height: 72px;
+            @include mobile {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 8px 16px 8px 8px;
+                gap: 4px;
+                isolation: isolate;
+
+                width: 135px;
+                height: 62px;
+
+                /* system/light/7 - secondary (background) */
+
+                background: #f2f3f4;
+                border-radius: 4px 4px 0px 0px;
+            }
+        }
+        &--add-options {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            @include mobile {
+                width: 40px;
+            }
         }
         &--platform {
             display: flex;
@@ -73,13 +153,23 @@
             padding: 16px 23px 16px 24px;
             gap: 24px;
 
-            width: 1152px;
+            width: 1105px;
             height: 147px;
 
             /* card shadow */
 
             background: linear-gradient(0deg, #f2f3f4, #f2f3f4), #ffffff;
             border-radius: 0px 6px 6px;
+
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 8px 0 0;
+                width: 328px;
+                height: 280px;
+                left: 0px;
+            }
             &--divider {
                 width: 40px;
                 height: 1px;

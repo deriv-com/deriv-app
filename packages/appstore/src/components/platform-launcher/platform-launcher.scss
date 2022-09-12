@@ -1,10 +1,17 @@
 .platform-launcher {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    height: 102px;
     @include mobile {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        padding: 0;
+        padding: 10px;
         height: 5.6rem;
+        width: 328px;
     }
     &__container {
         display: flex;
@@ -14,7 +21,6 @@
         gap: 1.6rem;
         width: 18.32rem;
         height: 5.4rem;
-        margin-bottom: 1.6rem;
         &--icon {
             width: 3.2rem;
             height: 3.2rem;
@@ -24,10 +30,10 @@
             flex-direction: column;
             align-items: flex-start;
             padding: 0;
-            width: 13.52rem;
+            width: 18.18rem;
             height: 5.4rem;
             &--title {
-                width: 13.52rem;
+                width: 13.38rem;
                 height: 1.8rem;
                 font-style: normal;
                 font-weight: 700;
@@ -35,7 +41,7 @@
                 line-height: 1.8rem;
             }
             &--description {
-                width: 16rem;
+                width: 13.38rem;
                 height: 3.6rem;
                 font-style: normal;
                 font-weight: 400;
@@ -68,7 +74,7 @@
             justify-content: center;
             padding: 0 0 0 0.8rem;
             gap: 1.2rem;
-            width: 27.8rem;
+            width: 22.8rem;
             height: 3.2rem;
         }
     }
@@ -77,9 +83,9 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 0.6rem 1.6rem;
+        padding: 0.6rem 0rem;
 
-        width: 18.32rem;
+        width: 18.18rem;
         height: 3.2rem;
         /* brand/coral */
 

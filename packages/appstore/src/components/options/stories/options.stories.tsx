@@ -16,11 +16,6 @@ OptionsDemo.args = {
     options_desc: 'Earn fixed payouts by predicting price movements with options,or combine the upside of CFDs.',
     platformlauncherprops: [
         {
-            app_icon: 'DTrader',
-            app_title: 'DTrader',
-            app_desc: 'Options & multipliers trading platform.',
-        },
-        {
             app_icon: 'DBot',
             app_title: 'DBot',
             app_desc: 'Automate your trading, no coding needed.',
@@ -30,6 +25,12 @@ OptionsDemo.args = {
             app_title: 'SmartTrader',
             app_desc: 'Our legacy options trading platform.',
         },
+        {
+            app_icon: 'DTrader',
+            app_title: 'DTrader',
+            app_desc: 'Options & multipliers trading platform.',
+        },
+
         {
             app_icon: 'BinaryBot',
             app_title: 'Binary Bot',
@@ -41,4 +42,30 @@ OptionsDemo.args = {
             app_desc: 'Trade on the go with our mobile app.',
         },
     ],
+    account_props: [
+        {
+            account_icon: 'Demo',
+            account_icon_mobile: 'DemoMobile',
+            account_title: 'Demo',
+            account_number: 'VRTC6501742',
+            account_balance: '10,000.00',
+            currency: 'USD',
+            account_button: 'Reset',
+        },
+        {
+            account_icon: 'CurrencyUSD',
+            account_icon_mobile: 'DemoMobile',
+            account_title: 'US Dollar',
+            account_number: 'CR2333683',
+            account_balance: '0.00',
+            currency: 'USD',
+            account_button: 'Deposit',
+        },
+    ],
+    addoptions_props: {
+        onClickHandler: Function,
+        title: 'More Options accounts',
+        description: 'Including cryptocurrencies',
+        class_names: '',
+    },
 };

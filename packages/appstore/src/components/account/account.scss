@@ -10,7 +10,7 @@
     background: $color-grey-2;
     border-radius: 0.6rem 0.6rem 0 0;
     @include mobile {
-        padding: 0.8rem;
+        padding: 0.8rem 0.8rem 0.8rem 0rem;
         gap: 0.4rem;
         isolation: isolate;
         width: 22rem;
@@ -28,8 +28,7 @@
     &--icon {
         width: 6.4rem;
         @include mobile {
-            width: 6.4rem;
-            height: 6rem;
+            width: 3.4rem;
         }
     }
     &--account-details-wrapper {
@@ -106,10 +105,11 @@
         border: 0.1rem solid $color-grey-1;
         border-radius: 0.4rem;
         @include mobile {
-            top: 0.8rem;
+            top: 1.5rem;
             border: 0.1rem solid $color-grey-1;
             border-radius: 0.4rem;
-            right: 3.8rem;
+            right: 3.1rem;
+            width: 5rem;
         }
         &--label {
             width: 4.5rem;

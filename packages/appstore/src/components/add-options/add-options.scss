@@ -5,8 +5,10 @@
     align-items: center;
     max-width: 240px;
     padding: 1rem;
-    border-radius: $BORDER_RADIUS;
+    height: 40px;
+    width: 240px;
     border: 2px dashed $color-red-6;
+    border-radius: $BORDER_RADIUS;
     cursor: pointer;
     &_title {
         display: flex;
@@ -15,11 +17,20 @@
         & > p {
             color: $color-red;
             margin-left: 0.8rem;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 18px;
         }
     }
     &_description {
         & > p {
             color: $color-grey-1;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 18px;
+            text-align: center;
         }
     }
 }

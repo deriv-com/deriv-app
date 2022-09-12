@@ -3,8 +3,8 @@
 export const icons =
 {
     'appstore': [
-        'IcAppstoreAdd',
         'IcAppstoreAddRounded',
+        'IcAppstoreAdd',
         'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',
         'IcAppstoreCfdsTradeType',

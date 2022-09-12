@@ -50,7 +50,7 @@ export const getAppId = () => {
     const platform = new URLSearchParams(window.location.search).get('platform');
 
     // Added platform at the top since this should take precedence over the config_app_id
-    if (platform) {
+    if (platform && platform_app_ids[platform]) {
         app_id = platform_app_ids[platform];
     } else if (config_app_id) {
         app_id = config_app_id;

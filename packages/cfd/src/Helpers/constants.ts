@@ -5,6 +5,7 @@ const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
+const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
 const getBrokerName = () => 'Deriv Limited';
 
@@ -20,8 +21,7 @@ const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
         case 'ios':
             return DXTRADE_IOS_APP_URL;
         case 'huawei':
-            // TODO: Add link of the huawei of the dxtrader
-            return '';
+            return DXTRADE_HUAWEI_APP_URL;
         default:
             return DXTRADE_ANDROID_APP_URL;
     }

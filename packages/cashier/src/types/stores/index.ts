@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 import { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus } from '@deriv/api-types';
 import CashierStore from '../../stores/cashier-store';
 
-type TCoreRootStore = NonNullable<import('@deriv/core/types').TRootStore>;
+type TCoreRootStore = NonNullable<import('@deriv/shared/types').TRootStore>;
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 

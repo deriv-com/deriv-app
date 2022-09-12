@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { RootStore } from 'Types';
 import './funds-protection.scss';
 
 type TFundsProtectionProps = {
@@ -40,6 +40,6 @@ const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
+export default connect(({ modules }: RootStore) => ({
     submitFundsProtection: modules.cashier.deposit.submitFundsProtection,
 }))(FundsProtection);

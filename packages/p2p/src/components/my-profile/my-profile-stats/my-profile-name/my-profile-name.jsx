@@ -10,6 +10,7 @@ import MyProfilePrivacy from '../my-profile-privacy';
 import StarRating from 'Components/star-rating';
 import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
+import classNames from 'classnames';
 
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
@@ -82,11 +83,6 @@ const MyProfileName = () => {
                                             recommended_count={recommended_count}
                                         />
                                     </div>
-                                    <DesktopWrapper>
-                                        <div className='my-profile-name--rating__row'>
-                                            <BlockUserCount />
-                                        </div>
-                                    </DesktopWrapper>
                                 </React.Fragment>
                             ) : (
                                 <div className='my-profile-name--rating__row'>
@@ -96,6 +92,9 @@ const MyProfileName = () => {
                                 </div>
                             )}
                             <DesktopWrapper>
+                                <div className='my-profile-name--rating__row'>
+                                    <BlockUserCount />
+                                </div>
                                 <Text
                                     className='my-profile-name--rating__row'
                                     color='less-prominent'
@@ -112,7 +111,12 @@ const MyProfileName = () => {
                                 </Text>
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div className='my-profile-name--row'>
+                                <div
+                                    className={classNames('my-profile-name--row', {
+                                        'my-profile-name--row--rated': rating_average,
+                                        'my-profile-name--row--no-rating': !rating_average,
+                                    })}
+                                >
                                     <div className='my-profile-name--rating__row'>
                                         <BlockUserCount />
                                     </div>

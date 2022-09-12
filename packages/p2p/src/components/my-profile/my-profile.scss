@@ -1,41 +1,96 @@
-.my-profile {
+.my-profile-name {
+    align-items: center;
     display: flex;
+    margin-bottom: 2.4rem;
+    width: 100%;
 
     @include mobile {
-        display: block;
+        margin: 0 0 2.4rem;
     }
 
-    &__content {
+    &__avatar {
+        @include mobile {
+            align-self: flex-start;
+            margin: 0 0 1;
+        }
+    }
+
+    &--column {
         display: flex;
         flex-direction: column;
-        flex: 1;
-        overflow-x: hidden;
+    }
 
-        &::-webkit-scrollbar {
-            display: none;
-        }
+    &__name {
+        padding-left: 0.8rem;
+        width: 100%;
 
-        & .p2p-toggle-container {
-            margin-bottom: 3.4rem;
-        }
-
-        @include tablet-up {
-            max-width: 100%;
-            min-width: 672px;
-        }
         @include mobile {
-            display: block;
-            padding: 0 1.6rem;
-            width: 100vw;
-
-            .dc-mobile-full-page-modal {
-                opacity: 1 !important;
-            }
+            width: unset;
         }
     }
 
-    &__navigation {
+    &--privacy {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
+        width: 100%;
+    }
+
+    &--rating {
+        display: flex;
+        flex-direction: row;
+        padding: 0.8rem 0;
+
+        @include mobile {
+            flex-flow: row wrap;
+        }
+
+        &__row {
+            align-items: center;
+            border-right: 1px solid var(--general-section-1);
+            display: flex;
+            padding: 0 0.8rem;
+
+            &--last {
+                @include mobile {
+                    border-right: none;
+                }
+            }
+
+            &:first-child {
+                padding-left: unset;
+            }
+
+            &:last-child {
+                border-right: unset;
+            }
+
+            .filled-icons {
+                pointer-events: none;
+            }
+        }
+
+        &__text {
+            display: flex;
+            gap: 0.8rem;
+            margin-left: 0.4rem;
+        }
+    }
+
+    &--row {
+        display: flex;
+        flex-direction: row;
+
+        &--no-rating {
+            @include mobile {
+                margin-left: 0.7rem;
+            }
+        }
+
+        &--rated {
+            @include mobile {
+                margin-top: 1rem;
+            }
+        }
     }
 }

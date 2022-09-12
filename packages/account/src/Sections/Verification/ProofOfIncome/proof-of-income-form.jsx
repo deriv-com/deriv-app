@@ -56,66 +56,11 @@ const ProofOfIncomeForm = ({
         return errors;
     };
 
-    // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         const uploading_value = poinc_documents_list.find(doc => doc.text === values.document_type)?.value;
-        // values.document_type = poinc_documents_list.find(doc => doc.text === values.document_type)?.value;
         setUploadingDocumentType(uploading_value);
         setStatus({ msg: '' });
-        // WS.setSettings(values).then(data => {
-        //     if (!data.error) {
-        //         setStatus({ msg: data.error.message });
-        //         setSubmitting(false);
-        //     } else {
-        //         // force request to update settings cache since settings have been updated
-        //         WS.authorized.storage
-        //             .getSettings()
-        //             .then(({ error }) => {
-        //                 if (error) {
-        //                     setAPIInitialLoadError(error.message);
-        //                 }
-        //             })
-        //             .then(() => {
-        //                 // upload files
-        //                 file_uploader_ref?.current
-        //                     .upload()
-        //                     .then(api_response => {
-        //                         if (api_response.warning) {
-        //                             setStatus({ msg: api_response.message });
-        //                         } else {
-        //                             WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
-        //                                 if (error) {
-        //                                     setAPIInitialLoadError(error.message);
-        //                                     return;
-        //                                 }
-        //                                 const { income, needs_verification } = get_account_status.authentication;
-        //                                 const needs_poinc =
-        //                                     needs_verification.includes('income') &&
-        //                                     ['rejected', 'none'].includes(income?.status);
-        //                                 removeNotificationMessage({ key: 'authenticate' });
-        //                                 removeNotificationByKey({ key: 'authenticate' });
-        //                                 removeNotificationMessage({ key: 'needs_poinc' });
-        //                                 removeNotificationByKey({ key: 'needs_poinc' });
-        //                                 removeNotificationMessage({ key: 'poinc_upload_limited' });
-        //                                 removeNotificationByKey({ key: 'poinc_upload_limited' });
-        //                                 onSubmit();
-        //                                 if (needs_poinc) {
-        //                                     addNotificationByKey('needs_poinc');
-        //                                 }
-        //                             });
-        //                         }
-        //                     })
-        //                     .catch(error => {
-        //                         setStatus({ msg: error.message });
-        //                     })
-        //                     .then(() => {
-        //                         setSubmitting(false);
-        //                     });
-        //             });
-        //     }
-        // });
 
-        // upload files
         file_uploader_ref?.current
             .upload()
             .then(api_response => {

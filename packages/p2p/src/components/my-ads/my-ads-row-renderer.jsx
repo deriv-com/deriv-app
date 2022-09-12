@@ -48,9 +48,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         exchange_rate: floating_rate_store.exchange_rate,
     });
 
+    const ad_pause_color = general_store.is_listed ? 'general' : 'less-prominent';
+    const icon_disabled_color = general_store.is_listed ? 'black' : 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
-    const is_ad_paused = general_store.is_listed ? 'general' : 'less-prominent';
-    const is_icon_disabled = general_store.is_listed ? 'black' : 'disabled';
 
     const onClickActivateDeactivate = () => {
         if (!is_activate_ad_disabled) {
@@ -177,7 +177,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 payment_method_names.map((payment_method, key) => {
                                     return (
                                         <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                            <Text color={is_ad_paused} size='xxxs' line-height='l'>
+                                            <Text color={ad_pause_color} size='xxxs' line-height='l'>
                                                 {payment_method}
                                             </Text>
                                         </div>
@@ -190,8 +190,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     })}
                                     onClick={() => onClickAdd()}
                                 >
-                                    <Icon color={is_icon_disabled} icon='IcAdd' />
-                                    <Text color={is_ad_paused} size='xxs' weight='bold'>
+                                    <Icon color={icon_disabled_color} icon='IcAdd' />
+                                    <Text color={ad_pause_color} size='xxs' weight='bold'>
                                         <Localize i18n_default_text='Add' />
                                     </Text>
                                 </div>
@@ -241,7 +241,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             payment_method_names.map((payment_method, key) => {
                                 return (
                                     <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                        <Text color={is_ad_paused} size='xs' line-height='l'>
+                                        <Text color={ad_pause_color} size='xs' line-height='l'>
                                             {payment_method}
                                         </Text>
                                     </div>
@@ -254,8 +254,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 })}
                                 onClick={() => onClickAdd()}
                             >
-                                <Icon color={is_icon_disabled} icon='IcAdd' />
-                                <Text color={is_ad_paused} size='xxs' weight='bold'>
+                                <Icon color={icon_disabled_color} icon='IcAdd' />
+                                <Text color={ad_pause_color} size='xxs' weight='bold'>
                                     <Localize i18n_default_text='Add' />
                                 </Text>
                             </div>

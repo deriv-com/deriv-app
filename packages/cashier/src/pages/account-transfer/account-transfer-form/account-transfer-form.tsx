@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, MobileWrapper, Text } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -11,15 +11,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import {
-    TRootStore,
-    TClientStore,
-    TUiStore,
-    TReactChangeEvent,
-    TAccount,
-    TAccountsList,
-    TCryptoTransactionDetails,
-} from 'Types';
+import { TRootStore, TReactChangeEvent, TAccount, TAccountsList, TCryptoTransactionDetails } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
@@ -39,7 +31,7 @@ type TSelect = {
 };
 
 type TAccountTransferFormProps = {
-    account_limits: TClientStore['account_limits'];
+    account_limits: TRootStore['client']['account_limits'];
     account_transfer_amount: string;
     accounts_list: Array<TAccount>;
     converter_from_amount: string;
@@ -49,15 +41,15 @@ type TAccountTransferFormProps = {
     crypto_transactions: Array<TCryptoTransactionDetails>;
     error: object;
     is_crypto: boolean;
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    is_dxtrade_allowed: TClientStore['is_dxtrade_allowed'];
+    is_dark_mode_on: TRootStore['ui']['is_dark_mode_on'];
+    is_dxtrade_allowed: TRootStore['client']['is_dxtrade_allowed'];
     minimum_fee: string;
-    mt5_login_list: TClientStore['mt5_login_list'];
+    mt5_login_list: TRootStore['client']['mt5_login_list'];
     onChangeConverterFromAmount: () => void;
     onChangeConverterToAmount: () => void;
     onChangeTransferFrom: (event: TReactChangeEvent) => void;
     onChangeTransferTo: (event: TReactChangeEvent) => void;
-    onMount: TClientStore['getLimits'];
+    onMount: TRootStore['client']['getLimits'];
     percentage: number;
     recentTransactionOnMount: () => void;
     requestTransferBetweenAccounts: ({ amount }: { amount: number }) => void;

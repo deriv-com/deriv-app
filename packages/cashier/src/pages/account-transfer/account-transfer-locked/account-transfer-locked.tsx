@@ -4,12 +4,12 @@ import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore } from 'Types';
+import { TRootStore } from 'Types';
 
 type TAccountTransferLockedProps = {
-    is_financial_account: TClientStore['is_financial_account'];
-    is_financial_information_incomplete: TClientStore['is_financial_information_incomplete'];
-    is_trading_experience_incomplete: TClientStore['is_trading_experience_incomplete'];
+    is_financial_account: TRootStore['client']['is_financial_account'];
+    is_financial_information_incomplete: TRootStore['client']['is_financial_information_incomplete'];
+    is_trading_experience_incomplete: TRootStore['client']['is_trading_experience_incomplete'];
 };
 
 const AccountTransferLocked = ({

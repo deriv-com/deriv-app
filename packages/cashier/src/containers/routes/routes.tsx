@@ -1,15 +1,15 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCommonStore, TRootStore } from 'Types';
+import { TRootStore } from 'Types';
 import BinaryRoutes from './binary-routes';
 import ErrorComponent from './error-component';
 
 type TRoutesProps = RouteComponentProps & {
-    error: TCommonStore['error'];
-    has_error: TCommonStore['has_error'];
-    is_logged_in: TClientStore['is_logged_in'];
-    is_logging_in: TClientStore['is_logging_in'];
+    error: TRootStore['common']['error'];
+    has_error: TRootStore['common']['has_error'];
+    is_logged_in: TRootStore['client']['is_logged_in'];
+    is_logging_in: TRootStore['client']['is_logging_in'];
 };
 
 const Routes = ({ error, has_error, is_logged_in, is_logging_in }: TRoutesProps) => {

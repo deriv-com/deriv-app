@@ -3,12 +3,12 @@ import { Icon, Button, Text } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TUiStore } from 'Types';
+import { TRootStore } from 'Types';
 import './account-transfer-no-account.scss';
 
 type TAccountTransferNoAccountProps = {
-    is_dxtrade_allowed: TClientStore['is_dxtrade_allowed'];
-    toggleAccountsDialog: TUiStore['toggleAccountsDialog'];
+    is_dxtrade_allowed: TRootStore['client']['is_dxtrade_allowed'];
+    toggleAccountsDialog: TRootStore['ui']['toggleAccountsDialog'];
 };
 
 const AccountTransferNoAccount = ({ is_dxtrade_allowed, toggleAccountsDialog }: TAccountTransferNoAccountProps) => (

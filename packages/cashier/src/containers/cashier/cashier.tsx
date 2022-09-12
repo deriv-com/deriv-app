@@ -16,33 +16,33 @@ import { localize } from '@deriv/translations';
 import AccountPromptDialog from 'Components/account-prompt-dialog';
 import ErrorDialog from 'Components/error-dialog';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from 'Types';
+import { TError, TRootStore, TRoute } from 'Types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
     error: TError;
     is_account_transfer_visible: boolean;
-    is_account_setting_loaded: TClientStore['is_account_setting_loaded'];
+    is_account_setting_loaded: TRootStore['client']['is_account_setting_loaded'];
     is_cashier_onboarding: boolean;
     is_crypto: boolean;
     is_crypto_transactions_visible: boolean;
     is_loading: boolean;
-    is_logged_in: TClientStore['is_logged_in'];
-    is_logging_in: TClientStore['is_logging_in'];
-    is_from_derivgo: TCommonStore['is_from_derivgo'];
+    is_logged_in: TRootStore['client']['is_logged_in'];
+    is_logging_in: TRootStore['client']['is_logging_in'];
+    is_from_derivgo: TRootStore['common']['is_from_derivgo'];
     is_onramp_tab_visible: boolean;
     is_p2p_enabled: boolean;
     is_payment_agent_transfer_visible: boolean;
     is_payment_agent_visible: boolean;
-    is_visible: TUiStore['is_cashier_visible'];
+    is_visible: TRootStore['ui']['is_cashier_visible'];
     p2p_notification_count: number;
     routes: TRoute[];
     tab_index: number;
     onMount: (should_remount?: boolean) => void;
     setAccountSwitchListener: () => void;
     setTabIndex: (index: number) => void;
-    routeBackInApp: TCommonStore['routeBackInApp'];
-    toggleCashier: TUiStore['toggleCashier'];
+    routeBackInApp: TRootStore['common']['routeBackInApp'];
+    toggleCashier: TRootStore['ui']['toggleCashier'];
 };
 
 type TCashierOptions = {

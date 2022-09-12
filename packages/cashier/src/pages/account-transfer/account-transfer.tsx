@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TAccountsList, TSideNotesProps } from 'Types';
+import { TRootStore, TAccountsList, TSideNotesProps } from 'Types';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
 import { Virtual } from 'Components/cashier-container';
@@ -25,10 +25,10 @@ type TAccountTransferProps = {
     is_cashier_locked: boolean;
     is_crypto_transactions_visible: boolean;
     is_loading: boolean;
-    is_switching: TClientStore['is_switching'];
+    is_switching: TRootStore['client']['is_switching'];
     is_transfer_confirm: boolean;
     is_transfer_locked: boolean;
-    is_virtual: TClientStore['is_virtual'];
+    is_virtual: TRootStore['client']['is_virtual'];
     onMount: () => void;
     recentTransactionOnMount: () => void;
     setAccountTransferAmount: (amount: number | string) => void;
@@ -132,7 +132,7 @@ export default connect(({ client, modules }: TRootStore) => ({
     is_loading: modules.cashier.general_store.is_loading,
     is_switching: client.is_switching,
     is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
-    is_transfer_locked: modules.cashier.general_store.is_transfer_locked,
+    is_transfer_locked: modules.cashier.general_store.is_transfer_locked, // `is_transfer_locked` doesn't exist!
     is_virtual: client.is_virtual,
     onMount: modules.cashier.account_transfer.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,

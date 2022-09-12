@@ -3,7 +3,7 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
+import { TCryptoTransactionDetails, TRootStore } from 'Types';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -41,24 +41,24 @@ type TWithdrawalSideNoteProps = {
 };
 
 type TWithdrawalProps = {
-    balance: TClientStore['balance'];
+    balance: TRootStore['client']['balance'];
     container: string;
     crypto_transactions: TCryptoTransactionDetails[];
-    current_currency_type: TClientStore['current_currency_type'];
-    currency: TClientStore['currency'];
+    current_currency_type: TRootStore['client']['current_currency_type'];
+    currency: TRootStore['client']['currency'];
     error: TErrorFull;
     iframe_url: string;
     is_10k_withdrawal_limit_reached: boolean;
     is_cashier_locked: boolean;
     is_crypto: boolean;
     is_crypto_transactions_visible: boolean;
-    is_switching: TClientStore['is_switching'];
+    is_switching: TRootStore['client']['is_switching'];
     is_system_maintenance: boolean;
-    is_virtual: TClientStore['is_virtual'];
+    is_virtual: TRootStore['client']['is_virtual'];
     is_withdraw_confirmed: boolean;
     is_withdrawal_locked: boolean;
     tab_index: number;
-    verification_code: TClientStore['verification_code']['payment_withdraw'];
+    verification_code: TRootStore['client']['verification_code']['payment_withdraw'];
     verify_error: TErrorFull;
     check10kLimit: () => void;
     setActiveTab: (container: string) => void;
@@ -68,7 +68,7 @@ type TWithdrawalProps = {
         is_show_full_page?: boolean | null
     ) => void;
     setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
-    willMountWithdraw: (verification_code: TClientStore['verification_code']['payment_withdraw']) => void;
+    willMountWithdraw: (verification_code: TRootStore['client']['verification_code']['payment_withdraw']) => void;
     recentTransactionOnMount: () => void;
 };
 

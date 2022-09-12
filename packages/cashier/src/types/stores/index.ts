@@ -1,4 +1,70 @@
-export * from './client-store.types';
-export * from './common-store.types';
-export * from './root-store.types';
-export * from './ui-store.types';
+// This is a workaround for overriding the wrong types in RootStore,
+// Once we refactor the RootStore in Core package to TS we should be able to remove this file.
+
+import { RouteComponentProps } from 'react-router';
+import type { TRootStore as TCoreRootStore } from '@deriv/core/types';
+import { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus } from '@deriv/api-types';
+import CashierStore from '../../stores/cashier-store';
+
+type TAccount = NonNullable<Authorize['account_list']>[0];
+
+type TError = {
+    header: string | JSX.Element;
+    message: string | JSX.Element;
+    type?: string;
+    redirect_label: string;
+    redirect_to: string;
+    should_clear_error_on_click: boolean;
+    should_show_refresh: boolean;
+    redirectOnClick: () => void;
+    setError: (has_error: boolean, error: TError | null) => void;
+};
+
+interface TOverrideClientStore extends Pick<TCoreRootStore, 'client'> {
+    accounts: { [k: string]: TAccount };
+    balance: string | undefined;
+    currency: string;
+    current_fiat_currency: string | undefined;
+    is_virtual: boolean;
+    is_financial_information_incomplete: boolean;
+    is_trading_experience_incomplete: boolean;
+    account_status: GetAccountStatus;
+    loginid: string;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
+    current_currency_type: string | undefined;
+    is_deposit_lock: boolean;
+    is_withdrawal_lock: boolean;
+    is_identity_verification_needed: boolean;
+    account_limits: {
+        daily_transfers?: {
+            [k: string]: {
+                allowed: boolean;
+                available: boolean;
+            };
+        };
+    };
+}
+
+interface TOverrideCommonStore extends Omit<Pick<TCoreRootStore, 'common'>, 'error'> {
+    error: TError;
+    routeTo: (pathname: string) => void;
+    routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
+}
+
+interface TOverrideUIStore extends Omit<Pick<TCoreRootStore, 'ui'>, 'current_focus'> {
+    current_focus: string | null;
+    setCurrentFocus: (value: string) => void;
+    is_dark_mode_on: boolean;
+}
+
+interface TOverrideRootStore extends Omit<TCoreRootStore, 'client' | 'common' | 'ui'> {
+    client: TOverrideClientStore;
+    common: TOverrideCommonStore;
+    ui: TOverrideUIStore;
+}
+
+export type TRootStore = TOverrideRootStore & {
+    modules: {
+        cashier: CashierStore;
+    };
+};

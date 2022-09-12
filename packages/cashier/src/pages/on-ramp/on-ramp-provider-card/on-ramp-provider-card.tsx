@@ -2,13 +2,13 @@ import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { TProviderDetails, TRootStore } from 'Types';
 
 type TOnRampProviderCardProps = {
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
+    is_dark_mode_on: TRootStore['ui']['is_dark_mode_on'];
     provider: TProviderDetails;
     setSelectedProvider: (provider: TProviderDetails) => void;
-    is_mobile: TUiStore['is_mobile'];
+    is_mobile: TRootStore['ui']['is_mobile'];
 };
 
 const OnRampProviderCard = ({

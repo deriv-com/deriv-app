@@ -4,11 +4,11 @@ import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TClientStore, TRootStore } from 'Types';
+import { TRootStore } from 'Types';
 import CashierLocked from 'Components/cashier-locked';
 
 type TWithdrawalLockedProps = {
-    account_status: Required<TClientStore['account_status']>;
+    account_status: Required<TRootStore['client']['account_status']>;
     is_10K_limit: boolean;
     is_ask_financial_risk_approval: boolean;
 };

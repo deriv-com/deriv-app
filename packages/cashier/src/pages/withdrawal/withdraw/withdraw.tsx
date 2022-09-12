@@ -1,7 +1,7 @@
 import React from 'react';
 import { Real } from 'Components/cashier-container';
 import { connect } from 'Stores/connect';
-import { TClientStore, TRootStore } from 'Types';
+import { TRootStore } from 'Types';
 
 type TWithdrawProps = {
     container: string;
@@ -10,7 +10,7 @@ type TWithdrawProps = {
     is_loading: boolean;
     verification_code: string;
     clearIframe: () => void;
-    onMount: (verification_code: TClientStore['verification_code']['payment_withdraw']) => void;
+    onMount: (verification_code: TRootStore['client']['verification_code']['payment_withdraw']) => void;
     setActiveTab: (container: string) => void;
 };
 

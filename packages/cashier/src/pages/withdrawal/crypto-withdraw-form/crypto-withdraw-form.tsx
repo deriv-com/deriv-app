@@ -8,7 +8,7 @@ import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TReactChangeEvent, TRootStore } from 'Types';
+import { TCryptoTransactionDetails, TReactChangeEvent, TRootStore } from 'Types';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
@@ -17,18 +17,18 @@ type THeaderProps = {
 
 type TCryptoWithdrawFormProps = {
     account_platform_icon: string;
-    balance: TClientStore['balance'];
+    balance: TRootStore['client']['balance'];
     blockchain_address: string;
-    crypto_currency: TClientStore['currency'];
+    crypto_currency: TRootStore['client']['currency'];
     crypto_transactions: TCryptoTransactionDetails[];
     converter_to_error: string;
     converter_from_error: string;
-    currency: TClientStore['currency'];
-    current_fiat_currency: TClientStore['current_fiat_currency'];
+    currency: TRootStore['client']['currency'];
+    current_fiat_currency: TRootStore['client']['current_fiat_currency'];
     is_loading: boolean;
     percentage: number;
     should_percentage_reset: boolean;
-    verification_code: TClientStore['verification_code']['payment_withdraw'];
+    verification_code: TRootStore['client']['verification_code']['payment_withdraw'];
     onChangeConverterFromAmount: (
         e: React.ChangeEvent<HTMLInputElement>,
         from_currency: string,

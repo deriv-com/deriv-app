@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { GetLimits } from '@deriv/api-types';
-import { DesktopWrapper, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
 import { TReactChildren } from 'Types';
 

@@ -3,14 +3,14 @@ import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
+import { TCryptoTransactionDetails, TRootStore } from 'Types';
 import RecentTransaction from 'Components/recent-transaction';
 import VerificationEmail from 'Components/verification-email';
 import './withdrawal-verification-email.scss';
 
 type TWithdrawalVerificationEmailProps = {
     crypto_transactions: TCryptoTransactionDetails[];
-    currency: TClientStore['currency'];
+    currency: TRootStore['client']['currency'];
     is_email_sent: boolean;
     is_resend_clicked: boolean;
     recentTransactionOnMount: () => void;

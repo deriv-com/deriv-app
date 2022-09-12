@@ -4,7 +4,7 @@ import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TUiStore, TCommonStore } from 'Types';
+import { TRootStore } from 'Types';
 import './account-transfer-receipt.scss';
 
 type TSelect = {
@@ -22,17 +22,17 @@ type TSwitch = {
 };
 
 type TAccountTransferReceiptProps = RouteComponentProps & {
-    disableApp: TUiStore['disableApp'];
-    enableApp: TUiStore['enableApp'];
-    is_from_derivgo: TCommonStore['is_from_derivgo'];
-    loginid: TClientStore['loginid'];
+    disableApp: TRootStore['ui']['disableApp'];
+    enableApp: TRootStore['ui']['enableApp'];
+    is_from_derivgo: TRootStore['common']['is_from_derivgo'];
+    loginid: TRootStore['client']['loginid'];
     receipt: {
         amount_transferred: number | string;
     };
     resetAccountTransfer: () => void;
     selected_from: TSelect;
     selected_to: TSelect;
-    switchAccount: TClientStore['switchAccount'];
+    switchAccount: TRootStore['client']['switchAccount'];
 };
 
 const AccountTransferReceipt = ({
@@ -62,8 +62,10 @@ const AccountTransferReceipt = ({
     };
 
     const switchAndRedirect = async () => {
-        await switchAccount(switch_to.value);
-        openStatement();
+        if (switch_to.value) {
+            await switchAccount(switch_to.value);
+            openStatement();
+        }
     };
 
     const toggleSwitchAlert = () => {

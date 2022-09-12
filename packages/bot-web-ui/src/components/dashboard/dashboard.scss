@@ -58,10 +58,6 @@
         background-color: var(--general-main-1);
     }
     &__run-strategy-wrapper {
-        position: absolute;
-        right: 0;
-        top: 10px;
-        z-index: 100;
         .animation {
             &__button {
                 background-color: var(--purchase-main-1);
@@ -69,6 +65,12 @@
             &__container {
                 background-color: var(--general-main-1);
             }
+        }
+    }
+    &__sidebar-wrapper {
+        &--active {
+            position: fixed;
+            right: 0;
         }
     }
 }

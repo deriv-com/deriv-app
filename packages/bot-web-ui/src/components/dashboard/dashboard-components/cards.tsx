@@ -6,15 +6,15 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
 
-interface CardsProps {
+type TCard = {
     load_modal: LoadModalStore;
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
-}
+};
 
-const Cards = ({ load_modal, setActiveTab }: CardsProps) => {
+const Cards = ({ load_modal, setActiveTab }: TCard) => {
     const { onDriveConnect } = load_modal;
-    const IconArray = [
+    const actions = [
         {
             icon: 'IcMyComputer',
             content: 'My computer',
@@ -37,24 +37,21 @@ const Cards = ({ load_modal, setActiveTab }: CardsProps) => {
     ];
 
     return (
-        <div className='dc-tabs__content_group_tiles' id='dc-tabs__content_group_tiles'>
-            {IconArray.map((icons, index) => {
-                const { icon, content, method } = icons;
-                return (
-                    <div key={index} className='dc-tabs__content_group_tiles_block'>
-                        <Icon
-                            className='dc-tabs__content_group_tiles_images'
-                            width='8rem'
-                            height='8rem'
-                            style={{ backgroundColor: `#F2F3F4` }}
-                            icon={icon}
-                            id={icon}
-                            onClick={method}
-                        />
-                        <span className='dc-tabs__content_group_tiles_content'>{localize(content)}</span>
-                    </div>
-                );
-            })}
+        <div className='dc-tabs__dashboard-cards-wrapper' id='dc-tabs__content_group_tiles'>
+            {actions.map(({ icon, content, method }, index) => (
+                <div key={index} className='dc-tabs__dashboard-card'>
+                    <Icon
+                        className='dc-tabs__dashboard-card-image'
+                        width='8rem'
+                        height='8rem'
+                        style={{ backgroundColor: `#F2F3F4` }}
+                        icon={icon}
+                        id={icon}
+                        onClick={method}
+                    />
+                    <span className='dc-tabs__dashboard-card-label'>{localize(content)}</span>
+                </div>
+            ))}
         </div>
     );
 };

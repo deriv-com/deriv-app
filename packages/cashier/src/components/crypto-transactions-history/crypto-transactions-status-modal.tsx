@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TReactMouseEvent, TRootStore } from 'Types';
+import { TReactMouseEvent, RootStore } from 'Types';
 
 type TCryptoTransactionsStatusModalProps = {
     hideCryptoTransactionsStatusModal: (e: TReactMouseEvent) => void;
@@ -34,7 +34,7 @@ const CryptoTransactionsStatusModal = ({
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
+export default connect(({ modules }: RootStore) => ({
     hideCryptoTransactionsStatusModal: modules.cashier.transaction_history.hideCryptoTransactionsStatusModal,
     is_status_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_status_modal_visible,
     selected_crypto_status: modules.cashier.transaction_history.selected_crypto_status,

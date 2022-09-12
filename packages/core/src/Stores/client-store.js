@@ -1734,6 +1734,7 @@ export default class ClientStore extends BaseStore {
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.landing_companies = {};
+        localStorage.removeItem('readScamMessage');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1751,7 +1752,6 @@ export default class ClientStore extends BaseStore {
         const response = await requestLogout();
 
         if (response?.logout === 1) {
-            localStorage.removeItem('readScamMessage');
             this.cleanUp();
 
             this.root_store.rudderstack.reset();

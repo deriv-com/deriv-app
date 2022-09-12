@@ -2,9 +2,10 @@
 // Once we refactor the RootStore in Core package to TS we should be able to remove this file.
 
 import { RouteComponentProps } from 'react-router';
-import type { TRootStore as TCoreRootStore } from '@deriv/core/types';
 import { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus } from '@deriv/api-types';
 import CashierStore from '../../stores/cashier-store';
+
+type TCoreRootStore = NonNullable<import('@deriv/core/types').TRootStore>;
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 

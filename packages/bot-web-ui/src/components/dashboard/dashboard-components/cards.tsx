@@ -17,21 +17,21 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
     const actions = [
         {
             icon: 'IcMyComputer',
-            content: 'My computer',
+            content: localize('My computer'),
         },
         {
             icon: 'IcGoogleDriveDbot',
-            content: 'Google Drive',
+            content: localize('Google Drive'),
             method: onDriveConnect,
         },
         {
             icon: 'IcBotBuilder',
-            content: 'Bot Builder',
+            content: localize('Bot Builder'),
             method: () => setActiveTab(1),
         },
         {
             icon: 'IcQuickStrategy',
-            content: 'Quick Strategy',
+            content: localize('Quick Strategy'),
             method: () => setActiveTab(2),
         },
     ];

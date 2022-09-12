@@ -4,16 +4,21 @@ import { localize } from '@deriv/translations';
 type TJoyrideConfig = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
 
 type TStep = {
-    Label: string | boolean;
-    Content: string;
+    label: string | boolean;
+    content: string;
 };
 
-const Step = ({ Label, Content }: TStep) => (
+const Step = ({ label, content }: TStep) => (
     <div>
-        <h1>{Label}</h1>
-        <p>{Content}</p>
+        <h1>{label}</h1>
+        <p>{content}</p>
     </div>
 );
+
+/**
+ * Joyride specifc config
+ * It should be in camel casing.
+ */
 const joyride_config: TJoyrideConfig = {
     showProgress: true,
     showSkipButton: true,
@@ -26,8 +31,8 @@ export const DBOT_ONBOARDING = [
         target: 'body',
         content: (
             <Step
-                Label={localize('Start with a tempplate')}
-                Content={localize(
+                label={localize('Start with a tempplate')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
@@ -38,8 +43,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-bot-builder',
         content: (
             <Step
-                Label={localize('Start with a BotBuilder')}
-                Content={localize(
+                label={localize('Start with a BotBuilder')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
@@ -50,8 +55,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-quick-strategy',
         content: (
             <Step
-                Label={localize('Start with a tempplate')}
-                Content={localize(
+                label={localize('Start with a tempplate')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
@@ -62,8 +67,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-charts',
         content: (
             <Step
-                Label={localize('Start with a charts')}
-                Content={localize(
+                label={localize('Start with a charts')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
@@ -74,8 +79,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-tutorials',
         content: (
             <Step
-                Label={localize('Start with a tutorials')}
-                Content={localize(
+                label={localize('Start with a tutorials')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
@@ -86,8 +91,8 @@ export const DBOT_ONBOARDING = [
         target: '#dc-tabs__content_group_tiles',
         content: (
             <Step
-                Label={localize('Start with a tutorials')}
-                Content={localize(
+                label={localize('Start with a tutorials')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />

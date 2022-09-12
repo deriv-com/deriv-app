@@ -118,18 +118,20 @@ const JurisdictionCardBanner = ({
                     </Text>
                 </div>
             );
-        } else if (
-            (is_vanuatu && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
-            (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
-        ) {
-            return (
-                <div className={`${card_classname}__verification-status--failed`}>
-                    <Text size='xxs' color='colored-background'>
-                        <Localize i18n_default_text='Please contact us via livechat' />
-                    </Text>
-                </div>
-            );
-        } else if (
+        }
+        // else if (
+        //     (is_vanuatu && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
+        //     (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
+        // ) {
+        //     return (
+        //         <div className={`${card_classname}__verification-status--failed`}>
+        //             <Text size='xxs' color='colored-background'>
+        //                 <Localize i18n_default_text='Please contact us via livechat' />
+        //             </Text>
+        //         </div>
+        //     );
+        // }
+        else if (
             (is_vanuatu && poi_resubmit_for_vanuatu) ||
             (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)
         ) {

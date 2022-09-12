@@ -319,9 +319,10 @@ const DMT5CompareModalContent = ({
     const onSelectRegulated = (type_of_account: { category: string; type: string }) => {
         if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
             return openPersonalDetailsFormOrPasswordForm(type_of_account);
-        } else if (need_poi_for_bvi_labuan_maltainvest && no_onfido_left) {
-            return window.LC_API.open_chat_window();
         }
+        // else if (need_poi_for_bvi_labuan_maltainvest && no_onfido_left) {
+        //     return window.LC_API.open_chat_window();
+        // }
         return toggleCFDVerificationModal();
     };
 
@@ -358,8 +359,9 @@ const DMT5CompareModalContent = ({
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
-                } else if (need_poi_for_vanuatu && no_onfido_left) {
-                    window.LC_API.open_chat_window();
+                    // }
+                    // else if (need_poi_for_vanuatu && no_onfido_left) {
+                    //     window.LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
@@ -571,9 +573,10 @@ const DMT5CompareModalContent = ({
                                                 primary_light
                                                 onClick={() => onButtonClick(item)}
                                             >
-                                                {should_show_contact_us_button(item)
+                                                {/* {should_show_contact_us_button(item)
                                                     ? localize('Contact Us')
-                                                    : item.label}
+                                                    : */}
+                                                {item.label}
                                             </Button>
                                         )}
                                     </Table.Cell>

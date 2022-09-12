@@ -37,6 +37,7 @@ type TSelect = {
     is_mt: boolean;
     value: string;
     error: string;
+    status?: string;
 };
 
 type TAccountTransferFormProps = {
@@ -352,7 +353,10 @@ const AccountTransferForm = ({
         resetConverter();
     }, [selected_to, selected_from, account_limits]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const is_mt5_restricted = selected_from?.is_mt && selected_from?.status?.includes('poa_failed');
+    const is_mt5_restricted =
+        selected_from?.is_mt &&
+        selected_from?.status?.includes('poa_failed') &&
+        authentication_status?.document_status !== 'verified';
     const poa_pending_msg = localize(
         'You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.'
     );

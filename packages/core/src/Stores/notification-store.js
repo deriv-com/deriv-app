@@ -153,10 +153,6 @@ export default class NotificationStore extends BaseStore {
         //identity
         if (identity.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poi_verified);
-        } else if (identity?.services.onfido.submissions_left === 0) {
-            this.addNotificationMessage(this.client_notifications.reached_poi_upload_limit);
-        } else if (identity.status === 'expired') {
-            this.addNotificationMessage(this.client_notifications.poi_expired);
         } else if (!['none', 'pending'].includes(identity.status)) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
@@ -167,8 +163,6 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (has_restricted_mt5_account) {
             this.addNotificationMessage(this.client_notifications.resticted_mt5);
-        } else if (document.status === 'expired') {
-            this.addNotificationMessage(this.client_notifications.poa_expired);
         } else if (!['none', 'pending'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
@@ -835,18 +829,6 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            onfido_failed: {
-                key: 'onfido_failed',
-                header: localize("You've reached the limit for uploading your documents."),
-                message: localize('Please contact us via live chat.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'danger',
-            },
             password_changed: {
                 key: 'password_changed',
                 header: localize('Password updated.'),
@@ -899,20 +881,6 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
-            },
-            reached_poi_upload_limit: {
-                key: 'reached_poi_upload_limit',
-                header: localize('Need help?'),
-                message: localize(
-                    'It looks like you’ve tried to verify your proof of identity for more than 3 times. Please contact us via live chat for help.'
-                ),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Yes, I need help'),
-                },
-                type: 'danger',
             },
             resticted_mt5: {
                 action: {

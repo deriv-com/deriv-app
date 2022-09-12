@@ -374,7 +374,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     {localize('Back to old interface')}
                                                 </Text>
                                                 <Icon
-                                                    className='header__menu-mobile-rightarrow'
+                                                    className='header__menu-mobile-right-arrow'
                                                     icon='IcArrowRight'
                                                     size={18}
                                                     color='red'
@@ -396,11 +396,11 @@ const ToggleMenuDrawer = React.forwardRef(
                                             id='mobile_platform_switcher'
                                         />
                                         {is_logged_in && route === routes.trade && (
-                                            <MobileDrawer.Item className='header__menu--backtooldui--dtrader'>
+                                            <MobileDrawer.Item className='header__menu--back-to-old-ui--dtrader'>
                                                 <Button
                                                     className={classNames({
                                                         'header__menu--back-to-ui': !is_dark_mode,
-                                                        'header__menu--back-tso-ui--dark': is_dark_mode,
+                                                        'header__menu--back-to-ui--dark': is_dark_mode,
                                                     })}
                                                     type='button'
                                                     large
@@ -419,7 +419,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         {localize('Back to old interface')}
                                                     </Text>
                                                     <Icon
-                                                        className='header__menu-mobile-rightarrow'
+                                                        className='header__menu-mobile-right-arrow'
                                                         icon='IcArrowRight'
                                                         size={18}
                                                         color='red'
@@ -456,7 +456,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
                                         <MobileDrawer.Item
-                                            className='header__menu-mobile-theme--tradinghub'
+                                            className='header__menu-mobile-theme--trading-hub'
                                             onClick={e => {
                                                 e.preventDefault();
                                                 toggleTheme(!is_dark_mode);
@@ -558,11 +558,11 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        <MobileDrawer.Item className='header__menu--tradinghub'>
+                                        <MobileDrawer.Item className='header__menu--trading-hub'>
                                             <Button
                                                 className={classNames({
-                                                    'header__menu--exploretradinghub': !is_dark_mode,
-                                                    'header__menu--exploretradinghub--dark': is_dark_mode,
+                                                    'header__menu--explore-trading-hub': !is_dark_mode,
+                                                    'header__menu--explore-trading-hub--dark': is_dark_mode,
                                                 })}
                                                 type='button'
                                                 large
@@ -571,11 +571,11 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     toggleDrawer();
                                                 }}
                                             >
-                                                <Text className='header__menu--tradinghub-text' size='xs'>
+                                                <Text className='header__menu--trading-hub-text' size='xs'>
                                                     {localize('Explore Trading hub')}
                                                 </Text>
                                                 <Icon
-                                                    className='header__menu-mobile-rightarrow'
+                                                    className='header__menu-mobile-right-arrow'
                                                     icon='IcArrowRight'
                                                     size={18}
                                                     color='red'

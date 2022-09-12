@@ -78,13 +78,13 @@ const TradingHubFooter = ({
                     {footer_extensions_left.map(FooterExtensionRenderer)}
                 </div>
             )}
+            <EndpointNote />
+            <NetworkStatus />
+            <FooterIconSeparator />
+            <ServerTime />
+            <FooterIconSeparator />
             {location === routes.trade ? (
                 <>
-                    <EndpointNote />
-                    <NetworkStatus />
-                    <FooterIconSeparator />
-                    <ServerTime />
-                    <FooterIconSeparator />
                     <div className='footer__links'>
                         {footer_extensions_right.map(FooterExtensionRenderer)}
                         <GoToDeriv />
@@ -110,16 +110,10 @@ const TradingHubFooter = ({
                             enableApp={enableApp}
                             settings_extension={settings_extension}
                         />
-                        <ToggleFullScreen />
                     </div>
                 </>
             ) : (
                 <>
-                    <EndpointNote />
-                    <NetworkStatus />
-                    <FooterIconSeparator />
-                    <ServerTime />
-                    <FooterIconSeparator />
                     <div className='footer__links'>
                         {footer_extensions_right.map(FooterExtensionRenderer)}
                         <LiveChat />
@@ -138,10 +132,10 @@ const TradingHubFooter = ({
                         </div>
                         <FooterIconSeparator />
                         <HelpCentre />
-                        <ToggleFullScreen />
                     </div>
                 </>
             )}
+            <ToggleFullScreen />
         </footer>
     );
 };

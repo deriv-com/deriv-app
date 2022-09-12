@@ -3,7 +3,7 @@ import { PlatformContext } from '@deriv/shared';
 import DefaultFooter from './default-footer.jsx';
 import TradingHubFooter from './trading-hub-footer.jsx';
 
-const Header = () => {
+const Footer = () => {
     const { is_pre_appstore } = React.useContext(PlatformContext);
     if (is_pre_appstore) {
         return <TradingHubFooter />;
@@ -11,4 +11,4 @@ const Header = () => {
     return <DefaultFooter />;
 };
 
-export default Header;
+export default Footer;

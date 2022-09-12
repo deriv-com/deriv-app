@@ -182,7 +182,7 @@ const TradingHubHeader = ({
             <MobileWrapper>
                 <div className='dashboard-platform-header__mobile-parent'>
                     <div className='dashboard-platform-header__menu-middle'>
-                        <TradingHubOnboarding />
+                        <TradingHubOnboarding is_dark_mode={is_dark_mode} />
                         <ShowNotifications
                             is_notifications_visible={is_notifications_visible}
                             notifications_count={notifications_count}

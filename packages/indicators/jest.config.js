@@ -4,7 +4,6 @@ module.exports = {
     ...baseConfigForPackages,
     transform: {
         '^.+\\.jsx?$': 'babel-jest',
-        '^.+\\.ts?$': 'ts-jest',
-        '^.+\\.tsx?$': 'ts-jest',
+        '^.+\\.(ts|tsx)?$': 'ts-jest',
     },
 };

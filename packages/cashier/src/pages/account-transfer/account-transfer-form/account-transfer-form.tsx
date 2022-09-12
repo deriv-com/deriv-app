@@ -170,7 +170,7 @@ const AccountTransferForm = ({
 }: TAccountTransferFormProps) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
-    const [transfer_to_hint, setTransferToHint] = React.useState();
+    const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5;

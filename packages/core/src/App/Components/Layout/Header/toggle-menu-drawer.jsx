@@ -150,7 +150,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.markets,
                     ];
                     secondary_routes = [];
-                } else if (is_pre_appstore && location === routes.trading_hub) {
+                } else if ((is_pre_appstore && location === routes.trading_hub) || location !== routes.trade) {
                     primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {
@@ -345,6 +345,7 @@ const ToggleMenuDrawer = React.forwardRef(
                             {is_pre_appstore && (
                                 <React.Fragment>
                                     {(is_logged_in && route.startsWith(routes.cashier)) ||
+                                    route.startsWith(routes.account) ||
                                     route === routes.trading_hub ? (
                                         <MobileDrawer.SubHeader
                                             className={classNames({

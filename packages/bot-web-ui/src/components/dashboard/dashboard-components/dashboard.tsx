@@ -4,9 +4,9 @@ import Cards from './cards';
 
 const Dashboard = () => {
     return (
-        <div className='dc-tabs__content_group'>
-            <span className='dc-tabs__content_group_heading'>{localize('Load or build your bot')}</span>
-            <span className='dc-tabs__content_group_description'>
+        <div className='dc-tabs__content-group'>
+            <span className='heading'>{localize('Load or build your bot')}</span>
+            <span className='description'>
                 {localize(
                     'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
                 )}

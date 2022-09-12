@@ -21,12 +21,12 @@
                 line-height: 2.6rem;
                 position: relative;
                 cursor: pointer;
-                .chevron {
+                &-chevron {
                     position: absolute;
                     right: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
-                    &.active {
+                    &--active {
                         transform: rotate(180deg);
                         top: -0.2rem;
                     }
@@ -45,7 +45,7 @@
             &__content-wrapper {
                 height: 0;
                 transition: height 0.4s ease;
-                &.active {
+                &--active {
                     height: auto;
                 }
             }

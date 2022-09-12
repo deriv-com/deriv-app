@@ -7,7 +7,7 @@ import ProofOfIncomeContainer from './proof-of-income-container.jsx';
 
 const ProofOfIncome = ({ is_virtual, is_switching, refreshNotifications }) => {
     const { is_appstore } = React.useContext(PlatformContext);
-    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={true} />;
+    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button />;
 
     return <ProofOfIncomeContainer is_switching={is_switching} refreshNotifications={refreshNotifications} />;
 };

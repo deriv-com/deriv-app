@@ -1,35 +1,35 @@
-import Passwords from 'Sections/Security/Passwords';
-import AccountLimits from 'Sections/Security/AccountLimits';
-import PersonalDetails from 'Sections/Profile/PersonalDetails';
-import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
-import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
-import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
-import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
-import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
-import ApiToken from 'Sections/Security/ApiToken';
-import SelfExclusion from 'Sections/Security/SelfExclusion';
 import Account from 'Containers/account.jsx';
+import AccountClosed from 'Sections/Security/AccountClosed';
+import AccountLimits from 'Sections/Security/AccountLimits';
+import ApiToken from 'Sections/Security/ApiToken';
 import ClosingAccount from 'Sections/Security/ClosingAccount';
 import ConnectedApps from 'Sections/Security/ConnectedApps';
-import LoginHistory from 'Sections/Security/LoginHistory';
-import AccountClosed from 'Sections/Security/AccountClosed';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
+import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
+import LoginHistory from 'Sections/Security/LoginHistory';
+import Passwords from 'Sections/Security/Passwords';
+import PersonalDetails from 'Sections/Profile/PersonalDetails';
+import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
+import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
+import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
+import SelfExclusion from 'Sections/Security/SelfExclusion';
+import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 
 export {
-    AccountLimits,
-    Passwords,
-    PersonalDetails,
-    FinancialAssessment,
-    ProofOfIdentity,
-    ProofOfAddress,
-    ProofOfIncome,
-    TwoFactorAuthentication,
-    ApiToken,
-    SelfExclusion,
     Account,
+    AccountClosed,
+    AccountLimits,
+    ApiToken,
     ClosingAccount,
     ConnectedApps,
-    LoginHistory,
-    AccountClosed,
     DeactivateAccount,
+    FinancialAssessment,
+    LoginHistory,
+    Passwords,
+    PersonalDetails,
+    ProofOfAddress,
+    ProofOfIdentity,
+    ProofOfIncome,
+    SelfExclusion,
+    TwoFactorAuthentication,
 };

@@ -133,7 +133,6 @@ const ProofOfIncomeForm = ({
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
-                                                    // {...field}
                                                     name='document_type'
                                                     placeholder={localize(
                                                         'Please select the document you wish to upload*'

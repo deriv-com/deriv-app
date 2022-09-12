@@ -20,7 +20,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import { action, computed, observable, reaction } from 'mobx';
 import React from 'react';
 import { WS } from 'Services';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage';
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
 import BaseStore from './base-store';
 import {
     excluded_notifications,

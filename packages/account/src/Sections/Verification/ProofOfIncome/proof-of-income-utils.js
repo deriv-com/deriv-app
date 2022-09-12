@@ -1,3 +1,5 @@
+import { localize } from '@deriv/translations';
+
 export const income_status_codes = {
     none: 'none',
     pending: 'pending',
@@ -7,13 +9,13 @@ export const income_status_codes = {
 };
 
 export const poinc_documents_list = [
-    { text: 'Tax return', value: 'tax_return' },
-    { text: 'Employment contract', value: 'employment_contract' },
-    { text: 'Payslip', value: 'payslip' },
-    { text: 'COI', value: 'coi' },
-    { text: 'Business POA', value: 'business_poa' },
-    { text: 'Article of association', value: 'article_of_association' },
-    { text: 'Memorandum', value: 'memorandum' },
-    { text: 'Authorisation letter', value: 'authorisation_letter' },
-    { text: 'Declarations', value: 'declarations' },
+    { text: localize('Tax return'), value: 'tax_return' },
+    { text: localize('Employment contract'), value: 'employment_contract' },
+    { text: localize('Payslip'), value: 'payslip' },
+    { text: localize('COI'), value: 'coi' },
+    { text: localize('Business POA'), value: 'business_poa' },
+    { text: localize('Article of association'), value: 'article_of_association' },
+    { text: localize('Memorandum'), value: 'memorandum' },
+    { text: localize('Authorisation letter'), value: 'authorisation_letter' },
+    { text: localize('Declarations'), value: 'declarations' },
 ];

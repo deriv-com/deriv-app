@@ -228,8 +228,6 @@ export const getAuthenticationStatusInfo = account_status => {
         !poi_verified_for_bvi_labuan_maltainvest;
     const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poa_verified;
 
-    const no_onfido_left = account_status?.authentication?.identity?.services?.onfido?.submissions_left < 1;
-
     return {
         poa_status,
         poi_status,
@@ -257,6 +255,5 @@ export const getAuthenticationStatusInfo = account_status => {
         poi_pending_for_vanuatu,
         poi_resubmit_for_vanuatu,
         poi_resubmit_for_bvi_labuan_maltainvest,
-        no_onfido_left,
     };
 };

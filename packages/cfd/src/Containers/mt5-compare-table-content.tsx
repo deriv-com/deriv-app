@@ -239,9 +239,6 @@ const DMT5CompareModalContent = ({
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
     const {
-        need_poi_for_vanuatu,
-        no_onfido_left,
-        need_poi_for_bvi_labuan_maltainvest,
         poi_pending_for_vanuatu,
         poi_pending_for_bvi_labuan_maltainvest,
         poi_verified_for_vanuatu,
@@ -320,9 +317,6 @@ const DMT5CompareModalContent = ({
         if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
             return openPersonalDetailsFormOrPasswordForm(type_of_account);
         }
-        // else if (need_poi_for_bvi_labuan_maltainvest && no_onfido_left) {
-        //     return window.LC_API.open_chat_window();
-        // }
         return toggleCFDVerificationModal();
     };
 
@@ -359,9 +353,6 @@ const DMT5CompareModalContent = ({
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
-                    // }
-                    // else if (need_poi_for_vanuatu && no_onfido_left) {
-                    //     window.LC_API.open_chat_window();
                 } else {
                     toggleCFDVerificationModal();
                 }
@@ -491,16 +482,6 @@ const DMT5CompareModalContent = ({
         return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
     };
 
-    const should_show_contact_us_button = (item: TFooterButtonData) => {
-        const type = item.action.split('_')[1];
-        if (type === 'svg') {
-            return false;
-        } else if (type === 'vanuatu') {
-            return need_poi_for_vanuatu && no_onfido_left;
-        }
-        return need_poi_for_bvi_labuan_maltainvest && no_onfido_left;
-    };
-
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
             <div className='cfd-real-compare-accounts'>
@@ -573,9 +554,6 @@ const DMT5CompareModalContent = ({
                                                 primary_light
                                                 onClick={() => onButtonClick(item)}
                                             >
-                                                {/* {should_show_contact_us_button(item)
-                                                    ? localize('Contact Us')
-                                                    : */}
                                                 {item.label}
                                             </Button>
                                         )}

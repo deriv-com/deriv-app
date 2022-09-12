@@ -34,12 +34,9 @@ const JurisdictionModal = ({
     const {
         poi_pending_for_vanuatu,
         poi_verified_for_vanuatu,
-        poi_acknowledged_for_vanuatu,
         poi_pending_for_bvi_labuan_maltainvest,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
         poi_resubmit_for_bvi_labuan_maltainvest,
         poi_resubmit_for_vanuatu,
-        no_onfido_left,
         poi_verified_for_bvi_labuan_maltainvest,
         poi_or_poa_not_submitted,
     } = getAuthenticationStatusInfo(account_status);
@@ -138,14 +135,7 @@ const JurisdictionModal = ({
             }
         } else if (jurisdiction_selected_shortcode === 'svg') {
             openPasswordModal(type_of_account);
-        }
-        //  else if (
-        //     (jurisdiction_selected_shortcode === 'vanuatu' && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
-        //     (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
-        // ) {
-        //     window.LC_API.open_chat_window();
-        // }
-        else if (jurisdiction_selected_shortcode === 'vanuatu') {
+        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
             if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
@@ -161,12 +151,6 @@ const JurisdictionModal = ({
     };
 
     const buttonText = () => {
-        // if (
-        //     (jurisdiction_selected_shortcode === 'vanuatu' && !poi_acknowledged_for_vanuatu && no_onfido_left) ||
-        //     (is_regulated_except_vanuatu && !poi_acknowledged_for_bvi_labuan_maltainvest && no_onfido_left)
-        // ) {
-        //     return <Localize i18n_default_text='Contact us via livechat' />;
-        // } else
         if (
             ((jurisdiction_selected_shortcode === 'vanuatu' && poi_resubmit_for_vanuatu) ||
                 (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)) &&

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { RootStore } from 'Types';
 
 type TCryptoTransactionsCancelModalProps = {
     cancelCryptoTransaction: (selected_crypto_transaction_id: string) => void;
@@ -45,7 +45,7 @@ const CryptoTransactionsCancelModal = ({
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
+export default connect(({ modules }: RootStore) => ({
     cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
     hideCryptoTransactionsCancelModal: modules.cashier.transaction_history.hideCryptoTransactionsCancelModal,
     is_cancel_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible,

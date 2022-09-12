@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils.js';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
@@ -27,8 +28,8 @@ const Unsupported = ({ country_code, ...props }) => {
         country_code,
     });
 
-    if (props?.manual && props.manual.status === 'pending') {
-        return <UploadComplete is_from_external />;
+    if (props?.manual && props.manual.status === identity_status_codes.pending) {
+        return <UploadComplete />;
     }
 
     if (detail !== null) {

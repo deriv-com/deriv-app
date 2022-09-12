@@ -100,6 +100,8 @@ const OnRamp = ({
         onMountOnramp();
         if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
             setSideNotes([<OnRampSideNote key={0} />]);
+        } else {
+            setSideNotes([]);
         }
 
         return () => onUnmountOnramp();

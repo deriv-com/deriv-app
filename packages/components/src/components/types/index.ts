@@ -1,3 +1,3 @@
-import { TChildren, TGenericStringValueObject } from './general.types';
+import { TGenericStringValueObject } from './general.types';
 
-export type { TChildren, TGenericStringValueObject };
+export type { TGenericStringValueObject };

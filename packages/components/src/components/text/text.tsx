@@ -1,20 +1,17 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLProps } from 'react';
 import { isEmptyObject } from '@deriv/shared';
-import { TChildren, TGenericStringValueObject } from '../types';
+import { TGenericStringValueObject } from '../types';
 
-export type TTextProps = {
-    line_height?: string;
-    size?: string;
-    children?: TChildren;
-    color?: string;
+interface ITextProps extends HTMLProps<HTMLElement> {
     align?: string;
     weight?: string;
-    as?: string;
-    className?: string;
+    line_height?: string;
     styles?: TGenericStringValueObject;
+}
+type TTextProps = Omit<ITextProps, 'size'> & {
+    size: string;
 };
-
 const Text = ({
     children,
     size = 's',

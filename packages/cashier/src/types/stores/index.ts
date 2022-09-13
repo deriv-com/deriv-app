@@ -3,7 +3,7 @@
 
 import CashierStore from '../../stores/cashier-store';
 
-type TCoreRootStore = NonNullable<import('@deriv/core/types').TRootStore>;
+type TCoreRootStore = NonNullable<import('@deriv/core').TRootStore>;
 type TClientStore = TCoreRootStore['client'];
 type TCommonStore = TCoreRootStore['common'];
 type TUIStore = TCoreRootStore['ui'];

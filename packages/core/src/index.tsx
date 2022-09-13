@@ -29,3 +29,5 @@ if (!has_endpoint_url) {
         ReactDOM.render(<App useSuspense={false} root_store={root_store} />, wrapper);
     }
 }
+
+export * from './types';

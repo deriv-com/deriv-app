@@ -55,14 +55,9 @@ const TradingHubFooter = ({
         footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
     }
 
-    const darkOnClick = () => {
+    const changeTheme = () => {
         if (isBot()) return;
-        setDarkMode(true);
-    };
-
-    const lightOnClick = () => {
-        if (isBot()) return;
-        setDarkMode(false);
+        setDarkMode(!is_dark_mode);
     };
 
     const location = window.location.pathname;
@@ -98,9 +93,9 @@ const TradingHubFooter = ({
                         <HelpCentre />
                         <div className='footer__links--dark-mode'>
                             {is_dark_mode ? (
-                                <LightModeToggleIcon onClick={lightOnClick} />
+                                <LightModeToggleIcon onClick={changeTheme} />
                             ) : (
-                                <DarkModeToggleIcon onClick={darkOnClick} />
+                                <DarkModeToggleIcon onClick={changeTheme} />
                             )}
                         </div>
                         <ToggleSettings
@@ -125,9 +120,9 @@ const TradingHubFooter = ({
                         )}
                         <div className='footer__links--dark-mode'>
                             {is_dark_mode ? (
-                                <LightModeToggleIcon onClick={lightOnClick} />
+                                <LightModeToggleIcon onClick={changeTheme} />
                             ) : (
-                                <DarkModeToggleIcon onClick={darkOnClick} />
+                                <DarkModeToggleIcon onClick={changeTheme} />
                             )}
                         </div>
                         <FooterIconSeparator />

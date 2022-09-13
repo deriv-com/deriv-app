@@ -2,7 +2,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-import { RiskToleranceWarningModal } from 'Components/trading-assessment';
+import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
 import { trading_assessment_questions } from 'Configs/trading-assessment-config.js';
 import {
     DesktopWrapper,
@@ -12,6 +12,7 @@ import {
     Text,
     FormSubmitButton,
     Loading,
+    Button,
 } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
@@ -34,13 +35,19 @@ const populateData = form_data => {
     };
 };
 
-const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setShouldShowWarningModal }) => {
+const TradingAssessment = ({
+    is_virtual,
+    setFinancialAndTradingAssessment,
+    should_show_warning_modal,
+    setShouldShowWarningModal,
+}) => {
     const history = useHistory();
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
     const [should_accept_risk, setShouldAcceptRisk] = React.useState(false);
+    const [prev_score, setPrevScore] = React.useState();
     const [form_data, setFormData] = React.useState({});
 
     React.useEffect(() => {
@@ -57,6 +64,13 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        WS.authorized.storage.getFinancialAssessment().then(data => {
+            const { trading_score } = data?.get_financial_assessment;
+            setPrevScore(trading_score);
+        });
+    }, [prev_score]);
 
     const handleSubmit = async values => {
         setFormData(values);
@@ -82,11 +96,15 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
             };
             const data = await setFinancialAndTradingAssessment(form_payload);
             const { trading_score } = data?.set_financial_assessment;
-            if (trading_score === 0 && !should_accept_risk) {
+            if (prev_score > 0 && trading_score === 0) {
                 setShouldShowWarningModal(true);
+            } else {
+                setShouldShowWarningModal(false);
             }
+
             WS.authorized.storage.getFinancialAssessment().then(res_data => {
                 setInitialFormValues(res_data.get_financial_assessment);
+                setPrevScore(trading_score);
             });
             setIsBtnLoading(false);
             setTimeout(() => setIsSubmitSuccess(false), 10000);
@@ -113,6 +131,37 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, you must confirm that you understand your capital is at risk.'
                         components={[<br key={0} />]}
                     />
+                }
+            />
+        );
+    }
+    if (should_show_warning_modal) {
+        return (
+            <TestWarningModal
+                show_risk_modal={should_show_warning_modal}
+                body_content={
+                    <Text as='p' size='xs'>
+                        <Localize
+                            i18n_default_text='In providing our services to you, we are required to ask you for some information to assess if a given product or service is appropriate for you and whether you have the experience and knowledge to understand the risks involved.<0/><0/>'
+                            components={[<br key={0} />]}
+                        />
+                        <Localize
+                            i18n_default_text='Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs. CFD trading is risky and you could potentially lose all of your capital.<0/><0/>'
+                            components={[<br key={0} />]}
+                        />
+                        <Localize i18n_default_text='Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge or experience to properly assess or mitigate these risks, which may be significant, including the risk of losing the entire sum you have invested' />
+                    </Text>
+                }
+                footer_content={
+                    <React.Fragment>
+                        <Button
+                            type='button'
+                            large
+                            text={localize('OK')}
+                            primary
+                            onClick={() => setShouldShowWarningModal(false)}
+                        />
+                    </React.Fragment>
                 }
             />
         );
@@ -254,9 +303,10 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
 };
 
 export default connect(({ client, ui }) => ({
-    setShouldShowWarningModal: ui.setShouldShowWarningModal,
     is_virtual: client.is_virtual,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     updateAccountStatus: client.updateAccountStatus,
+    setShouldShowWarningModal: ui.setShouldShowWarningModal,
+    should_show_warning_modal: ui.should_show_warning_modal,
 }))(withRouter(TradingAssessment));

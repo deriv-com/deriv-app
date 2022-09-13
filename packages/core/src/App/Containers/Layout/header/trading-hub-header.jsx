@@ -152,7 +152,6 @@ const TradingHubHeader = ({
                     <DerivBrandLogo className='dashboard-platform-header__logo' />
                 )}
 
-                <Divider />
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>

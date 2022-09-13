@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Icon } from '@deriv/components';
-import IconMessageList from '../icon-message-list';
+import IconMessageList, { TIconMessagesList } from '../icon-message-list';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -69,7 +69,7 @@ describe('<IconMessageList/>', () => {
     it('should show continue_btn if OnContinue is passed', () => {
         const onContinuefn = jest.fn();
         render(<IconMessageList message_list={['Sample Text1']} onContinue={onContinuefn} />);
-        const upload_btn = screen.queryByRole('button', { name: /upload document/i });
+        const upload_btn: HTMLInputElement = screen.getByRole('button', { name: /upload document/i });
         expect(upload_btn).toBeInTheDocument();
         fireEvent.click(upload_btn);
         expect(onContinuefn).toHaveBeenCalled();

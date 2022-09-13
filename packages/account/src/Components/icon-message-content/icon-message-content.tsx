@@ -1,10 +1,29 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
+import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
 import { Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 
-const IconMessageContent = ({ children, className, full_width, icon, icon_row, message, text }) => (
+type TIconMessagesContentExtend = {
+    className?: string;
+    full_width?: boolean;
+    icon?: React.ReactNode;
+    icon_row?: React.ReactNode;
+    message: React.ReactNode;
+    text: string;
+};
+
+export type TIconMessagesContent = HTMLAttributes<HTMLInputElement | HTMLLabelElement> &
+    React.PropsWithChildren<TIconMessagesContentExtend>;
+
+const IconMessageContent = ({
+    children,
+    className,
+    full_width,
+    icon,
+    icon_row,
+    message,
+    text,
+}: TIconMessagesContent) => (
     <Div100vhContainer
         className={classNames('account-management__message-wrapper', {
             'account-management__message-wrapper-full-width': full_width,
@@ -58,13 +77,4 @@ const IconMessageContent = ({ children, className, full_width, icon, icon_row, m
     </Div100vhContainer>
 );
 
-IconMessageContent.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.bool]),
-    className: PropTypes.string,
-    full_width: PropTypes.bool,
-    icon: PropTypes.object,
-    icon_row: PropTypes.object,
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-};
 export default IconMessageContent;

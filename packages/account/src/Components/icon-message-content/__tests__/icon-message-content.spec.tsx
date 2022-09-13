@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { Icon } from '@deriv/components';
-import IconMessageContent from '../icon-message-content';
+import IconMessageContent, { TIconMessagesContent } from '../icon-message-content';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

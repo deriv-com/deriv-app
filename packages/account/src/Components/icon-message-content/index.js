@@ -1,3 +1,3 @@
-import IconMessageContent from './icon-message-content.jsx';
+import IconMessageContent from './icon-message-content';
 
 export default IconMessageContent;

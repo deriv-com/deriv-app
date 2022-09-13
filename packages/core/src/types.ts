@@ -1,4 +1,4 @@
-// This is a workaround for overriding the wrong types in RootStore,
+// Todo: This is a workaround for overriding the wrong types in RootStore,
 // Once we refactor the RootStore in Core package to TS we should be able to remove these overrides.
 
 type TCoreRootStore = NonNullable<import('./Stores').default>;

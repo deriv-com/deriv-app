@@ -228,7 +228,6 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
-
         let has_missing_required_field;
 
         if (is_logged_in) {

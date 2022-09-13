@@ -5,34 +5,27 @@
         position: relative;
         margin-left: 1.2rem;
         transition: filter 0.2s linear;
-
         &--disabled {
             opacity: 0.32;
-
             & * {
                 cursor: not-allowed;
-
                 & * {
                     pointer-events: none;
                 }
             }
         }
-
         &--no-border {
             border-left: transparent solid 1px;
         }
     }
-
     &__container {
         margin-top: 4px;
         margin-left: 20px;
         width: 100%;
     }
-
     &__title {
         max-width: 500px;
     }
-
     &__oval {
         width: 24px;
         height: 24px;
@@ -45,16 +38,13 @@
         padding-left: 1px;
         left: -13px;
     }
-
     &__number {
         position: relative;
         left: -1px;
     }
-
     &__content {
         margin: 16px 0;
         color: var(--text-prominent);
-
         &:last-of-type {
             margin-bottom: 0;
         }

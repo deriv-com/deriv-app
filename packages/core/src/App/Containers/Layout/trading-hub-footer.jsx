@@ -78,59 +78,35 @@ const TradingHubFooter = ({
             <FooterIconSeparator />
             <ServerTime />
             <FooterIconSeparator />
-            {location === routes.trade ? (
-                <>
-                    <div className='footer__links'>
-                        {footer_extensions_right.map(FooterExtensionRenderer)}
-                        <GoToDeriv />
-                        <ResponsibleTrading />
-                        {is_logged_in && <AccountLimitsFooter />}
-                        {is_logged_in && !is_virtual && (
-                            <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
-                        )}
-                        <FooterIconSeparator />
-                        <LiveChat />
-                        <HelpCentre />
-                        <div className='footer__links--dark-mode'>
-                            {is_dark_mode ? (
-                                <LightModeToggleIcon onClick={changeTheme} />
-                            ) : (
-                                <DarkModeToggleIcon onClick={changeTheme} />
-                            )}
-                        </div>
-                        <ToggleSettings
-                            is_settings_visible={is_settings_modal_on}
-                            toggleSettings={toggleSettingsModal}
-                            disableApp={disableApp}
-                            enableApp={enableApp}
-                            settings_extension={settings_extension}
-                        />
-                    </div>
-                </>
-            ) : (
-                <>
-                    <div className='footer__links'>
-                        {footer_extensions_right.map(FooterExtensionRenderer)}
-                        <LiveChat />
-                        <GoToDeriv />
-                        <ResponsibleTrading />
-                        {is_logged_in && <AccountLimitsFooter />}
-                        {is_logged_in && !is_virtual && (
-                            <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
-                        )}
-                        <div className='footer__links--dark-mode'>
-                            {is_dark_mode ? (
-                                <LightModeToggleIcon onClick={changeTheme} />
-                            ) : (
-                                <DarkModeToggleIcon onClick={changeTheme} />
-                            )}
-                        </div>
-                        <FooterIconSeparator />
-                        <HelpCentre />
-                    </div>
-                </>
-            )}
-            <ToggleFullScreen />
+            <div className='footer__links'>
+                {footer_extensions_right.map(FooterExtensionRenderer)}
+                <LiveChat />
+                <GoToDeriv />
+                <ResponsibleTrading />
+                {is_logged_in && <AccountLimitsFooter />}
+                {is_logged_in && !is_virtual && (
+                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
+                )}
+                <div className='footer__links--dark-mode'>
+                    {is_dark_mode ? (
+                        <LightModeToggleIcon onClick={changeTheme} />
+                    ) : (
+                        <DarkModeToggleIcon onClick={changeTheme} />
+                    )}
+                </div>
+                <FooterIconSeparator />
+                <HelpCentre />
+                {location === routes.trade && (
+                    <ToggleSettings
+                        is_settings_visible={is_settings_modal_on}
+                        toggleSettings={toggleSettingsModal}
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        settings_extension={settings_extension}
+                    />
+                )}
+                <ToggleFullScreen />
+            </div>
         </footer>
     );
 };

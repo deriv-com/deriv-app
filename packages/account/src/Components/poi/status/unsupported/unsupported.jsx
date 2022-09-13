@@ -17,7 +17,7 @@ const checkNimcStep = documents => {
     return has_nimc;
 };
 
-const Unsupported = ({ country_code, ...props }) => {
+const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
     const [detail, setDetail] = React.useState(null);
     const toggleDetail = index => setDetail(index);
     const documents = getDocumentIndex({
@@ -33,6 +33,7 @@ const Unsupported = ({ country_code, ...props }) => {
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}
+                handlePOIforMT5Complete={handlePOIforMT5Complete}
                 {...props}
             />
         );

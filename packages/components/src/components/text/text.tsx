@@ -3,13 +3,11 @@ import React, { HTMLProps } from 'react';
 import { isEmptyObject } from '@deriv/shared';
 import { TGenericStringValueObject } from '../types';
 
-interface ITextProps extends HTMLProps<HTMLElement> {
+type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {
     align?: string;
     weight?: string;
     line_height?: string;
     styles?: TGenericStringValueObject;
-}
-type TTextProps = Omit<ITextProps, 'size'> & {
     size: string;
 };
 const Text = ({

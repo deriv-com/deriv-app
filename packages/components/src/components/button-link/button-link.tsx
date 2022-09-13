@@ -2,10 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface IButtonLinkProps extends React.HTMLProps<HTMLAnchorElement> {
+type TButtonLinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, 'size'> & {
     to: string;
-}
-type TButtonLinkProps = Omit<IButtonLinkProps, 'size'> & {
     size: string;
 };
 

@@ -4,7 +4,7 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TRootStore, TError, TReactElement } from 'Types';
+import { RootStore, TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
     disableApp: () => void;
@@ -148,7 +148,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
     );
 };
 
-export default connect(({ ui }: TRootStore) => ({
+export default connect(({ ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
 }))(ErrorDialog);

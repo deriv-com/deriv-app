@@ -1,8 +1,14 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
+import {
+    TGetLocalizedBasis,
+    TGetContractTypesConfig,
+    TGetCardLabels,
+    TGetUnsupportedContracts,
+} from './constants-types';
 
-export const getLocalizedBasis = () => ({
+export const getLocalizedBasis = (): TGetLocalizedBasis => ({
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -12,7 +18,7 @@ export const getLocalizedBasis = () => ({
  * components can be undef or an array containing any of: 'start_date', 'barrier', 'last_digit'
  *     ['duration', 'amount'] are omitted, as they're available in all contract types
  */
-export const getContractTypesConfig = symbol => ({
+export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
         title: localize('Rise/Fall'),
         trade_types: ['CALL', 'PUT'],
@@ -118,7 +124,7 @@ export const getContractTypesConfig = symbol => ({
     }, // hide Duration for Multiplier contracts for now
 });
 
-export const getContractCategoriesConfig = () => ({
+export const getContractCategoriesConfig = (): { [key: string]: string[] } => ({
     [localize('Multipliers')]: ['multiplier'],
     [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
     [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
@@ -127,7 +133,7 @@ export const getContractCategoriesConfig = () => ({
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
 });
 
-export const unsupported_contract_types_list = [
+export const unsupported_contract_types_list: string[] = [
     // TODO: remove these once all contract types are supported
     'callputspread',
     'run_high_low',
@@ -141,7 +147,7 @@ export const unsupported_contract_types_list = [
     'lb_high_low',
 ];
 
-export const getCardLabels = () => ({
+export const getCardLabels = (): TGetCardLabels => ({
     APPLY: localize('Apply'),
     STAKE: localize('Stake:'),
     CLOSE: localize('Close'),
@@ -269,7 +275,7 @@ export const getMarketNamesMap = () => ({
     CRYLTCUSD: localize('LTC/USD'),
 });
 
-export const getUnsupportedContracts = () => ({
+export const getUnsupportedContracts = (): TGetUnsupportedContracts => ({
     EXPIRYMISS: {
         name: <Localize i18n_default_text='Ends Outside' />,
         position: 'top',
@@ -340,7 +346,8 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-export const getSupportedContracts = is_high_low => ({
+type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+export const getSupportedContracts = (is_high_low?: boolean) => ({
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -399,17 +406,17 @@ export const getSupportedContracts = is_high_low => ({
     },
 });
 
-export const getContractConfig = is_high_low => ({
+export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) => {
+    return getContractConfig(is_high_low)[type].name || '';
 };
 
-export const getContractTypePosition = (type, is_high_low = false) =>
-    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top';
+export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>
+    getContractConfig(is_high_low)[type].position || 'top';
 
-export const isCallPut = trade_type =>
+export const isCallPut = (trade_type: 'rise_fall' | 'rise_fall_equal' | 'high_low') =>
     trade_type === 'rise_fall' || trade_type === 'rise_fall_equal' || trade_type === 'high_low';

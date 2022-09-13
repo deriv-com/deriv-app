@@ -1,4 +1,6 @@
-export const CONTRACT_SHADES = {
+import { TCONTRACT_SHADES, TDEFAULT_SHADES, TBARRIER_COLORS, TBARRIER_LINE_STYLES } from './constants-types';
+
+export const CONTRACT_SHADES: TCONTRACT_SHADES = {
     CALL: 'ABOVE',
     PUT: 'BELOW',
     CALLE: 'ABOVE',
@@ -16,12 +18,12 @@ export const CONTRACT_SHADES = {
 };
 
 // Default non-shade according to number of barriers
-export const DEFAULT_SHADES = {
+export const DEFAULT_SHADES: TDEFAULT_SHADES = {
     1: 'NONE_SINGLE',
     2: 'NONE_DOUBLE',
 };
 
-export const BARRIER_COLORS = {
+export const BARRIER_COLORS: TBARRIER_COLORS = {
     GREEN: '#4bb4b3',
     RED: '#ec3f3f',
     ORANGE: '#ff6444',
@@ -29,7 +31,7 @@ export const BARRIER_COLORS = {
     DARK_GRAY: '#6E6E6E',
 };
 
-export const BARRIER_LINE_STYLES = {
+export const BARRIER_LINE_STYLES: TBARRIER_LINE_STYLES = {
     DASHED: 'dashed',
     DOTTED: 'dotted',
     SOLID: 'solid',

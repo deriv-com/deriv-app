@@ -1,4 +1,5 @@
 import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TMt5LoginList, TTradingPlatformAccountsList } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -13,14 +14,17 @@ export type TClientStore = {
         };
     };
     account_status: GetAccountStatus;
+    active_accounts: Array<TAccount>;
     balance?: string;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => void;
+    has_maltainvest_account: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
+    is_eu: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_trading_experience_incomplete: boolean;
@@ -30,6 +34,7 @@ export type TClientStore = {
     is_switching: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
+    landing_company_shortcode: string;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -37,7 +42,11 @@ export type TClientStore = {
     loginid?: string;
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
+    responseMt5LoginList: TMt5LoginList;
+    setAccountStatus: (status: string) => void;
+    setBalanceOtherAccounts: (balance: string) => void;
     switchAccount: (value?: string) => void;
+    responseTradingPlatformAccountsList: TTradingPlatformAccountsList;
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;

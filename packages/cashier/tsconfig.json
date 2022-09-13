@@ -15,6 +15,7 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "baseUrl": "src",
+        "experimentalDecorators": true
     },
     "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
 }

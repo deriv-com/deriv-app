@@ -5,12 +5,8 @@ import { getBrandName } from '@deriv/shared';
 import CorrectMessageContent from './correct-message-content';
 import FakeMessageContent from './fake-message-content';
 
-const WarningScamMessageContent = ({ is_dark_mode_on }) => (
-    <div
-        className={
-            is_dark_mode_on ? 'warning-scam-message--content__info--dark-mode' : 'warning-scam-message--content__info'
-        }
-    >
+const WarningScamMessageContent = () => (
+    <div className='warning-scam-message--content__info'>
         <div className='warning-scam-message--content__info--title'>
             <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={18} />
             <Text weight='bold'>

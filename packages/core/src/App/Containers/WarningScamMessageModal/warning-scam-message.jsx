@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
 
-const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_visible, setScamMessageLocalStorage }) => {
+const WarningScamMessage = ({ is_warning_scam_message_modal_visible, setScamMessageLocalStorage }) => {
     const [is_message_read, setIsMessageRead] = React.useState(false);
     const toggleModal = () => false;
 
@@ -28,7 +28,6 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
                             acknowledgeMessage={acknowledgeMessage}
                             setLocalStorage={setScamMessageLocalStorage}
                             is_message_read={!is_message_read}
-                            is_dark_mode_on={is_dark_mode_on}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -54,13 +53,11 @@ const WarningScamMessage = ({ is_dark_mode_on, is_warning_scam_message_modal_vis
 };
 
 WarningScamMessage.propTypes = {
-    is_dark_mode_on: PropTypes.bool,
     is_warning_scam_message_modal_visible: PropTypes.bool,
     setScamMessageLocalStorage: PropTypes.func,
 };
 
 export default connect(({ ui }) => ({
-    is_dark_mode_on: ui.is_dark_mode_on,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     setScamMessageLocalStorage: ui.setScamMessageLocalStorage,
 }))(withRouter(WarningScamMessage));

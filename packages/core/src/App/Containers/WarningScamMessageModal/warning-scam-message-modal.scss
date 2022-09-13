@@ -38,34 +38,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: solid $color-grey-4;
+            border: solid var(--general-hover);
             border-radius: 0.5rem;
             margin-top: 0.625rem;
             padding: 1.6rem;
-            background-color: $color-grey-2;
+            background-color: var(--general-section-1);
             width: 90%;
-
-            &--dark-mode {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                border-radius: 0.5rem;
-                margin-top: 0.625rem;
-                padding: 1.6rem;
-                width: 90%;
-                border: solid $color-black;
-                background-color: var(--general-main-2);
-            }
-
-            @include mobile {
-                border: solid $color-black;
-                background-color: var(--general-main-2);
-            }
-
-            @include tablet {
-                border: solid $color-black;
-                background-color: var(--general-main-2);
-            }
 
             &--title {
                 margin-bottom: 1.6rem;
@@ -123,7 +101,7 @@
     &__container {
         display: flex;
         width: 98%;
-        background-color: $color-green-5;
+        background-color: var(--transparent-correct-message);
         @include link-container-gaps;
     }
 
@@ -134,7 +112,7 @@
     }
 
     &__link-container {
-        background-color: $color-white;
+        background-color: var(--general-main-2);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -146,7 +124,7 @@
 .fake-link {
     &__container {
         display: flex;
-        background-color: $color-red-6;
+        background-color: var(--transparent-fake-message);
         @include link-container-gaps;
         margin-top: 1.6rem;
     }
@@ -157,7 +135,7 @@
     }
 
     &__link-container {
-        background-color: $color-white;
+        background-color: var(--general-main-2);
         display: flex;
         justify-content: center;
         align-items: center;

@@ -1,13 +1,12 @@
 // This is a workaround for overriding the wrong types in RootStore,
 // Once we refactor the RootStore in Core package to TS we should be able to remove this file.
 
-import { RouteComponentProps } from 'react-router';
-import { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus } from '@deriv/api-types';
 import CashierStore from '../../stores/cashier-store';
 
-type TCoreRootStore = NonNullable<import('@deriv/shared/types').TRootStore>;
-
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TCoreRootStore = NonNullable<import('@deriv/core/types').TRootStore>;
+type TClientStore = TCoreRootStore['client'];
+type TCommonStore = TCoreRootStore['common'];
+type TUIStore = TCoreRootStore['ui'];
 
 type TError = {
     header: string | JSX.Element;
@@ -21,17 +20,17 @@ type TError = {
     setError: (has_error: boolean, error: TError | null) => void;
 };
 
-interface TOverrideClientStore extends Pick<TCoreRootStore, 'client'> {
-    accounts: { [k: string]: TAccount };
+interface TOverrideClientStore extends TClientStore {
+    accounts: { [k: string]: NonNullable<NonNullable<import('@deriv/api-types').Authorize>['account_list']>[0] };
     balance: string | undefined;
     currency: string;
     current_fiat_currency: string | undefined;
     is_virtual: boolean;
     is_financial_information_incomplete: boolean;
     is_trading_experience_incomplete: boolean;
-    account_status: GetAccountStatus;
+    account_status: NonNullable<import('@deriv/api-types').GetAccountStatus>;
     loginid: string;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
+    mt5_login_list: NonNullable<import('@deriv/api-types').DetailsOfEachMT5Loginid>[];
     current_currency_type: string | undefined;
     is_deposit_lock: boolean;
     is_withdrawal_lock: boolean;
@@ -46,13 +45,16 @@ interface TOverrideClientStore extends Pick<TCoreRootStore, 'client'> {
     };
 }
 
-interface TOverrideCommonStore extends Omit<Pick<TCoreRootStore, 'common'>, 'error'> {
+interface TOverrideCommonStore extends Omit<TCommonStore, 'error'> {
     error: TError;
     routeTo: (pathname: string) => void;
-    routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
+    routeBackInApp: (
+        history: Pick<NonNullable<import('react-router').RouteComponentProps>, 'history'>,
+        additional_platform_path?: string[]
+    ) => void;
 }
 
-interface TOverrideUIStore extends Omit<Pick<TCoreRootStore, 'ui'>, 'current_focus'> {
+interface TOverrideUIStore extends Omit<TUIStore, 'current_focus'> {
     current_focus: string | null;
     setCurrentFocus: (value: string) => void;
     is_dark_mode_on: boolean;

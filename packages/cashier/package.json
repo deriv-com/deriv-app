@@ -58,6 +58,7 @@
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
+        "@deriv/core": "0.1.0",
         "@babel/core": "^7.12.10",
         "@babel/eslint-parser": "^7.17.0",
         "@babel/plugin-proposal-class-properties": "^7.12.1",

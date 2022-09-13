@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-type TButtonLinkProps = {
-    children: React.ReactNode;
-    className: string;
-    onClick: () => void;
-    size: string;
+interface IButtonLinkProps extends React.HTMLProps<HTMLAnchorElement> {
     to: string;
+}
+type TButtonLinkProps = Omit<IButtonLinkProps, 'size'> & {
+    size: string;
 };
 
 const ButtonLink = ({ children, className, to, onClick, size = 'medium' }: TButtonLinkProps) => (

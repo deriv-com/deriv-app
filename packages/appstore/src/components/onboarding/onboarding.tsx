@@ -16,7 +16,7 @@ type TOnboardingProps = {
 };
 
 const Onboarding = ({ contents }: TOnboardingProps) => {
-    const amount_of_steps = Object.keys(contents);
+    const number_of_steps = Object.keys(contents);
 
     const [step, setStep] = React.useState<number>(1);
 
@@ -25,19 +25,19 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
     };
 
     const nextStep = () => {
-        if (step < amount_of_steps.length) setStep(step + 1);
+        if (step < number_of_steps.length) setStep(step + 1);
     };
 
-    const onboarding_step = amount_of_steps[step - 1];
+    const onboarding_step = number_of_steps[step - 1];
 
     return (
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
                 <Icon icon='IcWalletDeriv' height={96} width={128} />
-                <Icon icon='IcCross' custom_color='#fff' className='onboarding-header__cross-icon' />
+                <Icon icon='IcCross' custom_color='var(--general-main-1)' className='onboarding-header__cross-icon' />
             </div>
             <div className='onboarding-body'>
-                <Text as='h2' weight='bold' size='s' align='center' color='white'>
+                <Text as='h2' weight='bold' align='center' color='white'>
                     {contents[onboarding_step as keyof typeof contents]?.component}
                 </Text>
             </div>
@@ -53,7 +53,7 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
                         <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
                             {localize('Back')}
                         </Button>
-                        <ProgressBarOnboarding step={step} amount_of_steps={amount_of_steps} setStep={setStep} />
+                        <ProgressBarOnboarding step={step} amount_of_steps={number_of_steps} setStep={setStep} />
                         <Button primary onClick={nextStep}>
                             {contents[onboarding_step as keyof typeof contents]?.has_next_content
                                 ? contents[onboarding_step as keyof typeof contents]?.next_content

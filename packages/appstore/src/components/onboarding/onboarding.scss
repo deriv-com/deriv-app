@@ -1,6 +1,6 @@
 .onboarding-wrapper {
     height: 100%;
-    background-color: $color-grey-7;
+    background-color: var(--text-less-prominent);
 }
 
 .onboarding-header {
@@ -16,11 +16,11 @@
 .onboarding-body {
     display: flex;
     justify-content: center;
-    color: $color-white;
+    color: var(--general-main-1);
 }
 
 .onboarding-footer {
-    background-color: $color-white;
+    background-color: var(--general-main-1);
     position: absolute;
     top: 80%;
     width: 100%;

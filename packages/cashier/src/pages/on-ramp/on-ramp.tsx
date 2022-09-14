@@ -100,11 +100,12 @@ const OnRamp = ({
         onMountOnramp();
         if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
             setSideNotes([<OnRampSideNote key={0} />]);
-        } else {
-            setSideNotes([]);
         }
 
-        return () => onUnmountOnramp();
+        return () => {
+            onUnmountOnramp();
+            setSideNotes([]);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, tab_index]);
 

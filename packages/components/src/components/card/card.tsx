@@ -42,9 +42,9 @@ const Card = ({
 }: TCardProps) => {
     return (
         <CardRoot className={classNames('dc-card', className)} {...props}>
-            {renderHeader ? renderHeader() : header !== null && <CardHeader>{header}</CardHeader>}
-            {renderContent ? renderContent() : content !== null && <CardContent>{content}</CardContent>}
-            {renderFooter ? renderFooter() : footer !== null && <CardFooter>{footer}</CardFooter>}
+            {renderHeader ? renderHeader() : !!header && <CardHeader>{header}</CardHeader>}
+            {renderContent ? renderContent() : !!content && <CardContent>{content}</CardContent>}
+            {renderFooter ? renderFooter() : !!footer && <CardFooter>{footer}</CardFooter>}
         </CardRoot>
     );
 };

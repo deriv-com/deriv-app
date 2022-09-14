@@ -12,7 +12,7 @@
           "prepare",
           "build:travis"
         ],
-        "accessToken": "${env.NX_CLOUD_ACCESS_TOKEN}"
+        "accessToken": "${process.env.NX_CLOUD_ACCESS_TOKEN}"
       }
     }
   },

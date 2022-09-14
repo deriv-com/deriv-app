@@ -212,7 +212,7 @@ export default class GeneralStore extends BaseStore {
                     this.setOrderTableType(order_list.INACTIVE);
                     this.root_store.order_store.setOrderId(order_id);
                 },
-                text: localize('Give feedbackkk'),
+                text: localize('Give feedback'),
             },
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,

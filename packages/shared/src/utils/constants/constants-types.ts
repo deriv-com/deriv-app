@@ -49,7 +49,7 @@ type TContractTypesConfig = {
     config?: { hide_duration: boolean };
 };
 
-export type TGetContractTypesConfig = (symbol?: string) => {
+export type TGetContractTypesConfig = (symbol: string) => {
     rise_fall: TContractTypesConfig;
     rise_fall_equal: TContractTypesConfig;
     high_low: TContractTypesConfig;

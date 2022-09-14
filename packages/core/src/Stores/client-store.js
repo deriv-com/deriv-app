@@ -1269,6 +1269,11 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
+        if (action_param === 'signup') {
+            localStorage.setItem('isNewAccount', true);
+            this.root_store.ui.setIsNewAccount(true);
+        }
+
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
@@ -1735,6 +1740,7 @@ export default class ClientStore extends BaseStore {
         this.dxtrade_accounts_list = [];
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
+        localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -2017,8 +2023,6 @@ export default class ClientStore extends BaseStore {
                     this.root_store.gtm.pushDataLayer({
                         event: 'virtual_signup',
                     });
-                    //Set not to display scam message warning modal on signup
-                    localStorage.setItem('readScamMessage', true);
 
                     if (
                         !this.country_standpoint.is_france &&

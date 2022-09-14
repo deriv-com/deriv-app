@@ -1,23 +1,17 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLProps, ReactNode } from 'react';
 import ButtonLoading from './button_loading';
 import Icon from '../icon';
 import Text from '../text';
 
-type TButtonGroupProps = {
-    children: React.ReactNode;
-    className: string;
-};
+type TButtonGroupProps = HTMLProps<HTMLDivElement>;
 
-type TButtonProps = {
+type TButtonProps = HTMLProps<HTMLButtonElement> & {
     blue: boolean;
-    children: React.ReactNode;
-    className: string;
     classNameSpan: string;
     green: boolean;
     has_effect: boolean;
-    icon: React.ReactNode;
-    id: string;
+    icon: ReactNode;
     is_disabled: boolean;
     is_loading: boolean;
     is_circle: boolean;
@@ -25,7 +19,6 @@ type TButtonProps = {
     is_submit_success: boolean;
     large: boolean;
     medium: boolean;
-    onClick: () => void;
     primary: boolean;
     primary_light: boolean;
     rounded: boolean;
@@ -37,10 +30,9 @@ type TButtonProps = {
     wrapperClassName: string;
     is_button_toggle: boolean;
     is_circular: boolean;
-    tabIndex: number;
-    type: 'button' | 'submit' | 'reset';
+    type: 'button' | 'submit' | 'reset' | undefined;
     alternate: boolean;
-    renderText: (param: string) => React.ReactNode;
+    renderText: (param: ReactNode) => ReactNode;
 };
 
 const ButtonGroup = ({ children, className }: TButtonGroupProps) => (

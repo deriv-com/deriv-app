@@ -54,15 +54,14 @@ type TItemsState = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    const { refreshNotifications, authentication_status, fetchStatesList } = props;
+    const { account_status, authentication_status, fetchStatesList, refreshNotifications } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
     const height = 'auto';
     let is_mounted = React.useRef(true).current;
-    const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(
-        props.account_status
-    );
+
+    const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(account_status);
 
     const poi_config: TItemsState = {
         header: {

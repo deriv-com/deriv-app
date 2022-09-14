@@ -545,10 +545,12 @@
         @include desktop {
             width: 99.2rem;
         }
-
         @include mobile {
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
+        }
+        .text_capitalize {
+            text-transform: capitalize;
         }
 
         &--pending {

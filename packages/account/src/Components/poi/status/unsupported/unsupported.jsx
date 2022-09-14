@@ -28,7 +28,7 @@ const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
         country_code,
     });
 
-    if (props?.manual && props.manual.status === identity_status_codes.pending) {
+    if (props?.manual?.status === identity_status_codes.pending) {
         return <UploadComplete />;
     }
 

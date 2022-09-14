@@ -190,7 +190,7 @@ export const getAuthenticationStatusInfo = account_status => {
 
     const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
     const poi_not_submitted_for_vanuatu =
-        onfido_status && onfido_status === 'none' && manual_status && manual_status === 'none';
+        onfido_status && manual_status && [onfido_status, manual_status].includes('none');
     const poi_resubmit_for_vanuatu =
         ((onfido_status && failed_cases.includes(onfido_status)) ||
             (manual_status && failed_cases.includes(manual_status))) &&
@@ -207,19 +207,15 @@ export const getAuthenticationStatusInfo = account_status => {
 
     const need_poi_for_bvi_labuan_maltainvest = !poi_acknowledged_for_bvi_labuan_maltainvest;
     const poi_not_submitted_for_bvi_labuan_maltainvest =
-        idv_status &&
-        idv_status === 'none' &&
-        onfido_status &&
-        onfido_status === 'none' &&
-        manual_status &&
-        manual_status === 'none';
+        idv_status && onfido_status && manual_status && [idv_status, onfido_status, manual_status].includes('none');
 
-    const poi_verified_for_bvi_labuan_maltainvest =
-        idv_status === 'verified' || onfido_status === 'verified' || manual_status === 'verified';
+    const poi_verified_for_bvi_labuan_maltainvest = [idv_status, onfido_status, manual_status].includes('verified');
+
     const poi_pending_for_bvi_labuan_maltainvest =
-        ((idv_status && idv_status === 'pending') ||
-            (onfido_status && onfido_status === 'pending') ||
-            (manual_status && manual_status === 'pending')) &&
+        idv_status &&
+        onfido_status &&
+        manual_status &&
+        [idv_status, onfido_status, manual_status].includes('pending') &&
         !poi_verified_for_bvi_labuan_maltainvest;
 
     const poi_resubmit_for_bvi_labuan_maltainvest =

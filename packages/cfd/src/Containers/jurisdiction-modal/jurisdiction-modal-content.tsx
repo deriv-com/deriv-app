@@ -34,7 +34,7 @@ const JurisdictionModalContent = ({
     };
     const jurisdiction_cards_array = ['svg', 'bvi', 'vanuatu', 'labuan', 'maltainvest'];
     return (
-        <>
+        <React.Fragment>
             <div className={`${card_classname}__wrapper`}>
                 {jurisdiction_cards_array.map(
                     card =>
@@ -65,7 +65,7 @@ const JurisdictionModalContent = ({
                 class_name={`${card_classname}__jurisdiction-checkbox`}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
             />
-        </>
+        </React.Fragment>
     );
 };
 

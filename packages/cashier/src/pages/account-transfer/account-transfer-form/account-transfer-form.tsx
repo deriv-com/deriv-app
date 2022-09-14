@@ -373,13 +373,7 @@ const AccountTransferForm = ({
     );
 
     const getMt5Error = () => {
-        if (is_mt5_restricted) {
-            if (authentication_status?.document_status === 'pending') {
-                return poa_pending_msg;
-            }
-            return <Mt5RestrictedMsg />;
-        }
-        return null;
+        return authentication_status?.document_status === 'pending' ? poa_pending_msg : <Mt5RestrictedMsg />;
     };
 
     return (
@@ -462,7 +456,7 @@ const AccountTransferForm = ({
                                             setFieldTouched('amount', false);
                                         }}
                                         hint={transfer_to_hint}
-                                        error={getMt5Error() ? getMt5Error() : selected_to.error}
+                                        error={getMt5Error() ?? selected_to.error}
                                     />
                                 </div>
                                 {selected_from.currency === selected_to.currency ? (

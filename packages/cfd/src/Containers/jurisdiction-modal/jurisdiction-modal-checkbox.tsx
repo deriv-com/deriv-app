@@ -61,13 +61,13 @@ const JurisdictionCheckBox = ({
         </Text>
     );
     return (
-        <>
+        <React.Fragment>
             {shouldShowCheckBox() && (
                 <div className={class_name}>
                     <Checkbox onChange={onCheck} value={is_checked} label={getCheckboxLabel()} />
                 </div>
             )}
-        </>
+        </React.Fragment>
     );
 };
 

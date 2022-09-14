@@ -24,7 +24,7 @@ const JurisdictionCard = ({
         is_synthetic ? number_of_synthetic_accounts_to_be_shown : number_of_financial_accounts_to_be_shown
     );
 
-    const one_or_two_cards = number_of_cards === 1 || number_of_cards === 2;
+    const one_or_two_cards = [1, 2].includes(number_of_cards);
 
     const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
 
@@ -33,11 +33,13 @@ const JurisdictionCard = ({
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
+
     const Checkmark = () => (
         <Icon icon='IcCheckmark' className={`${card_classname}__bullet-wrapper--checkmark`} color={'green'} size={18} />
     );
+
     return (
-        <>
+        <React.Fragment>
             <div
                 className={classNames(card_classname, {
                     [`${card_classname}--selected`]: jurisdiction_selected_shortcode === type_of_card,
@@ -88,7 +90,7 @@ const JurisdictionCard = ({
                     account_type={account_type}
                 />
             </div>
-        </>
+        </React.Fragment>
     );
 };
 

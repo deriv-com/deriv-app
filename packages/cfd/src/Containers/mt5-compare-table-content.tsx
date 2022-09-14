@@ -305,20 +305,13 @@ const DMT5CompareModalContent = ({
     const getAvailableAccountsFooterButtons = (_footer_button_data: TFooterButtonData[]) => {
         return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
-    const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) => {
-        if (!has_submitted_personal_details) {
-            toggleCFDPersonalDetailsModal();
-        } else {
-            openPasswordModal(type_of_account);
-        }
-    };
+    const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) =>
+        !has_submitted_personal_details ? toggleCFDPersonalDetailsModal() : openPasswordModal(type_of_account);
 
-    const onSelectRegulated = (type_of_account: { category: string; type: string }) => {
-        if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
-            return openPersonalDetailsFormOrPasswordForm(type_of_account);
-        }
-        return toggleCFDVerificationModal();
-    };
+    const onSelectRegulated = (type_of_account: { category: string; type: string }) =>
+        poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted
+            ? openPersonalDetailsFormOrPasswordForm(type_of_account)
+            : toggleCFDVerificationModal();
 
     const onSelectRealAccount = (item: TFooterButtonData) => {
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';

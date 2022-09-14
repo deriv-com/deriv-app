@@ -55,7 +55,7 @@ const JurisdictionModal = ({
                     get_settings_response = account_settings;
                 }
                 const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-                    get_settings_response as GetSettings;
+                    get_settings_response;
                 if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
                     setHasSubmittedPersonalDetails(true);
                 }
@@ -162,7 +162,7 @@ const JurisdictionModal = ({
     };
 
     const ModalContent = () => (
-        <>
+        <React.Fragment>
             <JurisdictionModalContent
                 account_status={account_status}
                 account_type={account_type.type}
@@ -189,41 +189,39 @@ const JurisdictionModal = ({
                     {buttonText()}
                 </Button>
             </Modal.Footer>
-        </>
+        </React.Fragment>
     );
 
     return (
-        <>
-            <div>
-                <React.Suspense fallback={<UILoader />}>
-                    <DesktopWrapper>
-                        <Modal
-                            disableApp={disableApp}
-                            enableApp={enableApp}
-                            is_open={is_jurisdiction_modal_visible}
-                            title={modal_title}
-                            toggleModal={toggleJurisdictionModal}
-                            type='button'
-                            height='664px'
-                            width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
-                            exit_classname='cfd-modal--custom-exit'
-                        >
-                            <ModalContent />
-                        </Modal>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <MobileDialog
-                            portal_element_id='deriv_app'
-                            title={modal_title}
-                            visible={is_jurisdiction_modal_visible}
-                            onClose={toggleJurisdictionModal}
-                        >
-                            <ModalContent />
-                        </MobileDialog>
-                    </MobileWrapper>
-                </React.Suspense>
-            </div>
-        </>
+        <div>
+            <React.Suspense fallback={<UILoader />}>
+                <DesktopWrapper>
+                    <Modal
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_jurisdiction_modal_visible}
+                        title={modal_title}
+                        toggleModal={toggleJurisdictionModal}
+                        type='button'
+                        height='664px'
+                        width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
+                        exit_classname='cfd-modal--custom-exit'
+                    >
+                        <ModalContent />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='deriv_app'
+                        title={modal_title}
+                        visible={is_jurisdiction_modal_visible}
+                        onClose={toggleJurisdictionModal}
+                    >
+                        <ModalContent />
+                    </MobileDialog>
+                </MobileWrapper>
+            </React.Suspense>
+        </div>
     );
 };
 

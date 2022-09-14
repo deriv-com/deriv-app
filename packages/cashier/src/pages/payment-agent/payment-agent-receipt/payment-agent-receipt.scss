@@ -38,24 +38,21 @@
                 padding-left: 0;
             }
         }
+        .cashier__form-submit {
+            row-gap: 1rem;
+        }
     }
 
     & .cashier__form-submit {
-        text-align: center;
+        display: flex;
         justify-content: center;
-        flex-flow: row;
+        align-items: center;
+        column-gap: 0.8rem;
         margin: 2.4rem 0 3.2rem;
 
         &-button {
             margin: 0;
             max-width: 18rem;
-
-            &:first-child {
-                margin-right: 0.4rem;
-            }
-            &:last-child {
-                margin-left: 0.4rem;
-            }
         }
     }
     &__transferred-contact {

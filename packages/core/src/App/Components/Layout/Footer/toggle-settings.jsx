@@ -33,14 +33,14 @@ const ModalContent = ({ settings_extension }) => {
             {
                 icon: 'IcTheme',
                 label: localize('Themes'),
-                // eslint-disable-next-line react/display-name
                 value: ThemeSetting,
             },
             {
                 icon: 'IcLanguage',
                 label: localize('Language'),
                 value: LanguageSettingContainer,
-            }
+            },
+            ...(settings_extension || [])
         );
     }
 

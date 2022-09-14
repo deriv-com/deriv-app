@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { getPlatformSettings, routes, PlatformContext } from '@deriv/shared';
+import { getPlatformSettings, routes, PlatformContext, getStaticUrl } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -310,6 +310,11 @@ const ToggleMenuDrawer = React.forwardRef(
         };
         const { pathname: route } = useLocation();
 
+        const is_trading_hub_category =
+            route.startsWith(routes.trading_hub) ||
+            route.startsWith(routes.cashier) ||
+            route.startsWith(routes.account);
+
         return (
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -344,9 +349,7 @@ const ToggleMenuDrawer = React.forwardRef(
                             )}
                             {is_pre_appstore && (
                                 <React.Fragment>
-                                    {(is_logged_in && route.startsWith(routes.cashier)) ||
-                                    route.startsWith(routes.account) ||
-                                    route === routes.trading_hub ? (
+                                    {is_logged_in && is_trading_hub_category ? (
                                         <MobileDrawer.SubHeader
                                             className={classNames({
                                                 'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -438,20 +441,17 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        {is_logged_in &&
-                                            !route.startsWith(routes.trading_hub) &&
-                                            !route.startsWith(routes.cashier) &&
-                                            !route.startsWith(routes.account) && (
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={routes.trade}
-                                                        icon='IcTrade'
-                                                        text={localize('Trade')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
-                                            )}
+                                        {is_logged_in && is_trading_hub_category && (
+                                            <MobileDrawer.Item>
+                                                <MenuLink
+                                                    link_to={routes.trade}
+                                                    icon='IcTrade'
+                                                    text={localize('Trade')}
+                                                    onClickLink={toggleDrawer}
+                                                    changeCurrentLanguage={changeCurrentLanguage}
+                                                />
+                                            </MobileDrawer.Item>
+                                        )}
                                         {primary_routes_config.map((route_config, idx) =>
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
@@ -478,7 +478,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             <>
                                                 <MobileDrawer.Item>
                                                     <MenuLink
-                                                        link_to='https://deriv.com/help-centre//'
+                                                        link_to={getStaticUrl('/help-centre')}
                                                         icon='IcHelpCentre'
                                                         text={localize('Help centre')}
                                                         onClickLink={toggleDrawer}
@@ -496,7 +496,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </MobileDrawer.Item>
                                                 <MobileDrawer.Item>
                                                     <MenuLink
-                                                        link_to='https://deriv.com/responsible/'
+                                                        link_to={getStaticUrl('/responsible')}
                                                         icon='IcVerification'
                                                         text={localize('Responsible trading')}
                                                         onClickLink={toggleDrawer}
@@ -505,7 +505,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </MobileDrawer.Item>
                                                 <MobileDrawer.Item>
                                                     <MenuLink
-                                                        link_to='https://deriv.com/regulatory'
+                                                        link_to={getStaticUrl('/regulatory')}
                                                         icon='IcRegulatoryInformation'
                                                         text={localize('Regulatory information')}
                                                         onClickLink={toggleDrawer}
@@ -514,7 +514,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </MobileDrawer.Item>
                                                 <MobileDrawer.Item className='header__menu-mobile-theme'>
                                                     <MenuLink
-                                                        link_to='https://deriv.com'
+                                                        link_to={getStaticUrl('/')}
                                                         icon='IcDerivOutline'
                                                         text={localize('Go to Deriv.com')}
                                                         onClickLink={toggleDrawer}

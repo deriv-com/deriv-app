@@ -1,4 +1,4 @@
-.tradinghub-header {
+.trading-hub-header {
     position: fixed;
     z-index: 99;
     width: 100%;
@@ -13,7 +13,7 @@
     display: flex;
 
     @include mobile {
-        height: 40px;
+        height: 4rem;
     }
 
     &__menu-left {
@@ -22,7 +22,7 @@
         align-items: center;
 
         @include mobile {
-            height: 39px;
+            height: 3.8rem;
         }
 
         &-extensions {
@@ -47,13 +47,17 @@
     &__menu-middle {
         display: flex;
         align-items: center;
-        margin-left: 2rem;
+        margin-left: 1rem;
         justify-content: space-between;
     }
 
     &__logo {
         width: 8rem;
         height: 3rem;
+
+        @include mobile {
+            margin-left: 0.7rem;
+        }
     }
 
     &__tradinghub {
@@ -66,23 +70,10 @@
             cursor: pointer;
         }
 
-        &--title {
-            margin-left: 8px;
-        }
-
         &--onboarding {
             padding: 2rem;
             margin-right: 0.3rem;
             cursor: pointer;
-        }
-    }
-
-    &__platform-information {
-        display: flex;
-        align-items: center;
-
-        &--icon {
-            margin-right: 1.2rem;
         }
     }
 
@@ -121,11 +112,24 @@
         }
     }
 
+    &__dtrader--redirect {
+        display: flex;
+        margin-top: 0.9rem;
+        margin-right: 2rem;
+
+        &--link {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+    }
+
     &__setting {
-        margin-right: 25px;
+        margin-right: 2.2rem;
 
         @include mobile {
-            margin-left: 25px;
+            margin-left: 2.2rem;
         }
 
         &--icon {
@@ -139,30 +143,5 @@
                 margin-right: 0;
             }
         }
-    }
-
-    &__report {
-        margin-right: 24px;
-    }
-
-    &__balance {
-        display: flex;
-        align-items: center;
-
-        &--icon {
-            margin: 0px 8px;
-        }
-    }
-
-    &__button {
-        margin: 6px 16px;
-
-        @include mobile {
-            width: 5.4rem;
-        }
-    }
-
-    &__mobile-drawer-icon {
-        margin: 12px 8px 12px 12px;
     }
 }

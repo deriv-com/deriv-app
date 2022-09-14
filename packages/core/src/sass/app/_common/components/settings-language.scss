@@ -8,10 +8,10 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-template-rows: repeat(5, auto);
-        grid-gap: 16px;
+        grid-gap: 1.5rem;
         @include mobile {
             grid-template-columns: repeat(2, minmax(100%, 1fr));
-            grid-gap: 3px;
+            grid-gap: 0.5rem;
             grid-template-rows: auto;
         }
     }
@@ -34,13 +34,13 @@
             }
         }
         &-flag {
-            width: 36px;
-            height: 24px;
+            width: 5rem;
+            height: 4rem;
 
             @include mobile {
                 margin-top: 1rem;
-                width: 50px;
-                height: 40px;
+                width: 5rem;
+                height: 4rem;
             }
         }
         &-name {

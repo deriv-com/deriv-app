@@ -1,3 +1,3 @@
-import LanguageSettings from './settings-language.jsx';
+import LanguageSettings from './language-settings';
 
 export default LanguageSettings;

@@ -20,7 +20,7 @@ const AccountLogout = ({ logout, history }) => {
             }}
         >
             <div className='dc-vertical-tab__header-group account__logout-tab'>
-                <Text color='general' size='xxs' weight='normal'>
+                <Text size='xxs' weight='normal'>
                     {localize('Log out')}
                 </Text>
             </div>
@@ -40,7 +40,7 @@ const TradingHubLogout = ({ logout }) => {
         >
             <div className='dc-vertical-tab__header-account__logout'>
                 <Icon icon='IcLogout' className='dc-vertical-tab__header-account__logout--icon' />
-                <Text color='general' size='xs' weight='bold'>
+                <Text size='xs' weight='bold'>
                     {localize('Log out')}
                 </Text>
             </div>

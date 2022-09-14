@@ -16,11 +16,11 @@ import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
-const PreAppstoreMenuHomepage = () => {
+const TradingHubMenuHomepage = () => {
     const redirect = useHistory();
     return (
         <div
-            className='dashboard-platform-header__tradinghub'
+            className='trading-hub-header__tradinghub'
             onClick={() => {
                 redirect.push(routes.trading_hub);
             }}
@@ -38,10 +38,10 @@ const RedirectToOldInterface = () => {
         platform_store.setIsPreAppStore(false);
     };
     return (
-        <div className='dashboard-platform-header__dtrader--redirect'>
+        <div className='trading-hub-header__dtrader--redirect'>
             <BinaryLink
                 to={routes.trade}
-                className='dashboard-platform-header__dtrader--redirect--link'
+                className='trading-hub-header__dtrader--redirect--link'
                 onClick={disablePreAppstore}
             >
                 <Text as='p' size='xs' color='general'>
@@ -141,7 +141,7 @@ const DTraderHeader = ({
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
                     <DesktopWrapper>
-                        <PreAppstoreMenuHomepage />
+                        <TradingHubMenuHomepage />
                         <Divider />
                     </DesktopWrapper>
 
@@ -269,9 +269,6 @@ DTraderHeader.propTypes = {
     is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_account_transfer_visible: PropTypes.bool,
-    // is_p2p_enabled: PropTypes.bool,
-    // is_payment_agent_transfer_visible: PropTypes.bool,
-    // is_payment_agent_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,

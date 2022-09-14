@@ -19,6 +19,28 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
     </>
 );
 
+const platformDropdownContent = (platform, app_routing_history, hide_dropdown_items) => {
+    let platform_dropdown_content = null;
+    if (!hide_dropdown_items) {
+        platform_dropdown_content = platform.link_to ? (
+            <BinaryLink
+                to={platform.link_to}
+                // This is here because in routes-config it needs to have children, but not in menu
+                exact={platform.link_to === routes.trade}
+                className='platform-dropdown__list-platform'
+                isActive={() => getActivePlatform(app_routing_history) === platform.name}
+            >
+                <PlatformBox platform={platform} />
+            </BinaryLink>
+        ) : (
+            <a href={platform.href} className='platform-dropdown__list-platform'>
+                <PlatformBox platform={platform} />
+            </a>
+        );
+    }
+    return platform_dropdown_content;
+};
+
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
@@ -36,46 +58,16 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
         }
     };
     const { is_pre_appstore } = React.useContext(PlatformContext);
+
     const getPlatformDropdownContent = platform => {
-        let platform_dropdown_content;
-        if (is_pre_appstore) {
-            if (
-                platform.name !== getPlatformSettings('mt5').name &&
-                platform.name !== getPlatformSettings('dxtrade').name
-            ) {
-                platform_dropdown_content = platform.link_to ? (
-                    <BinaryLink
-                        to={platform.link_to}
-                        // This is here because in routes-config it needs to have children, but not in menu
-                        exact={platform.link_to === routes.trade}
-                        className='platform-dropdown__list-platform'
-                        isActive={() => getActivePlatform(app_routing_history) === platform.name}
-                    >
-                        <PlatformBox platform={platform} />
-                    </BinaryLink>
-                ) : (
-                    <a href={platform.href} className='platform-dropdown__list-platform'>
-                        <PlatformBox platform={platform} />
-                    </a>
-                );
-            }
-        } else {
-            platform_dropdown_content = platform.link_to ? (
-                <BinaryLink
-                    to={platform.link_to}
-                    // This is here because in routes-config it needs to have children, but not in menu
-                    exact={platform.link_to === routes.trade}
-                    className='platform-dropdown__list-platform'
-                    isActive={() => getActivePlatform(app_routing_history) === platform.name}
-                >
-                    <PlatformBox platform={platform} />
-                </BinaryLink>
-            ) : (
-                <a href={platform.href} className='platform-dropdown__list-platform'>
-                    <PlatformBox platform={platform} />
-                </a>
-            );
-        }
+        const platform_dropdown_content = platformDropdownContent(
+            platform,
+            app_routing_history,
+            (platform.name === getPlatformSettings('mt5').name ||
+                platform.name === getPlatformSettings('dxtrade').name) &&
+                is_pre_appstore
+        );
+
         return platform_dropdown_content;
     };
 

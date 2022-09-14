@@ -13,14 +13,14 @@ import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 
 const Divider = () => {
-    return <div className='dashboard-platform-header__divider' />;
+    return <div className='trading-hub-header__divider' />;
 };
 
-const PreAppstoreMenuHomepage = () => {
+const TradingHubMenuHomepage = () => {
     const history = useHistory();
 
     return (
-        <div className='dashboard-platform-header__tradinghub' onClick={() => history.push(routes.trading_hub)}>
+        <div className='trading-hub-header__tradinghub' onClick={() => history.push(routes.trading_hub)}>
             <Icon icon='IcAppstoreMenuHomepage' size={30} />
         </div>
     );
@@ -32,12 +32,8 @@ const RedirectToOldInterface = () => {
         platform_store.setIsPreAppStore(false);
     };
     return (
-        <div className='dashboard-platform-header__redirect'>
-            <BinaryLink
-                to={routes.trade}
-                className='dashboard-platform-header__redirect--link'
-                onClick={disablePreAppstore}
-            >
+        <div className='trading-hub-header__redirect'>
+            <BinaryLink to={routes.trade} className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
                 <Text as='p' size='xs' color='general'>
                     <Localize i18n_default_text='Back to old interface' />
                 </Text>
@@ -49,7 +45,7 @@ const RedirectToOldInterface = () => {
 
 const TradingHubOnboarding = ({ is_dark_mode }) => {
     return (
-        <div className='dashboard-platform-header__tradinghub--onboarding'>
+        <div className='trading-hub-header__tradinghub--onboarding'>
             {is_dark_mode ? (
                 <Icon icon='IcAppstoreTradingHubOnboardingDark' size={20} />
             ) : (
@@ -61,7 +57,7 @@ const TradingHubOnboarding = ({ is_dark_mode }) => {
 
 const ShowNotifications = ({ is_notifications_visible, notifications_count, toggleNotifications }) => {
     return (
-        <div className='dashboard-platform-header__notification'>
+        <div className='trading-hub-header__notification'>
             <ToggleNotifications
                 count={notifications_count}
                 is_visible={is_notifications_visible}
@@ -110,8 +106,8 @@ const TradingHubHeader = ({
     const { is_pre_appstore } = React.useContext(PlatformContext);
 
     return (
-        <header className='dashboard-platform-header'>
-            <div className='dashboard-platform-header__menu-left'>
+        <header className='trading-hub-header'>
+            <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
@@ -144,19 +140,19 @@ const TradingHubHeader = ({
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <DesktopWrapper>
-                    <PreAppstoreMenuHomepage />
+                    <TradingHubMenuHomepage />
                 </DesktopWrapper>
                 {is_dark_mode ? (
-                    <DerivBrandLogoDark className='dashboard-platform-header__logo' />
+                    <DerivBrandLogoDark className='trading-hub-header__logo' />
                 ) : (
-                    <DerivBrandLogo className='dashboard-platform-header__logo' />
+                    <DerivBrandLogo className='trading-hub-header__logo' />
                 )}
 
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>
             <DesktopWrapper>
-                <div className='dashboard-platform-header__menu-right'>
+                <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface />
                     <Divider />
                     <TradingHubOnboarding is_dark_mode={is_dark_mode} />
@@ -172,15 +168,15 @@ const TradingHubHeader = ({
                         should_disable_pointer_events
                         zIndex={9999}
                     >
-                        <BinaryLink className='dashboard-platform-header__setting' to={routes.personal_details}>
+                        <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
                             <Icon icon='IcUserOutline' size={20} />
                         </BinaryLink>
                     </Popover>
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='dashboard-platform-header__mobile-parent'>
-                    <div className='dashboard-platform-header__menu-middle'>
+                <div className='trading-hub-header__mobile-parent'>
+                    <div className='trading-hub-header__menu-middle'>
                         <TradingHubOnboarding is_dark_mode={is_dark_mode} />
                         <ShowNotifications
                             is_notifications_visible={is_notifications_visible}
@@ -195,12 +191,12 @@ const TradingHubHeader = ({
                             should_disable_pointer_events
                             zIndex={9999}
                         >
-                            <BinaryLink className='dashboard-platform-header__setting' to={routes.personal_details}>
+                            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' size={20} />
                             </BinaryLink>
                         </Popover>
                     </div>
-                    <div className='dashboard-platform-header__cashier-button'>
+                    <div className='trading-hub-header__cashier-button'>
                         <Button primary small onClick={() => history.push(routes.cashier_deposit)}>
                             <Localize i18n_default_text='Cashier' />
                         </Button>

@@ -225,6 +225,7 @@ DefaultHeader.propTypes = {
     // is_payment_agent_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    is_trading_assessment_for_existing_user_enabled: PropTypes.bool,
     is_risk_client: PropTypes.bool,
     logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,

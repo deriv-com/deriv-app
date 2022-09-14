@@ -379,7 +379,10 @@ const AccountTransferForm = ({
     );
 
     const getMt5Error = () => {
-        return authentication_status?.document_status === 'pending' ? poa_pending_msg : <Mt5RestrictedMsg />;
+        if (is_mt5_restricted) {
+            return authentication_status?.document_status === 'pending' ? poa_pending_msg : <Mt5RestrictedMsg />;
+        }
+        return null;
     };
 
     return (

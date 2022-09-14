@@ -1,4 +1,4 @@
-import Checkbox from './checkbox.jsx';
+import Checkbox from './checkbox';
 import './checkbox.scss';
 
 export default Checkbox;

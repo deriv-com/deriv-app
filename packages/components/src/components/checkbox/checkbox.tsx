@@ -1,23 +1,22 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React, { MouseEventHandler, HTMLProps } from 'react';
 import Icon from '../icon';
 import Text from '../text';
 
-type ICheckBoxProps = Omit<HTMLProps<HTMLInputElement>, 'value'> & {
+type TCheckBoxProps = Omit<HTMLProps<HTMLInputElement>, 'value'> & {
     className: string;
     classNameLabel: string;
     defaultChecked: boolean;
     disabled: boolean;
     greyDisabled: boolean;
     id: string;
-    label: string; //or object
+    label: string; //or object : packages/p2p/src/components/order-details/order-details-confirm-modal.jsx
     onChange: MouseEventHandler;
     value: boolean;
     withTabIndex: string;
 };
 
-const Checkbox = React.forwardRef(
+const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
     (
         {
             className,
@@ -31,22 +30,15 @@ const Checkbox = React.forwardRef(
             withTabIndex,
             greyDisabled = false,
             ...otherProps
-        }: ICheckBoxProps,
-        ref: React.Ref<HTMLInputElement>
+        },
+        ref
     ) => {
-        const [checked, setChecked] = React.useState<boolean | undefined>(defaultChecked || value);
-        const input_ref = React.useRef<HTMLInputElement>();
-
-        const setRef = (el_input: HTMLInputElement) => {
-            input_ref.current = el_input;
-            if (ref) ref.current = el_input;
-        };
-
+        const [checked, setChecked] = React.useState<boolean>(defaultChecked);
         React.useEffect(() => {
             setChecked(defaultChecked || value);
         }, [value, defaultChecked]);
 
-        const onInputChange = (e: any) => {
+        const onInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
             e.persist();
             setChecked(!checked);
             onChange(e);
@@ -55,7 +47,7 @@ const Checkbox = React.forwardRef(
         const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> & { keyCode: number }): void => {
             // Enter or space
             if (!disabled && (e.key === 'Enter' || e.keyCode === 32)) {
-                onChange({ target: { name: input_ref.current.name, checked: !checked } });
+                onChange(e);
                 setChecked(!checked);
             }
         };
@@ -72,7 +64,7 @@ const Checkbox = React.forwardRef(
                     className='dc-checkbox__input'
                     type='checkbox'
                     id={id}
-                    ref={setRef}
+                    ref={ref}
                     disabled={disabled}
                     onChange={onInputChange}
                     defaultChecked={checked}
@@ -86,7 +78,7 @@ const Checkbox = React.forwardRef(
                         'dc-checkbox--grey-disabled': disabled && greyDisabled,
                     })}
                     {...(withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
-                    tabIndex='0'
+                    tabIndex={0}
                     onKeyDown={handleKeyDown}
                 >
                     {!!checked && <Icon icon='IcCheckmark' color='active' />}

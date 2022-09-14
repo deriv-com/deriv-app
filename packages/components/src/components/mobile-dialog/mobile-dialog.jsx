@@ -126,6 +126,10 @@ const MobileDialog = props => {
     );
 };
 
+MobileDialog.defaultProps = {
+    has_close_icon: true,
+};
+
 MobileDialog.propTypes = {
     content_height_offset: PropTypes.string,
     children: PropTypes.any,

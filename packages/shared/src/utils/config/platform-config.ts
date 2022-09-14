@@ -39,11 +39,18 @@ export const useOnLoadTranslation = () => {
     const [is_loaded, setLoaded] = React.useState<boolean>(false);
 
     React.useEffect(() => {
-        if (!i18n.language) i18n.language = getInitialLanguage();
+        if (!i18n.language) {
+            i18n.language = getInitialLanguage();
+        }
         const is_english: boolean = i18n.language === 'EN';
 
-        if (is_english) setLoaded(true);
-        else i18n.store.on('added', () => setLoaded(true));
+        if (is_english) {
+            setLoaded(true);
+        } else {
+            i18n.store.on('added', () => {
+                setLoaded(true);
+            });
+        }
 
         return () => i18n.store.off('added');
     }, []);

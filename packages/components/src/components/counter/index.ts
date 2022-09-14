@@ -1,4 +1,4 @@
-import Counter from './counter.jsx';
+import Counter from './counter';
 import './counter.scss';
 
 export default Counter;

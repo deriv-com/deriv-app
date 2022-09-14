@@ -3,15 +3,14 @@
         justify-content: end;
     }
     .run-panel__container {
-        height: calc(100vh - 15rem) !important;
+        height: calc(100vh - 5rem) !important;
         position: unset !important;
-        transform: unset !important;
-        margin-right: -350px;
+        transform: translateX(calc(350px));
         transition: all 0.4s;
-        margin-top: 48px;
+        margin-top: 1rem;
     }
     .dc-drawer--open {
-        margin-right: 0 !important;
+        transform: translateX(calc(0px)) !important;
     }
 }
 .dashboard {
@@ -23,8 +22,7 @@
         border: none;
         max-width: 100%;
         background: var(--general-main-1);
-        margin-right: 1rem;
-        width: 70%;
+        width: 100%;
 
         .dc-tabs {
             &__active-line {
@@ -132,8 +130,10 @@
 .db-sidebar {
     position: relative;
     background-color: var(--general-main-1);
-    width: 30%;
     padding: 2.4rem;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    height: 100vh;
     &--block {
         display: block;
     }

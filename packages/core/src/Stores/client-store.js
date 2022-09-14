@@ -1270,8 +1270,7 @@ export default class ClientStore extends BaseStore {
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
-            localStorage.setItem('isNewAccount', true);
-            this.root_store.ui.setIsNewAccount(true);
+            this.root_store.ui.setIsNewAccount();
         }
 
         if (search) {

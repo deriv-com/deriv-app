@@ -215,8 +215,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setIsNewAccount(new_account) {
-        this.is_new_account = new_account;
+    setIsNewAccount() {
+        localStorage.setItem('isNewAccount', !this.is_new_account);
+        this.is_new_account = localStorage.getItem('isNewAccount') || false;
     }
 
     @action.bound

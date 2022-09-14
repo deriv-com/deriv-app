@@ -137,7 +137,7 @@
             padding-top: unset;
         }
 
-        &__heading {
+        &-heading {
             @include typeface(--title-center-bold-black, none);
             color: var(--text-general);
             line-height: 1.5;
@@ -148,7 +148,7 @@
             }
         }
 
-        &__links {
+        &-links {
             $parent: &;
 
             &--is-mt5 {
@@ -169,7 +169,7 @@
                 margin-bottom: 6.4rem;
             }
 
-            &__icons {
+            &-icons {
                 text-align: center;
                 margin-bottom: 1.6rem;
 
@@ -179,7 +179,7 @@
                 }
             }
 
-            &__download-buttons {
+            &-download-buttons {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -192,7 +192,7 @@
             }
         }
 
-        &__dxtrade-button {
+        &-dxtrade-button {
             background: $color-black-7;
             border-radius: $BORDER_RADIUS;
             text-decoration: none;
@@ -210,12 +210,12 @@
                 flex-direction: column;
                 padding: 0.4rem 0rem 0.4rem 0.2rem;
             }
-            &--icon {
+            &-icon {
                 margin-left: 0.6rem;
             }
         }
 
-        &__qrcode {
+        &-qrcode {
             display: flex;
             flex-direction: column;
             justify-content: center;

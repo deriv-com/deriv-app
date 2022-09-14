@@ -25,9 +25,9 @@ type TMobileDownloadProps = {
 const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDesktopDownloadProps) => {
     return (
         <React.Fragment>
-            <h1 className='cfd-dashboard__download-container__heading'>{localize('Run Deriv X on your browser')}</h1>
+            <h1 className='cfd-dashboard__download-container-heading'>{localize('Run Deriv X on your browser')}</h1>
             <a
-                className='cfd-dashboard__download-container__dxtrade-button'
+                className='cfd-dashboard__download-container-dxtrade-button'
                 href={getDXTradeWebTerminalLink(
                     active_index === 0 ? 'real' : 'demo',
                     dxtrade_tokens && dxtrade_tokens[active_index === 0 ? 'real' : 'demo']
@@ -36,18 +36,13 @@ const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDeskto
                 rel='noopener noreferrer'
             >
                 <Icon
-                    className='cfd-dashboard__download-container__dxtrade-button--icon'
+                    className='cfd-dashboard__download-container-dxtrade-button-icon'
                     icon='IcBrandDxtrade'
                     width={32}
                     height={32}
                 />
-                <div className='cfd-dashboard__download-container__dxtrade-button-text'>
-                    <Text
-                        className='cfd-dashboard__download-container__dxtrade-button--title'
-                        color='colored-background'
-                        size='xxs'
-                        weight='bold'
-                    >
+                <div className='cfd-dashboard__download-container-dxtrade-button-text'>
+                    <Text color='colored-background' size='xxs' weight='bold'>
                         <Localize i18n_default_text='Web terminal' />
                     </Text>
                 </div>
@@ -59,11 +54,11 @@ const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDeskto
 const MT5DesktopDownload = () => {
     return (
         <React.Fragment>
-            <div className='cfd-dashboard__download-container__links__icons'>
+            <div className='cfd-dashboard__download-container-links-icons'>
                 <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                 <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
             </div>
-            <div className='cfd-dashboard__download-container__links__download-buttons'>
+            <div className='cfd-dashboard__download-container-links-download-buttons'>
                 <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
                     <Icon icon='IcInstallationWindows' width={138} height={40} />
                 </a>
@@ -85,13 +80,13 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
     return (
         <React.Fragment>
             {platform === CFD_PLATFORMS.DXTRADE && (
-                <h1 className='cfd-dashboard__download-container__heading'>
+                <h1 className='cfd-dashboard__download-container-heading'>
                     {localize('Download the Deriv X mobile app')}
                 </h1>
             )}
             <div
                 className={classnames({
-                    'cfd-dashboard__download-container__links__icons': isMobile() || platform === CFD_PLATFORMS.MT5,
+                    'cfd-dashboard__download-container-links-icons': isMobile() || platform === CFD_PLATFORMS.MT5,
                 })}
             >
                 {isMobile() && platform === CFD_PLATFORMS.DXTRADE && (
@@ -115,7 +110,7 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
                     </React.Fragment>
                 )}
             </div>
-            <div className='cfd-dashboard__download-container__links__download-buttons'>
+            <div className='cfd-dashboard__download-container-links-download-buttons'>
                 <a
                     className='cfd-dashboard__download-center-options--mobile-link'
                     href={
@@ -160,9 +155,9 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
 const QRCodeBox = () => {
     return (
         <DesktopWrapper>
-            <div className='cfd-dashboard__download-container__qrcode'>
+            <div className='cfd-dashboard__download-container-qrcode'>
                 <QRCode value='https://deriv.com/' size={160} />
-                <span className='cfd-dashboard__download-container__qrcode__hint'>
+                <span className='cfd-dashboard__download-container-qrcode__hint'>
                     {localize('Scan the QR code to download the Deriv X Mobile App')}
                 </span>
             </div>
@@ -179,17 +174,17 @@ const CFDDownloadContainer = ({ platform, is_dark_mode_on, active_index, dxtrade
             data-testid='dt_cfd_dashboard_download_center_container'
         >
             {platform === CFD_PLATFORMS.MT5 && (
-                <h1 className='cfd-dashboard__download-container__heading'>
+                <h1 className='cfd-dashboard__download-container-heading'>
                     {isDesktop() ? general_messages.getDownloadHeader(platform) : localize('Download the MT5 app')}
                 </h1>
             )}
             <div
-                className={classnames('cfd-dashboard__download-container__links', {
-                    'cfd-dashboard__download-container__links--is-mt5': platform === CFD_PLATFORMS.MT5,
+                className={classnames('cfd-dashboard__download-container-links', {
+                    'cfd-dashboard__download-container-links--is-mt5': platform === CFD_PLATFORMS.MT5,
                 })}
             >
                 <DesktopWrapper>
-                    <div className='cfd-dashboard__download-container__links--desktop'>
+                    <div className='cfd-dashboard__download-container-links--desktop'>
                         {platform === CFD_PLATFORMS.DXTRADE && (
                             <DxtradeDesktopDownload active_index={active_index} dxtrade_tokens={dxtrade_tokens} />
                         )}
@@ -197,7 +192,7 @@ const CFDDownloadContainer = ({ platform, is_dark_mode_on, active_index, dxtrade
                     </div>
                 </DesktopWrapper>
 
-                <div className='cfd-dashboard__download-container__links--mobile'>
+                <div className='cfd-dashboard__download-container-links--mobile'>
                     <MobileDownload is_dark_mode_on={is_dark_mode_on} platform={platform} />
                 </div>
             </div>

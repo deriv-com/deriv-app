@@ -39,7 +39,7 @@ type TChecklistItem = {
     content: string;
     status: string;
     button_text: string;
-    onClick: <T>(e: T) => void;
+    onClick: () => void;
 };
 
 type TChecklistProps = {

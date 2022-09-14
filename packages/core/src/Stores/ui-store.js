@@ -34,6 +34,7 @@ export default class UIStore extends BaseStore {
     // @observable is_purchase_confirm_on    = false;
     @observable is_services_error_visible = false;
     @observable is_unsupported_contract_modal_visible = false;
+    @observable is_account_signup = false;
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
@@ -199,7 +200,12 @@ export default class UIStore extends BaseStore {
 
     @computed
     get is_warning_scam_message_modal_visible() {
-        return this.root_store.client.is_logged_in && this.root_store.client.is_brazil && !this.has_read_scam_message;
+        return (
+            this.root_store.client.is_logged_in &&
+            this.root_store.client.is_brazil &&
+            !this.has_read_scam_message &&
+            !this.is_account_signup
+        );
     }
 
     @action.bound
@@ -496,6 +502,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
+        this.is_account_signup = true;
         this.is_account_signup_modal_visible = state_change;
     }
 

@@ -2017,6 +2017,8 @@ export default class ClientStore extends BaseStore {
                     this.root_store.gtm.pushDataLayer({
                         event: 'virtual_signup',
                     });
+                    //Set not to display scam message warning modal on signup
+                    localStorage.setItem('readScamMessage', true);
 
                     if (
                         !this.country_standpoint.is_france &&

@@ -3163,6 +3163,7 @@
     "-311268215": "此區塊將代表日期和時間的文字字串轉換為自Unix 紀元（1970年1月1日）以來的秒數。時間和時區偏移是可選項。例子：2019年1月1日21:03:45 GMT + 0800將轉換為1546347825。",
     "-1797602591": "止損: {{ currency }} {{ stop_loss }}",
     "-1214929127": "止損必須是正數。",
+    "-780745489": "If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block\"",
     "-2142851225": "乘數交易期權",
     "-625636913": "金額必須是正數。",
     "-1466383897": "持續時間: {{ duration_unit }} {{ duration_value }}",

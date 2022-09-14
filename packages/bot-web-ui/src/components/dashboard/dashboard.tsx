@@ -27,7 +27,7 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     };
 
     return (
-        <div className='main_dashboard_container'>
+        <div className='dashboard__main'>
             <div className={classNames('dashboard__container', { 'w-100': !show_side_bar })}>
                 <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
                 <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>

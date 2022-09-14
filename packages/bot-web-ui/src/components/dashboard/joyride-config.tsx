@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 
 type TJoyrideConfig = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
 
@@ -9,9 +10,13 @@ type TStep = {
 };
 
 const Step = ({ label, content }: TStep) => (
-    <div>
-        <h1>{label}</h1>
-        <p>{content}</p>
+    <div className='db-tour'>
+        <Text size='s' line_height='s' color='prominent' as='h' weight='bold'>
+            {label}
+        </Text>
+        <Text size='s' line_height='s' color='prominent' as='p'>
+            {content}
+        </Text>
     </div>
 );
 
@@ -88,7 +93,7 @@ export const DBOT_ONBOARDING = [
         ...joyride_config,
     },
     {
-        target: '#dc-tabs__content_group_tiles',
+        target: '#db-dashboard-cards',
         content: (
             <Step
                 label={localize('Start with a tutorials')}

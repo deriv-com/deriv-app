@@ -69,7 +69,7 @@ export const JOYRIDE_CONFIG = [
         ),
     },
     {
-        target: '#dc-tabs__content_group_tiles',
+        target: '#db-dashboard-cards',
         label: localize('Start with a template'),
         content: localize(
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'

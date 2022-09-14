@@ -3163,6 +3163,7 @@
     "-311268215": "Blok ini mengkonversi string teks yang mewakili tanggal dan waktu menjadi detik sejak Unix Epoch (1 Januari 1970). Offset waktu dan zona waktu bersifat opsional. Contoh: 2019-01-01 21:03:45 GMT + 0800 akan dikonversi ke 1546347825.",
     "-1797602591": "Batas Kerugian: {{ currency }} {{ stop_loss }}",
     "-1214929127": "Batas kerugian harus berupa angka positif.",
+    "-780745489": "If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block\"",
     "-2142851225": "Opsi trading multiplier",
     "-625636913": "Jumlah harus berupa angka positif.",
     "-1466383897": "Durasi: {{ duration_unit }} {{ duration_value }}",

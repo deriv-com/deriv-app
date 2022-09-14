@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFDAccountCard } from 'Components/cfd-account-card';
-import specifications, { TSpecifications } from 'Constants/cfd-specifications';
+import specifications from 'Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from 'Components/props.types';
@@ -48,7 +48,7 @@ const CFDDxtradeDemoAccountDisplay = ({
     current_list,
     openPasswordManager,
 }: TCFDDemoAccountDisplayProps) => {
-    const existing_accounts_data = (acc_type: 'synthetic') => {
+    const existing_accounts_data = (acc_type: 'dxtrade') => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.${acc_type}`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.demo.${acc_type}`))
@@ -72,30 +72,29 @@ const CFDDxtradeDemoAccountDisplay = ({
                 type={{
                     category: 'demo',
                     platform: 'dxtrade',
-                    type: 'dxtrade',
+                    type: 'all',
                 }}
                 is_disabled={has_cfd_account_error || standpoint.malta}
                 is_logged_in={is_logged_in}
-                existing_accounts_data={existing_accounts_data('synthetic')}
+                existing_accounts_data={existing_accounts_data('dxtrade')}
                 commission_message={localize('No commission')}
                 onSelectAccount={() =>
                     onSelectAccount({
                         category: 'demo',
                         platform: 'dxtrade',
-                        type: 'synthetic',
+                        type: 'all',
                     })
                 }
                 onPasswordManager={openPasswordManager}
                 onClickFund={() =>
                     openAccountTransfer(
                         current_list[
-                            Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.synthetic`)
-                            ) || ''
+                            Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.all`)) ||
+                                ''
                         ],
                         {
                             category: 'demo',
-                            type: 'synthetic',
+                            type: 'all',
                         }
                     )
                 }
@@ -103,7 +102,7 @@ const CFDDxtradeDemoAccountDisplay = ({
                 descriptor={localize(
                     'Trade CFDs on forex, synthetic indices, cryptocurrencies, basket indices, and commodities with high leverage.'
                 )}
-                specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
+                specs={specifications.dxtrade.demo_all_specs}
                 has_banner
             />
         </div>

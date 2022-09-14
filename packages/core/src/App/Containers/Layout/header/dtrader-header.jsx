@@ -19,22 +19,18 @@ import { Localize } from '@deriv/translations';
 const PreAppstoreMenuHomepage = () => {
     const redirect = useHistory();
     return (
-        <>
-            <div
-                className='dashboard-platform-header__tradinghub'
-                onClick={() => {
-                    redirect.push(routes.trading_hub);
-                }}
-            >
-                <Icon icon='IcAppstoreMenuHomepage' size={30} />
-            </div>
-        </>
+        <div
+            className='dashboard-platform-header__tradinghub'
+            onClick={() => {
+                redirect.push(routes.trading_hub);
+            }}
+        >
+            <Icon icon='IcAppstoreMenuHomepage' size={30} />
+        </div>
     );
 };
 
-const Divider = () => {
-    return <div className='header__menu--dtrader--separator' />;
-};
+const Divider = () => <div className='header__menu--dtrader--separator' />;
 
 const RedirectToOldInterface = () => {
     const platform_store = React.useContext(PlatformContext);

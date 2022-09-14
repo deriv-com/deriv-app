@@ -28,9 +28,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: center;
                 justify-content: center;
                 display: flex;
-                border: solid 2px $color-grey-7;
-                padding: 10px;
-                border-radius: 5px;
+                border: 2px solid var(--border-normal-1);
+                padding: 1rem;
+                border-radius: 0.5rem;
                 cursor: pointer;
 
                 &--icon {

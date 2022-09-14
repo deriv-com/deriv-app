@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
-import DefaultFooter from './default-footer.jsx';
-import TradingHubFooter from './trading-hub-footer.jsx';
+import DefaultFooter from './default-footer';
+import TradingHubFooter from './trading-hub-footer';
 
 const Footer = () => {
     const { is_pre_appstore } = React.useContext(PlatformContext);

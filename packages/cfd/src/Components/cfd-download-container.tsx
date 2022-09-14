@@ -12,9 +12,19 @@ import {
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { TCFDDashboardContainer } from './props.types';
 
-const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: Partial<TCFDDashboardContainer>) => {
+type TDxtradeDesktopDownloadProps = {
+    active_index: TCFDDashboardContainer['active_index'];
+    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+};
+
+type TMobileDownloadProps = {
+    is_dark_mode_on: TCFDDashboardContainer['is_dark_mode_on'];
+    platform: TCFDDashboardContainer['platform'];
+};
+
+const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDesktopDownloadProps) => {
     return (
-        <>
+        <React.Fragment>
             <h1 className='cfd-dashboard__download-container__heading'>{localize('Run Deriv X on your browser')}</h1>
             <a
                 className='cfd-dashboard__download-container__dxtrade-button'
@@ -42,13 +52,13 @@ const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: Partial<TCFDDa
                     </Text>
                 </div>
             </a>
-        </>
+        </React.Fragment>
     );
 };
 
 const MT5DesktopDownload = () => {
     return (
-        <>
+        <React.Fragment>
             <div className='cfd-dashboard__download-container__links__icons'>
                 <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                 <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
@@ -67,13 +77,13 @@ const MT5DesktopDownload = () => {
             <Text as='p' align='center' size='xxxs' className='cfd-dashboard__download-center--hint'>
                 <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
             </Text>
-        </>
+        </React.Fragment>
     );
 };
 
-const MobileDownload = ({ is_dark_mode_on, platform }: Partial<TCFDDashboardContainer>) => {
+const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => {
     return (
-        <>
+        <React.Fragment>
             {platform === CFD_PLATFORMS.DXTRADE && (
                 <h1 className='cfd-dashboard__download-container__heading'>
                     {localize('Download the Deriv X mobile app')}
@@ -85,7 +95,7 @@ const MobileDownload = ({ is_dark_mode_on, platform }: Partial<TCFDDashboardCont
                 })}
             >
                 {isMobile() && platform === CFD_PLATFORMS.DXTRADE && (
-                    <>
+                    <React.Fragment>
                         <Icon
                             icon={is_dark_mode_on ? 'IcDxtradeDeviceTabletLight' : 'IcDxtradeDeviceTablet'}
                             width={133}
@@ -96,13 +106,13 @@ const MobileDownload = ({ is_dark_mode_on, platform }: Partial<TCFDDashboardCont
                             width={48}
                             height={74}
                         />
-                    </>
+                    </React.Fragment>
                 )}
                 {platform === CFD_PLATFORMS.MT5 && (
-                    <>
+                    <React.Fragment>
                         <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
                         <Icon icon='IcMt5DevicePhone' width={48} height={74} />
-                    </>
+                    </React.Fragment>
                 )}
             </div>
             <div className='cfd-dashboard__download-container__links__download-buttons'>
@@ -143,7 +153,7 @@ const MobileDownload = ({ is_dark_mode_on, platform }: Partial<TCFDDashboardCont
                     <Icon icon='IcInstallationHuawei' width={120} height={40} />
                 </a>
             </div>
-        </>
+        </React.Fragment>
     );
 };
 

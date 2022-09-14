@@ -47,6 +47,11 @@ export const getDxCompanies = () => {
 };
 
 export const getMtCompanies = (is_eu: boolean) => {
+    const all_config = {
+        account_type: '',
+        leverage: 500,
+        short_title: localize('DerivX'),
+    };
     const synthetic_config = {
         account_type: '',
         leverage: 500,
@@ -65,6 +70,12 @@ export const getMtCompanies = (is_eu: boolean) => {
 
     return {
         demo: {
+            all: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo DerivX'),
+                short_title: all_config.short_title,
+            },
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
@@ -98,6 +109,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             },
         },
         real: {
+            // TODO: Add All here before real release
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,

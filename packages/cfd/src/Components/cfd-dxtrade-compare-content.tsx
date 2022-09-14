@@ -122,8 +122,7 @@ type TGetAccounts = (params: TCompareAccountsReusedProps) => TAccountsDescriptio
 type TAccountTypesToFilter = (TLandingCompany['dxtrade_all_company'] | boolean | undefined)[];
 
 const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
-    const getLoggedInTypesCount = () =>
-        ([landing_companies?.dxtrade_all_company] as TAccountTypesToFilter).filter(Boolean).length;
+    const getLoggedInTypesCount = () => ([landing_companies?.dxtrade_all_company] as TAccountTypesToFilter).length;
 
     const account_types_count = is_logged_in ? getLoggedInTypesCount() : 2;
 

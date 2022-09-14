@@ -81,8 +81,8 @@ const CFDDxtradeDemoAccountDisplay = ({
                 onSelectAccount={() =>
                     onSelectAccount({
                         category: 'demo',
-                        type: 'synthetic',
                         platform: 'dxtrade',
+                        type: 'synthetic',
                     })
                 }
                 onPasswordManager={openPasswordManager}

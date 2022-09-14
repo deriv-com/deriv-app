@@ -528,11 +528,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             <CFDDxtradeDemoAccountDisplay
                                                 is_logged_in={is_logged_in}
                                                 has_cfd_account_error={
-                                                    platform === CFD_PLATFORMS.MT5
-                                                        ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
-                                                        : is_suspended_mt5_demo_server ||
-                                                          dxtrade_disabled_signup_types.demo ||
-                                                          !!dxtrade_accounts_list_error
+                                                    is_suspended_mt5_demo_server ||
+                                                    dxtrade_disabled_signup_types.demo ||
+                                                    !!dxtrade_accounts_list_error
                                                 }
                                                 standpoint={standpoint}
                                                 is_loading={is_loading}
@@ -551,11 +549,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_cfd_account_error={
-                                                    platform === CFD_PLATFORMS.MT5
-                                                        ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
-                                                        : is_suspended_mt5_demo_server ||
-                                                          dxtrade_disabled_signup_types.demo ||
-                                                          !!dxtrade_accounts_list_error
+                                                    is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
                                                 }
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 standpoint={standpoint}

@@ -41,8 +41,8 @@ const AccountSwitcher = props => {
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
-    const [exchanged_rate, setExchangedRate] = React.useState('');
-    const [exchanged_rate_mt5_dxtrade, setExchangedRateMT5Dxtrade] = React.useState({ mt5_demo: '', dxtrade_demo: '' });
+    const [exchanged_rate, setExchangedRate] = React.useState(1);
+    const [exchanged_rate_mt5_dxtrade, setExchangedRateMT5Dxtrade] = React.useState({ mt5_demo: 1, dxtrade_demo: 1 });
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
@@ -59,23 +59,25 @@ const AccountSwitcher = props => {
     React.useEffect(() => {
         const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
 
-        getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
-            setExchangedRate(res)
-        );
+        if (props.accounts[vrtc_loginid].currency !== props.obj_total_balance.currency) {
+            getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res => {
+                setExchangedRate(res);
+            });
 
-        const mt5_demo_currency = props.mt5_login_list.find(account => isDemo(account))?.currency;
-        const dxtrade_demo_currency = props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
+            const mt5_demo_currency = props.mt5_login_list.find(account => isDemo(account))?.currency;
+            const dxtrade_demo_currency = props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
 
-        if (mt5_demo_currency) {
-            getExchangeRate(mt5_demo_currency, props.obj_total_balance.currency).then(res =>
-                setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, mt5_demo: res }))
-            );
-        }
+            if (mt5_demo_currency) {
+                getExchangeRate(mt5_demo_currency, props.obj_total_balance.currency).then(res =>
+                    setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, mt5_demo: res }))
+                );
+            }
 
-        if (dxtrade_demo_currency) {
-            getExchangeRate(dxtrade_demo_currency, props.obj_total_balance.currency).then(res =>
-                setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, dxtrade_demo: res }))
-            );
+            if (dxtrade_demo_currency) {
+                getExchangeRate(dxtrade_demo_currency, props.obj_total_balance.currency).then(res =>
+                    setExchangedRateMT5Dxtrade(prev_rate => ({ ...prev_rate, dxtrade_demo: res }))
+                );
+            }
         }
     }, []);
 

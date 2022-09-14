@@ -1,29 +1,9 @@
 import { expect } from 'chai';
 import * as CurrencyUtils from '../currency';
-
-type TCurrency = {
-    fractional_digits: number;
-    type: string;
-    transfer_between_accounts?: {
-        limits: {
-            max: number;
-            min: number;
-        };
-    };
-};
-
-type TCurrenciesConfig = {
-    currencies_config: {
-        AUD: TCurrency;
-        EUR: TCurrency;
-        GBP: TCurrency;
-        USD: TCurrency;
-        BTC: TCurrency;
-    };
-};
+import { TCurrenciesConfig } from '../currency';
 
 describe('CurrencyUtils', () => {
-    const currencies_config: TCurrenciesConfig = {
+    const website_status: { currencies_config: TCurrenciesConfig } = {
         currencies_config: {
             AUD: { fractional_digits: 2, type: 'fiat' },
             EUR: { fractional_digits: 2, type: 'fiat' },
@@ -33,7 +13,7 @@ describe('CurrencyUtils', () => {
         },
     };
     beforeEach(() => {
-        CurrencyUtils.setCurrencies(currencies_config);
+        CurrencyUtils.setCurrencies(website_status);
     });
 
     describe('.formatMoney()', () => {
@@ -114,7 +94,7 @@ describe('CurrencyUtils', () => {
 
     describe('.getCurrencies()', () => {
         it('works as expected', () => {
-            expect(CurrencyUtils.getCurrencies()).to.deep.eq(currencies_config.currencies_config);
+            expect(CurrencyUtils.getCurrencies()).to.deep.eq(website_status.currencies_config);
         });
     });
 

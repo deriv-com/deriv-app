@@ -36,7 +36,7 @@ export const DBOT_ONBOARDING = [
         target: 'body',
         content: (
             <Step
-                label={localize('Start with a tempplate')}
+                label={localize('Start with a template')}
                 content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
@@ -60,7 +60,7 @@ export const DBOT_ONBOARDING = [
         target: '#id-quick-strategy',
         content: (
             <Step
-                label={localize('Start with a tempplate')}
+                label={localize('Start with a template')}
                 content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}

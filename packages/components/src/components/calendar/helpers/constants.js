@@ -1,21 +1,5 @@
 import { toMoment } from '@deriv/shared';
 
-// TODO: localize
-export const month_headers = {
-    Jan: 'Jan',
-    Feb: 'Feb',
-    Mar: 'Mar',
-    Apr: 'Apr',
-    May: 'May',
-    Jun: 'Jun',
-    Jul: 'Jul',
-    Aug: 'Aug',
-    Sep: 'Sep',
-    Oct: 'Oct',
-    Nov: 'Nov',
-    Dec: 'Dec',
-};
-
 export const week_headers = {
     Monday: 'Monday',
     Tuesday: 'Tuesday',

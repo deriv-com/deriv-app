@@ -1,10 +1,8 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLProps } from 'react';
 import Text from '../text/text.jsx';
 
-type TLoadingProps = {
-    className?: string;
-    id?: string;
+type TLoadingProps = HTMLProps<HTMLDivElement> & {
     is_fullscreen?: boolean;
     is_slow_loading?: boolean;
     status?: string[];

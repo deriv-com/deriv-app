@@ -59,8 +59,8 @@ const Toolbox = ({
                     <div className='db-toolbox__title' onClick={() => setOpen(!is_open)}>
                         {localize('Blocks menu')}
                         <span
-                            className={classNames('db-toolbox__title-chevron', {
-                                'db-toolbox__title-chevron--active': is_open,
+                            className={classNames('db-toolbox__title__chevron', {
+                                'db-toolbox__title__chevron--active': is_open,
                             })}
                         >
                             <Icon icon='IcChevronDownBold' />

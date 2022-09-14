@@ -1,7 +1,7 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
-import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
@@ -37,18 +37,20 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
     ];
 
     return (
-        <div className='dc-tabs__dashboard-cards-wrapper' id='dc-tabs__content_group_tiles'>
+        <div className='dc-tabs__dashboard-cards-wrapper' id='db-dashboard-cards'>
             {actions.map(({ icon, content, method }, index) => (
                 <div key={index} className='dc-tabs__dashboard-card'>
                     <Icon
-                        className='dc-tabs__dashboard-card-image'
+                        className='dc-tabs__dashboard-card__image'
                         width='8rem'
                         height='8rem'
                         icon={icon}
                         id={icon}
                         onClick={method}
                     />
-                    <span className='dc-tabs__dashboard-card-label'>{localize(content)}</span>
+                    <Text size='xxs' line_height='s' color='prominent'>
+                        {localize(content)}
+                    </Text>
                 </div>
             ))}
         </div>

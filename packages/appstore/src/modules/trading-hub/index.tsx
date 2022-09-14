@@ -5,7 +5,7 @@ const TradingHub = () => {
     return (
         <div className='trading-hub'>
             Trading Hub
-            <CFDAccounts is_demo={false} />
+            <CFDAccounts account_type='demo' />
         </div>
     );
 };

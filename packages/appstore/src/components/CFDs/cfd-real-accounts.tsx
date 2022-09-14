@@ -5,36 +5,39 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import CFDAccountManager from '../cfd-account-manager';
 import AddDerived from 'Components/add-derived';
 import { Button } from '@deriv/ui';
+import { TCFDAccounts } from 'Types';
 
-const available_real_accounts = [
-    {
-        name: 'Derived',
-        description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
-        has_account: false,
-        disabled: true,
-        platform: CFD_PLATFORMS.MT5,
-        type: 'derived',
-    },
-    {
-        name: 'Financial',
-        description: localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'),
-        has_account: false,
-        disabled: true,
-        platform: CFD_PLATFORMS.MT5,
-        type: 'financial',
-    },
-    {
-        name: 'Deriv X',
-        description: localize(
-            'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
-        ),
-        has_account: false,
-        disabled: true,
-        platform: CFD_PLATFORMS.DXTRADE,
-    },
-];
-
-const CFDRealAccounts = () => {
+const CFDRealAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible }: TCFDAccounts) => {
+    const available_real_accounts = [
+        {
+            name: 'Derived',
+            description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
+            is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
+            has_account: false,
+            disabled: true,
+            platform: CFD_PLATFORMS.MT5,
+            type: 'derived',
+        },
+        {
+            name: 'Financial',
+            description: localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'),
+            is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
+            has_account: false,
+            disabled: true,
+            platform: CFD_PLATFORMS.MT5,
+            type: 'financial',
+        },
+        {
+            name: 'Deriv X',
+            description: localize(
+                'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
+            ),
+            is_visible: isDerivXVisible(CFD_PLATFORMS.MT5),
+            has_account: false,
+            disabled: true,
+            platform: CFD_PLATFORMS.DXTRADE,
+        },
+    ];
     const has_cfd_account = available_real_accounts.find(account => account.has_account);
     return (
         <div className='cfd-real-account'>

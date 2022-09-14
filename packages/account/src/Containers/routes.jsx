@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import BinaryRoutes from 'Components/Routes';
+import { BinaryRoutes } from 'Components/Routes';
 import { connect } from 'Stores/connect';
 import ErrorComponent from 'Components/error-component';
 

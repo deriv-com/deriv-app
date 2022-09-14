@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { PlatformContext } from '@deriv/shared';
 import { findRouteByPath } from '../helpers';
-import BinaryLink from '../binary-link.jsx';
+import BinaryLink from '../binary-link';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

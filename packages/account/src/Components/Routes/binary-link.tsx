@@ -5,9 +5,22 @@ import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
 import { connect } from 'Stores/connect';
+import { TPlatformContext } from 'Types';
 
-const BinaryLink = ({ active_class, to, children, is_social_signup, ...props }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+type TBinaryLink = {
+    active_class: string;
+    to: string;
+    is_social_signup: boolean;
+};
+
+const BinaryLink = ({
+    active_class,
+    to,
+    children,
+    is_social_signup,
+    ...props
+}: React.PropsWithChildren<Partial<TBinaryLink>>) => {
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const path = normalizePath(to);
     const route = findRouteByPath(path, getRoutesConfig({ is_appstore }, is_social_signup));
 

@@ -1005,6 +1005,7 @@ FinancialAssessment.propTypes = {
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
     routeBackInApp: PropTypes.func,
+    setFinancialAndTradingAssessment: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications }) => ({

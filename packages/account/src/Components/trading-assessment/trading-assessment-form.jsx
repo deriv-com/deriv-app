@@ -75,10 +75,7 @@ const TradingAssessmentForm = ({
     };
 
     const hideElement = condition => {
-        if (condition) {
-            return { visibility: 'hidden' };
-        }
-        return {};
+        return condition ? { visibility: 'hidden' } : {};
     };
 
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));

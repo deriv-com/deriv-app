@@ -1,8 +1,29 @@
 import { expect } from 'chai';
 import * as CurrencyUtils from '../currency';
 
+type TCurrency = {
+    fractional_digits: number;
+    type: string;
+    transfer_between_accounts?: {
+        limits: {
+            max: number;
+            min: number;
+        };
+    };
+};
+
+type TCurrenciesConfig = {
+    currencies_config: {
+        AUD: TCurrency;
+        EUR: TCurrency;
+        GBP: TCurrency;
+        USD: TCurrency;
+        BTC: TCurrency;
+    };
+};
+
 describe('CurrencyUtils', () => {
-    const currencies_config = {
+    const currencies_config: TCurrenciesConfig = {
         currencies_config: {
             AUD: { fractional_digits: 2, type: 'fiat' },
             EUR: { fractional_digits: 2, type: 'fiat' },
@@ -113,9 +134,9 @@ describe('CurrencyUtils', () => {
 
     describe('.getTransferLimits()', () => {
         it('returns limits based on input', () => {
-            expect(CurrencyUtils.getTransferLimits('USD')).to.eq('1.00');
+            expect(CurrencyUtils.getTransferLimits('USD', 'min')).to.eq('1.00');
             expect(CurrencyUtils.getTransferLimits('USD', 'max')).to.eq('2500.00');
-            expect(CurrencyUtils.getTransferLimits('BTC')).to.eq(undefined);
+            expect(CurrencyUtils.getTransferLimits('BTC', 'min')).to.eq(undefined);
             expect(CurrencyUtils.getTransferLimits('BTC', 'max')).to.eq(undefined);
         });
     });

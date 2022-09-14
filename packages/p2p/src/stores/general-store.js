@@ -206,7 +206,6 @@ export default class GeneralStore extends BaseStore {
 
         // we need to refresh and re-filter notifications in notifications-store in the case of a bug where when user closes the notification, the notification count is not synced up with the closed notification
         this.props.refreshNotifications();
-        this.props.filterNotificationMessages();
 
         this.props.addNotificationMessage({
             action: {

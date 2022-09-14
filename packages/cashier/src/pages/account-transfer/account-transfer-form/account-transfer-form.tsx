@@ -362,9 +362,11 @@ const AccountTransferForm = ({
         selected_from?.is_mt &&
         selected_from?.status?.includes('poa_failed') &&
         authentication_status?.document_status !== 'verified';
+
     const poa_pending_msg = localize(
         'You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.'
     );
+
     const Mt5RestrictedMsg = () => (
         <Localize
             i18n_default_text='Please <0>resubmit</0> your proof of address to transfer funds between MT5 and Deriv accounts.'

@@ -117,6 +117,7 @@ const CryptoFiatConverter = ({
                         required
                         hint={hint}
                         classNameHint='crypto-fiat-converter__hint'
+                        data-testid='dt_converter_from_amount_input'
                     />
                 )}
             </Field>
@@ -149,6 +150,7 @@ const CryptoFiatConverter = ({
                             autoComplete='off'
                             hint={localize('Approximate value')}
                             classNameHint='crypto-fiat-converter__hint'
+                            data-testid='dt_converter_to_amount_input'
                         />
                         {is_timer_visible && (
                             <Timer

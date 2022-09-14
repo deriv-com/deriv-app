@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { HTMLProps } from 'react';
 
 type TGeneralCardComponentsProps = HTMLProps<HTMLDivElement>;
+
 type TCardProps = HTMLProps<HTMLDivElement> & {
     header: React.ReactNode;
     renderHeader: () => React.ReactNode;

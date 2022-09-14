@@ -2336,7 +2336,7 @@ $MIN_HEIGHT_FLOATING: calc(
     width: 49.5rem;
     border-radius: 4px;
     position: relaitve;
-    background-color: $alpha-color-yellow-1;
+    background-color: var(--status-warning-transparent);
 
     @include mobile {
         width: 32.8rem;

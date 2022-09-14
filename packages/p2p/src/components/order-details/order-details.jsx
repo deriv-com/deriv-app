@@ -80,6 +80,10 @@ const OrderDetails = observer(() => {
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
+        general_store.props.setOrderProps({
+            order_id: order_store.order_id,
+            setIsRatingModalOpen: order_store.setIsRatingModalOpen,
+        });
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);

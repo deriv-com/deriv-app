@@ -201,6 +201,7 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
+    @action.bound
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
 
@@ -211,7 +212,7 @@ export default class GeneralStore extends BaseStore {
                     this.setOrderTableType(order_list.INACTIVE);
                     this.root_store.order_store.setOrderId(order_id);
                 },
-                text: localize('Give feedback'),
+                text: localize('Give feedbackkk'),
             },
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,

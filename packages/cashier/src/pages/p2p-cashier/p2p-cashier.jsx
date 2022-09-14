@@ -28,6 +28,7 @@ const P2PCashier = ({
     removeNotificationByKey,
     removeNotificationMessage,
     residence,
+    setOrderProps,
     setNotificationCount,
     setCurrentFocus,
     balance,
@@ -140,6 +141,7 @@ const P2PCashier = ({
             setNotificationCount={setNotificationCount}
             setOrderId={setQueryOrder}
             setOnRemount={setOnRemount}
+            setOrderProps={setOrderProps}
             should_show_verification={/verification/.test(location.hash)}
             verification_action={action_param}
             verification_code={code_param}
@@ -169,6 +171,7 @@ P2PCashier.propTypes = {
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
     setCurrentFocus: PropTypes.func,
+    setOrderProps: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, notifications, ui }) => ({
@@ -189,6 +192,7 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     residence: client.residence,
     setNotificationCount: modules.cashier.general_store.setNotificationCount,
     setOnRemount: modules.cashier.general_store.setOnRemount,
+    setOrderProps: notifications.setOrderProps,
     is_mobile: ui.is_mobile,
     setCurrentFocus: ui.setCurrentFocus,
     current_focus: ui.current_focus,

@@ -37,6 +37,7 @@ export default class NotificationStore extends BaseStore {
     @observable push_notifications = [];
     @observable client_notifications = {};
     @observable should_show_popups = true;
+    @observable order_props = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -434,10 +435,16 @@ export default class NotificationStore extends BaseStore {
         const notification_key = `order-${order_id}`;
 
         this.addNotificationMessage({
-            action: {
-                route: `${routes.cashier_p2p}?order=${order_id}`,
-                text: localize('Give feedback'),
-            },
+            action:
+                this.order_props?.order_id === order_id
+                    ? {
+                          onClick: () => this.order_props.setIsRatingModalOpen(true),
+                          text: localize('Give feedback'),
+                      }
+                    : {
+                          route: `${routes.cashier_p2p}?order=${order_id}`,
+                          text: localize('Give feedback'),
+                      },
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (
@@ -1100,6 +1107,11 @@ export default class NotificationStore extends BaseStore {
             },
         };
         this.client_notifications = notifications;
+    }
+
+    @action.bound
+    setOrderProps(order_props) {
+        this.order_props = order_props;
     }
 
     @action.bound

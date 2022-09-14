@@ -3163,6 +3163,7 @@
     "-311268215": "Este bloco converte uma sequência de texto que representa a data e a hora em segundos desde Unix Epoch (1 de janeiro de 1970). A hora e o deslocamento do fuso horário são opcionais. Exemplo: 2019-01-01 21:03:45 GMT+0800 será convertido em 1546347825.",
     "-1797602591": "Stop Loss: {{ currency }} {{ stop_loss }}",
     "-1214929127": "Stop loss deve ser um número positivo.",
+    "-780745489": "If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block\"",
     "-2142851225": "Opções de multiplicador",
     "-625636913": "Valor deve ser um número positivo.",
     "-1466383897": "Duração: {{ duration_unit }} {{ duration_value }}",

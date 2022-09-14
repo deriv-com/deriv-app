@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, MobileWrapper, Text } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -175,7 +175,7 @@ const AccountTransferForm = ({
 }: TAccountTransferFormProps) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
-    const [transfer_to_hint, setTransferToHint] = React.useState();
+    const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5;
@@ -205,6 +205,10 @@ const AccountTransferForm = ({
         if (selected_from.balance && +selected_from.balance < +amount) return localize('Insufficient balance');
 
         return undefined;
+    };
+
+    const shouldShowTransferButton = (amount: string) => {
+        return selected_from.currency === selected_to.currency ? !amount : !converter_from_amount;
     };
 
     const getAccounts = (type: string, { is_mt, is_dxtrade }: TAccount) => {
@@ -401,7 +405,7 @@ const AccountTransferForm = ({
                 validateOnBlur={false}
                 enableReinitialize
             >
-                {({ errors, handleChange, isSubmitting, touched, setFieldValue, setFieldTouched, setFieldError }) => (
+                {({ errors, handleChange, isSubmitting, setFieldValue, setFieldError, values }) => (
                     <React.Fragment>
                         {isSubmitting || accounts_list.length === 0 ? (
                             <div className='cashier__loader-wrapper' data-testid='dt_cashier_loader_wrapper'>
@@ -431,8 +435,7 @@ const AccountTransferForm = ({
                                             onChangeTransferFrom(e);
                                             handleChange(e);
                                             setFieldValue('amount', '');
-                                            setFieldError('amount', '');
-                                            setFieldTouched('amount', false);
+                                            setTimeout(() => setFieldError('amount', ''));
                                         }}
                                         error={selected_from.error}
                                     />
@@ -454,8 +457,7 @@ const AccountTransferForm = ({
                                         onChange={(e: TReactChangeEvent) => {
                                             onChangeTransferTo(e);
                                             setFieldValue('amount', '');
-                                            setFieldError('amount', '');
-                                            setFieldTouched('amount', false);
+                                            setTimeout(() => setFieldError('amount', ''));
                                         }}
                                         hint={transfer_to_hint}
                                         error={getMt5Error() ?? selected_to.error}
@@ -470,7 +472,6 @@ const AccountTransferForm = ({
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                     setAccountTransferAmount(e.target.value);
-                                                    setFieldTouched('amount', true, false);
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer-form__input'
                                                 classNameHint={classNames('account-transfer-form__hint', {
@@ -480,7 +481,7 @@ const AccountTransferForm = ({
                                                 name='amount'
                                                 type='text'
                                                 label={localize('Amount')}
-                                                error={touched.amount && errors.amount ? errors.amount : ''}
+                                                error={errors.amount ? errors.amount : ''}
                                                 required
                                                 trailing_icon={
                                                     selected_from.currency ? (
@@ -585,6 +586,8 @@ const AccountTransferForm = ({
                                             !+selected_from.balance ||
                                             !!converter_from_error ||
                                             !!converter_to_error ||
+                                            !!errors.amount ||
+                                            shouldShowTransferButton(values.amount) ||
                                             is_mt5_restricted
                                         }
                                         primary

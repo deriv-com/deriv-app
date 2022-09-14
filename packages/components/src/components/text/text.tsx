@@ -1,13 +1,12 @@
 import classNames from 'classnames';
-import React, { HTMLProps } from 'react';
+import React, { CSSProperties, HTMLProps } from 'react';
 import { isEmptyObject } from '@deriv/shared';
-import { TGenericStringValueObject } from '../types';
 
 type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {
     align?: string;
     weight?: string;
     line_height?: string;
-    styles?: TGenericStringValueObject;
+    styles?: CSSProperties;
     size: string;
 };
 const Text = ({

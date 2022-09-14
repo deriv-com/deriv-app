@@ -155,6 +155,7 @@ const POISubmission = ({
                             country_code={selected_country.value}
                             is_from_external={is_from_external}
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                            allow_poi_resubmission={allow_poi_resubmission}
                         />
                     );
                 default:

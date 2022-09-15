@@ -2,19 +2,18 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
-            "Components/*": ["components/*"],
-            "Config/*": ["config/*"],
-            "Constants/*":["constants/*"],
-            "Containers/*": ["containers/*"],
-            "Images/*": ["public/images/*"],
-            "Pages/*": ["pages/*"],
-            "Stores/*": ["stores/*"],
-            "Types": ["types"],
-            "Utils/*": ["utils/*"],
+            "Components/*": ["src/components/*"],
+            "Config/*": ["src/config/*"],
+            "Constants/*": ["src/constants/*"],
+            "Containers/*": ["src/containers/*"],
+            "Pages/*": ["src/pages/*"],
+            "Stores/*": ["src/stores/*"],
+            "Types": ["src/types"],
+            "Utils/*": ["src/utils/*"],
+            "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
-        "rootDir": "./src",
-        "baseUrl": "src",
+        "baseUrl": "./"
     },
-    "include": ["./src", "./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["src", "globals.d.ts"]
 }

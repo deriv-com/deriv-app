@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { HTMLProps } from 'react';
+import React from 'react';
 
 type TCounterProps = {
     className?: string;

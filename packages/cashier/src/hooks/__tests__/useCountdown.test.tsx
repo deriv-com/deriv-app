@@ -10,7 +10,7 @@ const UseCountdownExample = (props: TCountdownOptions) => {
     const counter = useCountdown(props);
 
     return (
-        <>
+        <React.Fragment>
             <p data-testid={'count'}>{counter.count}</p>
             <p data-testid={'is_running'}>{counter.is_running ? 'true' : 'false'}</p>
             <button data-testid={'start'} onClick={counter.start}>
@@ -25,7 +25,7 @@ const UseCountdownExample = (props: TCountdownOptions) => {
             <button data-testid={'reset'} onClick={counter.reset}>
                 reset
             </button>
-        </>
+        </React.Fragment>
     );
 };
 

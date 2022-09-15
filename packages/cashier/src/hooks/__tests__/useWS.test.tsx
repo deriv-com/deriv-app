@@ -14,14 +14,14 @@ const UseWSExample = <T extends keyof TSocketCallTypes>({ name, request }: { nam
     const WS = useWS(name);
 
     return (
-        <>
+        <React.Fragment>
             <p data-testid={'is_loading'}>{WS.is_loading ? 'true' : 'false'}</p>
             <p data-testid={'error'}>{WS.error ? JSON.stringify(WS.error) : 'undefined'}</p>
             <p data-testid={'data'}>{WS.data ? JSON.stringify(WS.data) : 'undefined'}</p>
             <button data-testid={'send'} onClick={() => WS.send(request)}>
                 send
             </button>
-        </>
+        </React.Fragment>
     );
 };
 

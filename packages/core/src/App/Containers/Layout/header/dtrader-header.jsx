@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -16,7 +16,44 @@ import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
-const DefaultHeader = ({
+const TradingHubMenuHomepage = () => {
+    const redirect = useHistory();
+    return (
+        <div
+            className='trading-hub-header__tradinghub'
+            onClick={() => {
+                redirect.push(routes.trading_hub);
+            }}
+        >
+            <Icon icon='IcAppstoreMenuHomepage' size={30} />
+        </div>
+    );
+};
+
+const Divider = () => <div className='header__menu--dtrader--separator' />;
+
+const RedirectToOldInterface = () => {
+    const platform_store = React.useContext(PlatformContext);
+    const disablePreAppstore = () => {
+        platform_store.setIsPreAppStore(false);
+    };
+    return (
+        <div className='trading-hub-header__dtrader--redirect'>
+            <BinaryLink
+                to={routes.trade}
+                className='trading-hub-header__dtrader--redirect--link'
+                onClick={disablePreAppstore}
+            >
+                <Text as='p' size='xs'>
+                    <Localize i18n_default_text='Back to old interface' />
+                </Text>
+                <Icon icon='IcArrowRight' size={18} color='red' />
+            </BinaryLink>
+        </div>
+    );
+};
+
+const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_status,
     account_type,
@@ -94,31 +131,6 @@ const DefaultHeader = ({
             return true;
         });
 
-    const Divider = () => {
-        return <div className='header__menu--separator' />;
-    };
-
-    const ExploreTradingHub = () => {
-        const platform_store = React.useContext(PlatformContext);
-        const EnablePreAppstore = () => {
-            platform_store.setIsPreAppStore(true);
-        };
-        return (
-            <div className='header__menu__redirect'>
-                <BinaryLink
-                    to={routes.trading_hub}
-                    className='header__menu__redirect--link'
-                    onClick={EnablePreAppstore}
-                >
-                    <Text as='p' size='xs'>
-                        <Localize i18n_default_text='Explore Trading hub' />
-                    </Text>
-                    <Icon icon='IcArrowRight' size={18} color='red' />
-                </BinaryLink>
-            </div>
-        );
-    };
-
     return (
         <header
             className={classNames('header', {
@@ -128,6 +140,11 @@ const DefaultHeader = ({
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
+                    <DesktopWrapper>
+                        <TradingHubMenuHomepage />
+                        <Divider />
+                    </DesktopWrapper>
+
                     <DesktopWrapper>
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
@@ -171,29 +188,29 @@ const DefaultHeader = ({
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
-                {is_logged_in && (
-                    <DesktopWrapper>
-                        <ExploreTradingHub />
-                        <Divider />
-                    </DesktopWrapper>
-                )}
+
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,
                     })}
                 >
+                    <DesktopWrapper>
+                        <RedirectToOldInterface />
+                        <div className='header__menu--dtrader--separator--account'>
+                            <Divider />
+                        </div>
+                    </DesktopWrapper>
                     {is_logging_in && (
                         <div
                             id='dt_core_header_acc-info-preloader'
-                            className={classNames('acc-info__preloader', {
-                                'acc-info__preloader--no-currency': !currency,
-                                'acc-info__preloader--is-crypto': getDecimalPlaces(currency) > 2,
+                            className={classNames('acc-info__preloader__dtrader', {
+                                'acc-info__preloader__dtrader--no-currency': !currency,
+                                'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
                             })}
                         >
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
                         </div>
                     )}
-
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
@@ -226,7 +243,7 @@ const DefaultHeader = ({
     );
 };
 
-DefaultHeader.propTypes = {
+DTraderHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
@@ -320,4 +337,4 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
-}))(withRouter(DefaultHeader));
+}))(withRouter(DTraderHeader));

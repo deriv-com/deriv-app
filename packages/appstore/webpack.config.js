@@ -31,7 +31,9 @@ const svg_loaders = [
     },
 ];
 
-module.exports = function () {
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
+
     return {
         entry: {
             index: path.resolve(__dirname, 'src', 'index.tsx'),
@@ -39,6 +41,7 @@ module.exports = function () {
         mode: is_release ? 'production' : 'development',
         output: {
             path: path.resolve(__dirname, 'dist'),
+            publicPath: base,
             filename: 'appstore/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/appstore',

@@ -50,9 +50,11 @@ const CashierLocked = ({
     const ask_self_exclusion_max_turnover_set = cashier_validation?.includes('ASK_SELF_EXCLUSION_MAX_TURNOVER_SET');
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
+    const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
+
     let icon = 'IcCashierLocked';
     let title = localize('Cashier is locked');
-    let message = localize(
+    let message: string | JSX.Element = localize(
         'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
     );
 
@@ -269,6 +271,12 @@ const CashierLocked = ({
         icon = 'IcCashierWithdrawalLock';
         title = localize('Withdrawals are locked');
         message = localize('You can only make deposits. Please contact us via live chat for more information.');
+    } else if (is_withdrawal_locked && pa_commision_withdrawal_limit) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Cashier is locked for withdrawals');
+        message = localize(
+            "It seems that you've no commissions to withdraw at the moment. You can make withdrawals once you receive your commissions."
+        );
     }
 
     return (

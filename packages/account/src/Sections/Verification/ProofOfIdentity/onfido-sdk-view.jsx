@@ -147,18 +147,24 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
 
     React.useEffect(() => {
         // retry state will re-run the token fetching
-        getOnfidoServiceToken().then(response_token => {
-            if (response_token.error) {
-                handleError(response_token.error);
-                setStatusLoading(false);
-                setRetryCount(retry_count + 1);
-            } else {
-                setOnfidoToken(response_token);
-                initOnfido().then(() => {
-                    setStatusLoading(false);
+        if (retry_count <= 3) {
+            // Incorporating Exponential_backoff algo to prevent immediate throttling
+            const timeout_id = setTimeout(() => {
+                getOnfidoServiceToken().then(response_token => {
+                    if (response_token.error) {
+                        handleError(response_token.error);
+                        setStatusLoading(false);
+                        setRetryCount(retry_count + 1);
+                    } else {
+                        setOnfidoToken(response_token);
+                        initOnfido().then(() => {
+                            setStatusLoading(false);
+                        });
+                    }
+                    clearTimeout(timeout_id);
                 });
-            }
-        });
+            }, Math.pow(2, retry_count) + Math.random() * 1000);
+        }
     }, [getOnfidoServiceToken, initOnfido, retry_count]);
 
     let component_to_load;

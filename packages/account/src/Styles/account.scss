@@ -1249,7 +1249,6 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 0 0.8rem;
             &-dashboard {
                 height: 10.5rem;
-
                 & .account__file-uploader-remove-btn {
                     top: 25rem;
                     right: 1rem;
@@ -1416,7 +1415,7 @@ $MIN_HEIGHT_FLOATING: calc(
 .account-poinc {
     &-form {
         width: 100%;
-        padding: 3rem 2rem 0 1rem;
+        //padding: 3rem 2rem 0 1rem;
         @media only screen and (max-width: 926px) {
             padding-left: 2rem;
         }
@@ -1425,7 +1424,7 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 5rem;
         }
         &__upload-field {
-            margin-top: -2rem;
+            margin: -4.5rem 0 8 rem;
         }
         &__notes-container {
             margin: 0.8rem;

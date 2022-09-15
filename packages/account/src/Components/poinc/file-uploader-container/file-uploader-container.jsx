@@ -15,34 +15,25 @@ const PoincFileUploaderContainer = ({ document_type, is_description_enabled = tr
         return () => onRef(undefined);
     }, [onRef, ref]);
 
+    const properties = [
+        { name: 'size', icon: 'IcLessThanEight', text: 'Less than 8MB' },
+        { name: 'format', icon: 'IcImage', text: 'JPEG JPG PNG PDF' },
+        { name: 'with-address', icon: 'IcUser', text: 'Issued under your name with your current address' },
+        { name: 'time', icon: 'IcClock', text: '1 - 6 months old' },
+    ];
+
     return (
         <div className='account__file-uploader-section'>
             {is_description_enabled && (
                 <ul className='account__file-uploader-list'>
-                    <li className='account__file-uploader-box'>
-                        <Icon icon='IcLessThanEight' className='account__file-uploader-icon' size={24} />
-                        <div className='account__file-uploader-item'>
-                            <Localize i18n_default_text='Less than 8MB' />
-                        </div>
-                    </li>
-                    <li className='account__file-uploader-box'>
-                        <Icon icon='IcImage' className='account__file-uploader-icon' size={24} />
-                        <div className='account__file-uploader-item'>
-                            <Localize i18n_default_text='JPEG JPG PNG PDF' />
-                        </div>
-                    </li>
-                    <li className='account__file-uploader-box'>
-                        <Icon icon='IcUser' className='account__file-uploader-icon' size={24} />
-                        <div className='account__file-uploader-item'>
-                            <Localize i18n_default_text='Issued under your name with your current address' />
-                        </div>
-                    </li>
-                    <li className='account__file-uploader-box'>
-                        <Icon icon='IcClock' className='account__file-uploader-icon' size={24} />
-                        <div className='account__file-uploader-item'>
-                            <Localize i18n_default_text='1 - 6 months old' />
-                        </div>
-                    </li>
+                    {properties.map(item => (
+                        <li key={item.name} className='account__file-uploader-box'>
+                            <Icon icon={item.icon} className='account__file-uploader-icon' size={24} />
+                            <div className='account__file-uploader-item'>
+                                <Localize i18n_default_text={item.text} />
+                            </div>
+                        </li>
+                    ))}
                 </ul>
             )}
             <div

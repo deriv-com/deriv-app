@@ -5,7 +5,7 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import CFDAccountManager from '../cfd-account-manager';
 import { TCFDAccounts } from 'Types';
 
-const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible }: TCFDAccounts) => {
+const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible, hasAccount }: TCFDAccounts) => {
     // console.log('loading1', is_populating_mt5_account_list)
 
     const available_demo_accounts = [
@@ -13,7 +13,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
             is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
-            has_account: false,
+            has_account: hasAccount(CFD_PLATFORMS.MT5, 'synthetic'),
             disabled: false,
             platform: CFD_PLATFORMS.MT5,
             type: 'derived',
@@ -22,7 +22,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible
             name: 'Financial',
             description: localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'),
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
-            has_account: false,
+            has_account: hasAccount(CFD_PLATFORMS.MT5, 'financial'),
             disabled: false,
             platform: CFD_PLATFORMS.MT5,
             type: 'financial',

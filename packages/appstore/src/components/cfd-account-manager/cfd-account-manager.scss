@@ -4,10 +4,17 @@
     align-items: center;
     justify-content: space-between;
 
+    &__icon {
+        cursor: pointer;
+    }
+
     &__details {
         display: flex;
         flex-direction: column;
         margin-left: 0 0.8rem;
+        &--title {
+            cursor: pointer;
+        }
     }
 
     &__buttons {

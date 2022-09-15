@@ -29,10 +29,8 @@
 
     &__accounts {
         display: flex;
-        justify-content: flex-start;
-        margin: 1.6rem 0;
+        justify-content: space-between;
         &--item {
-            margin-right: 2.4rem;
             &__add-derived {
                 margin-top: 1.4rem;
             }

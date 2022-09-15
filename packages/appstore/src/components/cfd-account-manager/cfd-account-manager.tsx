@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
-import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
+import { formatMoney, CFD_PLATFORMS, getStaticUrl } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TPlatform } from 'Types';
 
@@ -33,19 +33,31 @@ const CFDAccountManager = ({
     onClickTrade,
     onClickGet,
 }: TCFDAccountManager) => {
+    const openStaticPage = () => {
+        if (platform === CFD_PLATFORMS.MT5) window.open(getStaticUrl(`/dmt5`));
+        else window.open(getStaticUrl(`/derivx`));
+    };
+
     return (
         <div className='cfd-account-manager'>
             <div className='cfd-account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
-                        <Icon icon='IcAppstoreFinancial' size={64} />
+                        <Icon icon='IcAppstoreFinancial' size={64} onClick={openStaticPage} />
                     ) : (
-                        <Icon icon='IcAppstoreDerived' size={64} />
+                        <Icon icon='IcAppstoreDerived' size={64} onClick={openStaticPage} />
                     ))}
-                {platform === CFD_PLATFORMS.DXTRADE && <Icon icon='IcAppstoreDerivx' size={64} />}
+                {platform === CFD_PLATFORMS.DXTRADE && (
+                    <Icon icon='IcAppstoreDerivx' size={64} onClick={openStaticPage} />
+                )}
             </div>
             <div className='cfd-account-manager__details'>
-                <Text size='xs' weight={!has_account ? 'bold' : 'normal'}>
+                <Text
+                    size='xs'
+                    weight={!has_account ? 'bold' : 'normal'}
+                    onClick={openStaticPage}
+                    className='cfd-account-manager__details--title'
+                >
                     {appname}
                 </Text>
                 {has_account ? (

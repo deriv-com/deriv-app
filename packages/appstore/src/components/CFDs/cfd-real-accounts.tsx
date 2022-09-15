@@ -7,13 +7,13 @@ import AddDerived from 'Components/add-derived';
 import { Button } from '@deriv/ui';
 import { TCFDAccounts } from 'Types';
 
-const CFDRealAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible }: TCFDAccounts) => {
+const CFDRealAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible, hasAccount }: TCFDAccounts) => {
     const available_real_accounts = [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
             is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
-            has_account: false,
+            has_account: hasAccount(CFD_PLATFORMS.MT5, 'synthetic'),
             disabled: true,
             platform: CFD_PLATFORMS.MT5,
             type: 'derived',
@@ -22,7 +22,7 @@ const CFDRealAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible
             name: 'Financial',
             description: localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'),
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
-            has_account: false,
+            has_account: hasAccount(CFD_PLATFORMS.MT5, 'financial'),
             disabled: true,
             platform: CFD_PLATFORMS.MT5,
             type: 'financial',
@@ -32,7 +32,7 @@ const CFDRealAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible
             description: localize(
                 'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
             ),
-            is_visible: isDerivXVisible(CFD_PLATFORMS.MT5),
+            is_visible: isDerivXVisible(CFD_PLATFORMS.DXTRADE),
             has_account: false,
             disabled: true,
             platform: CFD_PLATFORMS.DXTRADE,
@@ -85,7 +85,7 @@ const CFDRealAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible
                                 onClickGet={() => null}
                                 description={account.description}
                             />
-                            {account.type === 'derived' && (
+                            {account.type === 'derived' && account.has_account && (
                                 <AddDerived
                                     title={localize('More Derived accounts')}
                                     onClickHandler={() => null}

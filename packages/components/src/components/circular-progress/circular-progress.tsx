@@ -1,17 +1,7 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon/icon.jsx';
 
-// CircularProgress.defaultProps = {
-//     icon: '',
-//     danger_limit: 20,
-//     is_clockwise: false,
-//     progress: 0,
-//     radius: 22,
-//     stroke: 3,
-//     warning_limit: 50,
-// };
 type TCircularProgressProps = {
     className: string;
     danger_limit: number;
@@ -25,13 +15,13 @@ type TCircularProgressProps = {
 
 const CircularProgress = ({
     className,
-    danger_limit,
-    icon,
-    is_clockwise,
-    progress,
-    radius,
-    stroke,
-    warning_limit,
+    danger_limit = 20,
+    icon = '',
+    is_clockwise = false,
+    progress = 0,
+    radius = 22,
+    stroke = 3,
+    warning_limit = 50,
 }: TCircularProgressProps) => {
     const normalizedRadius = radius - stroke / 2;
     const circumference = normalizedRadius * 2 * Math.PI;

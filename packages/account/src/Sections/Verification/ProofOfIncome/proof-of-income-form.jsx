@@ -13,7 +13,7 @@ import {
 import { Formik, Field } from 'formik';
 import FormSubHeader from 'Components/form-sub-header';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
+import { isDesktop, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
@@ -105,8 +105,8 @@ const ProofOfIncomeForm = ({
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
             {({ values, errors, status, touched, handleChange, handleSubmit, isSubmitting, setFieldValue }) => (
                 <form noValidate className='account-poinc-form' onSubmit={handleSubmit}>
-                    <FormBody scroll_offset='80px'>
-                        <Timeline disabled_items={disabled_items}>
+                    <FormBody scroll_offset={isDesktop() ? '0' : '200px'}>
+                        <Timeline disabled_items={disabled_items} className='account-poinc-form__timeline-container'>
                             <Timeline.Item>
                                 <fieldset className='account-poinc-form__fieldset'>
                                     <Field name='document_type'>

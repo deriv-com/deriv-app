@@ -195,6 +195,9 @@ const ProofOfIdentityContainer = ({
                     manual={manual}
                     is_from_external={is_from_external}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                    handleRequireSubmission={handleRequireSubmission}
                 />
             );
         default:

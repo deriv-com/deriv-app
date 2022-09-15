@@ -4,7 +4,9 @@ import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils.js';
+import Verified from 'Components/poi/status/verified';
 import Limited from 'Components/poi/status/limited';
+import Expired from 'Components/poi/status/expired';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
@@ -33,6 +35,15 @@ const Unsupported = ({ country_code, ...props }) => {
         if (props.manual.status === identity_status_codes.pending) return <UploadComplete />;
         else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(props.manual.status)) {
             if (!props?.allow_poi_resubmission) return <Limited />;
+        } else if (props.manual.status === identity_status_codes.verified) {
+            return <Verified needs_poa={props.needs_poa} redirect_button={props.redirect_button} />;
+        } else if (props.manual.status === identity_status_codes.expired) {
+            return (
+                <Expired
+                    redirect_button={props.redirect_button}
+                    handleRequireSubmission={props.handleRequireSubmission}
+                />
+            );
         }
     }
 

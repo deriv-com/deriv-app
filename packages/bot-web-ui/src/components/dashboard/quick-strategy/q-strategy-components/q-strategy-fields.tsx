@@ -92,13 +92,14 @@ const QStrategyFields = React.memo(
 
                     const isDurationUnitField = !isUniqStrategyField && name.endsWith('duration-unit');
                     const isDurationValueField = !isUniqStrategyField && name.endsWith('duration-value');
-                    if (tempIsDoubleIdxRef.current === idx || isDurationValueField) return;
+                    if (tempIsDoubleIdxRef.current === idx || isDurationValueField) {
+                        return false;
+                    }
 
                     if (isCurrentStrategyFields && isInputField) {
                         tempIsDoubleIdxRef.current = idx + 1;
                     }
 
-                    /* eslint consistent-return: off */
                     return isCurrentStrategyFields ? (
                         isDurationUnitField ? (
                             <div

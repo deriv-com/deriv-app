@@ -28,6 +28,7 @@ const WarningScamMessageContent = () => (
                 <Localize i18n_default_text='Do not trust and give away your credentials on fake websites, ads or emails.' />
             </Text>
         </div>
+        <hr className='warning-scam-message__divider' />
         <CorrectMessageContent />
         <FakeMessageContent />
     </div>

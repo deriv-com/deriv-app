@@ -115,6 +115,13 @@
         height: 4rem;
         margin: 2.4rem 0 2.6rem;
     }
+
+    &__divider {
+        width: 97.5%;
+        border: 1px solid var(--general-hover);
+        margin-right: 0.7rem;
+        margin-bottom: 1.6rem;
+    }
 }
 
 .correct-link {

@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Popover, Icon } from '@deriv/components';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { liveChatInitialization } from './live-chat';
 
@@ -11,6 +11,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     const [is_livechat_interactive, setLiveChatInteractive] = React.useState(false);
     const [reload, setReload] = React.useState(false);
     const history = useHistory();
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         history.listen(handleHistoryChange);
@@ -127,9 +128,11 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     const handleHistoryChange = () => {
         livechatDeletion().then(() => {
             liveChatInitialization().then(() => {
-                setReload(true);
-                setLiveChatInteractive(true);
-                setReload(false);
+                if (isMounted()) {
+                    setReload(true);
+                    setLiveChatInteractive(true);
+                    setReload(false);
+                }
             });
         });
     };

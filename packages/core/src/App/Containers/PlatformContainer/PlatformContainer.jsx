@@ -13,6 +13,10 @@ const PlatformContainer = ({ ...props }) => {
     const is_pre_appstore_storage = window.localStorage.getItem(DERIV_PRE_APPSTORE_KEY) === 'true';
     const [is_pre_appstore, setIsPreAppStore] = React.useState(is_pre_appstore_storage);
 
+    React.useEffect(() => {
+        window.localStorage.setItem(DERIV_PRE_APPSTORE_KEY, is_pre_appstore);
+    }, [is_pre_appstore]);
+
     const platform_store = {
         is_appstore,
         setIsAppStore,

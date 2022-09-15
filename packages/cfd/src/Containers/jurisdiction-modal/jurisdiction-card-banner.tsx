@@ -71,7 +71,7 @@ const JurisdictionCardBanner = ({
         } else if (is_svg) {
             return (
                 <div className={`${card_classname}__verification-status--hint`}>
-                    <Text size='xxxs' align='center' color='less-prominent'>
+                    <Text size='xxxs' align='center' line-height='s' color='less-prominent'>
                         <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                     </Text>
                 </div>

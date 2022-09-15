@@ -511,7 +511,7 @@
         }
 
         &--poi_verified {
-            background: #377cfc;
+            background: $color-blue;
             border-radius: 0.5rem;
         }
         &--account_added {
@@ -527,11 +527,6 @@
             background-color: var(--general-section-1);
             padding: 0.3rem;
             border-radius: 0.5rem;
-        }
-        &--hint {
-            font-weight: 400;
-            line-height: 14px;
-            text-align: center;
         }
     }
     &__h2-header {

@@ -44,7 +44,7 @@ const RedirectToOldInterface = () => {
                 className='trading-hub-header__dtrader--redirect--link'
                 onClick={disablePreAppstore}
             >
-                <Text as='p' size='xs' color='general'>
+                <Text as='p' size='xs'>
                     <Localize i18n_default_text='Back to old interface' />
                 </Text>
                 <Icon icon='IcArrowRight' size={18} color='red' />

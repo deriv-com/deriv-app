@@ -54,12 +54,6 @@ export default class QuickStrategyStore {
         return init;
     }
 
-    @computed
-    get initial_errors() {
-        // Persist errors through tab switch + remount.
-        return this.validateQuickStrategy(this.initial_values, true);
-    }
-
     @action.bound
     setActiveTypeStrategyIndex(index) {
         this.active_index = index;
@@ -482,57 +476,6 @@ export default class QuickStrategyStore {
                 setFieldValue('quick-strategy__duration-value', duration_input_value);
             }
         }
-    }
-
-    @action.bound
-    validateQuickStrategy(values, should_ignore_empty = false) {
-        const errors = {};
-        const number_fields = [
-            'quick-strategy__duration-value',
-            'quick-strategy__stake',
-            ...(this.active_index === 0 ? ['martingale-size'] : []),
-            ...(this.active_index === 1 ? ['alembert-unit'] : []),
-            ...(this.active_index === 2 ? ['oscar-unit'] : []),
-            'quick-strategy__profit',
-            'quick-strategy__loss',
-        ];
-        Object.keys(values).forEach(key => {
-            const value = values[key];
-
-            if (should_ignore_empty && !value) {
-                return;
-            }
-
-            if (number_fields.includes(key)) {
-                if (isNaN(value)) {
-                    errors[key] = localize('Must be a number');
-                } else if (value <= 0) {
-                    errors[key] = localize('Must be a number higher than 0');
-                } else if (/^0+(?=\d)/.test(value)) {
-                    errors[key] = localize('Invalid number format');
-                }
-            }
-
-            if (value === '') {
-                errors[key] = localize('Field cannot be empty');
-            }
-            if (key === 'martingale-size' && values[key] < 2) {
-                errors[key] = localize('Value must be higher than 2');
-            }
-        });
-
-        const duration = this.duration_unit_dropdown.find(d => d.text === values['quick-strategy__duration-unit']);
-
-        if (duration) {
-            const { min, max } = duration;
-
-            if (values['quick-strategy__duration-value'] < min) {
-                errors['quick-strategy__duration-value'] = localize('Minimum duration: {{ min }}', { min });
-            } else if (values['quick-strategy__duration-value'] > max) {
-                errors['quick-strategy__duration-value'] = localize('Maximum duration: {{ max }}', { max });
-            }
-        }
-        return errors;
     }
 
     onScrollStopDropdownList = type => {

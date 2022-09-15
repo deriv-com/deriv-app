@@ -10,12 +10,12 @@ export type TCountdownOptions = {
 
 const useCountdown = ({ from, to = 0, increment = false }: TCountdownOptions) => {
     const [count, setCount] = useState(from);
-    const [isRunning, setIsRunning] = useState(false);
+    const [is_running, setIsRunning] = useState(false);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
 
-        if (isRunning) {
+        if (is_running) {
             timer = setTimeout(() => {
                 if (count === to) {
                     pause();
@@ -26,7 +26,7 @@ const useCountdown = ({ from, to = 0, increment = false }: TCountdownOptions) =>
         }
 
         return () => clearTimeout(timer);
-    }, [count, isRunning, to, increment]);
+    }, [count, is_running, to, increment]);
 
     const start = () => setIsRunning(true);
 
@@ -41,7 +41,7 @@ const useCountdown = ({ from, to = 0, increment = false }: TCountdownOptions) =>
 
     return {
         count,
-        isRunning,
+        is_running,
         start,
         pause,
         reset,

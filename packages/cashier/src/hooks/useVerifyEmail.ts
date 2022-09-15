@@ -10,11 +10,11 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
     const WS = useWS('verify_email');
     const counter = useCountdown({ from: RESEND_COUNTDOWN });
     const { client } = useStore();
-    const [sentCount, setSentCount] = useState(0);
+    const [sent_count, setSentCount] = useState(0);
 
     const send = () => {
         if (!client.email) return;
-        if (counter.isRunning) return;
+        if (counter.is_running) return;
 
         counter.reset();
         counter.start();
@@ -25,13 +25,13 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
     };
 
     return {
-        isLoading: WS.isLoading,
+        is_loading: WS.is_loading,
         error: WS.error,
         data: WS.data,
         counter: counter.count,
-        isCounterRunning: counter.isRunning,
-        sentCount,
-        hasBeenSent: sentCount !== 0,
+        is_counter_running: counter.is_running,
+        sent_count,
+        has_been_sent: sent_count !== 0,
         send,
     };
 };

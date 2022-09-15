@@ -1,4 +1,5 @@
 import * as React from 'react';
+// Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWS as useWSShared } from '@deriv/shared';

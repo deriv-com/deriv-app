@@ -441,7 +441,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        {is_logged_in && is_trading_hub_category && (
+                                        {is_logged_in && !is_trading_hub_category && (
                                             <MobileDrawer.Item>
                                                 <MenuLink
                                                     link_to={routes.trade}

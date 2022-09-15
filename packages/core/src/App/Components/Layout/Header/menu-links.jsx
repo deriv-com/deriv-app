@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 
-const getMenuLinks = (item, item_text, hide_menu_item) => {
+const getMenuLinks = (item, hide_menu_item) => {
     return hide_menu_item ? null : (
         <BinaryLink
             id={item.id}
@@ -14,9 +14,9 @@ const getMenuLinks = (item, item_text, hide_menu_item) => {
             className='header__menu-link'
             active_class='header__menu-link--active'
         >
-            <Text size='m' line_height='xs' title={item_text} className='header__menu-link-text'>
+            <Text size='m' line_height='xs' title={item.text()} className='header__menu-link-text'>
                 {item.icon}
-                {item_text}
+                {item.text()}
                 {item.logo}
             </Text>
             <span className='header__menu-link-text'>
@@ -32,8 +32,7 @@ const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
         {!!items.length && (
             <div className='header__menu-links'>
                 {items.map(item => {
-                    const item_text = item.text();
-                    return is_logged_in && getMenuLinks(item, item_text, item_text === 'Reports' && is_pre_appstore);
+                    return is_logged_in && getMenuLinks(item, item.text() === 'Reports' && is_pre_appstore);
                 })}
             </div>
         )}

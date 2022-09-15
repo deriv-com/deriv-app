@@ -8,10 +8,10 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-template-rows: repeat(5, auto);
-        grid-gap: 1.5rem;
+        grid-gap: 1.6rem;
         @include mobile {
             grid-template-columns: repeat(2, minmax(100%, 1fr));
-            grid-gap: 0.5rem;
+            grid-gap: 0.3rem;
             grid-template-rows: auto;
         }
     }

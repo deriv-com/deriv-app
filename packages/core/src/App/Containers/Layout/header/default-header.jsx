@@ -110,7 +110,7 @@ const DefaultHeader = ({
                     className='header__menu__redirect--link'
                     onClick={EnablePreAppstore}
                 >
-                    <Text as='p' size='xs' color='general'>
+                    <Text as='p' size='xs'>
                         <Localize i18n_default_text='Explore Trading hub' />
                     </Text>
                     <Icon icon='IcArrowRight' size={18} color='red' />

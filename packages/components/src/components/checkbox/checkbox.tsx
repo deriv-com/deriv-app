@@ -10,7 +10,7 @@ type TCheckBoxProps = Omit<HTMLProps<HTMLInputElement>, 'value'> & {
     disabled: boolean;
     greyDisabled: boolean;
     id: string;
-    label: string; //or object : packages/p2p/src/components/order-details/order-details-confirm-modal.jsx
+    label: string;
     onChange: MouseEventHandler;
     value: boolean;
     withTabIndex: string;

@@ -1,4 +1,4 @@
-import { Field, FieldProps, FormikProps } from 'formik';
+import { Field, FieldProps } from 'formik';
 import React from 'react';
 import { Icon, Input, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -26,6 +26,7 @@ const InputField = ({
     trailing_icon_message,
     zIndex,
     uniq_selected_input,
+    errors,
 }: TInputFieldProps) => {
     const dataField = isUniqStrategyField ? uniq_selected_input : idx ? (data_fields[idx + 1] as TDataFields) : {};
     const {
@@ -42,8 +43,7 @@ const InputField = ({
     } = dataField as TDataUniqInput | TDataFields;
 
     return (
-        // <div key={id || new_id}>
-        <Field name={field_name || new_field_name} key={id || new_id}>
+        <Field name={field_name || new_field_name} key={id || new_id} id={id || new_id}>
             {({ field }: FieldProps<string, TFormValues>) => {
                 return (
                     <Input
@@ -52,6 +52,7 @@ const InputField = ({
                         label_className={label_className || new_label_className}
                         field_className={field_className || new_field_className}
                         type='text'
+                        error={errors[(field.name as keyof typeof errors) || (new_field_name as keyof typeof errors)]}
                         label={localize(label || new_label)}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(e);
@@ -78,8 +79,7 @@ const InputField = ({
                 );
             }}
         </Field>
-        // </div>
     );
 };
 
-export default InputField;
+export default React.memo(InputField);

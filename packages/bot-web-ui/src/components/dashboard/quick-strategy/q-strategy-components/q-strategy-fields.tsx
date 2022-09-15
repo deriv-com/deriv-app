@@ -32,8 +32,9 @@ const QStrategyFields = React.memo(
         setCurrentFocus,
         values,
         description,
+        errors,
     }: TQStrategyFields) => {
-        let tempIsDoubleIdx: number;
+        const tempIsDoubleIdxRef: React.MutableRefObject<number | undefined> = React.useRef();
 
         const uniq_selected_input = React.useMemo(
             () => data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0],
@@ -91,10 +92,10 @@ const QStrategyFields = React.memo(
 
                     const isDurationUnitField = !isUniqStrategyField && name.endsWith('duration-unit');
                     const isDurationValueField = !isUniqStrategyField && name.endsWith('duration-value');
-                    if (tempIsDoubleIdx === idx || isDurationValueField) return;
+                    if (tempIsDoubleIdxRef.current === idx || isDurationValueField) return;
 
                     if (isCurrentStrategyFields && isInputField) {
-                        tempIsDoubleIdx = idx + 1;
+                        tempIsDoubleIdxRef.current = idx + 1;
                     }
 
                     /* eslint consistent-return: off */
@@ -129,6 +130,7 @@ const QStrategyFields = React.memo(
                                     onChangeInputValue={onChangeInputValue}
                                     setCurrentFocus={setCurrentFocus}
                                     is_mobile={is_mobile}
+                                    errors={errors}
                                 />
                             </div>
                         ) : isInputField && !isDurationValueField ? (
@@ -155,6 +157,7 @@ const QStrategyFields = React.memo(
                                     trailing_icon_message={trailing_icon_message}
                                     zIndex={zIndex}
                                     uniq_selected_input={uniq_selected_input}
+                                    errors={errors}
                                 />
                                 <InputField
                                     idx={idx}
@@ -162,6 +165,7 @@ const QStrategyFields = React.memo(
                                     onChangeInputValue={onChangeInputValue}
                                     setCurrentFocus={setCurrentFocus}
                                     is_mobile={is_mobile}
+                                    errors={errors}
                                 />
                             </div>
                         ) : (
@@ -207,14 +211,13 @@ const QStrategyFields = React.memo(
                 selected_trade_type,
                 selected_symbol,
                 selected_duration_unit,
+                errors,
             ]
         );
 
         return <>{fields}</>;
     },
-    (prevProps, nextProps) => {
-        return prevProps.values === nextProps.values;
-    }
+    (prevProps, nextProps) => prevProps.values === nextProps.values && prevProps.errors === nextProps.errors
 );
 
 QStrategyFields.displayName = 'QStrategyFields';

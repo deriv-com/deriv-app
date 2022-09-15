@@ -72,6 +72,7 @@ export type TQStrategyFields = {
     setCurrentFocus: TSetCurrentFocus;
     values: TFormValues;
     description: string;
+    errors?: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
 };
 
 export type TQStrategyFooter = {
@@ -116,6 +117,7 @@ export type TInputFieldProps = {
     isUniqStrategyField?: boolean;
     trailing_icon_message?: string;
     uniq_selected_input?: TDataUniqInput;
+    errors?: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
 } & TCommonInputsProperties;
 
 export type TTradeTypeOptionProps = {

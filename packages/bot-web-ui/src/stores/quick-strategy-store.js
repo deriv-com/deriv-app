@@ -16,7 +16,7 @@ export default class QuickStrategyStore {
     @observable selected_duration_unit = this.qs_cache.selected_duration_unit || '';
     @observable input_duration_value = this.qs_cache.input_duration_value || '';
     @observable input_stake = this.qs_cache.input_stake || '';
-    @observable input_size = this.qs_cache.input_size || '';
+    @observable input_martingale_size = this.qs_cache.input_martingale_size || '';
     @observable input_alembert_unit = this.qs_cache.input_alembert_unit || '';
     @observable input_oscar_unit = this.qs_cache.input_oscar_unit || '';
     @observable input_loss = this.qs_cache.input_loss || '';
@@ -42,7 +42,7 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
-            ...(this.active_index === 0 && { martingale__size: this.input_size }),
+            ...(this.active_index === 0 && { 'martingale-size': this.input_martingale_size }),
             ...(this.active_index === 1 && { 'alembert-unit': this.input_alembert_unit }),
             ...(this.active_index === 2 && { 'oscar-unit': this.input_oscar_unit }),
 
@@ -103,16 +103,6 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_type_strategy = type_strategy;
         this.selected_type_strategy = type_strategy;
         this.setDescription(type_strategy);
-        delete this.qs_cache.selected_symbol;
-        delete this.qs_cache.selected_trade_type;
-        delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.duration_value;
-        delete this.qs_cache.input_stake;
-        delete this.qs_cache.input_size;
-        delete this.qs_cache.input_alembert_unit;
-        delete this.qs_cache.input_oscar_unit;
-        delete this.qs_cache.input_loss;
-        delete this.qs_cache.input_profit;
     }
 
     @action.bound
@@ -228,7 +218,7 @@ export default class QuickStrategyStore {
         const duration_unit = this.selected_duration_unit.value;
         const duration_value = this.input_duration_value;
         const stake = this.input_stake;
-        const size = this.input_size;
+        const size = this.input_martingale_size;
         const alembert_unit = this.input_alembert_unit;
         const oscar_unit = this.input_oscar_unit;
         const loss = this.input_loss;
@@ -500,7 +490,7 @@ export default class QuickStrategyStore {
         const number_fields = [
             'quick-strategy__duration-value',
             'quick-strategy__stake',
-            ...(this.active_index === 0 ? ['martingale__size'] : []),
+            ...(this.active_index === 0 ? ['martingale-size'] : []),
             ...(this.active_index === 1 ? ['alembert-unit'] : []),
             ...(this.active_index === 2 ? ['oscar-unit'] : []),
             'quick-strategy__profit',
@@ -526,7 +516,7 @@ export default class QuickStrategyStore {
             if (value === '') {
                 errors[key] = localize('Field cannot be empty');
             }
-            if (key === 'martingale__size' && values[key] < 2) {
+            if (key === 'martingale-size' && values[key] < 2) {
                 errors[key] = localize('Value must be higher than 2');
             }
         });

@@ -15,15 +15,15 @@ export type TDataUniqInput = {
     trailing_icon_message: string;
 } & Readonly<TCommonInputsProperties>;
 
-type TFieldNameUniqInput = 'martingale__size' | 'alembert-unit' | 'oscar-unit';
+type TFieldNameUniqInput = 'martingale-size' | 'alembert-unit' | 'oscar-unit';
 type TFieldNameUniqLabel = 'Size' | '' | 'Units';
 
 const data_uniq_input_obj: ReadonlyArray<TDataUniqInput> = [
     {
         index: 0,
-        id: 'martingale__size',
-        name: 'martingale__size',
-        field_name: 'martingale__size',
+        id: 'martingale-size',
+        name: 'martingale-size',
+        field_name: 'martingale-size',
         input_value: 'input_martingale_size',
         label: 'Size',
         placeholder: '2',

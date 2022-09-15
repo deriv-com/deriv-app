@@ -1,13 +1,13 @@
-import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
-import classNames from 'classnames';
-import { localize } from '@deriv/translations';
 import { isSafari } from '@deriv/shared';
-import { Formik, Form, FormikProps } from 'formik';
-import { QStrategyFooter, QStrategyFields } from '.';
+import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { Form, Formik, FormikProps } from 'formik';
+import React from 'react';
+import * as Yup from 'yup';
+import { QStrategyFields, QStrategyFooter } from '.';
 import { TQuickStrategyFormValues } from '../q-strategy.types';
 import { TQStrategyForm } from './q-strategy-components.types';
-import { SchemaFields } from './schema-form';
 
 const QStrategyForm = ({
     createStrategy,
@@ -29,78 +29,112 @@ const QStrategyForm = ({
     setCurrentFocus,
     selected_type_strategy,
     description,
-}: TQStrategyForm) => (
-    <Formik
-        initialValues={initial_values}
-        validationSchema={SchemaFields}
-        onSubmit={createStrategy}
-        enableReinitialize={true}
-    >
-        {({
-            errors,
-            handleChange,
-            values,
-            isSubmitting,
-            setFieldValue,
-            touched,
-            submitForm,
-        }: FormikProps<TQuickStrategyFormValues>) => {
-            const is_valid = true; //!remove after implementation validation
+}: TQStrategyForm) => {
+    const { min, max } = selected_duration_unit;
 
-            const is_submit_enabled = !isSubmitting && is_valid;
+    const setDefaultValidationNumber = () =>
+        Yup.number()
+            .typeError(localize('Should be a number'))
+            .round('ceil')
+            .test('invalid-number-format', localize('Invalid number format'), (value?: number, context?: any) => {
+                // type Yup.TestContext doesn't consist an originalValue
+                // to avoid 01.. numbers and admit digits which starts with '0' but are decimal
+                return !(
+                    context?.originalValue?.startsWith('0') &&
+                    context?.originalValue?.length >= 2 &&
+                    context?.originalValue?.indexOf('.') !== 1
+                );
+            })
+            .min(1, localize('Must be a number higher than 0'));
 
-            return (
-                <Form
-                    className={classNames('quick-strategy__form', {
-                        'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
-                    })}
-                >
-                    <ThemedScrollbars height='535px' autohide is_bypassed={is_mobile}>
-                        <div
-                            className={classNames('quick-strategy__form-content', {
-                                'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
-                                'quick-strategy__form-content--safari-fix': isSafari(),
-                            })}
-                        >
-                            <div className='quick-strategy__title'>{localize('Quick strategy')}</div>
-                            <div className='quick-strategy__description'>
-                                {localize('Choose a template and set your trade parameters.')}
+    const SchemaFields = Yup.object().shape({
+        'quick-strategy__duration-value': Yup.number()
+            .typeError(localize('Should be a number'))
+            .required(localize('Field cannot be empty'))
+            .min(min, localize('Minimum duration: {{ min }}', { min }))
+            .max(max, localize('Maximum duration: {{ max }}', { max })),
+
+        'quick-strategy__stake': setDefaultValidationNumber(),
+        'quick-strategy__loss': setDefaultValidationNumber(),
+        'martingale-size': setDefaultValidationNumber().min(3, localize('Must be a number higher than 2')),
+        'alembert-unit': setDefaultValidationNumber(),
+        'oscar-unit': setDefaultValidationNumber(),
+        'quick-strategy__profit': setDefaultValidationNumber(),
+    });
+    return (
+        <Formik
+            initialValues={initial_values}
+            validationSchema={SchemaFields}
+            onSubmit={createStrategy}
+            enableReinitialize={true}
+            validateOnMount={true}
+        >
+            {({
+                errors,
+                handleChange,
+                values,
+                isSubmitting,
+                setFieldValue,
+                submitForm,
+            }: FormikProps<TQuickStrategyFormValues>) => {
+                const is_valid =
+                    Object.keys(errors).length === 0 && !Object.values(values).some(elem => (elem as string) === '');
+                const is_submit_enabled = !isSubmitting && is_valid;
+
+                return (
+                    <Form
+                        className={classNames('quick-strategy__form', {
+                            'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
+                        })}
+                    >
+                        <ThemedScrollbars height='535px' autohide is_bypassed={is_mobile}>
+                            <div
+                                className={classNames('quick-strategy__form-content', {
+                                    'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
+                                    'quick-strategy__form-content--safari-fix': isSafari(),
+                                })}
+                            >
+                                <div className='quick-strategy__title'>{localize('Quick strategy')}</div>
+                                <div className='quick-strategy__description'>
+                                    {localize('Choose a template and set your trade parameters.')}
+                                </div>
+
+                                <QStrategyFields
+                                    is_mobile={is_mobile}
+                                    types_strategies_dropdown={types_strategies_dropdown}
+                                    symbol_dropdown={symbol_dropdown}
+                                    trade_type_dropdown={trade_type_dropdown}
+                                    duration_unit_dropdown={duration_unit_dropdown}
+                                    selected_type_strategy={selected_type_strategy}
+                                    selected_trade_type={selected_trade_type}
+                                    selected_symbol={selected_symbol}
+                                    selected_duration_unit={selected_duration_unit}
+                                    onChangeDropdownItem={onChangeDropdownItem}
+                                    onHideDropdownList={onHideDropdownList}
+                                    setFieldValue={setFieldValue}
+                                    onScrollStopDropdownList={onScrollStopDropdownList}
+                                    handleChange={handleChange}
+                                    onChangeInputValue={onChangeInputValue}
+                                    setCurrentFocus={setCurrentFocus}
+                                    values={values}
+                                    description={description}
+                                    errors={errors}
+                                />
                             </div>
-
-                            <QStrategyFields
-                                is_mobile={is_mobile}
-                                types_strategies_dropdown={types_strategies_dropdown}
-                                symbol_dropdown={symbol_dropdown}
-                                trade_type_dropdown={trade_type_dropdown}
-                                duration_unit_dropdown={duration_unit_dropdown}
-                                selected_type_strategy={selected_type_strategy}
-                                selected_trade_type={selected_trade_type}
-                                selected_symbol={selected_symbol}
-                                selected_duration_unit={selected_duration_unit}
-                                onChangeDropdownItem={onChangeDropdownItem}
-                                onHideDropdownList={onHideDropdownList}
-                                setFieldValue={setFieldValue}
-                                onScrollStopDropdownList={onScrollStopDropdownList}
-                                handleChange={handleChange}
-                                onChangeInputValue={onChangeInputValue}
-                                setCurrentFocus={setCurrentFocus}
-                                values={values}
-                                description={description}
-                            />
-                        </div>
-                    </ThemedScrollbars>
-                    <QStrategyFooter
-                        is_onscreen_keyboard_active={is_onscreen_keyboard_active}
-                        is_mobile={is_mobile}
-                        is_submit_enabled={is_submit_enabled}
-                        is_stop_button_visible={is_stop_button_visible}
-                        setFieldValue={setFieldValue}
-                        submitForm={submitForm}
-                    />
-                </Form>
-            );
-        }}
-    </Formik>
-);
+                        </ThemedScrollbars>
+                        <QStrategyFooter
+                            is_onscreen_keyboard_active={is_onscreen_keyboard_active}
+                            is_mobile={is_mobile}
+                            is_submit_enabled={is_submit_enabled}
+                            is_stop_button_visible={is_stop_button_visible}
+                            setFieldValue={setFieldValue}
+                            submitForm={submitForm}
+                        />
+                    </Form>
+                );
+            }}
+        </Formik>
+    );
+};
 
 export default React.memo(QStrategyForm);

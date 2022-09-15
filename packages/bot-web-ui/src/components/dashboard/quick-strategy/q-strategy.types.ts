@@ -83,7 +83,7 @@ type TFieldMapData = {
     setSelected: TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
 };
 
-type TInitialUniqKeys = 'martingale__size' | 'alembert-unit' | 'oscar-unit';
+type TInitialUniqKeys = 'martingale-size' | 'alembert-unit' | 'oscar-unit';
 
 type TInitialKeys = TSelectsFieldNames | TInputsFieldNames | TInitialUniqKeys;
 

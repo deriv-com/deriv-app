@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const useIsMounted = () => {
-    const is_mounted = React.useRef(false);
+    const is_mounted: React.MutableRefObject<boolean> = React.useRef(false);
 
     React.useEffect(() => {
         is_mounted.current = true;

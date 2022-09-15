@@ -1,6 +1,6 @@
 import { TGenericObjectType } from './common.types';
 
-export type IIconsManifest = Readonly<{
+export type TIconsManifest = Readonly<{
     // If a new icon category is added, be sure to add it here as well. This is part of the fix for ts(7053)
     brand: string;
     cashier: string;

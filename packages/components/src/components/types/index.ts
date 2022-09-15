@@ -1,3 +1,3 @@
-import { IIconsManifest, TIconProps } from './icons.types';
+import { TIconsManifest, TIconProps } from './icons.types';
 
-export type { IIconsManifest, TIconProps };
+export type { TIconsManifest, TIconProps };

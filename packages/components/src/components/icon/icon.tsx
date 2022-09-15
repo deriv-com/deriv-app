@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { getKebabCase, getUrlBase } from '@deriv/shared';
 import * as icons_manifest from './icons-manifest';
-import { IIconsManifest, TIconProps } from '../types';
+import { TIconsManifest, TIconProps } from '../types';
 
 const Icon = React.forwardRef(
     (
@@ -24,7 +24,7 @@ const Icon = React.forwardRef(
     ) => {
         if (!icon) return null;
 
-        let category: keyof IIconsManifest = 'common';
+        let category: keyof TIconsManifest = 'common';
         const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(icon);
         if (category_match?.[1]) {
             category = getKebabCase(category_match[1]);

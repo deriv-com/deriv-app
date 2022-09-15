@@ -4,24 +4,25 @@ import { Text } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 
 const MenuItems = ({ item, hide_menu_item }) => {
+    const { id, link_to, onClick, href, text, image, logo, icon } = item;
     return hide_menu_item ? null : (
         <BinaryLink
-            id={item.id}
-            key={item.id}
-            to={item?.link_to}
-            onClick={item?.onClick}
-            href={item?.href}
+            id={id}
+            key={id}
+            to={link_to}
+            onClick={onClick}
+            href={href}
             className='header__menu-link'
             active_class='header__menu-link--active'
         >
-            <Text size='m' line_height='xs' title={item.text()} className='header__menu-link-text'>
-                {item.icon}
-                {item.text()}
-                {item.logo}
+            <Text size='m' line_height='xs' title={text()} className='header__menu-link-text'>
+                {icon}
+                {text()}
+                {logo}
             </Text>
             <span className='header__menu-link-text'>
-                {item.image}
-                {item.logo}
+                {image}
+                {logo}
             </span>
         </BinaryLink>
     );

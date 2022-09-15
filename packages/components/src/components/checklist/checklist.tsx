@@ -5,7 +5,7 @@ import Button from '../button';
 
 type TItemStatusProps = {
     button_text: string;
-    onClick: MouseEventHandler;
+    onClick: MouseEventHandler<HTMLButtonElement | HTMLDivElement>;
     status: string;
 };
 

@@ -1,39 +1,3 @@
-export type TCONTRACT_SHADES = {
-    CALL: string;
-    PUT: string;
-    CALLE: string;
-    PUTE: string;
-    EXPIRYRANGE: string;
-    EXPIRYMISS: string;
-    RANGE: string;
-    UPORDOWN: string;
-    ONETOUCH: string;
-    NOTOUCH: string;
-    ASIANU: string;
-    ASIAND: string;
-    MULTUP: string;
-    MULTDOWN: string;
-};
-
-export type TDEFAULT_SHADES = {
-    1: string;
-    2: string;
-};
-
-export type TBARRIER_COLORS = {
-    GREEN: string;
-    RED: string;
-    ORANGE: string;
-    GRAY: string;
-    DARK_GRAY: string;
-};
-
-export type TBARRIER_LINE_STYLES = {
-    DASHED: string;
-    DOTTED: string;
-    SOLID: string;
-};
-
 export type TGetLocalizedBasis = {
     payout: string;
     stake: string;

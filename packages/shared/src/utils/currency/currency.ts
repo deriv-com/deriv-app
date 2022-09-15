@@ -24,8 +24,8 @@ export type TCurrenciesConfig = {
 
 let currencies_config: TCurrenciesConfig = {};
 
-const fiat_currencies_display_order: string[] = ['USD', 'EUR', 'GBP', 'AUD'];
-const crypto_currencies_display_order: string[] = [
+const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
+const crypto_currencies_display_order = [
     'TUSDT',
     'BTC',
     'ETH',
@@ -121,14 +121,6 @@ export const getDecimalPlaces = (currency: string) =>
         ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
         : calcDecimalPlaces(currency);
 
-export const hasCorrectDecimalPlaces = (currency: string, amount: number) => {
-    const currency_decimal_places = getDecimalPlaces(currency);
-    const amount_decimal_array = amount.toString().split('.')[1];
-    const amount_decimal_places = amount_decimal_array ? amount_decimal_array.length || 0 : 0;
-
-    return amount_decimal_places <= currency_decimal_places;
-};
-
 export const setCurrencies = (website_status: { currencies_config: TCurrenciesConfig }) => {
     currencies_config = website_status.currencies_config;
 };
@@ -139,8 +131,7 @@ export const isCryptocurrency = (currency: string) => {
 };
 
 export const CryptoConfig = (() => {
-    type TInitCryptoConfig = ReturnType<typeof initCryptoConfig>;
-    let crypto_config: TInitCryptoConfig;
+    let crypto_config: any;
 
     // TODO: [use-shared-i18n] - Use translate function shared among apps or pass in translated names externally.
     const initCryptoConfig = () =>
@@ -297,24 +288,6 @@ export const getMinWithdrawal = (currency: string) => {
     return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002 : 1;
 };
 
-/**
- * Returns the transfer limits for the account.
- * @param currency
- * @param {string} max|undefined
- * @returns numeric|undefined
- */
-export const getTransferLimits = (currency: string, which: 'max' | 'min' | string) => {
-    const transfer_limits =
-        getPropertyValue(currencies_config, [currency, 'transfer_between_accounts', 'limits']) ||
-        getMinWithdrawal(currency);
-    const decimals = getDecimalPlaces(currency);
-    if (which === 'max') {
-        return transfer_limits.max ? transfer_limits.max.toFixed(decimals) : undefined;
-    }
-
-    return transfer_limits.min ? transfer_limits.min.toFixed(decimals) : undefined;
-};
-
 export const getTransferFee = (currency_from: string, currency_to: string) => {
     const transfer_fee = getPropertyValue(currencies_config, [
         currency_from,
@@ -323,20 +296,6 @@ export const getTransferFee = (currency_from: string, currency_to: string) => {
         currency_to,
     ]);
     return `${typeof transfer_fee === 'undefined' ? '1' : transfer_fee}%`;
-};
-
-// returns in a string format, e.g. '0.00000001'
-export const getMinimumTransferFee = (currency: string) => {
-    const decimals = getDecimalPlaces(currency);
-    return `${currency} ${(1 / Math.pow(10, decimals)).toFixed(decimals)}`; // we need toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-};
-
-// @param {String} limit = max|min
-export const getPaWithdrawalLimit = (currency: string, limit: 'max' | 'min' | string) => {
-    if (isCryptocurrency(currency)) {
-        return getPropertyValue(CryptoConfig.get(), [currency, `pa_${limit}_withdrawal`]); // pa_min_withdrawal and pa_max_withdrawal used here
-    }
-    return limit === 'max' ? 2000 : 10; // limits for fiat currency
 };
 
 export const getCurrencyDisplayCode = (currency = '') => {

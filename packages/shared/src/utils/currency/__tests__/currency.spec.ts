@@ -111,13 +111,4 @@ describe('CurrencyUtils', () => {
             expect(CurrencyUtils.isCryptocurrency('ZZZ')).to.eq(false);
         });
     });
-
-    describe('.getTransferLimits()', () => {
-        it('returns limits based on input', () => {
-            expect(CurrencyUtils.getTransferLimits('USD', 'min')).to.eq('1.00');
-            expect(CurrencyUtils.getTransferLimits('USD', 'max')).to.eq('2500.00');
-            expect(CurrencyUtils.getTransferLimits('BTC', 'min')).to.eq(undefined);
-            expect(CurrencyUtils.getTransferLimits('BTC', 'max')).to.eq(undefined);
-        });
-    });
 });

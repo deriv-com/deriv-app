@@ -133,7 +133,7 @@ export const getContractCategoriesConfig = (): { [key: string]: string[] } => ({
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
 });
 
-export const unsupported_contract_types_list: string[] = [
+export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported
     'callputspread',
     'run_high_low',

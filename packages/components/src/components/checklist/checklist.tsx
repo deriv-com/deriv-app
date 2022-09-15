@@ -9,6 +9,17 @@ type TItemStatusProps = {
     status: string;
 };
 
+type TChecklistItem = TItemStatusProps & {
+    is_disabled: boolean;
+    content: string;
+};
+
+type TChecklistProps = {
+    items: TChecklistItem[];
+    className: string;
+    itemClassName: string;
+};
+
 const ItemStatus = ({ status, onClick, button_text }: TItemStatusProps) => {
     switch (status) {
         case 'done':
@@ -31,20 +42,6 @@ const ItemStatus = ({ status, onClick, button_text }: TItemStatusProps) => {
                 </div>
             );
     }
-};
-
-type TChecklistItem = {
-    is_disabled: boolean;
-    content: string;
-    status: string;
-    button_text: string;
-    onClick: () => void;
-};
-
-type TChecklistProps = {
-    items: TChecklistItem[];
-    className: string;
-    itemClassName: string;
 };
 
 const Checklist = ({ items, className, itemClassName }: TChecklistProps) => (

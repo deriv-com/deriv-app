@@ -307,12 +307,12 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-dropdown__display {
                 max-width: 67.2rem;
             }
-        }
 
-        &__question:last-child {
-            .dc-list {
-                .dc-themed-scrollbars__autohide {
-                    top: 1px;
+            &:last-child {
+                .dc-list {
+                    .dc-themed-scrollbars__autohide {
+                        top: 1px;
+                    }
                 }
             }
         }

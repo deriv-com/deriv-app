@@ -95,6 +95,35 @@
             width: 30rem !important;
         }
     }
+    &_center-risk-modal {
+        .dc-modal {
+            &-header {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+            &-body {
+                text-align: center;
+                .risk-acceptance__text {
+                    margin-top: 2.4rem;
+                }
+                .verified-account__text {
+                    margin-top: 2.4rem;
+                }
+            }
+            &-footer {
+                justify-content: center;
+            }
+        }
+    }
+    &_verified_account {
+        .dc-modal {
+            &-body {
+                text-align: center;
+            }
+            &-footer {
+                justify-content: center;
+            }
+        }
+    }
 }
 
 .dc-mobile-dialog__account-signup-mobile-dialog {
@@ -641,34 +670,5 @@
                 width: 100%;
             }
         }
-    }
-}
-
-.dc-modal__container_center-risk-modal {
-    .dc-modal-header {
-        border-bottom: 1px solid var(--general-section-1);
-    }
-    .dc-modal-body {
-        text-align: center;
-        .risk-acceptance__text {
-            margin-top: 2.4rem;
-        }
-        .verified-account__text {
-            margin-top: 2.4rem;
-        }
-    }
-
-    .dc-modal-footer {
-        justify-content: center;
-    }
-}
-
-.dc_modal__container_verified_account {
-    .dc-modal-body {
-        text-align: center;
-    }
-
-    .dc-modal-footer {
-        justify-content: center;
     }
 }

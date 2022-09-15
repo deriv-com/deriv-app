@@ -1,6 +1,5 @@
 import React, { MouseEventHandler } from 'react';
 import classNames from 'classnames';
-
 import Icon from '../icon';
 import Button from '../button';
 

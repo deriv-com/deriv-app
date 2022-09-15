@@ -13,8 +13,13 @@ const Template: Story<optionsProps> = args => <Options {...args} />;
 export const OptionsDemo = Template.bind({});
 OptionsDemo.args = {
     options_title: 'Options',
-    options_desc: 'Earn fixed payouts by predicting price movements with options,or combine the upside of CFDs.',
+    is_app_launcher: false,
     platformlauncherprops: [
+        {
+            app_icon: 'DTrader',
+            app_title: 'DTrader',
+            app_desc: 'Options & multipliers trading platform.',
+        },
         {
             app_icon: 'DBot',
             app_title: 'DBot',
@@ -25,12 +30,6 @@ OptionsDemo.args = {
             app_title: 'SmartTrader',
             app_desc: 'Our legacy options trading platform.',
         },
-        {
-            app_icon: 'DTrader',
-            app_title: 'DTrader',
-            app_desc: 'Options & multipliers trading platform.',
-        },
-
         {
             app_icon: 'BinaryBot',
             app_title: 'Binary Bot',
@@ -67,5 +66,15 @@ OptionsDemo.args = {
         title: 'More Options accounts',
         description: 'Including cryptocurrencies',
         class_names: '',
+    },
+    applauncher_props: {
+        icon_name: 'icDxtradeSynthetic',
+        app_name: 'App name',
+        jurisdiction: 'JURISDICTION',
+        is_app_installed: false,
+        balance: 1.23,
+        currency: 'USD',
+        description: 'Trade multipliers on forex, cryptocurrencies, and synthetic indices with our mobile app.',
+        show_active_balance: false,
     },
 };

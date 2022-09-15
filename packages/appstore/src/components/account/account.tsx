@@ -25,17 +25,13 @@ const OptionsAccount = ({
 }: TOptionsAccountprops) => {
     return (
         <div className='account__container'>
-            <div className='account__container--icon'>
-                {isMobile() ? <WalletIcon icon={account_icon_mobile} /> : <WalletIcon icon={account_icon} />}
-            </div>
+            <div className='account__container--icon'>{isMobile() ? <WalletIcon icon={account_icon_mobile} /> : <WalletIcon icon={account_icon} />}</div>
             <div className='account__container--account-details-wrapper'>
                 <div className='account__container--account-details-wrapper--name-number'>
                     <Text className='account__container--account-details-wrapper--name-number--name' weight='bold'>
                         <Localize i18n_default_text={account_title} />
                     </Text>
-                    <Text className='account__container--account-details-wrapper--name-number--number'>
-                        {account_number}
-                    </Text>
+                    <Text className='account__container--account-details-wrapper--name-number--number'>{account_number}</Text>
                 </div>
 
                 <Text className='account__container--account-details-wrapper--balance'>

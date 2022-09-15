@@ -10,8 +10,8 @@ type TCheckBoxProps = Omit<HTMLProps<HTMLInputElement>, 'value'> & {
     disabled: boolean;
     greyDisabled: boolean;
     id: string;
-    label: string; //or object : packages/p2p/src/components/order-details/order-details-confirm-modal.jsx
-    onChange: MouseEventHandler;
+    label: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value: boolean;
     withTabIndex: string;
 };
@@ -33,18 +33,18 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
         },
         ref
     ) => {
-        const [checked, setChecked] = React.useState<boolean>(defaultChecked || value);
+        const [checked, setChecked] = React.useState(defaultChecked || value);
         React.useEffect(() => {
             setChecked(defaultChecked || value);
         }, [value, defaultChecked]);
 
-        const onInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
+        const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
             e.persist();
             setChecked(!checked);
             onChange(e);
         };
 
-        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> & { keyCode: number }): void => {
+        const handleKeyDown: React.KeyboardEventHandler<HTMLSpanElement> = e => {
             // Enter or space
             if (!disabled && (e.key === 'Enter' || e.keyCode === 32)) {
                 onChange(e);

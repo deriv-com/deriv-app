@@ -5,7 +5,7 @@ import { getBrandName } from '@deriv/shared';
 
 const FakeMessageContent = () => (
     <div className='fake-link__container'>
-        <Icon icon={'IcAccountCross'} className='warning-scam-message__icon--cross' size={24} />
+        <Icon icon='IcAccountCross' className='warning-scam-message__icon--cross' />
         <div className='fake-link__message-container'>
             <Text>
                 <Localize

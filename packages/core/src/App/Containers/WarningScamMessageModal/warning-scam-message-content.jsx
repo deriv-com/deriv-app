@@ -8,7 +8,7 @@ import FakeMessageContent from './fake-message-content';
 const WarningScamMessageContent = () => (
     <div className='warning-scam-message--content__info'>
         <div className='warning-scam-message--content__info--title'>
-            <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={18} />
+            <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={24} />
             <Text weight='bold'>
                 <Localize
                     i18n_default_text={`Do not get lured to fake "{{ brandName }}" pages!`}
@@ -23,7 +23,7 @@ const WarningScamMessageContent = () => (
             />
         </Text>
         <div className='warning-scam-message--content__info--message'>
-            <Icon icon='IcAccountCross' className='warning-scam-message__icon' size={18} />
+            <Icon icon='IcAccountCross' className='warning-scam-message__icon--cross-content' />
             <Text>
                 <Localize i18n_default_text='Do not trust and give away your credentials on fake websites, ads or emails.' />
             </Text>

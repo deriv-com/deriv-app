@@ -76,10 +76,30 @@
     }
 
     &__icon {
-        margin: 0.5rem;
+        margin: 0.5rem 0.8rem 0.5rem 0.5rem;
 
         &--cross {
-            margin: 0 0.5rem;
+            height: 2.6rem;
+            width: 2.6rem;
+            margin: 0 0.8rem 0.5rem 0.5rem;
+
+            @include mobile {
+                height: 3.4rem;
+                width: 3.4rem;
+                margin: -0.3rem 0.8rem 0.5rem 0.5rem;
+            }
+        }
+
+        &--cross-content {
+            height: 2.2rem;
+            width: 2.2rem;
+            margin: 0.2rem 0.8rem 0.5rem 0.5rem;
+
+            @include mobile {
+                height: 3rem;
+                width: 3rem;
+                margin: -0.2rem 0.8rem 0.5rem 0.5rem;
+            }
         }
     }
 
@@ -88,7 +108,7 @@
     }
 
     &__website-icon {
-        margin: 0.5rem 0.5rem 0 0;
+        margin: 0 0.5rem 0 0;
     }
 
     &__scam-message-icon {

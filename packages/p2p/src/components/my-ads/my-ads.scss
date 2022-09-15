@@ -1,19 +1,11 @@
-@mixin popoverIcons() {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    height: 3.2rem;
-    justify-content: center;
-    width: 3.2rem;
-}
-
-@mixin popoverIconsMobile($background-color) {
+@mixin popoverIcons($background-color, $cursor, $height, $width) {
     align-items: center;
     background-color: $background-color;
+    cursor: $cursor;
     display: flex;
-    height: 100%;
+    height: $height;
     justify-content: center;
-    width: 6rem;
+    width: $width;
 }
 
 .p2p-my-ads {
@@ -308,7 +300,7 @@
             }
 
             &__activate {
-                @include popoverIcons();
+                @include popoverIcons(none, pointer, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -317,12 +309,12 @@
                 }
 
                 @include mobile {
-                    @include popoverIconsMobile(var(--status-warning));
+                    @include popoverIcons(var(--status-warning), pointer, 100%, 6rem);
                 }
             }
 
             &__deactivate {
-                @include popoverIcons();
+                @include popoverIcons(none, pointer, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -331,12 +323,12 @@
                 }
 
                 @include mobile {
-                    @include popoverIconsMobile(#85acb0);
+                    @include popoverIcons(#85acb0, pointer, 100%, 6rem);
                 }
             }
 
             &__delete {
-                @include popoverIcons();
+                @include popoverIcons(none, pointer, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -345,12 +337,12 @@
                 }
 
                 @include mobile {
-                    @include popoverIconsMobile(var(--brand-red-coral));
+                    @include popoverIcons(var(--brand-red-coral), pointer, 100%, 6rem);
                 }
             }
 
             &__edit {
-                @include popoverIcons();
+                @include popoverIcons(none, pointer, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -359,7 +351,7 @@
                 }
 
                 @include mobile {
-                    @include popoverIconsMobile(var(--status-info));
+                    @include popoverIcons(var(--status-info), pointer, 100%, 6rem);
                 }
             }
         }

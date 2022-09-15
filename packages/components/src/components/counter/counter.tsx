@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type TCounterProps = {
-    className: string;
+type TCounterProps = HTMLDivElement & {
     count: number;
 };
 const Counter = ({ className, count }: TCounterProps) => {

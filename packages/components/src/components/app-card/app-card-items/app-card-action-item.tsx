@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ForwardedRef } from 'react';
+import React, { Ref } from 'react';
 import Text from '../../text';
 import Icon from '../../icon';
 
@@ -12,10 +12,7 @@ type TAppCardActionItemProps = {
 };
 
 const AppCardActionItem = React.forwardRef(
-    (
-        { icon, is_hovered, is_virtual, label, onClickHandler }: TAppCardActionItemProps,
-        ref: ForwardedRef<HTMLDivElement | null>
-    ) => (
+    ({ icon, is_hovered, is_virtual, label, onClickHandler }: TAppCardActionItemProps, ref: Ref<HTMLDivElement>) => (
         <div className='dc-app-card-actions__content-wrapper' onClick={onClickHandler} ref={ref}>
             <Icon
                 icon={icon}

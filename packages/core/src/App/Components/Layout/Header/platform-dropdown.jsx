@@ -62,13 +62,13 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
-                {platform_config.map((platform, idx) => {
+                {platform_config.map(platform => {
                     const should_hide_dropdown_item =
                         (platform.name === getPlatformSettings('mt5').name ||
                             platform.name === getPlatformSettings('dxtrade').name) &&
                         is_pre_appstore;
                     return (
-                        <div key={idx} onClick={closeDrawer} ref={ref}>
+                        <div key={platform.name} onClick={closeDrawer} ref={ref}>
                             <PlatformDropdownContent
                                 platform={platform}
                                 app_routing_history={app_routing_history}

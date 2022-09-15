@@ -78,13 +78,13 @@
     }
 
     &__divider {
-        width: 1px;
-        height: 32px;
-        margin-left: 8px;
+        width: 0.1rem;
+        height: 3rem;
+        margin-left: 0.8rem;
         background: var(--general-section-2);
 
         @include mobile {
-            height: 24px;
+            height: 2.4rem;
         }
     }
 

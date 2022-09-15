@@ -177,7 +177,7 @@ import './common/ic-bank.svg';
 import './common/ic-bell.svg';
 import './common/ic-black-warning.svg';
 import './common/ic-bot-builder.svg';
-import './common/ic-bot-builder-tab-icon.svg';
+import './common/ic-botbuilder-tab-icon.svg';
 import './common/ic-box.svg';
 import './common/ic-button-back.svg';
 import './common/ic-calendar-datefrom.svg';

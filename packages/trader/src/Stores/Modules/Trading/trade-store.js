@@ -119,7 +119,7 @@ export default class TradeStore extends BaseStore {
     @observable accumulator_rates_list = [];
     @observable growth_rate;
     @observable max_payout = 0;
-    @observable maximum_ticks = 0;
+    @observable max_ticks_number = 0;
     @observable tick_size_barrier = 0;
 
     // Multiplier trade params
@@ -963,9 +963,10 @@ export default class TradeStore extends BaseStore {
         }
 
         if (this.is_accumulator && this.proposal_info && this.proposal_info.ACCU) {
-            const { maximum_ticks, tick_size_barrier, max_payout, high_barrier, low_barrier } = this.proposal_info.ACCU;
+            const { max_ticks_number, tick_size_barrier, max_payout, high_barrier, low_barrier } =
+                this.proposal_info.ACCU;
             this.tick_size_barrier = tick_size_barrier;
-            this.maximum_ticks = maximum_ticks;
+            this.max_ticks_number = max_ticks_number;
             this.max_payout = max_payout;
             this.barrier_1 = high_barrier;
             this.barrier_2 = low_barrier;

@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 import { Money, Text } from '@deriv/components';
 import classNames from 'classnames';
 
-const AccumulatorsInfoDisplay = ({ currency, max_payout, maximum_ticks }) => {
+const AccumulatorsInfoDisplay = ({ currency, max_payout, max_ticks_number }) => {
     const labels = [localize('Maximum payout'), localize('Maximum ticks')].map((label, index) => (
         <Text key={index} size='xxs' weight='bold'>
             {label}
@@ -15,9 +15,9 @@ const AccumulatorsInfoDisplay = ({ currency, max_payout, maximum_ticks }) => {
 
     const values = [
         <Money key={0} amount={max_payout} show_currency currency={currency} />,
-        localize('{{maximum_ticks}} {{ticks}}', {
-            maximum_ticks,
-            ticks: maximum_ticks === 1 ? 'tick' : 'ticks',
+        localize('{{max_ticks_number}} {{ticks}}', {
+            max_ticks_number,
+            ticks: max_ticks_number === 1 ? 'tick' : 'ticks',
         }),
     ].map((value_component, index) => (
         <Text key={index} size='xxs' align='right'>
@@ -39,12 +39,12 @@ const AccumulatorsInfoDisplay = ({ currency, max_payout, maximum_ticks }) => {
 AccumulatorsInfoDisplay.propTypes = {
     currency: PropTypes.string,
     max_payout: PropTypes.number,
-    maximum_ticks: PropTypes.number,
+    max_ticks_number: PropTypes.number,
 };
 
 export default connect(({ modules }) => ({
-    // TODO:: when API is ready, connect real maximum_ticks
+    // TODO:: when API is ready, connect real max_ticks_number
     currency: modules.trade.currency,
-    maximum_ticks: modules.trade.maximum_ticks,
+    max_ticks_number: modules.trade.max_ticks_number,
     max_payout: modules.trade.max_payout,
 }))(AccumulatorsInfoDisplay);

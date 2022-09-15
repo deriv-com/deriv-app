@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
+    isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
     isHighLow,
@@ -60,6 +61,7 @@ const PositionsModalCard = ({
         </div>
     );
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
@@ -67,47 +69,64 @@ const PositionsModalCard = ({
 
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
+    const custom_card_header = (
+        <ContractCard.Header
+            contract_info={contract_info}
+            display_name={display_name}
+            getCardLabels={getCardLabels}
+            getContractTypeDisplay={getContractTypeDisplay}
+            has_progress_slider={(!is_mobile && has_progress_slider) || is_accumulator}
+            is_mobile={is_mobile}
+            is_sell_requested={is_sell_requested}
+            onClickSell={onClickSell}
+            server_time={server_time}
+        />
+    );
 
     const contract_options_el = (
         <React.Fragment>
-            <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
-                <div className='positions-modal-card__underlying-name'>
-                    <Icon
-                        icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'}
-                        size={34}
-                    />
-                    <Text size='xxs' className='positions-modal-card__symbol' weight='bold'>
-                        {contract_info.display_name}
-                    </Text>
-                </div>
-                <div className='positions-modal-card__type'>
-                    <ContractCard.ContractTypeCell
-                        getContractTypeDisplay={getContractTypeDisplay}
-                        is_high_low={isHighLow({ shortcode: contract_info.shortcode })}
-                        multiplier={contract_info.multiplier}
-                        type={type}
-                    />
-                </div>
-                <CSSTransition
-                    in={should_show_sell}
-                    timeout={250}
-                    classNames={{
-                        enter: 'positions-modal-card__sell-button--enter',
-                        enterDone: 'positions-modal-card__sell-button--enter-done',
-                        exit: 'positions-modal-card__sell-button--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <div className='positions-modal-card__sell-button'>
-                        <ContractCard.Sell
-                            contract_info={contract_info}
-                            is_sell_requested={is_sell_requested}
-                            getCardLabels={getCardLabels}
-                            onClickSell={onClickSell}
+            {!is_accumulator ? (
+                <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
+                    <div className='positions-modal-card__underlying-name'>
+                        <Icon
+                            icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'}
+                            size={34}
+                        />
+                        <Text size='xxs' className='positions-modal-card__symbol' weight='bold'>
+                            {contract_info.display_name}
+                        </Text>
+                    </div>
+                    <div className='positions-modal-card__type'>
+                        <ContractCard.ContractTypeCell
+                            getContractTypeDisplay={getContractTypeDisplay}
+                            is_high_low={isHighLow({ shortcode: contract_info.shortcode })}
+                            multiplier={contract_info.multiplier}
+                            type={type}
                         />
                     </div>
-                </CSSTransition>
-            </div>
+                    <CSSTransition
+                        in={should_show_sell}
+                        timeout={250}
+                        classNames={{
+                            enter: 'positions-modal-card__sell-button--enter',
+                            enterDone: 'positions-modal-card__sell-button--enter-done',
+                            exit: 'positions-modal-card__sell-button--exit',
+                        }}
+                        unmountOnExit
+                    >
+                        <div className='positions-modal-card__sell-button'>
+                            <ContractCard.Sell
+                                contract_info={contract_info}
+                                is_sell_requested={is_sell_requested}
+                                getCardLabels={getCardLabels}
+                                onClickSell={onClickSell}
+                            />
+                        </div>
+                    </CSSTransition>
+                </div>
+            ) : (
+                custom_card_header
+            )}
             <CurrencyBadge currency={contract_info?.currency ?? ''} />
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                 <div className={classNames('positions-modal-card__grid-profit-payout')}>
@@ -186,36 +205,24 @@ const PositionsModalCard = ({
                         result={result || fallback_result}
                     />
                 ) : (
-                    <ProgressSliderMobile
-                        className='positions-modal-card__progress'
-                        current_tick={current_tick}
-                        getCardLabels={getCardLabels}
-                        is_loading={is_loading}
-                        start_time={contract_info.date_start}
-                        expiry_time={contract_info.date_expiry}
-                        server_time={server_time}
-                        ticks_count={contract_info.tick_count}
-                    />
+                    !is_accumulator && (
+                        <ProgressSliderMobile
+                            className='positions-modal-card__progress'
+                            current_tick={current_tick}
+                            getCardLabels={getCardLabels}
+                            is_loading={is_loading}
+                            start_time={contract_info.date_start}
+                            expiry_time={contract_info.date_expiry}
+                            server_time={server_time}
+                            ticks_count={contract_info.tick_count}
+                        />
+                    )
                 )}
             </div>
         </React.Fragment>
     );
 
-    const card_multiplier_header = (
-        <ContractCard.Header
-            contract_info={contract_info}
-            display_name={display_name}
-            getCardLabels={getCardLabels}
-            getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_mobile && has_progress_slider}
-            is_mobile={is_mobile}
-            is_sell_requested={is_sell_requested}
-            onClickSell={onClickSell}
-            server_time={server_time}
-        />
-    );
-
-    const card_multiplier_body = (
+    const custom_card_body = (
         <ContractCard.Body
             addToast={addToast}
             connectWithContractUpdate={connectWithContractUpdate}
@@ -225,8 +232,11 @@ const PositionsModalCard = ({
             current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
+            is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            is_positions
+            is_sold={!!contract_info.is_sold}
             has_progress_slider={is_mobile && has_progress_slider && !has_ended}
             removeToast={removeToast}
             server_time={server_time}
@@ -237,7 +247,7 @@ const PositionsModalCard = ({
         />
     );
 
-    const card_multiplier_footer = (
+    const custom_card_footer = (
         <ContractCard.Footer
             contract_info={contract_info}
             getCardLabels={getCardLabels}
@@ -250,7 +260,7 @@ const PositionsModalCard = ({
         />
     );
 
-    const contract_multiplier_el = (
+    const custom_contract_el = (
         <React.Fragment>
             <ContractCard
                 contract_info={contract_info}
@@ -259,14 +269,15 @@ const PositionsModalCard = ({
                 profit_loss={profit_loss}
                 should_show_result_overlay={false}
             >
-                {card_multiplier_header}
-                {card_multiplier_body}
-                {card_multiplier_footer}
+                {custom_card_header}
+                {custom_card_body}
+                {custom_card_footer}
             </ContractCard>
         </React.Fragment>
     );
 
-    const contract_el = is_multiplier ? contract_multiplier_el : contract_options_el;
+    const contract_el =
+        is_multiplier || (is_accumulator && !contract_info.is_sold) ? custom_contract_el : contract_options_el;
 
     return (
         <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>

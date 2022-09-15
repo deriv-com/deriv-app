@@ -1,5 +1,5 @@
-const high_barrier = 94;
-const low_barrier = 93.5;
+const high_barrier = 96.58;
+const low_barrier = 96.54;
 const tick_1_price = 92.444;
 const tick_2_price = 92.317;
 const tick_3_price = 92.431;
@@ -18,10 +18,41 @@ const limit_order = {
         value: `${take_profit_price}`,
     },
 };
-const contract_status = 'open'; // 'lost', 'won' or 'open'
-const position_status = 'profit'; // 'profit' or 'loss'
-const profit_loss = +0.15;
-const profit_percentage = +1.5;
+let contract_status = 'open'; // 'lost', 'won' or 'open'
+let position_status = 'profit'; // 'profit' or 'loss'
+let result = ''; // 'won' or 'lost'
+let profit_loss = +0.15;
+let profit_percentage = +1.5;
+let is_sold = 0; // 0 || 1
+let first_time;
+const winLoseAndOpenContractIn10Sec = () => {
+    setInterval(() => {
+        setTimeout(() => {
+            contract_status = 'won'; // 'lost', 'won' or 'open'
+            position_status = 'profit'; // 'profit' or 'loss'
+            result = 'won'; // 'won' or 'lost'
+            profit_loss = +0.15;
+            profit_percentage = +1.5;
+            is_sold = 1; // 0 || 1
+        }, 2000);
+        setTimeout(() => {
+            contract_status = 'lost'; // 'lost', 'won' or 'open'
+            position_status = 'loss'; // 'profit' or 'loss'
+            result = 'lost'; // 'won' or 'lost'
+            profit_loss = -0.15;
+            profit_percentage = -1.5;
+            is_sold = 1; // 0 || 1
+        }, 4000);
+        setTimeout(() => {
+            contract_status = 'open'; // 'lost', 'won' or 'open'
+            position_status = 'profit'; // 'profit' or 'loss'
+            result = ''; // 'won' or 'lost'
+            profit_loss = +0.15;
+            profit_percentage = +1.5;
+            is_sold = 0; // 0 || 1
+        }, 6000);
+    }, 6000);
+};
 const tick_size_barrier = 0.000409;
 const stake = '10.00';
 const contract_type = 'ACCU'; // 'ACCU'
@@ -67,10 +98,11 @@ export const getDummyPOCResponseForACCU = time_now => {
             is_intraday: 1,
             is_path_dependent: 0,
             is_settleable: 0,
-            is_sold: 0,
+            is_sold,
             is_valid_to_cancel: 0,
             is_valid_to_sell: 1,
             limit_order,
+            max_ticks_number: 1000,
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             growth_rate: 0.01,
             profit: profit_loss,
@@ -118,6 +150,10 @@ export const getDummyPortfolioContractsForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digit number
     const dummy_start_time = dummy_current_time - 7;
     const dummy_end_time = dummy_current_time + 6;
+    if (!first_time) {
+        winLoseAndOpenContractIn10Sec();
+        first_time = true;
+    }
     return [
         {
             app_id: 17044,
@@ -127,6 +163,7 @@ export const getDummyPortfolioContractsForACCU = time_now => {
             currency: 'USD',
             date_start: dummy_start_time,
             expiry_time: dummy_end_time,
+            max_ticks_number: 1000,
             longcode: 'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
             payout: 27.45,
             purchase_time: dummy_start_time,
@@ -228,10 +265,11 @@ export const getDummyAllPositionsForACCU = time_now => {
                 is_intraday: 1,
                 is_path_dependent: 0,
                 is_settleable: 0,
-                is_sold: 0,
+                is_sold,
                 is_valid_to_cancel: 0,
                 is_valid_to_sell: 1,
                 limit_order,
+                max_ticks_number: 1000,
                 longcode:
                     'Win payout when every tick of your contract is within ± 0.1 % of the previous tick in AUD/JPY.',
                 growth_rate: 0.01,
@@ -289,6 +327,7 @@ export const getDummyAllPositionsForACCU = time_now => {
             duration: 10,
             duration_unit: 'seconds',
             id: 19459,
+            result,
             status: position_status,
         },
     ];
@@ -296,7 +335,7 @@ export const getDummyAllPositionsForACCU = time_now => {
 export const getDummyProposalInfoForACCU = (growth_rate, response) => {
     return {
         tick_size_barrier: response.proposal.tick_size_barrier,
-        maximum_ticks: response.proposal.maximum_ticks,
+        max_ticks_number: response.proposal.max_ticks_number,
         max_payout: response.proposal.max_payout,
         high_barrier: response.proposal.high_barrier,
         low_barrier: response.proposal.low_barrier,
@@ -376,7 +415,7 @@ export const getDummyProposalResponseForACCU = time_now => {
         msg_type: 'proposal',
         proposal: {
             tick_size_barrier,
-            maximum_ticks: 1000,
+            max_ticks_number: 1000,
             max_payout: 20000,
             high_barrier,
             low_barrier,

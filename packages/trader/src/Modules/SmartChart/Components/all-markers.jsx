@@ -377,7 +377,7 @@ const TickContract = RawMarkerMaker(
         if ((start.visible || entry.visible || exit.visible) && contract_type === 'ACCU') {
             const dashed_line_color = is_dark_theme ? '#6E6E6E' : '#999999';
             const profit_text_color = profit > 0 ? '#4BB4B3' : '#EC3F3F';
-            const sign = profit > 0 ? '+' : '-';
+            const sign = profit > 0 ? '+' : '';
             const profit_text = `${sign}${profit}`;
             ctx.save();
             // draw 3 text items with different font size and weight:

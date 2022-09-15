@@ -46,7 +46,7 @@ const PositionsDrawerCard = ({
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
-    const has_progress_slider = (!is_accumulator && !is_multiplier) || (is_crypto && is_multiplier);
+    const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
 
     const loader_el = (
@@ -63,7 +63,6 @@ const PositionsDrawerCard = ({
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_mobile && has_progress_slider}
             is_mobile={is_mobile}
-            is_positions
             is_sell_requested={is_sell_requested}
             onClickSell={onClickSell}
             server_time={server_time}

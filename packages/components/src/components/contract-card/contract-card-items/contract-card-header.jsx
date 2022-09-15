@@ -10,6 +10,7 @@ import Text from '../../text';
 import ProgressSlider from '../../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
+import TickCounterBar from './tick-counter-bar.jsx';
 
 const ContractCardHeader = ({
     contract_info,
@@ -28,6 +29,7 @@ const ContractCardHeader = ({
     const {
         growth_rate,
         underlying,
+        max_ticks_number,
         multiplier,
         contract_type,
         shortcode,
@@ -36,13 +38,14 @@ const ContractCardHeader = ({
         tick_count,
         is_sold,
     } = contract_info;
+    const is_accumulator = contract_type === 'ACCU';
 
     return (
         <>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
-                    'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
-                    'dc-contract-card__grid-underlying-trade--trader': !isBot() && !growth_rate,
+                    'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--trader': !isBot(),
                 })}
             >
                 <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
@@ -56,7 +59,7 @@ const ContractCardHeader = ({
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
                         multiplier={multiplier}
-                        growth_rate={growth_rate}
+                        growth_rate={is_accumulator ? growth_rate : null}
                         type={contract_type}
                     />
                 </div>
@@ -88,12 +91,15 @@ const ContractCardHeader = ({
                     ) : null}
                 </MobileWrapper>
             </div>
+            {has_progress_slider && !is_sold && is_accumulator && (
+                <TickCounterBar current_tick={current_tick} max_ticks_duration={max_ticks_number} />
+            )}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />
             </MobileWrapper>
             <DesktopWrapper>
                 {(!has_progress_slider || !!is_sold) && <div className='dc-progress-slider--completed' />}
-                {has_progress_slider && !is_sold && (
+                {has_progress_slider && !is_sold && !is_accumulator && (
                     <ProgressSlider
                         current_tick={current_tick}
                         expiry_time={date_expiry}

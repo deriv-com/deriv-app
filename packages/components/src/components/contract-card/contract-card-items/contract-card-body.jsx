@@ -157,56 +157,49 @@ const AccumulatorCardBody = ({
     error_message_alignment,
     getCardLabels,
     getContractById,
-    is_mobile,
+    indicative,
     is_sold,
-    has_progress_slider,
     onMouseLeave,
     removeToast,
     setCurrentFocus,
     status,
     is_positions,
 }) => {
-    const { buy_price, bid_price, profit, limit_order, tick_count, tick_stream } = contract_info;
-
+    const { buy_price, bid_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
-    const ticks_remaining = tick_count - tick_stream.length;
     const is_valid_to_sell = isValidToSell(contract_info);
 
     return (
         <React.Fragment>
-            <div
-                className={classNames({
-                    'dc-contract-card-items-wrapper--mobile': is_mobile,
-                    'dc-contract-card-items-wrapper': !is_mobile,
-                    'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
-                })}
-            >
+            <div className={classNames('dc-contract-card-items-wrapper')}>
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem
-                    header={is_positions ? getCardLabels().CURRENT_PRICE : getCardLabels().SELL_PRICE}
-                    className='dc-contract-card__current-stake'
-                >
-                    <div
-                        className={classNames({
-                            'dc-contract-card--profit': +profit > 0,
-                            'dc-contract-card--loss': +profit < 0,
-                        })}
-                    >
-                        <Money amount={bid_price} currency={currency} />
-                    </div>
-                </ContractCardItem>
-                <ContractCardItem header={is_sold ? getCardLabels().NUMBER_OF_TICKS : getCardLabels().TICKS_PASSED}>
-                    <strong>{tick_stream.length}</strong>
-                </ContractCardItem>
-                {is_sold ? (
-                    <ContractCardItem header={getCardLabels().MAX_TICK_DURATION} is_long>
-                        <strong>{tick_count}</strong>
+                {is_positions ? (
+                    <ContractCardItem header={getCardLabels().INDICATIVE_PRICE}>
+                        <Money currency={currency} amount={sell_price || indicative} />
+                        <div
+                            className={classNames('dc-contract-card__indicative--movement', {
+                                'dc-contract-card__indicative--movement-complete': is_sold,
+                            })}
+                        >
+                            {status === 'profit' && <Icon icon='IcProfit' />}
+                            {status === 'loss' && <Icon icon='IcLoss' />}
+                        </div>
                     </ContractCardItem>
                 ) : (
-                    <ContractCardItem header={getCardLabels().TICKS_REMAINING}>
-                        <strong>{ticks_remaining}</strong>
+                    <ContractCardItem
+                        header={getCardLabels().CURRENT_PRICE}
+                        className='dc-contract-card__current-stake'
+                    >
+                        <div
+                            className={classNames({
+                                'dc-contract-card--profit': +profit > 0,
+                                'dc-contract-card--loss': +profit < 0,
+                            })}
+                        >
+                            <Money amount={bid_price} currency={currency} />
+                        </div>
                     </ContractCardItem>
                 )}
                 <ContractCardItem
@@ -327,8 +320,7 @@ const ContractCardBody = ({
                 error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
                 getContractById={getContractById}
-                has_progress_slider={has_progress_slider}
-                is_mobile={is_mobile}
+                indicative={indicative}
                 is_sold={is_sold}
                 onMouseLeave={onMouseLeave}
                 status={status}

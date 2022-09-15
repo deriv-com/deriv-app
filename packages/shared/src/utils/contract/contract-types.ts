@@ -15,7 +15,7 @@ export type TGetTotalProfit = {
 };
 
 export type TGetDisplayStatus = TGetTotalProfit & {
-    status: 'open' | 'sold' | string;
+    status: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
 };
 
 export type TTickStream = {
@@ -28,7 +28,7 @@ export type TIsEnded = {
     sell_price?: number;
     bid_price?: number;
     is_valid_to_sell?: 0 | 1;
-    status?: 'open' | 'sold' | string;
+    status?: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
     is_expired?: 0 | 1;
     is_settleable?: 0 | 1;
 };
@@ -36,7 +36,7 @@ export type TIsEnded = {
 export type TContractInfo = {
     tick_stream?: TTickStream[];
     cancellation?: { ask_price: number };
-    status?: 'open' | 'sold' | string;
+    status?: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
     is_expired?: 0 | 1;
     is_settleable?: 0 | 1;
     is_valid_to_cancel?: 0 | 1;

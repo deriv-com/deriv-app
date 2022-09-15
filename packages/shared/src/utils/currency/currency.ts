@@ -42,7 +42,10 @@ const crypto_currencies_display_order = [
     'USDK',
 ];
 
-export const reorderCurrencies = (list: Array<{ value: string; type: string }>, type: 'fiat' | string = 'fiat') => {
+export const reorderCurrencies = (
+    list: Array<{ value: string; type: string }>,
+    type: 'fiat' | Omit<string, 'fiat'> = 'fiat'
+) => {
     const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
 
     return list.sort((a, b) => {
@@ -98,12 +101,12 @@ export const formatCurrency = (currency: string) => {
 };
 
 export const addComma = (num?: number | string | null, decimal_points?: number, is_crypto?: boolean) => {
-    let number: number | string = String(num || 0).replace(/,/g, '');
+    let number: number = +String(num || 0).replace(/,/g, '');
     if (typeof decimal_points !== 'undefined') {
-        number = (+number).toFixed(decimal_points);
+        number = +number.toFixed(decimal_points);
     }
     if (is_crypto) {
-        number = parseFloat(number);
+        number = parseFloat(String(number));
     }
 
     return number

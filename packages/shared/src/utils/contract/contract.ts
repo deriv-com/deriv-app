@@ -35,7 +35,7 @@ export const isEnded = (contract_info: TIsEnded) =>
 export const isOpen = (contract_info: TContractInfo) => contract_info.status === 'open';
 
 type TIsUserSold = {
-    status?: 'open' | 'sold' | string;
+    status?: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
 };
 
 export const isUserSold = (contract_info: TIsUserSold) => contract_info.status === 'sold';

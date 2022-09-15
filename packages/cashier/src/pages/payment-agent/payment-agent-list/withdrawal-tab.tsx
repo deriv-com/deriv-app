@@ -18,7 +18,7 @@ const WithdrawalTab = () => {
     }, [payment_agent.active_tab_index, verification_code, verify]);
 
     if (verify.error && 'code' in verify.error) return <PaymentAgentWithdrawalLocked error={verify.error} />;
-    if (verify.hasBeenSent) return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
+    if (verify.has_been_sent) return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
     if (verification_code || payment_agent.is_withdraw)
         return <PaymentAgentWithdrawForm verification_code={verification_code} />;
 

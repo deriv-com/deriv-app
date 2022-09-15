@@ -20,7 +20,7 @@ const WithdrawalVerificationEmail = () => {
 
     if (verify.error) return <Error error={verify.error} />;
 
-    if (verify.hasBeenSent) return <EmailVerificationEmptyState type={'payment_withdraw'} />;
+    if (verify.has_been_sent) return <EmailVerificationEmptyState type={'payment_withdraw'} />;
 
     return (
         <>

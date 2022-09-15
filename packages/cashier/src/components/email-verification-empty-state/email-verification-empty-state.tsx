@@ -25,11 +25,11 @@ const EmailVerificationEmptyState = ({ type }: TProps) => {
                 icon='IcEmailSent'
                 title={localize("We've sent you an email.")}
                 description={localize('Please check your email for the verification link to complete the process.')}
-                action={verify.hasBeenSent ? undefined : action}
+                action={verify.has_been_sent ? undefined : action}
             />
-            {verify.hasBeenSent && (
+            {verify.has_been_sent && (
                 <EmailVerificationResendEmptyState
-                    isCounterRunning={verify.isCounterRunning}
+                    isCounterRunning={verify.is_counter_running}
                     counter={verify.counter}
                     resend={verify.send}
                 />

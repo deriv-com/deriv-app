@@ -41,14 +41,14 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                                     </Text>
                                     <SelectNative
                                         placeholder={localize('Please select')}
-                                        label={question?.answer_options[0].text}
+                                        label={localize('Please select')}
                                         name={question?.question_text}
                                         list_items={question?.answer_options}
                                         onChange={e => {
                                             onChange(e, question.form_control, setFieldValue);
                                         }}
                                         value={values[question.form_control]}
-                                        hide_placeholder={true}
+                                        hide_top_placeholder={true}
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

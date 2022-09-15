@@ -223,7 +223,6 @@ const TradingAssessment = ({
                                                     value={values[form_control]}
                                                     name={form_control}
                                                     list_items={item?.answer_options}
-                                                    hide_placeholder={true}
                                                     onChange={e => handleChange(e)}
                                                     should_show_empty_option={false}
                                                 />

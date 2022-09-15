@@ -3,7 +3,7 @@ import Loadable from 'react-loadable';
 
 export type TFunction = () => any;
 
-export const makeLazyLoader = (importFn: TFunction, loaderFn: TFunction) => (component_name: string) =>
+export const makeLazyLoader = (importFn: TFunction, loaderFn: TFunction) => (component_name?: string) =>
     Loadable.Map({
         loader: {
             ComponentModule: importFn,

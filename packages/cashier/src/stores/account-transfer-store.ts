@@ -38,7 +38,7 @@ export default class AccountTransferStore {
     @observable selected_to: TAccount | undefined = {};
     @observable account_transfer_amount = '';
     @observable transfer_fee: number | null = null;
-    @observable transfer_limit = {};
+    @observable transfer_limit: { min: string; max: string } = { min: '', max: '' };
 
     @computed
     get is_account_transfer_visible() {
@@ -73,12 +73,16 @@ export default class AccountTransferStore {
 
     @action.bound
     setBalanceSelectedFrom(balance: string): void {
-        this.selected_from.balance = balance;
+        if (this.selected_from) {
+            this.selected_from.balance = balance;
+        }
     }
 
     @action.bound
     setBalanceSelectedTo(balance: string): void {
-        this.selected_to.balance = balance;
+        if (this.selected_to) {
+            this.selected_to.balance = balance;
+        }
     }
 
     // possible transfers:
@@ -419,7 +423,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    onChangeTransferFrom({ target }: { target: { value: string } }): void {
+    onChangeTransferFrom({ target }: { target: { value: string | undefined } }): void {
         this.error.setErrorMessage('');
         if (this.selected_from) this.selected_from.error = '';
 
@@ -454,7 +458,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    onChangeTransferTo({ target }: { target: { value: string } }): void {
+    onChangeTransferTo({ target }: { target: { value: string | undefined } }): void {
         this.error.setErrorMessage('');
         if (this.selected_to) this.selected_to.error = '';
 
@@ -559,10 +563,10 @@ export default class AccountTransferStore {
     setTransferPercentageSelectorResult(amount: number) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
-        const selected_from_currency = this.selected_from.currency;
-        const selected_to_currency = this.selected_to.currency;
+        const selected_from_currency = this.selected_from?.currency;
+        const selected_to_currency = this.selected_to?.currency;
 
-        if (amount > 0 || (this.selected_from.balance && +this.selected_from.balance === 0)) {
+        if (amount > 0 || (this.selected_from?.balance && +this.selected_from?.balance === 0)) {
             crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
             crypto_fiat_converter.onChangeConverterFromAmount(
@@ -586,13 +590,13 @@ export default class AccountTransferStore {
         } else {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(this.selected_from.currency),
+                decimals: getDecimalPlaces(this.selected_from?.currency),
                 min: this.transfer_limit.min,
                 max: this.transfer_limit.max,
             });
             if (!is_ok) {
                 setConverterFromError(message);
-            } else if (this.selected_from.balance && +this.selected_from.balance < +converter_from_amount) {
+            } else if (this.selected_from?.balance && +this.selected_from?.balance < +converter_from_amount) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {
                 setConverterFromError('');
@@ -605,7 +609,7 @@ export default class AccountTransferStore {
         const { converter_to_amount, setConverterToError } = this.root_store.modules.cashier.crypto_fiat_converter;
 
         if (converter_to_amount) {
-            const currency = this.selected_to.currency;
+            const currency = this.selected_to?.currency;
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),

@@ -150,7 +150,7 @@ beforeEach(() => {
             },
         },
     };
-    account_transfer_store = new AccountTransferStore({ WS, root_store });
+    account_transfer_store = new AccountTransferStore(WS, root_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -724,7 +724,7 @@ describe('AccountTransferStore', () => {
 
     it('should set transfer percentage selector result if selected_from.balance = 0', () => {
         const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
-        account_transfer_store.setSelectedFrom({ balance: 0, currency: 'USD' });
+        account_transfer_store.setSelectedFrom({ balance: 10, currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferPercentageSelectorResult(0);
         const { onChangeConverterFromAmount, setConverterFromAmount } =

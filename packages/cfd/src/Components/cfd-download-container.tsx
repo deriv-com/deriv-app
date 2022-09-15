@@ -22,6 +22,10 @@ type TMobileDownloadProps = {
     platform: TCFDDashboardContainer['platform'];
 };
 
+const mobileDownloadLink = (platform: string, type: 'ios' | 'android' | 'huawei') => {
+    return platform === CFD_PLATFORMS.MT5 ? getPlatformMt5DownloadLink(type) : getPlatformDXTradeDownloadLink(type);
+};
+
 const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDesktopDownloadProps) => {
     return (
         <React.Fragment>
@@ -113,11 +117,7 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
             <div className='cfd-dashboard__download-container-links-download-buttons'>
                 <a
                     className='cfd-dashboard__download-center-options--mobile-link'
-                    href={
-                        platform === CFD_PLATFORMS.MT5
-                            ? getPlatformMt5DownloadLink('android')
-                            : getPlatformDXTradeDownloadLink('android')
-                    }
+                    href={mobileDownloadLink(platform, 'android')}
                     target='_blank'
                     rel='noopener noreferrer'
                 >
@@ -125,11 +125,7 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
                 </a>
                 <a
                     className='cfd-dashboard__download-center-options--mobile-link'
-                    href={
-                        platform === CFD_PLATFORMS.MT5
-                            ? getPlatformMt5DownloadLink('ios')
-                            : getPlatformDXTradeDownloadLink('ios')
-                    }
+                    href={mobileDownloadLink(platform, 'ios')}
                     target='_blank'
                     rel='noopener noreferrer'
                 >
@@ -137,11 +133,7 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
                 </a>
                 <a
                     className='cfd-dashboard__download-center-options--mobile-link'
-                    href={
-                        platform === CFD_PLATFORMS.MT5
-                            ? getPlatformMt5DownloadLink('huawei')
-                            : getPlatformDXTradeDownloadLink('huawei')
-                    }
+                    href={mobileDownloadLink(platform, 'huawei')}
                     target='_blank'
                     rel='noopener noreferrer'
                 >

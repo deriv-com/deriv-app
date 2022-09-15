@@ -60,51 +60,52 @@ const CFDDxtradeDemoAccountDisplay = ({
         return acc;
     };
 
-    return is_loading ? (
-        <div className='cfd-demo-accounts-display'>
-            <Loading />
-        </div>
-    ) : (
+    return (
         <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
-            <CFDAccountCard
-                key='cfd'
-                title={localize('Deriv X')}
-                type={{
-                    category: 'demo',
-                    platform: 'dxtrade',
-                    type: 'all',
-                }}
-                is_disabled={has_cfd_account_error || standpoint.malta}
-                is_logged_in={is_logged_in}
-                existing_accounts_data={existing_accounts_data('dxtrade')}
-                commission_message={localize('No commission')}
-                onSelectAccount={() =>
-                    onSelectAccount({
+            {is_loading ? (
+                <Loading />
+            ) : (
+                <CFDAccountCard
+                    key='cfd'
+                    title={localize('Deriv X')}
+                    type={{
                         category: 'demo',
                         platform: 'dxtrade',
                         type: 'all',
-                    })
-                }
-                onPasswordManager={openPasswordManager}
-                onClickFund={() =>
-                    openAccountTransfer(
-                        current_list[
-                            Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.all`)) ||
-                                ''
-                        ],
-                        {
+                    }}
+                    is_disabled={has_cfd_account_error || standpoint.malta}
+                    is_logged_in={is_logged_in}
+                    existing_accounts_data={existing_accounts_data('dxtrade')}
+                    commission_message={localize('No commission')}
+                    onSelectAccount={() =>
+                        onSelectAccount({
                             category: 'demo',
+                            platform: 'dxtrade',
                             type: 'all',
-                        }
-                    )
-                }
-                platform={platform}
-                descriptor={localize(
-                    'Trade CFDs on forex, synthetic indices, cryptocurrencies, basket indices, and commodities with high leverage.'
-                )}
-                specs={specifications.dxtrade.demo_all_specs}
-                has_banner
-            />
+                        })
+                    }
+                    onPasswordManager={openPasswordManager}
+                    onClickFund={() =>
+                        openAccountTransfer(
+                            current_list[
+                                Object.keys(current_list).find((key: string) =>
+                                    key.startsWith(`${platform}.demo.all`)
+                                ) || ''
+                            ],
+                            {
+                                category: 'demo',
+                                type: 'all',
+                            }
+                        )
+                    }
+                    platform={platform}
+                    descriptor={localize(
+                        'Trade CFDs on forex, synthetic indices, cryptocurrencies, basket indices, and commodities with high leverage.'
+                    )}
+                    specs={specifications.dxtrade.demo_all_specs}
+                    has_banner
+                />
+            )}
         </div>
     );
 };

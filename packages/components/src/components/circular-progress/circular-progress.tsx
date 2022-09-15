@@ -28,7 +28,7 @@ const CircularProgress = ({
     const strokeDashoffset = circumference - (progress / 100) * circumference;
     return (
         <div className={classNames('dc-circular-progress', className)}>
-            {/* <Icon icon={icon} className='dc-circular-progress__icon' /> */}
+            <Icon icon={icon} className='dc-circular-progress__icon' />
             <svg height={radius * 2} width={radius * 2}>
                 <circle
                     className={classNames('dc-circular-progress__bar', {

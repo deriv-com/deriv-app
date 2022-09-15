@@ -19,26 +19,24 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
     </>
 );
 
-const platformDropdownContent = (platform, app_routing_history, hide_dropdown_items) => {
-    let platform_dropdown_content = null;
-    if (!hide_dropdown_items) {
-        platform_dropdown_content = platform.link_to ? (
-            <BinaryLink
-                to={platform.link_to}
-                // This is here because in routes-config it needs to have children, but not in menu
-                exact={platform.link_to === routes.trade}
-                className='platform-dropdown__list-platform'
-                isActive={() => getActivePlatform(app_routing_history) === platform.name}
-            >
-                <PlatformBox platform={platform} />
-            </BinaryLink>
-        ) : (
-            <a href={platform.href} className='platform-dropdown__list-platform'>
-                <PlatformBox platform={platform} />
-            </a>
-        );
-    }
-    return platform_dropdown_content;
+const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items }) => {
+    return !hide_dropdown_items
+        ? (platform.link_to && (
+              <BinaryLink
+                  to={platform.link_to}
+                  // This is here because in routes-config it needs to have children, but not in menu
+                  exact={platform.link_to === routes.trade}
+                  className='platform-dropdown__list-platform'
+                  isActive={() => getActivePlatform(app_routing_history) === platform.name}
+              >
+                  <PlatformBox platform={platform} />
+              </BinaryLink>
+          )) || (
+              <a href={platform.href} className='platform-dropdown__list-platform'>
+                  <PlatformBox platform={platform} />
+              </a>
+          )
+        : null;
 };
 
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
@@ -59,28 +57,26 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
     };
     const { is_pre_appstore } = React.useContext(PlatformContext);
 
-    const getPlatformDropdownContent = platform => {
-        const platform_dropdown_content = platformDropdownContent(
-            platform,
-            app_routing_history,
-            (platform.name === getPlatformSettings('mt5').name ||
-                platform.name === getPlatformSettings('dxtrade').name) &&
-                is_pre_appstore
-        );
-
-        return platform_dropdown_content;
-    };
-
     useOnClickOutside(ref, handleClickOutside, () => isDesktop());
 
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
-                {platform_config.map((platform, idx) => (
-                    <div key={idx} onClick={closeDrawer} ref={ref}>
-                        {getPlatformDropdownContent(platform)}
-                    </div>
-                ))}
+                {platform_config.map((platform, idx) => {
+                    const should_hide_dropdown_item =
+                        (platform.name === getPlatformSettings('mt5').name ||
+                            platform.name === getPlatformSettings('dxtrade').name) &&
+                        is_pre_appstore;
+                    return (
+                        <div key={idx} onClick={closeDrawer} ref={ref}>
+                            <PlatformDropdownContent
+                                platform={platform}
+                                app_routing_history={app_routing_history}
+                                hide_dropdown_items={should_hide_dropdown_item}
+                            />
+                        </div>
+                    );
+                })}
             </Div100vhContainer>
         </div>
     );

@@ -15,10 +15,10 @@ const UseWSExample = <T extends keyof TSocketCallTypes>({ name, request }: { nam
 
     return (
         <React.Fragment>
-            <p data-testid={'is_loading'}>{WS.is_loading ? 'true' : 'false'}</p>
-            <p data-testid={'error'}>{WS.error ? JSON.stringify(WS.error) : 'undefined'}</p>
-            <p data-testid={'data'}>{WS.data ? JSON.stringify(WS.data) : 'undefined'}</p>
-            <button data-testid={'send'} onClick={() => WS.send(request)}>
+            <p data-testid={'dt_is_loading'}>{WS.is_loading ? 'true' : 'false'}</p>
+            <p data-testid={'dt_error'}>{WS.error ? JSON.stringify(WS.error) : 'undefined'}</p>
+            <p data-testid={'dt_data'}>{WS.data ? JSON.stringify(WS.data) : 'undefined'}</p>
+            <button data-testid={'dt_send'} onClick={() => WS.send(request)}>
                 send
             </button>
         </React.Fragment>
@@ -29,9 +29,9 @@ describe('useWS', () => {
     test('should have initial error and data of undefined and is_loading of false', async () => {
         render(<UseWSExample name={'ping'} request={{}} />);
 
-        const is_loading = screen.getByTestId('is_loading');
-        const error = screen.getByTestId('error');
-        const data = screen.getByTestId('data');
+        const is_loading = screen.getByTestId('dt_is_loading');
+        const error = screen.getByTestId('dt_error');
+        const data = screen.getByTestId('dt_data');
 
         expect(is_loading).toHaveTextContent('false');
         expect(error).toHaveTextContent('undefined');
@@ -45,10 +45,10 @@ describe('useWS', () => {
 
         render(<UseWSExample name={'ping'} request={{}} />);
 
-        const is_loading = screen.getByTestId('is_loading');
-        const error = screen.getByTestId('error');
-        const data = screen.getByTestId('data');
-        const send = screen.getByTestId('send');
+        const is_loading = screen.getByTestId('dt_is_loading');
+        const error = screen.getByTestId('dt_error');
+        const data = screen.getByTestId('dt_data');
+        const send = screen.getByTestId('dt_send');
 
         expect(is_loading).toHaveTextContent('false');
         expect(error).toHaveTextContent('undefined');
@@ -69,10 +69,10 @@ describe('useWS', () => {
             <UseWSExample name={'verify_email'} request={{ verify_email: 'test@test.com', type: 'reset_password' }} />
         );
 
-        const is_loading = screen.getByTestId('is_loading');
-        const error = screen.getByTestId('error');
-        const data = screen.getByTestId('data');
-        const send = screen.getByTestId('send');
+        const is_loading = screen.getByTestId('dt_is_loading');
+        const error = screen.getByTestId('dt_error');
+        const data = screen.getByTestId('dt_data');
+        const send = screen.getByTestId('dt_send');
 
         expect(is_loading).toHaveTextContent('false');
         expect(error).toHaveTextContent('undefined');

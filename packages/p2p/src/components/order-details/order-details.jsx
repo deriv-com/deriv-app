@@ -80,7 +80,7 @@ const OrderDetails = observer(() => {
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
-        general_store.props.setOrderProps({
+        general_store.props.setP2POrderProps({
             order_id: order_store.order_id,
             setIsRatingModalOpen: order_store.setIsRatingModalOpen,
         });

@@ -37,7 +37,7 @@ export default class NotificationStore extends BaseStore {
     @observable push_notifications = [];
     @observable client_notifications = {};
     @observable should_show_popups = true;
-    @observable order_props = {};
+    @observable p2p_order_props = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -436,9 +436,12 @@ export default class NotificationStore extends BaseStore {
 
         this.addNotificationMessage({
             action:
-                this.order_props?.order_id === order_id
+                this.p2p_order_props?.order_id === order_id
                     ? {
-                          onClick: () => this.order_props.setIsRatingModalOpen(true),
+                          onClick: () => {
+                              this.p2p_order_props.setIsRatingModalOpen(true);
+                              this.toggleNotificationsModal();
+                          },
                           text: localize('Give feedback'),
                       }
                     : {
@@ -1110,8 +1113,8 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    setOrderProps(order_props) {
-        this.order_props = order_props;
+    setP2POrderProps(p2p_order_props) {
+        this.p2p_order_props = p2p_order_props;
     }
 
     @action.bound

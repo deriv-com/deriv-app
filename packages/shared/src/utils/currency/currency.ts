@@ -101,12 +101,12 @@ export const formatCurrency = (currency: string) => {
 };
 
 export const addComma = (num?: number | string | null, decimal_points?: number, is_crypto?: boolean) => {
-    let number: number = +String(num || 0).replace(/,/g, '');
+    let number: number | string = String(num || 0).replace(/,/g, '');
     if (typeof decimal_points !== 'undefined') {
-        number = +number.toFixed(decimal_points);
+        number = (+number).toFixed(decimal_points);
     }
     if (is_crypto) {
-        number = parseFloat(String(number));
+        number = parseFloat(number);
     }
 
     return number

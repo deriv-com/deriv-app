@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLProps } from 'react';
 
-type TCounterProps = HTMLDivElement & {
+type TCounterProps = HTMLProps<HTMLDivElement> & {
     count: number;
 };
 const Counter = ({ className, count }: TCounterProps) => {

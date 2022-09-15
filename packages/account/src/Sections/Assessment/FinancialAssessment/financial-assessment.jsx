@@ -179,6 +179,7 @@ const FinancialAssessment = ({
     is_authentication_needed,
     is_financial_account,
     is_mf,
+    is_svg,
     is_trading_experience_incomplete,
     is_financial_information_incomplete,
     is_virtual,
@@ -226,7 +227,9 @@ const FinancialAssessment = ({
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
-                    setHasTradingExperience((is_financial_account || is_trading_experience_incomplete) && !is_mf);
+                    setHasTradingExperience(
+                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
+                    );
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
                         return;
@@ -998,6 +1001,7 @@ FinancialAssessment.propTypes = {
     is_authentication_needed: PropTypes.bool,
     is_financial_account: PropTypes.bool,
     is_mf: PropTypes.bool,
+    is_svg: PropTypes.bool,
     is_trading_experience_incomplete: PropTypes.bool,
     is_financial_information_incomplete: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -1012,6 +1016,7 @@ export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
     is_mf: client.landing_company_shortcode === 'maltainvest',
+    is_svg: client.is_svg,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,

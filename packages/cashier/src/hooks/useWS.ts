@@ -18,13 +18,13 @@ type TRequest<T extends TSocketCalls> = TRequestProps<T> extends Record<string, 
     : TRequestProps<T>;
 
 const useWS = <T extends TSocketCalls>(name: T) => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [is_loading, setIsLoading] = useState(false);
     const [error, setError] = useState<unknown>();
     const [data, setData] = useState<TResponse<T>>();
     const WS = useWSShared();
 
     const send = async (props: TRequest<T>) => {
-        if (isLoading) return;
+        if (is_loading) return;
 
         setIsLoading(true);
 
@@ -43,7 +43,7 @@ const useWS = <T extends TSocketCalls>(name: T) => {
         }
     };
 
-    return { send, isLoading, error, data };
+    return { send, is_loading, error, data };
 };
 
 export default useWS;

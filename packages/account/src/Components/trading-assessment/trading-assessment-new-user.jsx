@@ -22,7 +22,7 @@ const TradingAssessmentNewUser = ({
         if (should_override) {
             // Remove the keys with no values
             process_form_values = Object.entries(process_form_values).reduce((accumulator, [key, val]) => {
-                if (val !== '') {
+                if (val) {
                     return { ...accumulator, [key]: val };
                 }
                 return { ...accumulator };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import PlatformLauncher from '../platform-launcher/index';
 import OptionsAccount from '../account/index';
 import AddOptions from '../add-options/index';
@@ -16,7 +16,7 @@ type Taccount_props = {
     currency?: string;
     account_button?: string;
 }[];
-type TPlatformLauncherPropsArray = { app_icon: string; app_title: string; app_desc: string }[];
+type TPlatformLauncherPropsArray = { app_icon: string; app_title: string; app_desc: string; app_url: string }[];
 type Taddoptions_props = {
     onClickHandler: () => void;
     class_names?: string;
@@ -36,12 +36,22 @@ type Tapplauncher_props = {
 type TOptionsProps = {
     options_title?: string;
     is_app_launcher: boolean;
+    is_demo_account: boolean;
     platformlauncherprops: TPlatformLauncherPropsArray;
     account_props: Taccount_props;
     addoptions_props: Taddoptions_props;
     applauncher_props: Tapplauncher_props;
 };
-const Options = ({ options_title, is_app_launcher, platformlauncherprops, account_props, addoptions_props, applauncher_props }: TOptionsProps) => {
+
+const Options = ({
+    options_title,
+    is_app_launcher,
+    platformlauncherprops,
+    account_props,
+    addoptions_props,
+    applauncher_props,
+    is_demo_account,
+}: TOptionsProps) => {
     return (
         <div className={`options-container ${is_app_launcher ? 'options-container-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
@@ -64,10 +74,12 @@ const Options = ({ options_title, is_app_launcher, platformlauncherprops, accoun
             <div className='options-container__accounts-platform-container'>
                 {!is_app_launcher ? (
                     <div className='options-container__accounts-platform-container--accounts'>
-                        <OptionsAccount {...account_props[1]} />
-                        <div className='options-container__accounts-platform-container--add-options'>
-                            <AddOptions {...addoptions_props} />
-                        </div>
+                        {is_demo_account ? <OptionsAccount {...account_props[0]} /> : <OptionsAccount {...account_props[1]} />}
+                        {!is_demo_account && (
+                            <div className='options-container__accounts-platform-container--add-options'>
+                                <AddOptions {...addoptions_props} />
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div>

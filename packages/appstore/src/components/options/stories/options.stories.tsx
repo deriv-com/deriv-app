@@ -14,31 +14,37 @@ export const OptionsDemo = Template.bind({});
 OptionsDemo.args = {
     options_title: 'Options',
     is_app_launcher: false,
+    is_demo_account: false,
     platformlauncherprops: [
         {
             app_icon: 'DTrader',
             app_title: 'DTrader',
             app_desc: 'Options & multipliers trading platform.',
+            app_url: 'trade',
         },
         {
             app_icon: 'DBot',
             app_title: 'DBot',
             app_desc: 'Automate your trading, no coding needed.',
+            app_url: 'bot',
         },
         {
             app_icon: 'SmartTrader',
             app_title: 'SmartTrader',
             app_desc: 'Our legacy options trading platform.',
+            app_url: 'trade',
         },
         {
             app_icon: 'BinaryBot',
             app_title: 'Binary Bot',
             app_desc: 'Our legacy automated trading platform.',
+            app_url: 'trade',
         },
         {
             app_icon: 'DerivGo',
             app_title: 'DerivGo',
             app_desc: 'Trade on the go with our mobile app.',
+            app_url: 'trade',
         },
     ],
     account_props: [

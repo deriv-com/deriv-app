@@ -511,7 +511,7 @@
         }
 
         &--poi_verified {
-            background: $color-blue;
+            background: var(--text-status-info-blue);
             border-radius: 0.5rem;
         }
         &--account_added {

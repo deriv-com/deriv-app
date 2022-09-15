@@ -1507,6 +1507,7 @@
 
 .cfd-personal-details-modal {
     grid-template-rows: 8rem minmax(10rem, 1fr);
+    overflow-y: scroll;
 
     &__heading-container {
         padding-top: 2.4rem;

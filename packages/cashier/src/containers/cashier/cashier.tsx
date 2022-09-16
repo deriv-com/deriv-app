@@ -43,6 +43,7 @@ type TCashierProps = RouteComponentProps & {
     setTabIndex: (index: number) => void;
     routeBackInApp: TCommonStore['routeBackInApp'];
     toggleCashier: TUiStore['toggleCashier'];
+    resetLastLocation: () => void;
 };
 
 type TCashierOptions = {
@@ -218,37 +219,7 @@ const Cashier = ({
     );
 };
 
-Cashier.propTypes = {
-    error: PropTypes.object,
-    history: PropTypes.object,
-    is_account_transfer_visible: PropTypes.bool,
-    is_account_setting_loaded: PropTypes.bool,
-    is_cashier_onboarding: PropTypes.bool,
-    is_crypto: PropTypes.bool,
-    is_crypto_transactions_visible: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    location: PropTypes.object,
-    onMount: PropTypes.func,
-    p2p_notification_count: PropTypes.number,
-    resetLastLocation: PropTypes.func,
-    routeBackInApp: PropTypes.func,
-    routes: PropTypes.arrayOf(PropTypes.object),
-    setAccountSwitchListener: PropTypes.func,
-    setTabIndex: PropTypes.func,
-    tab_index: PropTypes.number,
-    toggleCashier: PropTypes.func,
-};
-
-export default connect(({ client, common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }: TRootStore) => ({
     error: modules.cashier.withdraw.error,
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,

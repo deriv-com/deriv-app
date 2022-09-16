@@ -1,4 +1,5 @@
-import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, GetLimits } from '@deriv/api-types';
+import { TAccountsList } from 'types/shared';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -12,12 +13,13 @@ export type TClientStore = {
             };
         };
     };
+    account_list: TAccountsList[];
     account_status: GetAccountStatus;
     balance?: string;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => void;
+    getLimits: () => { get_limits?: GetLimits };
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;

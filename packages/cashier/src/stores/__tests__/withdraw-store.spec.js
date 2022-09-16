@@ -87,7 +87,7 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore({ root_store, WS });
+        withdraw_store = new WithdrawStore(WS, root_store);
     });
 
     it('should set is_withdraw_confirmed', () => {

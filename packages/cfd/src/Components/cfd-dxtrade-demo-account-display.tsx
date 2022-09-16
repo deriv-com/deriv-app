@@ -100,7 +100,7 @@ const CFDDxtradeDemoAccountDisplay = ({
                     }
                     platform={platform}
                     descriptor={localize(
-                        'Trade CFDs on forex, synthetic indices, cryptocurrencies, basket indices, and commodities with high leverage.'
+                        'Trade CFDs on forex, derived indices, cryptocurrencies, and commodities with high leverage.'
                     )}
                     specs={specifications.dxtrade.demo_all_specs}
                     has_banner

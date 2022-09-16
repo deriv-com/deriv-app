@@ -69,7 +69,7 @@ const dxtrade = {
         leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:1000') },
         'margin-call': { key: () => localize('Margin call'), value: () => localize('100%') },
         'stop-out-level': { key: () => localize('Stop out level'), value: () => localize('50%') },
-        'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('20+') },
+        'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('110+') },
     },
     real_synthetic_specs: {
         leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:1000') },

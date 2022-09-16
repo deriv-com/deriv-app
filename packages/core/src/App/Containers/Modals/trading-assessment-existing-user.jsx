@@ -110,15 +110,13 @@ const TradingAssessmentExistingUser = ({
                     </Text>
                 }
                 footer_content={
-                    <React.Fragment>
-                        <Button
-                            type='button'
-                            large
-                            text={localize('OK')}
-                            primary
-                            onClick={handleAcceptAppropriatenessTestWarning}
-                        />
-                    </React.Fragment>
+                    <Button
+                        type='button'
+                        large
+                        text={localize('OK')}
+                        primary
+                        onClick={handleAcceptAppropriatenessTestWarning}
+                    />
                 }
             />
         );

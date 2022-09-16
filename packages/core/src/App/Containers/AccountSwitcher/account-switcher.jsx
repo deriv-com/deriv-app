@@ -465,6 +465,11 @@ const AccountSwitcher = props => {
         return props.is_dxtrade_allowed;
     };
 
+    const canResetBalance = account => {
+        const account_init_balance = 10000;
+        return account.is_virtual && account.balance < account_init_balance;
+    };
+
     const checkMultipleSvgAcc = () => {
         const all_svg_acc = [];
         getRealMT5().map(acc => {
@@ -506,7 +511,7 @@ const AccountSwitcher = props => {
                                 country_standpoint={props.country_standpoint}
                                 display_type={'currency'}
                                 has_balance={'balance' in props.accounts[account.loginid]}
-                                has_reset_balance={props.accounts[props.account_loginid].is_virtual}
+                                has_reset_balance={canResetBalance(props.accounts[props.account_loginid])}
                                 is_disabled={account.is_disabled}
                                 is_virtual={account.is_virtual}
                                 loginid={account.loginid}

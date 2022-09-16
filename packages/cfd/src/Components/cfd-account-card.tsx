@@ -597,7 +597,7 @@ const CFDAccountCardComponent = ({
                             <div className='cfd-account-card__manage'>
                                 <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
                                     {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                                    {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
+                                    {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
                                 </Button>
                             </div>
                         )}

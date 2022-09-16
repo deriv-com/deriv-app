@@ -183,7 +183,7 @@ const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
             dxtrade: {
                 derivx: localize('100%'),
                 footnote: localize(
-                    'You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.'
+                    'You’ll get a warning, named margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
         },
@@ -192,7 +192,7 @@ const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
             dxtrade: {
                 derivx: localize('50%'),
                 footnote: localize(
-                    "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses."
+                    'If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses.'
                 ),
             },
         },

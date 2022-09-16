@@ -26,11 +26,11 @@ const PoincFileUploaderContainer = ({ document_type, is_description_enabled = tr
         <div className='account__file-uploader-section'>
             {is_description_enabled && (
                 <ul className='account__file-uploader-list'>
-                    {properties.map(item => (
-                        <li key={item.name} className='account__file-uploader-box'>
-                            <Icon icon={item.icon} className='account__file-uploader-icon' size={24} />
+                    {properties.map(({ name, icon, text }) => (
+                        <li key={name} className='account__file-uploader-box'>
+                            <Icon icon={icon} className='account__file-uploader-icon' size={24} />
                             <div className='account__file-uploader-item'>
-                                <Localize i18n_default_text={item.text} />
+                                <Localize i18n_default_text={text} />
                             </div>
                         </li>
                     ))}

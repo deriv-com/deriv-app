@@ -4,6 +4,8 @@
         color: var(--brand-red-coral);
         font-weight: bold;
         font-size: var(--text-size-xs);
+        word-wrap: break-word;
+
         @include mobile {
             padding-left: 0;
         }

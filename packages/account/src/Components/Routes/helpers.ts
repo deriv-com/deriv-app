@@ -5,11 +5,11 @@ export const normalizePath: (path: string) => string = path => (/^\//.test(path)
 
 export const findRouteByPath: (
     path: string,
-    routes_config: RouteProps<string, { [x: string]: string | undefined }>[]
+    routes_config?: RouteProps<string, { [x: string]: string }>[]
 ) => boolean | undefined = (path, routes_config) => {
     let result;
 
-    routes_config.some((route_info: RouteProps<string, { [x: string]: string | undefined }>) => {
+    routes_config?.some((route_info: RouteProps<string, { [x: string]: string }>) => {
         let match_path;
         try {
             match_path = matchPath(path, route_info);
@@ -32,7 +32,7 @@ export const findRouteByPath: (
     return result;
 };
 
-export const isRouteVisible = (route: { is_authenticated: boolean }, is_logged_in: boolean) =>
+export const isRouteVisible = (route?: { is_authenticated: boolean }, is_logged_in?: boolean) =>
     !(route && route.is_authenticated && !is_logged_in);
 
 export const getPath = (route_path: string, params = {}) =>

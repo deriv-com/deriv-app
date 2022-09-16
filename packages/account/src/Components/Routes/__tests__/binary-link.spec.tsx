@@ -12,12 +12,12 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('../helpers.js', () => ({
+jest.mock('../helpers', () => ({
     findRouteByPath: jest.fn(() => '/test/path'),
     normalizePath: jest.fn(() => '/test/path'),
 }));
 
-jest.mock('Constants/routes-config.js', () => () => ({
+jest.mock('Constants/routes-config', () => () => ({
     getRoutesConfig: jest.fn(() => []),
 }));
 

@@ -3,7 +3,7 @@ import { Switch } from 'react-router-dom';
 import { PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import getRoutesConfig from 'Constants/routes-config';
-import RouteWithSubRoutes from './route-with-sub-routes.jsx';
+import RouteWithSubRoutes from './route-with-sub-routes';
 import { connect } from 'Stores/connect';
 import { TPlatformContext } from 'Types';
 

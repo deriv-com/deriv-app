@@ -42,6 +42,7 @@ const PositionsDrawerCard = ({
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
 }) => {
+    console.log(contract_info, 'contract_info');
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);

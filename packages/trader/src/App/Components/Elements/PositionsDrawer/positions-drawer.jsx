@@ -86,6 +86,7 @@ const PositionsDrawer = ({
             symbol === p.contract_info.underlying &&
             filterByContractType(p.contract_info, trade_contract_type)
     );
+    console.log(positions, 'positions');
 
     const body_content = (
         <DataList

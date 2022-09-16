@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
@@ -11,8 +12,12 @@ import {
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
-const RouteWithSubRoutes = route => {
-    const renderFactory = props => {
+type TGeneric = {
+    [key: string]: any;
+};
+
+const RouteWithSubRoutes = (route: TGeneric) => {
+    const renderFactory = (props: TGeneric) => {
         let result = null;
 
         if (route.component === Redirect) {
@@ -28,7 +33,7 @@ const RouteWithSubRoutes = route => {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = (route.routes ?? []).reduce(
-                (acc, cur) => ({
+                (acc: any, cur: { subroutes: any[] }) => ({
                     ...acc,
                     ...cur.subroutes.find(subroute => subroute.default),
                 }),

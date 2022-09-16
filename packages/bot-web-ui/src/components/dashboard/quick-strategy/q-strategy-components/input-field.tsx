@@ -28,7 +28,13 @@ const InputField = ({
     uniq_selected_input,
     errors,
 }: TInputFieldProps) => {
-    const dataField = isUniqStrategyField ? uniq_selected_input : idx ? (data_fields[idx + 1] as TDataFields) : {};
+    const dataField = () => {
+        if (isUniqStrategyField) {
+            return uniq_selected_input;
+        }
+        return idx ? (data_fields[idx + 1] as TDataFields) : {};
+    };
+
     const {
         field_name: new_field_name,
         id: new_id,
@@ -40,7 +46,7 @@ const InputField = ({
         placeholder: new_placeholder,
         trailing_icon_message: new_trailing_icon_message,
         zIndex: new_zIndex,
-    } = dataField as TDataUniqInput | TDataFields;
+    } = dataField() as TDataUniqInput | TDataFields;
 
     return (
         <Field name={field_name || new_field_name} key={id || new_id} id={id || new_id}>

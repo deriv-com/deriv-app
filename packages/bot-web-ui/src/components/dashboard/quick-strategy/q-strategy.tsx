@@ -45,7 +45,6 @@ export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     duration_unit_dropdown: quick_strategy.duration_unit_dropdown,
     types_strategies_dropdown: quick_strategy.types_strategies_dropdown,
     getSizeDesc: quick_strategy.getSizeDesc,
-    initial_errors: quick_strategy.initial_errors,
     initial_values: quick_strategy.initial_values,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
     is_mobile: ui.is_mobile,
@@ -61,6 +60,5 @@ export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     symbol_dropdown: quick_strategy.symbol_dropdown,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
-    validateQuickStrategy: quick_strategy.validateQuickStrategy,
     setCurrentFocus: ui.setCurrentFocus,
 }))(QStrategy);

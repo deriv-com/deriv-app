@@ -1,4 +1,4 @@
-import { FormikProps } from 'formik';
+import { FormikProps, FormikErrors } from 'formik';
 import {
     TCreateStrategy,
     TDurationUnitDropdown,
@@ -17,7 +17,6 @@ import {
     TFormValues,
     TMarketOption,
     TGetSizeDesc,
-    TInitialValues,
     TQuickStrategyFormValues,
     TSelectsFieldNames,
     TDropdowns,
@@ -34,7 +33,7 @@ export type TQStrategyForm = {
     createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
-    initial_values: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
+    initial_values: TQuickStrategyFormValues;
     getSizeDesc: TGetSizeDesc;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;
@@ -72,7 +71,7 @@ export type TQStrategyFields = {
     setCurrentFocus: TSetCurrentFocus;
     values: TFormValues;
     description: string;
-    errors?: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
+    errors: FormikErrors<TQuickStrategyFormValues>;
 };
 
 export type TQStrategyFooter = {
@@ -83,6 +82,9 @@ export type TQStrategyFooter = {
     setFieldValue: TSetFieldValue;
     submitForm: FormikProps<TFormValues>['submitForm'];
 };
+
+export type TDropdownLists = Record<TDropdownItems, TDropdowns>;
+export type TSelectedValues = Record<TDropdownItems, TSelectedValuesSelect>;
 
 export type TSelectFieldProps = {
     field_name: TSelectsFieldNames;
@@ -117,7 +119,7 @@ export type TInputFieldProps = {
     isUniqStrategyField?: boolean;
     trailing_icon_message?: string;
     uniq_selected_input?: TDataUniqInput;
-    errors?: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
+    errors: FormikErrors<TQuickStrategyFormValues>;
 } & TCommonInputsProperties;
 
 export type TTradeTypeOptionProps = {

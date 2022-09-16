@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { SelectField, InputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
 import {
-    TDropdowns,
-    TSelectedValuesSelect,
     TSelectsFieldNames,
     TDropdownItems,
     TInputBaseFields,
     TInputsFieldNames,
+    TDropdowns,
+    TSelectedValuesSelect,
 } from '../q-strategy.types';
 import { TQStrategyFields } from './q-strategy-components.types';
 
@@ -63,29 +63,22 @@ const QStrategyFields = React.memo(
 
                     const isInputField = isUniqStrategyField || input_value.startsWith('input_');
 
-                    const getDropdownList: TDropdowns = !isUniqStrategyField
-                        ? name.endsWith('types-strategies')
-                            ? types_strategies_dropdown
-                            : name.endsWith('symbol')
-                            ? symbol_dropdown
-                            : name.endsWith('trade-type')
-                            ? trade_type_dropdown
-                            : name.endsWith('duration-unit')
-                            ? duration_unit_dropdown
-                            : ''
-                        : '';
+                    const d_types_strategies = name?.endsWith('types-strategies') ? types_strategies_dropdown : '';
+                    const d_symbol = name?.endsWith('symbol') ? symbol_dropdown : '';
+                    const d_trade_type = name?.endsWith('trade-type') ? trade_type_dropdown : '';
+                    const d_duration_unit = name?.endsWith('duration-unit') ? duration_unit_dropdown : '';
 
-                    const getSelectedValue: TSelectedValuesSelect = !isUniqStrategyField
-                        ? name.endsWith('types-strategies')
-                            ? selected_type_strategy
-                            : name.endsWith('symbol')
-                            ? selected_symbol
-                            : name.endsWith('trade-type')
-                            ? selected_trade_type
-                            : name.endsWith('duration-unit')
-                            ? selected_duration_unit
-                            : ''
-                        : '';
+                    const dropdowns: TDropdowns = d_types_strategies || d_symbol || d_trade_type || d_duration_unit;
+                    const getDropdownList: TDropdowns = !isUniqStrategyField ? dropdowns : '';
+
+                    const s_type_strategy = name?.endsWith('types-strategies') ? selected_type_strategy : '';
+                    const s_symbol = name?.endsWith('symbol') ? selected_symbol : '';
+                    const s_trade_type = name?.endsWith('trade-type') ? selected_trade_type : '';
+                    const s_duration_unit = name?.endsWith('duration-unit') ? selected_duration_unit : '';
+
+                    const selected_items = s_type_strategy || s_symbol || s_trade_type || s_duration_unit;
+
+                    const getSelectedValue: TSelectedValuesSelect = !isUniqStrategyField ? selected_items : '';
 
                     const isBaseField = !isUniqStrategyField && name.startsWith('base__');
                     const isCurrentStrategyFields = isBaseField || isUniqStrategyField;
@@ -100,110 +93,116 @@ const QStrategyFields = React.memo(
                         tempIsDoubleIdxRef.current = idx + 1;
                     }
 
-                    return isCurrentStrategyFields ? (
-                        isDurationUnitField ? (
-                            <div
-                                className={classNames('quick-strategy__form-row', {
-                                    'quick-strategy__form-row--multiple': !is_mobile,
-                                })}
-                            >
-                                <SelectField
-                                    field_name={field_name as TSelectsFieldNames}
-                                    id={id}
-                                    is_mobile={is_mobile}
-                                    getDropdownList={getDropdownList}
-                                    getSelectedValue={getSelectedValue}
-                                    label={label}
-                                    input_value={input_value as TDropdownItems}
-                                    setFieldValue={setFieldValue}
-                                    className={className}
-                                    is_able_disabled={is_able_disabled}
-                                    values={values}
-                                    onChangeDropdownItem={onChangeDropdownItem}
-                                    onHideDropdownList={onHideDropdownList}
-                                    onScrollStopDropdownList={onScrollStopDropdownList}
-                                    selected_trade_type={selected_trade_type}
-                                    selected_symbol={selected_symbol}
-                                />
-                                <InputField
-                                    idx={idx}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    is_mobile={is_mobile}
-                                    errors={errors}
-                                />
-                            </div>
-                        ) : isInputField && !isDurationValueField ? (
-                            <div
-                                className={classNames('quick-strategy__form-row', {
-                                    'quick-strategy__form-row--multiple': !is_mobile,
-                                })}
-                            >
-                                <InputField
-                                    idx={idx}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    is_mobile={is_mobile}
-                                    field_name={field_name as TInputsFieldNames}
-                                    id={id}
-                                    className={className}
-                                    label_className={label_className}
-                                    field_className={field_className}
-                                    label={label}
-                                    input_value={input_value as TInputBaseFields}
-                                    placeholder={placeholder}
-                                    isUniqStrategyField={isUniqStrategyField}
-                                    trailing_icon_message={trailing_icon_message}
-                                    zIndex={zIndex}
-                                    uniq_selected_input={uniq_selected_input}
-                                    errors={errors}
-                                />
-                                <InputField
-                                    idx={idx}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    is_mobile={is_mobile}
-                                    errors={errors}
-                                />
-                            </div>
-                        ) : (
-                            !isDurationValueField && (
-                                <>
-                                    <div className='quick-strategy__form-row'>
-                                        <SelectField
-                                            field_name={field_name as TSelectsFieldNames}
-                                            id={id}
-                                            is_mobile={is_mobile}
-                                            getDropdownList={getDropdownList}
-                                            getSelectedValue={getSelectedValue}
-                                            label={label}
-                                            input_value={input_value as TDropdownItems}
-                                            setFieldValue={setFieldValue}
-                                            className={className}
-                                            is_able_disabled={is_able_disabled}
-                                            values={values}
-                                            onChangeDropdownItem={onChangeDropdownItem}
-                                            onHideDropdownList={onHideDropdownList}
-                                            onScrollStopDropdownList={onScrollStopDropdownList}
-                                            selected_trade_type={selected_trade_type}
-                                            selected_symbol={selected_symbol}
-                                        />
+                    if (isCurrentStrategyFields) {
+                        if (isDurationUnitField) {
+                            return (
+                                <div
+                                    key={idx}
+                                    className={classNames('quick-strategy__form-row', {
+                                        'quick-strategy__form-row--multiple': !is_mobile,
+                                    })}
+                                >
+                                    <SelectField
+                                        field_name={field_name as TSelectsFieldNames}
+                                        id={id}
+                                        is_mobile={is_mobile}
+                                        getDropdownList={getDropdownList}
+                                        getSelectedValue={getSelectedValue}
+                                        label={label}
+                                        input_value={input_value as TDropdownItems}
+                                        setFieldValue={setFieldValue}
+                                        className={className}
+                                        is_able_disabled={is_able_disabled}
+                                        values={values}
+                                        onChangeDropdownItem={onChangeDropdownItem}
+                                        onHideDropdownList={onHideDropdownList}
+                                        onScrollStopDropdownList={onScrollStopDropdownList}
+                                        selected_trade_type={selected_trade_type}
+                                        selected_symbol={selected_symbol}
+                                    />
+                                    <InputField
+                                        idx={idx}
+                                        handleChange={handleChange}
+                                        onChangeInputValue={onChangeInputValue}
+                                        setCurrentFocus={setCurrentFocus}
+                                        is_mobile={is_mobile}
+                                        errors={errors}
+                                    />
+                                </div>
+                            );
+                        } else if (isInputField) {
+                            return (
+                                <div
+                                    key={idx}
+                                    className={classNames('quick-strategy__form-row', {
+                                        'quick-strategy__form-row--multiple': !is_mobile,
+                                    })}
+                                >
+                                    <InputField
+                                        idx={idx}
+                                        handleChange={handleChange}
+                                        onChangeInputValue={onChangeInputValue}
+                                        setCurrentFocus={setCurrentFocus}
+                                        is_mobile={is_mobile}
+                                        field_name={field_name as TInputsFieldNames}
+                                        id={id}
+                                        className={className}
+                                        label_className={label_className}
+                                        field_className={field_className}
+                                        label={label}
+                                        input_value={input_value as TInputBaseFields}
+                                        placeholder={placeholder}
+                                        isUniqStrategyField={isUniqStrategyField}
+                                        trailing_icon_message={trailing_icon_message}
+                                        zIndex={zIndex}
+                                        uniq_selected_input={uniq_selected_input}
+                                        errors={errors}
+                                    />
+                                    <InputField
+                                        idx={idx}
+                                        handleChange={handleChange}
+                                        onChangeInputValue={onChangeInputValue}
+                                        setCurrentFocus={setCurrentFocus}
+                                        is_mobile={is_mobile}
+                                        errors={errors}
+                                    />
+                                </div>
+                            );
+                        }
+                        return (
+                            <div key={idx}>
+                                <div className='quick-strategy__form-row'>
+                                    <SelectField
+                                        field_name={field_name as TSelectsFieldNames}
+                                        id={id}
+                                        is_mobile={is_mobile}
+                                        getDropdownList={getDropdownList}
+                                        getSelectedValue={getSelectedValue}
+                                        label={label}
+                                        input_value={input_value as TDropdownItems}
+                                        setFieldValue={setFieldValue}
+                                        className={className}
+                                        is_able_disabled={is_able_disabled}
+                                        values={values}
+                                        onChangeDropdownItem={onChangeDropdownItem}
+                                        onHideDropdownList={onHideDropdownList}
+                                        onScrollStopDropdownList={onScrollStopDropdownList}
+                                        selected_trade_type={selected_trade_type}
+                                        selected_symbol={selected_symbol}
+                                    />
+                                </div>
+                                {name.endsWith('types-strategies') && (
+                                    <div key='description' className='quick-strategy__description'>
+                                        {description}
                                     </div>
-                                    {name.endsWith('types-strategies') && (
-                                        <div className='quick-strategy__description'>{description}</div>
-                                    )}
-                                </>
-                            )
-                        )
-                    ) : (
-                        <></>
-                    );
+                                )}
+                            </div>
+                        );
+                    }
+                    return false;
                 }),
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             [
-                data_fields,
                 types_strategies_dropdown,
                 symbol_dropdown,
                 trade_type_dropdown,

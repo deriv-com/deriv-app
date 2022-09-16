@@ -1,8 +1,6 @@
 import React from 'react';
 import { FormikHelpers as FormikActions } from 'formik';
 
-export type TQuickStrategyFormValues = { button: 'run' | 'edit' };
-
 export type TDurationOptions = {
     max: number;
     min: number;
@@ -76,11 +74,13 @@ type TSetSelectedSymbol = (symbol: string) => void;
 type TSetSelectedDurationUnit = (duration_unit: TDurationOptions) => void;
 type TSetSelectedTypeStrategy = (type_strategy: TTypeStrategy) => void;
 
+type TSelectedField = TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
+
 type TFieldMapData = {
     field_name: TSelectsFieldNames;
     dropdown: TDropdowns;
     selected: TSelectedValuesSelect;
-    setSelected: TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
+    setSelected: TSelectedField;
 };
 
 type TInitialUniqKeys = 'martingale-size' | 'alembert-unit' | 'oscar-unit';
@@ -88,6 +88,7 @@ type TInitialUniqKeys = 'martingale-size' | 'alembert-unit' | 'oscar-unit';
 type TInitialKeys = TSelectsFieldNames | TInputsFieldNames | TInitialUniqKeys;
 
 export type TInitialValues = Record<TInitialKeys, string>;
+export type TQuickStrategyFormValues = TInitialValues & Record<'button', 'run' | 'edit'>;
 
 export type TGetSizeDesc = (index: number) => string;
 
@@ -114,7 +115,7 @@ export type TQuickStrategyProps = {
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     getSizeDesc: TGetSizeDesc;
-    initial_values: TQuickStrategyFormValues | (TQuickStrategyFormValues & TInitialValues);
+    initial_values: TQuickStrategyFormValues;
     is_onscreen_keyboard_active: boolean;
     is_mobile: boolean;
     is_stop_button_visible: boolean;

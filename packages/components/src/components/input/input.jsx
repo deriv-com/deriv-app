@@ -29,6 +29,7 @@ const Input = React.forwardRef(
             max_characters,
             trailing_icon,
             warn,
+            data_testId,
             ...props
         },
         ref
@@ -70,6 +71,7 @@ const Input = React.forwardRef(
                     {props.type === 'textarea' ? (
                         <textarea
                             ref={ref}
+                            data-testid={data_testId}
                             {...props}
                             className={classNames('dc-input__field dc-input__textarea', {
                                 'dc-input__field--placeholder-visible': !label && props.placeholder,
@@ -81,6 +83,7 @@ const Input = React.forwardRef(
                     ) : (
                         <input
                             ref={ref}
+                            data-testid={data_testId}
                             {...props}
                             className={classNames('dc-input__field', field_className, {
                                 'dc-input__field--placeholder-visible': !label && props.placeholder,

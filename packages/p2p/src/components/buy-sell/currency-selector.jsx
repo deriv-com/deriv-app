@@ -24,10 +24,14 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                             leading_icon={<Icon className='currency-selector__search-icon' icon='IcSearch' />}
                             list_items={filtered_currency_list}
                             not_found_text={
-                                list.filter(item => item.text.toLowerCase() === field.value && !item.has_adverts)
-                                    .length === 1
+                                list.filter(
+                                    item => item.text.toLowerCase() === field.value.toLowerCase() && !item.has_adverts
+                                ).length === 1
                                     ? localize('No ads for this currency.')
-                                    : localize('No results for "{{value}}".', { value: field.value })
+                                    : localize('No results for "{{value}}".', {
+                                          value: field.value,
+                                          interpolation: { escapeValue: false },
+                                      })
                             }
                             onItemSelection={({ value }) => {
                                 if (value) onSelect?.(value);

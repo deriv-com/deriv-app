@@ -27,6 +27,7 @@
             @include mobile {
                 overflow: hidden;
                 text-overflow: ellipsis;
+                word-break: break-all;
 
                 &:not(:first-child) {
                     color: var(--brand-red-coral);

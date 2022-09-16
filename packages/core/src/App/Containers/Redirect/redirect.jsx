@@ -145,6 +145,14 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+        case 'p2p_order_confirm': {
+            history.push({
+                pathname: routes.cashier_p2p,
+                search: url_query_string,
+            });
+            redirected_to_route = true;
+            break;
+        }
 
         default:
             break;

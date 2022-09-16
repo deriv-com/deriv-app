@@ -105,11 +105,12 @@ jobs:
             git push --set-upstream origin "$package_name" -f
 
             # Get the diff and use this as the PRs body.
-            pr_body=$(curl "https://diff.intrinsic.com/$package_name/$safe_old_version/$new_version.diff")
+            diff_url="https://diff.intrinsic.com/$package_name/$safe_old_version/$new_version.diff"
+            pr_body=$(curl $diff_url)
 
             # Use "gh" to create a PR from the CLI.
             sudo apt install gh
             gh auth login --with-token <<< ${{ github.token }}
             gh pr close "$package_name" || true
-            gh pr create --title "Bump $package_name from $safe_old_version to $new_version" --body "\`\`\`diff $pr_body \`\`\`" --base "master" --head "binary-com:$package_name"
+            gh pr create --title "Bump $package_name from $safe_old_version to $new_version" --body "Diff url: $diff_url\n \`\`\`diff ${pr_body:0:5000} \`\`\`" --base "master" --head "binary-com:$package_name"
           fi

@@ -45,7 +45,7 @@ export default class WithdrawStore {
     }
 
     @action.bound
-    async requestWithdraw(verification_code: string): Promise<any> {
+    async requestWithdraw(verification_code: string): Promise<void> {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter } = modules.cashier;
 
@@ -73,7 +73,7 @@ export default class WithdrawStore {
     }
 
     @action.bound
-    async saveWithdraw(verification_code: string): Promise<any> {
+    async saveWithdraw(verification_code: string): Promise<void> {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
 
         this.error.setErrorMessage('');

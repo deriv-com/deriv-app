@@ -6,7 +6,7 @@ import Text from '../text';
 type TCompositeCheckbox = {
     name: string;
     value: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (event?: boolean) => void;
     className?: string;
     label: string;
     id?: string;
@@ -27,11 +27,7 @@ const CompositeCheckbox = ({
     const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         e.preventDefault();
-        onChange({
-            target: {
-                value: !value,
-            },
-        });
+        onChange(!value);
     };
 
     return (

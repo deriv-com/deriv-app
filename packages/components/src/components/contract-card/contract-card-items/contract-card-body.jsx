@@ -238,6 +238,17 @@ const AccumulatorCardBody = ({
                     )}
                 </ContractCardItem>
             </div>
+            {is_sold && (
+                <MobileWrapper>
+                    <div
+                        className={classNames('dc-contract-card__status', {
+                            'dc-contract-card__status--accumulator-mobile-positions': is_positions,
+                        })}
+                    >
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
+                    </div>
+                </MobileWrapper>
+            )}
         </React.Fragment>
     );
 };

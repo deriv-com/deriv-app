@@ -3,13 +3,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isEnded, isDigitContract } from '@deriv/shared';
+import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
-    if (!latest_tick_contract || !latest_tick_contract.contract_info.tick_stream) return null;
+    if (
+        !latest_tick_contract ||
+        !latest_tick_contract.contract_info.tick_stream ||
+        isAccumulatorContract(latest_tick_contract.contract_info.contract_type)
+    )
+        return null;
 
     const is_ended = isEnded(latest_tick_contract.contract_info);
     if (is_ended || granularity !== 0) return null;

@@ -124,9 +124,8 @@ const ContractDrawer = ({
                 className={classNames('contract-drawer', {
                     'contract-drawer--with-collapsible-btn':
                         !!getEndTime(contract_info) || ((is_multiplier || is_accumulator) && isMobile()),
-                    'contract-drawer--is-multiplier': (is_multiplier || is_accumulator) && isMobile(),
-                    'contract-drawer--is-multiplier-sold':
-                        (is_multiplier || is_accumulator) && isMobile() && getEndTime(contract_info),
+                    'contract-drawer--is-multiplier': is_multiplier && isMobile(),
+                    'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                 })}
                 style={{
                     transform:

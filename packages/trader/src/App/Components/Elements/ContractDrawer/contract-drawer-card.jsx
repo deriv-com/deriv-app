@@ -135,15 +135,17 @@ const ContractDrawerCard = ({
         </ContractCard>
     );
 
+    const has_swipeable_drawer = is_sold || is_multiplier || is_accumulator;
+
     return (
         <React.Fragment>
             <DesktopWrapper>{contract_card}</DesktopWrapper>
             <MobileWrapper>
                 <SwipeableContractDrawer
-                    onSwipedUp={is_sold || is_multiplier ? onSwipedUp : undefined}
-                    onSwipedDown={is_sold || is_multiplier ? onSwipedDown : undefined}
+                    onSwipedUp={has_swipeable_drawer ? onSwipedUp : undefined}
+                    onSwipedDown={has_swipeable_drawer ? onSwipedDown : undefined}
                 >
-                    {(is_sold || is_multiplier) && (
+                    {has_swipeable_drawer && (
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                     )}
                     {contract_card}

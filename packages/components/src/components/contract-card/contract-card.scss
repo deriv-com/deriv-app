@@ -456,7 +456,8 @@
         align-items: center;
         justify-content: center;
 
-        .result-icon {
+        .result-icon,
+        &--accumulator-mobile-positions .dc-result__icon {
             margin-left: 0.4rem;
         }
     }
@@ -582,7 +583,7 @@
         width: 100%;
         padding: unset;
         box-sizing: border-box;
-        margin: 0 0 0.8rem;
+        margin: 0.8rem 0;
         border-bottom: 1px solid var(--general-section-1);
 
         @include mobile {

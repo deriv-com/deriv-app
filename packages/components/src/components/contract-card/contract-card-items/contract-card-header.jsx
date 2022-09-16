@@ -21,6 +21,7 @@ const ContractCardHeader = ({
     id,
     is_mobile,
     is_sell_requested,
+    is_sold: is_contract_sold,
     is_valid_to_sell,
     onClickSell,
     server_time,
@@ -36,8 +37,8 @@ const ContractCardHeader = ({
         purchase_time,
         date_expiry,
         tick_count,
-        is_sold,
     } = contract_info;
+    const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = contract_type === 'ACCU';
 
     return (
@@ -91,7 +92,7 @@ const ContractCardHeader = ({
                     ) : null}
                 </MobileWrapper>
             </div>
-            {has_progress_slider && !is_sold && is_accumulator && (
+            {!is_sold && is_accumulator && (
                 <TickCounterBar current_tick={current_tick} max_ticks_duration={max_ticks_number} />
             )}
             <MobileWrapper>
@@ -123,6 +124,7 @@ ContractCardHeader.propTypes = {
     has_progress_slider: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
+    is_sold: PropTypes.bool,
     is_valid_to_sell: PropTypes.bool,
     onClickSell: PropTypes.func,
     server_time: PropTypes.object,

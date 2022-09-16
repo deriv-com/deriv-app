@@ -15,6 +15,7 @@
             margin-bottom: 8px;
             display: flex;
             flex-direction: row;
+            word-break: break-all;
 
             &:first-child {
                 & .payment-agent-details__contact {
@@ -27,7 +28,6 @@
             @include mobile {
                 overflow: hidden;
                 text-overflow: ellipsis;
-                word-break: break-all;
 
                 &:not(:first-child) {
                     color: var(--brand-red-coral);

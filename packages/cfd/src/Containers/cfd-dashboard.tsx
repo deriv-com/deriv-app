@@ -81,14 +81,15 @@ type TMt5StatusServerType = {
     all: number;
     platform: number;
     server_number: number;
+    deposits?: number;
+    withdrawals?: number;
 };
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
 export type TObjectCFDAccount = { category: string; type: string; set_password?: number; platform?: string };
 
-type TCFDDashboardProps = RouteComponentProps & {
-    account_settings: { residence: string };
+export type TCFDDashboardProps = RouteComponentProps & {
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;
@@ -337,7 +338,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const {
-        account_settings,
         account_status,
         beginRealSignupForMt5,
         country,
@@ -677,7 +677,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         <Localize
                             i18n_default_text='{{platform_name_mt5}} is not available in {{country}}'
                             values={{
-                                country: account_settings.residence,
+                                country,
                                 platform_name_mt5: getPlatformSettings('mt5').name,
                             }}
                             components={[<br key={0} />]}
@@ -725,7 +725,6 @@ export default withRouter(
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,
         has_maltainvest_account: client.has_maltainvest_account,
         can_upgrade_to: client.can_upgrade_to,
-        account_settings: client.account_settings,
         disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
         dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
         is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,

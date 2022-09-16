@@ -23,6 +23,52 @@ export type TTradeType = {
     value: string;
 };
 
+export type TTradeTypeContractsFor = {
+    icon: TIconTradeType;
+    name: string;
+    value: string;
+};
+
+type TStrategy = {
+    index: number;
+    label: string;
+    description: string;
+};
+export type TKeysStrategies = 'martingale' | 'dalembert' | 'oscars_grind';
+export type TStrategies = Record<TKeysStrategies, TStrategy>;
+
+export type TSymbol = Record<
+    'market' | 'market_display' | 'submarket' | 'submarket_display' | 'symbol' | 'symbol_display',
+    string
+>;
+export type TSymbols = Array<TSymbol>;
+
+export type TDuration = {
+    display: 'Ticks' | 'Minutes' | 'Hours' | 'Days';
+    max: number;
+    min: number;
+    unit: 't' | 'm' | 'h' | 'd';
+};
+
+export type TDurations = Array<TDuration>;
+
+type TKeysFieldsToUpdate =
+    | 'alembert_unit'
+    | 'duration'
+    | 'durationtype'
+    | 'loss'
+    | 'market'
+    | 'oscar_unit'
+    | 'profit'
+    | 'size'
+    | 'stake'
+    | 'submarket'
+    | 'symbol'
+    | 'tradetype'
+    | 'tradetypecat';
+
+export type TFieldsToUpdate = Record<TKeysFieldsToUpdate, string>;
+
 export type TMarketOption = {
     group: string;
     text: string;
@@ -37,7 +83,10 @@ export type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' |
 export type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
 export type TInputCommonFields = TInputBaseFields | TInputUniqFields;
 
-export type TSetFieldValue = (element: 'button', action: 'run' | 'edit') => void;
+export type TSetFieldValue = (
+    element: 'button' | 'quick-strategy__duration-unit' | 'quick-strategy__duration-value' | string,
+    action: 'run' | 'edit' | string | number
+) => void;
 
 export type TSelectsFieldNames =
     | 'quick-strategy__type-strategy'
@@ -76,12 +125,14 @@ type TSetSelectedTypeStrategy = (type_strategy: TTypeStrategy) => void;
 
 type TSelectedField = TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
 
-type TFieldMapData = {
+export type TFieldMapData = {
     field_name: TSelectsFieldNames;
     dropdown: TDropdowns;
     selected: TSelectedValuesSelect;
     setSelected: TSelectedField;
 };
+
+export type TFieldsMapData = Record<TDropdownItems, TFieldMapData>;
 
 type TInitialUniqKeys = 'martingale-size' | 'alembert-unit' | 'oscar-unit';
 
@@ -134,3 +185,15 @@ export type TQuickStrategyProps = {
     trade_type_dropdown: TTradeTypeDropdown;
     setCurrentFocus: TSetCurrentFocus;
 };
+
+type TKeysQSCache = 'active_tab' | 'quick_strategy';
+type TKeysQStrategy =
+    | 'selected_duration_unit'
+    | 'selected_symbol'
+    | 'selected_trade_type'
+    | 'selected_type_strategy'
+    | TInputCommonFields;
+type TValuesQStrategy = TDurationOptions | TMarketOption | TTradeType | TTypeStrategy | TInputCommonFields;
+type TQStrategy = Record<TKeysQStrategy, TValuesQStrategy>;
+type TValuesQSCache = string | TQStrategy;
+export type TQSCache = Record<TKeysQSCache, TValuesQSCache>;

@@ -38,6 +38,7 @@ const Autocomplete = React.memo(props => {
         has_updating_list = true,
         input_id,
         is_alignment_top,
+        is_list_visible = false,
         list_items,
         list_portal_id,
         onHideDropdownList,
@@ -299,7 +300,7 @@ const Autocomplete = React.memo(props => {
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
                     }),
                 }}
-                is_visible={should_show_list}
+                is_visible={should_show_list || is_list_visible}
                 list_items={filtered_items}
                 list_height={props.list_height}
                 // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
@@ -321,6 +322,7 @@ Autocomplete.defaultProps = {
 
 Autocomplete.propTypes = {
     className: PropTypes.string,
+    is_list_visible: PropTypes.bool,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         PropTypes.arrayOf(

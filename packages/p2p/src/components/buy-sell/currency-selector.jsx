@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Formik, Field } from 'formik';
+import { Field, Formik } from 'formik';
 import { Autocomplete, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import './currency-dropdown.scss';
+import './currency-selector.scss';
 
-const CurrencyDropdown = ({ className, default_value, list, onSelect }) => {
+const CurrencySelector = ({ className, default_value, list, onSelect }) => {
     const filtered_currency_list = list.filter(item => item.has_adverts);
 
     return (
@@ -17,11 +17,11 @@ const CurrencyDropdown = ({ className, default_value, list, onSelect }) => {
                         <Autocomplete
                             {...field}
                             autoComplete='off'
-                            className={classNames('currency-dropdown', className)}
+                            className={classNames('currency-selector', className)}
                             data-lpignore='true'
                             historyValue={default_value}
                             is_list_visible
-                            leading_icon={<Icon className='currency-dropdown__search-icon' icon='IcSearch' />}
+                            leading_icon={<Icon className='currency-selector__search-icon' icon='IcSearch' />}
                             list_items={filtered_currency_list}
                             not_found_text={
                                 list.filter(item => item.text.toLowerCase() === field.value && !item.has_adverts)
@@ -36,8 +36,8 @@ const CurrencyDropdown = ({ className, default_value, list, onSelect }) => {
                             trailing_icon={
                                 field.value ? (
                                     <Icon
-                                        icon='IcCloseCircle'
                                         color='secondary'
+                                        icon='IcCloseCircle'
                                         onClick={() => {
                                             setFieldValue('currency', '');
                                         }}
@@ -55,11 +55,11 @@ const CurrencyDropdown = ({ className, default_value, list, onSelect }) => {
     );
 };
 
-CurrencyDropdown.propTypes = {
+CurrencySelector.propTypes = {
     className: PropTypes.string,
     default_value: PropTypes.string,
     list: PropTypes.array,
     onSelect: PropTypes.func,
 };
 
-export default CurrencyDropdown;
+export default CurrencySelector;

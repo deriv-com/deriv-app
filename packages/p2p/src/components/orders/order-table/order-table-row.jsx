@@ -1,14 +1,16 @@
-import { Table, Text, Icon } from '@deriv/components';
-import { isMobile, formatMoney } from '@deriv/shared';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
+import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
+import { localize } from 'Components/i18next';
+import RatingCellRenderer from 'Components/rating-cell-renderer';
+import RatingModal from 'Components/rating-modal';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -34,20 +36,25 @@ const OrderRow = ({ style, row: order }) => {
     const { general_store, order_store, sendbird_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
+    const should_show_order_details = React.useRef(true);
+    const [should_show_rating_modal, setShouldShowRatingModal] = React.useState(false); // Need a separate state to prevent re-render. DON'T REMOVE!
+
     const {
-        amount,
         account_currency,
         amount_display,
+        has_review_details,
         id,
-        is_buy_order,
-        is_my_ad,
-        is_sell_order,
+        is_buy_order_for_user,
+        is_completed_order,
+        is_order_reviewable,
+        is_user_rated_previously,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
-        // price_display,  TODO: Uncomment when price is fixed
-        rate,
+        previous_recommendation,
+        price_display,
+        rating,
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_disabled,
@@ -55,13 +62,24 @@ const OrderRow = ({ style, row: order }) => {
         status_string,
     } = order_state;
 
-    const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
+    const offer_amount = `${amount_display} ${account_currency}`;
+    const transaction_amount = `${Number(price_display).toFixed(2)} ${local_currency}`;
+    const order_type = is_buy_order_for_user ? localize('Buy') : localize('Sell');
 
+    const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
 
     const isOrderSeen = order_id => {
         const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
+    };
+
+    const onRowClick = () => {
+        if (should_show_order_details.current) {
+            return order_store.setQueryDetails(order);
+        }
+
+        return () => {};
     };
 
     React.useEffect(() => {
@@ -84,113 +102,158 @@ const OrderRow = ({ style, row: order }) => {
         return () => clearInterval(interval.current);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const offer_amount = `${amount_display} ${account_currency}`;
-    const transaction_amount = `${Number(amount * rate).toFixed(2)} ${local_currency}`;
-    const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
-    const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
-
-    if (isMobile()) {
-        return (
-            <div onClick={() => order_store.setQueryDetails(order)}>
-                <Table.Row
-                    style={style}
-                    className={classNames('orders__mobile', {
-                        'orders__mobile--attention': !isOrderSeen(id),
-                    })}
-                >
-                    <Table.Cell
-                        className={classNames('orders__mobile-header', {
+    return (
+        <React.Fragment>
+            <RatingModal
+                is_buy_order_for_user={is_buy_order_for_user}
+                is_rating_modal_open={should_show_rating_modal}
+                is_user_rated_previously={is_user_rated_previously}
+                onClickClearRecommendation={() => order_store.setIsRecommended(null)}
+                onClickDone={() => {
+                    order_store.setOrderRating(id);
+                    setShouldShowRatingModal(false);
+                    should_show_order_details.current = true;
+                    order_store.setRatingValue(0);
+                    general_store.props.removeNotificationMessage({ key: `order-${id}` });
+                    general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                }}
+                onClickNotRecommended={() => order_store.setIsRecommended(0)}
+                onClickRecommended={() => order_store.setIsRecommended(1)}
+                onClickSkip={() => {
+                    order_store.setRatingValue(0);
+                    setShouldShowRatingModal(false);
+                    should_show_order_details.current = true;
+                }}
+                onClickStar={order_store.handleRating}
+                previous_recommendation={previous_recommendation}
+                rating_value={order_store.rating_value}
+            />
+            <div onClick={onRowClick}>
+                <DesktopWrapper>
+                    <Table.Row
+                        className={classNames('orders__table-row orders__table-grid', {
                             'orders__table-grid--active': general_store.is_active_tab,
+                            'orders__table-row--attention': !isOrderSeen(id),
                         })}
                     >
-                        <Text
-                            as='div'
-                            align='center'
-                            size='xxs' // TODO: Change the font-size once design is ready
-                            weight='bold'
-                            className={classNames('orders__mobile-status', {
-                                'orders__table-status--danger': should_highlight_danger,
-                                'orders__table-status--alert': should_highlight_alert,
-                                'orders__table-status--success': should_highlight_success,
-                                'orders__table-status--disabled': should_highlight_disabled,
+                        <Table.Cell>{order_type}</Table.Cell>
+                        <Table.Cell>{id}</Table.Cell>
+                        <Table.Cell>{other_user_details.name}</Table.Cell>
+                        <Table.Cell>
+                            <Text
+                                as='div'
+                                size='xxs' // TODO: Change the font-size once design is ready
+                                weight='bold'
+                                className={classNames('orders__table-status', {
+                                    'orders__table-status--danger': should_highlight_danger,
+                                    'orders__table-status--alert': should_highlight_alert,
+                                    'orders__table-status--success': should_highlight_success,
+                                    'orders__table-status--disabled': should_highlight_disabled,
+                                })}
+                            >
+                                {status_string}
+                            </Text>
+                        </Table.Cell>
+                        <Table.Cell>{is_buy_order_for_user ? transaction_amount : offer_amount}</Table.Cell>
+                        <Table.Cell>{is_buy_order_for_user ? offer_amount : transaction_amount}</Table.Cell>
+                        <Table.Cell>
+                            {general_store.is_active_tab ? (
+                                <div className='orders__table-time'>{remaining_time}</div>
+                            ) : (
+                                is_completed_order && (
+                                    <RatingCellRenderer
+                                        has_review_details={has_review_details}
+                                        is_reviewable={is_order_reviewable}
+                                        rating={rating}
+                                        onClickUserRatingButton={() => {
+                                            should_show_order_details.current = false;
+                                            setShouldShowRatingModal(true);
+                                        }}
+                                    />
+                                )
+                            )}
+                        </Table.Cell>
+                    </Table.Row>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <Table.Row
+                        style={style}
+                        className={classNames('orders__mobile', {
+                            'orders__mobile--attention': !isOrderSeen(id),
+                        })}
+                    >
+                        <Table.Cell
+                            className={classNames('orders__mobile-header', {
+                                'orders__table-grid--active': general_store.is_active_tab,
                             })}
                         >
-                            {status_string}
-                        </Text>
-                    </Table.Cell>
-                    <Table.Cell className='orders__mobile-header-right'>
-                        {is_timer_visible && (
                             <Text
-                                size='xxs'
-                                color='prominent'
+                                as='div'
                                 align='center'
-                                line_height='l'
-                                className='orders__mobile-time'
+                                size='xxs' // TODO: Change the font-size once design is ready
+                                weight='bold'
+                                className={classNames('orders__mobile-status', {
+                                    'orders__table-status--danger': should_highlight_danger,
+                                    'orders__table-status--alert': should_highlight_alert,
+                                    'orders__table-status--success': should_highlight_success,
+                                    'orders__table-status--disabled': should_highlight_disabled,
+                                })}
                             >
-                                {remaining_time}
+                                {status_string}
                             </Text>
-                        )}
-                        <div className='orders__mobile-chat'>
-                            <Icon
-                                icon='IcChat'
-                                height={15}
-                                width={16}
-                                onClick={() => {
-                                    sendbird_store.setShouldShowChatModal(true);
-                                    sendbird_store.setShouldShowChatOnOrders(true);
-                                }}
+                        </Table.Cell>
+                        <Table.Cell className='orders__mobile-header-right'>
+                            {is_timer_visible && (
+                                <Text
+                                    size='xxs'
+                                    color='prominent'
+                                    align='center'
+                                    line_height='l'
+                                    className='orders__mobile-time'
+                                >
+                                    {remaining_time}
+                                </Text>
+                            )}
+                            {general_store.is_active_tab ? (
+                                <div className='orders__mobile-chat'>
+                                    <Icon
+                                        icon='IcChat'
+                                        height={15}
+                                        width={16}
+                                        onClick={() => {
+                                            sendbird_store.setShouldShowChatModal(true);
+                                            sendbird_store.setShouldShowChatOnOrders(true);
+                                        }}
+                                    />
+                                </div>
+                            ) : (
+                                <div className='orders__mobile-chat'>
+                                    {is_completed_order && (
+                                        <RatingCellRenderer
+                                            has_review_details={has_review_details}
+                                            is_reviewable={is_order_reviewable}
+                                            rating={rating}
+                                            onClickUserRatingButton={() => {
+                                                should_show_order_details.current = false;
+                                                setShouldShowRatingModal(true);
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            )}
+                        </Table.Cell>
+                        <Table.Cell className='orders__mobile-title'>
+                            <Title
+                                send_amount={amount_display}
+                                currency={account_currency}
+                                order_purchase_datetime={order_purchase_datetime}
+                                order_type={order_type}
                             />
-                        </div>
-                    </Table.Cell>
-                    <Table.Cell className='orders__mobile-title'>
-                        <Title
-                            send_amount={amount_display}
-                            currency={account_currency}
-                            order_purchase_datetime={order_purchase_datetime}
-                            order_type={order_type}
-                        />
-                    </Table.Cell>
-                </Table.Row>
+                        </Table.Cell>
+                    </Table.Row>
+                </MobileWrapper>
             </div>
-        );
-    }
-    return (
-        <div onClick={() => order_store.setQueryDetails(order)}>
-            <Table.Row
-                className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-grid--active': general_store.is_active_tab,
-                    'orders__table-row--attention': !isOrderSeen(id),
-                })}
-            >
-                <Table.Cell>{order_type}</Table.Cell>
-                <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{other_user_details.name}</Table.Cell>
-                <Table.Cell>
-                    <Text
-                        as='div'
-                        size='xxs' // TODO: Change the font-size once design is ready
-                        weight='bold'
-                        className={classNames('orders__table-status', {
-                            'orders__table-status--danger': should_highlight_danger,
-                            'orders__table-status--alert': should_highlight_alert,
-                            'orders__table-status--success': should_highlight_success,
-                            'orders__table-status--disabled': should_highlight_disabled,
-                        })}
-                    >
-                        {status_string}
-                    </Text>
-                </Table.Cell>
-                <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
-                <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
-                <Table.Cell>
-                    {general_store.is_active_tab ? (
-                        <div className='orders__table-time'>{remaining_time}</div>
-                    ) : (
-                        order_purchase_datetime
-                    )}
-                </Table.Cell>
-            </Table.Row>
-        </div>
+        </React.Fragment>
     );
 };
 

@@ -651,7 +651,6 @@ const AccountSwitcher = props => {
                             )}
                             {getRemainingDemoDXTrade().map(account => (
                                 <div key={account.title} className='acc-switcher__new-account'>
-                                    {account.type}
                                     <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                     <Text size='xs' color='general' className='acc-switcher__new-account-text'>
                                         {account.title}

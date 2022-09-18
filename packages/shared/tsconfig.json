@@ -6,5 +6,5 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src", "index.d.ts"]
+    "include": ["src"]
 }

@@ -13,29 +13,12 @@ import {
     validNumber,
     CFD_PLATFORMS,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
+import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 
-const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
-
-const getSelectedError = (selected_value, is_from_account) => {
-    if (is_from_account) {
-        return (
-            <Localize
-                i18n_default_text='Transfer from {{selected_value}} is not allowed, Please choose another account from dropdown'
-                values={{ selected_value }}
-            />
-        );
-    }
-
-    return (
-        <Localize
-            i18n_default_text='Transfer to {{selected_value}} is not allowed, Please choose another account from dropdown'
-            values={{ selected_value }}
-        />
-    );
-};
+const hasTransferNotAllowedLoginid = (loginid: string) => loginid.startsWith('MX');
 
 export default class AccountTransferStore {
     constructor({ WS, root_store }) {
@@ -152,7 +135,7 @@ export default class AccountTransferStore {
                 if (obj_values) {
                     if (hasTransferNotAllowedLoginid(obj_values.value)) {
                         // check if selected to is not allowed account
-                        obj_values.error = getSelectedError(obj_values.value);
+                        obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                     }
                     this.setSelectedTo(obj_values);
                 }
@@ -375,14 +358,14 @@ export default class AccountTransferStore {
             if (account.loginid === this.root_store.client.loginid) {
                 // check if selected from is not allowed account
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                    obj_values.error = getSelectedError(obj_values.value, true);
+                    obj_values.error = AccountTransferGetSelectedError(obj_values.value, true);
                 }
 
                 this.setSelectedFrom(obj_values);
             } else if (isEmptyObject(this.selected_to)) {
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
                     // check if selected to is not allowed account
-                    obj_values.error = getSelectedError(obj_values.value);
+                    obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                 }
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
@@ -460,7 +443,7 @@ export default class AccountTransferStore {
         }
 
         if (hasTransferNotAllowedLoginid(selected_from.value)) {
-            selected_from.error = getSelectedError(selected_from.value, true);
+            selected_from.error = AccountTransferGetSelectedError(selected_from.value, true);
         }
 
         this.selected_from = selected_from;
@@ -477,7 +460,7 @@ export default class AccountTransferStore {
         const accounts = this.accounts_list;
         this.selected_to = accounts.find(account => account.value === target.value) || {};
         if (hasTransferNotAllowedLoginid(this.selected_to.value)) {
-            this.selected_to.error = getSelectedError(this.selected_to.value);
+            this.selected_to.error = AccountTransferGetSelectedError(this.selected_to.value);
         }
         this.setTransferFee();
         this.setMinimumFee();

@@ -6,11 +6,12 @@ import {
     TGetFinalPrice,
     TGetContractUpdateConfig,
     TDigitsInfo,
-    TTickStream,
+    TTickItem,
     TIsEnded,
     TIsValidToSell,
     TGetTotalProfit,
     TGetDisplayStatus,
+    TStatus,
 } from './contract-types';
 
 export const getFinalPrice = (contract_info: TGetFinalPrice) => +(contract_info.sell_price || contract_info.bid_price);
@@ -35,7 +36,7 @@ export const isEnded = (contract_info: TIsEnded) =>
 export const isOpen = (contract_info: TContractInfo) => contract_info.status === 'open';
 
 type TIsUserSold = {
-    status?: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
+    status?: TStatus;
 };
 
 export const isUserSold = (contract_info: TIsUserSold) => contract_info.status === 'sold';
@@ -61,7 +62,7 @@ export const getCurrentTick = (contract_info: TGetCurrentTick) => {
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };
 
-export const getLastTickFromTickStream = (tick_stream: TTickStream[] = []) => tick_stream[tick_stream.length - 1] || {};
+export const getLastTickFromTickStream = (tick_stream: TTickItem[] = []) => tick_stream[tick_stream.length - 1] || {};
 
 export const isDigitContract = (contract_type: string) => /digit/i.test(contract_type);
 

@@ -18,7 +18,7 @@ export type TCurrenciesConfig = {
             limits_dxtrade?: { [k: string]: unknown };
             limits_mt5?: { [k: string]: unknown };
         };
-        type: 'fiat' | 'crypto';
+        type: string;
     };
 };
 
@@ -42,10 +42,7 @@ const crypto_currencies_display_order = [
     'USDK',
 ];
 
-export const reorderCurrencies = (
-    list: Array<{ value: string; type: string }>,
-    type: 'fiat' | Omit<string, 'fiat'> = 'fiat'
-) => {
+export const reorderCurrencies = (list: Array<{ value: string; type: string }>, type = 'fiat') => {
     const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
 
     return list.sort((a, b) => {
@@ -106,7 +103,7 @@ export const addComma = (num?: number | string | null, decimal_points?: number, 
         number = (+number).toFixed(decimal_points);
     }
     if (is_crypto) {
-        number = parseFloat(number);
+        number = parseFloat(String(number));
     }
 
     return number

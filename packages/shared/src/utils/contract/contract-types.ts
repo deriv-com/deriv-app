@@ -1,5 +1,7 @@
 import { ContractUpdate } from '@deriv/api-types';
 
+export type TStatus = 'open' | 'sold';
+
 export type TGetFinalPrice = {
     sell_price: number;
     bid_price: number;
@@ -15,10 +17,10 @@ export type TGetTotalProfit = {
 };
 
 export type TGetDisplayStatus = TGetTotalProfit & {
-    status: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
+    status: TStatus;
 };
 
-export type TTickStream = {
+export type TTickItem = {
     epoch?: number;
     tick?: null | number;
     tick_display_value?: null | string;
@@ -28,15 +30,15 @@ export type TIsEnded = {
     sell_price?: number;
     bid_price?: number;
     is_valid_to_sell?: 0 | 1;
-    status?: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
+    status?: TStatus;
     is_expired?: 0 | 1;
     is_settleable?: 0 | 1;
 };
 
 export type TContractInfo = {
-    tick_stream?: TTickStream[];
+    tick_stream?: TTickItem[];
     cancellation?: { ask_price: number };
-    status?: 'open' | 'sold' | Omit<string, 'open' | 'sold'>;
+    status?: TStatus;
     is_expired?: 0 | 1;
     is_settleable?: 0 | 1;
     is_valid_to_cancel?: 0 | 1;

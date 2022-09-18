@@ -3,7 +3,7 @@ import * as ContractUtils from '../contract';
 import {
     TContractInfo,
     TDigitsInfo,
-    TTickStream,
+    TTickItem,
     TGetFinalPrice,
     TIsEnded,
     TGetDisplayStatus,
@@ -171,7 +171,7 @@ describe('isValidToSell', () => {
 
 describe('getLastTickFromTickStream', () => {
     it('should return the last tick in the tick_stream array', () => {
-        const tick_stream: TTickStream[] = [
+        const tick_stream: TTickItem[] = [
             {
                 tick: 766.53,
                 epoch: 1000001,
@@ -187,7 +187,7 @@ describe('getLastTickFromTickStream', () => {
         });
     });
     it('should return an empty object if the tick_stream array is empty', () => {
-        const tick_stream: TTickStream[] = [];
+        const tick_stream: TTickItem[] = [];
         expect(ContractUtils.getLastTickFromTickStream(tick_stream)).to.eql({});
     });
 });

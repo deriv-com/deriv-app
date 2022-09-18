@@ -48,6 +48,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     }
 
     // TODO check this type after merging 75857 PR
+    // @ts-ignore
     if (getAppId() === domain_app_ids[window.location.hostname]) {
         return getOAuthUrl();
     }

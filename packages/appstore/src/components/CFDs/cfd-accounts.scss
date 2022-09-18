@@ -15,18 +15,6 @@
         }
     }
 
-    &__notification {
-        display: flex;
-        justify-content: center;
-        margin: 2.4rem 0;
-        padding: 1.6rem;
-        background-color: $color-grey-2;
-        border-radius: $BORDER_RADIUS;
-        & > button {
-            margin-left: 2.4rem;
-        }
-    }
-
     &__accounts {
         display: flex;
         justify-content: space-between;

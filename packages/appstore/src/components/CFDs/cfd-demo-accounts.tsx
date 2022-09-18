@@ -3,11 +3,9 @@ import { Text, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import CFDAccountManager from '../cfd-account-manager';
-import { TCFDAccounts } from 'Types';
+import { TCFDAccountsProps } from 'Types';
 
-const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible, hasAccount }: TCFDAccounts) => {
-    // console.log('loading1', is_populating_mt5_account_list)
-
+const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, isDerivXVisible, hasAccount }: TCFDAccountsProps) => {
     const available_demo_accounts = [
         {
             name: 'Derived',

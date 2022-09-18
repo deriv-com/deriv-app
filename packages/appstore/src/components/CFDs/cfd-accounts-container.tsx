@@ -2,10 +2,11 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import CFDDemoAccounts from './cfd-demo-accounts';
 import CFDRealAccounts from './cfd-real-accounts';
-import { isLandingCompanyEnabled } from '@deriv/shared';
+import { isLandingCompanyEnabled, CFD_PLATFORMS } from '@deriv/shared';
 import { Loading } from '@deriv/components';
-import { TPlatform, TAccountCategory } from 'Types';
+import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType } from 'Types';
 import { useStores } from 'Stores/index';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 type TCFDAccountsProps = {
     account_type: TAccountCategory;
@@ -19,16 +20,27 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         landing_companies,
         is_logged_in,
         is_populating_mt5_account_list: is_loading,
+        website_status,
+        mt5_disabled_signup_types,
+        dxtrade_disabled_signup_types,
+        dxtrade_accounts_list_error,
+        is_virtual,
+        isAccountOfTypeDisabled,
+        has_active_real_account: has_real_account,
+        standpoint,
+        residence,
+        upgradeable_landing_companies,
     } = client;
     const { current_list } = cfd_account;
 
-    const hasAccount = (platform: TPlatform, landing_company_short: string) =>
-        Object.keys(current_list).some(key => key.startsWith(`${platform}.${account_type}.${landing_company_short}`));
+    const hasAccount = (platform: TPlatform, landing_company_short?: string) =>
+        Object.keys(current_list).some(key =>
+            landing_company_short
+                ? key.startsWith(`${platform}.${account_type}`)
+                : key.startsWith(`${platform}.${account_type}.${landing_company_short}`)
+        );
 
     const isDerivedVisible = (platform: TPlatform) => {
-        const has_synthetic_account = Object.keys(current_list).some(key =>
-            key.startsWith(`${platform}.${account_type}.synthetic`)
-        );
         // Hiding card for logged out EU users
         if (!is_logged_in && is_eu_country) return false;
 
@@ -49,26 +61,84 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
     };
 
     const isDerivXVisible = (platform: TPlatform) => {
-        // will change the logic later
-        return true;
+        return (
+            !is_logged_in ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'financial',
+            }) ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'gaming',
+            })
+        );
     };
+
+    const getIsSuspendedMt5Server = (type_server: TMt5StatusServer['demo' | 'real']) =>
+        type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
+
+    const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(website_status.mt5_status?.demo);
+    const is_suspended_mt5_real_server = getIsSuspendedMt5Server(website_status.mt5_status?.real);
+
+    const should_show_missing_real_account =
+        is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
+    const should_enable_add_button = should_show_missing_real_account && CFD_PLATFORMS.MT5 && account_type === 'real';
 
     if (is_loading) return <Loading className='cfd-accounts-container__loader' />;
     return (
         <div className='cfd-accounts-container'>
-            {account_type === 'demo' ? (
+            {account_type === 'demo' && (
                 <CFDDemoAccounts
                     isDerivedVisible={isDerivedVisible}
                     isFinancialVisible={isFinancialVisible}
                     isDerivXVisible={isDerivXVisible}
                     hasAccount={hasAccount}
+                    is_eu={is_eu}
+                    is_eu_country={is_eu_country}
+                    is_logged_in={is_logged_in}
+                    is_loading={is_loading}
+                    has_cfd_account_error={platform => {
+                        return platform === CFD_PLATFORMS.MT5
+                            ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
+                            : is_suspended_mt5_demo_server ||
+                                  dxtrade_disabled_signup_types.demo ||
+                                  !!dxtrade_accounts_list_error;
+                    }}
+                    current_list={current_list}
+                    is_virtual={is_virtual}
+                    isAccountOfTypeDisabled={isAccountOfTypeDisabled}
+                    has_real_account={has_real_account}
+                    standpoint={standpoint}
+                    residence={residence}
+                    should_enable_add_button={should_enable_add_button}
                 />
-            ) : (
+            )}
+            {account_type === 'real' && (
                 <CFDRealAccounts
                     isDerivedVisible={isDerivedVisible}
                     isFinancialVisible={isFinancialVisible}
                     isDerivXVisible={isDerivXVisible}
                     hasAccount={hasAccount}
+                    is_eu={is_eu}
+                    is_eu_country={is_eu_country}
+                    is_logged_in={is_logged_in}
+                    is_loading={is_loading}
+                    has_cfd_account_error={platform => {
+                        return platform === CFD_PLATFORMS.MT5
+                            ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
+                            : is_suspended_mt5_real_server ||
+                                  dxtrade_disabled_signup_types.real ||
+                                  !!dxtrade_accounts_list_error;
+                    }}
+                    current_list={current_list}
+                    is_virtual={is_virtual}
+                    isAccountOfTypeDisabled={isAccountOfTypeDisabled}
+                    has_real_account={has_real_account}
+                    standpoint={standpoint}
+                    residence={residence}
+                    should_enable_add_button={should_enable_add_button}
                 />
             )}
         </div>

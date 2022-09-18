@@ -17,14 +17,13 @@ import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
+import { TRootStore, TWebSocket } from 'Types';
 
 const hasTransferNotAllowedLoginid = (loginid: string) => loginid.startsWith('MX');
 
 export default class AccountTransferStore {
-    constructor({ WS, root_store }) {
-        this.root_store = root_store;
-        this.WS = WS;
-    }
+    // eslint-disable-next-line no-useless-constructor
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {}
 
     @observable accounts_list = [];
     @observable container = Constants.containers.account_transfer;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import { action, computed, observable } from 'mobx';
 import {
@@ -317,8 +318,8 @@ export default class AccountTransferStore {
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 
-            const account_text_display = is_cfd
-                ? account.account_type === 'mt5'
+            const cfd_account_text_display =
+                account.account_type === CFD_PLATFORMS.MT5
                     ? `${cfd_text_display} ${getCFDAccountDisplay({
                           market_type: account.market_type,
                           sub_account_type: account.sub_account_type,
@@ -330,7 +331,9 @@ export default class AccountTransferStore {
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
-                      })}`
+                      })}`;
+            const account_text_display = is_cfd
+                ? cfd_account_text_display
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
                   );

@@ -509,7 +509,7 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.is_mt5_transfer_in_progress).toBeTruthy();
     });
 
-    it('should set transfered amount in receipt', () => {
+    it('should set transferred amount in receipt', () => {
         account_transfer_store.setReceiptTransfer({ amount: 1000 });
 
         expect(account_transfer_store.receipt.amount_transferred).toBe(1000);

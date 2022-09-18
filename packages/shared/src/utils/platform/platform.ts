@@ -1,6 +1,14 @@
 import { routes } from '../routes';
 import { getPlatformSettings } from '../brand';
 
+type TRoutingHistory = {
+    action: string;
+    hash: string;
+    key: string;
+    pathname: string;
+    search: string;
+}[];
+
 /*
  * These functions exist because we want to refresh the browser page on switch between Bot and the rest of the platforms.
  * */
@@ -47,7 +55,7 @@ export const getPathname = () => {
     }
 };
 
-export const getPlatformInformation = routing_history => {
+export const getPlatformInformation = (routing_history: TRoutingHistory) => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) {
         return { header: platform_name.DBot, icon: getPlatformSettings('dbot').icon };
     }
@@ -70,7 +78,7 @@ export const getPlatformInformation = routing_history => {
     return { header: platform_name.DTrader, icon: getPlatformSettings('trader').icon };
 };
 
-export const getActivePlatform = routing_history => {
+export const getActivePlatform = (routing_history: TRoutingHistory) => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
@@ -79,7 +87,7 @@ export const getActivePlatform = routing_history => {
     return platform_name.DTrader;
 };
 
-export const getPlatformRedirect = routing_history => {
+export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot))
         return { name: platform_name.DBot, route: routes.bot };
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5))
@@ -95,9 +103,13 @@ export const getPlatformRedirect = routing_history => {
     return { name: platform_name.DTrader, route: routes.trade };
 };
 
-export const isNavigationFromPlatform = (app_routing_history, platform_route, should_ignore_parent_path = false) => {
+export const isNavigationFromPlatform = (
+    app_routing_history: TRoutingHistory,
+    platform_route: string,
+    should_ignore_parent_path = false
+) => {
     if (app_routing_history.length > 0) {
-        const getParentPath = pathname => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
+        const getParentPath = (pathname: string) => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
 
         for (let i = 0; i < app_routing_history.length; i++) {
             const history_item = app_routing_history[i];
@@ -133,13 +145,13 @@ export const isNavigationFromPlatform = (app_routing_history, platform_route, sh
     return false;
 };
 
-export const isNavigationFromP2P = (routing_history, platform_route) => {
+export const isNavigationFromP2P = (routing_history: TRoutingHistory, platform_route: string) => {
     const routing_history_index = routing_history.length > 1 ? 1 : 0;
     const history_item = routing_history[routing_history_index];
     return history_item?.pathname === platform_route;
 };
 
-export const isNavigationFromExternalPlatform = (routing_history, platform_route) => {
+export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistory, platform_route: string) => {
     /*
      *  Check if the client is navigating from external platform(SmartTrader or BinaryBot)
      *  and has not visited Dtrader after it.

@@ -1,4 +1,4 @@
-export const systems = {
+export const systems: { [key: string]: (string | null)[] } = {
     mac: ['Mac68K', 'MacIntel', 'MacPPC'],
     linux: [
         'HP-UX',
@@ -40,7 +40,7 @@ export const OSDetect = () => {
     }
     if (typeof navigator !== 'undefined' && navigator.platform) {
         return Object.keys(systems)
-            .map(os => {
+            .map((os: string) => {
                 if (systems[os].some(platform => navigator.platform === platform)) {
                     return os;
                 }
@@ -52,6 +52,7 @@ export const OSDetect = () => {
     return 'Unknown OS';
 };
 
+// TODO will fix these 2 after Property 'opera' does not exist on type 'Window & typeof globalThis'.ts(2339) merged
 export const mobileOSDetect = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 

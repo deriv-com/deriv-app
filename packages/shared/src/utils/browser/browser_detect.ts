@@ -1,10 +1,3 @@
-declare global {
-    interface Window {
-        safari: any;
-        HTMLElement: any;
-    }
-}
-
 export const isSafari = () => {
     return (
         /constructor/i.test(window.HTMLElement) ||

@@ -36,13 +36,13 @@ export const platforms: TPlatforms = {
 };
 
 export const useOnLoadTranslation = () => {
-    const [is_loaded, setLoaded] = React.useState<boolean>(false);
+    const [is_loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
         if (!i18n.language) {
             i18n.language = getInitialLanguage();
         }
-        const is_english: boolean = i18n.language === 'EN';
+        const is_english = i18n.language === 'EN';
 
         if (is_english) {
             setLoaded(true);

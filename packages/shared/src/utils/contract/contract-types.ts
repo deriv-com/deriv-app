@@ -1,6 +1,6 @@
 import { ContractUpdate } from '@deriv/api-types';
 
-export type TStatus = 'open' | 'sold';
+export type TStatus = 'open' | 'sold' | 'won';
 
 export type TGetFinalPrice = {
     sell_price: number;

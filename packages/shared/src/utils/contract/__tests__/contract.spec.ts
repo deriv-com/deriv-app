@@ -12,28 +12,28 @@ import {
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {
-        const contract_info: TGetFinalPrice = {
+        const contract_info = {
             sell_price: 12345,
             bid_price: 0,
         };
         expect(ContractUtils.getFinalPrice(contract_info)).to.eql(12345);
     });
     it('should return sell_price as final price when sell_price && bid_price are available', () => {
-        const contract_info: TGetFinalPrice = {
+        const contract_info = {
             sell_price: 12345,
             bid_price: 789,
         };
         expect(ContractUtils.getFinalPrice(contract_info)).to.eql(12345);
     });
     it('should return bid_price as final price when sell_price is not available and bid_price is available', () => {
-        const contract_info: TGetFinalPrice = {
+        const contract_info = {
             sell_price: 0,
             bid_price: 789,
         };
         expect(ContractUtils.getFinalPrice(contract_info)).to.eql(789);
     });
     it('should return 0 as final price when sell_price and bid_price are empty', () => {
-        const contract_info: TGetFinalPrice = {
+        const contract_info = {
             sell_price: 0,
             bid_price: 0,
         };

@@ -184,9 +184,10 @@ const FinancialAssessment = ({
     is_financial_information_incomplete,
     is_virtual,
     platform,
-    removeNotificationByKey,
+    refreshNotifications,
     routeBackInApp,
     setFinancialAndTradingAssessment,
+    updateAccountStatus,
 }) => {
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
@@ -219,28 +220,24 @@ const FinancialAssessment = ({
         other_instruments_trading_frequency,
     } = initial_form_values;
 
-    const getFinancialData = () => {
-        WS.authorized.storage.getFinancialAssessment().then(data => {
-            WS.wait('get_account_status').then(() => {
-                setHasTradingExperience(
-                    (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
-                );
-                if (data.error) {
-                    setApiInitialLoadError(data.error.message);
-                    return;
-                }
-                setInitialFormValues(data.get_financial_assessment);
-                setIsLoading(false);
-            });
-        });
-    };
-
     React.useEffect(() => {
         if (is_virtual) {
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
-            getFinancialData();
+            WS.authorized.storage.getFinancialAssessment().then(data => {
+                WS.wait('get_account_status').then(() => {
+                    setHasTradingExperience(
+                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
+                    );
+                    if (data.error) {
+                        setApiInitialLoadError(data.error.message);
+                        return;
+                    }
+                    setInitialFormValues(data.get_financial_assessment);
+                    setIsLoading(false);
+                });
+            });
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -257,6 +254,7 @@ const FinancialAssessment = ({
             setIsBtnLoading(false);
             setStatus({ msg: data.error.message });
         } else {
+            await updateAccountStatus();
             WS.authorized.storage.getFinancialAssessment().then(res_data => {
                 setInitialFormValues(res_data.get_financial_assessment);
                 setIsSubmitSuccess(true);
@@ -265,9 +263,9 @@ const FinancialAssessment = ({
                 if (isDesktop()) {
                     setTimeout(() => setIsSubmitSuccess(false), 10000);
                 }
-                removeNotificationByKey({ key: 'risk' });
             });
             setSubmitting(false);
+            refreshNotifications();
         }
     };
 
@@ -1008,9 +1006,10 @@ FinancialAssessment.propTypes = {
     is_financial_information_incomplete: PropTypes.bool,
     is_virtual: PropTypes.bool,
     platform: PropTypes.string,
-    removeNotificationByKey: PropTypes.func,
+    refreshNotifications: PropTypes.func,
     routeBackInApp: PropTypes.func,
     setFinancialAndTradingAssessment: PropTypes.func,
+    updateAccountStatus: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications }) => ({
@@ -1022,7 +1021,8 @@ export default connect(({ client, common, notifications }) => ({
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,
     platform: common.platform,
-    removeNotificationByKey: notifications.removeNotificationByKey,
+    refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
+    updateAccountStatus: client.updateAccountStatus,
 }))(withRouter(FinancialAssessment));

@@ -22,7 +22,7 @@ const CompletedAssessmentModal = ({ should_show_assessment_complete_modal, setSh
                 </Text>
                 <Text as='p' size='xs' align='center'>
                     <Localize
-                        i18n_default_text='Thank you! Your response has been recorded into our system.<0/><0/>Please click ‘OK’ to continue'
+                        i18n_default_text='Thank you! Your response has been recorded into our system.<0/><0/>Please click ‘OK’ to continue.'
                         components={[<br key={0} />]}
                     />
                 </Text>

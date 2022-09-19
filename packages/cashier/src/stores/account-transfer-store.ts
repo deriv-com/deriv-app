@@ -450,7 +450,7 @@ export default class AccountTransferStore {
             selected_from.error = AccountTransferGetSelectedError(selected_from?.value, true);
         }
 
-        this.selected_from = selected_from;
+        this.selected_from = selected_from || {};
         this.setTransferFee();
         this.setMinimumFee();
         this.setTransferLimit();

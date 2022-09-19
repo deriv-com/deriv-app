@@ -1,9 +1,5 @@
-import { DetailsOfEachMT5Loginid, Balance } from '@deriv/api-types';
-
-// TODO: this type can be removed when account_id is added to the @deriv/api-types
-type TMT5LoginAccount = DetailsOfEachMT5Loginid & {
-    account_id?: string;
-};
+import { Balance } from '@deriv/api-types';
+import { TMT5LoginAccount } from 'Types';
 
 export type TServerError = {
     code: string;

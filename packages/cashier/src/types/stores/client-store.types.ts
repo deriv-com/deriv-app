@@ -1,10 +1,19 @@
 import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TMT5LoginAccount } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
 // balance is missing in @deriv/api-types
 type TActiveAccounts = TAccount & {
     balance?: number;
+};
+
+type TResponseMt5LoginList = {
+    mt5_login_list: Array<DetailsOfEachMT5Loginid>;
+};
+
+type TResponseTradingPlatformAccountsList = {
+    trading_platform_accounts: Array<TMT5LoginAccount>;
 };
 
 export type TClientStore = {
@@ -46,8 +55,10 @@ export type TClientStore = {
     loginid?: string;
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
-    responseMt5LoginList: Array<DetailsOfEachMT5Loginid>;
-    responseTradingPlatformAccountsList: Array<DetailsOfEachMT5Loginid>;
+    responseMt5LoginList: ({ mt5_login_list }: TResponseMt5LoginList) => Array<DetailsOfEachMT5Loginid>;
+    responseTradingPlatformAccountsList: ({
+        trading_platform_accounts,
+    }: TResponseTradingPlatformAccountsList) => Array<TMT5LoginAccount>;
     setAccountStatus: (status: string) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     switchAccount: (value?: string) => void;

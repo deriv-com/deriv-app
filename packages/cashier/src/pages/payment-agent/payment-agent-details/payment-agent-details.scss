@@ -15,6 +15,7 @@
             margin-bottom: 8px;
             display: flex;
             flex-direction: row;
+            word-break: break-all;
 
             &:first-child {
                 & .payment-agent-details__contact {

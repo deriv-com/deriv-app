@@ -21,8 +21,8 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
 
     return (
         <div className='trading-assessment__wrapper__dropdown'>
-            {item_list.map((question, index) => (
-                <Field name={question.form_control} key={index}>
+            {item_list.map(question => (
+                <Field name={question.form_control} key={question.form_control}>
                     {() => {
                         return (
                             <React.Fragment>

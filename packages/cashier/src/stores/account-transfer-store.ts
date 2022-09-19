@@ -132,8 +132,7 @@ export default class AccountTransferStore {
             if (this.accounts_list?.length > 0) {
                 const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
                 sessionStorage.removeItem('cfd_transfer_to_login_id');
-                const obj_values: TAccount =
-                    this.accounts_list.find(account => account.value === cfd_transfer_to_login_id) || {};
+                const obj_values = this.accounts_list.find(account => account.value === cfd_transfer_to_login_id);
                 if (obj_values) {
                     if (hasTransferNotAllowedLoginid(obj_values.value)) {
                         // check if selected to is not allowed account

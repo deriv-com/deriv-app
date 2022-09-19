@@ -18,7 +18,7 @@ export default class WithdrawStore {
     @observable blockchain_address = '';
     @observable container = Constants.containers.withdraw;
     @observable error = new ErrorStore();
-    @observable is_10k_withdrawal_limit_reached: boolean | undefined = undefined;
+    @observable is_10k_withdrawal_limit_reached?: boolean = undefined;
     @observable is_withdraw_confirmed = false;
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable withdraw_amount = '';
@@ -60,7 +60,7 @@ export default class WithdrawStore {
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +crypto_fiat_converter.converter_from_amount,
+            amount: Number(crypto_fiat_converter.converter_from_amount),
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -79,7 +79,7 @@ export default class WithdrawStore {
         this.error.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +converter_from_amount,
+            amount: Number(converter_from_amount),
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -195,7 +195,7 @@ export default class WithdrawStore {
         if (str_reg_exp.test(verification_code)) {
             response_cashier = await this.WS.cryptoWithdraw({
                 address: this.blockchain_address,
-                amount: +crypto_fiat_converter.converter_from_amount,
+                amount: Number(crypto_fiat_converter.converter_from_amount),
                 verification_code,
                 dry_run: 1,
             });
@@ -231,7 +231,7 @@ export default class WithdrawStore {
     }
 
     @action.bound
-    setMaxWithdrawAmount(amount: number | undefined): void {
+    setMaxWithdrawAmount(amount: number): void {
         if (amount) this.max_withdraw_amount = amount;
     }
 
@@ -242,7 +242,7 @@ export default class WithdrawStore {
         const remainder = (await client.getLimits())?.get_limits?.remainder;
         this.setMaxWithdrawAmount(remainder);
         const min_withdrawal = getMinWithdrawal(client.currency);
-        const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
+        const is_limit_reached = !!(typeof remainder !== 'undefined' && Number(remainder) < min_withdrawal);
         this.set10kLimitation(is_limit_reached);
     }
 
@@ -282,7 +282,8 @@ export default class WithdrawStore {
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
 
         const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
-        const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
+        const max_withdraw_amount =
+            Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);
 
         const format_balance = formatMoney(currency, balance, true);
         const format_min_withdraw_amount = formatMoney(currency, min_withdraw_amount, true);
@@ -294,15 +295,15 @@ export default class WithdrawStore {
                 decimals: getDecimalPlaces(currency),
             });
             if (!is_ok) error_message = message;
-            else if (+balance < +converter_from_amount) error_message = localize('Insufficient funds');
-            else if (min_withdraw_amount !== undefined && +balance < +min_withdraw_amount) {
+            else if (Number(balance) < Number(converter_from_amount)) error_message = localize('Insufficient funds');
+            else if (min_withdraw_amount && Number(balance) < Number(min_withdraw_amount)) {
                 error_message = localize(
                     'Your balance ({{format_balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{format_min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.',
                     { format_balance, currency, format_min_withdraw_amount }
                 );
             } else if (
-                (min_withdraw_amount !== undefined && +converter_from_amount < +min_withdraw_amount) ||
-                +converter_from_amount > +max_withdraw_amount
+                (min_withdraw_amount && Number(converter_from_amount) < Number(min_withdraw_amount)) ||
+                Number(converter_from_amount) > Number(max_withdraw_amount)
             ) {
                 error_message = localize(
                     'The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}',

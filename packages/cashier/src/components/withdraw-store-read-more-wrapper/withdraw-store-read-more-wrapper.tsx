@@ -6,6 +6,7 @@ type TWithdrawStoreReadMoreWrapperProps = {
     error_content: string | ReactElement;
     openDialog: () => void;
 };
+
 const WithdrawStoreReadMoreWrapper = ({ error_content, openDialog }: TWithdrawStoreReadMoreWrapperProps) => {
     return (
         <ReadMore

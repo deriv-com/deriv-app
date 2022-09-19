@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
-import { TProviderDetails, TProviderDetailsWithoutFrom, TServerError, TClientStore } from 'Types';
+import { TProviderDetails, TProviderDetailsWithoutFrom, TServerError } from 'Types';
+import OnRampStore from '../stores/on-ramp-store';
 
 export type TProviderResponse = {
     error: TServerError;
@@ -10,7 +11,7 @@ export type TProviderResponse = {
     };
 };
 
-const createBanxaProvider = (store: any): TProviderDetails => ({
+const createBanxaProvider = (store: OnRampStore): TProviderDetails => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
     name: 'Banxa',
     getDescription: () =>
@@ -63,9 +64,7 @@ const createBanxaProvider = (store: any): TProviderDetails => ({
     should_show_deposit_address: false,
 });
 
-const createChangellyProvider = (store: {
-    root_store: { client: { currency: TClientStore['currency'] } };
-}): TProviderDetails => ({
+const createChangellyProvider = (store: OnRampStore): TProviderDetails => ({
     icon: { dark: 'IcCashierChangellyDark', light: 'IcCashierChangellyLight' },
     name: 'Changelly',
     getDescription: () =>
@@ -102,10 +101,7 @@ const createChangellyProvider = (store: {
     should_show_deposit_address: true,
 });
 
-const createXanPoolProvider = (store: {
-    root_store: { client: { currency: TClientStore['currency'] } };
-    deposit_address: string | null;
-}): TProviderDetailsWithoutFrom => ({
+const createXanPoolProvider = (store: OnRampStore): TProviderDetailsWithoutFrom => ({
     icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
     name: 'XanPool',
     getDescription: () =>

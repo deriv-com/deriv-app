@@ -1,5 +1,5 @@
 import OnRampStore from '../on-ramp-store';
-import OnrampProviders from 'Config/on-ramp-providers';
+import OnrampProviders from '../../config/on-ramp-providers';
 import { waitFor } from '@testing-library/react';
 
 let changelly_provider, onramp_store, onramp_providers, root_store, WS;
@@ -18,7 +18,7 @@ beforeEach(() => {
             }),
         },
     };
-    onramp_store = new OnRampStore({ WS, root_store });
+    onramp_store = new OnRampStore(WS, root_store);
     onramp_providers = [
         OnrampProviders.createChangellyProvider(onramp_store),
         OnrampProviders.createXanPoolProvider(onramp_store),

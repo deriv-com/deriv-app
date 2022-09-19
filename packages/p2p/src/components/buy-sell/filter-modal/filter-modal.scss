@@ -40,7 +40,7 @@
 
     &__row {
         align-items: center;
-        border-bottom: 2px solid var(--general-section-1);
+        border-bottom: 2px solid var(--general-section-5);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -63,7 +63,7 @@
 
 .dc-modal__container_payment-methods {
     .dc-modal-header {
-        border-bottom: 2px solid var(--general-section-1);
+        border-bottom: 2px solid var(--general-section-5);
         height: 5.6rem;
 
         &__title {

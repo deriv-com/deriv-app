@@ -149,7 +149,7 @@ export default class AccountTransferStore {
     canDoAccountTransfer(accounts: Array<TAccount>) {
         let can_transfer = true;
         // should have at least one account with balance
-        if (!accounts.find(account => Number(account.balance) > 0)) {
+        if (!accounts.find(account => account.balance && +account.balance > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
         } else {
@@ -566,7 +566,7 @@ export default class AccountTransferStore {
         const selected_from_currency = this.selected_from.currency;
         const selected_to_currency = this.selected_to.currency;
 
-        if (amount > 0 || Number(this.selected_from.balance) === 0) {
+        if (amount > 0 || (this.selected_from.balance && +this.selected_from.balance === 0)) {
             crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
             crypto_fiat_converter.onChangeConverterFromAmount(
@@ -596,7 +596,7 @@ export default class AccountTransferStore {
             });
             if (!is_ok) {
                 setConverterFromError(message);
-            } else if (Number(this.selected_from.balance) < +converter_from_amount) {
+            } else if (this.selected_from.balance && +this.selected_from.balance < +converter_from_amount) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {
                 setConverterFromError('');

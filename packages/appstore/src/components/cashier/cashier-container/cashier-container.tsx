@@ -41,10 +41,7 @@ const CashierContainer = () => {
                                         width_of_tab='144px'
                                     >
                                         <div className='cashier-container-tabs-container'>
-                                            <>
-                                                xxxx
-                                                <Withdrawal />
-                                            </>
+                                            <Withdrawal />
                                         </div>
                                     </Tab>
                                 );

@@ -39,6 +39,10 @@ const JurisdictionModal = ({
         poi_resubmit_for_vanuatu,
         poi_verified_for_bvi_labuan_maltainvest,
         poi_or_poa_not_submitted,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
+        need_poa_resubmission,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
+        poa_acknowledged,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -84,10 +88,12 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
 
-    const is_regulated_except_vanuatu =
-        jurisdiction_selected_shortcode &&
-        jurisdiction_selected_shortcode !== 'svg' &&
-        jurisdiction_selected_shortcode !== 'vanuatu';
+    const is_svg_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'svg';
+    const is_bvi_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'bvi';
+    const is_vanuatu_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'vanuatu';
+    const is_labuan_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'labuan';
+    const is_maltainvest_selected =
+        jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'maltainvest';
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
@@ -101,12 +107,22 @@ const JurisdictionModal = ({
                       );
 
             if (!is_account_created) {
-                if (jurisdiction_selected_shortcode === 'svg' || poi_or_poa_not_submitted) {
+                if (is_svg_selected || poi_or_poa_not_submitted) {
                     return false;
-                } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+                } else if (is_vanuatu_selected) {
                     return poi_pending_for_vanuatu || (poi_verified_for_vanuatu && !checked);
+                } else if (is_bvi_selected) {
+                    return (
+                        poi_pending_for_bvi_labuan_maltainvest || (poi_verified_for_bvi_labuan_maltainvest && !checked)
+                    );
+                } else if (is_labuan_selected || is_maltainvest_selected) {
+                    return (
+                        (poi_acknowledged_for_bvi_labuan_maltainvest &&
+                            poa_acknowledged &&
+                            !poi_poa_verified_for_bvi_labuan_maltainvest) ||
+                        (poi_poa_verified_for_bvi_labuan_maltainvest && !checked)
+                    );
                 }
-                return poi_pending_for_bvi_labuan_maltainvest || (poi_verified_for_bvi_labuan_maltainvest && !checked);
             }
             return true;
         }
@@ -127,22 +143,28 @@ const JurisdictionModal = ({
             type: account_type.type,
         };
 
-        if (is_eu && jurisdiction_selected_shortcode === 'maltainvest') {
-            if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+        if (is_eu && is_labuan_selected) {
+            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
-        } else if (jurisdiction_selected_shortcode === 'svg') {
+        } else if (is_svg_selected) {
             openPasswordModal(type_of_account);
-        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+        } else if (is_vanuatu_selected) {
             if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
-        } else if (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'labuan') {
+        } else if (is_bvi_selected) {
             if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+                openPersonalDetailsFormOrPasswordForm(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (is_labuan_selected) {
+            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -152,11 +174,20 @@ const JurisdictionModal = ({
 
     const buttonText = () => {
         if (
-            ((jurisdiction_selected_shortcode === 'vanuatu' && poi_resubmit_for_vanuatu) ||
-                (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)) &&
+            (is_labuan_selected || is_labuan_selected) &&
+            poi_resubmit_for_bvi_labuan_maltainvest &&
+            need_poa_resubmission
+        ) {
+            return <Localize i18n_default_text='Resubmit' />;
+        } else if (
+            ((is_vanuatu_selected && poi_resubmit_for_vanuatu) ||
+                ((is_bvi_selected || is_labuan_selected || is_maltainvest_selected) &&
+                    poi_resubmit_for_bvi_labuan_maltainvest)) &&
             !poi_or_poa_not_submitted
         ) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
+        } else if ((is_labuan_selected || is_maltainvest_selected) && need_poa_resubmission) {
+            return <Localize i18n_default_text='Resubmit proof of address' />;
         }
         return <Localize i18n_default_text='Next' />;
     };

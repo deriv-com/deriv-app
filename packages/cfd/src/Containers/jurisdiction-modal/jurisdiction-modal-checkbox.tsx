@@ -11,8 +11,12 @@ const JurisdictionCheckBox = ({
     jurisdiction_selected_shortcode,
     onCheck,
 }: TJurisdictionCheckBoxProps) => {
-    const { poi_verified_for_bvi_labuan_maltainvest, poi_verified_for_vanuatu, poa_not_submitted } =
-        getAuthenticationStatusInfo(account_status);
+    const {
+        poi_verified_for_bvi_labuan_maltainvest,
+        poi_verified_for_vanuatu,
+        poa_not_submitted,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
+    } = getAuthenticationStatusInfo(account_status);
 
     const shouldShowCheckBox = () => {
         if (jurisdiction_selected_shortcode) {
@@ -25,9 +29,14 @@ const JurisdictionCheckBox = ({
             ) {
                 return true;
             } else if (
-                ['bvi', 'labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode) &&
+                jurisdiction_selected_shortcode === 'bvi' &&
                 poi_verified_for_bvi_labuan_maltainvest &&
                 !poa_not_submitted
+            ) {
+                return true;
+            } else if (
+                ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode) &&
+                poi_poa_verified_for_bvi_labuan_maltainvest
             ) {
                 return true;
             }

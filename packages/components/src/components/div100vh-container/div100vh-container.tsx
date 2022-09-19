@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Div100vh from 'react-div-100vh';
+import { use100vh } from 'react-div-100vh';
 
 /* Div100vh is workaround for getting accurate height of 100vh from browsers on mobile,
     because using normal css vh is not returning correct screen height */
@@ -13,14 +13,14 @@ import Div100vh from 'react-div-100vh';
 /* To bypass usage of component altogether, use is_bypassed */
 
 type TDiv100vhContainerProps = {
-    id: string;
+    id?: string;
     children: ReactNode;
-    height_offset: string;
-    is_bypassed: boolean;
-    is_disabled: boolean;
-    max_height_offset: string;
-    className: string;
-    max_autoheight_offset: string;
+    height_offset?: string;
+    is_bypassed?: boolean;
+    is_disabled?: boolean;
+    max_height_offset?: string;
+    className?: string;
+    max_autoheight_offset?: string;
 };
 const Div100vhContainer = ({
     children,
@@ -31,7 +31,9 @@ const Div100vhContainer = ({
     height_offset,
     max_autoheight_offset,
 }: TDiv100vhContainerProps) => {
-    const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
+    const screen_vertical_height = use100vh();
+    const height = screen_vertical_height ? `${screen_vertical_height}px` : '100rvh';
+    const height_rule = height_offset ? `calc(${height} - ${height_offset})` : `calc(${height})`;
 
     const height_style = {
         ...(!max_autoheight_offset && {
@@ -44,9 +46,9 @@ const Div100vhContainer = ({
 
     if (is_bypassed) return children;
     return (
-        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
+        <div id={id} className={className} style={is_disabled ? {} : height_style}>
             {children}
-        </Div100vh>
+        </div>
     );
 };
 

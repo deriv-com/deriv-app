@@ -5,6 +5,24 @@ import Constants from 'Constants/constants';
 import { TRootStore, TWebSocket } from 'Types';
 import ErrorStore from './error-store';
 
+type TConfirm = {
+    amount?: number;
+    client_id?: string;
+    client_name?: string;
+    description?: string;
+};
+
+type TReceipt = {
+    amount_transferred?: number;
+    client_id?: string;
+    client_name?: string;
+};
+
+type TMinMax = {
+    min_withdrawal?: number;
+    max_withdrawal?: number;
+};
+
 export default class PaymentAgentTransferStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         this.root_store = root_store;
@@ -16,9 +34,10 @@ export default class PaymentAgentTransferStore {
     @observable is_payment_agent = false;
     @observable is_try_transfer_successful = false;
     @observable is_transfer_successful = false;
-    @observable confirm = {};
-    @observable receipt = {};
-    @observable transfer_limit = {};
+    @observable confirm: TConfirm = {};
+    @observable receipt: TReceipt = {};
+    @observable transfer_limit: TMinMax = {};
+    @observable onRemount: () => Promise<void>;
 
     @computed
     get is_payment_agent_transfer_visible(): boolean {
@@ -52,7 +71,7 @@ export default class PaymentAgentTransferStore {
     }
 
     @action.bound
-    setConfirmationPaymentAgentTransfer({ amount, client_id, client_name, description }): void {
+    setConfirmationPaymentAgentTransfer({ amount, client_id, client_name, description }: TConfirm): void {
         this.confirm = {
             amount,
             client_id,
@@ -62,7 +81,7 @@ export default class PaymentAgentTransferStore {
     }
 
     @action.bound
-    setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }): void {
+    setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }: TReceipt): void {
         this.receipt = {
             amount_transferred,
             client_id,
@@ -70,21 +89,23 @@ export default class PaymentAgentTransferStore {
         };
     }
 
-    async getCurrentPaymentAgent(
-        response_payment_agent: PaymentAgentListResponse
-    ): Promise<PaymentAgentDetailsResponse> {
+    async getCurrentPaymentAgent(response_payment_agent: PaymentAgentListResponse): Promise<TMinMax> {
         const { client, modules } = this.root_store;
         const payment_agent_listed = response_payment_agent.paymentagent_list?.list.find(
             agent => agent.paymentagent_loginid === client.loginid
         );
-        const current_payment_agent =
-            payment_agent_listed || (await modules.cashier.payment_agent.getPaymentAgentDetails());
+        const response: PaymentAgentDetailsResponse = await modules.cashier.payment_agent.getPaymentAgentDetails();
+        const min = payment_agent_listed?.min_withdrawal || response.paymentagent_details?.min_withdrawal;
+        const max = payment_agent_listed?.max_withdrawal || response.paymentagent_details?.max_withdrawal;
 
-        return current_payment_agent ?? {};
+        return {
+            min_withdrawal: min ? Number(min) : undefined,
+            max_withdrawal: max ? Number(max) : undefined,
+        };
     }
 
     @action.bound
-    setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }: PaymentAgentDetailsResponse) {
+    setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }: TMinMax) {
         this.transfer_limit = {
             min: min_withdrawal,
             max: max_withdrawal,
@@ -99,7 +120,7 @@ export default class PaymentAgentTransferStore {
         this.onRemount = this.onMountPaymentAgentTransfer;
         await general_store.onMountCommon();
         if (!this.transfer_limit.min_withdrawal) {
-            const response = await payment_agent.getPaymentAgentList();
+            const response: PaymentAgentListResponse = await payment_agent.getPaymentAgentList();
             const current_payment_agent = await this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
@@ -123,7 +144,7 @@ export default class PaymentAgentTransferStore {
             dry_run: 1,
         });
 
-        if (payment_agent_transfer.paymentagent_transfer && payment_agent_transfer.paymentagent_transfer === 2) {
+        if (payment_agent_transfer.paymentagent_transfer === 2) {
             // show confirmation screen
             this.setConfirmationPaymentAgentTransfer({
                 client_id: transfer_to,
@@ -155,7 +176,7 @@ export default class PaymentAgentTransferStore {
             transfer_to,
         });
 
-        if (payment_agent_transfer.paymentagent_transfer && payment_agent_transfer.paymentagent_transfer === 1) {
+        if (payment_agent_transfer.paymentagent_transfer === 1) {
             this.setReceiptPaymentAgentTransfer({
                 amount_transferred: amount,
                 client_id: transfer_to,
@@ -177,7 +198,7 @@ export default class PaymentAgentTransferStore {
     };
 
     @action.bound
-    resetPaymentAgentTransfer = () => {
+    resetPaymentAgentTransfer = (): void => {
         this.setIsTransferSuccessful(false);
         this.error.setErrorMessage('');
     };

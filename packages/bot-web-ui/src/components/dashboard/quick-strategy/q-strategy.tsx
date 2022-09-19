@@ -6,12 +6,10 @@ import { QStrategyContainer } from './q-strategy-components';
 import { localize } from '@deriv/translations';
 import { MobileFullPageModal } from '@deriv/components';
 
-const QStrategy = (props: TQuickStrategyProps) => {
+const QuickStrategy = (props: TQuickStrategyProps) => {
     const { is_mobile, is_strategy_modal_open, toggleStrategyModal } = props;
     React.useEffect(() => {
-        if (!is_mobile) {
-            toggleStrategyModal();
-        }
+        toggleStrategyModal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -61,4 +59,4 @@ export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     setCurrentFocus: ui.setCurrentFocus,
-}))(QStrategy);
+}))(QuickStrategy);

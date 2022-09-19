@@ -11,7 +11,7 @@ export { default as Journal } from './journal';
 export { default as LoadModal } from './load-modal';
 export { default as MainContent } from './main-content';
 export { messageWithButton, messageWithImage, arrayAsMessage } from './notify-item';
-export { default as QuickStrategy } from './quick-strategy';
+export { default as QuickStrategy } from './dashboard/quick-strategy';
 export { default as RoutePromptDialog } from './route-prompt-dialog';
 export { default as RunPanel } from './run-panel';
 export { default as SaveModal } from './save-modal';

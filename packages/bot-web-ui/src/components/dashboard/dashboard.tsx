@@ -12,19 +12,21 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
-import QStrategy from './quick-strategy/q-strategy';
+import QStrategy from './quick-strategy';
 
 interface DashboardProps {
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
+    toggleStrategyModal: () => void;
 }
 
-const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
+const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal }: DashboardProps) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [tour_run, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
+        toggleStrategyModal();
     };
 
     return (
@@ -45,7 +47,9 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                         id='id-quick-strategy'
                         onTabItemClick={handleClick}
                     >
-                        <QStrategy />
+                        <div>
+                            <QStrategy />
+                        </div>
                     </Tab>
                     <Tab icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                         <div className='dashboard__chart-wrapper'>
@@ -71,7 +75,8 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     );
 };
 
-export default connect((store: RootStore) => ({
-    active_tab: store.dashbaord.active_tab,
-    setActiveTab: store.dashbaord.setActiveTab,
+export default connect(({ dashbaord, quick_strategy }: RootStore) => ({
+    active_tab: dashbaord.active_tab,
+    setActiveTab: dashbaord.setActiveTab,
+    toggleStrategyModal: quick_strategy.toggleStrategyModal,
 }))(Dashboard);

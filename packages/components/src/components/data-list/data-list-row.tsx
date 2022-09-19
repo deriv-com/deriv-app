@@ -1,8 +1,18 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useIsMounted } from '@deriv/shared';
+
+type TDataListRowProps = {
+    action_desc: any;
+    destination_link: string;
+    row_gap: number;
+    row_key: string[] | number[];
+    rowRenderer: () => void;
+    measure: () => void;
+    is_dynamic_height: boolean;
+};
 
 const DataListRow = ({
     action_desc,
@@ -13,7 +23,7 @@ const DataListRow = ({
     measure,
     is_dynamic_height,
     ...other_props
-}) => {
+}: TDataListRowProps) => {
     const [show_desc, setShowDesc] = React.useState(false);
     const isMounted = useIsMounted();
 
@@ -62,16 +72,6 @@ const DataListRow = ({
             )}
         </div>
     );
-};
-
-DataListRow.propTypes = {
-    action_desc: PropTypes.object,
-    destination_link: PropTypes.string,
-    row_gap: PropTypes.number,
-    row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    rowRenderer: PropTypes.func,
-    measure: PropTypes.func,
-    is_dynamic_height: PropTypes.bool,
 };
 
 export default React.memo(DataListRow);

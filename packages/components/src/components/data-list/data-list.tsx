@@ -6,9 +6,25 @@ import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellM
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
-import DataListCell from './data-list-cell.jsx';
-import DataListRow from './data-list-row.jsx';
+import DataListCell from './data-list-cell.js';
+import DataListRow from './data-list-row.js';
 import ThemedScrollbars from '../themed-scrollbars';
+
+DataList.propTypes = {
+    className: PropTypes.string,
+    data_source: PropTypes.array,
+    footer: PropTypes.object,
+    getRowAction: PropTypes.func,
+    getRowSize: PropTypes.func,
+    keyMapper: PropTypes.func,
+    onRowsRendered: PropTypes.func,
+    onScroll: PropTypes.func,
+    passthrough: PropTypes.object,
+    row_gap: PropTypes.number,
+    setListRef: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+    overscanRowCount: PropTypes.number,
+};
 
 const DataList = React.memo(
     ({
@@ -184,20 +200,5 @@ const DataList = React.memo(
 DataList.displayName = 'DataList';
 
 DataList.Cell = DataListCell;
-DataList.propTypes = {
-    className: PropTypes.string,
-    data_source: PropTypes.array,
-    footer: PropTypes.object,
-    getRowAction: PropTypes.func,
-    getRowSize: PropTypes.func,
-    keyMapper: PropTypes.func,
-    onRowsRendered: PropTypes.func,
-    onScroll: PropTypes.func,
-    passthrough: PropTypes.object,
-    row_gap: PropTypes.number,
-    setListRef: PropTypes.func,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
-    overscanRowCount: PropTypes.number,
-};
 
 export default DataList;

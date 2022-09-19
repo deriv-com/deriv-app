@@ -1,7 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const DataListCell = ({ className, column, is_footer, passthrough, row }) => {
+type TDataListCellProps = {
+    className: string;
+    column: any;
+    is_footer: boolean;
+    passthrough: any;
+    row: any;
+};
+
+const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCellProps) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];

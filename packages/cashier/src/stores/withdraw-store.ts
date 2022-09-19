@@ -232,7 +232,7 @@ export default class WithdrawStore {
 
     @action.bound
     setMaxWithdrawAmount(amount: number): void {
-        if (amount) this.max_withdraw_amount = amount;
+        this.max_withdraw_amount = amount;
     }
 
     @action.bound

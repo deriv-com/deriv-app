@@ -68,15 +68,12 @@
             }
         }
         &--description {
-            display: flex;
-            flex-direction: row;
             align-items: flex-start;
             padding: 0px;
             gap: 4px;
             font-weight: 340;
             font-size: 16px;
             line-height: 24px;
-            width: 1070px;
             height: 24px;
             .link {
                 height: 24px;
@@ -90,8 +87,6 @@
             @include mobile {
                 width: 328px;
                 height: 54px;
-
-                /* mobile/small/S - regular */
                 font-style: normal;
                 font-weight: 400;
                 font-size: 12px;

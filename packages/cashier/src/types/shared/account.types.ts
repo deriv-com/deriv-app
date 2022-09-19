@@ -8,6 +8,7 @@ export type TAccount = {
     currency?: string;
     disabled?: boolean;
     error?: JSX.Element | string;
+    is_crypto?: boolean;
     is_dxtrade?: boolean;
     is_mt?: boolean;
     market_type?: string;

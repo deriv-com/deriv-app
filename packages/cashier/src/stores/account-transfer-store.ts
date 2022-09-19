@@ -40,7 +40,7 @@ export default class AccountTransferStore {
     @observable selected_to: TAccount = {};
     @observable account_transfer_amount = 0;
     @observable transfer_fee: number | undefined | null = null;
-    @observable transfer_limit: { min?: string; max?: string } = {};
+    @observable transfer_limit: { min?: string | null; max?: string | null } = {};
 
     @computed
     get is_account_transfer_visible() {
@@ -340,7 +340,7 @@ export default class AccountTransferStore {
                       account.currency !== 'eUSDT' ? account.currency?.toUpperCase() : account.currency
                   );
 
-            const obj_values = {
+            const obj_values: TAccount = {
                 text: account_text_display,
                 value: account.loginid,
                 balance: account.balance,
@@ -457,7 +457,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    onChangeTransferTo({ target }: { target: { value: string } }) {
+    onChangeTransferTo({ target }: { target: { value: string | undefined } }) {
         this.error.setErrorMessage('');
         this.selected_to.error = '';
 

@@ -74,7 +74,11 @@ const Options = ({
             <div className='options-container__accounts-platform-container'>
                 {!is_app_launcher ? (
                     <div className='options-container__accounts-platform-container--accounts'>
-                        {is_demo_account ? <OptionsAccount {...account_props[0]} /> : <OptionsAccount {...account_props[1]} />}
+                        {is_demo_account ? (
+                            <OptionsAccount {...account_props[0]} />
+                        ) : (
+                            <OptionsAccount {...account_props[1]} />
+                        )}
                         {!is_demo_account && (
                             <div className='options-container__accounts-platform-container--add-options'>
                                 <AddOptions {...addoptions_props} />
@@ -89,7 +93,9 @@ const Options = ({
                 {is_app_launcher && <span className='options-container__accounts-platform-container--divider' />}
                 <div
                     className={`options-container__accounts-platform-container--platform ${
-                        is_app_launcher ? 'options-container__accounts-platform-container--platform-with-applauncher' : ''
+                        is_app_launcher
+                            ? 'options-container__accounts-platform-container--platform-with-applauncher'
+                            : ''
                     }`}
                 >
                     {platformlauncherprops.map((item, index) => {

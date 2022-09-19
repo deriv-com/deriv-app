@@ -36,7 +36,7 @@ beforeEach(() => {
             },
         },
     };
-    payment_agent_transfer_store = new PaymentAgentTransferStore({ WS, root_store });
+    payment_agent_transfer_store = new PaymentAgentTransferStore(WS, root_store);
     response_payment_agent = {
         paymentagent_list: {
             list: [{ paymentagent_loginid: 'CR9000000' }],

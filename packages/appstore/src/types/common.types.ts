@@ -5,3 +5,6 @@ export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType exten
 export type RequiredAndNotNull<T> = {
     [P in keyof T]-?: Exclude<T[P], null | undefined>;
 };
+
+export type TAccountCategory = 'real' | 'demo';
+export type TPlatform = 'dxtrade' | 'mt5';

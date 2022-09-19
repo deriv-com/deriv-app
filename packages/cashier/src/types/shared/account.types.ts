@@ -37,6 +37,7 @@ export type TMt5LoginList = Array<DetailsOfEachMT5Loginid>;
 // TODO: this type can be removed when account_id is added to the @deriv/api-types
 export type TMT5LoginAccount = DetailsOfEachMT5Loginid & {
     account_id?: string;
+    loginid?: string;
 };
 
 export type TAccountsList = {

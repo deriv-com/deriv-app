@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
-import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAccounts } from 'Types';
+import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAccounts, TMT5LoginAccount } from 'Types';
 
 const hasTransferNotAllowedLoginid = (loginid: string | undefined) => loginid?.startsWith('MX');
 
@@ -277,6 +277,8 @@ export default class AccountTransferStore {
             accounts?.sort((a, b) => {
                 const a_is_mt = a.account_type === CFD_PLATFORMS.MT5;
                 const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
+                const a_currency = a.currency ? a.currency : '';
+                const b_currency = b.currency ? b.currency : '';
                 const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
                 const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
@@ -290,7 +292,7 @@ export default class AccountTransferStore {
                     }
                     return 1;
                 } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-                    return a.currency < b.currency ? -1 : 1;
+                    return a_currency < b_currency ? -1 : 1;
                 } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
                     return -1;
                 }
@@ -300,7 +302,7 @@ export default class AccountTransferStore {
         const arr_accounts: Array<TAccount> = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        accounts?.forEach((account: TTransferAccount) => {
+        accounts?.forEach((account: TMT5LoginAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'DMT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },

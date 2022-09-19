@@ -1,4 +1,9 @@
-type TLocationList = {
+type TType = {
+    text: string;
+    value: string;
+};
+
+type TLocationList = TType & {
     identity: {
         services: {
             idv: object;
@@ -6,11 +11,9 @@ type TLocationList = {
         };
     };
     phone_idd: string;
-    text: string;
-    value: string;
 };
 
-export const getLocation = (location_list: TLocationList[], value: string, type: 'text' | 'value') => {
+export const getLocation = (location_list: TLocationList[], value: string, type: keyof TType) => {
     const location_obj = location_list.find(
         location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
     );

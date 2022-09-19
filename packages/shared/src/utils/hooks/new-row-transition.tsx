@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const useNewRowTransition = (is_new_row: boolean) => {
-    const [in_prop, setInProp] = React.useState<boolean>(!is_new_row);
+    const [in_prop, setInProp] = React.useState(!is_new_row);
 
     React.useEffect(() => {
         if (is_new_row) setInProp(true);

@@ -93,7 +93,7 @@ const AdvertiserPage = () => {
                     page_title={localize("Advertiser's page")}
                 />
                 <MobileWrapper>
-                    <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />
+                    {!is_my_advert && <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />}
                 </MobileWrapper>
             </div>
             <BlockUserOverlay
@@ -209,7 +209,7 @@ const AdvertiserPage = () => {
                             </div>
                         </div>
                         <DesktopWrapper>
-                            <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />
+                            {!is_my_advert && <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />}
                         </DesktopWrapper>
                     </div>
                     <AdvertiserPageStats />

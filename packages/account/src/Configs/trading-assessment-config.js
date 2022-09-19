@@ -55,20 +55,20 @@ export const trading_assessment_questions = [
                 form_control: 'cfd_experience',
                 answer_options: [
                     {
-                        text: localize('No experience'),
                         value: 'No experience',
+                        text: localize('No experience'),
                     },
                     {
-                        text: localize('Less than a year'),
                         value: 'Less than a year',
+                        text: localize('Less than a year'),
                     },
                     {
-                        text: localize('1 - 2 years'),
                         value: '1 - 2 years',
+                        text: localize('1 - 2 years'),
                     },
                     {
-                        text: localize('Over 3 years'),
                         value: 'Over 3 years',
+                        text: localize('Over 3 years'),
                     },
                 ],
             },
@@ -78,24 +78,24 @@ export const trading_assessment_questions = [
                 form_control: 'cfd_frequency',
                 answer_options: [
                     {
-                        text: localize('None'),
                         value: 'No transactions in the past 12 months',
+                        text: localize('None'),
                     },
                     {
-                        text: '1 - 5',
                         value: '1 - 5 transactions in the past 12 months',
+                        text: '1 - 5',
                     },
                     {
-                        text: '6 - 10',
                         value: '6 - 10 transactions in the past 12 months',
+                        text: '6 - 10',
                     },
                     {
-                        text: '11 - 39',
                         value: '11 - 39 transactions in the past 12 months',
+                        text: '11 - 39',
                     },
                     {
-                        text: localize('40 or more'),
                         value: '40 transactions or more in the past 12 months',
+                        text: localize('40 or more'),
                     },
                 ],
             },
@@ -105,20 +105,20 @@ export const trading_assessment_questions = [
                 form_control: 'trading_experience_financial_instruments',
                 answer_options: [
                     {
-                        text: localize('No experience'),
                         value: 'No experience',
+                        text: localize('No experience'),
                     },
                     {
-                        text: localize('Less than a year'),
                         value: 'Less than a year',
+                        text: localize('Less than a year'),
                     },
                     {
-                        text: localize('1 - 2 years'),
                         value: '1 - 2 years',
+                        text: localize('1 - 2 years'),
                     },
                     {
-                        text: localize('Over 3 years'),
                         value: 'Over 3 years',
+                        text: localize('Over 3 years'),
                     },
                 ],
             },
@@ -130,24 +130,24 @@ export const trading_assessment_questions = [
                 field_type: 'dropdown',
                 answer_options: [
                     {
-                        text: localize('None'),
                         value: 'No transactions in the past 12 months',
+                        text: localize('None'),
                     },
                     {
-                        text: '1 - 5',
                         value: '1 - 5 transactions in the past 12 months',
+                        text: '1 - 5',
                     },
                     {
                         text: '6 - 10',
                         value: '6 - 10 transactions in the past 12 months',
                     },
                     {
-                        text: '11 - 39',
                         value: '11 - 39 transactions in the past 12 months',
+                        text: '11 - 39',
                     },
                     {
-                        text: localize('40 or more'),
                         value: '40 transactions or more in the past 12 months',
+                        text: localize('40 or more'),
                     },
                 ],
             },

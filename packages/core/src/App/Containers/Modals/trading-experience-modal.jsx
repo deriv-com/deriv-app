@@ -26,7 +26,7 @@ const TradingExperienceModal = ({
             is_open={is_trading_experience_incomplete && should_show_trading_assessment_modal}
         >
             <Modal.Body>
-                <Icon icon='IcCurrency-eur-check' size={95} />
+                <Icon icon='IcCurrencyEurCheck' size={95} />
                 <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
                     <Localize i18n_default_text='Trading Experience Assessment<0/>' components={[<br key={0} />]} />
                 </Text>

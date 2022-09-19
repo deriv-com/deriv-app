@@ -126,7 +126,7 @@ const TradingAssessmentForm = ({
                         return (
                             <Form className='trading-assessment__form--layout'>
                                 <div className='trading-assessment__form--fields'>
-                                    {questions && questions.length ? (
+                                    {questions?.length ? (
                                         <TradingAssessmentDropdown
                                             item_list={questions}
                                             onChange={handleValueSelection}

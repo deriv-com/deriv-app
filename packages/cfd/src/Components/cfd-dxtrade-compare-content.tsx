@@ -122,9 +122,9 @@ type TGetAccounts = (params: TCompareAccountsReusedProps) => TAccountsDescriptio
 type TAccountTypesToFilter = (TLandingCompany['dxtrade_all_company'] | boolean | undefined)[];
 
 const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
-    const getLoggedInTypesCount = () => ([landing_companies?.dxtrade_all_company] as TAccountTypesToFilter).length;
+    const getLoggedInTypesCount = ([landing_companies?.dxtrade_all_company] as TAccountTypesToFilter).length;
 
-    const account_types_count = is_logged_in ? getLoggedInTypesCount() : 2;
+    const account_types_count = is_logged_in ? getLoggedInTypesCount : 2;
 
     return [
         {
@@ -230,8 +230,9 @@ const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
 };
 
 const CFDAttributeDescriber = ({ name, counter }: TCFDAttributeDescriberProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [is_visible, setIsVisible] = React.useState(false);
-    const toggleModal = () => setIsVisible(!is_visible);
+    const toggleModal = () => setIsVisible(prev => !prev);
 
     return counter ? (
         <React.Fragment>

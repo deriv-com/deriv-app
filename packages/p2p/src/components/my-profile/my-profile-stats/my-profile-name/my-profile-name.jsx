@@ -10,7 +10,6 @@ import MyProfilePrivacy from '../my-profile-privacy';
 import StarRating from 'Components/star-rating';
 import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
-import classNames from 'classnames';
 
 const MyProfileName = () => {
     const { general_store, my_profile_store } = useStores();
@@ -77,7 +76,7 @@ const MyProfileName = () => {
                                             </Text>
                                         </div>
                                     </div>
-                                    <div className='my-profile-name--rating__row my-profile-name--rating__row--last'>
+                                    <div className='my-profile-name--rating__row'>
                                         <RecommendedBy
                                             recommended_average={recommended_average}
                                             recommended_count={recommended_count}
@@ -110,34 +109,29 @@ const MyProfileName = () => {
                                     )}
                                 </Text>
                             </DesktopWrapper>
-                            <MobileWrapper>
-                                <div
-                                    className={classNames('my-profile-name--row', {
-                                        'my-profile-name--row--rated': rating_average,
-                                        'my-profile-name--row--no-rating': !rating_average,
-                                    })}
-                                >
-                                    <div className='my-profile-name--rating__row'>
-                                        <BlockUserCount />
-                                    </div>
-                                    <Text
-                                        className='my-profile-name--rating__row'
-                                        color='less-prominent'
-                                        size={isMobile() ? 'xxxs' : 'xs'}
-                                    >
-                                        {joined_since > 0 ? (
-                                            <Localize
-                                                i18n_default_text='Joined {{days_since_joined}}d'
-                                                values={{ days_since_joined: joined_since }}
-                                            />
-                                        ) : (
-                                            <Localize i18n_default_text='Joined today' />
-                                        )}
-                                    </Text>
-                                </div>
-                            </MobileWrapper>
                         </div>
-                        <div className='my-profile-name--row'>
+                        <MobileWrapper>
+                            <div className='my-profile-name__row'>
+                                <div className='my-profile-name--rating__row'>
+                                    <BlockUserCount />
+                                </div>
+                                <Text
+                                    className='my-profile-name--rating__row'
+                                    color='less-prominent'
+                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                >
+                                    {joined_since > 0 ? (
+                                        <Localize
+                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                            values={{ days_since_joined: joined_since }}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text='Joined today' />
+                                    )}
+                                </Text>
+                            </div>
+                        </MobileWrapper>
+                        <div className='my-profile-name__row'>
                             <TradeBadge
                                 is_poa_verified={!!full_verification}
                                 is_poi_verified={!!basic_verification}

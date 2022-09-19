@@ -1,5 +1,5 @@
 import { action, observable, computed } from 'mobx';
-import { WS } from '@deriv/shared';
+import { useWs as WS } from 'Services/websocket';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import {
@@ -78,7 +78,7 @@ export default class WalletStore extends BaseStore {
     @action.bound
     async getWalletNames() {
         if (this.wallet_names) return;
-        const response = await WS.authorized.storage.send({
+        const response = await WS().authorized.storage.send({
             get_account_types: 1,
         });
 

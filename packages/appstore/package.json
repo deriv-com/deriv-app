@@ -26,11 +26,12 @@
     "dependencies": {
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "1.0.48",
+        "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/ui": "^0.0.6",
+        "@deriv/ui": "^0.0.13",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^5.15.7",

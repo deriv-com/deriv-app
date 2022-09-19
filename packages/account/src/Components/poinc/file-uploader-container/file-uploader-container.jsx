@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import { isDesktop, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import FileUploader from '../../file-uploader';
+import FileUploader from 'Components/file-uploader';
 
 const PoincFileUploaderContainer = ({ document_type, is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
     const ref = React.useRef();

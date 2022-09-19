@@ -18,15 +18,15 @@ import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAccounts } from 'Types';
 
-const hasTransferNotAllowedLoginid = (loginid: string) => loginid.startsWith('MX');
+const hasTransferNotAllowedLoginid = (loginid: string | undefined) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
     // eslint-disable-next-line no-useless-constructor
     constructor(public WS: TWebSocket, public root_store: TRootStore) {}
 
-    @observable accounts_list = [];
+    @observable accounts_list: Array<TAccount> = [];
     @observable container = Constants.containers.account_transfer;
     @observable error = new ErrorStore();
     @observable has_no_account = false;
@@ -34,13 +34,13 @@ export default class AccountTransferStore {
     @observable is_transfer_confirm = false;
     @observable is_transfer_successful = false;
     @observable is_mt5_transfer_in_progress = false;
-    @observable minimum_fee = null;
+    @observable minimum_fee = '';
     @observable receipt = {};
-    @observable selected_from = {};
-    @observable selected_to = {};
-    @observable account_transfer_amount = '';
-    @observable transfer_fee = null;
-    @observable transfer_limit = {};
+    @observable selected_from: TAccount = {};
+    @observable selected_to: TAccount = {};
+    @observable account_transfer_amount = 0;
+    @observable transfer_fee: number | undefined | null = null;
+    @observable transfer_limit: { min?: string; max?: string } = {};
 
     @computed
     get is_account_transfer_visible() {
@@ -68,17 +68,18 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    setBalanceByLoginId(loginid, balance) {
-        this.accounts_list.find(acc => loginid === acc.value).balance = balance;
+    setBalanceByLoginId(loginid: string | undefined, balance: string | undefined) {
+        const account = this.accounts_list.find(acc => loginid === acc.value);
+        if (account) account.balance = balance;
     }
 
     @action.bound
-    setBalanceSelectedFrom(balance) {
+    setBalanceSelectedFrom(balance: string | undefined): void {
         this.selected_from.balance = balance;
     }
 
     @action.bound
-    setBalanceSelectedTo(balance) {
+    setBalanceSelectedTo(balance: string | undefined): void {
         this.selected_to.balance = balance;
     }
 
@@ -101,7 +102,7 @@ export default class AccountTransferStore {
         const has_updated_account_balance =
             this.has_no_accounts_balance &&
             Object.keys(active_accounts).find(
-                account => !active_accounts[account].is_virtual && active_accounts[account].balance
+                account => !active_accounts[+account].is_virtual && active_accounts[+account].balance
             );
         if (has_updated_account_balance) {
             this.setHasNoAccountsBalance(false);
@@ -131,7 +132,8 @@ export default class AccountTransferStore {
             if (this.accounts_list?.length > 0) {
                 const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
                 sessionStorage.removeItem('cfd_transfer_to_login_id');
-                const obj_values = this.accounts_list.find(account => account.value === cfd_transfer_to_login_id);
+                const obj_values: TAccount =
+                    this.accounts_list.find(account => account.value === cfd_transfer_to_login_id) || {};
                 if (obj_values) {
                     if (hasTransferNotAllowedLoginid(obj_values.value)) {
                         // check if selected to is not allowed account
@@ -144,10 +146,10 @@ export default class AccountTransferStore {
         setLoading(false);
     }
 
-    canDoAccountTransfer(accounts) {
+    canDoAccountTransfer(accounts: Array<TAccount>) {
         let can_transfer = true;
         // should have at least one account with balance
-        if (!accounts.find(account => +account.balance > 0)) {
+        if (!accounts.find(account => Number(account.balance) > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
         } else {
@@ -167,12 +169,12 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    setHasNoAccountsBalance(has_no_accounts_balance) {
+    setHasNoAccountsBalance(has_no_accounts_balance: boolean): void {
         this.has_no_accounts_balance = has_no_accounts_balance;
     }
 
     @action.bound
-    setHasNoAccount(has_no_account) {
+    setHasNoAccount(has_no_account: boolean): void {
         this.has_no_account = has_no_account;
     }
 
@@ -218,7 +220,8 @@ export default class AccountTransferStore {
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.transfer_limit = {
             max:
-                !transfer_limit?.max || (+balance >= (transfer_limit?.min || 0) && +balance <= transfer_limit?.max)
+                !transfer_limit?.max ||
+                (balance && +balance >= (transfer_limit?.min || 0) && (balance && +balance) <= transfer_limit?.max)
                     ? balance
                     : transfer_limit?.max.toFixed(decimal_places),
             min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
@@ -226,7 +229,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    async sortAccountsTransfer(response_accounts) {
+    async sortAccountsTransfer(response_accounts: TTransferBetweensAccounts) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
             if (transfer_between_accounts.error) {
@@ -240,7 +243,7 @@ export default class AccountTransferStore {
             ?.trading_platform_accounts;
 
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
-        const accounts = transfer_between_accounts.accounts.map(account => {
+        const accounts = transfer_between_accounts.accounts?.map(account => {
             if (account.account_type === CFD_PLATFORMS.MT5 && Array.isArray(mt5_login_list) && mt5_login_list.length) {
                 // account_type in transfer_between_accounts (mt5|binary)
                 // gets overridden by account_type in mt5_login_list (demo|real)
@@ -271,8 +274,8 @@ export default class AccountTransferStore {
         // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
         // should have more than one account
-        if (transfer_between_accounts.accounts.length > 1) {
-            accounts.sort((a, b) => {
+        if (transfer_between_accounts.accounts && transfer_between_accounts.accounts.length > 1) {
+            accounts?.sort((a, b) => {
                 const a_is_mt = a.account_type === CFD_PLATFORMS.MT5;
                 const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
                 const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
@@ -280,11 +283,11 @@ export default class AccountTransferStore {
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
                 const b_is_fiat = !b_is_mt && !b_is_crypto;
                 if (a_is_mt && b_is_mt) {
-                    if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
+                    if (a.market_type === 'synthetic') {
                         return -1;
                     }
                     if (a.sub_account_type === 'financial') {
-                        return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
+                        return b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;
                 } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
@@ -295,10 +298,10 @@ export default class AccountTransferStore {
                 return a_is_mt ? -1 : 1;
             });
         }
-        const arr_accounts = [];
+        const arr_accounts: Array<TAccount> = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        accounts.forEach(account => {
+        accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'DMT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
@@ -335,7 +338,7 @@ export default class AccountTransferStore {
             const account_text_display = is_cfd
                 ? cfd_account_text_display
                 : getCurrencyDisplayCode(
-                      account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                      account.currency !== 'eUSDT' ? account.currency?.toUpperCase() : account.currency
                   );
 
             const obj_values = {
@@ -378,49 +381,49 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    setSelectedFrom(obj_values) {
+    setSelectedFrom(obj_values: TAccount): void {
         this.selected_from = obj_values;
     }
 
     @action.bound
-    setSelectedTo(obj_values) {
+    setSelectedTo(obj_values: TAccount): void {
         this.selected_to = obj_values;
     }
 
     @action.bound
-    setAccounts(arr_accounts) {
+    setAccounts(arr_accounts: Array<TAccount>): void {
         this.accounts_list = arr_accounts;
     }
 
     @action.bound
-    setIsTransferConfirm(is_transfer_confirm) {
+    setIsTransferConfirm(is_transfer_confirm: boolean): void {
         this.is_transfer_confirm = is_transfer_confirm;
     }
 
     @action.bound
-    setAccountTransferAmount(amount) {
+    setAccountTransferAmount(amount: number): void {
         this.account_transfer_amount = amount;
     }
 
     @action.bound
-    setIsTransferSuccessful(is_transfer_successful) {
+    setIsTransferSuccessful(is_transfer_successful: boolean): void {
         this.is_transfer_successful = is_transfer_successful;
     }
 
     @action.bound
-    setIsMT5TransferInProgress(is_mt5_transfer_in_progress) {
+    setIsMT5TransferInProgress(is_mt5_transfer_in_progress: boolean): void {
         this.is_mt5_transfer_in_progress = is_mt5_transfer_in_progress;
     }
 
     @action.bound
-    setReceiptTransfer({ amount }) {
+    setReceiptTransfer({ amount }: { amount: number }): void {
         this.receipt = {
             amount_transferred: amount,
         };
     }
 
     @action.bound
-    onChangeTransferFrom({ target }) {
+    onChangeTransferFrom({ target }: { target: { value: string } }) {
         this.error.setErrorMessage('');
         this.selected_from.error = '';
 
@@ -429,23 +432,23 @@ export default class AccountTransferStore {
 
         // if new value of selected_from is the same as the current selected_to
         // switch the value of selected_from and selected_to
-        if (selected_from.value === this.selected_to.value) {
+        if (selected_from?.value === this.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.selected_from.value } });
         } else if (
-            (selected_from.is_mt && this.selected_to.is_mt) ||
-            (selected_from.is_dxtrade && this.selected_to.is_dxtrade) ||
-            (selected_from.is_dxtrade && this.selected_to.is_mt) ||
-            (selected_from.is_mt && this.selected_to.is_dxtrade)
+            (selected_from?.is_mt && this.selected_to.is_mt) ||
+            (selected_from?.is_dxtrade && this.selected_to.is_dxtrade) ||
+            (selected_from?.is_dxtrade && this.selected_to.is_mt) ||
+            (selected_from?.is_mt && this.selected_to.is_dxtrade)
         ) {
             // not allowed to transfer from MT to MT
             // not allowed to transfer from Dxtrade to Dxtrade
             // not allowed to transfer between MT and Dxtrade
             const first_non_cfd = this.accounts_list.find(account => !account.is_mt && !account.is_dxtrade);
-            this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
+            this.onChangeTransferTo({ target: { value: first_non_cfd?.value } });
         }
 
-        if (hasTransferNotAllowedLoginid(selected_from.value)) {
-            selected_from.error = AccountTransferGetSelectedError(selected_from.value, true);
+        if (selected_from && hasTransferNotAllowedLoginid(selected_from?.value)) {
+            selected_from.error = AccountTransferGetSelectedError(selected_from?.value, true);
         }
 
         this.selected_from = selected_from;
@@ -455,7 +458,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    onChangeTransferTo({ target }) {
+    onChangeTransferTo({ target }: { target: { value: string } }) {
         this.error.setErrorMessage('');
         this.selected_to.error = '';
 
@@ -469,7 +472,7 @@ export default class AccountTransferStore {
         this.setTransferLimit();
     }
 
-    requestTransferBetweenAccounts = async ({ amount }) => {
+    requestTransferBetweenAccounts = async ({ amount }: { amount: number }) => {
         const { client, modules } = this.root_store;
         const { setLoading } = modules.cashier.general_store;
         const {
@@ -512,7 +515,7 @@ export default class AccountTransferStore {
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
             this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
-            transfer_between_accounts.accounts.forEach(account => {
+            transfer_between_accounts.accounts.forEach((account: TTransferAccount) => {
                 this.setBalanceByLoginId(account.loginid, account.balance);
                 if (account.loginid === this.selected_from.value) {
                     this.setBalanceSelectedFrom(account.balance);
@@ -543,7 +546,7 @@ export default class AccountTransferStore {
                     });
                 }
             });
-            this.setAccountTransferAmount(null);
+            this.setAccountTransferAmount(0);
             this.setIsTransferConfirm(true);
         }
         setLoading(false);
@@ -557,13 +560,13 @@ export default class AccountTransferStore {
     };
 
     @action.bound
-    setTransferPercentageSelectorResult(amount) {
+    setTransferPercentageSelectorResult(amount: number) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         const selected_from_currency = this.selected_from.currency;
         const selected_to_currency = this.selected_to.currency;
 
-        if (amount > 0 || +this.selected_from.balance === 0) {
+        if (amount > 0 || Number(this.selected_from.balance) === 0) {
             crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
             crypto_fiat_converter.onChangeConverterFromAmount(
@@ -593,7 +596,7 @@ export default class AccountTransferStore {
             });
             if (!is_ok) {
                 setConverterFromError(message);
-            } else if (+this.selected_from.balance < +converter_from_amount) {
+            } else if (Number(this.selected_from.balance) < +converter_from_amount) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {
                 setConverterFromError('');

@@ -1,4 +1,9 @@
-import { Authorize, DetailsOfEachMT5Loginid, Balance } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, Balance } from '@deriv/api-types';
+
+// TODO: this type can be removed when account_id is added to the @deriv/api-types
+type TMT5LoginAccount = DetailsOfEachMT5Loginid & {
+    account_id?: string;
+};
 
 export type TServerError = {
     code: string;
@@ -21,16 +26,16 @@ export type TWebSocket = {
     authorized: TWebSocketCall;
     balanceAll: () => Promise<Balance>;
     mt5LoginList: () => {
-        mt5_login_list: DetailsOfEachMT5Loginid[];
+        mt5_login_list: Array<TMT5LoginAccount>;
     };
     send: (obj: any) => Promise<any>;
     storage: {
         mt5LoginList: () => {
-            mt5_login_list: DetailsOfEachMT5Loginid[];
+            mt5_login_list: Array<TMT5LoginAccount>;
         };
     };
     tradingPlatformAccountsList: (platform: string) => {
-        trading_platform_accounts: DetailsOfEachMT5Loginid[];
+        trading_platform_accounts: Array<TMT5LoginAccount>;
     };
     wait: (value: string) => Promise<any>;
 };

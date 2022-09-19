@@ -43,9 +43,6 @@
 
         @include mobile {
             padding: 1rem 0;
-        }
-
-        @include mobile {
             flex-flow: row wrap;
         }
 

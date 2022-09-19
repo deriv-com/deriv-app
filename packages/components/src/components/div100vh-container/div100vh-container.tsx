@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Div100vh from 'react-div-100vh';
 
 /* Div100vh is workaround for getting accurate height of 100vh from browsers on mobile,
@@ -12,6 +11,17 @@ import Div100vh from 'react-div-100vh';
 */
 /* To manually remove rvh calculation and revert to default browser calculation use is_disabled */
 /* To bypass usage of component altogether, use is_bypassed */
+
+type TDiv100vhContainerProps = {
+    id: string;
+    children: ReactNode;
+    height_offset: string;
+    is_bypassed: boolean;
+    is_disabled: boolean;
+    max_height_offset: string;
+    className: string;
+    max_autoheight_offset: string;
+};
 const Div100vhContainer = ({
     children,
     className,
@@ -20,29 +30,24 @@ const Div100vhContainer = ({
     id,
     height_offset,
     max_autoheight_offset,
-}) => {
+}: TDiv100vhContainerProps) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
+
     const height_style = {
-        height: max_autoheight_offset ? null : height_rule,
-        maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : null,
+        ...(!max_autoheight_offset && {
+            height: height_rule,
+        }),
+        ...(max_autoheight_offset && {
+            maxHeight: `calc(100rvh - ${max_autoheight_offset})`,
+        }),
     };
+
     if (is_bypassed) return children;
     return (
         <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
             {children}
         </Div100vh>
     );
-};
-
-Div100vhContainer.propTypes = {
-    id: PropTypes.string,
-    children: PropTypes.any,
-    height_offset: PropTypes.string,
-    is_bypassed: PropTypes.bool,
-    is_disabled: PropTypes.bool,
-    max_height_offset: PropTypes.string,
-    className: PropTypes.string,
-    max_autoheight_offset: PropTypes.string,
 };
 
 export default Div100vhContainer;

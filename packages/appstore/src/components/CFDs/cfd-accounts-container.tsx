@@ -94,7 +94,6 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                     isDerivedVisible={isDerivedVisible}
                     isFinancialVisible={isFinancialVisible}
                     isDerivXVisible={isDerivXVisible}
-                    hasAccount={hasAccount}
                     is_eu={is_eu}
                     is_eu_country={is_eu_country}
                     is_logged_in={is_logged_in}
@@ -120,7 +119,6 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                     isDerivedVisible={isDerivedVisible}
                     isFinancialVisible={isFinancialVisible}
                     isDerivXVisible={isDerivXVisible}
-                    hasAccount={hasAccount}
                     is_eu={is_eu}
                     is_eu_country={is_eu_country}
                     is_logged_in={is_logged_in}

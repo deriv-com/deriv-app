@@ -91,13 +91,14 @@ const App = ({ passthrough }) => {
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
-            <div className='bot'>
+            <div className={show_dashboard ? 'bot-dashboard' : 'bot'}>
+                <BotNotificationMessages />
+                <NetworkToastPopup />
+
                 {show_dashboard ? (
                     <Dashboard />
                 ) : (
                     <>
-                        <BotNotificationMessages />
-                        <NetworkToastPopup />
                         <Toolbar />
                         <MainContent />
                         <RunPanel />

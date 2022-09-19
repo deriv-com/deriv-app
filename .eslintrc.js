@@ -61,6 +61,10 @@ module.exports = {
                     '**/*.test.js*',
                     '**/*.spec.js',
                     '**/*.spec.jsx',
+                    '**/*.spec.ts',
+                    '**/*.test.ts',
+                    '**/*.spec.tsx',
+                    '**/*.test.tsx',
                 ],
             },
         ],
@@ -173,6 +177,12 @@ module.exports = {
             settings: {
                 react: {
                     version: 'detect',
+                },
+                'import/resolver': {
+                    node: {
+                        extensions: ['.ts', '.tsx'],
+                        moduleDirectory: ['src', 'node_modules'],
+                    },
                 },
             },
         },

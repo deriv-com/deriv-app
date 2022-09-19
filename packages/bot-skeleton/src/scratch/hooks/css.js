@@ -64,10 +64,10 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.injectionDiv {',
-    'height: 100%;',
+    'height: calc(100vh - 110px);',
     'position: relative;',
     'overflow: hidden;' /* So blocks in drag surface disappear at edges */,
-    'touch-action: none',
+    'touch-action: none;',
     '}',
 
     '.blocklyNonSelectable {',
@@ -222,7 +222,7 @@ Blockly.Css.CONTENT = [
     'margin: 4px;',
     'border-radius: 4px;',
     'background: $colour_numPadBackground;',
-    'color: $colour_numPadText;',
+    'color: var(--text-general);',
     'outline: none;',
     'border: 1px solid $colour_numPadBorder;',
     'cursor: pointer;',
@@ -235,6 +235,7 @@ Blockly.Css.CONTENT = [
     'margin-top: 10%;',
     'width: 80%;',
     'height: 80%;',
+    'filter: invert(1);',
     '}',
 
     '.blocklyNumPadButton:active {',

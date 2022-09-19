@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import LoadModal from 'Components/load-modal';
 import SaveModal from 'Components/save-modal';
-import TradeAnimation from 'Components/trade-animation';
 import { tabs_title } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
+import RunStrategy from './run-strategy.tsx';
 
 const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }) => (
     <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>
@@ -149,13 +149,7 @@ const Toolbar = ({ onMount, onUnmount, ...other_props }) => {
                             />
                             {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...other_props} />}
                         </div>
-                        <div className='toolbar__section'>
-                            <TradeAnimation
-                                className='toolbar__animation'
-                                should_show_overlay={true}
-                                info_direction={'left'}
-                            />
-                        </div>
+                        <RunStrategy />
                     </div>
                 </ThemedScrollbars>
             )}

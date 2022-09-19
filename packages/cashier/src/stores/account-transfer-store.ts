@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
-import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAccounts, TMT5LoginAccount } from 'Types';
+import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAccounts } from 'Types';
 
 const hasTransferNotAllowedLoginid = (loginid: string | undefined) => loginid?.startsWith('MX');
 
@@ -287,7 +287,7 @@ export default class AccountTransferStore {
                     if (a.market_type === 'synthetic') {
                         return -1;
                     }
-                    if (a.sub_account_type === 'financial') {
+                    if ('sub_account_type' in a && a.sub_account_type === 'financial') {
                         return b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;
@@ -299,17 +299,20 @@ export default class AccountTransferStore {
                 return a_is_mt ? -1 : 1;
             });
         }
-        const arr_accounts: Array<TAccount> = [];
+        const arr_accounts: Array<TTransferAccount | TAccount> = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        accounts?.forEach((account: TMT5LoginAccount) => {
+        accounts?.forEach((acc: any) => {
+            const account = acc as TTransferAccount;
             const cfd_platforms = {
                 mt5: { name: 'DMT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
             };
-            const is_cfd = Object.keys(cfd_platforms).includes(account.account_type);
-            const cfd_text_display = cfd_platforms[account.account_type]?.name;
-            const cfd_icon_display = `${cfd_platforms[account.account_type]?.icon}-${getCFDAccount({
+            const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
+            const cfd_text_display = cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.name;
+            const cfd_icon_display = `${
+                cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.icon
+            }-${getCFDAccount({
                 market_type: account.market_type,
                 sub_account_type: account.sub_account_type,
                 platform: account.account_type,

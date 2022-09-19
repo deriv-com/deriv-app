@@ -185,7 +185,6 @@ const FinancialAssessment = ({
     is_virtual,
     platform,
     removeNotificationByKey,
-    removeNotificationMessage,
     routeBackInApp,
     setFinancialAndTradingAssessment,
 }) => {
@@ -220,24 +219,28 @@ const FinancialAssessment = ({
         other_instruments_trading_frequency,
     } = initial_form_values;
 
+    const getFinancialData = () => {
+        WS.authorized.storage.getFinancialAssessment().then(data => {
+            WS.wait('get_account_status').then(() => {
+                setHasTradingExperience(
+                    (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
+                );
+                if (data.error) {
+                    setApiInitialLoadError(data.error.message);
+                    return;
+                }
+                setInitialFormValues(data.get_financial_assessment);
+                setIsLoading(false);
+            });
+        });
+    };
+
     React.useEffect(() => {
         if (is_virtual) {
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
-            WS.authorized.storage.getFinancialAssessment().then(data => {
-                WS.wait('get_account_status').then(() => {
-                    setHasTradingExperience(
-                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
-                    );
-                    if (data.error) {
-                        setApiInitialLoadError(data.error.message);
-                        return;
-                    }
-                    setInitialFormValues(data.get_financial_assessment);
-                    setIsLoading(false);
-                });
-            });
+            getFinancialData();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -262,7 +265,6 @@ const FinancialAssessment = ({
                 if (isDesktop()) {
                     setTimeout(() => setIsSubmitSuccess(false), 10000);
                 }
-                removeNotificationMessage({ key: 'risk' });
                 removeNotificationByKey({ key: 'risk' });
             });
             setSubmitting(false);
@@ -1007,7 +1009,6 @@ FinancialAssessment.propTypes = {
     is_virtual: PropTypes.bool,
     platform: PropTypes.string,
     removeNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
     routeBackInApp: PropTypes.func,
     setFinancialAndTradingAssessment: PropTypes.func,
 };
@@ -1022,7 +1023,6 @@ export default connect(({ client, common, notifications }) => ({
     is_virtual: client.is_virtual,
     platform: common.platform,
     removeNotificationByKey: notifications.removeNotificationByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
     routeBackInApp: common.routeBackInApp,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
 }))(withRouter(FinancialAssessment));

@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import CFDDemoAccounts from './cfd-demo-accounts';
 import CFDRealAccounts from './cfd-real-accounts';
 import { isLandingCompanyEnabled, CFD_PLATFORMS } from '@deriv/shared';
-import { Loading } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import { Loading, Text, StaticUrl } from '@deriv/components';
 import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType } from 'Types';
 import { useStores } from 'Stores/index';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 type TCFDAccountsProps = {
     account_type: TAccountCategory;
@@ -89,6 +89,24 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
     if (is_loading) return <Loading className='cfd-accounts-container__loader' />;
     return (
         <div className='cfd-accounts-container'>
+            <div className='cfd-demo-account__title'>
+                <Text weight='bold' size='m'>
+                    CFDs
+                </Text>
+                <Text weight='bold' size='xxs' color='red'>
+                    <Localize i18n_default_text='Compare accounts' />
+                </Text>
+            </div>
+            <div className='cfd-demo-account__description'>
+                <Text>
+                    <Localize
+                        i18n_default_text={
+                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                        }
+                        components={[<StaticUrl key={0} className='link' href='/dmt5' />]}
+                    />
+                </Text>
+            </div>
             {account_type === 'demo' && (
                 <CFDDemoAccounts
                     isDerivedVisible={isDerivedVisible}

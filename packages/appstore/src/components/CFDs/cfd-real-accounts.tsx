@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Text, StaticUrl } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import CFDAccountManager from '../cfd-account-manager';
 import AddDerived from 'Components/add-derived';
@@ -58,24 +57,6 @@ const CFDRealAccounts = ({
 
     return (
         <div className='cfd-real-account'>
-            <div className='cfd-real-account__title'>
-                <Text weight='bold' size='m'>
-                    CFDs
-                </Text>
-                <Text weight='bold' size='xxs' color='red'>
-                    <Localize i18n_default_text='Compare accounts' />
-                </Text>
-            </div>
-            <div className='cfd-real-account__description'>
-                <Text>
-                    <Localize
-                        i18n_default_text={
-                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
-                        }
-                        components={[<StaticUrl key={0} className='link' href='/dmt5' />]}
-                    />
-                </Text>
-            </div>
             {!has_real_account && <MissingRealAccount onClickSignup={() => null} />}
             <div className='cfd-real-account__accounts'>
                 {available_real_accounts.map(account => (

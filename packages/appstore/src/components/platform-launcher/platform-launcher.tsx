@@ -7,9 +7,10 @@ type TPlatformLauncherProps = {
     app_icon: string;
     app_title?: string;
     app_desc?: string;
+    has_account?: boolean;
 };
 
-const PlatformLauncher = ({ app_icon, app_title, app_desc }: TPlatformLauncherProps) => {
+const PlatformLauncher = ({ app_icon, app_title, app_desc, has_account }: TPlatformLauncherProps) => {
     return (
         <div className='platform-launcher'>
             <div className='platform-launcher__container'>
@@ -25,11 +26,13 @@ const PlatformLauncher = ({ app_icon, app_title, app_desc }: TPlatformLauncherPr
                     </Text>
                 </div>
             </div>
-            <div className='platform-launcher__trade-button'>
-                <Button primary small onClick={undefined} type='button'>
-                    <Localize i18n_default_text='Trade' />
-                </Button>
-            </div>
+            {has_account && (
+                <div className='platform-launcher__trade-button'>
+                    <Button primary small onClick={undefined} type='button'>
+                        <Localize i18n_default_text='Trade' />
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };

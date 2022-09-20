@@ -1,0 +1,25 @@
+.static-cfd-account-manager {
+    display: flex;
+    width: 29.4rem;
+    align-items: center;
+    justify-content: space-between;
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+
+        &--blurry {
+            opacity: 0.2;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+
+        &-topup {
+            margin-bottom: 0.5rem;
+        }
+    }
+}

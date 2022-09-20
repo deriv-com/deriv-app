@@ -22,6 +22,7 @@ import './appstore/ic-appstore-link-wallet.svg';
 import './appstore/ic-appstore-linked-wallets.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
+import './appstore/ic-appstore-options.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';
 import './appstore/ic-appstore-success.svg';
 import './appstore/ic-appstore-wallet-aud-light.svg';

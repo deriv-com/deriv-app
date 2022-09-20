@@ -1,3 +1,10 @@
+declare global {
+    interface Window {
+        opera?: any;
+        MSStream?: any;
+    }
+}
+
 export const systems: { [key: string]: (string | null)[] } = {
     mac: ['Mac68K', 'MacIntel', 'MacPPC'],
     linux: [
@@ -52,9 +59,7 @@ export const OSDetect = () => {
     return 'Unknown OS';
 };
 
-// TODO will fix these 2 after Property 'opera' does not exist on type 'Window & typeof globalThis'.ts(2339) merged
 export const mobileOSDetect = () => {
-    // @ts-ignore
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
     // Windows Phone must come first because its UA also contains "Android"
@@ -67,7 +72,6 @@ export const mobileOSDetect = () => {
     }
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    // @ts-ignore
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
         return 'iOS';
     }

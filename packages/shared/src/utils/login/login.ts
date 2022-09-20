@@ -16,10 +16,9 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
 };
 
 type TRedirectToSignUp = {
-    is_appstore?: boolean;
+    is_appstore: boolean;
 };
 
-// TODO check this seems like we are not using option!
 export const redirectToSignUp = ({ is_appstore }: TRedirectToSignUp) => {
     window.open(getStaticUrl('/signup/', { is_appstore }));
 };
@@ -47,8 +46,6 @@ export const loginUrl = ({ language }: TLoginUrl) => {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
-    // TODO check this type after merging 75857 PR
-    // @ts-ignore
     if (getAppId() === domain_app_ids[window.location.hostname]) {
         return getOAuthUrl();
     }

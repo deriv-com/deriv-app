@@ -50,7 +50,7 @@ export const getMtCompanies = (is_eu: boolean) => {
     const all_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('DerivX'),
+        short_title: localize('CFDs'),
     };
     const synthetic_config = {
         account_type: '',

@@ -7,14 +7,14 @@ import './add-options-account.scss';
 const AddOptionsAccount = () => {
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                <div className='add-options-account'>
-                    <div className='add-options-account__desktop--title'>
+            <div className='add-options-account'>
+                <DesktopWrapper>
+                    <div className='add-options-account__title'>
                         <Text type='paragraph-2' bold>
                             <Localize i18n_default_text='You need an Options account to create a CFD account.' />
                         </Text>
                     </div>
-                    <div className='add-options-account__desktop--button'>
+                    <div className='add-options-account__button'>
                         <Button
                             className='add-options-account__button'
                             type='submit'
@@ -27,11 +27,28 @@ const AddOptionsAccount = () => {
                             primary
                         />
                     </div>
-                </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div className='add' />
-            </MobileWrapper>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div className='add-options-account__title'>
+                        <Text type='paragraph-2' bold>
+                            <Localize i18n_default_text='You need an Options account to create a CFD account.' />
+                        </Text>
+                    </div>
+                    <div className='add-options-account__button'>
+                        <Button
+                            className='add-options-account__button'
+                            type='submit'
+                            onClick
+                            has_effect
+                            is_disabled={false}
+                            is_loading={false}
+                            text={localize('Get an Options account')}
+                            medium
+                            primary
+                        />
+                    </div>
+                </MobileWrapper>
+            </div>
         </React.Fragment>
     );
 };

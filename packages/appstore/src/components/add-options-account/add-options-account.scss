@@ -8,9 +8,19 @@
     margin: 0 auto;
     margin-top: 1.6rem;
     width: 85%;
-    &__desktop {
-        &--title {
-            padding: 1.5rem;
+
+    @include mobile {
+        flex-direction: column;
+        width: 90%;
+        padding-bottom: 1.5rem;
+    }
+
+    &__title {
+        padding: 1.5rem;
+
+        @include mobile {
+            margin-bottom: 1rem;
+            padding: 0.3rem 1.1rem;
         }
     }
 }

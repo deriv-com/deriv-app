@@ -84,7 +84,7 @@ const mt5_login_list: Array<TTransferAccount> = [
 ];
 
 beforeEach(() => {
-    accounts = [
+    (accounts as Array<TTransferAccount>) = [
         CR_USD_account,
         CR_eUSDT_account,
         { ...MT_USD_account, loginid: 'MTR111176' },
@@ -150,7 +150,7 @@ beforeEach(() => {
             },
         },
     };
-    account_transfer_store = new AccountTransferStore(WS, root_store);
+    (account_transfer_store as AccountTransferStore) = new AccountTransferStore(WS, root_store);
 });
 
 jest.mock('@deriv/shared', () => ({

@@ -33,7 +33,7 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
     return (
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
-                <Icon icon='IcWalletDeriv' height={96} width={128} />
+                <Icon icon='IcAppstoreDerivLogo' height={96} width={128} />
                 <Icon icon='IcCross' custom_color='var(--general-main-1)' className='onboarding-header__cross-icon' />
             </div>
             <div className='onboarding-body'>

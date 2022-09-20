@@ -1,5 +1,6 @@
-import { localize } from '@deriv/translations';
 import React from 'react';
+import { localize } from '@deriv/translations';
+import StaticDashboard from 'Components/onboarding/static-dashboard';
 
 type TStep = {
     component: React.ReactNode;
@@ -13,13 +14,13 @@ type TTradingHubContents = Record<'step1' | 'step2' | 'step3' | 'step4' | 'step5
 
 export const trading_hub_contents: TTradingHubContents = {
     step1: {
-        component: 'Step1',
+        component: <StaticDashboard />,
         footer_header: localize('Welcome to Trading Hub'),
         footer_text: localize('This is your new dashboard'),
         has_next_content: false,
     },
     step2: {
-        component: 'Step2',
+        component: <StaticDashboard is_cfd_text_blurry is_options_text_blurry />,
         footer_header: localize('Trading accounts'),
         footer_text: localize(
             'These are the trading accounts available to you. You can click on an account to find out more.'

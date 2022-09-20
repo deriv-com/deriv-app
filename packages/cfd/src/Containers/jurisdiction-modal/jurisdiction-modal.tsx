@@ -174,7 +174,7 @@ const JurisdictionModal = ({
 
     const buttonText = () => {
         if (
-            (is_labuan_selected || is_labuan_selected) &&
+            (is_labuan_selected || is_maltainvest_selected) &&
             poi_resubmit_for_bvi_labuan_maltainvest &&
             need_poa_resubmission
         ) {

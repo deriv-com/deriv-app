@@ -67,18 +67,18 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    setBalanceByLoginId(loginid: string | undefined, balance: string | undefined) {
+    setBalanceByLoginId(loginid: string, balance: string) {
         const account = this.accounts_list.find(acc => loginid === acc.value);
         if (account) account.balance = balance;
     }
 
     @action.bound
-    setBalanceSelectedFrom(balance: string | undefined): void {
+    setBalanceSelectedFrom(balance: string | number): void {
         this.selected_from.balance = balance;
     }
 
     @action.bound
-    setBalanceSelectedTo(balance: string | undefined): void {
+    setBalanceSelectedTo(balance: string | number): void {
         this.selected_to.balance = balance;
     }
 
@@ -519,10 +519,12 @@ export default class AccountTransferStore {
         } else {
             this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach((account: TTransferAccount) => {
-                this.setBalanceByLoginId(account.loginid, account.balance);
-                if (account.loginid === this.selected_from.value) {
+                if (account.loginid && account.balance) {
+                    this.setBalanceByLoginId(account.loginid, account.balance);
+                }
+                if (account.loginid === this.selected_from.value && account.balance) {
                     this.setBalanceSelectedFrom(account.balance);
-                } else if (account.loginid === this.selected_to.value) {
+                } else if (account.loginid === this.selected_to.value && account.balance) {
                     this.setBalanceSelectedTo(account.balance);
                 }
                 // if one of the accounts was mt5

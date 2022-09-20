@@ -3,8 +3,11 @@ import { Text } from '@deriv/ui';
 import { DesktopWrapper, MobileWrapper, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 
-const AddOptionsAccount = () => {
+const AddOptionsAccount: React.FC = () => {
+    const { ui } = useStores();
     return (
         <React.Fragment>
             <div className='add-options-account'>
@@ -18,8 +21,10 @@ const AddOptionsAccount = () => {
                         <Button
                             className='add-options-account__button'
                             type='submit'
-                            onClick
                             has_effect
+                            onClick={() => {
+                                ui.openRealAccountSignup();
+                            }}
                             is_disabled={false}
                             is_loading={false}
                             text={localize('Get an Options account')}
@@ -38,8 +43,10 @@ const AddOptionsAccount = () => {
                         <Button
                             className='add-options-account__button'
                             type='submit'
-                            onClick
                             has_effect
+                            onClick={() => {
+                                ui.openRealAccountSignup();
+                            }}
                             is_disabled={false}
                             is_loading={false}
                             text={localize('Get an Options account')}
@@ -53,4 +60,4 @@ const AddOptionsAccount = () => {
     );
 };
 
-export default AddOptionsAccount;
+export default observer(AddOptionsAccount);

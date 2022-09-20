@@ -4,13 +4,19 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWS as useWSShared } from '@deriv/shared';
 import useWS from '../useWS';
-import { TSocketCallTypes } from '../../types';
+import { TSocketEndpointNames, TSocketRequestProps } from '../../types';
 
 jest.mock('@deriv/shared');
 
 const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
 
-const UseWSExample = <T extends keyof TSocketCallTypes>({ name, request }: { name: T; request: any }) => {
+const UseWSExample = <T extends TSocketEndpointNames>({
+    name,
+    request,
+}: {
+    name: T;
+    request?: TSocketRequestProps<T>;
+}) => {
     const WS = useWS(name);
 
     return (
@@ -27,7 +33,7 @@ const UseWSExample = <T extends keyof TSocketCallTypes>({ name, request }: { nam
 
 describe('useWS', () => {
     test('should have initial error and data of undefined and is_loading of false', async () => {
-        render(<UseWSExample name={'ping'} request={{}} />);
+        render(<UseWSExample name={'ping'} />);
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');
@@ -43,7 +49,7 @@ describe('useWS', () => {
             send: jest.fn(() => Promise.resolve({ ping: 'pong' })),
         });
 
-        render(<UseWSExample name={'ping'} request={{}} />);
+        render(<UseWSExample name={'ping'} />);
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');

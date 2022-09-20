@@ -68,8 +68,7 @@ const CFDDxtradeDemoAccountDisplay = ({
         return acc;
     };
 
-    const current_list_index =
-        Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.dxtrade`)) || '';
+    const current_list_index = Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.dxtrade`)) || '';
 
     return (
         <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>

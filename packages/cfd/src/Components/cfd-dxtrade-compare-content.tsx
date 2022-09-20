@@ -128,7 +128,7 @@ const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
 
     return [
         {
-            attribute: localize('Account currency'),
+            attribute: localize('Currency'),
             dxtrade: {
                 derivx: localize('USD'),
                 footnote: null,

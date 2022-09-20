@@ -45,12 +45,16 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
         if (!is_copied) setIsPopoverOpen(false);
     };
 
-    const copyToClipboard = text => {
+    const copyToClipboard = async text => {
         const textField = document.createElement('textarea');
         textField.innerText = text;
         document.body.appendChild(textField);
         textField.select();
-        document.execCommand('copy');
+        if ('clipboard' in navigator) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            document.execCommand('copy');
+        }
         textField.remove();
     };
 

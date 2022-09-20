@@ -1,9 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import Popover from '../popover';
 import Icon from '../icon';
+
+type TClipboard = {
+    text_copy: string;
+    icon: string;
+    info_message: string;
+    success_message: string;
+    className: string;
+    popoverClassName: string;
+    popoverAlignment: 'top' | 'right' | 'bottom' | 'left';
+    popover_props: any;
+};
 
 const Clipboard = ({
     text_copy,
@@ -14,21 +24,25 @@ const Clipboard = ({
     popoverClassName,
     popover_props = {},
     popoverAlignment = 'bottom',
-}) => {
+}: TClipboard) => {
     const [is_copied, setIsCopied] = React.useState(false);
     const isMounted = useIsMounted();
-    let timeout_clipboard = null;
+    let timeout_clipboard: ReturnType<typeof setTimeout>;
 
-    const copyToClipboard = text => {
+    const copyToClipboard = async (text: string) => {
         const textField = document.createElement('textarea');
         textField.innerText = text;
         document.body.appendChild(textField);
         textField.select();
-        document.execCommand('copy');
+        if ('clipboard' in navigator) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            document.execCommand('copy');
+        }
         textField.remove();
     };
 
-    const onClick = event => {
+    const onClick = (event: React.MouseEvent<HTMLImageElement>) => {
         copyToClipboard(text_copy);
         setIsCopied(true);
         timeout_clipboard = setTimeout(() => {
@@ -41,7 +55,7 @@ const Clipboard = ({
 
     React.useEffect(() => {
         return () => clearTimeout(timeout_clipboard);
-    }, [timeout_clipboard]);
+    }, []);
 
     return (
         <>
@@ -71,14 +85,5 @@ const Clipboard = ({
         </>
     );
 };
-Clipboard.propTypes = {
-    text_copy: PropTypes.string,
-    icon: PropTypes.string,
-    info_message: PropTypes.string,
-    success_message: PropTypes.string,
-    className: PropTypes.string,
-    popoverClassName: PropTypes.string,
-    popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
-    popover_props: PropTypes.object,
-};
+
 export default Clipboard;

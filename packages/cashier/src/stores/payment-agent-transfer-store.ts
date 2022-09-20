@@ -18,9 +18,14 @@ type TReceipt = {
     client_name?: string;
 };
 
-type TMinMax = {
+type TMinMaxWithdrawal = {
     min_withdrawal?: number;
     max_withdrawal?: number;
+};
+
+type TMinMax = {
+    min?: number;
+    max?: number;
 };
 
 export default class PaymentAgentTransferStore {
@@ -37,7 +42,7 @@ export default class PaymentAgentTransferStore {
     @observable confirm: TConfirm = {};
     @observable receipt: TReceipt = {};
     @observable transfer_limit: TMinMax = {};
-    @observable onRemount: () => Promise<void>;
+    @observable onRemount: (() => Promise<void>) | null = null;
 
     @computed
     get is_payment_agent_transfer_visible(): boolean {
@@ -89,7 +94,7 @@ export default class PaymentAgentTransferStore {
         };
     }
 
-    async getCurrentPaymentAgent(response_payment_agent: PaymentAgentListResponse): Promise<TMinMax> {
+    async getCurrentPaymentAgent(response_payment_agent: PaymentAgentListResponse): Promise<TMinMaxWithdrawal> {
         const { client, modules } = this.root_store;
         const payment_agent_listed = response_payment_agent.paymentagent_list?.list.find(
             agent => agent.paymentagent_loginid === client.loginid
@@ -105,7 +110,7 @@ export default class PaymentAgentTransferStore {
     }
 
     @action.bound
-    setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }: TMinMax) {
+    setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }: TMinMaxWithdrawal) {
         this.transfer_limit = {
             min: min_withdrawal,
             max: max_withdrawal,
@@ -119,7 +124,7 @@ export default class PaymentAgentTransferStore {
         general_store.setLoading(true);
         this.onRemount = this.onMountPaymentAgentTransfer;
         await general_store.onMountCommon();
-        if (!this.transfer_limit.min_withdrawal) {
+        if (!this.transfer_limit.min) {
             const response: PaymentAgentListResponse = await payment_agent.getPaymentAgentList();
             const current_payment_agent = await this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);

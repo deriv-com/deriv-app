@@ -81,6 +81,8 @@ describe('PaymentAgentTransferStore', () => {
 
     it('should route to /cashier/deposit if there is no payment agent and window.location.pathname ends with /cashier/payment-agent-transfer', () => {
         const windowSpy = jest.spyOn(window, 'window', 'get');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         windowSpy.mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_pa_transfer,

@@ -13,7 +13,7 @@ import { isStaging } from '../url/helpers';
 export const livechat_license_id = 12049137;
 export const livechat_client_id = '66aa088aad5a414484c1fd1fa8a5ace7';
 
-export const domain_app_ids: { [key: string]: number } = {
+export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
@@ -25,7 +25,7 @@ export const domain_app_ids: { [key: string]: number } = {
     'binary.com': 1,
 };
 
-export const platform_app_ids: { [key: string]: number } = {
+export const platform_app_ids = {
     derivgo: 23789,
 };
 
@@ -43,7 +43,7 @@ export const isTestLink = () => {
 };
 
 export const getAppId = () => {
-    let app_id = null;
+    let app_id: number | string | null = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
     const current_domain: string = getCurrentProductionDomain() || '';

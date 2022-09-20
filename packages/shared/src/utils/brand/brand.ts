@@ -25,10 +25,6 @@ type TPlatforms = {
     go: TPlatform;
 };
 
-export const getBrandName = () => {
-    return config_data.brand_name;
-};
-
 export const getLegalEntityName = (landing_company: keyof TLandingCompany) => {
     return config_data.legal_entities[landing_company];
 };

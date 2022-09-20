@@ -13,8 +13,8 @@ describe('PaymentAgentStore', () => {
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
                 email: 'pa@example.com',
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
+                phone_numbers: [{ phone_number: '+12345678' }],
+                urls: [{ url: 'http://www.pa.com' }],
                 supported_payment_methods: [{ payment_method: 'Visa' }],
             },
             {
@@ -23,8 +23,8 @@ describe('PaymentAgentStore', () => {
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
                 email: 'pa@example.com',
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
+                phone_numbers: [{ phone_number: '+12345678' }],
+                urls: [{ url: 'http://www.pa.com' }],
                 supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             },
         ],
@@ -32,17 +32,17 @@ describe('PaymentAgentStore', () => {
     const mocked_payment_agents = [
         {
             email: 'pa@example.com',
-            phones: '+12345678',
+            phones: [{ phone_number: '+12345678' }],
             name: 'Payment Agent of CR90000000',
             supported_banks: [{ payment_method: 'Visa' }],
-            urls: 'http://www.pa.com',
+            urls: [{ url: 'http://www.pa.com' }],
         },
         {
             email: 'pa@example.com',
-            phones: '+12345678',
+            phones: [{ phone_number: '+12345678' }],
             name: 'Payment Agent of CR90000002',
             supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-            urls: 'http://www.pa.com',
+            urls: [{ url: 'http://www.pa.com' }],
         },
     ];
     const mocked_withdrawal_request = {
@@ -162,10 +162,10 @@ describe('PaymentAgentStore', () => {
             expect.arrayContaining([
                 {
                     email: 'pa@example.com',
-                    phones: '+12345678',
+                    phones: [{ phone_number: '+12345678' }],
                     name: 'Payment Agent of CR90000000',
                     supported_banks: [{ payment_method: 'Visa' }],
-                    urls: 'http://www.pa.com',
+                    urls: [{ url: 'http://www.pa.com' }],
                 },
             ])
         );
@@ -191,10 +191,10 @@ describe('PaymentAgentStore', () => {
             expect.arrayContaining([
                 {
                     email: 'pa@example.com',
-                    phones: '+12345678',
+                    phones: [{ phone_number: '+12345678' }],
                     name: 'Payment Agent of CR90000002',
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                    urls: 'http://www.pa.com',
+                    urls: [{ url: 'http://www.pa.com' }],
                 },
             ])
         );
@@ -268,8 +268,8 @@ describe('PaymentAgentStore', () => {
             max_withdrawal: '2000',
             min_withdrawal: '10',
             email: 'pa@example.com',
-            telephone: '+12345678',
-            url: 'http://www.pa.com',
+            phone_numbers: [{ phone_number: '+12345678' }],
+            urls: [{ url: 'http://www.pa.com' }],
         };
 
         payment_agent_store.addPaymentAgent(payment_agent);
@@ -281,8 +281,8 @@ describe('PaymentAgentStore', () => {
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',
-                    phone: '+12345678',
-                    url: 'http://www.pa.com',
+                    phone: [{ phone_number: '+12345678' }],
+                    url: [{ url: 'http://www.pa.com' }],
                 },
             ])
         );
@@ -302,8 +302,8 @@ describe('PaymentAgentStore', () => {
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',
-                    phone: '+12345678',
-                    url: 'http://www.pa.com',
+                    phone: [{ phone_number: '+12345678' }],
+                    url: [{ url: 'http://www.pa.com' }],
                 },
             ])
         );
@@ -384,8 +384,8 @@ describe('PaymentAgentStore', () => {
             payment_agent_email: 'pa@example.com',
             payment_agent_id: 'CR90000000',
             payment_agent_name: 'Payment Agent of CR90000000',
-            payment_agent_phone: '+12345678',
-            payment_agent_url: 'http://www.pa.com',
+            payment_agent_phone: [{ phone_number: '+12345678' }],
+            payment_agent_url: [{ url: 'http://www.pa.com' }],
         });
         expect(payment_agent_store.is_withdraw_successful).toBeTruthy();
         expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();

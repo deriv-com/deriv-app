@@ -3163,6 +3163,7 @@
     "-311268215": "Khung này chuyển đổi một chuỗi văn bản đại diện cho ngày và thời gian thành giây kể từ Unix Epoch (ngày 1 tháng 1 năm 1970). Thời gian và múi giờ bù là tùy chọn. Ví dụ: 2019-01-01 21:03:45 GMT + 0800 sẽ được chuyển đổi thành 1546347825.",
     "-1797602591": "Cắt lỗ: {{ currency }} {{ stop_loss }}",
     "-1214929127": "Số cắt lỗ phải là một số dương.",
+    "-780745489": "If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block\"",
     "-2142851225": "Quyền chọn giao dịch cấp số nhân",
     "-625636913": "Số nhập vào phải là một số dương.",
     "-1466383897": "Thời lượng: {{ duration_unit }} {{ duration_value }}",

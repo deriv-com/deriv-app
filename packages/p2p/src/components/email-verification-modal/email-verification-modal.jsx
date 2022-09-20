@@ -83,7 +83,14 @@ const EmailVerificationModal = ({
             </Modal.Body>
             {should_show_resend_email_button && should_show_reasons_if_no_email && (
                 <Modal.Footer className='email-verification-modal--footer'>
-                    <Button large primary onClick={onClickResendEmailButton}>
+                    <Button
+                        large
+                        primary
+                        onClick={() => {
+                            onClickResendEmailButton();
+                            setShouldShowReasonsIfNoEmail(false);
+                        }}
+                    >
                         <Localize i18n_default_text='Resend email' />
                         {/* TODO: Uncomment when time is available in BE response
                         <Localize i18n_default_text='Resend email {{remaining_time}}' values={{ remaining_time }} /> */}

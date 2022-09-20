@@ -30,7 +30,7 @@ const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOpt
                 <div className={classNames('add-options--desktop', class_names)} onClick={onClickHandler}>
                     <div className='add-options--desktop_title'>
                         <Icon
-                            icon='icAppstoreAdd'
+                            icon='IcAppstoreAdd'
                             width={getHeightWidthOfIcon().width}
                             height={getHeightWidthOfIcon().height}
                         />
@@ -46,7 +46,7 @@ const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOpt
             <MobileWrapper>
                 <div className={classNames('add-options--mobile', class_names)} onClick={onClickHandler}>
                     <Icon
-                        icon='icAppstoreAdd'
+                        icon='IcAppstoreAdd'
                         width={getHeightWidthOfIcon().width}
                         height={getHeightWidthOfIcon().height}
                     />

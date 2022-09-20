@@ -46,7 +46,7 @@ export const trading_hub_contents: TTradingHubContents = {
             <StaticDashboard
                 has_account
                 currency={'USD'}
-                amount={'369'}
+                derived_amount={'369'}
                 loginid={'20884385'}
                 is_cfd_text_blurry
                 is_options_text_blurry
@@ -58,7 +58,17 @@ export const trading_hub_contents: TTradingHubContents = {
         has_next_content: false,
     },
     step6: {
-        component: 'Step6',
+        component: (
+            <StaticDashboard
+                has_account
+                currency={'USD'}
+                financial_amount={'512'}
+                loginid={'20884385'}
+                is_cfd_text_blurry
+                is_options_text_blurry
+                has_applauncher_account
+            />
+        ),
         footer_header: localize('Start trading'),
         footer_text: localize('Click ‘Trade’ to start trading with your account'),
         has_next_content: true,

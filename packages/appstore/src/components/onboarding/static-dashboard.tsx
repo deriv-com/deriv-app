@@ -7,10 +7,11 @@ import StaticPlatformLauncher from './static-platform-launcher';
 import './static-dashboard.scss';
 
 type TStaticDashboard = {
-    amount?: string;
     loginid?: string;
     currency?: string;
     has_account?: boolean;
+    derived_amount?: string;
+    financial_amount?: string;
     is_text_animated?: boolean;
     is_button_animated?: boolean;
     is_cfd_item_blurry?: boolean;
@@ -22,10 +23,11 @@ type TStaticDashboard = {
 };
 
 const StaticDashboard = ({
-    amount,
     loginid,
     currency,
     has_account,
+    derived_amount,
+    financial_amount,
     is_text_animated,
     is_button_animated,
     is_cfd_item_blurry,
@@ -59,21 +61,21 @@ const StaticDashboard = ({
                         <StaticCFDAccountManager
                             type='financial'
                             platform='mt5'
-                            appname='Derived'
+                            appname='Derived SVG'
                             description='Trade CFDs on MT5 with forex, stocks & indices, commodities and cryptocurrencies.'
-                            amount={amount}
                             loginid={loginid}
                             currency={currency}
                             has_account={has_account}
+                            derived_amount={derived_amount}
                             is_item_blurry={is_cfd_item_blurry}
                             is_button_animated={is_button_animated}
                         />
                         <StaticCFDAccountManager
                             type='synthetic'
                             platform='mt5'
-                            appname='Financial'
+                            appname='Financial BVI'
                             description='Trade CFDs on MT5 with Derived indices that simulate areal-world market movement'
-                            amount={amount}
+                            financial_amount={financial_amount}
                             loginid={loginid}
                             currency={currency}
                             has_account={has_account}
@@ -85,7 +87,6 @@ const StaticDashboard = ({
                             platform='dxtrade'
                             appname='Deriv X'
                             description='Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
-                            amount={amount}
                             loginid={loginid}
                             currency={currency}
                             has_account={has_account}

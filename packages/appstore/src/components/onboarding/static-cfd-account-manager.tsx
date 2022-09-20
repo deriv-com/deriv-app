@@ -8,22 +8,22 @@ import './static-cfd-account-manager.scss';
 
 type TStaticCFDAccountManager = {
     type: string;
-    amount?: string;
     appname: string;
     loginid?: string;
     currency?: string;
     description?: string;
     is_animated?: boolean;
     has_account?: boolean;
+    derived_amount?: string;
     is_item_blurry?: boolean;
     is_text_blurry?: boolean;
+    financial_amount?: string;
     is_button_animated?: boolean;
     platform: TPlatform | 'options';
 };
 
 const StaticCFDAccountManager = ({
     type,
-    amount,
     appname,
     loginid,
     currency,
@@ -31,6 +31,8 @@ const StaticCFDAccountManager = ({
     has_account,
     description,
     is_item_blurry,
+    derived_amount,
+    financial_amount,
     is_button_animated,
 }: TStaticCFDAccountManager) => {
     return (
@@ -73,7 +75,7 @@ const StaticCFDAccountManager = ({
                     <>
                         <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
                             currency,
-                            amount,
+                            type === 'financial' ? financial_amount : derived_amount,
                             true
                         )} ${currency}`}</Text>
                         <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
@@ -87,7 +89,7 @@ const StaticCFDAccountManager = ({
                 )}
             </div>
             <div className='static-cfd-account-manager__buttons'>
-                {has_account ? (
+                {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
                     <>
                         <Button primary className='static-cfd-account-manager__buttons-topup'>
                             <Localize i18n_default_text='Top-up' />
@@ -97,7 +99,10 @@ const StaticCFDAccountManager = ({
                         </Button>
                     </>
                 ) : (
-                    <Button className={is_button_animated ? 'static-cfd-account-manager__buttons--animated' : ''}>
+                    <Button
+                        primary_light
+                        className={is_button_animated ? 'static-cfd-account-manager__buttons--animated' : ''}
+                    >
                         <Localize i18n_default_text='Get' />
                     </Button>
                 )}

@@ -40,6 +40,62 @@ export default class OnRampStore extends BaseStore {
     @observable widget_html: string | null = null;
 
     deposit_address_ref = {} as Node;
+    disposeThirdPartyJsReaction = reaction(
+        () => this.selected_provider,
+        async provider => {
+            if (!provider) {
+                return;
+            }
+
+            const dependencies = provider.getScriptDependencies();
+            if (dependencies.length === 0) {
+                return;
+            }
+
+            const { default: loadjs } = await import(/* webpackChunkName: "loadjs" */ 'loadjs');
+            const script_name = `${getKebabCase(provider.name)}-onramp`;
+
+            if (!loadjs.isDefined(script_name)) {
+                loadjs(dependencies, script_name, {
+                    error: () => {
+                        // eslint-disable-next-line no-console
+                        console.warn(`Dependencies for onramp provider ${provider.name} could not be loaded.`);
+                        this.setSelectedProvider(null);
+                    },
+                });
+            }
+        }
+    );
+
+    disposeGetWidgetHtmlReaction = reaction(
+        () => this.should_show_widget,
+        should_show_widget => {
+            if (should_show_widget) {
+                if (this.is_requesting_widget_html) {
+                    return;
+                }
+
+                this.setIsRequestingWidgetHtml(true);
+                if (this.selected_provider) {
+                    this.selected_provider
+                        .getWidgetHtml()
+                        .then(widget_html => {
+                            if (widget_html) {
+                                // Regular providers (iframe/JS embed)
+                                this.setWidgetHtml(widget_html);
+                            } else {
+                                // An empty resolve (widget_html) identifies a redirect.
+                                this.setShouldShowWidget(false);
+                            }
+                        })
+                        .catch(error => {
+                            this.setWidgetError(error);
+                        })
+                        .finally(() => this.setIsRequestingWidgetHtml(false));
+                }
+            }
+        }
+    );
 
     @computed
     get is_onramp_tab_visible() {
@@ -90,69 +146,8 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    disposeThirdPartyJsReaction = reaction(
-        () => this.selected_provider,
-        async provider => {
-            if (!provider) {
-                return;
-            }
-
-            const dependencies = provider.getScriptDependencies();
-            if (dependencies.length === 0) {
-                return;
-            }
-
-            const { default: loadjs } = await import(/* webpackChunkName: "loadjs" */ 'loadjs');
-            const script_name = `${getKebabCase(provider.name)}-onramp`;
-
-            if (!loadjs.isDefined(script_name)) {
-                loadjs(dependencies, script_name, {
-                    error: () => {
-                        // eslint-disable-next-line no-console
-                        console.warn(`Dependencies for onramp provider ${provider.name} could not be loaded.`);
-                        this.setSelectedProvider(null);
-                    },
-                });
-            }
-        }
-    );
-
-    @action.bound
-    disposeGetWidgetHtmlReaction = reaction(
-        () => this.should_show_widget,
-        should_show_widget => {
-            if (should_show_widget) {
-                if (this.is_requesting_widget_html) {
-                    return;
-                }
-
-                this.setIsRequestingWidgetHtml(true);
-                if (this.selected_provider) {
-                    this.selected_provider
-                        .getWidgetHtml()
-                        .then(widget_html => {
-                            if (widget_html) {
-                                // Regular providers (iframe/JS embed)
-                                this.setWidgetHtml(widget_html);
-                            } else {
-                                // An empty resolve (widget_html) identifies a redirect.
-                                this.setShouldShowWidget(false);
-                            }
-                        })
-                        .catch(error => {
-                            this.setWidgetError(error);
-                        })
-                        .finally(() => this.setIsRequestingWidgetHtml(false));
-                }
-            }
-        }
-    );
-
-    @action.bound
     onMountOnramp() {
         this.disposeThirdPartyJsReaction();
-
-        // When "should_show_widget", attempt to fetch "selected_provider"'s "widget_html".
         this.disposeGetWidgetHtmlReaction();
     }
 

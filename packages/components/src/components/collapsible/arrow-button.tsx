@@ -5,8 +5,25 @@ import { positionPropType } from './utils';
 import Icon from '../icon';
 import Text from '../text';
 
-const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
-const IconArrowWithTitle = ({ title, ...props }) => (
+type TIconArrow = {
+    className: string;
+};
+
+type TIconArrowWithTitle = {
+    title: string;
+    className: string;
+};
+
+type TArrowButton = {
+    is_open: boolean;
+    onClick: () => void;
+    title: string;
+    position: 'top' | 'bottom';
+};
+
+const IconArrow = (props: TIconArrow) => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
+
+const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
     <>
         <Text size='xs' weight='bold' color='prominent' className='dc-collapsible__title'>
             {title}

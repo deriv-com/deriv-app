@@ -3163,7 +3163,7 @@
     "-311268215": "Blok zamienia ciąg tekstu reprezentujący datę i godzinę na sekundy od początku epoki Uniksa (1 stycznia 1970 r.). Godzina i strefa czasowa są opcjonalne. Na przykład: 2019-01-01 21:03:45 GMT+0800 zostanie zamieniony na 1546347825.",
     "-1797602591": "Stop Stratom: {{ currency }} {{ stop_loss }}",
     "-1214929127": "Stop stratom musi być liczbą dodatnią.",
-    "-780745489": "If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block\"",
+    "-780745489": "Jeśli typ umowy to „Oba”, wówczas Warunki zakupu powinny obejmować zarówno Wzrost, jak i Spadek przy użyciu „Bloku warunkowego”",
     "-2142851225": "Opcje handlowe mnożnika",
     "-625636913": "Kwota musi być liczbą dodatnią.",
     "-1466383897": "Czas trwania: {{ duration_unit }} {{ duration_value }}",

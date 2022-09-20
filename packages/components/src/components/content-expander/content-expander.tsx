@@ -1,12 +1,25 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
+type TContentExpander = {
+    children: React.ReactNode;
+    className?: string;
+    has_fade_in?: boolean;
+    is_arrow_inverted?: boolean;
+    is_expanded: boolean;
+    is_title_spaced?: boolean;
+    title: string | React.ReactNode;
+    measure?: () => void;
+    title_style?: { size?: string; weight?: string; color?: string };
+    title_className?: string;
+    wrapper_className?: string;
+    onToggle?: () => void;
+};
+
 const ContentExpander = ({
-    arrow_style,
     children,
     className,
     has_fade_in,
@@ -19,18 +32,18 @@ const ContentExpander = ({
     wrapper_className,
     onToggle,
     measure,
-}) => {
-    const [is_visible, toggleVisibility] = React.useState(is_expanded);
+}: TContentExpander) => {
+    const [is_visible, toggleVisibility] = React.useState<boolean>(is_expanded);
 
     const onClick = React.useCallback(() => {
         toggleVisibility(!is_visible);
-        if (typeof onToggle === 'function') {
+        if (onToggle) {
             onToggle();
         }
     }, [is_visible, onToggle, toggleVisibility]);
 
     React.useEffect(() => {
-        if (typeof measure === 'function') {
+        if (measure) {
             measure();
         }
     }, [is_visible, measure]);
@@ -78,7 +91,6 @@ const ContentExpander = ({
                     className={classNames('dc-content-expander__select-arrow', {
                         'dc-content-expander__select-arrow--invert': is_arrow_inverted,
                     })}
-                    {...arrow_style}
                 />
             </div>
             {has_fade_in ? (
@@ -99,23 +111,6 @@ const ContentExpander = ({
             )}
         </div>
     );
-};
-
-ContentExpander.propTypes = {
-    arrow_style: PropTypes.object,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    has_fade_in: PropTypes.bool,
-    is_title_spaced: PropTypes.bool,
-    measure: PropTypes.func,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-    title_style: PropTypes.object,
-    title_className: PropTypes.string,
-    wrapper_className: PropTypes.string,
-    onToggle: PropTypes.func,
-    toggleVisibility: PropTypes.func,
-    is_arrow_inverted: PropTypes.bool,
-    is_expanded: PropTypes.bool,
 };
 
 export default ContentExpander;

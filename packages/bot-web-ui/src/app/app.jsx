@@ -2,18 +2,7 @@ import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
-import {
-    Audio,
-    BlocklyLoading,
-    BotFooterExtensions,
-    BotNotificationMessages,
-    MainContent,
-    QuickStrategy,
-    RunPanel,
-    RoutePromptDialog,
-    Toolbar,
-    NetworkToastPopup,
-} from 'Components';
+import { BotNotificationMessages, NetworkToastPopup } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
@@ -89,24 +78,10 @@ const App = ({ passthrough }) => {
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
-            <div className={show_dashboard ? 'bot-dashboard' : 'bot'}>
+            <div className='bot-dashboard'>
                 <BotNotificationMessages />
                 <NetworkToastPopup />
-
-                {show_dashboard ? (
-                    <Dashboard />
-                ) : (
-                    <>
-                        <Toolbar />
-                        <MainContent />
-                        <RunPanel />
-                        <QuickStrategy />
-                        <BotFooterExtensions />
-                        <Audio />
-                        <RoutePromptDialog />
-                        <BlocklyLoading />
-                    </>
-                )}
+                <Dashboard />
             </div>
         </MobxContentProvider>
     );

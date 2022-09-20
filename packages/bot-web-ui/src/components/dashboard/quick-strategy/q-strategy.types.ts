@@ -52,22 +52,21 @@ export type TDuration = {
 
 export type TDurations = Array<TDuration>;
 
-type TKeysFieldsToUpdate =
-    | 'alembert_unit'
-    | 'duration'
-    | 'durationtype'
-    | 'loss'
-    | 'market'
-    | 'oscar_unit'
-    | 'profit'
-    | 'size'
-    | 'stake'
-    | 'submarket'
-    | 'symbol'
-    | 'tradetype'
-    | 'tradetypecat';
-
-export type TFieldsToUpdate = Record<TKeysFieldsToUpdate, string>;
+export type TFieldsToUpdate = {
+    alembert_unit: string;
+    duration: string | number;
+    durationtype: string;
+    loss: string;
+    market: string;
+    oscar_unit: string;
+    profit: string;
+    size: string;
+    stake: string;
+    submarket: string;
+    symbol: string;
+    tradetype: string;
+    tradetypecat: string;
+};
 
 export type TMarketOption = {
     group: string;

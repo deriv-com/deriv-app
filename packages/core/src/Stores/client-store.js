@@ -566,11 +566,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_restricted_mt5_account() {
-        const need_poa_resubmission = ['expired', 'rejected', 'suspected'];
-        return (
-            !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length &&
-            need_poa_resubmission.includes(this.authentication_status.document_status)
-        );
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
     }
 
     @computed

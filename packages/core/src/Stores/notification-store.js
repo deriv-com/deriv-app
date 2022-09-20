@@ -163,7 +163,11 @@ export default class NotificationStore extends BaseStore {
         if (document.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (has_restricted_mt5_account) {
-            this.addNotificationMessage(this.client_notifications.resticted_mt5);
+            if (document.status === 'pending') {
+                this.addNotificationMessage(this.client_notifications.resticted_mt5_with_pending_poa);
+            } else {
+                this.addNotificationMessage(this.client_notifications.resticted_mt5_with_failed_poa);
+            }
         } else if (!['none', 'pending'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
@@ -882,12 +886,20 @@ export default class NotificationStore extends BaseStore {
                 ),
                 type: 'warning',
             },
-            resticted_mt5: {
+            resticted_mt5_with_pending_poa: {
+                key: 'resticted_mt5_with_pending_poa',
+                header: localize('Your proof of address verification is pending'),
+                message: localize(
+                    'Your address verification is pending, and we’ve placed some restrictions on your account. The restrictions will be lifted once your address is verified.'
+                ),
+                type: 'danger',
+            },
+            resticted_mt5_with_failed_poa: {
                 action: {
                     route: routes.proof_of_address,
                     text: localize('Resubmit proof of address'),
                 },
-                key: 'poa_failed',
+                key: 'resticted_mt5_with_failed_poa',
                 header: localize('Your proof of address verification has failed'),
                 message: localize(
                     'Your proof of address did not pass our verification checks, and we’ve placed some restrictions on your account. Please resubmit your proof of address.'

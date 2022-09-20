@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { QRCode } from 'react-qrcode';
-import { Icon, Text, DesktopWrapper } from '@deriv/components';
+import { Icon, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { CFD_PLATFORMS, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -159,38 +159,51 @@ const QRCodeBox = ({ platform }: { platform: string }) => {
 
 const CFDDownloadContainer = ({ platform, is_dark_mode_on, active_index, dxtrade_tokens }: TCFDDashboardContainer) => {
     return (
-        <div
-            className={classnames('cfd-dashboard__download-container', {
-                'cfd-dashboard__download-container--is-mt5': platform === CFD_PLATFORMS.MT5,
-            })}
-            data-testid='dt_cfd_dashboard_download_center_container'
-        >
-            {platform === CFD_PLATFORMS.MT5 && (
-                <h1 className='cfd-dashboard__download-container-heading'>
-                    {isDesktop() ? general_messages.getDownloadHeader(platform) : localize('Download the MT5 app')}
-                </h1>
-            )}
+        <React.Fragment>
+            <MobileWrapper>
+                <Text
+                    className='cfd-dashboard__download-container-mobile-hint'
+                    color='general'
+                    size='xxs'
+                    weight='400'
+                    align='center'
+                >
+                    <Localize i18n_default_text='If you have the app, launch it to start trading.' />
+                </Text>
+            </MobileWrapper>
             <div
-                className={classnames('cfd-dashboard__download-container-links', {
-                    'cfd-dashboard__download-container-links--is-mt5': platform === CFD_PLATFORMS.MT5,
+                className={classnames('cfd-dashboard__download-container', {
+                    'cfd-dashboard__download-container--is-mt5': platform === CFD_PLATFORMS.MT5,
                 })}
+                data-testid='dt_cfd_dashboard_download_center_container'
             >
-                <DesktopWrapper>
-                    <div className='cfd-dashboard__download-container-links--desktop'>
-                        {platform === CFD_PLATFORMS.DXTRADE && (
-                            <DxtradeDesktopDownload active_index={active_index} dxtrade_tokens={dxtrade_tokens} />
-                        )}
-                        {platform === CFD_PLATFORMS.MT5 && <MT5DesktopDownload />}
+                {platform === CFD_PLATFORMS.MT5 && (
+                    <h1 className='cfd-dashboard__download-container-heading'>
+                        {isDesktop() ? general_messages.getDownloadHeader(platform) : localize('Download the MT5 app')}
+                    </h1>
+                )}
+                <div
+                    className={classnames('cfd-dashboard__download-container-links', {
+                        'cfd-dashboard__download-container-links--is-mt5': platform === CFD_PLATFORMS.MT5,
+                    })}
+                >
+                    <DesktopWrapper>
+                        <div className='cfd-dashboard__download-container-links--desktop'>
+                            {platform === CFD_PLATFORMS.DXTRADE && (
+                                <DxtradeDesktopDownload active_index={active_index} dxtrade_tokens={dxtrade_tokens} />
+                            )}
+                            {platform === CFD_PLATFORMS.MT5 && <MT5DesktopDownload />}
+                        </div>
+                    </DesktopWrapper>
+
+                    <div className='cfd-dashboard__download-container-links--mobile'>
+                        <MobileDownload is_dark_mode_on={is_dark_mode_on} platform={platform} />
                     </div>
-                </DesktopWrapper>
-
-                <div className='cfd-dashboard__download-container-links--mobile'>
-                    <MobileDownload is_dark_mode_on={is_dark_mode_on} platform={platform} />
                 </div>
-            </div>
 
-            {platform === CFD_PLATFORMS.DXTRADE && <QRCodeBox platform={platform} />}
-        </div>
+                {platform === CFD_PLATFORMS.DXTRADE && <QRCodeBox platform={platform} />}
+            </div>
+        </React.Fragment>
     );
 };
 

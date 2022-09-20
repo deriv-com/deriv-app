@@ -137,6 +137,11 @@
             padding-top: unset;
         }
 
+        &-mobile-hint {
+            margin: 2.4rem 0;
+            display: block;
+        }
+
         &-heading {
             @include typeface(--title-center-bold-black, none);
             color: var(--text-general);

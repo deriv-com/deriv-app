@@ -32,7 +32,13 @@ type TCFDDemoAccountDisplayProps = {
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: TCFDPlatform;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
+    current_list: Record<
+        string,
+        DetailsOfEachMT5Loginid & {
+            enabled: number;
+        }
+    >;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     landing_companies?: LandingCompany;
 };
@@ -49,7 +55,9 @@ const CFDDxtradeDemoAccountDisplay = ({
     openPasswordManager,
 }: TCFDDemoAccountDisplayProps) => {
     const existing_accounts_data = (acc_type: 'dxtrade') => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.${acc_type}`))
+        const acc = Object.keys(current_list).some(
+            key => key.startsWith(`${platform}.demo.${acc_type}`) && current_list[key].enabled === 1
+        )
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.demo.${acc_type}`))
                   .reduce((_acc, cur) => {

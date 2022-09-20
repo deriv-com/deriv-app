@@ -95,7 +95,13 @@ export type TCFDDashboardProps = RouteComponentProps & {
     beginRealSignupForMt5: () => void;
     country: string;
     createCFDAccount: (objCFDAccount: TObjectCFDAccount) => void;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
+    current_list: Record<
+        string,
+        DetailsOfEachMT5Loginid & {
+            enabled: number;
+        }
+    >;
     dxtrade_accounts_list_error: null;
     isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_accounts_switcher_on: boolean;

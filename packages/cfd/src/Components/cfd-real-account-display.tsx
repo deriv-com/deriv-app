@@ -24,6 +24,10 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
+type TCurrentList = DetailsOfEachMT5Loginid & {
+    enabled: number;
+};
+
 type TCFDRealAccountDisplayProps = {
     has_real_account: boolean;
     is_accounts_switcher_on: boolean;
@@ -47,7 +51,8 @@ type TCFDRealAccountDisplayProps = {
     isAccountOfTypeDisabled: (
         account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
     ) => boolean;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
+    current_list: Record<string, TCurrentList>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
     toggleMT5TradeModal: (is_accounts_switcher_on?: boolean) => void;
@@ -147,7 +152,13 @@ const CFDRealAccountDisplay = ({
     };
 
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
+        // We need to check enabled property for DXTRADE accounts only.
+        // TODO: This condition should be removed after separating the DXTRADE and MT5 component.
+        const should_be_enabled = (list_item: TCurrentList) =>
+            platform === 'dxtrade' ? list_item.enabled === 1 : true;
+        const acc = Object.keys(current_list).some(
+            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
+        )
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((_acc, cur) => {

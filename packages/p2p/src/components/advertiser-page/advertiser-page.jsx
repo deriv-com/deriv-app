@@ -92,9 +92,11 @@ const AdvertiserPage = () => {
                     onClick={buy_sell_store.hideAdvertiserPage}
                     page_title={localize("Advertiser's page")}
                 />
-                <MobileWrapper>
-                    {!is_my_advert && <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />}
-                </MobileWrapper>
+                {!is_my_advert && (
+                    <MobileWrapper>
+                        <AdvertiserPageDropdownMenu />
+                    </MobileWrapper>
+                )}
             </div>
             <BlockUserOverlay
                 is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked}
@@ -208,9 +210,11 @@ const AdvertiserPage = () => {
                                 />
                             </div>
                         </div>
-                        <DesktopWrapper>
-                            {!is_my_advert && <AdvertiserPageDropdownMenu is_my_advert={is_my_advert} />}
-                        </DesktopWrapper>
+                        {!is_my_advert && (
+                            <DesktopWrapper>
+                                <AdvertiserPageDropdownMenu />
+                            </DesktopWrapper>
+                        )}
                     </div>
                     <AdvertiserPageStats />
                 </div>

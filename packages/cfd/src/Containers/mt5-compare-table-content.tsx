@@ -244,6 +244,9 @@ const DMT5CompareModalContent = ({
         poi_verified_for_vanuatu,
         poi_verified_for_bvi_labuan_maltainvest,
         poi_or_poa_not_submitted,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
+        poa_acknowledged,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -309,7 +312,7 @@ const DMT5CompareModalContent = ({
         !has_submitted_personal_details ? toggleCFDPersonalDetailsModal() : openPasswordModal(type_of_account);
 
     const onSelectRegulated = (type_of_account: { category: string; type: string }) =>
-        poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted
+        poi_poa_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted
             ? openPersonalDetailsFormOrPasswordForm(type_of_account)
             : toggleCFDVerificationModal();
 
@@ -332,15 +335,11 @@ const DMT5CompareModalContent = ({
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setJurisdictionSelectedShortcode('bvi');
-                onSelectRegulated(type_of_account);
-                break;
-            case 'financial_labuan':
-                setJurisdictionSelectedShortcode('labuan');
-                onSelectRegulated(type_of_account);
-                break;
-            case 'financial_maltainvest':
-                setJurisdictionSelectedShortcode('maltainvest');
-                onSelectRegulated(type_of_account);
+                if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+                    openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
                 break;
             case 'financial_vanuatu':
                 setJurisdictionSelectedShortcode('vanuatu');
@@ -349,6 +348,14 @@ const DMT5CompareModalContent = ({
                 } else {
                     toggleCFDVerificationModal();
                 }
+                break;
+            case 'financial_labuan':
+                setJurisdictionSelectedShortcode('labuan');
+                onSelectRegulated(type_of_account);
+                break;
+            case 'financial_maltainvest':
+                setJurisdictionSelectedShortcode('maltainvest');
+                onSelectRegulated(type_of_account);
                 break;
 
             default:
@@ -471,8 +478,14 @@ const DMT5CompareModalContent = ({
             return false;
         } else if (type === 'vanuatu') {
             return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;
+        } else if (type === 'bvi') {
+            return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
         }
-        return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
+        return (
+            poi_acknowledged_for_bvi_labuan_maltainvest &&
+            poa_acknowledged &&
+            !poi_poa_verified_for_bvi_labuan_maltainvest
+        );
     };
 
     return (

@@ -23,13 +23,19 @@ const JurisdictionCardBanner = ({
         poi_pending_for_vanuatu,
         poi_resubmit_for_vanuatu,
         poi_resubmit_for_bvi_labuan_maltainvest,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
+        poa_acknowledged,
+        need_poa_resubmission,
+        need_poi_for_bvi_labuan_maltainvest,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => account_type && (account_type === 'synthetic' ? 'Synthetics' : 'Financial');
 
     const is_svg = type_of_card && type_of_card === 'svg';
     const is_vanuatu = type_of_card && type_of_card === 'vanuatu';
-    const is_regulated_except_vanuatu = type_of_card && ['bvi', 'labuan', 'maltainvest'].includes(type_of_card);
+    const is_bvi = type_of_card && type_of_card === 'bvi';
+    const is_labuan_or_maltainvest = type_of_card && ['labuan', 'maltainvest'].includes(type_of_card);
 
     const getTypeTitle = () => {
         switch (type_of_card) {
@@ -87,7 +93,8 @@ const JurisdictionCardBanner = ({
             );
         } else if (
             (is_vanuatu && poi_verified_for_vanuatu) ||
-            (is_regulated_except_vanuatu && poi_verified_for_bvi_labuan_maltainvest)
+            (is_bvi && poi_verified_for_bvi_labuan_maltainvest) ||
+            (is_labuan_or_maltainvest && poi_poa_verified_for_bvi_labuan_maltainvest)
         ) {
             return (
                 <div className={`${card_classname}__verification-status--poi_verified`}>
@@ -104,10 +111,7 @@ const JurisdictionCardBanner = ({
                     </Text>
                 </div>
             );
-        } else if (
-            (is_vanuatu && poi_pending_for_vanuatu) ||
-            (is_regulated_except_vanuatu && poi_pending_for_bvi_labuan_maltainvest)
-        ) {
+        } else if ((is_vanuatu && poi_pending_for_vanuatu) || (is_bvi && poi_pending_for_bvi_labuan_maltainvest)) {
             return (
                 <div className={`${card_classname}__verification-status--pending`}>
                     <Text size='xxs' color='prominent'>
@@ -116,13 +120,42 @@ const JurisdictionCardBanner = ({
                 </div>
             );
         } else if (
+            is_labuan_or_maltainvest &&
+            poi_acknowledged_for_bvi_labuan_maltainvest &&
+            poa_acknowledged &&
+            !poi_poa_verified_for_bvi_labuan_maltainvest
+        ) {
+            return (
+                <div className={`${card_classname}__verification-status--pending`}>
+                    <Text size='xxs' color='prominent'>
+                        <Localize i18n_default_text='Pending verification' />
+                    </Text>
+                </div>
+            );
+        } else if (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) {
+            return (
+                <div className={`${card_classname}__verification-status--failed`}>
+                    <Text size='xxs' color='colored-background'>
+                        <Localize i18n_default_text='Resubmit proof of identity and address' />
+                    </Text>
+                </div>
+            );
+        } else if (
             (is_vanuatu && poi_resubmit_for_vanuatu) ||
-            (is_regulated_except_vanuatu && poi_resubmit_for_bvi_labuan_maltainvest)
+            ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest)
         ) {
             return (
                 <div className={`${card_classname}__verification-status--failed`}>
                     <Text size='xxs' color='colored-background'>
                         <Localize i18n_default_text='Resubmit proof of identity' />
+                    </Text>
+                </div>
+            );
+        } else if (is_labuan_or_maltainvest && need_poa_resubmission) {
+            return (
+                <div className={`${card_classname}__verification-status--failed`}>
+                    <Text size='xxs' color='colored-background'>
+                        <Localize i18n_default_text='Resubmit proof of address' />
                     </Text>
                 </div>
             );

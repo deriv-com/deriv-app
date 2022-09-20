@@ -10,6 +10,7 @@
     }
 
     &__description {
+        margin-bottom: 2.4rem;
         a {
             text-decoration-line: underline;
         }
@@ -17,7 +18,13 @@
 
     &__accounts {
         display: flex;
-        justify-content: space-between;
+        justify-content: start;
+        gap: 2.4rem;
+        margin-top: 4rem;
+        @include mobile {
+            flex-direction: column;
+            gap: 3.6rem;
+        }
         &--item {
             &__add-derived {
                 margin-top: 1.4rem;

@@ -1,5 +1,4 @@
-import { RouteComponentProps } from 'react-router';
-import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
     ? ElementType
@@ -47,6 +46,10 @@ export type TCategotyTypes = {
     demo: boolean;
 };
 
+export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    display_login: string;
+};
+
 export type TCFDAccountsProps = {
     isDerivedVisible: TVisibilityChecker;
     isFinancialVisible: TVisibilityChecker;
@@ -56,7 +59,7 @@ export type TCFDAccountsProps = {
     is_loading: boolean;
     is_logged_in: boolean;
     has_cfd_account_error: (platform: TPlatform) => boolean;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    current_list: Record<string, TDetailsOfEachMT5Loginid>;
     is_virtual: boolean;
     isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     has_real_account: boolean;

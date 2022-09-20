@@ -1,9 +1,10 @@
 import AccountTransferStore from '../account-transfer-store';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
+import { DeepPartial, TRootStore, TWebSocket, TTransferAccount, TMT5LoginAccount } from '../../types';
 
 let accounts, account_transfer_store, root_store, WS;
 
-const CR_eUSDT_account = {
+const CR_eUSDT_account: TTransferAccount = {
     account_type: 'trading',
     balance: '1.00000000',
     currency: 'eUSDT',
@@ -11,14 +12,14 @@ const CR_eUSDT_account = {
     loginid: 'CR90000113',
 };
 
-const CR_USD_account = {
+const CR_USD_account: TTransferAccount = {
     account_type: 'trading',
     balance: '10.00',
     currency: 'USD',
     demo_account: 0,
     loginid: 'CR90000103',
 };
-const MT_USD_account = {
+const MT_USD_account: TTransferAccount = {
     account_type: 'mt5',
     balance: '10.00',
     currency: 'USD',
@@ -26,7 +27,7 @@ const MT_USD_account = {
     loginid: 'MT0000000',
 };
 
-const MX_USD_account = {
+const MX_USD_account: TTransferAccount = {
     account_type: 'trading',
     balance: '10.00',
     currency: 'USD',
@@ -34,13 +35,53 @@ const MX_USD_account = {
     loginid: 'MX0000000',
 };
 
-const DXR_USD_account = {
+const DXR_USD_account: TTransferAccount = {
     account_type: 'dxtrade',
     balance: '10.00',
     currency: 'USD',
     loginid: 'DXR1008',
     market_type: 'financial',
 };
+
+const trading_platform_accounts: Array<TMT5LoginAccount> = [
+    {
+        account_id: 'DXR1002',
+        account_type: 'real',
+        balance: 0,
+        currency: 'USD',
+        login: '52',
+        market_type: 'synthetic',
+    },
+    {
+        account_id: 'DXR1003',
+        account_type: 'real',
+        balance: 0,
+        currency: 'USD',
+        login: '52',
+        market_type: 'financial',
+    },
+];
+
+const mt5_login_list: Array<TTransferAccount> = [
+    {
+        ...MT_USD_account,
+        loginid: 'MTR111176',
+        market_type: 'financial',
+        sub_account_type: 'financial',
+    },
+    {
+        ...MT_USD_account,
+        loginid: 'MTR111177',
+        market_type: 'financial',
+        sub_account_type: 'financial',
+    },
+    {
+        ...MT_USD_account,
+        loginid: 'MTR40000265',
+        market_type: 'synthetic',
+        sub_account_type: 'financial',
+    },
+];
 
 beforeEach(() => {
     accounts = [
@@ -52,70 +93,29 @@ beforeEach(() => {
         { ...DXR_USD_account, loginid: 'DXR1002' },
         { ...DXR_USD_account, loginid: 'DXR1003' },
     ];
-    WS = {
+    (WS as DeepPartial<TWebSocket>) = {
         authorized: {
             transferBetweenAccounts: jest.fn().mockResolvedValue({ accounts }),
             getAccountStatus: jest.fn().mockResolvedValue({ get_account_status: 1 }),
         },
         storage: {
             mt5LoginList: jest.fn().mockResolvedValue({
-                mt5_login_list: [
-                    {
-                        ...MT_USD_account,
-                        loginid: 'MTR111176',
-                        login: 'MTR111176',
-                        market_type: 'financial',
-                        sub_account_type: 'financial',
-                    },
-                    {
-                        ...MT_USD_account,
-                        loginid: 'MTR111177',
-                        login: 'MTR111177',
-                        market_type: 'financial',
-                        sub_account_type: 'financial',
-                    },
-                    {
-                        ...MT_USD_account,
-                        loginid: 'MTR40000265',
-                        login: 'MTR40000265',
-                        market_type: 'synthetic',
-                        sub_account_type: 'financial',
-                    },
-                ],
+                mt5_login_list,
             }),
         },
         balanceAll: jest.fn().mockResolvedValue({ balance_response: { balance: '20' } }),
         mt5LoginList: jest.fn().mockResolvedValue({}),
         tradingPlatformAccountsList: jest.fn().mockResolvedValue({
-            trading_platform_accounts: [
-                {
-                    account_id: 'DXR1002',
-                    account_type: 'real',
-                    balance: 0,
-                    currency: 'USD',
-                    login: '52',
-                    market_type: 'synthetic',
-                    platform: 'dxtrade',
-                },
-                {
-                    account_id: 'DXR1003',
-                    account_type: 'real',
-                    balance: 0,
-                    currency: 'USD',
-                    login: '52',
-                    market_type: 'financial',
-                    platform: 'dxtrade',
-                },
-            ],
+            trading_platform_accounts,
         }),
         wait: jest.fn(),
     };
-    root_store = {
+    (root_store as DeepPartial<TRootStore>) = {
         client: {
             account_status: {
                 status: ['status'],
             },
-            active_accounts: [{ is_virtual: false, balance: 10 }],
+            active_accounts: [{ is_virtual: 0, balance: 10 }],
             has_maltainvest_account: true,
             is_financial_account: true,
             is_financial_information_incomplete: true,

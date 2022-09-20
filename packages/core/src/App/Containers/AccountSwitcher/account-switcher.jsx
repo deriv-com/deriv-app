@@ -290,7 +290,9 @@ const AccountSwitcher = props => {
     };
 
     const getDemoDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(isDemo);
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(
+            account => isDemo(account) && account.enabled === 1
+        );
     };
 
     const getRemainingDemoMT5 = () => {
@@ -312,7 +314,9 @@ const AccountSwitcher = props => {
     };
 
     const getRealDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(
+            account => !isDemo(account) && account.enabled === 1
+        );
     };
 
     const findServerForAccount = acc => {

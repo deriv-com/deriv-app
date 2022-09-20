@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, getLanguage } from '@deriv/translations';
+import { getPropertyValue, WS, redirectToLogin } from '@deriv/shared';
 
-const DigitForm = ({ is_enabled }) => {
-    const [is_success] = React.useState(false);
+const DigitForm = ({ is_enabled, setTwoFAStatus, logoutClient }) => {
+    const [is_success, setSuccess] = React.useState(false);
     const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
 
     const initial_form = {
@@ -28,8 +29,33 @@ const DigitForm = ({ is_enabled }) => {
         return errors;
     };
 
+    const handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
+        const totp_action = is_enabled ? 'disable' : 'enable';
+        const enable_response = await WS.authorized.accountSecurity({
+            account_security: 1,
+            totp_action,
+            otp: values.digit_code,
+        });
+        setSubmitting(false);
+
+        if (enable_response.error) {
+            const { code, message } = enable_response.error;
+            if (code === 'InvalidOTP') {
+                setFieldError('digit_code', localize("That's not the right code. Please try again."));
+            } else {
+                setFieldError('digit_code', message);
+            }
+        } else {
+            const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
+            setSuccess(true);
+            resetForm();
+            setTwoFAStatus(is_enabled_response);
+            logoutClient().then(() => redirectToLogin(false, getLanguage()));
+        }
+    };
+
     return (
-        <Formik initialValues={initial_form} validate={validateFields}>
+        <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
             {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty }) => (
                 <Form noValidate>
                     <div className='two-factor__input-group'>

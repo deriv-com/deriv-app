@@ -43,11 +43,11 @@ export const extractInfoFromShortcode = (shortcode: string) => {
 type TIsHighLow = {
     shortcode?: string;
     shortcode_info?: {
-        category: string;
-        underlying: string;
-        barrier_1: string;
-        multiplier: string;
-        start_time: string;
+        category?: string;
+        underlying?: string;
+        barrier_1?: string;
+        multiplier?: string;
+        start_time?: string;
     };
 };
 

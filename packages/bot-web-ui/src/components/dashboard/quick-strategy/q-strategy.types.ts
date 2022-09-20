@@ -108,14 +108,9 @@ export type TDurationUnitDropdown = Array<TDurationOptions>;
 
 export type TTypeStrategiesDropdown = Array<TTypeStrategy>;
 
-export type TDropdowns =
-    | TSymbolDropdown
-    | TTradeTypeDropdown
-    | TDurationUnitDropdown
-    | TTypeStrategiesDropdown
-    | string;
+export type TDropdowns = TSymbolDropdown | TTradeTypeDropdown | TDurationUnitDropdown | TTypeStrategiesDropdown;
 
-export type TSelectedValuesSelect = TTypeStrategy | TTradeType | TDurationOptions | TMarketOption | string;
+export type TSelectedValuesSelect = TTypeStrategy | TTradeType | TDurationOptions | TMarketOption;
 
 type TSetSelectedTradeType = (trade_type: TTradeType) => void;
 type TSetSelectedSymbol = (symbol: string) => void;
@@ -158,7 +153,7 @@ export type TCreateStrategy = (
     actions: FormikActions<TQuickStrategyFormValues>
 ) => void;
 
-export type TQuickStrategyProps = {
+export type TQuickStrategyProps = React.PropsWithChildren<{
     active_index: number;
     description: string;
     createStrategy: TCreateStrategy;
@@ -183,16 +178,18 @@ export type TQuickStrategyProps = {
     toggleStrategyModal: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
     setCurrentFocus: TSetCurrentFocus;
-};
+}>;
 
-type TKeysQSCache = 'active_tab' | 'quick_strategy';
-type TKeysQStrategy =
-    | 'selected_duration_unit'
-    | 'selected_symbol'
-    | 'selected_trade_type'
-    | 'selected_type_strategy'
-    | TInputCommonFields;
-type TValuesQStrategy = TDurationOptions | TMarketOption | TTradeType | TTypeStrategy | TInputCommonFields;
-type TQStrategy = Record<TKeysQStrategy, TValuesQStrategy>;
-type TValuesQSCache = string | TQStrategy;
-export type TQSCache = Record<TKeysQSCache, TValuesQSCache>;
+export type TQSCache = {
+    selected_type_strategy?: TTypeStrategy;
+    selected_symbol?: TMarketOption;
+    input_stake?: string;
+    input_loss?: string;
+    input_martingale_size?: string;
+    input_profit?: string;
+    input_oscar_unit?: string;
+    input_alembert_unit?: string;
+    selected_trade_type?: TTradeType;
+    selected_duration_unit?: TDurationOptions;
+    input_duration_value?: number | string;
+};

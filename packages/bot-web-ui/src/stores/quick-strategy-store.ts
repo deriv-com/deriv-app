@@ -22,7 +22,6 @@ import {
     TStrategies,
     TSymbol,
     TSymbolDropdown,
-    TSymbolItem,
     TTradeType,
     TTradeTypeContractsFor,
     TTradeTypeDropdown,
@@ -31,25 +30,27 @@ import {
 } from '../components/dashboard/quick-strategy/q-strategy.types';
 
 export default class QuickStrategyStore {
+    qs_cache: TQSCache = (getSetting('quick_strategy') as TQSCache) || {};
+
     constructor(root_store) {
         this.root_store = root_store;
-        (this.qs_cache as TQSCache) = getSetting('quick_strategy') || {};
     }
-    @observable selected_symbol: TMarketOption = this.qs_cache.selected_symbol || '';
-    @observable selected_trade_type: TTradeType = this.qs_cache.selected_trade_type || '';
-    @observable selected_type_strategy: TTypeStrategy = this.qs_cache.selected_type_strategy || '';
-    @observable selected_duration_unit: TDurationOptions = this.qs_cache.selected_duration_unit || '';
-    @observable input_duration_value: string | number = this.qs_cache.input_duration_value || '';
-    @observable input_stake: string = this.qs_cache.input_stake || '';
-    @observable input_martingale_size: string = this.qs_cache.input_martingale_size || '';
-    @observable input_alembert_unit: string = this.qs_cache.input_alembert_unit || '';
-    @observable input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
-    @observable input_loss: string = this.qs_cache.input_loss || '';
-    @observable input_profit: string = this.qs_cache.input_profit || '';
+    @observable selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
+    @observable selected_trade_type: TTradeType = (this.qs_cache.selected_trade_type as TTradeType) || {};
+    @observable selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
+    @observable selected_duration_unit: TDurationOptions =
+        (this.qs_cache.selected_duration_unit as TDurationOptions) || {};
+    @observable input_duration_value: string | number = (this.qs_cache.input_duration_value as string | number) || '';
+    @observable input_stake: string = (this.qs_cache.input_stake as string) || '';
+    @observable input_martingale_size: string = (this.qs_cache.input_martingale_size as string) || '';
+    @observable input_alembert_unit: string = (this.qs_cache.input_alembert_unit as string) || '';
+    @observable input_oscar_unit: string = (this.qs_cache.input_oscar_unit as string) || '';
+    @observable input_loss: string = (this.qs_cache.input_loss as string) || '';
+    @observable input_profit: string = (this.qs_cache.input_profit as string) || '';
 
     @observable is_strategy_modal_open = false;
-    @observable active_index: number = this.selected_type_strategy.index || 0;
-    @observable description?: string = this.qs_cache.selected_type_strategy.description || '';
+    @observable active_index: number = (this.selected_type_strategy.index as number) || 0;
+    @observable description: string = (this.qs_cache.selected_type_strategy?.description as string) || '';
     @observable types_strategies_dropdown: TTypeStrategiesDropdown = [];
     @observable symbol_dropdown: TSymbolDropdown = [];
     @observable trade_type_dropdown: TTradeTypeDropdown = [];
@@ -86,9 +87,10 @@ export default class QuickStrategyStore {
 
     @action.bound
     setDescription(type_strategy: TTypeStrategy): void {
-        this.description = (this.types_strategies_dropdown as TTypeStrategiesDropdown).find(
-            strategy => strategy.value === type_strategy.value
-        )?.description;
+        this.description =
+            (this.types_strategies_dropdown as TTypeStrategiesDropdown)?.find(
+                strategy => strategy.value === type_strategy.value
+            )?.description || '';
     }
 
     @action.bound
@@ -129,7 +131,7 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_symbol = symbol;
         this.selected_symbol = symbol;
         delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.duration_value;
+        delete this.qs_cache.input_duration_value;
         delete this.qs_cache.selected_trade_type;
     }
 
@@ -138,7 +140,7 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_trade_type = trade_type;
         this.selected_trade_type = trade_type;
         delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.duration_value;
+        delete this.qs_cache.input_duration_value;
     }
 
     @action.bound
@@ -203,9 +205,8 @@ export default class QuickStrategyStore {
     onHideDropdownList(type: TDropdownItems, value: TSelectsFieldNames, setFieldValue: TSetFieldValue): void {
         const field_map = this.getFieldMap(type);
         const item =
-            ((field_map as TFieldMapData).dropdown as TDropdowns)?.find(
-                i => i.text.toLowerCase() === value.toLowerCase()
-            ) || field_map.selected;
+            (field_map.dropdown as TDropdowns)?.find(i => i.text.toLowerCase() === value.toLowerCase()) ||
+            field_map.selected;
 
         // Don't allow bogus input.
         if (!item) {
@@ -436,18 +437,19 @@ export default class QuickStrategyStore {
     @action.bound
     async updateTypesStrategiesDropdown() {
         const { strategies } = config;
-        const typesStrategies = Object.values(strategies as TStrategies).map(strategy => ({
+        const types_strategies = Object.values(strategies as TStrategies).map(strategy => ({
             index: strategy.index,
             text: strategy.label,
             value: strategy.label,
             description: strategy.description,
         }));
-        this.setTypesStrategiesDropdown(typesStrategies);
-        let first_type_strategy = typesStrategies[0];
-        if (this.selected_type_strategy && typesStrategies.some(e => e.value === this.selected_type_strategy.value)) {
+
+        this.setTypesStrategiesDropdown(types_strategies);
+        let first_type_strategy = types_strategies[0];
+        if (this.selected_type_strategy && types_strategies.some(e => e.value === this.selected_type_strategy.value)) {
             first_type_strategy = this.selected_type_strategy;
             runInAction(() => {
-                first_type_strategy.text = this.getFieldValue(typesStrategies, this.selected_type_strategy.value);
+                first_type_strategy.text = this.getFieldValue(types_strategies, this.selected_type_strategy.value);
             });
         } else {
             delete this.qs_cache.selected_type_strategy;
@@ -494,7 +496,7 @@ export default class QuickStrategyStore {
         const durations = await contracts_for.getDurations(this.selected_symbol.value, this.selected_trade_type.value);
         const min_duration = (durations as TDurations).find(duration => duration.unit === duration_type);
         if (min_duration) {
-            let duration_input_value: number = min_duration.min;
+            let duration_input_value: number | string = min_duration.min;
             const cache_unit = this.qs_cache.input_duration_value;
             if (cache_unit && cache_unit < min_duration.max && cache_unit > min_duration.min) {
                 duration_input_value = cache_unit;
@@ -557,19 +559,12 @@ export default class QuickStrategyStore {
     };
 
     getFieldValue = (list_items: TDropdowns, value: string): string => {
-        const dropdown_items = Array.isArray(list_items)
-            ? list_items
-            : [].concat(...Object.values(list_items as TDropdowns));
-
         const list_obj: TSelectedValuesSelect =
-            dropdown_items && Array.isArray(dropdown_items)
-                ? (dropdown_items as TSymbolDropdown | TDurationUnitDropdown | TTypeStrategiesDropdown)?.find(
-                      (item: TSymbolItem | TDurationOptions | TTypeStrategy) =>
-                          typeof item.value !== 'string'
-                              ? item.value === value
-                              : item.value?.toLowerCase() === value?.toLowerCase()
-                  )
-                : '';
+            list_items?.find(item =>
+                typeof item.value !== 'string'
+                    ? item.value === value
+                    : item.value?.toLowerCase() === value?.toLowerCase()
+            ) || {};
 
         return typeof list_obj !== 'string' ? list_obj?.text : '';
     };

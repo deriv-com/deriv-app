@@ -34,7 +34,7 @@ const QStrategyFields = React.memo(
         description,
         errors,
     }: TQStrategyFields) => {
-        const tempIsDoubleIdxRef: React.MutableRefObject<number | undefined> = React.useRef();
+        const is_double_idx_ref: React.MutableRefObject<number | undefined> = React.useRef();
 
         const uniq_selected_input = React.useMemo(
             () => data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0],
@@ -59,42 +59,45 @@ const QStrategyFields = React.memo(
                         is_able_disabled,
                     } = item as TDataFields;
 
-                    const isUniqStrategyField = Array.isArray(item);
+                    const is_uniq_strategy_field = Array.isArray(item);
+                    const is_input_field = is_uniq_strategy_field || input_value.startsWith('input_');
 
-                    const isInputField = isUniqStrategyField || input_value.startsWith('input_');
+                    //dropdowns
+                    const types_strategies_drop = name?.endsWith('types-strategies') && types_strategies_dropdown;
+                    const symbol_drop = name?.endsWith('symbol') && symbol_dropdown;
+                    const trade_type_drop = name?.endsWith('trade-type') && trade_type_dropdown;
+                    const duration_unit_drop = name?.endsWith('duration-unit') && duration_unit_dropdown;
 
-                    const d_types_strategies = name?.endsWith('types-strategies') ? types_strategies_dropdown : '';
-                    const d_symbol = name?.endsWith('symbol') ? symbol_dropdown : '';
-                    const d_trade_type = name?.endsWith('trade-type') ? trade_type_dropdown : '';
-                    const d_duration_unit = name?.endsWith('duration-unit') ? duration_unit_dropdown : '';
+                    const dropdowns: TDropdowns =
+                        types_strategies_drop || symbol_drop || trade_type_drop || duration_unit_drop || [];
+                    const dropdown_list: TDropdowns = !is_uniq_strategy_field ? dropdowns : [];
 
-                    const dropdowns: TDropdowns = d_types_strategies || d_symbol || d_trade_type || d_duration_unit;
-                    const getDropdownList: TDropdowns = !isUniqStrategyField ? dropdowns : '';
+                    //selected_items
+                    const type_strategy_pick = name?.endsWith('types-strategies') && selected_type_strategy;
+                    const symbol_pick = name?.endsWith('symbol') && selected_symbol;
+                    const trade_type_pick = name?.endsWith('trade-type') && selected_trade_type;
+                    const duration_unit_pick = name?.endsWith('duration-unit') && selected_duration_unit;
 
-                    const s_type_strategy = name?.endsWith('types-strategies') ? selected_type_strategy : '';
-                    const s_symbol = name?.endsWith('symbol') ? selected_symbol : '';
-                    const s_trade_type = name?.endsWith('trade-type') ? selected_trade_type : '';
-                    const s_duration_unit = name?.endsWith('duration-unit') ? selected_duration_unit : '';
+                    const selected_item =
+                        type_strategy_pick || symbol_pick || trade_type_pick || duration_unit_pick || {};
+                    const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field ? selected_item : {};
 
-                    const selected_items = s_type_strategy || s_symbol || s_trade_type || s_duration_unit;
+                    const is_base_field = !is_uniq_strategy_field && name.startsWith('base__');
+                    const is_current_strategy_fields = is_base_field || is_uniq_strategy_field;
 
-                    const getSelectedValue: TSelectedValuesSelect = !isUniqStrategyField ? selected_items : '';
+                    const is_duration_unit_field = !is_uniq_strategy_field && name.endsWith('duration-unit');
+                    const is_duration_value_field = !is_uniq_strategy_field && name.endsWith('duration-value');
 
-                    const isBaseField = !isUniqStrategyField && name.startsWith('base__');
-                    const isCurrentStrategyFields = isBaseField || isUniqStrategyField;
-
-                    const isDurationUnitField = !isUniqStrategyField && name.endsWith('duration-unit');
-                    const isDurationValueField = !isUniqStrategyField && name.endsWith('duration-value');
-                    if (tempIsDoubleIdxRef.current === idx || isDurationValueField) {
+                    if (is_double_idx_ref.current === idx || is_duration_value_field) {
                         return false;
                     }
 
-                    if (isCurrentStrategyFields && isInputField) {
-                        tempIsDoubleIdxRef.current = idx + 1;
+                    if (is_current_strategy_fields && is_input_field) {
+                        is_double_idx_ref.current = idx + 1;
                     }
 
-                    if (isCurrentStrategyFields) {
-                        if (isDurationUnitField) {
+                    if (is_current_strategy_fields) {
+                        if (is_duration_unit_field && selected_value) {
                             return (
                                 <div
                                     key={idx}
@@ -106,8 +109,8 @@ const QStrategyFields = React.memo(
                                         field_name={field_name as TSelectsFieldNames}
                                         id={id}
                                         is_mobile={is_mobile}
-                                        getDropdownList={getDropdownList}
-                                        getSelectedValue={getSelectedValue}
+                                        dropdown_list={dropdown_list}
+                                        selected_value={selected_value}
                                         label={label}
                                         input_value={input_value as TDropdownItems}
                                         setFieldValue={setFieldValue}
@@ -130,7 +133,7 @@ const QStrategyFields = React.memo(
                                     />
                                 </div>
                             );
-                        } else if (isInputField) {
+                        } else if (is_input_field) {
                             return (
                                 <div
                                     key={idx}
@@ -152,7 +155,7 @@ const QStrategyFields = React.memo(
                                         label={label}
                                         input_value={input_value as TInputBaseFields}
                                         placeholder={placeholder}
-                                        isUniqStrategyField={isUniqStrategyField}
+                                        is_uniq_strategy_field={is_uniq_strategy_field}
                                         trailing_icon_message={trailing_icon_message}
                                         zIndex={zIndex}
                                         uniq_selected_input={uniq_selected_input}
@@ -171,26 +174,28 @@ const QStrategyFields = React.memo(
                         }
                         return (
                             <div key={idx}>
-                                <div className='quick-strategy__form-row'>
-                                    <SelectField
-                                        field_name={field_name as TSelectsFieldNames}
-                                        id={id}
-                                        is_mobile={is_mobile}
-                                        getDropdownList={getDropdownList}
-                                        getSelectedValue={getSelectedValue}
-                                        label={label}
-                                        input_value={input_value as TDropdownItems}
-                                        setFieldValue={setFieldValue}
-                                        className={className}
-                                        is_able_disabled={is_able_disabled}
-                                        values={values}
-                                        onChangeDropdownItem={onChangeDropdownItem}
-                                        onHideDropdownList={onHideDropdownList}
-                                        onScrollStopDropdownList={onScrollStopDropdownList}
-                                        selected_trade_type={selected_trade_type}
-                                        selected_symbol={selected_symbol}
-                                    />
-                                </div>
+                                {selected_value && (
+                                    <div className='quick-strategy__form-row'>
+                                        <SelectField
+                                            field_name={field_name as TSelectsFieldNames}
+                                            id={id}
+                                            is_mobile={is_mobile}
+                                            dropdown_list={dropdown_list}
+                                            selected_value={selected_value}
+                                            label={label}
+                                            input_value={input_value as TDropdownItems}
+                                            setFieldValue={setFieldValue}
+                                            className={className}
+                                            is_able_disabled={is_able_disabled}
+                                            values={values}
+                                            onChangeDropdownItem={onChangeDropdownItem}
+                                            onHideDropdownList={onHideDropdownList}
+                                            onScrollStopDropdownList={onScrollStopDropdownList}
+                                            selected_trade_type={selected_trade_type}
+                                            selected_symbol={selected_symbol}
+                                        />
+                                    </div>
+                                )}
                                 {name.endsWith('types-strategies') && (
                                     <div key='description' className='quick-strategy__description'>
                                         {description}

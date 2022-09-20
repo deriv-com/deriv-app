@@ -86,12 +86,12 @@ export type TQStrategyFooter = {
 export type TDropdownLists = Record<TDropdownItems, TDropdowns>;
 export type TSelectedValues = Record<TDropdownItems, TSelectedValuesSelect>;
 
-export type TSelectFieldProps = {
+export type TSelectFieldProps = React.PropsWithChildren<{
     field_name: TSelectsFieldNames;
     id: string;
     is_mobile: boolean;
-    getDropdownList: TDropdowns;
-    getSelectedValue: TSelectedValuesSelect;
+    dropdown_list: TDropdowns;
+    selected_value: Partial<TSelectedValuesSelect>;
     label: string;
     input_value: TDropdownItems;
     setFieldValue: TSetFieldValue;
@@ -103,29 +103,31 @@ export type TSelectFieldProps = {
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     selected_trade_type: TTradeType;
     selected_symbol: TMarketOption;
-};
+}>;
 
-export type TInputFieldProps = {
-    idx?: number;
-    handleChange: FormikProps<TFormValues>['handleChange'];
-    onChangeInputValue: TOnChangeInputValue;
-    setCurrentFocus: TSetCurrentFocus;
-    is_mobile: boolean;
-    field_name?: TInputsFieldNames;
-    id?: string;
-    label?: string;
-    input_value?: TInputBaseFields;
-    placeholder?: string;
-    isUniqStrategyField?: boolean;
-    trailing_icon_message?: string;
-    uniq_selected_input?: TDataUniqInput;
-    errors: FormikErrors<TQuickStrategyFormValues>;
-} & TCommonInputsProperties;
+export type TInputFieldProps = React.PropsWithChildren<
+    {
+        idx?: number;
+        handleChange: FormikProps<TFormValues>['handleChange'];
+        onChangeInputValue: TOnChangeInputValue;
+        setCurrentFocus: TSetCurrentFocus;
+        is_mobile: boolean;
+        field_name?: TInputsFieldNames;
+        id?: string;
+        label?: string;
+        input_value?: TInputBaseFields;
+        placeholder?: string;
+        is_uniq_strategy_field?: boolean;
+        trailing_icon_message?: string;
+        uniq_selected_input?: TDataUniqInput;
+        errors: FormikErrors<TQuickStrategyFormValues>;
+    } & TCommonInputsProperties
+>;
 
-export type TTradeTypeOptionProps = {
+export type TTradeTypeOptionProps = React.PropsWithChildren<{
     trade_type: TTradeType;
-};
+}>;
 
-export type TMarketOptionProps = {
+export type TMarketOptionProps = React.PropsWithChildren<{
     symbol: TMarketOption;
-};
+}>;

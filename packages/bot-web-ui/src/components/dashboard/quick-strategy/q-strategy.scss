@@ -35,9 +35,9 @@
         }
 
         &-row {
-            align-items: flex-end;
             display: flex;
             justify-content: space-between;
+            align-items: flex-end;
             margin: 3.5rem 0;
 
             .dc-dropdown-list__item--active {

@@ -22,14 +22,14 @@ const InputField = ({
     label,
     input_value,
     placeholder,
-    isUniqStrategyField,
+    is_uniq_strategy_field,
     trailing_icon_message,
     zIndex,
     uniq_selected_input,
     errors,
 }: TInputFieldProps) => {
     const dataField = () => {
-        if (isUniqStrategyField) {
+        if (is_uniq_strategy_field) {
             return uniq_selected_input;
         }
         return idx ? (data_fields[idx + 1] as TDataFields) : {};

@@ -6,6 +6,7 @@
         padding: 0;
         height: 5.6rem;
     }
+
     &__container {
         display: flex;
         flex-direction: row;
@@ -15,11 +16,15 @@
         width: 18.32rem;
         height: 5.4rem;
         margin-bottom: 1.6rem;
+        margin-left: 1rem;
+
         &--icon {
             width: 3.2rem;
             height: 3.2rem;
 
             &--blurry {
+                width: 3.2rem;
+                height: 3.2rem;
                 opacity: 0.2;
             }
         }
@@ -62,30 +67,8 @@
         }
     }
     &__trade-button {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 0.6rem 1.6rem;
-
-        width: 18.32rem;
-        height: 3.2rem;
-        /* brand/coral */
-
-        background: #ff444f;
-        border-radius: 0.4rem;
-
-        &--label {
-            width: 3.8rem;
-            height: 2rem;
-            font-family: 'IBM Plex Sans';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 1.4rem;
-            line-height: 2rem;
-            text-align: center;
-            color: $color-white;
-        }
+        width: 90%;
+        margin-bottom: 2rem;
 
         @include mobile {
             padding: 0.3rem 0.8rem;

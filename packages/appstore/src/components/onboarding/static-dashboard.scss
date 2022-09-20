@@ -5,6 +5,10 @@
     &-wrapper {
         &__header {
             padding: 1rem;
+
+            &--animated {
+                animation: triggerAnimation 2s linear;
+            }
         }
         &__body {
             display: flex;

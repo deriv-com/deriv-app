@@ -12,12 +12,13 @@ type TStaticCFDAccountManager = {
     appname: string;
     loginid?: string;
     currency?: string;
-    is_item_blurry?: boolean;
-    is_text_blurry?: boolean;
-    platform: TPlatform | 'options';
     description?: string;
     is_animated?: boolean;
     has_account?: boolean;
+    is_item_blurry?: boolean;
+    is_text_blurry?: boolean;
+    is_button_animated?: boolean;
+    platform: TPlatform | 'options';
 };
 
 const StaticCFDAccountManager = ({
@@ -29,8 +30,8 @@ const StaticCFDAccountManager = ({
     platform,
     has_account,
     description,
-    is_animated,
     is_item_blurry,
+    is_button_animated,
 }: TStaticCFDAccountManager) => {
     return (
         <div className='static-cfd-account-manager'>
@@ -85,18 +86,18 @@ const StaticCFDAccountManager = ({
                     </Text>
                 )}
             </div>
-            <div className='static-cfd-account-manager-buttons'>
+            <div className='static-cfd-account-manager__buttons'>
                 {has_account ? (
                     <>
                         <Button primary className='static-cfd-account-manager__buttons-topup'>
                             <Localize i18n_default_text='Top-up' />
                         </Button>
-                        <Button secondary>
+                        <Button secondary className='static-cfd-account-manager__buttons-trade'>
                             <Localize i18n_default_text='Trade' />
                         </Button>
                     </>
                 ) : (
-                    <Button className='static-cfd-account-manager__buttons--animated'>
+                    <Button className={is_button_animated ? 'static-cfd-account-manager__buttons--animated' : ''}>
                         <Localize i18n_default_text='Get' />
                     </Button>
                 )}

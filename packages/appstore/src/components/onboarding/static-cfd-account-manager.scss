@@ -1,6 +1,7 @@
 .static-cfd-account-manager {
     display: flex;
     width: 29.4rem;
+    margin-left: 1rem;
     align-items: center;
     justify-content: space-between;
 
@@ -25,6 +26,10 @@
         }
 
         &-topup {
+            margin-bottom: 0.5rem;
+        }
+
+        &-trade {
             margin-bottom: 0.5rem;
         }
     }

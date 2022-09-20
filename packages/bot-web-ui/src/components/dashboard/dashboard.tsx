@@ -12,6 +12,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
+import Tutorial from './tutorial-components';
 
 interface DashboardProps {
     active_tab: number;
@@ -50,7 +51,9 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                         </div>
                     </Tab>
                     <Tab icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
-                        <div>{localize('Under Developments')}</div>
+                        <div>
+                            <Tutorial />
+                        </div>
                     </Tab>
                 </Tabs>
             </div>

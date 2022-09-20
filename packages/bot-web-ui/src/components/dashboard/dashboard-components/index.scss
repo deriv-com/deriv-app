@@ -19,7 +19,6 @@
         border: none;
         max-width: 100%;
         background: var(--general-main-1);
-        margin-right: 1rem;
         width: 70%;
 
         .dc-tabs {
@@ -141,6 +140,7 @@
     padding: 2.4rem;
     &--block {
         display: block;
+        margin-left: 1rem;
     }
     display: none;
     &__images {

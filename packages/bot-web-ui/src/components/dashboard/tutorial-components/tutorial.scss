@@ -1,0 +1,131 @@
+.dc-tabs {
+    &__wrapper {
+        padding: 0.8rem;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        &__search_input {
+            width: 21rem;
+            height: 3.2rem;
+            border-radius: 4px;
+            outline: none;
+            background-color: #d6dadb;
+            position: absolute;
+            z-index: 1;
+            top: 20px;
+            left: 15px;
+            font-size: 1.4rem;
+
+            ::placeholder {
+                margin-left: 3.2rem;
+            }
+        }
+
+        .dc-tabs {
+            &--top {
+                display: flex;
+                height: calc(100vh - 16rem);
+            }
+
+            &__list {
+                width: 22.5rem;
+                display: flex;
+                flex-direction: column;
+                height: calc(100vh - 16rem);
+            }
+
+            &__active {
+                width: 100%;
+            }
+
+            &__item {
+                width: 100%;
+                border-radius: 0;
+
+                &:first-child {
+                    margin-top: 6rem;
+                }
+            }
+
+            &__inner-content {
+                width: 100%;
+                padding: 1.6rem 2.4rem;
+
+                h1 {
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                    margin-bottom: 2.4rem;
+                }
+
+                &--card {
+                    display: flex;
+                    text-align: center;
+
+                    &-holder {
+                        margin-right: 2.4rem;
+                        height: 16rem;
+                        width: 28rem;
+
+                        &-placeholder {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100%;
+                            width: 100%;
+                            background: #d6d6d6;
+                            margin-bottom: 0.8rem;
+
+                            &--button-group {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 20rem;
+                                height: 7rem;
+                                border-radius: 10px;
+                                background-color: rgba(0, 0, 0, 0.5);
+                                &-play {
+                                    cursor: pointer;
+                                    filter: invert(1);
+                                }
+                            }
+                        }
+
+                        &-label {
+                            text-align: center;
+                            font-size: 1.4rem;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+        }
+
+        .dc-accordion {
+            &__item-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            &__wrapper {
+                width: 100%;
+            }
+            &__item {
+                border: unset;
+                border-bottom: 1px solid var(--general-section-1);
+                // color: var(--text-general);
+                // font-size: 1.4rem;
+            }
+        }
+
+        &__group {
+            width: 100%;
+        }
+
+        &__faq_header {
+            margin-bottom: 1rem;
+            margin-left: 0.5rem;
+        }
+    }
+}

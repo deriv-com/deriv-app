@@ -11,6 +11,7 @@ import OrderDetailsConfirmModal from './order-details-confirm-modal.jsx';
 const OrderDetailsFooter = observer(() => {
     const { order_store } = useStores();
     const {
+        // id,
         is_buy_order_for_user,
         should_show_cancel_and_paid_button,
         should_show_complain_and_received_button,
@@ -42,6 +43,14 @@ const OrderDetailsFooter = observer(() => {
 
     const hideConfirmOrderModal = () => setShouldShowConfirmModal(false);
     const showConfirmOrderModal = () => setShouldShowConfirmModal(true);
+    // TODO: Uncomment this when we're ready to remove the modal
+    // const showConfirmOrderModal = () => {
+    //     if (is_buy_order_for_user) {
+    //         setShouldShowConfirmModal(true);
+    //     } else {
+    //         order_store.confirmOrderRequest(id);
+    //     }
+    // };
 
     if (should_show_cancel_and_paid_button) {
         return (

@@ -1,10 +1,13 @@
 .dc-tabs {
+    &__content {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+
     &__wrapper {
         padding: 0.8rem;
         position: relative;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
 
         &__search_input {
             width: 21rem;
@@ -108,19 +111,10 @@
                 justify-content: space-between;
                 align-items: center;
             }
-            &__wrapper {
-                width: 100%;
-            }
             &__item {
                 border: unset;
                 border-bottom: 1px solid var(--general-section-1);
-                // color: var(--text-general);
-                // font-size: 1.4rem;
             }
-        }
-
-        &__group {
-            width: 100%;
         }
 
         &__faq_header {

@@ -28,7 +28,7 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
     };
 
     return (
-        <div className='main_dashboard_container'>
+        <div className='dashboard__main'>
             <div className={classNames('dashboard__container', { 'w-100': !show_side_bar })}>
                 <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
                 <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
@@ -57,11 +57,16 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                     </Tab>
                 </Tabs>
             </div>
-            <div className='dashboard__run-strategy-wrapper'>
+
+            <div
+                className={classNames('dashboard__run-strategy-wrapper', {
+                    'dashboard__sidebar-wrapper--active': !show_side_bar || active_tab !== 0,
+                })}
+            >
                 <RunStrategy />
+                {active_tab === 0 && <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />}
+                {(active_tab === 1 || active_tab === 2) && <RunPanel />}
             </div>
-            <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />
-            <RunPanel />
         </div>
     );
 };

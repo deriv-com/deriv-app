@@ -2,23 +2,9 @@ import { localize } from '@deriv/translations';
 
 export type TTutorialItem = {
     title: string;
-    description: string[];
+    description: { [key: string]: string }[];
     img?: string;
 };
-
-// const desc = {
-//   title: 'string'
-//   content: [
-//     {
-//       type: 'text',
-//       content: 'striakldsjfjasdf'
-//     },
-//     {
-//       type: 'image',
-//       src="",
-//     },
-//   ]
-// }
 
 export const FAQ_QUESTIONS: TTutorialItem[] = [
     {
@@ -118,9 +104,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
     },
     {
         title: localize('How do I clear my transaction log?'),
-        description: [localize('1. Hit Reset at the bottom of stats panel.')],
-        first_img: localize(''),
-        additional_description: localize('2. Hit OK to confirm.'),
+        description: [localize('1. Hit Reset at the bottom of stats panel.'), localize('2. Hit OK to confirm.')],
     },
     {
         title: localize('How do I control my losses with DBot?'),
@@ -148,7 +132,6 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
                 '3. Update currentPL with the profit from the last contract. If the last contract was lost, the value of currentPL will be negative.'
             ),
         ],
-        first_img: localize(''),
     },
     {
         title: localize('Can I run DBot on multiple tabs in my web browser?'),

@@ -1,19 +1,30 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 
-type TJoyrideProps = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
-type TTourGuide = {
-    Label: string | boolean;
-    Content: string;
+type TJoyrideConfig = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
+
+type TStep = {
+    label: string | boolean;
+    content: string;
 };
 
-const TourGuide = ({ Label, Content }: TTourGuide) => (
-    <div>
-        <h1>{Label}</h1>
-        <p>{Content}</p>
+const Step = ({ label, content }: TStep) => (
+    <div className='db-tour'>
+        <Text size='s' line_height='s' color='prominent' as='h' weight='bold'>
+            {label}
+        </Text>
+        <Text size='s' line_height='s' color='prominent' as='p'>
+            {content}
+        </Text>
     </div>
 );
-const joyride_props: TJoyrideProps = {
+
+/**
+ * Joyride specifc config
+ * It should be in camel casing.
+ */
+const joyride_config: TJoyrideConfig = {
     showProgress: true,
     showSkipButton: true,
     spotlightClicks: true,
@@ -24,73 +35,73 @@ export const DBOT_ONBOARDING = [
     {
         target: 'body',
         content: (
-            <TourGuide
-                Label={localize('Start with a tempplate')}
-                Content={localize(
+            <Step
+                label={localize('Start with a template')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
         ),
-        ...joyride_props,
+        ...joyride_config,
     },
     {
         target: '#id-bot-builder',
         content: (
-            <TourGuide
-                Label={localize('Start with a BotBuilder')}
-                Content={localize(
+            <Step
+                label={localize('Start with a BotBuilder')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
         ),
-        ...joyride_props,
+        ...joyride_config,
     },
     {
         target: '#id-quick-strategy',
         content: (
-            <TourGuide
-                Label={localize('Start with a tempplate')}
-                Content={localize(
+            <Step
+                label={localize('Start with a template')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
         ),
-        ...joyride_props,
+        ...joyride_config,
     },
     {
         target: '#id-charts',
         content: (
-            <TourGuide
-                Label={localize('Start with a charts')}
-                Content={localize(
+            <Step
+                label={localize('Start with a charts')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
         ),
-        ...joyride_props,
+        ...joyride_config,
     },
     {
         target: '#id-tutorials',
         content: (
-            <TourGuide
-                Label={localize('Start with a tutorials')}
-                Content={localize(
+            <Step
+                label={localize('Start with a tutorials')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
         ),
-        ...joyride_props,
+        ...joyride_config,
     },
     {
-        target: '#dc-tabs__content_group_tiles',
+        target: '#db-dashboard-cards',
         content: (
-            <TourGuide
-                Label={localize('Start with a tutorials')}
-                Content={localize(
+            <Step
+                label={localize('Start with a tutorials')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
             />
         ),
-        ...joyride_props,
+        ...joyride_config,
     },
 ];

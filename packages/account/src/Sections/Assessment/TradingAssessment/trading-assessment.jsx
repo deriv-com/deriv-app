@@ -105,8 +105,8 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
         }
     };
 
-    const handleAcceptRisk = () => {
-        handleSubmit({ ...form_data, risk_tolerance: 'Yes' });
+    const handleAcceptRisk = async () => {
+        await handleSubmit({ ...form_data, risk_tolerance: 'Yes' });
         setShouldAcceptRisk(false);
         setIsBtnLoading(false);
         setIsSubmitSuccess(false);

@@ -26,7 +26,7 @@ For Fonts, Constants, Mixins, Themes, Devices:
 {
     loader: 'sass-resources-loader',
     options: {
-        resources: require('@deriv/shared/src/styles/index.js'),
+        resources: require('@deriv/shared/src/styles/index.ts'),
     }
 }
 ```

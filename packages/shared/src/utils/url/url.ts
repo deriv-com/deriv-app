@@ -14,7 +14,7 @@ const host_map = {
 };
 let location_url, static_host, default_language;
 
-export const legacyUrlForLanguage = (target_language, url = window.location.href) =>
+export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) =>
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 
 export const urlForLanguage = (lang, url = window.location.href) => {
@@ -192,7 +192,7 @@ export const getContractPath = contract_id => getPath(routes.contract, { contrac
  * @param {string} search_param window.location.search
  * @param {Array<string>} allowed_keys array of string of allowed query string keys
  */
-export const filterUrlQuery = (search_param, allowed_keys) => {
+export const filterUrlQuery = (search_param: string, allowed_keys: string[]) => {
     const search_params = new URLSearchParams(search_param);
     const filtered_queries = [...search_params].filter(kvp => allowed_keys.includes(kvp[0]));
     return new URLSearchParams(filtered_queries || '').toString();

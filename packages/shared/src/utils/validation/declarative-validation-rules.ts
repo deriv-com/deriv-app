@@ -1,6 +1,12 @@
 import { addComma } from '../currency';
 import { cloneObject } from '../object';
 import { compareBigUnsignedInt } from '../string';
+import { TFormErrorMessagesTypes } from './form-error-messages-types';
+
+type TOptions = {
+    min: number;
+    max: number;
+};
 
 const validRequired = (value /* , options, field */) => {
     if (value === undefined || value === null) {
@@ -10,23 +16,23 @@ const validRequired = (value /* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
-export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
-export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
-export const validPhone = value => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
-export const validLetterSymbol = value => /^[A-Za-z]+([a-zA-Z\.' -])*[a-zA-Z\.' -]+$/.test(value);
-export const validLength = (value = '', options) =>
+export const validAddress = (value: string): boolean => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+export const validPostCode = (value: string): boolean => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
+export const validTaxID = (value: string): boolean => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
+export const validPhone = (value: string): boolean => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
+export const validLetterSymbol = (value: string): boolean => /^[A-Za-z]+([a-zA-Z\.' -])*[a-zA-Z\.' -]+$/.test(value);
+export const validLength = (value = '', options: TOptions) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
-export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-export const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
-const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
+export const validPassword = (value: string): boolean => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validEmail = (value: string): boolean => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+const validBarrier = (value: string): boolean => /^[+-]?\d+\.?\d*$/.test(value);
+const validGeneral = (value: string): boolean => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value, options) => options.regex.test(value);
 const confirmRequired = value => value === true;
-const checkPOBox = value => !/p[.\s]+o[.\s]+box/i.test(value);
-const validEmailToken = value => value.trim().length === 8;
+const checkPOBox = (value: string): boolean => !/p[.\s]+o[.\s]+box/i.test(value);
+const validEmailToken = (value: string): boolean => value.trim().length === 8;
 
-let pre_build_dvrs, form_error_messages;
+let pre_build_dvrs, form_error_messages: TFormErrorMessagesTypes;
 
 const isMoreThanMax = (value, options) =>
     options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1;
@@ -121,7 +127,7 @@ const initPreBuildDVRs = () => ({
     },
 });
 
-export const initFormErrorMessages = all_form_error_messages => {
+export const initFormErrorMessages = (all_form_error_messages: TFormErrorMessagesTypes) => {
     if (!pre_build_dvrs) {
         form_error_messages = all_form_error_messages;
         pre_build_dvrs = initPreBuildDVRs();

@@ -214,6 +214,7 @@ export type TJurisdictionModalProps = {
     toggleCFDVerificationModal: () => void;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    updateAccountStatus: () => void;
 };
 
 export type TJurisdictionModalContentProps = {

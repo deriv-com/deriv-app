@@ -27,6 +27,7 @@ const JurisdictionModal = ({
     setAccountSettings,
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
+    updateAccountStatus,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
@@ -47,6 +48,7 @@ const JurisdictionModal = ({
 
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
+            updateAccountStatus();
             setJurisdictionSelectedShortcode('');
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
@@ -274,4 +276,5 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal: cfd.toggleJurisdictionModal,
+    updateAccountStatus: client.updateAccountStatus,
 }))(JurisdictionModal);

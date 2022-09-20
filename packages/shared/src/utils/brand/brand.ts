@@ -37,6 +37,6 @@ export const getBrandWebsiteName = () => {
     return config_data.domain_name;
 };
 
-export const getPlatformSettings = (platform_key: keyof TPlatforms) => {
+export const getPlatformSettings = (platform_key: keyof TPlatforms): TPlatform => {
     return config_data.platforms[platform_key];
 };

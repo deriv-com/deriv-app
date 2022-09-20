@@ -67,6 +67,8 @@ const App = () => (
     npx svgo src/components/icon/**/**.svg --enable=sortAttrs
     ```
 
+    Note: If there are multiple svg files you are adding in the component, please make sure that the id's are not duplicated due to minification.
+
 4. Run `npm run build` to rebuild the Icon component.
 
     - Note: Running `npm run build` command will run the `npm run build:icons`. This command will then rewrite `icons.js` file and `stories/icon/icons.js` files with the newly added icon imports.

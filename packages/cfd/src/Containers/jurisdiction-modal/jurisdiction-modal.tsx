@@ -145,7 +145,7 @@ const JurisdictionModal = ({
             type: account_type.type,
         };
 
-        if (is_eu && is_labuan_selected) {
+        if (is_eu && is_maltainvest_selected) {
             if (poi_poa_verified_for_bvi_labuan_maltainvest) {
                 openPasswordModal(type_of_account);
             } else {

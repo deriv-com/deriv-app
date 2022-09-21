@@ -437,7 +437,7 @@ export default class NotificationStore extends BaseStore {
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
 
-        const notification_action =
+        const notification_redirect_action =
             routes.cashier_p2p === window.location.pathname
                 ? {
                       onClick: () => {
@@ -467,7 +467,7 @@ export default class NotificationStore extends BaseStore {
                           },
                           text: localize('Give feedback'),
                       }
-                    : notification_action,
+                    : notification_redirect_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (

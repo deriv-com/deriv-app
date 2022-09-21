@@ -114,6 +114,7 @@ export default class NotificationStore extends BaseStore {
 
     @computed
     get filtered_notifications() {
+        // console.log(this.notifications.filter(message => !['news', 'promotions'].includes(message.type)));
         return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
@@ -452,11 +453,11 @@ export default class NotificationStore extends BaseStore {
                           });
                           if (this.is_notifications_visible) this.toggleNotificationsModal();
                       },
-                      text: localize('Give feedback C'),
+                      text: localize('Give feedback'),
                   }
                 : {
                       route: `${routes.cashier_p2p}?order=${order_id}`,
-                      text: localize('Give feedback R'),
+                      text: localize('Give feedback'),
                   };
 
         this.addNotificationMessage({
@@ -467,7 +468,7 @@ export default class NotificationStore extends BaseStore {
                               this.p2p_order_props.setIsRatingModalOpen(true);
                               if (this.is_notifications_visible) this.toggleNotificationsModal();
                           },
-                          text: localize('Give feedback SAME'),
+                          text: localize('Give feedback'),
                       }
                     : notification_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,

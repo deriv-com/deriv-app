@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 type TFieldProps = {
     className?: string;
-    message: string | ReactNode | boolean;
-    type: string;
+    message: string;
+    type?: 'error' | 'warn';
 };
 
 const Field = ({ message, className, type }: TFieldProps) => (

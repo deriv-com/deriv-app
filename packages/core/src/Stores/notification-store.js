@@ -48,12 +48,6 @@ export default class NotificationStore extends BaseStore {
             }
         );
         reaction(
-            () => this.p2p_order_props,
-            () => {
-                this.refreshNotifications();
-            }
-        );
-        reaction(
             () => [
                 root_store.client.account_settings,
                 root_store.client.account_status,
@@ -62,6 +56,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
+                this.p2p_order_props.order_id,
             ],
             async () => {
                 if (
@@ -452,6 +447,7 @@ export default class NotificationStore extends BaseStore {
                               order_id,
                           });
                           if (this.is_notifications_visible) this.toggleNotificationsModal();
+                          this.refreshNotifications();
                       },
                       text: localize('Give feedback'),
                   }
@@ -467,6 +463,7 @@ export default class NotificationStore extends BaseStore {
                           onClick: () => {
                               this.p2p_order_props.setIsRatingModalOpen(true);
                               if (this.is_notifications_visible) this.toggleNotificationsModal();
+                              this.refreshNotifications();
                           },
                           text: localize('Give feedback'),
                       }

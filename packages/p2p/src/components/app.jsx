@@ -66,17 +66,6 @@ const App = props => {
         if (order_id) {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
-            general_store.props.setP2POrderProps({
-                order_id: order_store.order_id,
-                redirectToOrderDetails: general_store.redirectToOrderDetails,
-                setIsRatingModalOpen: order_store.setIsRatingModalOpen,
-            });
-        } else {
-            general_store.props.setP2POrderProps({
-                order_id,
-                redirectToOrderDetails: general_store.redirectToOrderDetails,
-                setIsRatingModalOpen: order_store.setIsRatingModalOpen,
-            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);

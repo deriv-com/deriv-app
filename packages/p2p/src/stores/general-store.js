@@ -214,6 +214,8 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         const notification_key = `order-${order_id}`;
 
+        this.props.refreshNotifications();
+
         this.props.addNotificationMessage({
             action: {
                 onClick: () => {

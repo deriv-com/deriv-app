@@ -197,7 +197,7 @@ const Withdrawal = ({
     if (is_withdrawal_blocked) {
         return (
             <DisableWithdrawalModal
-                is_risk_client={is_withdrawal_blocked}
+                is_risky_client={is_withdrawal_blocked}
                 onClick={() => {
                     setIsWithdrawalBlocked(false);
                     history.push(routes.financial_assessment);

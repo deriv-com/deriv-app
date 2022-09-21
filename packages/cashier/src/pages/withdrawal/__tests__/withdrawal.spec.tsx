@@ -55,7 +55,7 @@ describe('<Withdrawal />', () => {
         is_virtual: false,
         verification_code: '',
         verify_error: {},
-        is_risk_client: false,
+        is_risky_client: false,
         is_financial_information_incomplete: false,
     };
 
@@ -269,7 +269,7 @@ describe('<Withdrawal />', () => {
             <Router history={history}>
                 <Withdrawal
                     {...props}
-                    is_risk_client
+                    is_risky_client
                     is_financial_information_incomplete
                     active_account_landing_company='maltainvest'
                 />
@@ -286,7 +286,7 @@ describe('<Withdrawal />', () => {
             <Router history={history}>
                 <Withdrawal
                     {...props}
-                    is_risk_client
+                    is_risky_client
                     is_financial_information_incomplete
                     active_account_landing_company='maltainvest'
                 />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStores } from 'Stores';
 import { Text, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import PlatformLauncher from '../platform-launcher/index';
@@ -6,6 +7,23 @@ import OptionsAccount from '../account/index';
 import AddOptions from '../add-options/index';
 import { isMobile } from '@deriv/shared';
 import AppsLauncher from '../app-launcher/index';
+import { observer } from 'mobx-react-lite';
+import { getSortedAccountList } from '../../helpers';
+
+type Taccount_propsN = {
+    a_currency: string;
+    b_currency: string;
+    a_is_crypto?: boolean;
+    b_is_crypto?: boolean;
+    a_is_fiat?: boolean;
+    b_is_fiat?: boolean;
+    loginid: string;
+    is_virtual?: boolean;
+}[];
+
+type Taccounts = {
+    currency: string;
+}[];
 
 type Taccount_props = {
     account_icon: string;
@@ -16,12 +34,11 @@ type Taccount_props = {
     currency?: string;
     account_button?: string;
 }[];
-type TPlatformLauncherPropsArray = { app_icon: string; app_title: string; app_desc: string; app_url: string }[];
+
+type TPlatformLauncherPropsArray = { icon: string; title: string; description: string; link_to: string }[];
 type Taddoptions_props = {
     onClickHandler: () => void;
     class_names?: string;
-    title: string;
-    description: string;
 };
 type Tapplauncher_props = {
     icon_name: string;
@@ -34,30 +51,22 @@ type Tapplauncher_props = {
     show_active_balance: boolean;
 };
 type TOptionsProps = {
-    options_title?: string;
-    is_app_launcher: boolean;
-    is_demo_account: boolean;
     platformlauncherprops: TPlatformLauncherPropsArray;
-    account_props: Taccount_props;
-    addoptions_props: Taddoptions_props;
-    applauncher_props: Tapplauncher_props;
+    //account_props: Taccount_props;
+    //addoptions_props: Taddoptions_props;
+    //applauncher_props: Tapplauncher_props;
 };
 
-const Options = ({
-    options_title,
-    is_app_launcher,
-    platformlauncherprops,
-    account_props,
-    addoptions_props,
-    applauncher_props,
-    is_demo_account,
-}: TOptionsProps) => {
+const Options: React.FC<TOptionsProps> = ({ platformlauncherprops }: TOptionsProps) => {
+    const { client, ui } = useStores();
+    const account_list = client.account_list;
+    const accounts = client.accounts;
     return (
-        <div className={`options-container ${is_app_launcher ? 'options-container-app-launcher' : ''}`}>
+        <div className={`options-container ${!client.has_any_real_account ? 'options-container-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
                 {!isMobile() && (
                     <Text className='options-container__title-description-container--title' weight='bold'>
-                        <Localize i18n_default_text={options_title} />
+                        <Localize i18n_default_text={'Options'} />
                     </Text>
                 )}
                 <Text className='options-container__title-description-container--description'>
@@ -72,28 +81,51 @@ const Options = ({
                 </Text>
             </div>
             <div className='options-container__accounts-platform-container'>
-                {!is_app_launcher ? (
+                {client.has_any_real_account ? (
                     <div className='options-container__accounts-platform-container--accounts'>
-                        {is_demo_account ? (
-                            <OptionsAccount {...account_props[0]} />
+                        {client.getClientAccountType === 'demo' ? (
+                            // <OptionsAccount {...account_props[0]} />
+                            <p>Demo here</p>
                         ) : (
-                            <OptionsAccount {...account_props[1]} />
+                            getSortedAccountList(account_list, accounts)
+                                .filter(account => account.is_virtual)
+                                .map(account => (
+                                    <>
+                                        <OptionsAccount
+                                            key={account.loginid}
+                                            balance={accounts[account.loginid].balance}
+                                            currency={accounts[account.loginid].currency}
+                                            currency_icon={account.icon}
+                                            display_type={'currency'}
+                                            has_balance={'balance' in accounts[account.loginid]}
+                                            has_reset_balance={accounts[account.loginid].is_virtual}
+                                            is_disabled={account.is_disabled}
+                                            is_virtual={account.is_virtual}
+                                            // loginid={account.loginid}
+                                            // redirectAccount={
+                                            //     account.is_disabled ? undefined : () => doSwitch(account.loginid)
+                                            // }
+                                            //onClickResetVirtualBalance={resetBalance}
+                                            //selected_loginid={account_loginid}
+                                        />
+                                    </>
+                                ))
                         )}
-                        {!is_demo_account && (
+                        {client.getClientAccountType !== 'demo' && (
                             <div className='options-container__accounts-platform-container--add-options'>
-                                <AddOptions {...addoptions_props} />
+                                <AddOptions />
                             </div>
                         )}
                     </div>
                 ) : (
-                    <div>
-                        <AppsLauncher {...applauncher_props} />
-                    </div>
+                    <div>{/* <AppsLauncher {...applauncher_props} /> */}</div>
                 )}
-                {is_app_launcher && <span className='options-container__accounts-platform-container--divider' />}
+                {!client.has_any_real_account && (
+                    <span className='options-container__accounts-platform-container--divider' />
+                )}
                 <div
                     className={`options-container__accounts-platform-container--platform ${
-                        is_app_launcher
+                        !client.has_any_real_account
                             ? 'options-container__accounts-platform-container--platform-with-applauncher'
                             : ''
                     }`}
@@ -101,7 +133,11 @@ const Options = ({
                     {platformlauncherprops.map((item, index) => {
                         return (
                             <>
-                                <PlatformLauncher key={item.app_title} {...item} app_launcher={is_app_launcher} />
+                                <PlatformLauncher
+                                    key={item.title}
+                                    {...item}
+                                    app_launcher={client.has_any_real_account}
+                                />
                                 {!isMobile() && platformlauncherprops.length - 1 !== index && (
                                     <span className='options-container__accounts-platform-container--platform--divider' />
                                 )}
@@ -114,4 +150,4 @@ const Options = ({
     );
 };
 
-export default Options;
+export default observer(Options);

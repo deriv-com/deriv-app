@@ -3,15 +3,14 @@ import { Text } from '@deriv/ui';
 import classNames from 'classnames';
 import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 
 export interface TAddOptionsProps extends HTMLAttributes<HTMLDivElement> {
     onClickHandler: () => void;
     class_names?: string;
-    title: string;
-    description: string;
 }
 
-const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOptionsProps) => {
+const AddOptions = () => {
     const getHeightWidthOfIcon = () => {
         return isMobile()
             ? {
@@ -23,7 +22,10 @@ const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOpt
                   height: 16,
               };
     };
-
+    const class_names = '';
+    const onClickHandler = () => {
+        return true;
+    };
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -35,11 +37,13 @@ const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOpt
                             height={getHeightWidthOfIcon().height}
                         />
                         <Text type='paragraph-2' bold>
-                            {title}
+                            <Localize i18n_default_text={'More Options accounts'} />
                         </Text>
                     </div>
                     <div className='add-options--desktop_description'>
-                        <Text type='paragraph-2'>{description}</Text>
+                        <Text type='paragraph-2'>
+                            <Localize i18n_default_text={'Including cryptocurrencies'} />
+                        </Text>
                     </div>
                 </div>
             </DesktopWrapper>

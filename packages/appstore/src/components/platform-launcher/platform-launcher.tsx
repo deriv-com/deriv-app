@@ -6,14 +6,14 @@ import { routes } from '@deriv/shared';
 import { useHistory } from 'react-router-dom';
 
 type TPlatformLauncherProps = {
-    app_icon: string;
-    app_title?: string;
-    app_desc?: string;
-    app_url: string;
+    icon: string;
+    title?: string;
+    description?: string;
+    link_to: string;
     app_launcher: boolean;
 };
 
-const PlatformLauncher = ({ app_icon, app_title, app_desc, app_url, app_launcher }: TPlatformLauncherProps) => {
+const PlatformLauncher = ({ icon, title, description, link_to, app_launcher }: TPlatformLauncherProps) => {
     const history = useHistory();
     const onClickTrade = (url_path: string) => {
         history.push(routes[url_path]);
@@ -23,20 +23,20 @@ const PlatformLauncher = ({ app_icon, app_title, app_desc, app_url, app_launcher
         <div className={`platform-launcher ${app_launcher ? 'applauncher' : ''}`}>
             <div className='platform-launcher__container'>
                 <div className='platform-launcher__container--icon'>
-                    <WalletIcon icon={app_icon} />
+                    <WalletIcon icon={icon} />
                 </div>
                 <div className='platform-launcher__container--title-desc-wrapper'>
                     <Text className='platform-launcher__container--title-desc-wrapper--title' weight='bold'>
-                        <Localize i18n_default_text={app_title} />
+                        <Localize i18n_default_text={title} />
                     </Text>
                     <Text className='platform-launcher__container--title-desc-wrapper--description'>
-                        <Localize i18n_default_text={app_desc} />
+                        <Localize i18n_default_text={description} />
                     </Text>
                 </div>
             </div>
             {!app_launcher && (
                 <div className='platform-launcher__trade-button'>
-                    <Button primary small onClick={() => onClickTrade(app_url)} type='button'>
+                    <Button primary small onClick={() => onClickTrade(link_to)} type='button'>
                         <Localize i18n_default_text='Trade' />
                     </Button>
                 </div>

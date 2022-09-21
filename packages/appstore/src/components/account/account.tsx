@@ -6,23 +6,28 @@ import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { useHistory } from 'react-router-dom';
 
 type TOptionsAccountprops = {
-    account_icon: string;
-    account_icon_mobile: string;
-    account_title?: string;
-    account_number?: string;
-    account_balance?: string;
+    currency_icon: string | undefined;
+    // account_title?: string;
+    loginid?: string;
+    balance?: string;
     account_button?: string;
     currency?: string;
+    display_type: string;
+    has_balance?: boolean;
+    has_reset_balance?: boolean;
+    is_disabled?: boolean;
+    is_virtual?: boolean;
 };
 
 const OptionsAccount = ({
-    account_icon,
-    account_icon_mobile,
-    account_title,
-    account_number,
-    account_balance,
-    account_button,
+    currency_icon,
+    //account_title,
+    loginid,
+    balance,
     currency,
+    display_type,
+    has_balance,
+    has_reset_balance,
 }: TOptionsAccountprops) => {
     const history = useHistory();
     const onClickDeposit = () => {
@@ -31,21 +36,19 @@ const OptionsAccount = ({
     return (
         <div className='account__container'>
             <div className='account__container--icon'>
-                {isMobile() ? <WalletIcon icon={account_icon_mobile} /> : <WalletIcon icon={account_icon} />}
+                {isMobile() ? <WalletIcon icon={currency_icon} /> : <WalletIcon icon={currency_icon} />}
             </div>
             <div className='account__container--account-details-wrapper'>
                 <div className='account__container--account-details-wrapper--name-number'>
                     <Text className='account__container--account-details-wrapper--name-number--name' weight='bold'>
-                        <Localize i18n_default_text={account_title} />
+                        <Localize i18n_default_text={getCurrencyDisplayCode(currency)} />
                     </Text>
-                    <Text className='account__container--account-details-wrapper--name-number--number'>
-                        {account_number}
-                    </Text>
+                    <Text className='account__container--account-details-wrapper--name-number--number'>{loginid}</Text>
                 </div>
 
                 <Text className='account__container--account-details-wrapper--balance'>
-                    {account_balance}
-                    {` ${getCurrencyDisplayCode(currency)}`}
+                    {balance}
+                    {getCurrencyDisplayCode(currency)}
                 </Text>
             </div>
             <div className='account__container--account-reset-button'>
@@ -56,11 +59,11 @@ const OptionsAccount = ({
                 <Button
                     className='account__container--account-reset-button--label'
                     has_effect
-                    text={localize(account_button)}
+                    text={localize('Deposit')}
                     onClick={onClickDeposit}
                 />
             </div>
-            {isMobile() && account_title !== 'Demo' && (
+            {isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
                 <div className='account__container--dropdown'>
                     <WalletIcon icon={'DropDown'} />
                 </div>

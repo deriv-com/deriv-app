@@ -1,7 +1,5 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { positionPropType } from './utils';
 import Icon from '../icon';
 import Text from '../text';
 
@@ -15,7 +13,8 @@ type TIconArrowWithTitle = {
 };
 
 type TArrowButton = {
-    is_open: boolean;
+    is_collapsed?: boolean;
+    is_open?: boolean;
     onClick: () => void;
     title: string;
     position: 'top' | 'bottom';
@@ -32,7 +31,7 @@ const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
     </>
 );
 
-const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
+const ArrowButton = ({ is_collapsed, position, onClick, title }: TArrowButton) => {
     const [is_open, expand] = React.useState(!is_collapsed);
 
     const toggleExpand = () => {
@@ -43,7 +42,7 @@ const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
     };
 
     React.useEffect(() => {
-        expand(is_collapsed);
+        expand(Boolean(is_collapsed));
     }, [is_collapsed]);
 
     let icon_arrow;
@@ -90,13 +89,6 @@ const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
             {icon_arrow}
         </div>
     );
-};
-
-ArrowButton.propTypes = {
-    is_open: PropTypes.bool,
-    onClick: PropTypes.func,
-    title: PropTypes.string,
-    ...positionPropType,
 };
 
 export default ArrowButton;

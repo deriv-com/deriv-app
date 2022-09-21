@@ -4,8 +4,8 @@ import posed, { PoseGroup } from 'react-pose';
 type TFadeWrapperProps = {
     children: ReactNode;
     is_visible: boolean;
-    keyname: string;
-    type: 'top' | 'bottom' | Omit<string, 'top' | 'buttom'>;
+    keyname?: string;
+    type?: 'top' | 'bottom';
     className?: string;
 };
 

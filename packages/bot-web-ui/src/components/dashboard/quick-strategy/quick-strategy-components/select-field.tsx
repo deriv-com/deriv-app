@@ -2,8 +2,8 @@ import { Field, FieldProps } from 'formik';
 import React from 'react';
 import { Autocomplete, SelectNative, Icon, IconTradeTypes, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TFormValues, TSelectsFieldNames } from '../q-strategy.types';
-import { TSelectFieldProps } from './q-strategy-components.types';
+import { TFormValues, TSelectsFieldNames } from '../quick-strategy.types';
+import { TSelectFieldProps } from './components.types';
 
 const SelectField = React.memo(
     ({

@@ -1,6 +1,6 @@
 import QuickStrategyStore from 'Stores/quick-strategy-store';
 import common_inputs_properties, { TCommonInputsProperties } from './common-input-properties';
-import { TInputUniqFields } from '../../q-strategy.types';
+import { TInputUniqFields } from '../../quick-strategy.types';
 
 const quick_strategy_store = new QuickStrategyStore();
 

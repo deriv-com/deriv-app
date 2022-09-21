@@ -27,7 +27,7 @@ import {
     TTradeTypeDropdown,
     TTypeStrategiesDropdown,
     TTypeStrategy,
-} from '../components/dashboard/quick-strategy/q-strategy.types';
+} from '../components/dashboard/quick-strategy/quick-strategy.types';
 
 export default class QuickStrategyStore {
     // TODO: Convert RootStore to TS + add type of RootStore here later.

@@ -6,8 +6,8 @@ import { Form, Formik, FormikProps } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 import { QStrategyFields, QStrategyFooter } from '.';
-import { TQuickStrategyFormValues } from '../q-strategy.types';
-import { TQStrategyForm } from './q-strategy-components.types';
+import { TQuickStrategyFormValues } from '../quick-strategy.types';
+import { TQStrategyForm } from './components.types';
 
 const QStrategyForm = ({
     createStrategy,

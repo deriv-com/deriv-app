@@ -9,8 +9,8 @@ import {
     TInputsFieldNames,
     TDropdowns,
     TSelectedValuesSelect,
-} from '../q-strategy.types';
-import { TQStrategyFields } from './q-strategy-components.types';
+} from '../quick-strategy.types';
+import { TQStrategyFields } from './components.types';
 
 const QStrategyFields = React.memo(
     ({

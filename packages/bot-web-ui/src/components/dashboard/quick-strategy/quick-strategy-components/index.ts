@@ -1,9 +1,9 @@
-export { default as QStrategyContainer } from './q-strategy-container';
-export { default as QStrategyForm } from './q-strategy-form';
+export { default as QStrategyContainer } from './container';
+export { default as QStrategyForm } from './form';
 export { default as MarketOption } from './market-option';
 export { default as TradeTypeOption } from './trade-type-option';
-export { default as QStrategyFooter } from './q-strategy-footer';
-export { default as QStrategyFields } from './q-strategy-fields';
+export { default as QStrategyFooter } from './footer';
+export { default as QStrategyFields } from './fields';
 export { default as data_uniq_input_obj } from './data/data-uniq-input-obj';
 export { default as common_inputs_properties } from './data/common-input-properties';
 export { default as data_fields } from './data/data-fields';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { TQuickStrategyProps } from './q-strategy.types';
-import { QStrategyContainer } from './q-strategy-components';
+import { TQuickStrategyProps } from './quick-strategy.types';
+import { QStrategyContainer } from './quick-strategy-components';
 import { localize } from '@deriv/translations';
 import { MobileFullPageModal } from '@deriv/components';
 

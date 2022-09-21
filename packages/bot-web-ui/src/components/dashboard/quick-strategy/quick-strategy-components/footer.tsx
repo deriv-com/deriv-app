@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { TQStrategyFooter } from './q-strategy-components.types';
+import { TQStrategyFooter } from './components.types';
 
 const QStrategyFooter = ({
     is_onscreen_keyboard_active,

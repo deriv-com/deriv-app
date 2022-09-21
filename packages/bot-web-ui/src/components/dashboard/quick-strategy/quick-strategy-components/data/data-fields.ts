@@ -1,5 +1,5 @@
 import { data_uniq_input_obj, common_inputs_properties } from '..';
-import { TSelectsFieldNames, TDropdownItems, TInputBaseFields, TInputsFieldNames } from '../../q-strategy.types';
+import { TSelectsFieldNames, TDropdownItems, TInputBaseFields, TInputsFieldNames } from '../../quick-strategy.types';
 import { TDataUniqInput } from './data-uniq-input-obj';
 import { TCommonInputsProperties } from './common-input-properties';
 

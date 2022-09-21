@@ -24,7 +24,7 @@ import {
     TDropdownItems,
     TInputBaseFields,
     TInputsFieldNames,
-} from '../q-strategy.types';
+} from '../quick-strategy.types';
 import { TDataUniqInput } from './data/data-uniq-input-obj';
 import { TCommonInputsProperties } from './data/common-input-properties';
 

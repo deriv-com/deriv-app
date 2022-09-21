@@ -5,8 +5,8 @@ import { localize } from '@deriv/translations';
 import { data_fields } from '.';
 import { TDataFields } from './data/data-fields';
 import { TDataUniqInput } from './data/data-uniq-input-obj';
-import { TFormValues, TInputBaseFields, TInputCommonFields } from '../q-strategy.types';
-import { TInputFieldProps } from './q-strategy-components.types';
+import { TFormValues, TInputBaseFields, TInputCommonFields } from '../quick-strategy.types';
+import { TInputFieldProps } from './components.types';
 
 const InputField = ({
     idx,

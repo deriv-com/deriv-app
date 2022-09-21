@@ -60,7 +60,7 @@ export type TFieldsToUpdate = {
     market: string;
     oscar_unit: string;
     profit: string;
-    size: string;
+    martingale_size: string;
     stake: string;
     submarket: string;
     symbol: string;

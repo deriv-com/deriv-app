@@ -244,7 +244,7 @@ export default class QuickStrategyStore {
         const duration_unit = this.selected_duration_unit.value;
         const duration_value = this.input_duration_value;
         const stake = this.input_stake;
-        const size = this.input_martingale_size;
+        const martingale_size = this.input_martingale_size;
         const alembert_unit = this.input_alembert_unit;
         const oscar_unit = this.input_oscar_unit;
         const loss = this.input_loss;
@@ -285,7 +285,7 @@ export default class QuickStrategyStore {
             durationtype: duration_unit,
             duration: duration_value,
             stake,
-            size,
+            martingale_size,
             alembert_unit,
             oscar_unit,
             loss,
@@ -293,9 +293,10 @@ export default class QuickStrategyStore {
         };
 
         Object.keys(fields_to_update).forEach(key => {
+            const input_fields = alembert_unit || loss || oscar_unit || profit || martingale_size || stake;
             const value = fields_to_update[key as keyof typeof fields_to_update];
 
-            if (!isNaN(value as number)) {
+            if (!isNaN(value as number) || input_fields) {
                 modifyValueInputs(key, value as number);
             } else if (typeof value === 'string') {
                 modifyFieldDropdownValues(key, value);

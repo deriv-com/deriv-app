@@ -37,5 +37,9 @@
     &__navigation {
         display: flex;
         justify-content: space-between;
+
+        &:last-child {
+            margin-bottom: 1.6rem;
+        }
     }
 }

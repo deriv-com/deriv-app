@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
@@ -10,20 +10,20 @@ import DataListCell from './data-list-cell.js';
 import DataListRow from './data-list-row.js';
 import ThemedScrollbars from '../themed-scrollbars';
 
-DataList.propTypes = {
-    className: PropTypes.string,
-    data_source: PropTypes.array,
-    footer: PropTypes.object,
-    getRowAction: PropTypes.func,
-    getRowSize: PropTypes.func,
-    keyMapper: PropTypes.func,
-    onRowsRendered: PropTypes.func,
-    onScroll: PropTypes.func,
-    passthrough: PropTypes.object,
-    row_gap: PropTypes.number,
-    setListRef: PropTypes.func,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
-    overscanRowCount: PropTypes.number,
+type TDataListProps = {
+    className: string;
+    data_source: any[];
+    footer: any; // object
+    getRowAction: () => any;
+    getRowSize: () => any;
+    keyMapper: () => any;
+    onRowsRendered: () => any;
+    onScroll: () => any;
+    passthrough: any; //object
+    row_gap: number;
+    setListRef: () => any;
+    children: ReactNode;
+    overscanRowCount: number;
 };
 
 const DataList = React.memo(
@@ -39,7 +39,7 @@ const DataList = React.memo(
         setListRef,
         overscanRowCount,
         ...other_props
-    }) => {
+    }: TDataListProps) => {
         const [is_loading, setLoading] = React.useState(true);
         const [is_scrolling, setIsScrolling] = React.useState(false);
         const [scroll_top, setScrollTop] = React.useState(0);
@@ -47,7 +47,7 @@ const DataList = React.memo(
         const cache = React.useRef();
         const list_ref = React.useRef();
         const items_transition_map_ref = React.useRef({});
-        const data_source_ref = React.useRef();
+        const data_source_ref = React.useRef(null);
         data_source_ref.current = data_source;
 
         const is_dynamic_height = !getRowSize;

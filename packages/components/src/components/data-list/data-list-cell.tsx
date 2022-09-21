@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 
 type TDataListCellProps = {
-    className: string;
+    className?: string;
     column: any;
-    is_footer: boolean;
-    passthrough: any;
+    is_footer?: boolean;
+    passthrough?: any;
     row: any;
 };
 

@@ -82,6 +82,7 @@ const OrderDetails = observer(() => {
         order_store.setIsRecommended(undefined);
         general_store.props.setP2POrderProps({
             order_id: order_store.order_id,
+            redirectToOrderDetails: general_store.redirectToOrderDetails,
             setIsRatingModalOpen: order_store.setIsRatingModalOpen,
         });
 
@@ -96,6 +97,11 @@ const OrderDetails = observer(() => {
             disposeReactions();
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
+            general_store.props.setP2POrderProps({
+                order_id: order_store.order_id,
+                redirectToOrderDetails: general_store.redirectToOrderDetails,
+                setIsRatingModalOpen: order_store.setIsRatingModalOpen,
+            });
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

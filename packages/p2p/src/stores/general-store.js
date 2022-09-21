@@ -202,6 +202,14 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    redirectToOrderDetails(order_id) {
+        const { order_store } = this.root_store;
+        this.redirectTo('orders');
+        this.setOrderTableType(order_list.INACTIVE);
+        order_store.setOrderId(order_id);
+    }
+
+    @action.bound
     showCompletedOrderNotification(advertiser_name, order_id) {
         const { order_store } = this.root_store;
         const notification_key = `order-${order_id}`;
@@ -212,9 +220,7 @@ export default class GeneralStore extends BaseStore {
                     if (order_store.order_id === order_id) {
                         order_store.setIsRatingModalOpen(true);
                     }
-                    this.redirectTo('orders');
-                    this.setOrderTableType(order_list.INACTIVE);
-                    order_store.setOrderId(order_id);
+                    this.redirectToOrderDetails(order_id);
                 },
                 text: localize('Give feedback'),
             },

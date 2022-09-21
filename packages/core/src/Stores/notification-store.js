@@ -48,6 +48,12 @@ export default class NotificationStore extends BaseStore {
             }
         );
         reaction(
+            () => this.p2p_order_props,
+            () => {
+                this.refreshNotifications();
+            }
+        );
+        reaction(
             () => [
                 root_store.client.account_settings,
                 root_store.client.account_status,
@@ -431,8 +437,27 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
+    @action.bound
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
+
+        const notification_action =
+            routes.cashier_p2p === window.location.pathname
+                ? {
+                      onClick: () => {
+                          this.p2p_order_props.redirectToOrderDetails(order_id);
+                          this.setP2POrderProps({
+                              ...this.p2p_order_props,
+                              order_id,
+                          });
+                          if (this.is_notifications_visible) this.toggleNotificationsModal();
+                      },
+                      text: localize('Give feedback C'),
+                  }
+                : {
+                      route: `${routes.cashier_p2p}?order=${order_id}`,
+                      text: localize('Give feedback R'),
+                  };
 
         this.addNotificationMessage({
             action:
@@ -440,14 +465,11 @@ export default class NotificationStore extends BaseStore {
                     ? {
                           onClick: () => {
                               this.p2p_order_props.setIsRatingModalOpen(true);
-                              this.toggleNotificationsModal();
+                              if (this.is_notifications_visible) this.toggleNotificationsModal();
                           },
-                          text: localize('Give feedback'),
+                          text: localize('Give feedback SAME'),
                       }
-                    : {
-                          route: `${routes.cashier_p2p}?order=${order_id}`,
-                          text: localize('Give feedback'),
-                      },
+                    : notification_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (

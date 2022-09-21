@@ -3,7 +3,7 @@ import { action, computed, observable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { CryptoConfig } from '@deriv/api-types';
-import WithdrawStoreReadMoreWrapper from 'Components/withdraw-store-read-more-wrapper/withdraw-store-read-more-wrapper';
+import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -240,7 +240,7 @@ export default class WithdrawStore {
         const { client } = this.root_store;
 
         const remainder = (await client.getLimits())?.get_limits?.remainder;
-        this.setMaxWithdrawAmount(remainder);
+        this.setMaxWithdrawAmount(Number(remainder));
         const min_withdrawal = getMinWithdrawal(client.currency);
         const is_limit_reached = !!(typeof remainder !== 'undefined' && Number(remainder) < min_withdrawal);
         this.set10kLimitation(is_limit_reached);
@@ -277,7 +277,7 @@ export default class WithdrawStore {
         let error_message: string | ReactElement = '';
 
         const { client, modules } = this.root_store;
-        const { balance = 0, currency } = client;
+        const { balance, currency } = client;
         const { crypto_fiat_converter } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
 
@@ -316,7 +316,7 @@ export default class WithdrawStore {
                 const openDialog = () => {
                     this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content });
                 };
-                error_message = WithdrawStoreReadMoreWrapper({ error_content, openDialog });
+                error_message = ReadMoreWrapper({ error_content, openDialog });
             }
         }
         setConverterFromError(error_message);

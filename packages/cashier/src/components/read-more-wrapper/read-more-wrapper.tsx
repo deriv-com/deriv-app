@@ -2,12 +2,12 @@ import { ReadMore } from '@deriv/components';
 import React, { ReactElement } from 'react';
 import { localize } from '@deriv/translations';
 
-type TWithdrawStoreReadMoreWrapperProps = {
+type TReadMoreWrapperProps = {
     error_content: string | ReactElement;
     openDialog: () => void;
 };
 
-const WithdrawStoreReadMoreWrapper = ({ error_content, openDialog }: TWithdrawStoreReadMoreWrapperProps) => {
+const ReadMoreWrapper = ({ error_content, openDialog }: TReadMoreWrapperProps) => {
     return (
         <ReadMore
             expand_text={localize('more')}
@@ -19,4 +19,4 @@ const WithdrawStoreReadMoreWrapper = ({ error_content, openDialog }: TWithdrawSt
     );
 };
 
-export default WithdrawStoreReadMoreWrapper;
+export default ReadMoreWrapper;

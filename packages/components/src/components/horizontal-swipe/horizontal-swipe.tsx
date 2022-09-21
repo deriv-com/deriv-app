@@ -63,6 +63,15 @@ const HorizontalSwipe = ({
         }
     };
 
+    const transform_style = {
+        ...(should_show_left_hidden_component && {
+            transform: `translate(${left_hidden_component_width})`,
+        }),
+        ...(should_show_right_hidden_component && {
+            transform: `translate(-${right_hidden_component_width})`,
+        }),
+    };
+
     return (
         <Swipeable onSwipedLeft={onSwipeLeft} onSwipedRight={onSwipeRight}>
             <div className='dc-horizontal-swipe'>
@@ -77,16 +86,7 @@ const HorizontalSwipe = ({
                         {left_hidden_component}
                     </div>
                 )}
-                <div
-                    className='dc-horizontal-swipe--main'
-                    ref={visible_component_height_ref}
-                    style={{
-                        transform:
-                            (should_show_left_hidden_component && `translate(${left_hidden_component_width})`) ||
-                            (should_show_right_hidden_component && `translate(-${right_hidden_component_width})`) ||
-                            'none', // I don't know what the default value should be in case of the above two conditions fail
-                    }}
-                >
+                <div className='dc-horizontal-swipe--main' ref={visible_component_height_ref} style={transform_style}>
                     {visible_component}
                 </div>
                 {visible_component_height_ref && (

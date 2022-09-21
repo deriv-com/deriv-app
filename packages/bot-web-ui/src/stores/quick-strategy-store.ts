@@ -43,17 +43,17 @@ export default class QuickStrategyStore {
     @observable selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
     @observable selected_duration_unit: TDurationOptions =
         (this.qs_cache.selected_duration_unit as TDurationOptions) || {};
-    @observable input_duration_value: string | number = (this.qs_cache.input_duration_value as string | number) || '';
-    @observable input_stake: string = (this.qs_cache.input_stake as string) || '';
-    @observable input_martingale_size: string = (this.qs_cache.input_martingale_size as string) || '';
-    @observable input_alembert_unit: string = (this.qs_cache.input_alembert_unit as string) || '';
-    @observable input_oscar_unit: string = (this.qs_cache.input_oscar_unit as string) || '';
-    @observable input_loss: string = (this.qs_cache.input_loss as string) || '';
-    @observable input_profit: string = (this.qs_cache.input_profit as string) || '';
+    @observable input_duration_value: string | number = this.qs_cache.input_duration_value || '';
+    @observable input_stake: string = this.qs_cache.input_stake || '';
+    @observable input_martingale_size: string = this.qs_cache.input_martingale_size || '';
+    @observable input_alembert_unit: string = this.qs_cache.input_alembert_unit || '';
+    @observable input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
+    @observable input_loss: string = this.qs_cache.input_loss || '';
+    @observable input_profit: string = this.qs_cache.input_profit || '';
 
     @observable is_strategy_modal_open = false;
-    @observable active_index: number = (this.selected_type_strategy.index as number) || 0;
-    @observable description: string = (this.qs_cache.selected_type_strategy?.description as string) || '';
+    @observable active_index: number = this.selected_type_strategy.index || 0;
+    @observable description: string = this.qs_cache.selected_type_strategy?.description || '';
     @observable types_strategies_dropdown: TTypeStrategiesDropdown = [];
     @observable symbol_dropdown: TSymbolDropdown = [];
     @observable trade_type_dropdown: TTradeTypeDropdown = [];

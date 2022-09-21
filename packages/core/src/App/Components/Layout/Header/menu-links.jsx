@@ -35,9 +35,9 @@ const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
                     return (
                         is_logged_in && (
                             <MenuItems
+                                key={`${item.icon}${item.id}`}
                                 item={item}
                                 hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
-                                key={`${item.icon}${item.id}`}
                             />
                         )
                     );

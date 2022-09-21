@@ -6,10 +6,10 @@ import AddOptionsAccount from 'Components/add-options-account';
 const TradingHub = () => {
     /*TODO: We need to show this component whenever user click on tour guide button*/
     return (
-        <>
+        <React.Fragment>
             <AddOptionsAccount />
             <Onboarding contents={trading_hub_contents} />
-        </>
+        </React.Fragment>
     );
 };
 

@@ -35,7 +35,8 @@ const AccountManager = ({
 }: TAccountManager) => {
     const openStaticPage = () => {
         if (platform === CFD_PLATFORMS.MT5) window.open(getStaticUrl(`/dmt5`));
-        else window.open(getStaticUrl(`/derivx`));
+        else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (type === 'options') window.open(getStaticUrl(`/trade-types/options/`));
     };
 
     return (

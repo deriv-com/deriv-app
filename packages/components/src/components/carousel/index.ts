@@ -1,4 +1,4 @@
-import Carousel from './carousel.jsx';
+import Carousel from './carousel';
 import './carousel.scss';
 
 export default Carousel;

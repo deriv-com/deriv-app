@@ -1,7 +1,20 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Icon from '../icon';
+
+type TNav = {
+    active_index: number;
+    active_bullet_color: string;
+    bullet_color: string;
+    className?: string;
+    handleNextClick: () => void;
+    handlePrevClick: () => void;
+    handleNavigationClick: (index: number) => void;
+    list: React.ReactNode[];
+    show_bullet: boolean;
+    show_nav: boolean;
+    item_per_window: number;
+};
 
 const Nav = ({
     active_index,
@@ -15,7 +28,7 @@ const Nav = ({
     show_bullet,
     show_nav,
     item_per_window,
-}) => {
+}: TNav) => {
     if (!show_bullet && !show_nav) return null;
 
     return (
@@ -53,20 +66,6 @@ const Nav = ({
             )}
         </nav>
     );
-};
-
-Nav.propTypes = {
-    active_index: PropTypes.number,
-    handleNavigationClick: PropTypes.func,
-    list: PropTypes.array,
-    show_bullet: PropTypes.bool,
-    item_per_window: PropTypes.number,
-    active_bullet_color: PropTypes.string,
-    bullet_color: PropTypes.string,
-    className: PropTypes.string,
-    handleNextClick: PropTypes.func,
-    handlePrevClick: PropTypes.func,
-    show_nav: PropTypes.bool,
 };
 
 export default React.memo(Nav);

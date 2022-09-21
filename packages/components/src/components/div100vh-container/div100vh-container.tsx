@@ -16,8 +16,8 @@ type TDiv100vhContainerProps = {
     id?: string;
     children: ReactNode;
     height_offset?: string;
-    is_bypassed?: boolean;
-    is_disabled?: boolean;
+    is_bypassed: boolean;
+    is_disabled: boolean;
     max_height_offset?: string;
     className?: string;
     max_autoheight_offset?: string;
@@ -26,8 +26,8 @@ type TDiv100vhContainerProps = {
 const Div100vhContainer = ({
     children,
     className,
-    is_bypassed,
-    is_disabled,
+    is_bypassed = false,
+    is_disabled = false,
     id,
     height_offset,
     max_autoheight_offset,
@@ -36,14 +36,9 @@ const Div100vhContainer = ({
     const height = screen_vertical_height ? `${screen_vertical_height}px` : '100rvh';
     const height_rule = height_offset ? `calc(${height} - ${height_offset})` : `calc(${height})`;
 
-    const height_style = {
-        ...(!max_autoheight_offset && {
-            height: height_rule,
-        }),
-        ...(max_autoheight_offset && {
-            maxHeight: `calc(100rvh - ${max_autoheight_offset})`,
-        }),
-    };
+    const height_style = max_autoheight_offset
+        ? { maxHeight: `calc(100rvh - ${max_autoheight_offset})` }
+        : { height: height_rule };
 
     if (is_bypassed) return children;
     return (

@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import { TPlatform } from 'Types';
 
 type TCFDAccountManager = {
-    type: string;
+    type?: string;
     amount?: string;
     appname: string;
     loginid?: string;
@@ -72,10 +72,10 @@ const CFDAccountManager = ({
             <div className='cfd-account-manager__buttons'>
                 {has_account ? (
                     <>
-                        <Button primary className='cfd-account-manager__buttons-topup' onClick={onClickTopUp}>
+                        <Button secondary className='cfd-account-manager__buttons-topup' onClick={onClickTopUp}>
                             <Localize i18n_default_text='Top-up' />
                         </Button>
-                        <Button secondary onClick={onClickTrade}>
+                        <Button primary onClick={onClickTrade}>
                             <Localize i18n_default_text='Trade' />
                         </Button>
                     </>

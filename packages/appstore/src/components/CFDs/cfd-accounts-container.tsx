@@ -19,17 +19,19 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         is_eu_country,
         landing_companies,
         is_logged_in,
-        is_populating_mt5_account_list: is_loading,
+        is_populating_mt5_account_list,
+        is_populating_dxtrade_account_list,
         website_status,
         mt5_disabled_signup_types,
         dxtrade_disabled_signup_types,
         dxtrade_accounts_list_error,
         is_virtual,
         isAccountOfTypeDisabled,
-        has_active_real_account: has_real_account,
+        has_active_real_account,
         standpoint,
         residence,
         upgradeable_landing_companies,
+        trading_platform_available_accounts,
     } = client;
     const { current_list } = cfd_account;
 
@@ -60,33 +62,15 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         );
     };
 
-    const isDerivXVisible = (platform: TPlatform) => {
-        return (
-            !is_logged_in ||
-            isLandingCompanyEnabled({
-                landing_companies,
-                platform,
-                type: 'financial',
-            }) ||
-            isLandingCompanyEnabled({
-                landing_companies,
-                platform,
-                type: 'gaming',
-            })
-        );
-    };
-
     const getIsSuspendedMt5Server = (type_server: TMt5StatusServer['demo' | 'real']) =>
         type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
 
     const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(website_status.mt5_status?.demo);
     const is_suspended_mt5_real_server = getIsSuspendedMt5Server(website_status.mt5_status?.real);
 
-    const should_show_missing_real_account =
-        is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
-    const should_enable_add_button = should_show_missing_real_account && CFD_PLATFORMS.MT5 && account_type === 'real';
+    const is_loading = !is_populating_mt5_account_list && !is_populating_dxtrade_account_list;
 
-    if (is_loading) return <Loading className='cfd-accounts-container__loader' />;
+    if (!is_loading) return <Loading className='cfd-accounts-container__loader' />;
     return (
         <div className='cfd-accounts-container'>
             <div className='cfd-demo-account__title'>
@@ -111,11 +95,6 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                 <CFDDemoAccounts
                     isDerivedVisible={isDerivedVisible}
                     isFinancialVisible={isFinancialVisible}
-                    isDerivXVisible={isDerivXVisible}
-                    is_eu={is_eu}
-                    is_eu_country={is_eu_country}
-                    is_logged_in={is_logged_in}
-                    is_loading={is_loading}
                     has_cfd_account_error={platform => {
                         return platform === CFD_PLATFORMS.MT5
                             ? is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
@@ -124,23 +103,14 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                                   !!dxtrade_accounts_list_error;
                     }}
                     current_list={current_list}
-                    is_virtual={is_virtual}
-                    isAccountOfTypeDisabled={isAccountOfTypeDisabled}
-                    has_real_account={has_real_account}
-                    standpoint={standpoint}
-                    residence={residence}
-                    should_enable_add_button={should_enable_add_button}
+                    available_accounts={trading_platform_available_accounts}
                 />
             )}
             {account_type === 'real' && (
                 <CFDRealAccounts
                     isDerivedVisible={isDerivedVisible}
                     isFinancialVisible={isFinancialVisible}
-                    isDerivXVisible={isDerivXVisible}
-                    is_eu={is_eu}
-                    is_eu_country={is_eu_country}
-                    is_logged_in={is_logged_in}
-                    is_loading={is_loading}
+                    has_real_account={has_active_real_account}
                     has_cfd_account_error={platform => {
                         return platform === CFD_PLATFORMS.MT5
                             ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
@@ -149,12 +119,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                                   !!dxtrade_accounts_list_error;
                     }}
                     current_list={current_list}
-                    is_virtual={is_virtual}
-                    isAccountOfTypeDisabled={isAccountOfTypeDisabled}
-                    has_real_account={has_real_account}
-                    standpoint={standpoint}
-                    residence={residence}
-                    should_enable_add_button={should_enable_add_button}
+                    available_accounts={trading_platform_available_accounts}
                 />
             )}
         </div>

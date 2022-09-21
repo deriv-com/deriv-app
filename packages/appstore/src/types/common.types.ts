@@ -47,23 +47,32 @@ export type TCategotyTypes = {
 };
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
-    display_login: string;
+    display_login?: string;
+    landing_company_short?: string;
+};
+
+export type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
 };
 
 export type TCFDAccountsProps = {
     isDerivedVisible: TVisibilityChecker;
     isFinancialVisible: TVisibilityChecker;
-    isDerivXVisible: TVisibilityChecker;
-    is_eu: boolean;
-    is_eu_country: boolean;
-    is_loading: boolean;
-    is_logged_in: boolean;
     has_cfd_account_error: (platform: TPlatform) => boolean;
     current_list: Record<string, TDetailsOfEachMT5Loginid>;
-    is_virtual: boolean;
-    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
-    has_real_account: boolean;
-    standpoint: TStandPoint;
-    residence: string;
-    should_enable_add_button: boolean;
+    available_accounts: Array<TTradingPlatformAvailableAccount>;
+    has_real_account?: boolean;
 };

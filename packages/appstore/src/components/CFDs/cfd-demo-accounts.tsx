@@ -4,12 +4,7 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import CFDAccountManager from '../cfd-account-manager';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid } from 'Types';
 
-const CFDDemoAccounts = ({
-    isDerivedVisible,
-    isFinancialVisible,
-    isDerivXVisible,
-    current_list,
-}: TCFDAccountsProps) => {
+const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const available_demo_accounts = [
         {
             name: 'Derived',
@@ -29,13 +24,16 @@ const CFDDemoAccounts = ({
         },
         {
             name: 'Deriv X',
-            is_visible: isDerivXVisible(CFD_PLATFORMS.DXTRADE),
+            is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
             description: localize(
                 'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
             ),
             has_account: false,
             disabled: false,
             platform: CFD_PLATFORMS.DXTRADE,
+            type: 'synthetic',
+            // ToDo: deriv x should have type of all in new API
+            // type: 'all'
         },
     ];
 
@@ -57,26 +55,36 @@ const CFDDemoAccounts = ({
                 {available_demo_accounts.map(account => (
                     <div className={`cfd-demo-account__accounts-${account.name}`} key={account.name}>
                         {existing_demo_accounts(account.platform, account.type)
-                            ? existing_demo_accounts(account.platform, account.type)?.map(existing_account => (
-                                  <div
-                                      className={`cfd-demo-account__accounts-${account.name}--item`}
-                                      key={existing_account.login}
-                                  >
-                                      <CFDAccountManager
-                                          has_account={true}
-                                          type={account.type || ''}
-                                          appname={account.name}
-                                          platform={account.platform}
-                                          disabled={false}
-                                          loginid={existing_account.display_login}
-                                          currency={existing_account.country}
-                                          amount={existing_account.display_balance}
-                                          onClickTopUp={() => null}
-                                          onClickTrade={() => null}
-                                          description={account.description}
-                                      />
-                                  </div>
-                              ))
+                            ? existing_demo_accounts(account.platform, account.type)?.map(existing_account => {
+                                  const non_eu_accounts =
+                                      existing_account.landing_company_short &&
+                                      existing_account.landing_company_short !== 'svg' &&
+                                      existing_account.landing_company_short !== 'bvi'
+                                          ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
+                                            existing_account.landing_company_short?.slice(1)
+                                          : existing_account.landing_company_short?.toUpperCase();
+
+                                  return (
+                                      <div
+                                          className={`cfd-demo-account__accounts-${account.name}--item`}
+                                          key={existing_account.login}
+                                      >
+                                          <CFDAccountManager
+                                              has_account={true}
+                                              type={existing_account.market_type}
+                                              appname={`${account.name} ${non_eu_accounts}`}
+                                              platform={account.platform}
+                                              disabled={false}
+                                              loginid={existing_account.display_login}
+                                              currency={existing_account.currency}
+                                              amount={existing_account.display_balance}
+                                              onClickTopUp={() => null}
+                                              onClickTrade={() => null}
+                                              description={account.description}
+                                          />
+                                      </div>
+                                  );
+                              })
                             : account.is_visible && (
                                   <div className='cfd-demo-account__accounts--item' key={account.name}>
                                       <CFDAccountManager

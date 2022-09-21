@@ -36,15 +36,6 @@ const QStrategyForm = ({
         Yup.number()
             .typeError(localize('Should be a number'))
             .round('ceil')
-            .test('invalid-number-format', localize('Invalid number format'), (value?: number, context?: any) => {
-                // type Yup.TestContext doesn't consist an originalValue
-                // to avoid 01.. numbers and admit digits which starts with '0' but are decimal
-                return !(
-                    context?.originalValue?.startsWith('0') &&
-                    context?.originalValue?.length >= 2 &&
-                    context?.originalValue?.indexOf('.') !== 1
-                );
-            })
             .min(1, localize('Must be a number higher than 0'));
 
     const SchemaFields = Yup.object().shape({

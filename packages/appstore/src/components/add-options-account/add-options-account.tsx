@@ -50,7 +50,7 @@ const AddOptionsAccount: React.FC = () => {
                             is_disabled={false}
                             is_loading={false}
                             text={localize('Get an Options account')}
-                            medium
+                            small
                             primary
                         />
                     </div>

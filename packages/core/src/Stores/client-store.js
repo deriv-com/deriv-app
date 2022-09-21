@@ -116,7 +116,6 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable account_limits = {};
-    @observable account_limits = {};
 
     @observable self_exclusion = {};
 
@@ -582,6 +581,11 @@ export default class ClientStore extends BaseStore {
                   eu_shortcode_regex.test(gaming_shortcode) ||
                   eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
+    }
+
+    @computed
+    get is_brazil() {
+        return this.clients_country === 'br';
     }
 
     @computed
@@ -1265,6 +1269,10 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
+        if (action_param === 'signup') {
+            this.root_store.ui.setIsNewAccount();
+        }
+
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
@@ -1730,6 +1738,8 @@ export default class ClientStore extends BaseStore {
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.landing_companies = {};
+        localStorage.removeItem('readScamMessage');
+        localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 

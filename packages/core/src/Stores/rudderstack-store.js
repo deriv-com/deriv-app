@@ -21,7 +21,7 @@ export default class RudderStackStore extends BaseStore {
                 BinarySocket.wait('authorize').then(() => {
                     const user_id = this.root_store.client.user_id;
                     if (user_id) {
-                        window.rudderanalytics.identify(user_id, {
+                        window.rudderanalytics.identify(user_id.toString(), {
                             language: getLanguage().toLowerCase(),
                             ...data,
                         });

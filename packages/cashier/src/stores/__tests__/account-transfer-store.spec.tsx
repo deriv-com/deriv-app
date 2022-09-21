@@ -2,7 +2,10 @@ import AccountTransferStore from '../account-transfer-store';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { DeepPartial, TRootStore, TWebSocket, TTransferAccount, TMT5LoginAccount } from '../../types';
 
-let accounts, account_transfer_store, root_store, WS;
+let accounts: Array<TTransferAccount>,
+    account_transfer_store: AccountTransferStore,
+    root_store: DeepPartial<TRootStore>,
+    WS: DeepPartial<TWebSocket>;
 
 const CR_eUSDT_account: TTransferAccount = {
     account_type: 'trading',
@@ -84,7 +87,7 @@ const mt5_login_list: Array<TTransferAccount> = [
 ];
 
 beforeEach(() => {
-    (accounts as Array<TTransferAccount>) = [
+    accounts = [
         CR_USD_account,
         CR_eUSDT_account,
         { ...MT_USD_account, loginid: 'MTR111176' },
@@ -93,7 +96,7 @@ beforeEach(() => {
         { ...DXR_USD_account, loginid: 'DXR1002' },
         { ...DXR_USD_account, loginid: 'DXR1003' },
     ];
-    (WS as DeepPartial<TWebSocket>) = {
+    WS = {
         authorized: {
             transferBetweenAccounts: jest.fn().mockResolvedValue({ accounts }),
             getAccountStatus: jest.fn().mockResolvedValue({ get_account_status: 1 }),
@@ -110,7 +113,7 @@ beforeEach(() => {
         }),
         wait: jest.fn(),
     };
-    (root_store as DeepPartial<TRootStore>) = {
+    root_store = {
         client: {
             account_status: {
                 status: ['status'],
@@ -150,7 +153,7 @@ beforeEach(() => {
             },
         },
     };
-    (account_transfer_store as AccountTransferStore) = new AccountTransferStore(WS, root_store);
+    account_transfer_store = new AccountTransferStore(WS, root_store);
 });
 
 jest.mock('@deriv/shared', () => ({

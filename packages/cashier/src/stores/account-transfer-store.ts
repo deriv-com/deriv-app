@@ -1,4 +1,3 @@
-import React from 'react';
 import { action, computed, observable } from 'mobx';
 import {
     formatMoney,
@@ -19,7 +18,7 @@ import ErrorStore from './error-store';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAccounts } from 'Types';
 
-const hasTransferNotAllowedLoginid = (loginid: string | undefined) => loginid?.startsWith('MX');
+const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
     // eslint-disable-next-line no-useless-constructor
@@ -34,7 +33,9 @@ export default class AccountTransferStore {
     @observable is_transfer_successful = false;
     @observable is_mt5_transfer_in_progress = false;
     @observable minimum_fee = '';
-    @observable receipt = {};
+    @observable receipt = {
+        amount_transferred: 0,
+    };
     @observable selected_from: TAccount = {};
     @observable selected_to: TAccount = {};
     @observable account_transfer_amount = 0;
@@ -67,7 +68,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    setBalanceByLoginId(loginid: string, balance: string) {
+    setBalanceByLoginId(loginid: string, balance: string | number) {
         const account = this.accounts_list.find(acc => loginid === acc.value);
         if (account) account.balance = balance;
     }
@@ -101,7 +102,7 @@ export default class AccountTransferStore {
         const has_updated_account_balance =
             this.has_no_accounts_balance &&
             Object.keys(active_accounts).find(
-                account => !active_accounts[+account].is_virtual && active_accounts[+account].balance
+                account => !active_accounts[Number(account)].is_virtual && active_accounts[Number(account)].balance
             );
         if (has_updated_account_balance) {
             this.setHasNoAccountsBalance(false);
@@ -144,17 +145,17 @@ export default class AccountTransferStore {
         setLoading(false);
     }
 
-    canDoAccountTransfer(accounts: Array<TAccount>) {
+    canDoAccountTransfer(accounts: TTransferBetweensAccounts['accounts']) {
         let can_transfer = true;
         // should have at least one account with balance
-        if (!accounts.find(account => Number(account.balance) > 0)) {
+        if (!accounts?.find(account => Number(account.balance) > 0)) {
             can_transfer = false;
             this.setHasNoAccountsBalance(true);
         } else {
             this.setHasNoAccountsBalance(false);
         }
         // should have at least two real-money accounts
-        if (accounts.length <= 1) {
+        if (accounts && accounts.length <= 1) {
             can_transfer = false;
             this.setHasNoAccount(true);
         } else {
@@ -227,7 +228,7 @@ export default class AccountTransferStore {
     }
 
     @action.bound
-    async sortAccountsTransfer(response_accounts: TTransferBetweensAccounts) {
+    async sortAccountsTransfer(response_accounts?: TTransferBetweensAccounts) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
             if (transfer_between_accounts.error) {
@@ -518,7 +519,7 @@ export default class AccountTransferStore {
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
             this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
-            transfer_between_accounts.accounts.forEach((account: TTransferAccount) => {
+            transfer_between_accounts.accounts?.forEach((account: TTransferAccount) => {
                 if (account.loginid && account.balance) {
                     this.setBalanceByLoginId(account.loginid, account.balance);
                 }

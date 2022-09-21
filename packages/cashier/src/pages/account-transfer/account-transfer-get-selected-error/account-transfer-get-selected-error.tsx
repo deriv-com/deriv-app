@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-const AccountTransferGetSelectedError = (selected_value?: string, is_from_account?: boolean) => {
+const AccountTransferGetSelectedError = (selected_value?: string, is_from_account = false) => {
     if (is_from_account) {
         return (
             <Localize

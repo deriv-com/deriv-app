@@ -15,7 +15,7 @@ export type TAccount = {
     nativepicker_text?: string;
     platform_icon?: string;
     text?: JSX.Element | string;
-    value?: string | undefined;
+    value?: string;
 };
 
 export type TTransferAccount = {

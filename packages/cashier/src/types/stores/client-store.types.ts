@@ -59,7 +59,7 @@ export type TClientStore = {
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
     }: TResponseTradingPlatformAccountsList) => Array<TMT5LoginAccount>;
-    setAccountStatus: (status: string) => void;
+    setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     switchAccount: (value?: string) => void;
     verification_code: {

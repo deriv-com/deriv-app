@@ -1,4 +1,10 @@
-import { Balance, CashierInformationRequest, CashierInformationResponse } from '@deriv/api-types';
+import {
+    Balance,
+    CashierInformationRequest,
+    CashierInformationResponse,
+    AccountStatusResponse,
+    TransferBetweenAccountsResponse,
+} from '@deriv/api-types';
 import { TMT5LoginAccount } from 'Types';
 
 export type TServerError = {
@@ -12,13 +18,13 @@ type TWebSocketCall = {
         action: CashierInformationRequest['cashier'],
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse>;
-    getAccountStatus: () => Promise<any>;
+    getAccountStatus: () => Promise<AccountStatusResponse>;
     transferBetweenAccounts: (
         account_from?: string,
         account_to?: string,
         currency?: string,
         amount?: number
-    ) => Promise<any>;
+    ) => Promise<TransferBetweenAccountsResponse & { error: TServerError }>;
 };
 
 export type TWebSocket = {

@@ -1,4 +1,3 @@
-// Code from: https://stackoverflow.com/a/68699273
 export type DeepPartial<T> = T extends string | number | bigint | boolean | null | undefined | symbol | Date
     ? T | undefined
     : T extends Array<infer ArrayType>

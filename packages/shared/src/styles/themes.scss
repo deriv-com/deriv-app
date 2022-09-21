@@ -167,6 +167,8 @@
         --transparent-info: #{$alpha-color-blue-1};
         --transparent-hint: #{$alpha-color-blue-3};
         --transparent-danger: #{$alpha-color-red-2};
+        --transparent-correct-message: #{$color-green-5};
+        --transparent-fake-message: #{$color-red-6};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
@@ -266,6 +268,8 @@
         --transparent-info: #{$alpha-color-blue-1};
         --transparent-hint: #{$alpha-color-blue-1};
         --transparent-danger: #{$alpha-color-red-2};
+        --transparent-correct-message: #{$color-green-5};
+        --transparent-fake-message: #{$color-red-6};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-2};

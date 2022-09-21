@@ -109,7 +109,6 @@ export default class NotificationStore extends BaseStore {
 
     @computed
     get filtered_notifications() {
-        // console.log(this.notifications.filter(message => !['news', 'promotions'].includes(message.type)));
         return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 

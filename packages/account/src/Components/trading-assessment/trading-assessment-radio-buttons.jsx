@@ -25,10 +25,10 @@ const TradingAssessmentRadioButton = ({ text, list, onChange, values, form_contr
                             setEnableNextSection(true);
                         }}
                     >
-                        {list.map((answer, index) => (
+                        {list.map(answer => (
                             <RadioGroup.Item
                                 className='trading-assessment__wrapper__question--radio-group--item'
-                                key={index}
+                                key={answer.value}
                                 label={answer?.text}
                                 value={answer?.value}
                             />

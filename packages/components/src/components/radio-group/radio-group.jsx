@@ -46,8 +46,8 @@ const RadioGroup = ({
     );
     return (
         <div className={classes}>
-            {children.map((item, idx) => (
-                <ItemWrapper key={idx} should_wrap_items={should_wrap_items}>
+            {children.map(item => (
+                <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>
                     <label
                         className={classNames('dc-radio-group__item', className, {
                             'dc-radio-group__item--selected': selected_option === item.props.value,

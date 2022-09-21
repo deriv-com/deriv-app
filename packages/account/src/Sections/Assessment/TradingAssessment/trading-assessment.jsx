@@ -147,7 +147,7 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}
                             />
-                            {trading_assessment_questions.map((item, index) => {
+                            {trading_assessment_questions.map(item => {
                                 if (item.field_type === 'radio') {
                                     const form_control = item.form_control;
                                     return (
@@ -195,7 +195,7 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                     // eslint-disable-next-line no-else-return
                                 } else {
                                     return (
-                                        <React.Fragment key={index}>
+                                        <React.Fragment>
                                             {item.questions.map(items => {
                                                 const form_control = items.form_control;
                                                 return (

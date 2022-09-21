@@ -162,13 +162,15 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </Text>
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
-                            <Text color='prominent' line_height='m' size='xxs'>
+                            <Text color={ad_pause_color} line_height='m' size='xxs'>
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
                             <Text color='profit-success' line_height='m' size='xs' weight='bold'>
                                 <div className='display-layout'>
                                     {display_effective_rate} {local_currency}
-                                    {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
+                                    {rate_type === ad_type.FLOAT && (
+                                        <AdType ad_pause_color={ad_pause_color} float_rate={rate_display} />
+                                    )}
                                 </div>
                             </Text>
                         </div>
@@ -222,7 +224,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 <Table.Cell className='p2p-my-ads__table-price'>
                     <div className='display-layout'>
                         {display_effective_rate} {local_currency}
-                        {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
+                        {rate_type === ad_type.FLOAT && (
+                            <AdType ad_pause_color={ad_pause_color} float_rate={rate_display} />
+                        )}
                     </div>
                 </Table.Cell>
                 <Table.Cell className='p2p-my-ads__table-available'>

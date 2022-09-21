@@ -4,13 +4,20 @@ import { localize } from 'Components/i18next';
 import { Text } from '@deriv/components';
 import './ad-type.scss';
 
-const AdType = ({ float_rate }) => {
+const AdType = ({ ad_pause_color, float_rate }) => {
     return (
         <div className='ad-type'>
-            <Text as='span' size='xxs' weight='normal' line_height='xs' className='ad-type__badge'>
+            <Text
+                as='span'
+                className='ad-type__badge'
+                color={ad_pause_color}
+                line_height='xs'
+                size='xxs'
+                weight='normal'
+            >
                 {localize('Float')}
             </Text>
-            <Text as='span' size='xxs' weight='normal' line_height='xxs'>
+            <Text as='span' color={ad_pause_color} line_height='xxs' size='xxs' weight='normal'>
                 {float_rate}%
             </Text>
         </div>
@@ -18,6 +25,7 @@ const AdType = ({ float_rate }) => {
 };
 
 AdType.propTypes = {
+    ad_pause_color: PropTypes.string,
     float_rate: PropTypes.string,
 };
 

@@ -86,7 +86,7 @@ const Account = ({
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
-    is_risk_client,
+    is_risky_client,
     is_virtual,
     is_visible,
     location,
@@ -116,7 +116,7 @@ const Account = ({
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
                 if (active_account_landing_company === 'maltainvest') {
-                    route.is_disabled = is_virtual || !is_risk_client;
+                    route.is_disabled = is_virtual || !is_risky_client;
                 } else {
                     route.is_disabled = is_virtual;
                 }
@@ -187,7 +187,7 @@ Account.propTypes = {
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_from_derivgo: PropTypes.bool,
-    is_risk_client: PropTypes.bool,
+    is_risky_client: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -205,7 +205,7 @@ export default connect(({ client, common, ui }) => ({
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_from_derivgo: common.is_from_derivgo,
-    is_risk_client: client.is_risk_client,
+    is_risky_client: client.is_risky_client,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

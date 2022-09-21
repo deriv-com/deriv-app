@@ -46,7 +46,7 @@ const DefaultHeader = ({
     is_account_transfer_visible,
     is_route_modal_on,
     is_virtual,
-    is_risk_client,
+    is_risky_client,
     location,
     logoutClient,
     menu_items,
@@ -126,7 +126,7 @@ const DefaultHeader = ({
                             is_payment_agent_visible={is_payment_agent_visible}
                             is_account_transfer_visible={is_account_transfer_visible}
                             is_virtual={is_virtual}
-                            is_risk_client={is_risk_client}
+                            is_risky_client={is_risky_client}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
@@ -226,7 +226,7 @@ DefaultHeader.propTypes = {
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_trading_assessment_for_existing_user_enabled: PropTypes.bool,
-    is_risk_client: PropTypes.bool,
+    is_risky_client: PropTypes.bool,
     logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
@@ -282,7 +282,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
-    is_risk_client: client.is_risk_client,
+    is_risky_client: client.is_risky_client,
     logoutClient: client.logout,
     menu_items: menu.extensions,
     notifications_count: notifications.filtered_notifications.length,

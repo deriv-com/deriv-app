@@ -443,7 +443,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_risk_client() {
+    get is_risky_client() {
         if (isEmptyObject(this.account_status)) return false;
         return (
             this.is_logged_in &&
@@ -746,7 +746,7 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
-    // @computed
+    @computed
     get active_account_landing_company() {
         return this.is_logged_in ? this.getAccount().landing_company_shortcode : null;
     }

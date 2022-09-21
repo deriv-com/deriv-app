@@ -76,10 +76,10 @@ const AccountManager = ({
             <div className='account-manager__buttons'>
                 {has_account ? (
                     <>
-                        <Button primary className='account-manager__buttons-topup' onClick={onClickTopUp}>
+                        <Button secondary className='account-manager__buttons-topup' onClick={onClickTopUp}>
                             <Localize i18n_default_text='Top-up' />
                         </Button>
-                        <Button secondary onClick={onClickTrade}>
+                        <Button primary onClick={onClickTrade}>
                             <Localize i18n_default_text='Trade' />
                         </Button>
                     </>

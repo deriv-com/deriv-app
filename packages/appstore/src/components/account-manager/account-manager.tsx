@@ -4,12 +4,12 @@ import { formatMoney, CFD_PLATFORMS, getStaticUrl } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TPlatform } from 'Types';
 
-type TCFDAccountManager = {
+type TAccountManager = {
     type?: string;
     amount?: string;
     appname: string;
     loginid?: string;
-    platform: TPlatform;
+    platform?: TPlatform;
     currency?: string;
     onClickTopUp?: () => void;
     onClickTrade?: () => void;
@@ -19,7 +19,7 @@ type TCFDAccountManager = {
     disabled: boolean;
 };
 
-const CFDAccountManager = ({
+const AccountManager = ({
     type,
     amount,
     appname,
@@ -32,15 +32,16 @@ const CFDAccountManager = ({
     onClickTopUp,
     onClickTrade,
     onClickGet,
-}: TCFDAccountManager) => {
+}: TAccountManager) => {
     const openStaticPage = () => {
         if (platform === CFD_PLATFORMS.MT5) window.open(getStaticUrl(`/dmt5`));
-        else window.open(getStaticUrl(`/derivx`));
+        else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (type === 'options') window.open(getStaticUrl(`/trade-types/options/`));
     };
 
     return (
-        <div className='cfd-account-manager'>
-            <div className='cfd-account-manager__icon'>
+        <div className='account-manager'>
+            <div className='account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
                         <Icon icon='IcAppstoreFinancial' size={64} onClick={openStaticPage} />
@@ -50,13 +51,16 @@ const CFDAccountManager = ({
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <Icon icon='IcAppstoreDerivx' size={64} onClick={openStaticPage} />
                 )}
+                {!platform && type === 'options' && (
+                    <Icon icon='IcAppstoreOptions' size={64} onClick={openStaticPage} />
+                )}
             </div>
-            <div className='cfd-account-manager__details'>
+            <div className='account-manager__details'>
                 <Text
                     size='xs'
                     weight={!has_account ? 'bold' : 'normal'}
                     onClick={openStaticPage}
-                    className='cfd-account-manager__details--title'
+                    className='account-manager__details--title'
                 >
                     {appname}
                 </Text>
@@ -69,10 +73,10 @@ const CFDAccountManager = ({
                     <Text size='xxxs'>{description}</Text>
                 )}
             </div>
-            <div className='cfd-account-manager__buttons'>
+            <div className='account-manager__buttons'>
                 {has_account ? (
                     <>
-                        <Button secondary className='cfd-account-manager__buttons-topup' onClick={onClickTopUp}>
+                        <Button secondary className='account-manager__buttons-topup' onClick={onClickTopUp}>
                             <Localize i18n_default_text='Top-up' />
                         </Button>
                         <Button primary onClick={onClickTrade}>
@@ -81,8 +85,8 @@ const CFDAccountManager = ({
                     </>
                 ) : (
                     <Button
-                        primary
-                        className='cfd-account-manager__buttons-get'
+                        primary_light
+                        className='account-manager__buttons-get'
                         onClick={onClickGet}
                         disabled={disabled}
                     >
@@ -94,4 +98,4 @@ const CFDAccountManager = ({
     );
 };
 
-export default CFDAccountManager;
+export default AccountManager;

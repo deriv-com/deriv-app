@@ -28,6 +28,7 @@ export const icons =
         'IcAppstoreMenuHomepage',
         'IcAppstoreMultipliersTradeType',
         'IcAppstoreOptionTradeType',
+        'IcAppstoreOptions',
         'IcAppstoreSkeletonCardBorder',
         'IcAppstoreSuccess',
         'IcAppstoreTradingHubOnboardingDark',

@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
-import CFDAccountManager from '../cfd-account-manager';
+import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid } from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -63,7 +63,7 @@ const CFDRealAccounts = ({
 
     return (
         <div className='cfd-real-account'>
-            {has_real_account && <AddOptionsAccount />}
+            {!has_real_account && <AddOptionsAccount />}
             <div className='cfd-real-account__accounts'>
                 {available_real_accounts.map(account => (
                     <div className={`cfd-real-account__accounts-${account.name}`} key={account.name}>
@@ -82,7 +82,7 @@ const CFDRealAccounts = ({
                                           className={`cfd-demo-account__accounts-${account.name}--item`}
                                           key={existing_account.login}
                                       >
-                                          <CFDAccountManager
+                                          <AccountManager
                                               has_account={true}
                                               type={existing_account.market_type}
                                               appname={`${account.name} ${non_eu_accounts}`}
@@ -108,7 +108,7 @@ const CFDRealAccounts = ({
                               })
                             : account.is_visible && (
                                   <div className='cfd-demo-account__accounts--item' key={account.name}>
-                                      <CFDAccountManager
+                                      <AccountManager
                                           has_account={false}
                                           type={account.type || ''}
                                           appname={account.name}

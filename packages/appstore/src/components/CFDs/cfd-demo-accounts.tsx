@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
-import CFDAccountManager from '../cfd-account-manager';
+import AccountManager from '../account-manager';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid } from 'Types';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
@@ -69,7 +69,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           className={`cfd-demo-account__accounts-${account.name}--item`}
                                           key={existing_account.login}
                                       >
-                                          <CFDAccountManager
+                                          <AccountManager
                                               has_account={true}
                                               type={existing_account.market_type}
                                               appname={`${account.name} ${non_eu_accounts}`}
@@ -87,7 +87,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                               })
                             : account.is_visible && (
                                   <div className='cfd-demo-account__accounts--item' key={account.name}>
-                                      <CFDAccountManager
+                                      <AccountManager
                                           has_account={false}
                                           type={account.type || ''}
                                           appname={account.name}

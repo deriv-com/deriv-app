@@ -122,7 +122,27 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     );
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
+    const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
     const formik_ref = React.useRef();
+    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 1050;
+
+    React.useEffect(() => {
+        const disposer = reaction(
+            () => buy_sell_store?.advert?.rate,
+            () => {
+                setHasRateChangedRecently(true);
+                setTimeout(() => {
+                    setHasRateChangedRecently(false);
+                }, MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY);
+            }
+        );
+        return disposer;
+    }, []);
+
+    const onSubmitWhenRateChanged = () => {
+        setShouldShowPopup(false);
+        setTimeout(() => setShowMarketRateChangeErrorModal(true), my_profile_store.MODAL_TRANSITION_DURATION);
+    };
 
     const BuySellFormError = () => (
         <div className='buy-sell__modal--error-message'>
@@ -295,7 +315,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                                 <BuySellModalFooter
                                     is_submit_disabled={is_submit_disabled}
                                     onCancel={onCancel}
-                                    onSubmit={submitForm.current}
+                                    onSubmit={!has_rate_changed_recently ? submitForm.current : onSubmitWhenRateChanged}
                                 />
                             )}
                         </Modal.Footer>

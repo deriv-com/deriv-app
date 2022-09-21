@@ -3163,6 +3163,7 @@
     "-311268215": "Ce bloc convertit une chaîne de texte qui représente la date et l'heure en secondes depuis l'époque Unix (1er janvier 1970). L'heure et le décalage du fuseau horaire sont facultatifs. Exemple: 2019-01-01 21:03:45 GMT + 0800 sera converti en 1546347825.",
     "-1797602591": "Stop Loss: {{ currency }} {{ stop_loss }}",
     "-1214929127": "Le Stop Loss doit être un nombre positif.",
+    "-780745489": "If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block\"",
     "-2142851225": "Trade options avec Multiplicateur",
     "-625636913": "Le montant doit être un nombre positif.",
     "-1466383897": "Durée: {{ duration_unit }} {{ duration_value }}",

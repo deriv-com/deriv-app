@@ -1,8 +1,11 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 
-const UILoader = ({ className, classNameBlock }) => {
+type TUILoader = {
+    className?: string;
+    classNameBlock?: string;
+};
+const UILoader = ({ className, classNameBlock }: TUILoader) => {
     const block_class = classNames(classNameBlock, 'block-ui');
     const loading_class = classNames('block-ui__loading', className);
     return (
@@ -24,11 +27,6 @@ const UILoader = ({ className, classNameBlock }) => {
             </div>
         </div>
     );
-};
-
-UILoader.propTypes = {
-    className: PropTypes.string,
-    classNameBlock: PropTypes.string,
 };
 
 export default UILoader;

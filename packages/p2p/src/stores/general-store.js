@@ -35,6 +35,11 @@ export default class GeneralStore extends BaseStore {
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
     @observable is_modal_open = false;
+    @observable modal_id = '';
+    @observable modal_props = {};
+    @observable modal_history = null;
+
+    MODAL_TRANSITION_DURATION = 250;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -84,6 +89,11 @@ export default class GeneralStore extends BaseStore {
     @computed
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+    }
+
+    @action.bound
+    closeModal() {
+        this.modal_id = '';
     }
 
     @action.bound
@@ -461,6 +471,21 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setModalHistory(modal_history) {
+        this.modal_history = modal_history;
+    }
+
+    @action.bound
+    setModalId(modal_id) {
+        this.modal_id = modal_id;
+    }
+
+    @action.bound
+    setModalProps(modal_props) {
+        this.modal_props = modal_props;
+    }
+
+    @action.bound
     setOrderTableType(order_table_type) {
         const { order_store } = this.root_store;
 
@@ -552,6 +577,17 @@ export default class GeneralStore extends BaseStore {
     setWebsocketInit = websocket => {
         WebsocketInit(websocket);
     };
+
+    @action.bound
+    setShouldShowModal() {
+        this.should_show_modal = true;
+    }
+
+    @action.bound
+    showModal(modal_id) {
+        this.setModalId(modal_id);
+        this.setShouldShowModal(true);
+    }
 
     @action.bound
     toggleNicknamePopup() {

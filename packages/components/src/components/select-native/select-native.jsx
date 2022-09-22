@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Field from '../field/field.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 import Text from '../text/text.jsx';
 
 const getDisplayText = (list_items, value) => {

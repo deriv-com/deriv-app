@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 import Text from '../text/text.jsx';
 
 const SubMenuSection = props => {

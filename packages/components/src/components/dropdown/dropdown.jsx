@@ -10,7 +10,7 @@ import DisplayText from './display-text.jsx';
 import Text from '../text/text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {

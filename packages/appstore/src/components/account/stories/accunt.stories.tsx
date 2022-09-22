@@ -14,7 +14,7 @@ export const AccountDemo = Template.bind({});
 AccountDemo.args = {
     currency_icon: 'Demo',
     currency: 'Demo',
-    loginid: 'VRTC6501742',
+    loginid_text: 'VRTC6501742',
     balance: '10,000.00',
     account_button: 'Reset',
 };
@@ -23,7 +23,7 @@ export const AccountUsdollar = Template.bind({});
 AccountUsdollar.args = {
     currency_icon: 'CurrencyUSD',
     currency: 'US Dollar',
-    loginid: 'CR2333683',
+    loginid_text: 'CR2333683',
     balance: '0.00',
     account_button: 'Deposit',
 };

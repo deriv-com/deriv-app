@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { routes, isNavigationFromExternalPlatform, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
@@ -35,6 +35,8 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+
     if (!maltainvest_signup && !currency) {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
@@ -45,6 +47,10 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
 
     if (iom_signup && is_isle_of_man_residence) {
         return <Localize i18n_default_text='Add a Deriv account' />;
+    }
+
+    if (is_pre_appstore) {
+        return <Localize i18n_default_text='Get an Options account' />;
     }
 
     switch (real_account_signup_target) {

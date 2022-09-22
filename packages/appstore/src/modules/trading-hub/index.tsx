@@ -3,10 +3,16 @@ import Onboarding from 'Components/onboarding';
 import { trading_hub_contents } from 'Constants/trading-hub-content';
 import Options from '../../components/options';
 import platform_config from '../../constants/platform-config';
+import AddOptionsAccount from 'Components/add-options-account';
 
 const TradingHub = () => {
     /*TODO: We need to show this component whenever user click on tour guide button*/
-    return <Options platformlauncherprops={platform_config} />;
+    return (
+        <React.Fragment>
+            {/* <AddOptionsAccount /> */}
+            <Options platformlauncherprops={platform_config} />;{/* <Onboarding contents={trading_hub_contents} /> */}
+        </React.Fragment>
+    );
 };
 
 export default TradingHub;

@@ -1,36 +1,41 @@
-import { platforms_appstore, routes } from '@deriv/shared';
+import { getPlatformSettingsAppstore, routes } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 
 const platform_config = [
     {
-        icon: platforms_appstore('trader').icon,
-        title: platforms_appstore('trader').name,
-        name: platforms_appstore('trader').name,
-        description: localize('A whole new trading experience on a powerful yet easy to use platform.'),
+        icon: getPlatformSettingsAppstore('trader').icon,
+        title: getPlatformSettingsAppstore('trader').name,
+        name: getPlatformSettingsAppstore('trader').name,
+        description: localize('Options & multipliers trading platform.'),
         link_to: routes.trade,
     },
     {
-        icon: platforms_appstore('dbot').icon,
-        title: platforms_appstore('dbot').name,
-        name: platforms_appstore('dbot').name,
-        description: localize('Automated trading at your fingertips. No coding needed.'),
+        icon: getPlatformSettingsAppstore('dbot').icon,
+        title: getPlatformSettingsAppstore('dbot').name,
+        name: getPlatformSettingsAppstore('dbot').name,
+        description: localize('Automate your trading, no coding needed.'),
         link_to: routes.bot,
     },
     {
-        icon: platforms_appstore('smarttrader').icon,
-        title: platforms_appstore('smarttrader').name,
-        name: platforms_appstore('smarttrader').name,
-        description: localize('Trade the world’s markets with our popular user-friendly platform.'),
+        icon: getPlatformSettingsAppstore('smarttrader').icon,
+        title: getPlatformSettingsAppstore('smarttrader').name,
+        name: getPlatformSettingsAppstore('smarttrader').name,
+        description: localize('Our legacy options trading platform.'),
         link_to: routes.smarttrader,
     },
     {
-        icon: platforms_appstore('bbot').icon,
-        title: platforms_appstore('bbot').name,
-        name: platforms_appstore('bbot').name,
-        description: localize(
-            'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'
-        ),
+        icon: getPlatformSettingsAppstore('bbot').icon,
+        title: getPlatformSettingsAppstore('bbot').name,
+        name: getPlatformSettingsAppstore('bbot').name,
+        description: localize('Our legacy automated trading platform.'),
+        link_to: routes.binarybot,
+    },
+    {
+        icon: getPlatformSettingsAppstore('go').icon,
+        title: getPlatformSettingsAppstore('go').name,
+        name: getPlatformSettingsAppstore('go').name,
+        description: localize('Trade on the go with our mobile app.'),
         link_to: routes.binarybot,
     },
 ];

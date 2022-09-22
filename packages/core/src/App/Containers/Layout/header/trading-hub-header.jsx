@@ -11,6 +11,7 @@ import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
+import RealAccountSignup from 'App/Containers/RealAccountSignup';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -173,6 +174,7 @@ const TradingHubHeader = ({
                         </BinaryLink>
                     </Popover>
                 </div>
+                <RealAccountSignup />
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
@@ -202,6 +204,7 @@ const TradingHubHeader = ({
                         </Button>
                     </div>
                 </div>
+                <RealAccountSignup />
             </MobileWrapper>
         </header>
     );

@@ -10,17 +10,17 @@ type TPlatformLauncherProps = {
     title?: string;
     description?: string;
     link_to: string;
-    app_launcher: boolean;
+    has_real_account: boolean;
 };
 
-const PlatformLauncher = ({ icon, title, description, link_to, app_launcher }: TPlatformLauncherProps) => {
+const PlatformLauncher = ({ icon, title, description, link_to, has_real_account }: TPlatformLauncherProps) => {
     const history = useHistory();
     const onClickTrade = (url_path: string) => {
         history.push(routes[url_path]);
     };
 
     return (
-        <div className={`platform-launcher ${app_launcher ? 'applauncher' : ''}`}>
+        <div className={`platform-launcher ${has_real_account ? '' : 'applauncher'}`}>
             <div className='platform-launcher__container'>
                 <div className='platform-launcher__container--icon'>
                     <WalletIcon icon={icon} />
@@ -34,7 +34,7 @@ const PlatformLauncher = ({ icon, title, description, link_to, app_launcher }: T
                     </Text>
                 </div>
             </div>
-            {!app_launcher && (
+            {has_real_account && (
                 <div className='platform-launcher__trade-button'>
                     <Button primary small onClick={() => onClickTrade(link_to)} type='button'>
                         <Localize i18n_default_text='Trade' />

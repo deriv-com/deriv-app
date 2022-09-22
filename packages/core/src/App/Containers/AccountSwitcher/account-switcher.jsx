@@ -56,12 +56,12 @@ const AccountSwitcher = props => {
     }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
-        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
-
-        getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
-            setExchangedRate(res)
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
+        if (vrtc_loginid) {
+            getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
+                setExchangedRate(res)
+            );
+        }
     }, []);
 
     React.useEffect(() => {

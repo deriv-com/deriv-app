@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
 import { tabs_title } from 'Constants/bot-contents';
 import { storeSetting, getSetting } from 'Utils/settings';
+import RootStore from '.';
 
 export interface IBlocklyStore {
     is_loading: boolean;
@@ -16,7 +17,7 @@ export interface IBlocklyStore {
 }
 
 export default class BlocklyStore implements IBlocklyStore {
-    private root_store?: RootStore;
+    root_store: RootStore;
 
     constructor(root_store: RootStore) {
         this.root_store = root_store;

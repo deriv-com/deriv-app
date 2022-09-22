@@ -49,7 +49,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     });
 
     const ad_pause_color = general_store.is_listed ? 'general' : 'less-prominent';
-    const icon_disabled_color = general_store.is_listed ? 'black' : 'disabled';
+    const icon_disabled_color = !general_store.is_listed && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
 
     const onClickActivateDeactivate = () => {

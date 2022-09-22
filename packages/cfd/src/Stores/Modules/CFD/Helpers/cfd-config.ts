@@ -47,6 +47,7 @@ export const getDxCompanies = () => {
 };
 
 export const getMtCompanies = (is_eu: boolean) => {
+    // TODO: Move this to the getDxCompanies for real release and when separating MT5 and DerivX components.
     const all_config = {
         account_type: '',
         leverage: 500,

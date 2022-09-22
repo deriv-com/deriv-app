@@ -53,6 +53,7 @@ export const icons =
         'IcBrandDbot',
         'IcBrandDerivApps',
         'IcBrandDeriv',
+        'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',
         'IcBrandDmt5Synthetics',

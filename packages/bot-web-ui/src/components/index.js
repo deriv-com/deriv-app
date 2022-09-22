@@ -1,5 +1,7 @@
+export { default as Audio } from './audio';
 export { default as BotNotificationMessages } from './bot-notification-messages';
 export { default as Chart } from './chart';
+export { default as Dashboard } from './dashboard';
 export { default as ContractCardLoader } from './contract-card-loading';
 export { default as ContractResultOverlay } from './contract-result-overlay';
 export { default as Download } from './download';
@@ -15,3 +17,5 @@ export { default as Summary } from './summary';
 export { default as TradeAnimation } from './trade-animation';
 export { default as Transactions } from './transactions';
 export { default as NetworkToastPopup } from './network-toast-popup';
+export { default as RoutePromptDialog } from './route-prompt-dialog';
+export { default as BotFooterExtensions } from './bot-footer-extensions';

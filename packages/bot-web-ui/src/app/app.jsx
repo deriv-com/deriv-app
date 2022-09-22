@@ -2,15 +2,19 @@ import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
-import { BotNotificationMessages, NetworkToastPopup, QuickStrategy } from 'Components';
-import Audio from '../components/audio';
-import RoutePromptDialogue from '../components/route-prompt-dialog';
-import BotFooterExtensions from '../components/bot-footer-extensions';
+import {
+    Dashboard,
+    BotNotificationMessages,
+    NetworkToastPopup,
+    QuickStrategy,
+    Audio,
+    RoutePromptDialog,
+    BotFooterExtensions,
+} from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import './app.scss';
-import Dashboard from 'Components/dashboard';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
@@ -77,7 +81,7 @@ const App = ({ passthrough }) => {
                 <Dashboard />
                 <QuickStrategy />
                 <Audio />
-                <RoutePromptDialogue />
+                <RoutePromptDialog />
                 <BotFooterExtensions />
             </div>
         </MobxContentProvider>

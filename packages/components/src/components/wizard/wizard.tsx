@@ -1,4 +1,3 @@
-import PropTypes, { object } from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import Step from './wizard-step';
@@ -8,7 +7,7 @@ type TWizard = {
     initial_step: number;
     onStepChange: (prop: { [key: string]: number }) => void;
     nav: React.ReactNode;
-    selected_step_ref: () => any | React.MutableRefObject<HTMLElement>;
+    selected_step_ref: () => React.MutableRefObject<HTMLElement>;
 };
 
 const Wizard = ({

@@ -616,15 +616,17 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
+        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
+            response?.p2p_advertiser_info;
+
         if (!response.error) {
-            this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
-            this.setIsListed(!!p2p_advertiser_info.is_listed);
-            this.setNickname(p2p_advertiser_info.name);
-            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
-            this.setUserBlockedCount(p2p_advertiser_info.blocked_by_count);
+            this.setAdvertiserId(id);
+            this.setIsAdvertiser(!!is_approved);
+            this.setIsAdvertiserBlocked(!!is_blocked);
+            this.setIsListed(!!is_listed);
+            this.setNickname(name);
+            this.setUserBlockedUntil(blocked_until);
+            this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
             if (response.error.code === 'RestrictedCountry') {

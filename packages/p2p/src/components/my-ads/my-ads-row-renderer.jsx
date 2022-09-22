@@ -118,7 +118,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             <Localize i18n_default_text='Ad ID {{advert_id}} ' values={{ advert_id: id }} />
                         </Text>
                         <div className='p2p-my-ads__table-row__type-and-status'>
-                            <Text line_height='m' size='s' weight='bold'>
+                            <Text color={ad_pause_color} line_height='m' size='s' weight='bold'>
                                 <Localize
                                     i18n_default_text='{{ad_type}} {{ account_currency }}'
                                     values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
@@ -165,7 +165,12 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             <Text color={ad_pause_color} line_height='m' size='xxs'>
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
-                            <Text color='profit-success' line_height='m' size='xs' weight='bold'>
+                            <Text
+                                color={general_store.is_listed ? 'profit-success' : 'disabled'}
+                                line_height='m'
+                                size='xs'
+                                weight='bold'
+                            >
                                 <div className='display-layout'>
                                     {display_effective_rate} {local_currency}
                                     {rate_type === ad_type.FLOAT && (

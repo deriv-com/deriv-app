@@ -36,6 +36,7 @@ export default class GeneralStore extends BaseStore {
     @observable review_period;
     @observable should_show_real_name = false;
     @observable should_show_popup = false;
+    @observable user_blocked_count = 0;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
     @observable is_modal_open = false;
@@ -593,6 +594,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setUserBlockedCount(user_blocked_count) {
+        this.user_blocked_count = user_blocked_count;
+    }
+
+    @action.bound
     setUserBlockedUntil(user_blocked_until) {
         this.user_blocked_until = user_blocked_until;
     }
@@ -618,6 +624,7 @@ export default class GeneralStore extends BaseStore {
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            this.setUserBlockedCount(p2p_advertiser_info.blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
             if (response.error.code === 'RestrictedCountry') {

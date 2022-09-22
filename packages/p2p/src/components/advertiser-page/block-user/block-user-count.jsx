@@ -7,28 +7,28 @@ import { isDesktop } from '@deriv/shared';
 import './block-user-count.scss';
 
 const BlockUserCount = () => {
-    const { my_profile_store } = useStores();
-    const { blocked_by_count } = my_profile_store.advertiser_info;
+    const { general_store } = useStores();
+    const { user_blocked_count } = general_store;
 
     const [is_block_user_count_modal_open, setIsBlockUserCountModalOpen] = React.useState(false);
 
     const getMessage = () => {
-        if (blocked_by_count === 0) {
-            return localize('Nobody has blocked you. Yay!');
-        } else if (blocked_by_count === 1) {
-            return localize('{{blocked_by_count}} person has blocked you', { blocked_by_count });
+        switch (user_blocked_count) {
+            case 0:
+                return localize('Nobody has blocked you. Yay!');
+            case 1:
+                return localize('{{user_blocked_count}} person has blocked you', {
+                    user_blocked_count,
+                });
+            default:
+                return localize('{{user_blocked_count}} people have blocked you', {
+                    user_blocked_count,
+                });
         }
-        return localize('{{blocked_by_count}} people have blocked you', { blocked_by_count });
     };
 
-    React.useEffect(() => {
-        my_profile_store.getAdvertiserInfo();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
-        <>
+        <React.Fragment>
             <MobileWrapper>
                 <Modal has_close_icon={false} is_open={is_block_user_count_modal_open} width='440px'>
                     <Modal.Body>
@@ -58,11 +58,11 @@ const BlockUserCount = () => {
                 >
                     <Icon className='block-user-count__container--icon' icon='IcUserBlockedOutline' size={16} />
                     <Text color='less-prominent' line_height='m' size={isDesktop() ? 'xs' : 14}>
-                        {blocked_by_count}
+                        {user_blocked_count}
                     </Text>
                 </Popover>
             </div>
-        </>
+        </React.Fragment>
     );
 };
 

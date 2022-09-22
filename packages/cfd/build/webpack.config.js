@@ -9,6 +9,8 @@ module.exports = function (env) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
+            CFDStore: 'Stores/Modules/CFD/cfd-store',
+            'success-dialog': 'Components/success-dialog.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

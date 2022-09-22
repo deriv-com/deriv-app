@@ -6,4 +6,5 @@ export type TRootStore = {
     client: Record<string, any>;
     config: ConfigStore;
     wallet_store: WalletStore;
+    modules: Record<string, any>;
 };

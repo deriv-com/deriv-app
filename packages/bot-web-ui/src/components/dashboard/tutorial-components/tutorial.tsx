@@ -43,18 +43,26 @@ const Tutorial = ({ active_tab_tutotials, setActiveTabTutorial, setFAQSearchValu
                                         </Text>
                                     ),
 
-                                    content: description.map((item, index) => (
-                                        <Text
-                                            as='p'
-                                            size={'s'}
-                                            line_height='m'
-                                            className='faq_description'
-                                            text-weight='normal'
-                                            key={index}
-                                        >
-                                            {item}
-                                        </Text>
-                                    )),
+                                    content: description.map((item, index) => {
+                                        switch (item.type) {
+                                            case 'text':
+                                                return (
+                                                    <Text
+                                                        as='p'
+                                                        size={'s'}
+                                                        line_height='m'
+                                                        className='faq_description'
+                                                        text-weight='normal'
+                                                        key={index}
+                                                    >
+                                                        {item.content}
+                                                    </Text>
+                                                );
+
+                                            default:
+                                                return null;
+                                        }
+                                    }),
                                 };
                             })}
                             icon_close=''

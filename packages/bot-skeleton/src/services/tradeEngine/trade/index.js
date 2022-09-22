@@ -74,6 +74,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             forget_proposal_ids: [],
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
+        this.api.connection.onclose = () => {
+            globalObserver.setState({ transaction_subscription_id: null });
+        };
     }
 
     init(...args) {

@@ -2,7 +2,7 @@ import { action, observable } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
 import { tabs_title } from 'Constants/bot-contents';
 import { storeSetting, getSetting } from 'Utils/settings';
-import RootStore from '.';
+import RootStore from './root-store';
 
 export interface IBlocklyStore {
     is_loading: boolean;

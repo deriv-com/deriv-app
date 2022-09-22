@@ -28,14 +28,13 @@ import {
     TTypeStrategiesDropdown,
     TTypeStrategy,
 } from '../components/dashboard/quick-strategy/quick-strategy.types';
+import RootStore from './root-store';
 
 export default class QuickStrategyStore {
-    // TODO: Convert RootStore to TS + add type of RootStore here later.
-    // we haven't to use import of the class RootStore in order to avoid error 'Dependency cycled detected' of plagin circular-dependency-plugin
-    root_store: any;
+    root_store: RootStore;
     qs_cache: TQSCache = (getSetting('quick_strategy') as TQSCache) || {};
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore) {
         this.root_store = root_store;
     }
     @observable selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};

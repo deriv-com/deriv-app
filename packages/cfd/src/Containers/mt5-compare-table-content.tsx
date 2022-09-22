@@ -249,6 +249,7 @@ const DMT5CompareModalContent = ({
         poi_poa_verified_for_bvi_labuan_maltainvest,
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poa_acknowledged,
+        poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -384,6 +385,36 @@ const DMT5CompareModalContent = ({
         return isDesktop() ? 'xxxs' : 'xxxxs';
     };
 
+    const is_account_added = (item: TFooterButtonData) =>
+        Object.entries(current_list).some(([key, value]) => {
+            const [market, type] = item.action.split('_');
+            return (
+                value.market_type === market &&
+                value.landing_company_short === type &&
+                value.account_type === 'real' &&
+                key.includes(CFD_PLATFORMS.MT5)
+            );
+        });
+
+    const should_show_pending_status = (item: TFooterButtonData) => {
+        const type = item.action.split('_')[1];
+        if (is_account_added(item)) {
+            return false;
+        } else if (type === 'svg') {
+            return false;
+        } else if (type === 'vanuatu') {
+            return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;
+        } else if (type === 'bvi') {
+            if (should_restrict_bvi_account_creation && poa_pending) return true;
+            return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
+        }
+        return (
+            poi_acknowledged_for_bvi_labuan_maltainvest &&
+            poa_acknowledged &&
+            !poi_poa_verified_for_bvi_labuan_maltainvest
+        );
+    };
+
     const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
         <Table.Row
             className={
@@ -478,23 +509,6 @@ const DMT5CompareModalContent = ({
         );
     };
 
-    const should_show_pending_status = (item: TFooterButtonData) => {
-        const type = item.action.split('_')[1];
-        if (type === 'svg') {
-            return false;
-        } else if (type === 'vanuatu') {
-            return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;
-        } else if (type === 'bvi') {
-            if (should_restrict_bvi_account_creation && poa_acknowledged) return true;
-            return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
-        }
-        return (
-            poi_acknowledged_for_bvi_labuan_maltainvest &&
-            poa_acknowledged &&
-            !poi_poa_verified_for_bvi_labuan_maltainvest
-        );
-    };
-
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
             <div className='cfd-real-compare-accounts'>
@@ -554,15 +568,7 @@ const DMT5CompareModalContent = ({
                                         ) : (
                                             <Button
                                                 className='cfd-real-compare-accounts__table-footer__button'
-                                                disabled={Object.entries(current_list).some(([key, value]) => {
-                                                    const [market, type] = item.action.split('_');
-                                                    return (
-                                                        value.market_type === market &&
-                                                        value.landing_company_short === type &&
-                                                        value.account_type === 'real' &&
-                                                        key.includes(CFD_PLATFORMS.MT5)
-                                                    );
-                                                })}
+                                                disabled={is_account_added(item)}
                                                 type='button'
                                                 primary_light
                                                 onClick={() => onButtonClick(item)}

@@ -1,11 +1,6 @@
 import React, { ReactNode } from 'react';
 import { use100vh } from 'react-div-100vh';
 
-/* use100vh() hook is workaround for getting accurate height of 100vh from browsers on mobile (it returns height as a number in browser and undefined in Node),
-    because using normal css vh is not returning correct screen height */
-/* To manually remove use100vh() calculation and revert to default browser calculation use is_disabled */
-/* To bypass usage of component altogether, use is_bypassed */
-
 type TDiv100vhContainerProps = {
     id?: string;
     children: ReactNode;
@@ -20,8 +15,8 @@ type TDiv100vhContainerProps = {
 const Div100vhContainer = ({
     children,
     className,
-    is_bypassed = false,
-    is_disabled = false,
+    is_bypassed = false, // to bypass usage of component altogether, pass it
+    is_disabled = false, // To manually remove use100vh() calculation and revert to default browser calculation pass it
     id,
     height_offset,
     max_autoheight_offset,

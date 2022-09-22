@@ -1,20 +1,20 @@
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from './image/image_utility';
 
-export const truncateFileName = (file, limit) => {
+export const truncateFileName = (file: any, limit: number) => {
     const string_limit_regex = new RegExp(`(.{${limit || 30}})..+`);
     return file?.name?.replace(string_limit_regex, `$1….${getFileExtension(file)}`);
 };
 
-export const getFileExtension = file => {
+export const getFileExtension = (file: any) => {
     return file?.type?.match(/[^/]+$/)[0];
 };
 
-export const compressImageFiles = files => {
-    const promises = [];
-    files.forEach(f => {
+export const compressImageFiles = (files: any) => {
+    const promises: unknown[] = [];
+    files.forEach((f: any) => {
         const promise = new Promise(resolve => {
             if (isImageType(f.type)) {
-                convertToBase64(f).then(img => {
+                convertToBase64(f).then((img: any) => {
                     compressImg(img).then(compressed_img => {
                         const file_arr = f;
                         file_arr.file = compressed_img;
@@ -31,10 +31,35 @@ export const compressImageFiles = files => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files, getFileReadErrorMessage, settings) => {
-    const promises = [];
+type TSettings = {
+    documentType: {
+        passport: string;
+        national_identity_card: string;
+        driving_licence: string;
+        utility_bill: string;
+        bankstatement: string;
+        power_of_attorney: string;
+        amlglobalcheck: string;
+        docverification: string;
+        proofid: string;
+        driverslicense: string;
+        proofaddress: string;
+        other: string;
+    };
+    pageType: {
+        front: string;
+        back: string;
+        photo: string;
+    };
+    expirationDate?: string;
+    documentId?: string;
+    lifetimeValid?: boolean;
+};
 
-    files.forEach(f => {
+export const readFiles = (files: any, getFileReadErrorMessage: (t: string) => string, settings: TSettings) => {
+    const promises: unknown[] = [];
+
+    files.forEach((f: any) => {
         const fr = new FileReader();
         const promise = new Promise(resolve => {
             fr.onload = () => {
@@ -44,7 +69,10 @@ export const readFiles = (files, getFileReadErrorMessage, settings) => {
                     documentType: settings?.documentType || 'utility_bill',
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    ...settings,
+                    pageType: settings?.pageType,
+                    expirationDate: settings?.expirationDate,
+                    documentId: settings?.documentId,
+                    lifetimeValid: settings?.lifetimeValid,
                 };
                 resolve(file_obj);
             };
@@ -92,4 +120,5 @@ export const PAGE_TYPE = {
     photo: 'photo',
 };
 
-export const getSupportedFiles = filename => /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);
+export const getSupportedFiles = (filename: string) =>
+    /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);

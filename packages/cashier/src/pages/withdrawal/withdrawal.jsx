@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { isCryptocurrency, isDesktop, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -65,7 +65,10 @@ const Withdrawal = ({
     verification_code,
     willMountWithdraw,
     recentTransactionOnMount,
+    context,
 }) => {
+    const { is_appstore } = React.useContext(PlatformContext);
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -89,7 +92,7 @@ const Withdrawal = ({
     }, [willMountWithdraw]);
 
     React.useEffect(() => {
-        if (isDesktop()) {
+        if (isDesktop() && !is_appstore) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [];
                 if (crypto_transactions?.length) {
@@ -110,25 +113,25 @@ const Withdrawal = ({
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
-            return <CashierLocked />;
+            return <CashierLocked context={context} />;
         }
     }
     if (is_switching || is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen={false} />;
     }
     if (is_virtual) {
-        return <Virtual />;
+        return <Virtual context={context} />;
     }
     if (is_cashier_locked) {
-        return <CashierLocked />;
+        return <CashierLocked context={context} />;
     }
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
-        return <WithdrawalLocked />;
+        return <WithdrawalLocked context={context} />;
     }
     if (!+balance) {
         return (
             <>
-                <NoBalance />
+                <NoBalance context={context} />
                 {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
             </>
         );
@@ -140,26 +143,26 @@ const Withdrawal = ({
         return <Error error={verify_error} />;
     }
     if (!is_crypto && (verification_code || iframe_url)) {
-        return <Withdraw />;
+        return <Withdraw context={context} />;
     }
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return (
             <>
-                <CryptoWithdrawForm />
+                <CryptoWithdrawForm context={context} />
                 {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
             </>
         );
     }
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
-        return <CryptoWithdrawReceipt />;
+        return <CryptoWithdrawReceipt context={context} />;
     }
     if (is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
+        return <CryptoTransactionsHistory context={context} />;
     }
 
     return (
         <>
-            <WithdrawalVerificationEmail />
+            <WithdrawalVerificationEmail context={context} />
             {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );

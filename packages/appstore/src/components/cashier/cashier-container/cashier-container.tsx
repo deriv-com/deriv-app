@@ -7,10 +7,11 @@ import AppWalletModal from '../../app-wallet-modal';
 import { Withdrawal } from '@deriv/cashier';
 
 const CashierContainer = () => {
+    const store = useStores();
     const {
         client: { balance, currency },
         ui: { is_dark_mode_on },
-    } = useStores();
+    } = store;
     const wallet_name = 'USD';
 
     return (
@@ -41,7 +42,7 @@ const CashierContainer = () => {
                                         width_of_tab='144px'
                                     >
                                         <div className='cashier-container-tabs-container'>
-                                            <Withdrawal />
+                                            <Withdrawal context={store} />
                                         </div>
                                     </Tab>
                                 );

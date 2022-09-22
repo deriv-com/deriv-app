@@ -28,42 +28,42 @@ export default class BlocklyStore implements IBlocklyStore {
     @observable active_tab = tabs_title.WORKSPACE;
 
     @action.bound
-    setActiveTab(tab: string) {
+    setActiveTab(tab: string): void {
         this.active_tab = tab;
         storeSetting('active_tab', this.active_tab);
     }
 
     @action.bound
-    setContainerSize() {
+    setContainerSize(): void {
         if (this.active_tab === tabs_title.WORKSPACE) {
             onWorkspaceResize();
         }
     }
 
     @action.bound
-    onMount() {
+    onMount(): void {
         window.addEventListener('resize', this.setContainerSize);
     }
 
     @action.bound
-    getCachedActiveTab() {
+    getCachedActiveTab(): void {
         if (getSetting('active_tab')) {
             this.active_tab = getSetting('active_tab');
         }
     }
 
     @action.bound
-    onUnmount() {
+    onUnmount(): void {
         window.removeEventListener('resize', this.setContainerSize);
     }
 
     @action.bound
-    startLoading() {
+    startLoading(): void {
         this.is_loading = true;
     }
 
     @action.bound
-    endLoading() {
+    endLoading(): void {
         this.is_loading = false;
     }
 }

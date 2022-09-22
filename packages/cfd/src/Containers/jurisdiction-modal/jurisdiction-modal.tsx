@@ -26,6 +26,7 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     setAccountSettings,
     setJurisdictionSelectedShortcode,
+    should_restrict_bvi_account_creation,
     toggleCFDVerificationModal,
     updateAccountStatus,
 }: TJurisdictionModalProps) => {
@@ -44,6 +45,7 @@ const JurisdictionModal = ({
         need_poa_resubmission,
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poa_acknowledged,
+        poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -115,7 +117,9 @@ const JurisdictionModal = ({
                     return poi_pending_for_vanuatu || (poi_verified_for_vanuatu && !checked);
                 } else if (is_bvi_selected) {
                     return (
-                        poi_pending_for_bvi_labuan_maltainvest || (poi_verified_for_bvi_labuan_maltainvest && !checked)
+                        (should_restrict_bvi_account_creation && poa_acknowledged) ||
+                        poi_pending_for_bvi_labuan_maltainvest ||
+                        (poi_verified_for_bvi_labuan_maltainvest && !checked && !should_restrict_bvi_account_creation)
                     );
                 } else if (is_labuan_selected || is_maltainvest_selected) {
                     return (
@@ -160,7 +164,11 @@ const JurisdictionModal = ({
                 toggleCFDVerificationModal();
             }
         } else if (is_bvi_selected) {
-            if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+            if (
+                poi_verified_for_bvi_labuan_maltainvest &&
+                !poi_or_poa_not_submitted &&
+                !should_restrict_bvi_account_creation
+            ) {
                 openPersonalDetailsFormOrPasswordForm(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -176,19 +184,25 @@ const JurisdictionModal = ({
 
     const buttonText = () => {
         if (
+            // need to resubmit both poi and poa
             (is_labuan_selected || is_maltainvest_selected) &&
             poi_resubmit_for_bvi_labuan_maltainvest &&
             need_poa_resubmission
         ) {
             return <Localize i18n_default_text='Resubmit' />;
         } else if (
+            //need to resubmit poi
             ((is_vanuatu_selected && poi_resubmit_for_vanuatu) ||
                 ((is_bvi_selected || is_labuan_selected || is_maltainvest_selected) &&
                     poi_resubmit_for_bvi_labuan_maltainvest)) &&
             !poi_or_poa_not_submitted
         ) {
             return <Localize i18n_default_text='Resubmit proof of identity' />;
-        } else if ((is_labuan_selected || is_maltainvest_selected) && need_poa_resubmission) {
+        } else if (
+            ((is_labuan_selected || is_maltainvest_selected) && need_poa_resubmission) ||
+            (is_bvi_selected && should_restrict_bvi_account_creation && !poa_acknowledged)
+        ) {
+            //need to resubmit poa
             return <Localize i18n_default_text='Resubmit proof of address' />;
         }
         return <Localize i18n_default_text='Next' />;
@@ -208,6 +222,7 @@ const JurisdictionModal = ({
                 setChecked={setChecked}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
+                should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
             <Modal.Footer has_separator>
                 <Button
@@ -272,6 +287,7 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     setAccountSettings: client.setAccountSettings,
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
+    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,

@@ -570,6 +570,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get should_restrict_bvi_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
+        ).length;
+    }
+
+    @computed
     get is_virtual() {
         return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }

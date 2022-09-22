@@ -9,6 +9,7 @@ const JurisdictionModalFootNote = ({
     account_type,
     jurisdiction_selected_shortcode,
     card_classname,
+    should_restrict_bvi_account_creation,
 }: TJurisdictionModalFootNoteProps) => {
     const {
         poi_or_poa_not_submitted,
@@ -23,6 +24,7 @@ const JurisdictionModalFootNote = ({
         poi_poa_verified_for_bvi_labuan_maltainvest,
         need_poa_resubmission,
         need_poi_for_bvi_labuan_maltainvest,
+        poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
     const is_svg_type = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'svg';
@@ -44,7 +46,16 @@ const JurisdictionModalFootNote = ({
             return (
                 <Localize i18n_default_text='To create this account first we need your proof of identity and address.' />
             );
-        else if (poi_verified_for_bvi_labuan_maltainvest && is_bvi_type)
+        else if (is_bvi_type && should_restrict_bvi_account_creation) {
+            return poa_pending ? (
+                <Localize
+                    i18n_default_text='<0>You can open this account once your submitted documents have been verified.</0>'
+                    components={[<span key={0} className={`${card_classname}__footnote--pending`} />]}
+                />
+            ) : (
+                <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
+            );
+        } else if (poi_verified_for_bvi_labuan_maltainvest && is_bvi_type)
             return (
                 <Localize
                     i18n_default_text='Add your DMT5 <0>{{account_type}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'

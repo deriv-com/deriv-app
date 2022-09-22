@@ -177,6 +177,7 @@ export type TVerificationStatusBannerProps = {
     disabled: boolean;
     is_virtual: boolean;
     type_of_card: string;
+    should_restrict_bvi_account_creation: boolean;
 };
 
 export type TJurisdictionCheckBoxProps = {
@@ -185,6 +186,7 @@ export type TJurisdictionCheckBoxProps = {
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
+    should_restrict_bvi_account_creation: boolean;
 };
 
 type TOpenAccountTransferMeta = {
@@ -208,6 +210,7 @@ export type TJurisdictionModalProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    should_restrict_bvi_account_creation: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     toggleCFDPersonalDetailsModal: () => void;
     toggleJurisdictionModal: () => void;
@@ -228,6 +231,7 @@ export type TJurisdictionModalContentProps = {
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    should_restrict_bvi_account_creation: boolean;
     is_virtual: boolean;
 };
 
@@ -236,4 +240,5 @@ export type TJurisdictionModalFootNoteProps = {
     card_classname: string;
     account_type: string;
     jurisdiction_selected_shortcode: string;
+    should_restrict_bvi_account_creation: boolean;
 };

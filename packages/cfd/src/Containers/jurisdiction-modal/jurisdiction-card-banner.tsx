@@ -13,6 +13,7 @@ const JurisdictionCardBanner = ({
     disabled,
     is_virtual,
     type_of_card,
+    should_restrict_bvi_account_creation,
 }: TVerificationStatusBannerProps) => {
     const {
         poi_not_submitted_for_vanuatu,
@@ -28,6 +29,7 @@ const JurisdictionCardBanner = ({
         poa_acknowledged,
         need_poa_resubmission,
         need_poi_for_bvi_labuan_maltainvest,
+        poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => account_type && (account_type === 'synthetic' ? 'Synthetics' : 'Financial');
@@ -88,6 +90,23 @@ const JurisdictionCardBanner = ({
                 <div className={`${card_classname}__verification-status--not_submitted`}>
                     <Text as='p' size='xxs' align='center' color='prominent'>
                         <Localize i18n_default_text='Proof of identity and address are required' />
+                    </Text>
+                </div>
+            );
+        } else if (is_bvi && should_restrict_bvi_account_creation) {
+            if (poa_pending) {
+                return (
+                    <div className={`${card_classname}__verification-status--pending`}>
+                        <Text size='xxs' color='prominent'>
+                            <Localize i18n_default_text='Pending proof of address review' />
+                        </Text>
+                    </div>
+                );
+            }
+            return (
+                <div className={`${card_classname}__verification-status--failed`}>
+                    <Text size='xxs' color='colored-background'>
+                        <Localize i18n_default_text='Resubmit proof of address' />
                     </Text>
                 </div>
             );
@@ -173,4 +192,5 @@ const JurisdictionCardBanner = ({
 export default connect(({ client }: RootStore) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
+    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
 }))(JurisdictionCardBanner);

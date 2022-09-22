@@ -10,6 +10,7 @@ const JurisdictionCheckBox = ({
     is_checked,
     jurisdiction_selected_shortcode,
     onCheck,
+    should_restrict_bvi_account_creation,
 }: TJurisdictionCheckBoxProps) => {
     const {
         poi_verified_for_bvi_labuan_maltainvest,
@@ -30,6 +31,7 @@ const JurisdictionCheckBox = ({
                 return true;
             } else if (
                 jurisdiction_selected_shortcode === 'bvi' &&
+                !should_restrict_bvi_account_creation &&
                 poi_verified_for_bvi_labuan_maltainvest &&
                 !poa_not_submitted
             ) {

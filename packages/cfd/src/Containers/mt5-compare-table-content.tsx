@@ -54,6 +54,7 @@ type TDMT5CompareModalContentProps = {
     show_eu_related: boolean;
     account_status: GetAccountStatus;
     upgradeable_landing_companies: unknown[];
+    should_restrict_bvi_account_creation: boolean;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -219,6 +220,7 @@ const DMT5CompareModalContent = ({
     setJurisdictionSelectedShortcode,
     account_status,
     upgradeable_landing_companies,
+    should_restrict_bvi_account_creation,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -335,7 +337,11 @@ const DMT5CompareModalContent = ({
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setJurisdictionSelectedShortcode('bvi');
-                if (poi_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+                if (
+                    poi_verified_for_bvi_labuan_maltainvest &&
+                    !poi_or_poa_not_submitted &&
+                    !should_restrict_bvi_account_creation
+                ) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
@@ -479,6 +485,7 @@ const DMT5CompareModalContent = ({
         } else if (type === 'vanuatu') {
             return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;
         } else if (type === 'bvi') {
+            if (should_restrict_bvi_account_creation && poa_acknowledged) return true;
             return poi_pending_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted;
         }
         return (
@@ -588,5 +595,6 @@ export default connect(({ modules, client }: RootStore) => ({
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     account_status: client.account_status,
+    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
 }))(DMT5CompareModalContent);

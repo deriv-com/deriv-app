@@ -7,6 +7,7 @@ import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 const JurisdictionModalContent = ({
     account_status,
     account_type,
+    is_virtual,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
@@ -15,7 +16,7 @@ const JurisdictionModalContent = ({
     setChecked,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
-    is_virtual,
+    should_restrict_bvi_account_creation,
 }: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
@@ -57,6 +58,7 @@ const JurisdictionModalContent = ({
                 card_classname={card_classname}
                 account_type={account_type}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
             <JurisdictionCheckBox
                 account_status={account_status}
@@ -64,6 +66,7 @@ const JurisdictionModalContent = ({
                 onCheck={() => setChecked(!checked)}
                 class_name={`${card_classname}__jurisdiction-checkbox`}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
         </React.Fragment>
     );

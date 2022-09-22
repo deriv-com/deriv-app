@@ -9,5 +9,5 @@
         "baseUrl": "./",
         "experimentalDecorators": true
     },
-    "include": ["src", "./globals.d.ts"]
+    "include": ["src"]
 }

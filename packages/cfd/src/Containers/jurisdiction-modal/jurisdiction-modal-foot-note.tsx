@@ -31,7 +31,7 @@ const JurisdictionModalFootNote = ({
     const is_vanuatu_type = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'vanuatu';
     const is_bvi_type = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'bvi';
     const is_labuan_maltainvest_type =
-        jurisdiction_selected_shortcode && ['bvi', 'labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode);
+        jurisdiction_selected_shortcode && ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode);
 
     const FooterNote = () => {
         if (is_svg_type)

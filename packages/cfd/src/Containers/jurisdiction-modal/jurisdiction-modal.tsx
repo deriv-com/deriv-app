@@ -117,7 +117,7 @@ const JurisdictionModal = ({
                     return poi_pending_for_vanuatu || (poi_verified_for_vanuatu && !checked);
                 } else if (is_bvi_selected) {
                     return (
-                        (should_restrict_bvi_account_creation && poa_acknowledged) ||
+                        (should_restrict_bvi_account_creation && poa_pending) ||
                         poi_pending_for_bvi_labuan_maltainvest ||
                         (poi_verified_for_bvi_labuan_maltainvest && !checked && !should_restrict_bvi_account_creation)
                     );

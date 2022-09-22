@@ -4,8 +4,8 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 type TToast = {
-    className?: string;
-    is_open?: boolean;
+    className: string;
+    is_open: boolean;
     onClick: (event: React.MouseEvent<HTMLElement>) => void;
     onClose: () => void;
     type: 'error' | 'info';
@@ -20,7 +20,7 @@ const Toast = ({
     onClick,
     type = 'info',
     timeout = 0,
-}: React.PropsWithChildren<TToast>) => {
+}: React.PropsWithChildren<Partial<TToast>>) => {
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {

@@ -6,7 +6,7 @@ import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const JurisdictionCardBanner = ({
+const VerificationStatusBanner = ({
     account_status,
     account_type,
     card_classname,
@@ -51,140 +51,139 @@ const JurisdictionCardBanner = ({
                 return '';
         }
     };
-
-    const VerificationStatusBanner = () => {
-        if (is_virtual && is_svg) {
-            return (
-                <div className={`${card_classname}__verification-status--not_submitted`}>
-                    <Text as='p' size='xxxs' align='center' color='prominent'>
-                        <Localize
-                            i18n_default_text='Switch to your real account to create a DMT5 {{account_title}} {{type_title}} account.'
-                            values={{
-                                account_title: getAccountTitle(),
-                                type_title: getTypeTitle(),
-                            }}
-                        />
-                    </Text>
-                </div>
-            );
-        } else if (disabled) {
-            // account not added
-            return (
-                <div className={`${card_classname}__verification-status--account_added`}>
-                    <Text size='xxs' weight='bold' color='colored-background'>
-                        <Localize i18n_default_text='Account added' />
-                    </Text>
-                </div>
-            );
-        } else if (is_svg) {
-            return (
-                <div className={`${card_classname}__verification-status--hint`}>
-                    <Text size='xxxs' align='center' line-height='s' color='less-prominent'>
-                        <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
-                    </Text>
-                </div>
-            );
-        } else if (poi_or_poa_not_submitted) {
-            // if poi or poa is not submitted
-            return (
-                <div className={`${card_classname}__verification-status--not_submitted`}>
-                    <Text as='p' size='xxs' align='center' color='prominent'>
-                        <Localize i18n_default_text='Proof of identity and address are required' />
-                    </Text>
-                </div>
-            );
-        } else if (is_bvi && should_restrict_bvi_account_creation) {
-            if (poa_pending) {
-                return (
-                    <div className={`${card_classname}__verification-status--pending`}>
-                        <Text size='xxs' color='prominent'>
-                            <Localize i18n_default_text='Pending proof of address review' />
-                        </Text>
-                    </div>
-                );
-            }
-            return (
-                <div className={`${card_classname}__verification-status--failed`}>
-                    <Text size='xxs' color='colored-background'>
-                        <Localize i18n_default_text='Resubmit proof of address' />
-                    </Text>
-                </div>
-            );
-        } else if (
-            (is_vanuatu && poi_verified_for_vanuatu) ||
-            (is_bvi && poi_verified_for_bvi_labuan_maltainvest) ||
-            (is_labuan_or_maltainvest && poi_poa_verified_for_bvi_labuan_maltainvest)
-        ) {
-            return (
-                <div className={`${card_classname}__verification-status--poi_verified`}>
-                    <Text as='p' size='xxs' align='center' color='colored-background'>
-                        <Localize i18n_default_text='You are verified to add this account' />
-                    </Text>
-                </div>
-            );
-        } else if (is_vanuatu && poi_not_submitted_for_vanuatu) {
-            return (
-                <div className={`${card_classname}__verification-status--not_submitted`}>
-                    <Text as='p' size='xxs' align='center' color='prominent'>
-                        <Localize i18n_default_text='You will need to submit proof of identity' />
-                    </Text>
-                </div>
-            );
-        } else if ((is_vanuatu && poi_pending_for_vanuatu) || (is_bvi && poi_pending_for_bvi_labuan_maltainvest)) {
+    if (is_virtual && is_svg) {
+        return (
+            <div className={`${card_classname}__verification-status--not_submitted`}>
+                <Text as='p' size='xxxs' align='center' color='prominent'>
+                    <Localize
+                        i18n_default_text='Switch to your real account to create a DMT5 {{account_title}} {{type_title}} account.'
+                        values={{
+                            account_title: getAccountTitle(),
+                            type_title: getTypeTitle(),
+                        }}
+                    />
+                </Text>
+            </div>
+        );
+    } else if (disabled) {
+        // account not added
+        return (
+            <div className={`${card_classname}__verification-status--account_added`}>
+                <Text size='xxs' weight='bold' color='colored-background'>
+                    <Localize i18n_default_text='Account added' />
+                </Text>
+            </div>
+        );
+    } else if (is_svg) {
+        return (
+            <div className={`${card_classname}__verification-status--hint`}>
+                <Text size='xxxs' align='center' line-height='s' color='less-prominent'>
+                    <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
+                </Text>
+            </div>
+        );
+    } else if (poi_or_poa_not_submitted) {
+        // if poi or poa is not submitted
+        return (
+            <div className={`${card_classname}__verification-status--not_submitted`}>
+                <Text as='p' size='xxs' align='center' color='prominent'>
+                    <Localize i18n_default_text='Proof of identity and address are required' />
+                </Text>
+            </div>
+        );
+    } else if (is_bvi && should_restrict_bvi_account_creation) {
+        if (poa_pending) {
             return (
                 <div className={`${card_classname}__verification-status--pending`}>
                     <Text size='xxs' color='prominent'>
-                        <Localize i18n_default_text='Pending proof of identity review' />
-                    </Text>
-                </div>
-            );
-        } else if (
-            is_labuan_or_maltainvest &&
-            poi_acknowledged_for_bvi_labuan_maltainvest &&
-            poa_acknowledged &&
-            !poi_poa_verified_for_bvi_labuan_maltainvest
-        ) {
-            return (
-                <div className={`${card_classname}__verification-status--pending`}>
-                    <Text size='xxs' color='prominent'>
-                        <Localize i18n_default_text='Pending verification' />
-                    </Text>
-                </div>
-            );
-        } else if (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) {
-            return (
-                <div className={`${card_classname}__verification-status--failed`}>
-                    <Text size='xxs' color='colored-background'>
-                        <Localize i18n_default_text='Resubmit proof of identity and address' />
-                    </Text>
-                </div>
-            );
-        } else if (
-            (is_vanuatu && poi_resubmit_for_vanuatu) ||
-            ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest)
-        ) {
-            return (
-                <div className={`${card_classname}__verification-status--failed`}>
-                    <Text size='xxs' color='colored-background'>
-                        <Localize i18n_default_text='Resubmit proof of identity' />
-                    </Text>
-                </div>
-            );
-        } else if (is_labuan_or_maltainvest && need_poa_resubmission) {
-            return (
-                <div className={`${card_classname}__verification-status--failed`}>
-                    <Text size='xxs' color='colored-background'>
-                        <Localize i18n_default_text='Resubmit proof of address' />
+                        <Localize i18n_default_text='Pending proof of address review' />
                     </Text>
                 </div>
             );
         }
-        return null;
-    };
+        return (
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Resubmit proof of address' />
+                </Text>
+            </div>
+        );
+    } else if (
+        (is_vanuatu && poi_verified_for_vanuatu) ||
+        (is_bvi && poi_verified_for_bvi_labuan_maltainvest) ||
+        (is_labuan_or_maltainvest && poi_poa_verified_for_bvi_labuan_maltainvest)
+    ) {
+        return (
+            <div className={`${card_classname}__verification-status--poi_verified`}>
+                <Text as='p' size='xxs' align='center' color='colored-background'>
+                    <Localize i18n_default_text='You are verified to add this account' />
+                </Text>
+            </div>
+        );
+    } else if (is_vanuatu && poi_not_submitted_for_vanuatu) {
+        return (
+            <div className={`${card_classname}__verification-status--not_submitted`}>
+                <Text as='p' size='xxs' align='center' color='prominent'>
+                    <Localize i18n_default_text='You will need to submit proof of identity' />
+                </Text>
+            </div>
+        );
+    } else if ((is_vanuatu && poi_pending_for_vanuatu) || (is_bvi && poi_pending_for_bvi_labuan_maltainvest)) {
+        return (
+            <div className={`${card_classname}__verification-status--pending`}>
+                <Text size='xxs' color='prominent'>
+                    <Localize i18n_default_text='Pending proof of identity review' />
+                </Text>
+            </div>
+        );
+    } else if (
+        is_labuan_or_maltainvest &&
+        poi_acknowledged_for_bvi_labuan_maltainvest &&
+        poa_acknowledged &&
+        !poi_poa_verified_for_bvi_labuan_maltainvest
+    ) {
+        return (
+            <div className={`${card_classname}__verification-status--pending`}>
+                <Text size='xxs' color='prominent'>
+                    <Localize i18n_default_text='Pending verification' />
+                </Text>
+            </div>
+        );
+    } else if (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) {
+        return (
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Resubmit proof of identity and address' />
+                </Text>
+            </div>
+        );
+    } else if (
+        (is_vanuatu && poi_resubmit_for_vanuatu) ||
+        ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest)
+    ) {
+        return (
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Resubmit proof of identity' />
+                </Text>
+            </div>
+        );
+    } else if (is_labuan_or_maltainvest && need_poa_resubmission) {
+        return (
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Resubmit proof of address' />
+                </Text>
+            </div>
+        );
+    }
+    return null;
+};
 
+const JurisdictionCardBanner = (props: TVerificationStatusBannerProps) => {
     return (
-        <div className={`${card_classname}__verification-status`}>
-            <VerificationStatusBanner />
+        <div className={`${props.card_classname}__verification-status`}>
+            <VerificationStatusBanner {...props} />
         </div>
     );
 };

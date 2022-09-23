@@ -385,7 +385,7 @@ const DMT5CompareModalContent = ({
         return isDesktop() ? 'xxxs' : 'xxxxs';
     };
 
-    const is_account_added = (item: TFooterButtonData) =>
+    const isAccountAdded = (item: TFooterButtonData) =>
         Object.entries(current_list).some(([key, value]) => {
             const [market, type] = item.action.split('_');
             return (
@@ -396,9 +396,9 @@ const DMT5CompareModalContent = ({
             );
         });
 
-    const should_show_pending_status = (item: TFooterButtonData) => {
+    const shouldShowPendingStatus = (item: TFooterButtonData) => {
         const type = item.action.split('_')[1];
-        if (is_account_added(item)) {
+        if (isAccountAdded(item)) {
             return false;
         } else if (type === 'svg') {
             return false;
@@ -559,7 +559,7 @@ const DMT5CompareModalContent = ({
                                 <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
                                 {getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
                                     <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
-                                        {should_show_pending_status(item) ? (
+                                        {shouldShowPendingStatus(item) ? (
                                             <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
                                                 <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
                                                     {localize('Pending verification')}
@@ -568,7 +568,7 @@ const DMT5CompareModalContent = ({
                                         ) : (
                                             <Button
                                                 className='cfd-real-compare-accounts__table-footer__button'
-                                                disabled={is_account_added(item)}
+                                                disabled={isAccountAdded(item)}
                                                 type='button'
                                                 primary_light
                                                 onClick={() => onButtonClick(item)}

@@ -12,8 +12,8 @@ const BlockUserRow = ({ row: advertiser }) => {
     return (
         <Table.Row
             className='block-user__row'
-            onFocus={e => {
-                if (general_store.is_block_user_modal_open) e.preventDefault();
+            onClick={e => {
+                if (general_store.is_block_user_modal_open) e.current.target.blur();
             }}
         >
             <Table.Cell>

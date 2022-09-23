@@ -1,9 +1,11 @@
 import { CFD_PLATFORMS } from '../platform';
+import { LandingCompany, GetAccountStatus, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-let CFD_text_translated;
+let CFD_text_translated: { [key: string]: () => void };
 
 // TODO: add swap_free to this file when ready
-const CFD_text = {
+
+const CFD_text: { [key: string]: string } = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
@@ -23,11 +25,23 @@ const CFD_text = {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
-export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }) => {
+type TPlatform = 'dxtrade' | 'mt5';
+type TMarketType = 'all' | 'financial' | 'synthetic' | 'gaming' | undefined;
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
+type TGetAccount = {
+    market_type: TMarketType;
+    sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+    platform: TPlatform;
+};
+
+type TGetCFDAccountKey = TGetAccount & {
+    shortcode?: TShortcode;
+};
+
+export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
     if (market_type === 'all') {
         return 'dxtrade';
     }
-
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {
@@ -70,8 +84,28 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
  * @param {string} type [synthetic, financial, financial_stp]
  * @return {string}
  */
-export const getAccountTypeFields = ({ category, type }) => {
-    const map_mode = {
+type TGetAccountTypeFields = {
+    category: 'real' | 'demo';
+    type: 'financial' | 'synthetic';
+};
+
+type TAccountType = {
+    account_type: string;
+    mt5_account_type?: string;
+};
+
+type TAccountTypes = {
+    synthetic: TAccountType;
+    financial: TAccountType;
+};
+
+type TMapMode = {
+    real: TAccountTypes;
+    demo: TAccountTypes;
+};
+
+export const getAccountTypeFields = ({ category, type }: TGetAccountTypeFields) => {
+    const map_mode: TMapMode = {
         real: {
             synthetic: {
                 account_type: 'gaming',
@@ -95,6 +129,11 @@ export const getAccountTypeFields = ({ category, type }) => {
     return map_mode[category][type];
 };
 
+type TGetCFDAccountDisplay = TGetCFDAccountKey & {
+    is_eu: boolean;
+    is_mt5_trade_modal?: boolean;
+};
+
 export const getCFDAccountDisplay = ({
     market_type,
     sub_account_type,
@@ -102,8 +141,8 @@ export const getCFDAccountDisplay = ({
     is_eu,
     shortcode,
     is_mt5_trade_modal,
-}) => {
-    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
+}: TGetCFDAccountDisplay) => {
+    let cfd_account_key: string | undefined = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
@@ -114,8 +153,12 @@ export const getCFDAccountDisplay = ({
     return CFD_text_translated[cfd_account_key]();
 };
 
-export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }) => {
-    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+type TGetCFDAccount = TGetAccount & {
+    is_eu?: boolean;
+};
+
+export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }: TGetCFDAccount) => {
+    let cfd_account_key: string | undefined = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
@@ -125,11 +168,12 @@ export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }
     return CFD_text[cfd_account_key];
 };
 
-export const setSharedCFDText = all_shared_CFD_text => {
+export const setSharedCFDText = (all_shared_CFD_text: { [key: string]: () => void }) => {
     CFD_text_translated = all_shared_CFD_text;
 };
 
-export const getAccountListKey = (account, platform, shortcode) => {
+type TAccount = DetailsOfEachMT5Loginid & { platform: string };
+export const getAccountListKey = (account: TAccount, platform: TPlatform, shortcode?: TShortcode) => {
     return `${account.platform || platform}.${account.account_type}.${getCFDAccountKey({
         market_type: account.market_type,
         sub_account_type: account.sub_account_type,
@@ -138,7 +182,7 @@ export const getAccountListKey = (account, platform, shortcode) => {
     })}@${platform === CFD_PLATFORMS.DXTRADE ? account.market_type : account.server}`;
 };
 
-export const getCFDPlatformLabel = platform => {
+export const getCFDPlatformLabel = (platform: TPlatform) => {
     switch (platform) {
         case CFD_PLATFORMS.MT5:
             return 'DMT5';
@@ -149,7 +193,13 @@ export const getCFDPlatformLabel = platform => {
     }
 };
 
-export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) => {
+type TIsLandingCompanyEnabled = {
+    landing_companies: LandingCompany;
+    platform: TPlatform;
+    type: TMarketType | 'financial_stp';
+};
+
+export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: TIsLandingCompanyEnabled) => {
     if (platform === CFD_PLATFORMS.MT5) {
         if (type === 'gaming') return !!landing_companies?.mt_gaming_company?.financial;
         if (type === 'financial') return !!landing_companies?.mt_financial_company?.financial;
@@ -161,9 +211,9 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) =
     return false;
 };
 
-export const getIdentityStatusInfo = account_status => {
-    const poa_status = account_status?.authentication?.document?.status;
-    const poi_status = account_status?.authentication?.identity?.status;
+export const getIdentityStatusInfo = (account_status: GetAccountStatus) => {
+    const poa_status = account_status?.authentication?.document?.status || '';
+    const poi_status = account_status?.authentication?.identity?.status || '';
 
     const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
     const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;

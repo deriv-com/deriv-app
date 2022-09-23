@@ -4,8 +4,21 @@ import { getInitialLanguage } from '@deriv/translations';
 import { initMoment } from '../date';
 import { routes } from '../routes';
 
+type TPlatform = {
+    icon_text: undefined;
+    is_hard_redirect: boolean;
+    platform_name: string;
+    route_to_path: string;
+    url: string;
+};
+
+type TPlatforms = {
+    p2p: TPlatform;
+    derivgo: TPlatform;
+};
+
 // TODO: This should be moved to PlatformContext
-export const platforms = {
+export const platforms: TPlatforms = {
     p2p: {
         icon_text: undefined,
         is_hard_redirect: true,

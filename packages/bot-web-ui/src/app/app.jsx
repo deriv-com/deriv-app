@@ -20,6 +20,7 @@ import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import './app.scss';
 import Dashboard from 'Components/dashboard';
+import BotBuilder from 'Components/dashboard/bot-builder';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
@@ -94,7 +95,7 @@ const App = ({ passthrough }) => {
             <div className={show_dashboard ? 'bot-dashboard' : 'bot'}>
                 <BotNotificationMessages />
                 <NetworkToastPopup />
-
+                <BotBuilder />
                 {show_dashboard ? (
                     <Dashboard />
                 ) : (

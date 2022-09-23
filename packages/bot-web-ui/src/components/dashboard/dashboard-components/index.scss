@@ -1,4 +1,7 @@
 .bot-dashboard {
+    position: relative;
+    height: calc(100vh - 9rem);
+    overflow: hidden;
     .toolbar__section {
         justify-content: end;
     }

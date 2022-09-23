@@ -1,6 +1,17 @@
 @import '../dashboard/dashboard-components/index.scss';
 
 .dashboard {
+    &__main {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background: #f2f3f4;
+        width: 100%;
+        height: calc(100vh - 90px);
+        padding: 1rem;
+    }
+
     &__container {
         position: relative;
     }
@@ -72,5 +83,16 @@
             position: fixed;
             right: 0;
         }
+    }
+}
+
+.bot-builder {
+    overflow: hidden;
+    position: absolute;
+    top: 6rem;
+    left: 1.1rem;
+    z-index: 0;
+    &--active {
+        z-index: 200;
     }
 }

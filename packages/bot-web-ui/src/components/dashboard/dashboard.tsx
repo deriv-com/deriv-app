@@ -5,7 +5,6 @@ import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
 import ReactJoyride from 'react-joyride';
 import { DBOT_ONBOARDING } from './joyride-config';
-import BotBuilder from './bot-builder';
 import classNames from 'classnames';
 import RunStrategy from '../toolbar/run-strategy';
 import { connect } from 'Stores/connect';
@@ -36,7 +35,8 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                         <DashboardComponents />
                     </Tab>
                     <Tab icon='IcBotbuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder'>
-                        <BotBuilder />
+                        {/* It should remain empty in order to fill
+                        blockly workspace later */}
                     </Tab>
                     <Tab
                         icon='IcQuickStrategyIcon'

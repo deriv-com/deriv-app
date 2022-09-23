@@ -11,27 +11,6 @@
     max-width: fit-content;
     margin: 0 auto;
 
-    &__dxtrade-download {
-        background: $color-black-7;
-        border-radius: $BORDER_RADIUS;
-        text-decoration: none;
-        display: grid;
-        grid-template-columns: 32px 1fr;
-        grid-gap: 0.8rem;
-        width: 12.7rem;
-        align-items: center;
-        height: 4rem;
-        border: 1px solid #a6a6a6;
-
-        &-text {
-            display: flex;
-            flex-direction: column;
-            padding: 0.4rem 0rem 0.4rem 0.2rem;
-        }
-        &--icon {
-            margin-left: 0.6rem;
-        }
-    }
     &--hint {
         @include typeface(--xsmall-left-normal-black, none);
     }
@@ -140,96 +119,124 @@
             }
         }
     }
-    &__download-center {
+
+    &__download-container {
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
-        padding-bottom: 5.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
 
-        &-options {
-            display: flex;
-            justify-content: center;
-
-            &--desktop {
-                display: block;
-                align-items: baseline;
-                flex-flow: column nowrap;
-
-                &-links {
-                    display: flex;
-                    flex-direction: column;
-                }
-                &-row {
-                    display: flex;
-                    align-items: baseline;
-                    justify-content: center;
-                    margin-bottom: 3.1rem;
-
-                    > svg:first-child {
-                        margin-bottom: 0.4rem;
-                        margin-right: 0.8rem;
-                    }
-                    a > svg {
-                        margin-top: 0.8rem;
-                        margin-right: 0.8rem;
-                    }
-                }
-                &-download {
-                    display: grid;
-                    grid-auto-flow: column;
-                    grid-gap: 0.8rem;
-                    justify-content: center;
-
-                    a {
-                        margin-top: 0.4rem;
-                    }
-                }
-            }
-            &--mobile {
-                align-items: center;
-                display: flex;
-                flex-flow: column nowrap;
-                margin-left: 4.7rem;
-
-                &-devices {
-                    margin-bottom: 1.6em;
-                    svg:first-child {
-                        margin-right: 0.8em;
-                    }
-                }
-                &-link:not(:first-child) {
-                    margin-left: 0.8rem;
-                }
-                @include mobile {
-                    margin-left: unset;
-                    margin-right: unset;
-                    &-links {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                }
-            }
+        @include mobile {
+            margin-bottom: 1.6rem;
         }
-        &--heading {
+
+        &--is-mt5 {
+            display: block;
+            border-top: unset;
+            padding-top: unset;
+        }
+
+        &-mobile-hint {
+            margin: 2.4rem 0;
+            display: block;
+        }
+
+        &-heading {
             @include typeface(--title-center-bold-black, none);
             color: var(--text-general);
             line-height: 1.5;
-            margin-left: 2.1rem;
-            margin-bottom: 4.2rem;
+            margin-bottom: 2.4rem;
             @include desktop {
                 margin-left: 0;
                 text-align: center;
             }
         }
-        &--hint {
-            margin-top: 1.6rem;
+
+        &-links {
+            $parent: &;
+
+            &--is-mt5 {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+
+                #{$parent}--desktop {
+                    margin-right: 6.4rem;
+                }
+
+                @include mobile {
+                    display: block;
+                }
+            }
+
+            &--desktop {
+                margin-bottom: 6.4rem;
+            }
+
+            &-icons {
+                text-align: center;
+                margin-bottom: 1.6rem;
+
+                svg {
+                    margin: 0 0.4rem;
+                    display: inline-block;
+                }
+            }
+
+            &-download-buttons {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+
+                & > a {
+                    display: inline-block;
+                    margin: 0.4rem;
+                }
+            }
         }
-        @include mobile {
-            margin-bottom: 1.6rem;
+
+        &-dxtrade-button {
+            background: $color-black-7;
+            border-radius: $BORDER_RADIUS;
+            text-decoration: none;
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            grid-gap: 0.8rem;
+            width: 12.7rem;
+            align-items: center;
+            height: 4rem;
+            border: 1px solid #a6a6a6;
+            margin: 0 auto;
+
+            &-text {
+                display: flex;
+                flex-direction: column;
+                padding: 0.4rem 0rem 0.4rem 0.2rem;
+            }
+            &-icon {
+                margin-left: 0.6rem;
+            }
         }
-    }
-    &__download-center--mt5 {
-        border-top: unset;
-        padding-top: unset;
+
+        &-qrcode {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid $color-grey-4;
+            border-radius: $BORDER_RADIUS;
+            padding: 2.4rem 2.4rem 0.8rem;
+            margin-left: 10rem;
+
+            &__hint {
+                @include typeface(--small-center-normal-black, none);
+                color: $color-black-1;
+                margin-top: 0.8rem;
+                width: 160px;
+            }
+        }
     }
     &__maintenance {
         @include typeface(--small-center-normal-black, none);
@@ -649,7 +656,6 @@
         &--value {
             @include typeface(--title-left-bold-black);
             color: var(--text-profit-success);
-            padding: 0.8rem;
         }
     }
 

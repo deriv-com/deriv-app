@@ -11,6 +11,7 @@ const QStrategyFooter = ({
     is_stop_button_visible,
     setFieldValue,
     submitForm,
+    setActiveTab,
 }: TQStrategyFooter) => (
     <div
         className={classNames('quick-strategy__form-footer', {
@@ -27,6 +28,7 @@ const QStrategyFooter = ({
                     secondary
                     large
                     onClick={() => {
+                        setActiveTab(0);
                         setFieldValue('button', 'edit');
                         submitForm();
                     }}
@@ -40,6 +42,7 @@ const QStrategyFooter = ({
                 primary
                 large
                 onClick={() => {
+                    setActiveTab(1);
                     setFieldValue('button', 'run');
                     submitForm();
                 }}

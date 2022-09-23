@@ -50,6 +50,7 @@ export type TQStrategyForm = {
     setCurrentFocus: TSetCurrentFocus;
     selected_type_strategy: TTypeStrategy;
     description: string;
+    setActiveTab: (active_tab: number) => void;
 };
 
 export type TQStrategyFields = {
@@ -81,6 +82,7 @@ export type TQStrategyFooter = {
     is_stop_button_visible: boolean;
     setFieldValue: TSetFieldValue;
     submitForm: FormikProps<TFormValues>['submitForm'];
+    setActiveTab: (active_tab: number) => void;
 };
 
 export type TDropdownLists = Record<TDropdownItems, TDropdowns>;

@@ -29,6 +29,7 @@ const QStrategyForm = ({
     setCurrentFocus,
     selected_type_strategy,
     description,
+    setActiveTab,
 }: TQStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -120,6 +121,7 @@ const QStrategyForm = ({
                             is_stop_button_visible={is_stop_button_visible}
                             setFieldValue={setFieldValue}
                             submitForm={submitForm}
+                            setActiveTab={setActiveTab}
                         />
                     </Form>
                 );

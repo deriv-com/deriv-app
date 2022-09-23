@@ -25,6 +25,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
         setCurrentFocus,
         selected_duration_unit,
         selected_type_strategy,
+        setActiveTab,
     } = props;
 
     const symbol_dropdown_options = React.useMemo(
@@ -71,6 +72,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
                 selected_duration_unit={selected_duration_unit}
                 selected_type_strategy={selected_type_strategy}
                 setCurrentFocus={setCurrentFocus}
+                setActiveTab={setActiveTab}
             />
         </>
     );

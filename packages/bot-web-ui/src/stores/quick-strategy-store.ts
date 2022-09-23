@@ -292,10 +292,9 @@ export default class QuickStrategyStore {
         };
 
         Object.keys(fields_to_update).forEach(key => {
-            const input_fields = alembert_unit || loss || oscar_unit || profit || martingale_size || stake;
             const value = fields_to_update[key as keyof typeof fields_to_update];
 
-            if (!isNaN(value as number) || input_fields) {
+            if (!isNaN(value as number)) {
                 modifyValueInputs(key, value as number);
             } else if (typeof value === 'string') {
                 modifyFieldDropdownValues(key, value);
@@ -303,25 +302,24 @@ export default class QuickStrategyStore {
         });
 
         const file_name = (strategies as TStrategies)?.[strategy_name as TKeysStrategies]?.label || localize('Unknown');
-        const { derivWorkspace: workspace } = Blockly;
 
-        load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
+        setTimeout(() => {
+            const { derivWorkspace: workspace } = Blockly;
 
-        if (button === 'run') {
-            workspace
-                .waitForBlockEvent({
-                    block_type: 'trade_definition',
-                    event_type: Blockly.Events.BLOCK_CREATE,
-                    timeout: 5000,
-                })
-                .then(() => {
-                    this.root_store.run_panel.onRunButtonClick();
-                });
-        }
+            load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
-        if (this.is_strategy_modal_open) {
-            this.toggleStrategyModal();
-        }
+            if (button === 'run') {
+                workspace
+                    .waitForBlockEvent({
+                        block_type: 'trade_definition',
+                        event_type: Blockly.Events.BLOCK_CREATE,
+                        timeout: 5000,
+                    })
+                    .then(() => {
+                        this.root_store.run_panel.onRunButtonClick();
+                    });
+            }
+        }, 3000);
     }
 
     @action.bound
@@ -570,5 +568,9 @@ export default class QuickStrategyStore {
             ) || {};
 
         return typeof list_obj !== 'string' ? list_obj?.text : '';
+    };
+
+    getQuickStrategyFields = (): void => {
+        return getSetting('quick_strategy');
     };
 }

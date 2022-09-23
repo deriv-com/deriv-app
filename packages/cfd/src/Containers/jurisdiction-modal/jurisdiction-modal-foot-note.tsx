@@ -27,11 +27,10 @@ const FooterNote = ({
         poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
-    const is_svg_type = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'svg';
-    const is_vanuatu_type = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'vanuatu';
-    const is_bvi_type = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'bvi';
-    const is_labuan_maltainvest_type =
-        jurisdiction_selected_shortcode && ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode);
+    const is_svg_type = jurisdiction_selected_shortcode === 'svg';
+    const is_vanuatu_type = jurisdiction_selected_shortcode === 'vanuatu';
+    const is_bvi_type = jurisdiction_selected_shortcode === 'bvi';
+    const is_labuan_maltainvest_type = ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode);
     if (is_svg_type)
         return (
             <Localize

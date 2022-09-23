@@ -182,7 +182,7 @@ const JurisdictionModal = ({
         }
     };
 
-    const buttonText = () => {
+    const getButtonText = () => {
         if (
             // need to resubmit both poi and poa
             (is_labuan_selected || is_maltainvest_selected) &&
@@ -234,7 +234,7 @@ const JurisdictionModal = ({
                         onSelectRealAccount();
                     }}
                 >
-                    {buttonText()}
+                    {getButtonText()}
                 </Button>
             </Modal.Footer>
         </React.Fragment>

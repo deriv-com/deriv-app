@@ -34,10 +34,10 @@ const VerificationStatusBanner = ({
 
     const getAccountTitle = () => account_type && (account_type === 'synthetic' ? 'Synthetics' : 'Financial');
 
-    const is_svg = type_of_card && type_of_card === 'svg';
-    const is_vanuatu = type_of_card && type_of_card === 'vanuatu';
-    const is_bvi = type_of_card && type_of_card === 'bvi';
-    const is_labuan_or_maltainvest = type_of_card && ['labuan', 'maltainvest'].includes(type_of_card);
+    const is_svg = type_of_card === 'svg';
+    const is_vanuatu = type_of_card === 'vanuatu';
+    const is_bvi = type_of_card === 'bvi';
+    const is_labuan_or_maltainvest = ['labuan', 'maltainvest'].includes(type_of_card);
 
     const getTypeTitle = () => {
         switch (type_of_card) {

@@ -5,7 +5,6 @@ import Text from '../text/text';
 import Icon from '../icon/icon';
 
 type TContentExpander = {
-    children: React.ReactNode;
     className?: string;
     has_fade_in?: boolean;
     is_arrow_inverted?: boolean;
@@ -32,7 +31,7 @@ const ContentExpander = ({
     wrapper_className,
     onToggle,
     measure,
-}: TContentExpander) => {
+}: React.PropsWithChildren<TContentExpander>) => {
     const [is_visible, toggleVisibility] = React.useState<boolean>(is_expanded);
 
     const onClick = React.useCallback(() => {

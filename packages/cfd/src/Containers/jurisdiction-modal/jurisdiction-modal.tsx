@@ -92,12 +92,11 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
           });
 
-    const is_svg_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'svg';
-    const is_bvi_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'bvi';
-    const is_vanuatu_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'vanuatu';
-    const is_labuan_selected = jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'labuan';
-    const is_maltainvest_selected =
-        jurisdiction_selected_shortcode && jurisdiction_selected_shortcode === 'maltainvest';
+    const is_svg_selected = jurisdiction_selected_shortcode === 'svg';
+    const is_bvi_selected = jurisdiction_selected_shortcode === 'bvi';
+    const is_vanuatu_selected = jurisdiction_selected_shortcode === 'vanuatu';
+    const is_labuan_selected = jurisdiction_selected_shortcode === 'labuan';
+    const is_maltainvest_selected = jurisdiction_selected_shortcode === 'maltainvest';
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {

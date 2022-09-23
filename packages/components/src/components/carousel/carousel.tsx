@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Swipeable } from 'react-swipeable';
-import Card from './carousel-card.jsx';
-import Nav from './carousel-nav.jsx';
+import Card from './carousel-card';
+import Nav from './carousel-nav';
 import Icon from '../icon';
 import Button from '../button/button.jsx';
 import { useInterval } from '../../hooks';

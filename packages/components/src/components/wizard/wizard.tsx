@@ -5,7 +5,7 @@ import Step from './wizard-step';
 type TWizard = {
     className?: string;
     initial_step: number;
-    onStepChange: (prop: { [key: string]: number }) => void;
+    onStepChange?: (prop: { [key: string]: number }) => void;
     nav: React.ReactNode;
     selected_step_ref: () => React.MutableRefObject<HTMLElement>;
 };

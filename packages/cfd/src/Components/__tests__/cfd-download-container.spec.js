@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CFDDashboardContainer from '../cfd-dashboard-container';
+import CFDDownloadContainer from '../cfd-download-container';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -10,7 +10,7 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-describe('CFDDashboardContainer', () => {
+describe('CFDDownloadContainer', () => {
     const mock_props = {
         platform: 'mt5',
         active_index: 0,
@@ -21,12 +21,12 @@ describe('CFDDashboardContainer', () => {
         },
     };
 
-    it('should render <CFDDashboardContainer /> correctly', () => {
-        render(<CFDDashboardContainer {...mock_props} />);
+    it('should render <CFDDownloadContainer /> correctly', () => {
+        render(<CFDDownloadContainer {...mock_props} />);
         expect(screen.getByTestId(/dt_cfd_dashboard_download_center_container/i)).toBeInTheDocument();
     });
     it('should render correct text according to the MT5 platform', () => {
-        render(<CFDDashboardContainer {...mock_props} />);
+        render(<CFDDownloadContainer {...mock_props} />);
         expect(
             screen.getByText(/run MT5 from your browser or download the MT5 app for your devices/i)
         ).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('CFDDashboardContainer', () => {
         ).toBeInTheDocument();
     });
     it('should show the proper icons for the MT5 platform ', () => {
-        render(<CFDDashboardContainer {...mock_props} />);
+        render(<CFDDownloadContainer {...mock_props} />);
         expect(screen.getByText(/IcMt5DeviceDesktop/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5DeviceLaptop/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationWindows/i)).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('CFDDashboardContainer', () => {
     });
 
     it('should download/redirect the correct file for MT5 platform', () => {
-        render(<CFDDashboardContainer {...mock_props} />);
+        render(<CFDDownloadContainer {...mock_props} />);
         expect(screen.getByText(/IcInstallationWindows/i).closest('a')).toHaveAttribute(
             'href',
             'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe'
@@ -77,27 +77,15 @@ describe('CFDDashboardContainer', () => {
     });
 
     it('should render the correct icons and text for the Deriv X platform', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' />);
-        expect(screen.getByText(/IcDxtradeDeviceDesktop/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeDeviceLaptop/i)).toBeInTheDocument();
+        render(<CFDDownloadContainer {...mock_props} platform='dxtrade' />);
         expect(screen.getByText(/IcBrandDxtrade/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeDeviceTablet/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeDevicePhone/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationApple/i)).toBeInTheDocument();
-        expect(screen.getByText(/Run deriv x on your browser or download the mobile app/i)).toBeInTheDocument();
         expect(screen.getByText(/web terminal/i)).toBeInTheDocument();
-    });
-    it('should render the correct icons if dark mode is on for DerivX', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' is_dark_mode_on='true' />);
-        expect(screen.getByText(/IcDxtradeDeviceDesktopLight/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeDeviceLaptopLight/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeDeviceTabletLight/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeDevicePhoneLight/i)).toBeInTheDocument();
     });
 
     it('should download/redirect the correct file for DerivX', () => {
-        render(<CFDDashboardContainer {...mock_props} platform='dxtrade' active_index={0} />);
+        render(<CFDDownloadContainer {...mock_props} platform='dxtrade' active_index={0} />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
         expect(screen.getByText(/IcInstallationGoogle/i).closest('a')).toHaveAttribute(
             'href',
@@ -109,7 +97,7 @@ describe('CFDDashboardContainer', () => {
         );
     });
     it('should render demo account dashboard and the demo link for derivx web terminal if active_index is 1 ', () => {
-        render(<CFDDashboardContainer {...mock_props} active_index={1} platform='dxtrade' />);
+        render(<CFDDownloadContainer {...mock_props} active_index={1} platform='dxtrade' />);
         expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx-demo.deriv.com');
     });
 });

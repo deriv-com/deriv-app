@@ -25,10 +25,12 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         financial_stp: 'IcMt5FinancialStpPlatform',
         cfd: 'IcMt5CfdPlatform',
     },
+    // TODO: Line 30, 31 and 32 should be removed after real released.
     dxtrade: {
         synthetic: 'IcDxtradeSyntheticPlatform',
         financial: 'IcDxtradeFinancialPlatform',
         cfd: 'IcMt5CfdPlatform',
+        all: 'IcDxtradeDerivxPlatform',
     },
 };
 
@@ -595,7 +597,7 @@ const CFDAccountCardComponent = ({
                             <div className='cfd-account-card__manage'>
                                 <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
                                     {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                                    {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
+                                    {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
                                 </Button>
                             </div>
                         )}

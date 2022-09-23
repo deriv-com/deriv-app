@@ -46,7 +46,7 @@ type TCFDDemoAccountDisplayProps = {
     toggleMT5TradeModal: () => void;
 };
 
-const CFDDemoAccountDisplay = ({
+const CFDMT5DemoAccountDisplay = ({
     is_eu,
     is_eu_country,
     has_maltainvest_account,
@@ -66,6 +66,10 @@ const CFDDemoAccountDisplay = ({
     toggleMT5TradeModal,
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+
+    const openAccountTransferList = (type: 'synthetic' | 'financial') => {
+        return Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.${type}`)) || '';
+    };
 
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
@@ -102,98 +106,80 @@ const CFDDemoAccountDisplay = ({
         return specifications[platform as keyof TSpecifications].real_financial_specs;
     }, [is_logged_in, is_eu, is_eu_country, residence, platform]);
 
-    return is_loading ? (
-        <div className='cfd-demo-accounts-display'>
-            <Loading />
-        </div>
-    ) : (
+    return (
         <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
-            {isSyntheticCardVisible('demo') && (
-                <CFDAccountCard
-                    title={localize('Synthetic')}
-                    type={{
-                        category: 'demo',
-                        type: 'synthetic',
-                        platform,
-                    }}
-                    is_disabled={has_cfd_account_error || standpoint.malta}
-                    is_logged_in={is_logged_in}
-                    existing_accounts_data={
-                        current_list[
-                            Object.keys(current_list).find((key: string) =>
-                                key.startsWith(`${platform}.demo.synthetic`)
-                            ) || ''
-                        ]
-                    }
-                    commission_message={localize('No commission')}
-                    onSelectAccount={() =>
-                        onSelectAccount({
-                            category: 'demo',
-                            type: 'synthetic',
-                            platform,
-                        })
-                    }
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(
-                            current_list[
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.synthetic`)
-                                ) || ''
-                            ],
-                            {
+            {is_loading ? (
+                <Loading />
+            ) : (
+                <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
+                    {isSyntheticCardVisible('demo') && (
+                        <CFDAccountCard
+                            title={localize('Synthetic')}
+                            type={{
                                 category: 'demo',
                                 type: 'synthetic',
+                                platform,
+                            }}
+                            is_disabled={has_cfd_account_error || standpoint.malta}
+                            is_logged_in={is_logged_in}
+                            existing_accounts_data={current_list[openAccountTransferList('synthetic')]}
+                            commission_message={localize('No commission')}
+                            onSelectAccount={() =>
+                                onSelectAccount({
+                                    category: 'demo',
+                                    type: 'synthetic',
+                                    platform,
+                                })
                             }
-                        )
-                    }
-                    platform={platform}
-                    descriptor={localize(
-                        'Trade CFDs on our synthetic indices that simulate real-world market movements.'
+                            onPasswordManager={openPasswordManager}
+                            onClickFund={() =>
+                                openAccountTransfer(current_list[openAccountTransferList('synthetic')], {
+                                    category: 'demo',
+                                    type: 'synthetic',
+                                })
+                            }
+                            platform={platform}
+                            descriptor={localize(
+                                'Trade CFDs on our synthetic indices that simulate real-world market movements.'
+                            )}
+                            specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
+                            has_banner
+                            toggleMT5TradeModal={toggleMT5TradeModal}
+                        />
                     )}
-                    specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
-                    has_banner
-                    toggleMT5TradeModal={toggleMT5TradeModal}
-                />
-            )}
 
-            {isFinancialCardVisible() && (
-                <CFDAccountCard
-                    title={is_eu_user ? localize('CFDs') : localize('Financial')}
-                    is_disabled={has_cfd_account_error}
-                    is_logged_in={is_logged_in}
-                    is_eu={is_eu_user}
-                    type={{
-                        category: 'demo',
-                        type: 'financial',
-                        platform,
-                    }}
-                    existing_accounts_data={financial_accounts_data()}
-                    commission_message={localize('No commission')}
-                    onSelectAccount={openCFDAccount}
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(
-                            current_list[
-                                Object.keys(current_list).find((key: string) =>
-                                    key.startsWith(`${platform}.demo.financial`)
-                                ) || ''
-                            ],
-                            {
+                    {isFinancialCardVisible() && (
+                        <CFDAccountCard
+                            title={is_eu_user ? localize('CFDs') : localize('Financial')}
+                            is_disabled={has_cfd_account_error}
+                            is_logged_in={is_logged_in}
+                            is_eu={is_eu_user}
+                            type={{
                                 category: 'demo',
                                 type: 'financial',
+                                platform,
+                            }}
+                            existing_accounts_data={financial_accounts_data()}
+                            commission_message={localize('No commission')}
+                            onSelectAccount={openCFDAccount}
+                            onPasswordManager={openPasswordManager}
+                            onClickFund={() =>
+                                openAccountTransfer(current_list[openAccountTransferList('financial')], {
+                                    category: 'demo',
+                                    type: 'financial',
+                                })
                             }
-                        )
-                    }
-                    platform={platform}
-                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
-                    specs={financial_specs}
-                    has_banner
-                    toggleMT5TradeModal={toggleMT5TradeModal}
-                />
+                            platform={platform}
+                            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
+                            specs={financial_specs}
+                            has_banner
+                            toggleMT5TradeModal={toggleMT5TradeModal}
+                        />
+                    )}
+                </div>
             )}
         </div>
     );
 };
 
-export { CFDDemoAccountDisplay };
+export default CFDMT5DemoAccountDisplay;

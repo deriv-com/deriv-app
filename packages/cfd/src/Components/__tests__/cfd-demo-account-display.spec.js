@@ -100,7 +100,7 @@ describe('<CFDDemoAccountDisplay />', () => {
 
     const checkAccountCardsRendering = tested_case => {
         const component_testid = 'dt_cfd_demo_accounts_display';
-        const first_account_card = 'Synthetic';
+        const first_account_card = 'Derived';
         const second_account_card = {
             eu: 'CFDs',
             non_eu: 'Financial',
@@ -125,7 +125,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         }
     };
 
-    it('should render Synthetic & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
+    it('should render Derived & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
         render(<CFDDemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -139,7 +139,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'demo', platform: 'mt5' });
     });
 
-    it('should render Synthetic & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Derived & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -167,7 +167,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
+    it('should render Derived & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
         render(<CFDDemoAccountDisplay {...props} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
@@ -189,7 +189,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         });
     });
 
-    it('should render Synthetic & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Derived & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);

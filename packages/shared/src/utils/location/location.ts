@@ -1,4 +1,19 @@
-export const getLocation = (location_list, value, type) => {
+type TType = {
+    text: string;
+    value: string;
+};
+
+type TLocationList = TType & {
+    identity: {
+        services: {
+            idv: object;
+            onfido: object;
+        };
+    };
+    phone_idd: string;
+};
+
+export const getLocation = (location_list: TLocationList[], value: string, type: keyof TType) => {
     const location_obj = location_list.find(
         location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
     );
@@ -41,4 +56,4 @@ const eu_countries = [
     'mt',
 ];
 // check if client is from EU
-export const isEuCountry = country => eu_countries.includes(country);
+export const isEuCountry = (country: string) => eu_countries.includes(country);

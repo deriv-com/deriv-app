@@ -525,7 +525,7 @@ const DMT5CompareModalContent = ({
                                 <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
                                 {!show_eu_related && synthetic_accounts_count > 0 && (
                                     <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                        {localize('Synthetic')}
+                                        {localize('Derived')}
                                     </Table.Head>
                                 )}
                                 {financial_accounts_count > 0 && (

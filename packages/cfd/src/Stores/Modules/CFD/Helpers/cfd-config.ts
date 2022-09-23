@@ -7,7 +7,7 @@ export const getDxCompanies = () => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('Synthetic'),
+        short_title: localize('Derived'),
     };
     const financial_config = {
         account_type: 'financial',
@@ -19,7 +19,7 @@ export const getDxCompanies = () => {
             synthetic: {
                 dxtrade_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Synthetic'),
+                title: localize('Demo Derived'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
@@ -33,7 +33,7 @@ export const getDxCompanies = () => {
             synthetic: {
                 dxtrade_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Synthetic'),
+                title: localize('Derived'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
@@ -50,7 +50,7 @@ export const getMtCompanies = (is_eu: boolean) => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('Synthetic'),
+        short_title: localize('Derived'),
     };
     const financial_config = {
         account_type: 'financial',
@@ -68,7 +68,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Synthetic'),
+                title: localize('Demo Derived'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
@@ -80,7 +80,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Synthetic SVG'),
+                title: localize('Demo Derived SVG'),
                 short_title: synthetic_config.short_title,
             },
 
@@ -101,19 +101,19 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Synthetic'),
+                title: localize('Derived'),
                 short_title: synthetic_config.short_title,
             },
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Synthetic SVG'),
+                title: localize('Derived SVG'),
                 short_title: synthetic_config.short_title,
             },
             synthetic_bvi: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Synthetic BVI'),
+                title: localize('Derived BVI'),
                 short_title: synthetic_config.short_title,
             },
             financial: {

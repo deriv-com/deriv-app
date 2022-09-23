@@ -23,7 +23,7 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
+import { getAccountTitle, getFormattedAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
 import { getExchangeRate } from 'Utils/ExchangeCurrencyRate/exchange_currency_rate';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
@@ -565,7 +565,7 @@ const AccountSwitcher = props => {
                                     <div key={account.title} className='acc-switcher__new-account'>
                                         <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {getFormattedAccountTitle(account.title)}
                                         </Text>
                                         <Button
                                             onClick={() => openMt5DemoAccount(account.type)}
@@ -623,7 +623,7 @@ const AccountSwitcher = props => {
                                 <div key={account.title} className='acc-switcher__new-account'>
                                     <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                     <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                        {account.title}
+                                        {getFormattedAccountTitle(account.title)}
                                     </Text>
                                     <Button
                                         onClick={() => openDXTradeDemoAccount(account.type)}
@@ -787,7 +787,7 @@ const AccountSwitcher = props => {
                                     >
                                         <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {getFormattedAccountTitle(account.title)}
                                         </Text>
                                         <Button
                                             onClick={() => openMt5RealAccount(account.type)}
@@ -858,7 +858,7 @@ const AccountSwitcher = props => {
                                     >
                                         <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {getFormattedAccountTitle(account.title)}
                                         </Text>
                                         <Button
                                             onClick={() => openDXTradeRealAccount(account.type)}

@@ -131,7 +131,7 @@ const JurisdictionCard = ({
     const getAccountTitle = () => {
         switch (account_type) {
             case 'synthetic':
-                return 'Synthetic';
+                return 'Derived';
             case 'financial':
                 return 'Financial';
             default:

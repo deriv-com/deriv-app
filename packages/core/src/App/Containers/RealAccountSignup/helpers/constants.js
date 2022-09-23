@@ -66,21 +66,6 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
 };
 
 /**
- * Return account title for the given account type
- * - Example:
- * getFormattedAccountTitle('Synthetic') => 'Derived'
- *
- * @param {string} account_type
- */
-export const getFormattedAccountTitle = account_type => {
-    if (account_type === localize('Synthetic')) {
-        return localize('Derived');
-    } 
-        return account_type;
-    
-};
-
-/**
  * @param {string} landing_company_shortcode
  * @param {boolean} is_fully_authenticated
  * @param {boolean} is_age_verified

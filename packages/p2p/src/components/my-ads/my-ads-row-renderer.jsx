@@ -97,7 +97,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             )}
                         >
                             <Icon
-                                icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                icon={`${is_advert_active && !general_store.is_barred ? 'IcArchive' : 'IcUnarchive'}`}
                                 custom_color={'var(--general-main-1)'}
                             />
                         </div>
@@ -127,13 +127,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             {enable_action_point ? (
                                 <div className='p2p-my-ads__table-status-warning'>
                                     <div style={{ marginRight: '0.8rem' }}>
-                                        <AdStatus is_active={!!is_advert_active} />
+                                        <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                                     </div>
 
                                     <Icon icon='IcAlertWarning' />
                                 </div>
                             ) : (
-                                <AdStatus is_active={!!is_advert_active} />
+                                <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                             )}
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
@@ -274,12 +274,12 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 <Table.Cell>
                     {enable_action_point ? (
                         <div className='p2p-my-ads__table-status-warning'>
-                            <AdStatus is_active={!!is_advert_active} />
+                            <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                             <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />
                         </div>
                     ) : (
                         <div className='p2p-my-ads__table-status'>
-                            <AdStatus is_active={!!is_advert_active} />
+                            <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                         </div>
                     )}
                 </Table.Cell>
@@ -296,11 +296,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     }
                                 )}
                                 message={localize('{{status}}', {
-                                    status: is_advert_active ? 'Deactivate' : 'Activate',
+                                    status: is_advert_active && !general_store.is_barred ? 'Deactivate' : 'Activate',
                                 })}
                             >
                                 <Icon
-                                    icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                    icon={`${
+                                        is_advert_active && !general_store.is_barred ? 'IcArchive' : 'IcUnarchive'
+                                    }`}
                                     color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
                                 />
                             </Popover>

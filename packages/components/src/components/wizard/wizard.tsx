@@ -14,7 +14,7 @@ const Wizard = ({
     children = [],
     className,
     initial_step = 1,
-    onStepChange = () => undefined,
+    onStepChange,
     nav = null,
     selected_step_ref,
 }: React.PropsWithChildren<TWizard>) => {
@@ -33,7 +33,7 @@ const Wizard = ({
 
     const onChangeStep = (stats: { [key: string]: number }) => {
         // User callback
-        onStepChange(stats);
+        if (typeof onStepChange === 'function') onStepChange(stats);
     };
 
     const isInvalidStep = (next: number) => next < 0 || next >= getTotalSteps();

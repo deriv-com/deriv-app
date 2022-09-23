@@ -1,4 +1,4 @@
-import Timeline from './timeline.jsx';
+import Timeline from './timeline';
 import './timeline.scss';
 
 export default Timeline;

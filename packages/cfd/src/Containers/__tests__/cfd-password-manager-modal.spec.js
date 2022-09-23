@@ -314,6 +314,6 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(screen.getByText(/investor password/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/investor password/i));
 
-        expect(await screen.findByText(/manage dmt5 real synthetic account password/i)).toBeInTheDocument();
+        expect(await screen.findByText(/manage dmt5 real derived account password/i)).toBeInTheDocument();
     });
 });

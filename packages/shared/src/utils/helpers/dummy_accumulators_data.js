@@ -24,6 +24,7 @@ const result = ''; // 'won' or 'lost'
 const profit_loss = +0.15;
 const profit_percentage = +1.5;
 const is_sold = 0; // 0 || 1
+const ticks_history_stats = [...new Array(33).fill(157), ...new Array(33).fill(403), ...new Array(33).fill(285), 291];
 // let first_time;
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
@@ -58,6 +59,13 @@ const longcode = `Win payout when every tick of your contract is within ± ${tic
 const stake = '10.00';
 const contract_type = 'ACCU'; // 'ACCU'
 const shortcode = 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'; // 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'
+
+export const dummy_break_out_history = [
+    ...new Array(33).fill(888),
+    ...new Array(33).fill(444),
+    ...new Array(33).fill(555),
+    111,
+];
 
 export const getDummyPOCResponseForACCU = time_now => {
     const dummy_current_time = Math.round(time_now / 1000); // 10 digits number
@@ -335,6 +343,7 @@ export const getDummyAllPositionsForACCU = time_now => {
 };
 export const getDummyProposalInfoForACCU = (growth_rate, response) => {
     return {
+        ticks_history_stats: response.proposal.ticks_history_stats,
         tick_size_barrier: response.proposal.tick_size_barrier,
         max_ticks_number: response.proposal.max_ticks_number,
         max_payout: response.proposal.max_payout,
@@ -415,6 +424,7 @@ export const getDummyProposalResponseForACCU = time_now => {
         },
         msg_type: 'proposal',
         proposal: {
+            ticks_history_stats,
             tick_size_barrier,
             max_ticks_number: 1000,
             max_payout: 20000,

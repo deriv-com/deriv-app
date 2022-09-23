@@ -23,6 +23,7 @@ import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/r
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
+import TicksHistoryStats from 'Modules/Contract/Components/TicksHistoryStats';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -56,6 +57,7 @@ const CollapsibleTradeParams = ({
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
+            {is_accumulator && <TicksHistoryStats />}
             <div className='trade-params__contract-type-container'>
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}

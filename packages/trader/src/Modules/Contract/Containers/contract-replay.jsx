@@ -266,7 +266,10 @@ const Chart = props => {
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
-            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
+            shouldFetchTickHistory={
+                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds' ||
+                props.is_accumulator_contract
+            }
             contractInfo={props.contract_info}
         >
             {props.markers_array.map(marker => (
@@ -289,6 +292,7 @@ Chart.propTypes = {
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     InfoBox: PropTypes.node,
+    is_accumulator_contract: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
@@ -340,6 +344,7 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         granularity: contract_config.granularity,
         scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
         settings,
+        is_accumulator_contract: contract_store.is_accumulator_contract,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,
         is_digit_contract: contract_store.is_digit_contract,

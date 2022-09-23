@@ -2,6 +2,7 @@ import { action, extendObservable, observable, toJS } from 'mobx';
 import {
     isEnded,
     isEqualObject,
+    isAccumulatorContract,
     isMultiplierContract,
     isDigitContract,
     getDigitInfo,
@@ -38,6 +39,7 @@ export default class ContractStore extends BaseStore {
     @observable.ref contract_config = {};
     @observable display_status = 'purchased';
     @observable is_ended = false;
+    @observable is_accumulator_contract = false;
     @observable is_digit_contract = false;
 
     // TODO: see how to handle errors.
@@ -79,6 +81,7 @@ export default class ContractStore extends BaseStore {
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
+        this.is_accumulator_contract = isAccumulatorContract(this.contract_info.contract_type);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {

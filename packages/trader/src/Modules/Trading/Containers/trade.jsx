@@ -293,6 +293,7 @@ const Chart = props => {
         refToAddTick,
         setChartStatus,
         settings,
+        show_accumulators_stats,
         show_digits_stats,
         symbol,
         wsForget,
@@ -302,8 +303,15 @@ const Chart = props => {
     } = props;
 
     const bottomWidgets = React.useCallback(
-        ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
-        []
+        ({ digits, tick }) => (
+            <ChartBottomWidgets
+                digits={digits}
+                tick={tick}
+                show_accumulators_stats={show_accumulators_stats}
+                is_trade_page
+            />
+        ),
+        [show_accumulators_stats]
     );
 
     const getMarketsOrder = active_symbols => {
@@ -334,7 +342,9 @@ const Chart = props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
-            bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
+            bottomWidgets={
+                (show_accumulators_stats || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets
+            }
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
@@ -401,6 +411,7 @@ Chart.propTypes = {
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
+    show_accumulators_stats: PropTypes.bool,
     symbol: PropTypes.string,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
@@ -432,6 +443,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
     extra_barriers: modules.trade.barriers_flattened,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,
+    show_accumulators_stats: modules.trade.show_accumulators_stats,
     symbol: modules.trade.symbol,
     exportLayout: modules.trade.exportLayout,
     setChartStatus: modules.trade.setChartStatus,

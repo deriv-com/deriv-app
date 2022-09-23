@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import Icon from '../icon/icon';
 import Text from '../text/text';
+import Icon from '../icon/icon';
 
 type TContentExpander = {
     children: React.ReactNode;

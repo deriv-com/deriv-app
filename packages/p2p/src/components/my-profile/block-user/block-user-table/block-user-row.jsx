@@ -8,9 +8,14 @@ import { localize } from 'Components/i18next';
 import '../block-user.scss';
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     return (
-        <Table.Row className='block-user__row'>
+        <Table.Row
+            className='block-user__row'
+            onFocus={e => {
+                if (general_store.is_block_user_modal_open) e.preventDefault();
+            }}
+        >
             <Table.Cell>
                 <div className='block-user__row-cell'>
                     <UserAvatar nickname={advertiser.name} size={32} text_size='s' />

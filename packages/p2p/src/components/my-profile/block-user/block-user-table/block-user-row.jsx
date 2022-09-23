@@ -6,12 +6,16 @@ import { Button, Table, Text } from '@deriv/components';
 import UserAvatar from 'Components/user/user-avatar';
 import { localize } from 'Components/i18next';
 import '../block-user.scss';
-import { isMobile } from '@deriv/shared';
+import classNames from 'classnames';
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     return (
-        <Table.Row className='block-user__row' has_hover={!isMobile()}>
+        <Table.Row
+            className={classNames('block-user__row', {
+                'block-user__row--unfocus': general_store.is_block_user_modal_open,
+            })}
+        >
             <Table.Cell>
                 <div className='block-user__row-cell'>
                     <UserAvatar nickname={advertiser.name} size={32} text_size='s' />

@@ -77,6 +77,11 @@
         &:hover {
             background-color: var(--general-hover);
         }
+        &--unfocus {
+            @include mobile {
+                background-color: inherit;
+            }
+        }
 
         &-button {
             display: flex;

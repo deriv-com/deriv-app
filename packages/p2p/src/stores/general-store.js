@@ -617,7 +617,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     updateAdvertiserInfo(response) {
         const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
-            response?.p2p_advertiser_info;
+            response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);

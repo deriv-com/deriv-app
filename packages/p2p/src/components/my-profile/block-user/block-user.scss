@@ -76,8 +76,7 @@
 
         &:hover {
             background-color: var(--general-hover);
-        }
-        &--unfocus:hover {
+
             @include mobile {
                 background-color: inherit;
             }

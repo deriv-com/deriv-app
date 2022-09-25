@@ -1,27 +1,34 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import classNames from 'classnames';
 import WalletIcon from 'Assets/svgs/wallet';
 
 import './static-platform-launcher.scss';
 
 type TPlatformLauncherProps = {
     app_icon: string;
-    app_title?: string;
     app_desc?: string;
+    is_grey?: boolean;
+    app_title?: string;
     has_applauncher_account?: boolean;
     is_item_blurry?: boolean;
 };
 
 const PlatformLauncher = ({
     app_icon,
-    app_title,
     app_desc,
-    has_applauncher_account,
+    is_grey,
+    app_title,
     is_item_blurry,
+    has_applauncher_account,
 }: TPlatformLauncherProps) => {
     return (
-        <div className='static-platform-launcher'>
+        <div
+            className={classNames('static-platform-launcher', {
+                'static-platform-launcher--grey': is_grey,
+            })}
+        >
             <div className='static-platform-launcher__container'>
                 <div
                     className={

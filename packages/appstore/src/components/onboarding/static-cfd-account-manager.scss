@@ -22,15 +22,31 @@
         margin-left: auto;
 
         &--animated {
-            animation: triggerAnimation infinite linear;
+            animation: triggerAnimation 3s linear infinite;
         }
 
         &-topup {
             margin-bottom: 0.5rem;
+
+            &--blurry {
+                opacity: 0.2;
+            }
+
+            &--animated {
+                animation: triggerAnimation 3s linear infinite;
+            }
         }
 
         &-trade {
             margin-bottom: 0.5rem;
+
+            &--blurry {
+                opacity: 0.2;
+            }
+
+            &--animated {
+                animation: triggerAnimation 3s linear infinite;
+            }
         }
     }
 }

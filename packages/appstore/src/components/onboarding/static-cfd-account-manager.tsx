@@ -5,6 +5,7 @@ import { Localize } from '@deriv/translations';
 import { TPlatform } from 'Types';
 
 import './static-cfd-account-manager.scss';
+import classNames from 'classnames';
 
 type TStaticCFDAccountManager = {
     type: string;
@@ -17,7 +18,11 @@ type TStaticCFDAccountManager = {
     derived_amount?: string;
     is_item_blurry?: boolean;
     is_text_blurry?: boolean;
+    is_topup_blurry?: boolean;
+    is_trade_blurry?: boolean;
     financial_amount?: string;
+    is_topup_animated?: boolean;
+    is_trade_animated?: boolean;
     is_button_animated?: boolean;
     platform: TPlatform | 'options';
 };
@@ -32,7 +37,11 @@ const StaticCFDAccountManager = ({
     description,
     is_item_blurry,
     derived_amount,
+    is_trade_blurry,
+    is_topup_blurry,
     financial_amount,
+    is_trade_animated,
+    is_topup_animated,
     is_button_animated,
 }: TStaticCFDAccountManager) => {
     return (
@@ -91,10 +100,22 @@ const StaticCFDAccountManager = ({
             <div className='static-cfd-account-manager__buttons'>
                 {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
                     <>
-                        <Button primary className='static-cfd-account-manager__buttons-topup'>
+                        <Button
+                            primary
+                            className={classNames('static-cfd-account-manager__buttons-topup', {
+                                'static-cfd-account-manager__buttons-topup--blurry': is_topup_blurry,
+                                'static-cfd-account-manager__buttons-topup--animated': is_topup_animated,
+                            })}
+                        >
                             <Localize i18n_default_text='Top-up' />
                         </Button>
-                        <Button secondary className='static-cfd-account-manager__buttons-trade'>
+                        <Button
+                            secondary
+                            className={classNames('static-cfd-account-manager__buttons-trade', {
+                                'static-cfd-account-manager__buttons-trade--blurry': is_trade_blurry,
+                                'static-cfd-account-manager__buttons-topup--animated': is_trade_animated,
+                            })}
+                        >
                             <Localize i18n_default_text='Trade' />
                         </Button>
                     </>

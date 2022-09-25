@@ -44,10 +44,13 @@ export const trading_hub_contents: TTradingHubContents = {
     step5: {
         component: (
             <StaticDashboard
+                is_grey
                 has_account
                 currency={'USD'}
                 derived_amount={'369'}
                 loginid={'20884385'}
+                is_trade_blurry
+                is_topup_animated
                 is_cfd_text_blurry
                 is_options_text_blurry
                 has_applauncher_account
@@ -60,10 +63,13 @@ export const trading_hub_contents: TTradingHubContents = {
     step6: {
         component: (
             <StaticDashboard
+                is_grey
                 has_account
                 currency={'USD'}
                 financial_amount={'512'}
                 loginid={'20884385'}
+                is_topup_blurry
+                is_trade_animated
                 is_cfd_text_blurry
                 is_options_text_blurry
                 has_applauncher_account

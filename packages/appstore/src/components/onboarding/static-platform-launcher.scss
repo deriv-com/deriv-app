@@ -1,4 +1,8 @@
 .static-platform-launcher {
+    &--grey {
+        background: var(--general-section-1);
+    }
+
     @include mobile {
         display: flex;
         flex-direction: row;

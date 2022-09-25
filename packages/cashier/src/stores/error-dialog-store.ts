@@ -8,33 +8,33 @@ export default class ErrorDialogStore {
     @observable should_not_show_title = false;
 
     @action.bound
-    setShouldShow(value) {
+    setShouldShow(value: boolean): void {
         this.should_show = value;
     }
 
     @action.bound
-    setErrorMessage(message) {
+    setErrorMessage(message: string): void {
         this.error_message = message;
         this.setShouldShow(true);
     }
 
     @action.bound
-    setConfirmButtonText(text) {
+    setConfirmButtonText(text: string): void {
         this.confirm_button_text = text;
     }
 
     @action.bound
-    setShouldNotShowTitle(value) {
+    setShouldNotShowTitle(value: boolean): void {
         this.should_not_show_title = value;
     }
 
     @action.bound
-    setHasNoCloseIcon(value) {
+    setHasNoCloseIcon(value: boolean): void {
         this.has_no_close_icon = value;
     }
 
     @action.bound
-    openReadMoreDialog(error_content, confirm_button_text) {
+    openReadMoreDialog(error_content: string, confirm_button_text: string): void {
         this.setErrorMessage(error_content);
         this.setConfirmButtonText(confirm_button_text);
         this.setHasNoCloseIcon(true);
@@ -42,7 +42,7 @@ export default class ErrorDialogStore {
     }
 
     @action.bound
-    reset() {
+    reset(): void {
         this.setConfirmButtonText('');
         this.setShouldNotShowTitle(false);
         this.setHasNoCloseIcon(false);

@@ -3,6 +3,7 @@ import { DesktopWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
 import StaticPlatformLauncher from './static-platform-launcher';
+import StaticAppLauncher from './static-applauncher';
 
 import './static-dashboard.scss';
 
@@ -19,6 +20,7 @@ type TStaticDashboard = {
     is_options_item_blurry?: boolean;
     is_options_text_blurry?: boolean;
     has_applauncher_account?: boolean;
+    has_platformlauncher_account?: boolean;
     is_platformlauncher_blurry?: boolean;
 };
 
@@ -35,6 +37,7 @@ const StaticDashboard = ({
     is_options_item_blurry,
     is_options_text_blurry,
     has_applauncher_account,
+    has_platformlauncher_account,
     is_platformlauncher_blurry,
 }: TStaticDashboard) => {
     const Divider = () => <div className='divider' />;
@@ -112,16 +115,25 @@ const StaticDashboard = ({
                         </Text>
                     </div>
                     <div className='static-dashboard-wrapper__body'>
-                        <StaticCFDAccountManager
-                            type='all'
-                            platform='options'
-                            appname='Options account'
-                            description='Get a real Options account, start trading and manage your funds.'
-                            currency={currency}
-                            has_account={has_account}
-                            is_item_blurry={is_options_item_blurry}
-                            is_button_animated={is_button_animated}
-                        />
+                        {!has_applauncher_account ? (
+                            <StaticCFDAccountManager
+                                type='all'
+                                platform='options'
+                                appname='Options account'
+                                description='Get a real Options account, start trading and manage your funds.'
+                                currency={currency}
+                                has_account={has_account}
+                                is_item_blurry={is_options_item_blurry}
+                                is_button_animated={is_button_animated}
+                            />
+                        ) : (
+                            <>
+                                <StaticAppLauncher icon_type={'USD'} />
+                                <StaticAppLauncher icon_type={'Bitcoin'} />
+                                <StaticAppLauncher icon_type={'Ethereum'} />
+                                <StaticAppLauncher icon_type={'Litecoin'} />
+                            </>
+                        )}
                     </div>
                     <Divider />
 

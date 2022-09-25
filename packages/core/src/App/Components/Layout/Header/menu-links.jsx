@@ -4,13 +4,12 @@ import { Text } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 
 const MenuItems = ({ item, hide_menu_item }) => {
-    const { id, link_to, onClick, href, text, image, logo, icon } = item;
+    const { id, link_to, href, text, image, logo, icon } = item;
     return hide_menu_item ? null : (
         <BinaryLink
             id={id}
-            key={id}
+            key={icon}
             to={link_to}
-            onClick={onClick}
             href={href}
             className='header__menu-link'
             active_class='header__menu-link--active'
@@ -35,7 +34,11 @@ const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
                 {items.map(item => {
                     return (
                         is_logged_in && (
-                            <MenuItems item={item} hide_menu_item={item.text() === 'Reports' && is_pre_appstore} />
+                            <MenuItems
+                                key={`${item.icon}${item.id}`}
+                                item={item}
+                                hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
+                            />
                         )
                     );
                 })}

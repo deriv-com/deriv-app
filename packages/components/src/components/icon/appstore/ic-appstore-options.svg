@@ -1,18 +1,1 @@
-<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_27042_115471)">
-<path d="M0.200012 9.9C0.200012 4.604 4.50401 0.300003 9.80001 0.300003H41.8C47.096 0.300003 51.4 4.604 51.4 9.9V41.9C51.4 47.196 47.096 51.5 41.8 51.5H9.80001C4.50401 51.5 0.200012 47.196 0.200012 41.9V9.9Z" fill="url(#paint0_linear_27042_115471)"/>
-<path d="M27.4 30.7C27.4 28.94 28.84 27.5 30.6 27.5H37C38.76 27.5 40.2 28.94 40.2 30.7V37.1C40.2 38.86 38.76 40.3 37 40.3H30.6C28.84 40.3 27.4 38.86 27.4 37.1V30.7Z" fill="#FF6444"/>
-<path d="M11.4 30.7C11.4 28.94 12.84 27.5 14.6 27.5H21C22.76 27.5 24.2 28.94 24.2 30.7V37.1C24.2 38.86 22.76 40.3 21 40.3H14.6C12.84 40.3 11.4 38.86 11.4 37.1V30.7Z" fill="#336F9A"/>
-<path d="M27.4 14.7C27.4 12.94 28.84 11.5 30.6 11.5H37C38.76 11.5 40.2 12.94 40.2 14.7V21.1C40.2 22.86 38.76 24.3 37 24.3H30.6C28.84 24.3 27.4 22.86 27.4 21.1V14.7Z" fill="#85ACB0"/>
-<path d="M11.4 14.7C11.4 12.94 12.84 11.5 14.6 11.5H21C22.76 11.5 24.2 12.94 24.2 14.7V21.1C24.2 22.86 22.76 24.3 21 24.3H14.6C12.84 24.3 11.4 22.86 11.4 21.1V14.7Z" fill="#FF444F"/>
-</g>
-<defs>
-<linearGradient id="paint0_linear_27042_115471" x1="25.8" y1="51.5" x2="25.8" y2="0.300003" gradientUnits="userSpaceOnUse">
-<stop/>
-<stop offset="1" stop-color="#58595B"/>
-</linearGradient>
-<clipPath id="clip0_27042_115471">
-<rect width="51.2" height="51.2" fill="white" transform="translate(0.200012 0.300003)"/>
-</clipPath>
-</defs>
-</svg>
+<svg width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#prefix__clip0_27113_74253)"><path d="M0 12C0 5.38 5.38 0 12 0h40c6.62 0 12 5.38 12 12v40c0 6.62-5.38 12-12 12H12C5.38 64 0 58.62 0 52V12z" fill="url(#prefix__paint0_linear_27113_74253)"/><path d="M34 38c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v8c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4v-8z" fill="#FF6444"/><path d="M14 38c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v8c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4v-8z" fill="#336F9A"/><path d="M34 18c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v8c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4v-8z" fill="#85ACB0"/><path d="M14 18c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v8c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4v-8z" fill="#FF444F"/></g><defs><linearGradient id="prefix__paint0_linear_27113_74253" x1="32" y1="64" x2="32" y2="0" gradientUnits="userSpaceOnUse"><stop/><stop offset="1" stop-color="#58595B"/></linearGradient><clipPath id="prefix__clip0_27113_74253"><path fill="#fff" d="M0 0h64v64H0z"/></clipPath></defs></svg>

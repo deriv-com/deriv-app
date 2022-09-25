@@ -7,12 +7,14 @@ export type TAccount = {
     balance?: string | number;
     currency?: string;
     disabled?: boolean;
+    error?: JSX.Element | string;
+    is_crypto?: boolean;
     is_dxtrade?: boolean;
     is_mt?: boolean;
     market_type?: string;
-    nativepicker_text: string;
+    nativepicker_text?: string;
     platform_icon?: string;
-    text: JSX.Element | string;
+    text?: JSX.Element | string;
     value?: string;
 };
 

@@ -35,7 +35,7 @@ beforeEach(() => {
             },
         },
     };
-    crypto_fiat_converter_store = new CryptoFiatConverterStore({ WS, root_store });
+    crypto_fiat_converter_store = new CryptoFiatConverterStore(WS, root_store);
 });
 
 describe('CryptoFiatConverterStore', () => {
@@ -125,8 +125,8 @@ describe('CryptoFiatConverterStore', () => {
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus
         ).toBeCalledTimes(1);
-        expect(crypto_fiat_converter_store.converter_from_amount).toEqual('');
-        expect(crypto_fiat_converter_store.converter_to_amount).toEqual('');
+        expect(crypto_fiat_converter_store.converter_from_amount).toEqual(0);
+        expect(crypto_fiat_converter_store.converter_to_amount).toEqual(0);
         expect(crypto_fiat_converter_store.converter_from_error).toEqual('');
         expect(crypto_fiat_converter_store.converter_to_error).toEqual('');
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalsy();
@@ -148,7 +148,7 @@ describe('CryptoFiatConverterStore', () => {
         crypto_fiat_converter_store.setConverterFromError(new Error('something went wrong'));
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
-        expect(crypto_fiat_converter_store.converter_to_amount).toEqual('');
+        expect(crypto_fiat_converter_store.converter_to_amount).toEqual(0);
         expect(crypto_fiat_converter_store.converter_to_error).toEqual('');
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalsy();
         expect(
@@ -159,7 +159,7 @@ describe('CryptoFiatConverterStore', () => {
     it('should set converter_to_amount with an amount when onChangeConverterFromAmount is called', async () => {
         await crypto_fiat_converter_store.onChangeConverterFromAmount({ target: { value: 3 } }, 'USD', 'AED');
 
-        expect(crypto_fiat_converter_store.converter_to_amount).toEqual('11.01');
+        expect(crypto_fiat_converter_store.converter_to_amount).toEqual(11.01);
         expect(crypto_fiat_converter_store.is_timer_visible).toBeTruthy();
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.account_transfer.setAccountTransferAmount
@@ -172,8 +172,8 @@ describe('CryptoFiatConverterStore', () => {
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus
         ).toBeCalledTimes(1);
-        expect(crypto_fiat_converter_store.converter_from_amount).toEqual('');
-        expect(crypto_fiat_converter_store.converter_to_amount).toEqual('');
+        expect(crypto_fiat_converter_store.converter_from_amount).toEqual(0);
+        expect(crypto_fiat_converter_store.converter_to_amount).toEqual(0);
         expect(crypto_fiat_converter_store.converter_from_error).toEqual('');
         expect(crypto_fiat_converter_store.converter_to_error).toEqual('');
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalsy();
@@ -189,7 +189,7 @@ describe('CryptoFiatConverterStore', () => {
         crypto_fiat_converter_store.setConverterToError(new Error('something went wrong'));
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
-        expect(crypto_fiat_converter_store.converter_from_amount).toEqual('');
+        expect(crypto_fiat_converter_store.converter_from_amount).toEqual(0);
         expect(crypto_fiat_converter_store.converter_from_error).toEqual('');
         expect(crypto_fiat_converter_store.is_timer_visible).toBeFalsy();
         expect(
@@ -200,7 +200,7 @@ describe('CryptoFiatConverterStore', () => {
     it('should set converter_from_amount with an amount when onChangeConverterToAmount is called', async () => {
         await crypto_fiat_converter_store.onChangeConverterToAmount({ target: { value: 3 } }, 'USD', 'AED');
 
-        expect(crypto_fiat_converter_store.converter_from_amount).toEqual('11.01');
+        expect(crypto_fiat_converter_store.converter_from_amount).toEqual(11.01);
         expect(crypto_fiat_converter_store.is_timer_visible).toBeTruthy();
         expect(
             crypto_fiat_converter_store.root_store.modules.cashier.account_transfer.setAccountTransferAmount

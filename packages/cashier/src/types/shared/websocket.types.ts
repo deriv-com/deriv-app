@@ -5,6 +5,11 @@ import {
     ExchangeRatesResponse,
 } from '@deriv/api-types';
 
+type TCashierPayments = {
+    provider: string;
+    transaction_type: string;
+};
+
 export type TServerError = {
     code: string;
     message: string;
@@ -12,14 +17,17 @@ export type TServerError = {
 };
 
 type TWebSocketCall = {
-    cashier: (
+    cashier?: (
         action: CashierInformationRequest['cashier'],
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse>;
+    cashierPayments?: ({ provider, transaction_type }: TCashierPayments) => Promise<any>;
 };
 
 export type TWebSocket = {
     authorized: TWebSocketCall;
-    send: (args: ExchangeRatesRequest) => Promise<ExchangeRatesResponse>;
-    wait: (value: string) => Promise<any>;
+    cancelCryptoTransaction?: (transaction_id: string) => Promise<any>;
+    send?: (args: ExchangeRatesRequest) => Promise<ExchangeRatesResponse>;
+    subscribeCashierPayments?: (response: any) => Promise<any>;
+    wait?: (value: string) => Promise<any>;
 };

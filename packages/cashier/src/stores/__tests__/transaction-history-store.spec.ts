@@ -1,8 +1,10 @@
 import TransactionHistoryStore from '../transaction-history-store';
+import type { TTransactionItem } from '../transaction-history-store';
+import { TWebSocket, TRootStore, DeepPartial } from '../../types';
 
 describe('TransactionHistoryStore', () => {
     let transaction_history_store;
-    const crypto_transactions = [
+    const crypto_transactions: Array<TTransactionItem> = [
         {
             address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
             address_url: 'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
@@ -16,13 +18,13 @@ describe('TransactionHistoryStore', () => {
             transaction_type: 'withdrawal',
         },
     ];
-    const root_store = {
+    const root_store: DeepPartial<TRootStore> = {
         client: {
             currency: 'BTC',
             switched: false,
         },
     };
-    const WS = {
+    const WS: TWebSocket = {
         authorized: {
             cashierPayments: () =>
                 Promise.resolve({
@@ -37,7 +39,7 @@ describe('TransactionHistoryStore', () => {
     };
 
     beforeEach(() => {
-        transaction_history_store = new TransactionHistoryStore({ WS, root_store });
+        transaction_history_store = new TransactionHistoryStore(WS, root_store);
     });
 
     it('should load crypto transactions properly', async () => {

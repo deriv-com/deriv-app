@@ -37,6 +37,7 @@ export type TClientStore = {
     loginid?: string;
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
+    switched: boolean;
     switchAccount: (value?: string) => void;
     verification_code: {
         payment_agent_withdraw: string;

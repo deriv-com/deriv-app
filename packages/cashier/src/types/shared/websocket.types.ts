@@ -29,5 +29,6 @@ export type TWebSocket = {
     cancelCryptoTransaction?: (transaction_id: string) => Promise<any>;
     send?: (args: ExchangeRatesRequest) => Promise<ExchangeRatesResponse>;
     subscribeCashierPayments?: (response: any) => Promise<any>;
+    verifyEmail?: (email: string, withdrawal_type: string) => Promise<any>;
     wait?: (value: string) => Promise<any>;
 };

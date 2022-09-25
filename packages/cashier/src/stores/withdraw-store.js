@@ -18,7 +18,7 @@ export default class WithdrawStore {
     @observable error = new ErrorStore();
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_withdraw_confirmed = false;
-    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
+    @observable verification = new VerificationStore(this.WS, this.root_store);
     @observable withdraw_amount = '';
     @observable max_withdraw_amount = 0;
     @observable crypto_config = {};

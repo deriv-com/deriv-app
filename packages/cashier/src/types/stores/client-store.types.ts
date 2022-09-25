@@ -17,6 +17,7 @@ export type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
+    email: string;
     getLimits: () => void;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
@@ -37,6 +38,7 @@ export type TClientStore = {
     loginid?: string;
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
+    setVerificationCode: (code: string, container: string) => void;
     switched: boolean;
     switchAccount: (value?: string) => void;
     verification_code: {

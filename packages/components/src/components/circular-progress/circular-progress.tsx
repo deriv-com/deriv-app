@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 type TCircularProgressProps = {
     className: string;

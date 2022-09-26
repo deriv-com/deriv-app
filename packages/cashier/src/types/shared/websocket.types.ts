@@ -27,6 +27,12 @@ type TServiceTokenRequest = {
 type TWebSocketCall = {
     send: (obj: any) => Promise<any>;
     wait: (value: string) => Promise<any>;
+    storage: {
+        getSettings: () => Promise<GetAccountSettingsResponse>;
+        mt5LoginList: () => {
+            mt5_login_list: Array<TMT5LoginAccount>;
+        };
+    };
     cashier: (
         action: CashierInformationRequest['cashier'],
         parameters: Omit<CashierInformationRequest, 'cashier'>
@@ -38,12 +44,6 @@ type TWebSocketCall = {
     cryptoWithdraw: (
         args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>
     ) => Promise<CashierInformationResponse>;
-    storage: {
-        getSettings: () => Promise<GetAccountSettingsResponse>;
-        mt5LoginList: () => {
-            mt5_login_list: Array<TMT5LoginAccount>;
-        };
-    };
     balanceAll: () => Promise<Balance>;
     mt5LoginList: () => {
         mt5_login_list: Array<TMT5LoginAccount>;
@@ -52,17 +52,22 @@ type TWebSocketCall = {
         trading_platform_accounts: Array<TMT5LoginAccount>;
     };
     transferBetweenAccounts: (
-        account_from: TransferBetweenAccountsRequest['account_from'],
-        account_to: TransferBetweenAccountsRequest['account_to'],
-        currency: TransferBetweenAccountsRequest['currency'],
-        amount: TransferBetweenAccountsRequest['amount']
+        account_from?: TransferBetweenAccountsRequest['account_from'],
+        account_to?: TransferBetweenAccountsRequest['account_to'],
+        currency?: TransferBetweenAccountsRequest['currency'],
+        amount?: TransferBetweenAccountsRequest['amount']
     ) => Promise<TransferBetweenAccountsResponse & { error: TServerError }>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
     serviceToken: (req: TServiceTokenRequest) => Promise<any>;
 };
 
-type TAuthorizedCalls = 'cashier' | 'getAccountStatus' | 'transferBetweenAccounts';
+type TAuthorizedCalls =
+    | 'cashier'
+    | 'getAccountStatus'
+    | 'transferBetweenAccounts'
+    | 'paymentAgentTransfer'
+    | 'transferBetweenAccounts';
 
 export type TWebSocket = {
-    authorized: Pick<TWebSocketCall, TAuthorizedCalls>;
+    authorized: Pick<TWebSocketCall, TAuthorizedCalls | 'storage'>;
 } & Omit<TWebSocketCall, TAuthorizedCalls>;

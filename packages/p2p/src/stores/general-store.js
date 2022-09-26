@@ -36,6 +36,7 @@ export default class GeneralStore extends BaseStore {
     @observable review_period;
     @observable should_show_real_name = false;
     @observable should_show_popup = false;
+    @observable user_blocked_count = 0;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
     @observable is_modal_open = false;
@@ -593,6 +594,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setUserBlockedCount(user_blocked_count) {
+        this.user_blocked_count = user_blocked_count;
+    }
+
+    @action.bound
     setUserBlockedUntil(user_blocked_until) {
         this.user_blocked_until = user_blocked_until;
     }
@@ -610,14 +616,17 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
+        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
+            response?.p2p_advertiser_info || {};
+
         if (!response.error) {
-            this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
-            this.setIsListed(!!p2p_advertiser_info.is_listed);
-            this.setNickname(p2p_advertiser_info.name);
-            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            this.setAdvertiserId(id);
+            this.setIsAdvertiser(!!is_approved);
+            this.setIsAdvertiserBlocked(!!is_blocked);
+            this.setIsListed(!!is_listed);
+            this.setNickname(name);
+            this.setUserBlockedUntil(blocked_until);
+            this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
             if (response.error.code === 'RestrictedCountry') {

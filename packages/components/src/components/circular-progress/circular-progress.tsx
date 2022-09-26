@@ -3,14 +3,14 @@ import React from 'react';
 import Icon from '../icon/icon';
 
 type TCircularProgressProps = {
-    className: string;
-    danger_limit: number;
-    is_clockwise: boolean;
-    progress: number;
-    radius: number;
-    stroke: number;
-    warning_limit: number;
-    icon: string;
+    className?: string;
+    danger_limit?: number;
+    is_clockwise?: boolean;
+    progress?: number;
+    radius?: number;
+    stroke?: number;
+    warning_limit?: number;
+    icon?: string;
 };
 
 const CircularProgress = ({

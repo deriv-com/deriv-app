@@ -114,7 +114,7 @@ const CFDMT5DemoAccountDisplay = ({
                 <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
                     {isSyntheticCardVisible('demo') && (
                         <CFDAccountCard
-                            title={localize('Synthetic')}
+                            title={localize('Derived')}
                             type={{
                                 category: 'demo',
                                 type: 'synthetic',

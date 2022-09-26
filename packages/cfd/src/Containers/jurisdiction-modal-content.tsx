@@ -423,7 +423,7 @@ const JurisdictionModalContent = ({
     };
 
     const ModalFootNote = () => {
-        const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
+        const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';
 
         return (
             <>

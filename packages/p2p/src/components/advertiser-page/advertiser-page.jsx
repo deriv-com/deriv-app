@@ -81,9 +81,10 @@ const AdvertiserPage = () => {
             <ErrorModal
                 error_message={general_store.block_unblock_user_error}
                 error_modal_title='Unable to block advertiser.'
+                has_close_icon={false}
                 is_error_modal_open={is_error_modal_open}
                 setIsErrorModalOpen={is_open => {
-                    if (is_open === false) buy_sell_store.hideAdvertiserPage();
+                    if (!is_open) buy_sell_store.hideAdvertiserPage();
                 }}
             />
             <BlockUserModal

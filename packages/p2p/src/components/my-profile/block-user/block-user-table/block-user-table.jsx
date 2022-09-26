@@ -5,8 +5,8 @@ import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import BlockUserRow from './block-user-row.jsx';
-import { TableError } from 'Components/table/table-error.jsx';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
+import BlockUserTableError from './block-user-table-error.jsx';
 
 const BlockUserTable = () => {
     const { general_store, my_profile_store } = useStores();
@@ -24,7 +24,7 @@ const BlockUserTable = () => {
     }
 
     if (general_store.block_unblock_user_error) {
-        return <TableError message={general_store.block_unblock_user_error} />;
+        return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
     }
 
     if (my_profile_store.search_term && my_profile_store.search_results.length === 0) {

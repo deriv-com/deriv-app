@@ -184,6 +184,7 @@ export const icons =
         'IcBell',
         'IcBlackWarning',
         'IcBlock',
+        'IcBlockedAdvertisersBarred',
         'IcBox',
         'IcButtonBack',
         'IcCalendarDatefrom',

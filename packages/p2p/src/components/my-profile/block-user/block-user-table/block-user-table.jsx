@@ -25,7 +25,6 @@ const BlockUserTable = () => {
 
     if (general_store.block_unblock_user_error) {
         return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
-        // return <TableError message={general_store.block_unblock_user_error} />;
     }
 
     if (my_profile_store.search_term && my_profile_store.search_results.length === 0) {

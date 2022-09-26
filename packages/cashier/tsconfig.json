@@ -14,7 +14,7 @@
         },
         "outDir": "./dist",
         "baseUrl": "./",
-        "experimentalDecorators": true,
+        "experimentalDecorators": true
     },
     "include": ["src", "globals.d.ts"]
 }

@@ -113,9 +113,15 @@
         }
         &--add-options {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
+            padding: 0px;
+            gap: 16px;
+            height: 62px;
+            background: #ffffff;
+            border: 2px dashed rgba(255, 68, 79, 0.16);
+            border-radius: 4px;
             @include mobile {
                 width: 4rem;
             }

@@ -8,9 +8,10 @@ import { Localize } from '@deriv/translations';
 export interface TAddOptionsProps extends HTMLAttributes<HTMLDivElement> {
     onClickHandler: () => void;
     class_names?: string;
+    numberofAccounts?: number;
 }
 
-const AddOptions = () => {
+const AddOptions = ({ numberofAccounts }) => {
     const getHeightWidthOfIcon = () => {
         return isMobile()
             ? {
@@ -29,23 +30,33 @@ const AddOptions = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <div className={classNames('add-options--desktop', class_names)} onClick={onClickHandler}>
-                    <div className='add-options--desktop_title'>
+                {numberofAccounts < 4 ? (
+                    <div className={classNames('add-options--desktop', class_names)} onClick={onClickHandler}>
+                        <div className='add-options--desktop_title'>
+                            <Icon
+                                icon='IcAppstoreAdd'
+                                width={getHeightWidthOfIcon().width}
+                                height={getHeightWidthOfIcon().height}
+                            />
+                            <Text type='paragraph-2' bold>
+                                <Localize i18n_default_text={'More Options accounts'} />
+                            </Text>
+                        </div>
+                        <div className='add-options--desktop_description'>
+                            <Text type='paragraph-2'>
+                                <Localize i18n_default_text={'Including cryptocurrencies'} />
+                            </Text>
+                        </div>
+                    </div>
+                ) : (
+                    <div className={classNames('add-options--mobile', class_names)} onClick={onClickHandler}>
                         <Icon
                             icon='IcAppstoreAdd'
                             width={getHeightWidthOfIcon().width}
                             height={getHeightWidthOfIcon().height}
                         />
-                        <Text type='paragraph-2' bold>
-                            <Localize i18n_default_text={'More Options accounts'} />
-                        </Text>
                     </div>
-                    <div className='add-options--desktop_description'>
-                        <Text type='paragraph-2'>
-                            <Localize i18n_default_text={'Including cryptocurrencies'} />
-                        </Text>
-                    </div>
-                </div>
+                )}
             </DesktopWrapper>
             <MobileWrapper>
                 <div className={classNames('add-options--mobile', class_names)} onClick={onClickHandler}>

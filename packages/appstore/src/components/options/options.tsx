@@ -219,7 +219,13 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                   )}
                         {client.getClientAccountType !== 'demo' && (
                             <div className='options-container__accounts-platform-container--add-options'>
-                                <AddOptions />
+                                <AddOptions
+                                    numberofAccounts={
+                                        getSortedAccountList(account_list, accounts).filter(
+                                            account => !account.is_virtual
+                                        ).length
+                                    }
+                                />
                             </div>
                         )}
                     </div>

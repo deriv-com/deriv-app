@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
@@ -22,3 +23,5 @@ ErrorModal.propTypes = {
     is_error_modal_open: PropTypes.bool,
     setIsErrorModalOpen: PropTypes.func,
 };
+
+export default observer(ErrorModal);

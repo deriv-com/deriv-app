@@ -14,7 +14,7 @@ const TradingHub = () => {
     return (
         <React.Fragment>
             {/* <AddOptionsAccount /> */}
-            <ToggleAccountType accountTypeChange={undefined} value={''} />
+            <ToggleAccountType accountTypeChange value={''} />
             <Joyride
                 run={is_tour_open}
                 continuous
@@ -49,8 +49,8 @@ const TradingHub = () => {
                                 {localize('Trading Hub tour')}
                             </Text>
                         ),
-                        content:
-                            'Need help moving around?\n We have a short turorial that might help. Hit Repeat Tour to begin',
+                        content: `Need help moving around?
+                             We have a short turorial that might help. Hit Repeat Tour to begin`,
                         target: '.trading-hub-header__tradinghub--onboarding--logo',
                         disableBeacon: true,
                     },

@@ -51,7 +51,7 @@ export const OSDetect = () => {
     }
     if (typeof navigator !== 'undefined' && navigator.platform) {
         return Object.keys(systems)
-            .map((os: string) => {
+            .map(os => {
                 if (systems[os as keyof typeof systems].some(platform => navigator.platform === platform)) {
                     return os;
                 }

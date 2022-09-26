@@ -13,6 +13,12 @@ export type TServerError = {
     details?: { [key: string]: string };
 };
 
+type TServiceTokenRequest = {
+    service_token: number;
+    service: string;
+    referrer: string;
+};
+
 type TWebSocketCall = {
     cashier: (
         action: CashierInformationRequest['cashier'],
@@ -34,6 +40,7 @@ export type TWebSocket = {
         mt5_login_list: Array<TMT5LoginAccount>;
     };
     send: (obj: any) => Promise<any>;
+    serviceToken: (req: TServiceTokenRequest) => Promise<any>;
     storage: {
         mt5LoginList: () => {
             mt5_login_list: Array<TMT5LoginAccount>;

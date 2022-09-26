@@ -189,7 +189,12 @@ const content: TModalContentProps[] = [
                 ],
             },
             financial_vanuatu: {
-                text: [localize('Forex'), localize('Commodities')],
+                text: [
+                    localize('Forex'),
+                    localize('Stock indices'),
+                    localize('Commodities'),
+                    localize('Cryptocurrencies'),
+                ],
             },
             financial_labuan: { text: [localize('Forex'), localize('Cryptocurrencies')] },
         },

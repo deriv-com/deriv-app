@@ -148,9 +148,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={localize(
-                        'Trade CFDs on our synthetic indices that simulate real-world market movements.'
-                    )}
+                    descriptor={localize('Trade CFDs on our synthetics, basket indices, and Derived FX.')}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
                     toggleMT5TradeModal={toggleMT5TradeModal}

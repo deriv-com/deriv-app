@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
+import '../../../../index.d';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -42,7 +43,7 @@ describe('<CashierOnboardingSideNote />', () => {
     it('should trigger onClick callbacks when the client clicks on "Manage your accounts" link', () => {
         const openRealAccountSignup = jest.fn();
         const setDepositTarget = jest.fn();
-        const { container } = render(
+        render(
             <CashierOnboardingSideNote
                 currency={'BTC'}
                 is_crypto
@@ -51,7 +52,7 @@ describe('<CashierOnboardingSideNote />', () => {
             />
         );
 
-        const link = container.querySelector('.cashier-onboarding-side-note__link');
+        const link = screen.getByTestId('dt_cashier_onboarding_side_note_link');
         fireEvent.click(link);
         expect(openRealAccountSignup).toHaveBeenCalledTimes(1);
         expect(setDepositTarget).toHaveBeenCalledTimes(1);

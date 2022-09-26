@@ -27,6 +27,7 @@ describe('<CashierOnboarding />', () => {
         has_set_currency: true,
         is_switching: false,
         is_landing_company_loaded: true,
+        accounts_list: [{}],
     });
 
     it('should show the proper messages when <CashierOnboarding /> is rendered with fiat account', () => {
@@ -84,13 +85,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his fiat account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }];
-        const { container } = render(<CashierOnboarding {...props} currency='USD' />);
+        render(<CashierOnboarding {...props} currency='USD' />);
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Deposit via the following payment methods:')
+            node.textContent?.includes('Deposit via the following payment methods:')
         );
-        fireEvent.click(deposit_bank_card_ewallet_detail_div);
+
+        if (deposit_bank_card_ewallet_detail_div) fireEvent.click(deposit_bank_card_ewallet_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.setIsDeposit).toHaveBeenCalledTimes(1);
@@ -99,15 +101,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his crypto account, not having the fiat account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: true }];
-        const { container } = render(
-            <CashierOnboarding {...props} currency='BTC' available_crypto_currencies={['BTC', 'ETH']} />
+        render(<CashierOnboarding {...props} currency='BTC' available_crypto_currencies={['BTC', 'ETH']} />);
+
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
+        const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
+            node.textContent?.includes('Deposit via the following payment methods:')
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
-        const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Deposit via the following payment methods:')
-        );
-        fireEvent.click(deposit_bank_card_ewallet_detail_div);
+        if (deposit_bank_card_ewallet_detail_div) fireEvent.click(deposit_bank_card_ewallet_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
@@ -116,15 +117,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his crypto account, having the fiat account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: true }, { is_crypto: false }];
-        const { container } = render(
-            <CashierOnboarding {...props} currency='BTC' available_crypto_currencies={['BTC', 'ETH']} />
+        render(<CashierOnboarding {...props} currency='BTC' available_crypto_currencies={['BTC', 'ETH']} />);
+
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
+        const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
+            node.textContent?.includes('Deposit via the following payment methods:')
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
-        const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Deposit via the following payment methods:')
-        );
-        fireEvent.click(deposit_bank_card_ewallet_detail_div);
+        if (deposit_bank_card_ewallet_detail_div) fireEvent.click(deposit_bank_card_ewallet_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.shouldNavigateAfterPrompt).toHaveBeenCalledTimes(1);
@@ -133,13 +133,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit cryptocurrencies" section from his fiat account, not having the crypto account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }];
-        const { container } = render(<CashierOnboarding {...props} currency='USD' />);
+        render(<CashierOnboarding {...props} currency='USD' />);
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_crypto_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('We accept the following cryptocurrencies:')
+            node.textContent?.includes('We accept the following cryptocurrencies:')
         );
-        fireEvent.click(deposit_crypto_detail_div);
+
+        if (deposit_crypto_detail_div) fireEvent.click(deposit_crypto_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
@@ -148,15 +149,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit cryptocurrencies" section from his crypto account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: true }];
-        const { container } = render(
-            <CashierOnboarding {...props} available_crypto_currencies={['BTC', 'ETH']} currency='BTC' />
+        render(<CashierOnboarding {...props} available_crypto_currencies={['BTC', 'ETH']} currency='BTC' />);
+
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
+        const deposit_crypto_detail_div = Array.from(node_list).find(node =>
+            node.textContent?.includes('We accept the following cryptocurrencies:')
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
-        const deposit_crypto_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('We accept the following cryptocurrencies:')
-        );
-        fireEvent.click(deposit_crypto_detail_div);
+        if (deposit_crypto_detail_div) fireEvent.click(deposit_crypto_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
@@ -166,13 +166,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Buy cryptocurrencies via fiat onramp" section from his fiat account, not having the crypto account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }];
-        const { container } = render(<CashierOnboarding {...props} currency='USD' />);
+        render(<CashierOnboarding {...props} currency='USD' />);
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const buy_crypto_onramp_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Choose any of these exchanges to buy cryptocurrencies:')
+            node.textContent?.includes('Choose any of these exchanges to buy cryptocurrencies:')
         );
-        fireEvent.click(buy_crypto_onramp_detail_div);
+
+        if (buy_crypto_onramp_detail_div) fireEvent.click(buy_crypto_onramp_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
@@ -181,15 +182,14 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Buy cryptocurrencies" section from his crypto account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: true }];
-        const { container } = render(
-            <CashierOnboarding {...props} available_crypto_currencies={['BTC', 'ETH']} currency='BTC' />
+        render(<CashierOnboarding {...props} available_crypto_currencies={['BTC', 'ETH']} currency='BTC' />);
+
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
+        const buy_crypto_onramp_detail_div = Array.from(node_list).find(node =>
+            node.textContent?.includes('Choose any of these exchanges to buy cryptocurrencies:')
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
-        const buy_crypto_onramp_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Choose any of these exchanges to buy cryptocurrencies:')
-        );
-        fireEvent.click(buy_crypto_onramp_detail_div);
+        if (buy_crypto_onramp_detail_div) fireEvent.click(buy_crypto_onramp_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
@@ -199,17 +199,16 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit via payment agents" section', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
-        const { container } = render(
-            <CashierOnboarding {...props} currency='USD' is_payment_agent_visible_in_onboarding />
-        );
+        render(<CashierOnboarding {...props} currency='USD' is_payment_agent_visible_in_onboarding />);
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_via_pa_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via an authorised, independent payment agent in your country.'
             )
         );
-        fireEvent.click(deposit_via_pa_detail_div);
+
+        if (deposit_via_pa_detail_div) fireEvent.click(deposit_via_pa_detail_div);
 
         expect(props.setShouldShowAllAvailableCurrencies).toHaveBeenCalledTimes(1);
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
@@ -220,19 +219,20 @@ describe('<CashierOnboarding />', () => {
         const props = mockProps();
         const history = createBrowserHistory();
         props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
-        const { container } = render(
+        render(
             <Router history={history}>
                 <CashierOnboarding {...props} currency='USD' show_p2p_in_cashier_onboarding />
             </Router>
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
-        fireEvent.click(deposit_with_dp2p_detail_div);
+
+        if (deposit_with_dp2p_detail_div) fireEvent.click(deposit_with_dp2p_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).toBe(routes.cashier_p2p);
@@ -241,7 +241,7 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his crypto account, already having the fiat account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
-        const { container } = render(
+        render(
             <CashierOnboarding
                 {...props}
                 available_crypto_currencies={['BTC', 'ETH']}
@@ -250,13 +250,14 @@ describe('<CashierOnboarding />', () => {
             />
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
-        fireEvent.click(deposit_with_dp2p_detail_div);
+
+        if (deposit_with_dp2p_detail_div) fireEvent.click(deposit_with_dp2p_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.shouldNavigateAfterPrompt).toHaveBeenCalledTimes(1);
@@ -265,7 +266,7 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his crypto account, not having the fiat account', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: true }];
-        const { container } = render(
+        render(
             <CashierOnboarding
                 {...props}
                 available_crypto_currencies={['BTC', 'ETH']}
@@ -274,13 +275,14 @@ describe('<CashierOnboarding />', () => {
             />
         );
 
-        const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
+        const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
-        fireEvent.click(deposit_with_dp2p_detail_div);
+
+        if (deposit_with_dp2p_detail_div) fireEvent.click(deposit_with_dp2p_detail_div);
 
         expect(props.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(props.openRealAccountSignup).toHaveBeenCalledTimes(1);
@@ -298,8 +300,8 @@ describe('<CashierOnboarding />', () => {
         const props = mockProps();
         props.accounts_list = [{ is_crypto: false }];
         window.open = jest.fn();
-        const { container } = render(<CashierOnboarding {...props} is_mobile />);
-        const link = container.querySelector('.cashier-onboarding-header-learn-more');
+        render(<CashierOnboarding {...props} is_mobile />);
+        const link = screen.getByTestId('dt_cashier_onboarding_header_learn_more');
         fireEvent.click(link);
 
         expect(window.open).toHaveBeenCalledTimes(1);

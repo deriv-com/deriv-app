@@ -38,15 +38,15 @@ describe('<CashierOnboardingDetails />', () => {
     });
 
     it('should show contain the correct className, when detail_contents has icons', () => {
-        const { container } = render(<CashierOnboardingDetails {...props} />);
+        render(<CashierOnboardingDetails {...props} />);
 
-        expect(container.querySelector('.cashier-onboarding-detail__array')).not.toBe(null);
+        expect(screen.getByTestId('dt_cashier_onboarding_detail_array')).toBeInTheDocument();
     });
 
     it('should trigger onClick callback, when the user clicks on the block with details', () => {
-        const { container } = render(<CashierOnboardingDetails {...props} />);
+        render(<CashierOnboardingDetails {...props} />);
 
-        const details_block = container.querySelector('.cashier-onboarding-detail__div');
+        const details_block = screen.getByTestId('dt_cashier_onboarding_detail_div');
         fireEvent.click(details_block);
 
         expect(props.detail_click).toHaveBeenCalledTimes(1);

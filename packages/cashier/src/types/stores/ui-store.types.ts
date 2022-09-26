@@ -6,7 +6,10 @@ export type TUiStore = {
     notification_messages_ui: JSX.Element;
     disableApp: () => void;
     enableApp: () => void;
+    openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
+    shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
+    toggleSetCurrencyModal: () => void;
 };

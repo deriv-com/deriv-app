@@ -27,8 +27,10 @@ export type TClientStore = {
         };
     };
     account_status: GetAccountStatus;
+    available_crypto_currencies: string[];
     active_accounts: Array<TActiveAccounts>;
     balance?: string;
+    can_change_fiat_currency: boolean;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -41,6 +43,7 @@ export type TClientStore = {
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
+    is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_switching: boolean;

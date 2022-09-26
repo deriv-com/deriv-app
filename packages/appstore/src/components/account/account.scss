@@ -7,7 +7,6 @@
     position: relative;
     width: 24rem;
     height: 7.2rem;
-    background: $color-grey-2;
     border-radius: 0.6rem 0.6rem 0 0;
     @include mobile {
         padding: 0.8rem 0.8rem 0.8rem 0rem;
@@ -90,7 +89,7 @@
             }
         }
     }
-    &--account-reset-button {
+    &--account-reset-button-wrapper {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -104,6 +103,9 @@
         top: 0.8rem;
         border: 0.1rem solid $color-grey-1;
         border-radius: 0.4rem;
+        button {
+            border: none !important;
+        }
         @include mobile {
             top: 1.5rem;
             border: 0.1rem solid $color-grey-1;
@@ -122,4 +124,7 @@
             color: $color-black-1;
         }
     }
+}
+.account__container-active {
+    background: $color-grey-2;
 }

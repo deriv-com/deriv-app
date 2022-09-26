@@ -11,13 +11,30 @@ import {
     isBot,
     formatMoney,
 } from '@deriv/shared';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-type TOptionsAccountprops = {
+interface Icountry_standpoint {
+    is_united_kingdom: string;
+    is_isle_of_man: string;
+}
+
+interface Igeolocation {
+    region: any;
+    sequence: number;
+}
+interface Iserver_info {
+    geolocation: Igeolocation;
+}
+interface Iserver {
+    server_info: Iserver_info;
+}
+
+type TOptionsAccountprops = RouteComponentProps & {
     currency_icon: string | undefined;
     // account_title?: string;
-    loginid_text?: string | number;
+    loginid_text: string;
     balance?: string;
     account_button?: string;
     currency?: string;
@@ -27,10 +44,10 @@ type TOptionsAccountprops = {
     is_disabled?: boolean;
     is_virtual?: boolean;
     title?: string;
-    country_standpoint?: string;
+    country_standpoint: Icountry_standpoint;
     is_eu?: string;
     market_type?: string;
-    server?: string;
+    server?: Iserver;
     sub_account_type?: string;
     has_error?: string;
     platform?: string;
@@ -38,6 +55,29 @@ type TOptionsAccountprops = {
     shortcode?: string;
     should_show_server_name?: string;
     onClickResetVirtualBalance: () => void;
+    selected_loginid?: string;
+    redirectAccount: () => void;
+    activeAccount?: string;
+    onClickDeposit?: () => void;
+};
+
+type TCurrentDisplay = {
+    country_standpoint: Icountry_standpoint;
+    currency?: string;
+    loginid: string;
+    is_virtual?: boolean;
+};
+
+type TAccountDisplay = {
+    is_eu?: string;
+    market_type?: string;
+    server?: Iserver;
+    sub_account_type?: string;
+    has_error?: string;
+    platform?: string;
+    is_dark_mode_on?: string;
+    shortcode?: string;
+    should_show_server_name?: string;
 };
 
 const OptionsAccount = ({
@@ -57,19 +97,29 @@ const OptionsAccount = ({
     server,
     sub_account_type,
     has_error,
+    history,
     platform,
     is_dark_mode_on,
     shortcode,
     should_show_server_name,
     onClickResetVirtualBalance,
+    selected_loginid,
+    redirectAccount,
+    activeAccount,
+    onClickDeposit,
 }: TOptionsAccountprops) => {
-    const history = useHistory();
-    const onClickDeposit = () => {
-        history.push(routes.cashier_deposit);
-    };
+    //const history = useHistory();
+    // const onClickDeposit = () => {
+    //     history.push(routes.cashier_deposit);
+    // };
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
-        <div className='account__container'>
+        <div
+            className={`account__container ${
+                activeAccount === loginid_text ? 'account__container-active' : 'account__container-disabled'
+            }`}
+            onClick={redirectAccount}
+        >
             <div className='account__container--icon'>
                 <Icon
                     icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
@@ -111,7 +161,7 @@ const OptionsAccount = ({
                     {getCurrencyDisplayCode(currency)}
                 </Text>
             </div>
-            <div className='account__container--account-reset-button'>
+            <div className='account__container--account-reset-button-wrapper'>
                 {/* <Text className='account__container--account-reset-button--label' onClick={onClickDeposit}>
                     <Localize i18n_default_text={account_button} />
                 </Text> */}
@@ -126,7 +176,7 @@ const OptionsAccount = ({
                 {has_reset_balance ? (
                     <Button
                         is_disabled={is_disabled}
-                        onClick={e => {
+                        onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
                             e.stopPropagation();
                             onClickResetVirtualBalance();
                         }}
@@ -139,10 +189,7 @@ const OptionsAccount = ({
                 ) : (
                     <Button
                         is_disabled={is_disabled}
-                        onClick={e => {
-                            e.stopPropagation();
-                            onClickResetVirtualBalance();
-                        }}
+                        onClick={onClickDeposit}
                         className='acc-switcher__reset-account-btn'
                         secondary
                         small
@@ -162,7 +209,7 @@ const OptionsAccount = ({
 
 export default OptionsAccount;
 
-const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) => {
+const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }: TCurrentDisplay) => {
     const user_is_from_this_country_list = Object.values(country_standpoint).includes(true);
     const account_type = loginid.replace(/\d/g, '');
 
@@ -203,19 +250,24 @@ const AccountDisplay = ({
     is_eu,
     shortcode,
     should_show_server_name,
-}) => {
+}: TAccountDisplay) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
-    const getServerName = React.useCallback(account => {
-        if (account) {
-            const server_region = account.server_info?.geolocation?.region;
-            if (server_region) {
-                return `${server_region} ${
-                    account?.server_info?.geolocation?.sequence === 1 ? '' : account?.server_info?.geolocation?.sequence
-                }`;
+    const getServerName = React.useCallback(
+        (account: { server_info: { geolocation: { region: any; sequence: number } } }) => {
+            if (account) {
+                const server_region = account.server_info?.geolocation?.region;
+                if (server_region) {
+                    return `${server_region} ${
+                        account?.server_info?.geolocation?.sequence === 1
+                            ? ''
+                            : account?.server_info?.geolocation?.sequence
+                    }`;
+                }
             }
-        }
-        return '';
-    }, []);
+            return '';
+        },
+        []
+    );
     if (has_error)
         return (
             <div>

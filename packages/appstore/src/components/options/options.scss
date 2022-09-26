@@ -96,6 +96,8 @@
             align-items: flex-start;
             width: 115.2rem;
             height: 7.2rem;
+            //max-width: 105rem;
+            //overflow-x: auto;
             @include mobile {
                 display: flex;
                 flex-direction: row;

@@ -7,7 +7,7 @@ type Taccount_props = {
     b_is_crypto?: boolean;
     a_is_fiat?: boolean;
     b_is_fiat?: boolean;
-    loginid: number;
+    loginid: string;
     is_virtual?: boolean;
     icon?: string;
     is_disabled?: boolean;
@@ -19,8 +19,8 @@ export const getSortedAccountList = (account_list: Taccount_props, accounts: Tac
     // sort accounts as follows:
     // top is fiat, then crypto (each alphabetically by currency), then demo
     return [...account_list].sort((a, b) => {
-        const a_currency = accounts[a.loginid].currency;
-        const b_currency = accounts[b.loginid].currency;
+        const a_currency = accounts[a.loginid as any].currency;
+        const b_currency = accounts[b.loginid as any].currency;
         const a_is_crypto = isCryptocurrency(a_currency);
         const b_is_crypto = isCryptocurrency(b_currency);
         const a_is_fiat = !a_is_crypto;

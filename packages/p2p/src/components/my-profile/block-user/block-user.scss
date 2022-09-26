@@ -53,6 +53,24 @@
             flex-direction: column;
         }
 
+        &--error {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+
+            &-icon {
+                margin-top: 2.2rem;
+            }
+
+            &-text {
+                margin: 3rem 11rem;
+
+                @include mobile {
+                    margin: 3rem 1rem;
+                }
+            }
+        }
+
         &-header {
             display: grid;
             grid-template-columns: 1fr;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import PropTypes from 'prop-types';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
@@ -14,7 +15,7 @@ const BlockUserTableError = ({ error_message }) => {
                 <div className='block-user__table--error'>
                     <Icon
                         className='block-user__table--error-icon'
-                        icon='IcEmptyBlockedAdvertisers'
+                        icon='IcBlockedAdvertisersBarred'
                         height={128}
                         width={128}
                     />
@@ -38,7 +39,7 @@ const BlockUserTableError = ({ error_message }) => {
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
                     <Icon
-                        icon='IcEmptyBlockedAdvertisers'
+                        icon='IcBlockedAdvertisersBarred'
                         className='block-user__table--error-icon'
                         height={128}
                         width={128}
@@ -56,6 +57,10 @@ const BlockUserTableError = ({ error_message }) => {
             </MobileWrapper>
         </React.Fragment>
     );
+};
+
+BlockUserTableError.propTypes = {
+    error_message: PropTypes.string,
 };
 
 export default observer(BlockUserTableError);

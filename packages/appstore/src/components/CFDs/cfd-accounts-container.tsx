@@ -5,7 +5,7 @@ import CFDRealAccounts from './cfd-real-accounts';
 import { isLandingCompanyEnabled, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, Text, StaticUrl } from '@deriv/components';
-import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType } from 'Types';
+import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType, TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
 
 type TCFDAccountsProps = {
@@ -13,7 +13,7 @@ type TCFDAccountsProps = {
 };
 
 const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
-    const { client, cfd_account } = useStores();
+    const { client, cfd_account }: TRootStore = useStores();
     const {
         is_eu,
         is_eu_country,
@@ -25,14 +25,10 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         mt5_disabled_signup_types,
         dxtrade_disabled_signup_types,
         dxtrade_accounts_list_error,
-        is_virtual,
-        isAccountOfTypeDisabled,
         has_active_real_account,
-        standpoint,
-        residence,
-        upgradeable_landing_companies,
         trading_platform_available_accounts,
     } = client;
+
     const { current_list } = cfd_account;
 
     const hasAccount = (platform: TPlatform, landing_company_short?: string) =>

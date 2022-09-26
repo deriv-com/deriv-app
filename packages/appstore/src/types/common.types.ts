@@ -10,7 +10,7 @@ export type RequiredAndNotNull<T> = {
 
 export type TAccountCategory = 'real' | 'demo';
 export type TPlatform = 'dxtrade' | 'mt5';
-export type TMarketType = 'financial' | 'synthetic';
+export type TMarketType = 'financial' | 'synthetic' | 'all';
 export type TVisibilityChecker = (platform: TPlatform) => boolean;
 
 export type TMissingRealAccount = {
@@ -75,4 +75,13 @@ export type TCFDAccountsProps = {
     current_list: Record<string, TDetailsOfEachMT5Loginid>;
     available_accounts: Array<TTradingPlatformAvailableAccount>;
     has_real_account?: boolean;
+};
+
+export type TStaticAccountProps = {
+    name: 'Derived' | 'Financial' | 'Deriv X';
+    description: string;
+    is_visible: boolean;
+    disabled: boolean;
+    platform: TPlatform;
+    type: TMarketType;
 };

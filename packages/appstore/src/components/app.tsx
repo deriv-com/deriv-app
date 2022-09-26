@@ -4,12 +4,12 @@ import { observer } from 'mobx-react-lite';
 import { setWebsocket } from '@deriv/shared';
 import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
+import { TRootStore } from 'Types';
 import './app.scss';
-import { CoreStoreTypes } from 'Stores/root-store';
 
 type TAppProps = {
     passthrough: {
-        root_store: CoreStoreTypes;
+        root_store: TRootStore;
         WS: Record<string, any>;
     };
 };
@@ -18,7 +18,7 @@ const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
     const { root_store, WS } = passthrough;
     initContext(root_store, WS);
     setWebsocket(WS);
-    const { ui } = useStores();
+    const { ui }: TRootStore = useStores();
 
     return (
         <main

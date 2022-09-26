@@ -2,10 +2,10 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import AccountManager from '../account-manager';
-import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid } from 'Types';
+import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps } from 'Types';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
-    const available_demo_accounts = [
+    const available_demo_accounts: Array<TStaticAccountProps> = [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
@@ -28,7 +28,6 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             description: localize(
                 'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
             ),
-            has_account: false,
             disabled: false,
             platform: CFD_PLATFORMS.DXTRADE,
             type: 'synthetic',
@@ -37,7 +36,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         },
     ];
 
-    const existing_demo_accounts = (platform: TPlatform, market_type?: string) => {
+    const existingDemoAccounts = (platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.${market_type}`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.demo.${market_type}`))
@@ -54,8 +53,8 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             <div className='cfd-demo-account__accounts'>
                 {available_demo_accounts.map(account => (
                     <div className={`cfd-demo-account__accounts-${account.name}`} key={account.name}>
-                        {existing_demo_accounts(account.platform, account.type)
-                            ? existing_demo_accounts(account.platform, account.type)?.map(existing_account => {
+                        {existingDemoAccounts(account.platform, account.type)
+                            ? existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
                                   const non_eu_accounts =
                                       existing_account.landing_company_short &&
                                       existing_account.landing_company_short !== 'svg' &&
@@ -78,6 +77,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                               loginid={existing_account.display_login}
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
+                                              //   TODO will pass the click functions when flows are updated
                                               onClickTopUp={() => null}
                                               onClickTrade={() => null}
                                               description={account.description}
@@ -93,6 +93,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           appname={account.name}
                                           platform={account.platform}
                                           disabled={account.disabled}
+                                          //   TODO will pass the click functions when flows are updated
                                           onClickGet={() => null}
                                           description={account.description}
                                       />

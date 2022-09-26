@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
-import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid } from 'Types';
+import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 
@@ -15,10 +15,10 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client } = useStores();
+    const { client }: TRootStore = useStores();
     const { isEligibleForMoreRealMt5 } = client;
 
-    const available_real_accounts = [
+    const available_real_accounts: Array<TStaticAccountProps> = [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
@@ -49,7 +49,7 @@ const CFDRealAccounts = ({
         },
     ];
 
-    const existing_real_accounts = (platform: TPlatform, market_type?: string) => {
+    const existingRealAccounts = (platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${market_type}`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${market_type}`))
@@ -67,8 +67,8 @@ const CFDRealAccounts = ({
             <div className='cfd-real-account__accounts'>
                 {available_real_accounts.map(account => (
                     <div className={`cfd-real-account__accounts-${account.name}`} key={account.name}>
-                        {existing_real_accounts(account.platform, account?.type)
-                            ? existing_real_accounts(account.platform, account?.type)?.map(existing_account => {
+                        {existingRealAccounts(account.platform, account?.type)
+                            ? existingRealAccounts(account.platform, account?.type)?.map(existing_account => {
                                   const non_eu_accounts =
                                       existing_account.landing_company_short &&
                                       existing_account.landing_company_short !== 'svg' &&
@@ -91,6 +91,7 @@ const CFDRealAccounts = ({
                                               loginid={existing_account?.display_login}
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
+                                              //   TODO will pass the click functions when flows are updated
                                               onClickTopUp={() => null}
                                               onClickTrade={() => null}
                                               description={account.description}
@@ -114,6 +115,7 @@ const CFDRealAccounts = ({
                                           appname={account.name}
                                           platform={account.platform}
                                           disabled={account.disabled}
+                                          //   TODO will pass the click functions when flows are updated
                                           onClickGet={() => null}
                                           description={account.description}
                                       />

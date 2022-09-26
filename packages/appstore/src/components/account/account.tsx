@@ -157,8 +157,7 @@ const OptionsAccount = ({
                 </div>
 
                 <Text className='account__container--account-details-wrapper--balance'>
-                    {balance}
-                    {getCurrencyDisplayCode(currency)}
+                    {`${balance} ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>
             <div className='account__container--account-reset-button-wrapper'>

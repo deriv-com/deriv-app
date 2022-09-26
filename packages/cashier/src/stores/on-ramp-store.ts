@@ -3,25 +3,20 @@ import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import OnrampProviders from 'Config/on-ramp-providers';
 import BaseStore from './base-store';
+import { TRootStore, TWebSocket, TProviderDetails, TProviderDetailsWithoutFrom } from 'Types';
+
+type TGetDepositAddressResponse = {
+    error: string;
+    cashier: {
+        deposit: {
+            address: string;
+        };
+    };
+};
 
 export default class OnRampStore extends BaseStore {
-    @observable api_error = null;
-    @observable deposit_address = null;
-    @observable is_deposit_address_loading = true;
-    @observable is_deposit_address_popover_open = false;
-    @observable is_onramp_modal_open = false;
-    @observable is_requesting_widget_html = false;
-    @observable.shallow onramp_providers = [];
-    @observable.ref selected_provider = null;
-    @observable should_show_widget = false;
-    @observable widget_error = null;
-    @observable widget_html = null;
-
-    deposit_address_ref = null;
-
-    constructor({ WS, root_store }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
-        this.WS = WS;
 
         this.onClientInit(async () => {
             this.setOnrampProviders([
@@ -31,6 +26,20 @@ export default class OnRampStore extends BaseStore {
             ]);
         });
     }
+
+    @observable api_error: string | null = null;
+    @observable deposit_address = '';
+    @observable is_deposit_address_loading = true;
+    @observable is_deposit_address_popover_open = false;
+    @observable is_onramp_modal_open = false;
+    @observable is_requesting_widget_html = false;
+    @observable.shallow onramp_providers: Array<TProviderDetails | TProviderDetailsWithoutFrom> = [];
+    @observable.ref selected_provider: TProviderDetails | null = null;
+    @observable should_show_widget = false;
+    @observable widget_error: string | null = null;
+    @observable widget_html: string | null = null;
+
+    deposit_address_ref = {} as Node;
 
     @computed
     get is_onramp_tab_visible() {
@@ -108,8 +117,6 @@ export default class OnRampStore extends BaseStore {
                 }
             }
         );
-
-        // When "should_show_widget", attempt to fetch "selected_provider"'s "widget_html".
         this.disposeGetWidgetHtmlReaction = reaction(
             () => this.should_show_widget,
             should_show_widget => {
@@ -119,21 +126,23 @@ export default class OnRampStore extends BaseStore {
                     }
 
                     this.setIsRequestingWidgetHtml(true);
-                    this.selected_provider
-                        .getWidgetHtml()
-                        .then(widget_html => {
-                            if (widget_html) {
-                                // Regular providers (iframe/JS embed)
-                                this.setWidgetHtml(widget_html);
-                            } else {
-                                // An empty resolve (widget_html) identifies a redirect.
-                                this.setShouldShowWidget(false);
-                            }
-                        })
-                        .catch(error => {
-                            this.setWidgetError(error);
-                        })
-                        .finally(() => this.setIsRequestingWidgetHtml(false));
+                    if (this.selected_provider) {
+                        this.selected_provider
+                            .getWidgetHtml()
+                            .then(widget_html => {
+                                if (widget_html) {
+                                    // Regular providers (iframe/JS embed)
+                                    this.setWidgetHtml(widget_html);
+                                } else {
+                                    // An empty resolve (widget_html) identifies a redirect.
+                                    this.setShouldShowWidget(false);
+                                }
+                            })
+                            .catch(error => {
+                                this.setWidgetError(error);
+                            })
+                            .finally(() => this.setIsRequestingWidgetHtml(false));
+                    }
                 }
             }
         );
@@ -155,8 +164,8 @@ export default class OnRampStore extends BaseStore {
         range.selectNodeContents(this.deposit_address_ref);
 
         const selections = window.getSelection();
-        selections.removeAllRanges();
-        selections.addRange(range);
+        selections?.removeAllRanges();
+        selections?.addRange(range);
 
         navigator.clipboard.writeText(this.deposit_address).then(() => {
             this.setIsDepositAddressPopoverOpen(true);
@@ -176,7 +185,7 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    pollApiForDepositAddress(should_allow_empty_address) {
+    pollApiForDepositAddress(should_allow_empty_address: boolean): void {
         // should_allow_empty_address: API returns empty deposit address for legacy accounts
         // that have never generated a deposit address. Setting this to "true" will allow
         // the user to be redirected to the Deposit page (where an address will be generated).
@@ -187,26 +196,28 @@ export default class OnRampStore extends BaseStore {
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
         const getDepositAddressFromApi = () => {
-            this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
-                let should_clear_interval = false;
+            this.WS.authorized
+                .cashier('deposit', { provider: 'crypto', type: 'api' })
+                .then((response: TGetDepositAddressResponse) => {
+                    let should_clear_interval = false;
 
-                if (response.error) {
-                    this.setApiError(response.error);
-                    should_clear_interval = true;
-                } else {
-                    const { address } = response.cashier.deposit;
-
-                    if (address || should_allow_empty_address) {
-                        this.setDepositAddress(address);
+                    if (response.error) {
+                        this.setApiError(response.error);
                         should_clear_interval = true;
-                    }
-                }
+                    } else {
+                        const { address } = response.cashier.deposit;
 
-                if (should_clear_interval) {
-                    clearInterval(deposit_address_interval);
-                    this.setIsDepositAddressLoading(false);
-                }
-            });
+                        if (address || should_allow_empty_address) {
+                            this.setDepositAddress(address);
+                            should_clear_interval = true;
+                        }
+                    }
+
+                    if (should_clear_interval) {
+                        clearInterval(deposit_address_interval);
+                        this.setIsDepositAddressLoading(false);
+                    }
+                });
         };
 
         getDepositAddressFromApi();
@@ -219,8 +230,8 @@ export default class OnRampStore extends BaseStore {
     @action.bound
     resetPopup() {
         this.setApiError(null);
-        this.setDepositAddress(null);
-        this.setDepositAddressRef(null);
+        this.setDepositAddress('');
+        this.setDepositAddressRef({} as Node);
         this.setIsDepositAddressLoading(true);
         this.setSelectedProvider(null);
         this.setShouldShowWidget(false);
@@ -229,47 +240,42 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    setApiError(api_error) {
+    setApiError(api_error: string | null): void {
         this.api_error = api_error;
     }
 
     @action.bound
-    setCopyIconRef(ref) {
-        this.copy_icon_ref = ref;
-    }
-
-    @action.bound
-    setDepositAddress(deposit_address) {
+    setDepositAddress(deposit_address: string): void {
         this.deposit_address = deposit_address;
     }
 
     @action.bound
-    setDepositAddressRef(ref) {
+    setDepositAddressRef(ref: Node): void {
         this.deposit_address_ref = ref;
     }
 
     @action.bound
-    setIsDepositAddressLoading(is_loading) {
+    setIsDepositAddressLoading(is_loading: boolean): void {
         this.is_deposit_address_loading = is_loading;
     }
 
     @action.bound
-    setIsDepositAddressPopoverOpen(is_open) {
+    setIsDepositAddressPopoverOpen(is_open: boolean): void {
         this.is_deposit_address_popover_open = is_open;
     }
 
     @action.bound
-    setIsOnRampModalOpen(is_open) {
+    setIsOnRampModalOpen(is_open: boolean): void {
         this.is_onramp_modal_open = is_open;
     }
 
     @action.bound
-    setIsRequestingWidgetHtml(is_requesting_widget_html) {
+    setIsRequestingWidgetHtml(is_requesting_widget_html: boolean): void {
         this.is_requesting_widget_html = is_requesting_widget_html;
     }
 
     @action.bound
-    setSelectedProvider(provider) {
+    setSelectedProvider(provider: TProviderDetails | null): void {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);
@@ -281,22 +287,22 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowWidget(should_show) {
+    setShouldShowWidget(should_show: boolean): void {
         this.should_show_widget = should_show;
     }
 
     @action.bound
-    setOnrampProviders(onramp_providers) {
+    setOnrampProviders(onramp_providers: Array<TProviderDetails | TProviderDetailsWithoutFrom>): void {
         this.onramp_providers = onramp_providers.slice();
     }
 
     @action.bound
-    setWidgetError(widget_error) {
+    setWidgetError(widget_error: string | null): void {
         this.widget_error = widget_error;
     }
 
     @action.bound
-    setWidgetHtml(widget_html) {
+    setWidgetHtml(widget_html: string | null): void {
         this.widget_html = widget_html;
     }
 }

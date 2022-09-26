@@ -1,7 +1,7 @@
 declare global {
     interface Window {
-        safari?: any;
-        HTMLElement: any;
+        safari?: { pushNotification: () => void };
+        HTMLElement: HTMLElement & string;
     }
 }
 

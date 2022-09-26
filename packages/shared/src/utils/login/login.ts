@@ -16,7 +16,8 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
 };
 
 type TRedirectToSignUp = {
-    is_appstore: boolean;
+    is_appstore?: boolean;
+    is_deriv_crypto?: boolean;
 };
 
 export const redirectToSignUp = ({ is_appstore }: TRedirectToSignUp) => {
@@ -46,7 +47,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
-    if (getAppId() === domain_app_ids[window.location.hostname]) {
+    if (getAppId() === domain_app_ids[window.location.hostname as keyof typeof domain_app_ids]) {
         return getOAuthUrl();
     }
     return urlForCurrentDomain(getOAuthUrl());

@@ -20,6 +20,7 @@ const ErrorModal = ({ error_message, error_modal_title, has_close_icon, is_error
 ErrorModal.propTypes = {
     error_message: PropTypes.string,
     error_modal_title: PropTypes.string,
+    has_close_icon: PropTypes.bool,
     is_error_modal_open: PropTypes.bool,
     setIsErrorModalOpen: PropTypes.func,
 };

@@ -25,20 +25,11 @@ const CFD_text: { [key: string]: string } = {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
-type TPlatform = 'dxtrade' | 'mt5';
-type TMarketType = 'financial' | 'synthetic' | 'gaming' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
-type TGetAccount = {
-    market_type: TMarketType;
-    sub_account_type?: 'financial' | 'financial_stp' | 'swap_free' | undefined;
-    platform: TPlatform;
-};
+export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }) => {
+    if (market_type === 'all') {
+        return 'dxtrade';
+    }
 
-type TGetCFDAccountKey = TGetAccount & {
-    shortcode?: TShortcode;
-};
-
-export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {

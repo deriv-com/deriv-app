@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv/shared';
 import Button from './calendar-button.jsx';
-import { month_headers, getCentury, getDecade } from './helpers';
+import { getCentury, getDecade } from './helpers';
 
 const Header = ({
     calendar_date,
@@ -77,7 +77,7 @@ const Header = ({
                     <Button
                         className='dc-calendar__btn--select'
                         is_hidden={!is_date_view}
-                        label={month_headers[moment_date.format('MMM')]}
+                        label={moment_date.format('MMM')}
                         onClick={() => (disable_month_selector ? undefined : switchView('month'))}
                     />
                 )}

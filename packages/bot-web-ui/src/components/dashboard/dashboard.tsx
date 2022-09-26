@@ -18,9 +18,10 @@ interface DashboardProps {
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
     toggleStrategyModal: () => void;
+    is_drawer_open: boolean;
 }
 
-const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal }: DashboardProps) => {
+const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: DashboardProps) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [tour_run, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
@@ -47,7 +48,11 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal }: DashboardP
                         id='id-quick-strategy'
                         onTabItemClick={handleClick}
                     >
-                        <div>
+                        <div
+                            className={classNames('quick-strategy', {
+                                'quick-strategy--is-notifications-container-panel-open': !is_drawer_open,
+                            })}
+                        >
                             <QStrategy />
                         </div>
                     </Tab>
@@ -75,8 +80,9 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal }: DashboardP
     );
 };
 
-export default connect(({ dashbaord, quick_strategy }: RootStore) => ({
+export default connect(({ dashbaord, quick_strategy, run_panel }: RootStore) => ({
     active_tab: dashbaord.active_tab,
     setActiveTab: dashbaord.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    is_drawer_open: run_panel.is_drawer_open,
 }))(Dashboard);

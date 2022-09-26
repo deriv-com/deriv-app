@@ -37,7 +37,7 @@ export default class CashierStore {
 
     constructor({ root_store, WS }: TCashierStoreArgs) {
         this.account_prompt_dialog = new AccountPromptDialogStore(root_store);
-        this.account_transfer = new AccountTransferStore({ root_store, WS });
+        this.account_transfer = new AccountTransferStore(WS, root_store);
         this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);
         this.deposit = new DepositStore({ root_store, WS });
         this.error_dialog = new ErrorDialogStore();

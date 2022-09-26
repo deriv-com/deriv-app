@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 import Text from '../text';
 
 const FormSubmitButton = ({

@@ -1,11 +1,41 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import ButtonLoading from './button_loading.jsx';
+import React, { HTMLProps, ReactNode } from 'react';
+import ButtonLoading from './button_loading';
 import Icon from '../icon';
 import Text from '../text';
 
-const ButtonGroup = ({ children, className }) => (
+type TButtonGroupProps = HTMLProps<HTMLDivElement>;
+
+type TButtonProps = HTMLProps<HTMLButtonElement> & {
+    blue: boolean;
+    classNameSpan: string;
+    green: boolean;
+    has_effect: boolean;
+    icon: ReactNode;
+    is_disabled: boolean;
+    is_loading: boolean;
+    is_circle: boolean;
+    is_plus: boolean;
+    is_submit_success: boolean;
+    large: boolean;
+    medium: boolean;
+    primary: boolean;
+    primary_light: boolean;
+    rounded: boolean;
+    secondary: boolean;
+    small: boolean;
+    tertiary: boolean;
+    transparent: boolean;
+    text: string;
+    wrapperClassName: string;
+    is_button_toggle: boolean;
+    is_circular: boolean;
+    type: 'button' | 'submit' | 'reset' | undefined;
+    alternate: boolean;
+    renderText: (param: ReactNode) => ReactNode;
+};
+
+const ButtonGroup = ({ children, className }: TButtonGroupProps) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>
 );
 const Button = ({
@@ -41,7 +71,7 @@ const Button = ({
     tertiary,
     renderText,
     ...props
-}) => {
+}: TButtonProps) => {
     const classes = classNames(
         'dc-btn',
         {
@@ -73,7 +103,7 @@ const Button = ({
             className={classes}
             onClick={onClick || undefined}
             disabled={is_disabled}
-            tabIndex={tabIndex || '0'}
+            tabIndex={tabIndex || 0}
             type={is_submit_success ? 'button' : type || 'submit'}
             {...props}
         >
@@ -98,40 +128,6 @@ const Button = ({
     const wrapper = <div className={wrapperClassName}>{button}</div>;
 
     return wrapperClassName ? wrapper : button;
-};
-
-Button.propTypes = {
-    blue: PropTypes.bool,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    classNameSpan: PropTypes.string,
-    green: PropTypes.bool,
-    has_effect: PropTypes.bool,
-    icon: PropTypes.node,
-    id: PropTypes.string,
-    is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    is_loading: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    is_circle: PropTypes.bool,
-    is_plus: PropTypes.bool,
-    is_submit_success: PropTypes.bool,
-    large: PropTypes.bool,
-    medium: PropTypes.bool,
-    onClick: PropTypes.func,
-    primary: PropTypes.bool,
-    primary_light: PropTypes.bool,
-    rounded: PropTypes.bool,
-    secondary: PropTypes.bool,
-    small: PropTypes.bool,
-    tertiary: PropTypes.bool,
-    transparent: PropTypes.bool,
-    text: PropTypes.string,
-    wrapperClassName: PropTypes.string,
-    is_button_toggle: PropTypes.bool,
-    is_circular: PropTypes.bool,
-    tabIndex: PropTypes.string,
-    type: PropTypes.string,
-    alternate: PropTypes.bool,
-    renderText: PropTypes.func,
 };
 
 Button.Group = ButtonGroup;

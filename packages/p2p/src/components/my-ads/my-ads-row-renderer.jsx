@@ -48,8 +48,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         exchange_rate: floating_rate_store.exchange_rate,
     });
 
-    const ad_pause_color = general_store.is_listed ? 'general' : 'less-prominent';
-    const icon_disabled_color = !general_store.is_listed && 'disabled';
+    const ad_pause_color = general_store.is_listed && !general_store.is_barred ? 'general' : 'less-prominent';
+    const icon_disabled_color =
+        (!general_store.is_listed || general_store.is_barred || !is_advert_active) && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
 
     const onClickActivateDeactivate = () => {

@@ -1,4 +1,4 @@
-import CashierOnboarding from './cashier-onboarding.jsx';
-import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
+import CashierOnboarding from './cashier-onboarding';
+import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 
 export { CashierOnboarding, CashierOnboardingSideNote };

@@ -12,9 +12,30 @@ import PaymentAgentTransferStore from './payment-agent-transfer-store';
 import TransactionHistoryStore from './transaction-history-store';
 import VerificationStore from './verification-store';
 import WithdrawStore from './withdraw-store';
+import { TRootStore, TWebSocket } from 'Types';
+
+type TCashierStoreArgs = {
+    root_store: TRootStore;
+    WS: TWebSocket;
+};
 
 export default class CashierStore {
-    constructor({ root_store, WS }) {
+    account_prompt_dialog: AccountPromptDialogStore;
+    account_transfer: AccountTransferStore;
+    crypto_fiat_converter: CryptoFiatConverterStore;
+    deposit: DepositStore;
+    error_dialog: ErrorDialogStore;
+    error: ErrorStore;
+    general_store: GeneralStore;
+    iframe: IframeStore;
+    onramp: OnRampStore;
+    payment_agent: PaymentAgentStore;
+    payment_agent_transfer: PaymentAgentTransferStore;
+    transaction_history: TransactionHistoryStore;
+    verification: VerificationStore;
+    withdraw: WithdrawStore;
+
+    constructor({ root_store, WS }: TCashierStoreArgs) {
         this.account_prompt_dialog = new AccountPromptDialogStore(root_store);
         this.account_transfer = new AccountTransferStore({ root_store, WS });
         this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);

@@ -13,7 +13,7 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
-    @observable block_unblock_user_error = null;
+    @observable block_unblock_user_error = '';
     @observable balance;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
@@ -109,7 +109,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
-                    this.setBlockUnblockUserError(response.error);
+                    this.setBlockUnblockUserError(response.error.message);
                 }
             }
             this.setIsBlockUnblockUserLoading(false);

@@ -10,7 +10,7 @@ const CFD_text = {
     cfd: 'CFDs',
     synthetic: 'Derived',
     synthetic_bvi: 'Derived BVI',
-    synthetic_svg: 'Derived SVG',
+    synthetic_svg: 'MT5 Derived SVG',
     financial: 'Financial',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',
@@ -141,7 +141,7 @@ export const getAccountListKey = (account, platform, shortcode) => {
 export const getCFDPlatformLabel = platform => {
     switch (platform) {
         case CFD_PLATFORMS.MT5:
-            return 'DMT5';
+            return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
         default:

@@ -120,7 +120,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Derived SVG'),
+                title: localize('MT5 Derived SVG'),
                 short_title: synthetic_config.short_title,
             },
             synthetic_bvi: {

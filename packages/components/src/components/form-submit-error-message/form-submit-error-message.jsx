@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 import Text from '../text';
 
 const FormSubmitErrorMessage = ({ className, message }) => (

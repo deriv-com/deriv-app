@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { getKebabCase, getUrlBase } from '@deriv/shared';
 import * as icons_manifest from './icons-manifest';
+import { TIconsManifest, TIconProps } from '../types';
 
 const Icon = React.forwardRef(
     (
@@ -19,12 +19,12 @@ const Icon = React.forwardRef(
             onMouseLeave,
             size = 16,
             width,
-        },
-        ref
+        }: TIconProps,
+        ref?: React.ForwardedRef<SVGSVGElement | null>
     ) => {
         if (!icon) return null;
 
-        let category = 'common';
+        let category: keyof TIconsManifest = 'common';
         const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(icon);
         if (category_match?.[1]) {
             category = getKebabCase(category_match[1]);
@@ -59,11 +59,11 @@ const Icon = React.forwardRef(
                 onMouseLeave={onMouseLeave}
                 ref={ref}
                 style={
-                    custom_color
+                    (custom_color
                         ? {
                               '--fill-color1': custom_color,
                           }
-                        : undefined
+                        : undefined) as React.CSSProperties & { '--fill-color1': string }
                 }
             >
                 <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
@@ -73,20 +73,5 @@ const Icon = React.forwardRef(
 );
 
 Icon.displayName = 'Icon';
-
-Icon.propTypes = {
-    className: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    color: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    custom_color: PropTypes.string,
-    data_testid: PropTypes.string,
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    icon: PropTypes.string,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    id: PropTypes.string,
-};
 
 export default React.memo(Icon);

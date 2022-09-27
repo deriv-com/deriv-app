@@ -14,9 +14,11 @@ export type TProviderDetails = {
     }[];
     getScriptDependencies: () => any[];
     getDefaultFromCurrency: () => string;
-    getFromCurrencies: () => string;
-    getToCurrencies: () => string;
-    getWidgetHtml: () => Promise<void>;
+    getFromCurrencies: () => string[];
+    getToCurrencies: () => string[];
+    getWidgetHtml: () => Promise<any>;
     onMountWidgetContainer: (ref?: MutableRefObject<any>) => void;
     should_show_deposit_address: boolean;
 };
+
+export type TProviderDetailsWithoutFrom = Omit<TProviderDetails, 'getDefaultFromCurrency' | 'getFromCurrencies'>;

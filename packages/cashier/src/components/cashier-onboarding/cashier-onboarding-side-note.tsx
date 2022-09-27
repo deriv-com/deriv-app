@@ -1,12 +1,25 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
 import './cashier-onboarding.scss';
+import { TClientStore, TRootStore, TUiStore } from 'Types';
 
-const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
+type TCashierOnboardingSideNoteProps = {
+    currency: TClientStore['currency'];
+    is_crypto: boolean;
+    mt5_login_list: TClientStore['mt5_login_list'];
+    openRealAccountSignup: TUiStore['openRealAccountSignup'];
+    setDepositTarget: (path: string) => void;
+};
+
+const CashierOnboardingSideNote = ({
+    currency,
+    is_crypto,
+    openRealAccountSignup,
+    setDepositTarget,
+}: TCashierOnboardingSideNoteProps) => {
     const currency_code = getCurrencyDisplayCode(currency);
 
     const getSideNoteDescription = () => {
@@ -52,6 +65,7 @@ const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup,
             {is_crypto && (
                 <div
                     className='cashier-onboarding-side-note__link'
+                    data-testid='dt_cashier_onboarding_side_note_link'
                     onClick={() => {
                         setDepositTarget(routes.cashier_deposit);
                         openRealAccountSignup('add_crypto');
@@ -67,15 +81,7 @@ const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup,
     );
 };
 
-CashierOnboardingSideNote.propTypes = {
-    currency: PropTypes.string,
-    is_crypto: PropTypes.bool,
-    mt5_login_list: PropTypes.array,
-    openRealAccountSignup: PropTypes.func,
-    setDepositTarget: PropTypes.func,
-};
-
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules, ui }: TRootStore) => ({
     currency: client.currency,
     mt5_login_list: client.mt5_login_list,
     openRealAccountSignup: ui.openRealAccountSignup,

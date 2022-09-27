@@ -193,7 +193,7 @@ const CashierOnboarding = ({
         <div>
             {is_currency_banner_visible && (
                 <SideNote is_mobile has_title={false} className='outside-wrapper'>
-                    (<CashierOnboardingSideNote is_crypto={is_crypto} />)
+                    <CashierOnboardingSideNote is_crypto={is_crypto} />
                 </SideNote>
             )}
             <div className='cashier-onboarding'>

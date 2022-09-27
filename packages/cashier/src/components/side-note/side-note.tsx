@@ -3,7 +3,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TReactChildren, TSideNotesProps } from 'Types';
+import { TReactChildren, TReactElement, TSideNotesProps } from 'Types';
 import './side-note.scss';
 
 type TSideNoteTitle = {
@@ -18,7 +18,7 @@ type TSideNoteBullet = {
 };
 
 type TSideNoteProps = {
-    children?: TReactChildren[];
+    children?: TReactChildren[] | TReactElement;
     className?: string;
     has_bullets?: boolean;
     has_title?: boolean;
@@ -64,7 +64,7 @@ const SideNote = ({
                         {has_title && (
                             <SideNoteTitle
                                 title={title}
-                                children_length={children?.length}
+                                children_length={Array.isArray(children) ? children?.length : 0}
                                 side_notes_length={side_notes?.length}
                             />
                         )}

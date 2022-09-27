@@ -23,7 +23,7 @@ const BotBuilder = ({ app, active_tab }: TBotBuilder) => {
             <div
                 id='scratch_div'
                 style={{
-                    width: '100vw',
+                    width: 'calc(100vw - 3.2rem)',
                     height: 'var(--bot-content-height)',
                 }}
             >
@@ -35,5 +35,5 @@ const BotBuilder = ({ app, active_tab }: TBotBuilder) => {
 
 export default connect((store: RootStore) => ({
     app: store.app,
-    active_tab: store.dashbaord.active_tab,
+    active_tab: store.dashboard.active_tab,
 }))(BotBuilder);

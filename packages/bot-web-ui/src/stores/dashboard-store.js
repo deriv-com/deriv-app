@@ -6,9 +6,15 @@ export default class DashboardStore {
     }
 
     @observable active_tab = 0;
+    @observable is_info_panel_visible = true;
 
     @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
+    }
+
+    @action.bound
+    setInfoPanelVisibility(visibility) {
+        this.is_info_panel_visible = visibility;
     }
 }

@@ -2,14 +2,9 @@
 
 .dashboard {
     &__main {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        background: #f2f3f4;
         width: 100%;
         height: calc(100vh - 90px);
-        padding: 1rem;
+        padding: 1.6rem;
     }
 
     &__container {
@@ -47,7 +42,7 @@
                 border: solid 1px var(--general-section-1);
             }
             &__category-menu {
-                height: calc(100vh - 258px);
+                height: calc(100vh - 28.4rem);
             }
             &__search {
                 padding: 1.3rem 0.8rem;
@@ -69,6 +64,10 @@
         background-color: var(--general-main-1);
     }
     &__run-strategy-wrapper {
+        position: absolute;
+        right: 1.6rem;
+        top: 1.6rem;
+        z-index: 1;
         .animation {
             &__button {
                 background-color: var(--purchase-main-1);
@@ -87,12 +86,14 @@
 }
 
 .bot-builder {
-    overflow: hidden;
     position: absolute;
-    top: 6rem;
-    left: 1.1rem;
-    z-index: 0;
+    top: 6.6rem;
+    left: 1.6rem;
+    z-index: -1;
+    background: var(--general-main-1);
+    width: calc(100vw - 4.6rem);
+    height: calc(100vh - 16.6rem);
     &--active {
-        z-index: 200;
+        z-index: 1;
     }
 }

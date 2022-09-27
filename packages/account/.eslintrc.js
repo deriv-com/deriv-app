@@ -7,4 +7,7 @@ module.exports = {
             webpack: { config: webpackConfig({}) },
         },
     },
+    rules: {
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*'] }],
+    },
 };

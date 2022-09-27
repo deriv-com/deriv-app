@@ -1,19 +1,20 @@
 import { action, observable } from 'mobx';
 import { getPropertyValue } from '@deriv/shared';
+import { TServerError } from 'Types';
 
 export default class ErrorStore {
     @observable message = '';
     @observable code = '';
     @observable fields = '';
     @observable is_show_full_page = false;
-    @observable onClickButton = null;
+    @observable onClickButton: VoidFunction | null = null;
     @observable is_ask_uk_funds_protection = false;
     @observable is_self_exclusion_max_turnover_set = false;
     @observable is_ask_authentication = false;
     @observable is_ask_financial_risk_approval = false;
 
     @action.bound
-    setErrorMessage(error, onClickButton, is_show_full_page) {
+    setErrorMessage(error: TServerError, onClickButton?: VoidFunction | null, is_show_full_page?: boolean): void {
         // for errors that need to show a button, reset the form
         const error_object = {
             onClickButton,
@@ -21,7 +22,7 @@ export default class ErrorStore {
             message: error.message,
             is_show_full_page: is_show_full_page || /InvalidToken|WrongResponse/.test(error.code),
             ...(getPropertyValue(error, ['details', 'fields']) && {
-                fields: error.details.fields,
+                fields: error.details?.fields,
             }),
         };
 
@@ -37,7 +38,7 @@ export default class ErrorStore {
     }
 
     @action.bound
-    handleCashierError(error) {
+    handleCashierError(error: TServerError): void {
         switch (error.code) {
             case 'ASK_TNC_APPROVAL':
                 this.setErrorMessage(error, null, true);
@@ -68,27 +69,27 @@ export default class ErrorStore {
     }
 
     @action.bound
-    setMessage(value) {
+    setMessage(value: string): void {
         this.message = value;
     }
 
     @action.bound
-    setIsAskUkFundsProtection(value) {
+    setIsAskUkFundsProtection(value: boolean): void {
         this.is_ask_uk_funds_protection = value;
     }
 
     @action.bound
-    setIsSelfExclusionMaxTurnoverSet(value) {
+    setIsSelfExclusionMaxTurnoverSet(value: boolean): void {
         this.is_self_exclusion_max_turnover_set = value;
     }
 
     @action.bound
-    setIsAskAuthentication(value) {
+    setIsAskAuthentication(value: boolean): void {
         this.is_ask_authentication = value;
     }
 
     @action.bound
-    setIsAskFinancialRiskApproval(value) {
+    setIsAskFinancialRiskApproval(value: boolean): void {
         this.is_ask_financial_risk_approval = value;
     }
 }

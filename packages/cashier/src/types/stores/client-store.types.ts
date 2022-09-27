@@ -56,4 +56,13 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    setVerificationCode: (code: string, action: string) => void;
+    updateAccountStatus: () => Promise<void>;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
+    is_authentication_needed: boolean;
+    is_tnc_needed: boolean;
+    is_financial_account: boolean;
+    is_financial_information_incomplete: boolean;
+    is_trading_experience_incomplete: boolean;
+    is_eu: boolean;
 };

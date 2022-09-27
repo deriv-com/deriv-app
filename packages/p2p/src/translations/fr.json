@@ -276,7 +276,6 @@
     "-727433417": "{{status}}",
     "-1667041441": "Taux (1 {{ offered_currency }})",
     "-1886565882": "Vos annonces avec des taux flottants ont été désactivées. Définissez des taux fixes pour les réactiver.",
-    "-1797936681": "Les taux fixes sont désactivés pour {{local_currency}}. Les publicités avec des taux fixes seront désactivées. Passez à des taux fixes pour {{end_date}}.",
     "-792015701": "La caisse Deriv P2P n'est pas disponible dans votre pays.",
     "-1220275347": "Vous pouvez choisir jusqu'à 3 méthodes de paiement pour cette annonce.",
     "-1889014820": "<0>Vous ne voyez pas votre mode de paiement ? </0> <1>Ajouter un nouveau.</1>",

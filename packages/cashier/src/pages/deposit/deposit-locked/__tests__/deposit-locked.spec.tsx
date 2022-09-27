@@ -132,11 +132,11 @@ describe('<DepositLocked />', () => {
             {
                 content: 'Check proof of identity document verification status',
                 status: 'action',
-                onClick: onClick,
+                onClick,
             },
         ];
-        const { container } = render(<Checklist className='cashier-locked__checklist' items={items} />);
-        const btn = container.querySelector('.dc-checklist__item-status--action');
+        render(<Checklist className='cashier-locked__checklist' items={items} />);
+        const btn = screen.getByTestId('dt_checklist_item_status_action');
 
         fireEvent.click(btn);
         expect(onClick).toHaveBeenCalled();

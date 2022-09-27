@@ -22,9 +22,14 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('qrcode.react', () => () => <div>QRCode</div>);
-
-jest.mock('Components/recent-transaction', () => () => <div>RecentTransactions</div>);
+jest.mock('qrcode.react', () => {
+    const QrCode = () => <div>QRCode</div>;
+    return QrCode;
+});
+jest.mock('Components/recent-transaction', () => {
+    const RecentTransactions = () => <div>RecentTransactions</div>;
+    return RecentTransactions;
+});
 
 describe('<CryptoDeposit />', () => {
     let history;
@@ -70,8 +75,8 @@ describe('<CryptoDeposit />', () => {
         expect(props.pollApiForDepositAddress).toHaveBeenCalledTimes(2);
     });
 
-    it('should show proper messsages for BTC cryptocurrency', () => {
-        getCurrencyName.mockReturnValueOnce('Bitcoin');
+    it('should show proper messages for BTC cryptocurrency', () => {
+        (getCurrencyName as jest.Mock).mockReturnValueOnce('Bitcoin');
         renderWithRouter(<CryptoDeposit {...props} />);
 
         expect(screen.getByText('Send only Bitcoin (BTC) to this address.')).toBeInTheDocument();
@@ -87,8 +92,8 @@ describe('<CryptoDeposit />', () => {
         expect(screen.getByRole('link', { name: 'Try our Fiat onramp' })).toBeInTheDocument();
     });
 
-    it('should show proper messsages for ETH cryptocurrency', () => {
-        getCurrencyName.mockReturnValueOnce('Ethereum');
+    it('should show proper messages for ETH cryptocurrency', () => {
+        (getCurrencyName as jest.Mock).mockReturnValueOnce('Ethereum');
         renderWithRouter(<CryptoDeposit {...props} currency='ETH' />);
 
         expect(screen.getByText('Send only Ethereum (ETH) to this address.')).toBeInTheDocument();
@@ -203,8 +208,12 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show "RecentTransactions" in Mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        renderWithRouter(<CryptoDeposit {...props} />);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        render(
+            <Router history={history}>
+                <CryptoDeposit {...props} />
+            </Router>
+        );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();
     });

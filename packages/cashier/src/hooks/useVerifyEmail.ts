@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { TEmailVerificationType } from 'Types';
+import { TSocketEndpoints } from 'Types';
 import useCountdown from './useCountdown';
 import { useStore } from './useStore';
 import useWS from './useWS';
 
 const RESEND_COUNTDOWN = 60;
+
+export type TEmailVerificationType = TSocketEndpoints['verify_email']['request']['type'];
 
 const useVerifyEmail = (type: TEmailVerificationType) => {
     const WS = useWS('verify_email');

@@ -8,17 +8,21 @@ describe('AccountPromptDialogStore', () => {
             routeTo: jest.fn(),
         },
         client: {
+            accounts: {
+                CR90000001: {
+                    is_virtual: 0,
+                    currency: 'USD',
+                },
+                CR90000002: {
+                    is_virtual: 0,
+                    currency: 'BTC',
+                },
+            },
             currency: 'BTC',
             switchAccount: jest.fn(),
         },
         modules: {
             cashier: {
-                account_transfer: {
-                    accounts_list: [
-                        { currency: 'USD', is_crypto: false, text: 'USD', value: 'CR90000001' },
-                        { currency: 'BTC', is_crypto: true, text: 'BTC', value: 'CR90000002' },
-                    ],
-                },
                 general_store: {
                     setIsDeposit: jest.fn(),
                 },

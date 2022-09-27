@@ -1,6 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
+import WalletIcon from 'Assets/svgs/wallet';
 
 type TOnboardingProps = {
     contents: Record<
@@ -33,7 +34,7 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
     return (
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
-                <Icon icon='IcAppstoreDerivLogo' height={96} width={128} />
+                <WalletIcon icon={'DerivLogo'} />
                 <Icon icon='IcCross' custom_color='var(--general-main-1)' className='onboarding-header__cross-icon' />
             </div>
             <div className='onboarding-body'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
 import StaticPlatformLauncher from './static-platform-launcher';
 import StaticAppLauncher from './static-applauncher';
@@ -61,7 +61,16 @@ const StaticDashboard = ({
                             className={is_text_animated ? 'static-dashboard-wrapper__header--animated' : ''}
                         >
                             {localize('CFDs')}
+                            <Text
+                                color={'red'}
+                                size='xxxs'
+                                weight='bold'
+                                className='static-dashboard-wrapper__header--compare-accounts'
+                            >
+                                {localize('Compare accounts')}
+                            </Text>
                         </Text>
+
                         <Text as='p' size='xxs' color={is_cfd_text_blurry ? 'less-prominent' : 'prominent'}>
                             {localize(
                                 'Trade with leverage and tight spreads for better returns on successful trades. Learn more'
@@ -70,9 +79,9 @@ const StaticDashboard = ({
                     </div>
                     <div className='static-dashboard-wrapper__body'>
                         <StaticCFDAccountManager
-                            type='financial'
+                            type='synthetic'
                             platform='mt5'
-                            appname='Derived SVG'
+                            appname='Derived'
                             description='Trade CFDs on MT5 with forex, stocks & indices, commodities and cryptocurrencies.'
                             loginid={loginid}
                             currency={currency}
@@ -86,9 +95,9 @@ const StaticDashboard = ({
                             is_button_animated={is_button_animated}
                         />
                         <StaticCFDAccountManager
-                            type='synthetic'
+                            type='financial'
                             platform='mt5'
-                            appname='Financial BVI'
+                            appname='Financial'
                             description='Trade CFDs on MT5 with Derived indices that simulate areal-world market movement'
                             financial_amount={financial_amount}
                             loginid={loginid}
@@ -129,9 +138,23 @@ const StaticDashboard = ({
                             {localize('Options')}
                         </Text>
                         <Text as='p' size='xxs' color={is_options_text_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize(
-                                'Earn fixed payouts by predicting price movements with Options, or combine the upside of CFDs with the simplicity of Options with Multipliers '
-                            )}
+                            <Localize
+                                i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simplicity of Options with <1>Multipliers</1> '
+                                components={[
+                                    <Text
+                                        key={0}
+                                        size='xs'
+                                        color='red'
+                                        className='static-dashboard-wrapper__header--underlined'
+                                    />,
+                                    <Text
+                                        key={1}
+                                        size='xs'
+                                        color='red'
+                                        className='static-dashboard-wrapper__header--underlined'
+                                    />,
+                                ]}
+                            />
                         </Text>
                     </div>
                     <div className='static-dashboard-wrapper__body'>
@@ -159,7 +182,7 @@ const StaticDashboard = ({
                             </>
                         )}
                     </div>
-                    <Divider />
+                    {!has_applauncher_account && <Divider />}
 
                     <div className='static-dashboard-wrapper__body--apps'>
                         <div>
@@ -182,7 +205,7 @@ const StaticDashboard = ({
                         />
                         <StaticPlatformLauncher
                             is_grey={is_grey}
-                            app_icon={`SmartTrader`}
+                            app_icon={`SmartTraderBlue`}
                             app_title={'SmartTrader'}
                             app_desc={'Our legacy options trading platform.'}
                             is_item_blurry={is_platformlauncher_blurry}
@@ -190,7 +213,7 @@ const StaticDashboard = ({
                         />
                         <StaticPlatformLauncher
                             is_grey={is_grey}
-                            app_icon={`BinaryBot`}
+                            app_icon={`BinaryBotBlue`}
                             app_title={'Binary Bot'}
                             app_desc={'Our legacy automated trading platform.'}
                             is_item_blurry={is_platformlauncher_blurry}
@@ -198,7 +221,7 @@ const StaticDashboard = ({
                         />
                         <StaticPlatformLauncher
                             is_grey={is_grey}
-                            app_icon={`DerivGo`}
+                            app_icon={`DerivGoBlack`}
                             app_title={'Deriv Go'}
                             app_desc={'Trade on the go with our mobile app.'}
                             is_item_blurry={is_platformlauncher_blurry}

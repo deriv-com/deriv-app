@@ -10,6 +10,14 @@
         &__header {
             padding: 1rem;
 
+            &--compare-accounts {
+                margin-left: 1rem;
+            }
+
+            &--underlined {
+                text-decoration: underline;
+            }
+
             &--animated {
                 animation: triggerAnimation 2s linear;
             }

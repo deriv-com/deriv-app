@@ -28,7 +28,7 @@
         margin-left: 1rem;
 
         &--animated {
-            animation: triggerAnimation infinite linear;
+            animation: triggerAnimation 2s linear infinite;
         }
 
         &-topup {

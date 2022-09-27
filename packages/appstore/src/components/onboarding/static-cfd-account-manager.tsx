@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import WalletIcon from 'Assets/svgs/wallet';
 import { TPlatform } from 'Types';
 
 import './static-cfd-account-manager.scss';
@@ -48,33 +49,9 @@ const StaticCFDAccountManager = ({
         <div className='static-cfd-account-manager'>
             <div className='static-cfd-account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
-                    (type === 'financial' ? (
-                        <Icon
-                            icon='IcAppstoreFinancial'
-                            size={64}
-                            className={is_item_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
-                        />
-                    ) : (
-                        <Icon
-                            icon='IcAppstoreDerived'
-                            size={64}
-                            className={is_item_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
-                        />
-                    ))}
-                {platform === CFD_PLATFORMS.DXTRADE && (
-                    <Icon
-                        icon='IcAppstoreDerivx'
-                        size={64}
-                        className={is_item_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
-                    />
-                )}
-                {platform === 'options' && (
-                    <Icon
-                        icon='IcAppstoreOptions'
-                        size={64}
-                        className={is_item_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
-                    />
-                )}
+                    (type === 'financial' ? <WalletIcon icon={'Financial'} /> : <WalletIcon icon={'Derived'} />)}
+                {platform === CFD_PLATFORMS.DXTRADE && <WalletIcon icon={'DerivX'} />}
+                {platform === 'options' && <WalletIcon icon={'Options'} />}
             </div>
             <div className='static-cfd-account-manager__details'>
                 <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>

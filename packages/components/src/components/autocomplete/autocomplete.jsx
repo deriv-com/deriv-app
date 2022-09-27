@@ -33,6 +33,7 @@ const Autocomplete = React.memo(props => {
         autoComplete,
         className,
         dropdown_offset,
+        historyValue,
         error,
         has_updating_list = true,
         input_id,
@@ -65,10 +66,18 @@ const Autocomplete = React.memo(props => {
     React.useEffect(() => {
         if (has_updating_list) {
             setFilteredItems(list_items);
-            setActiveIndex(null);
-            setInputValue('');
+            if (historyValue) {
+                const index = filtered_items.findIndex(object => {
+                    return object.text === historyValue;
+                });
+                setInputValue(historyValue);
+                setActiveIndex(index);
+            } else {
+                setInputValue('');
+                setActiveIndex(null);
+            }
         }
-    }, [list_items]);
+    }, [list_items, has_updating_list, historyValue]);
 
     React.useEffect(() => {
         if (should_show_list && list_item_ref.current) {
@@ -310,9 +319,8 @@ Autocomplete.defaultProps = {
     not_found_text: 'No results found',
 };
 
-export default Autocomplete;
-
 Autocomplete.propTypes = {
+    className: PropTypes.string,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         PropTypes.arrayOf(
@@ -329,4 +337,14 @@ Autocomplete.propTypes = {
     list_portal_id: PropTypes.string,
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,
+    autoComplete: PropTypes.string,
+    dropdown_offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    error: PropTypes.string,
+    has_updating_list: PropTypes.bool,
+    input_id: PropTypes.string,
+    onScrollStop: PropTypes.func,
+    value: PropTypes.string,
+    onBlur: PropTypes.func,
 };
+
+export default Autocomplete;

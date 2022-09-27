@@ -140,7 +140,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && replaceCashierMenuOnclick()}
+                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -232,6 +232,15 @@ DefaultHeader.propTypes = {
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
+    country_standpoint: PropTypes.object,
+    history: PropTypes.object,
+    is_onramp_tab_visible: PropTypes.bool,
+    is_p2p_enabled: PropTypes.bool,
+    is_payment_agent_transfer_visible: PropTypes.bool,
+    is_payment_agent_visible: PropTypes.bool,
+    location: PropTypes.object,
+    menu_items: PropTypes.array,
+    changeCurrentLanguage: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({

@@ -9,7 +9,7 @@ import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { generateErrorDialogTitle } from 'Utils/adverts.js';
+import { generateErrorDialogTitle } from 'Utils/adverts';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
@@ -45,18 +45,8 @@ const AdSwitchHintBox = () => {
         );
     }
 
-    return floating_rate_store.reached_target_date ? (
+    return (
         <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
-    ) : (
-        <Localize
-            i18n_default_text={
-                'Fixed rates are enabled for {{local_currency}}. Ads with floating rates will be deactivated. Switch to fixed rates by {{end_date}}.'
-            }
-            values={{
-                local_currency: general_store.client.local_currency_config.currency || '',
-                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
-            }}
-        />
     );
 };
 
@@ -69,12 +59,11 @@ const MyAdsTable = () => {
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
         general_store.setP2PConfig();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-
         return () => {
             my_ads_store.setApiErrorCode(null);
             floating_rate_store.setChangeAdAlert(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (my_ads_store.is_table_loading) {

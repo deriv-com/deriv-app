@@ -7,13 +7,13 @@ import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { useUpdatingAvailableBalance } from 'Components/hooks';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import { api_error_codes } from 'Constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
 import FloatingRate from 'Components/floating-rate';
 import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
-import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts.js';
+import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
@@ -409,7 +409,11 @@ const EditAdForm = () => {
                                                         <Localize i18n_default_text='Payment methods' />
                                                     </Text>
                                                     <Text color='less-prominent'>
-                                                        <Localize i18n_default_text='You may choose up to 3.' />
+                                                        {is_sell_advert ? (
+                                                            <Localize i18n_default_text='You may tap and choose up to 3.' />
+                                                        ) : (
+                                                            <Localize i18n_default_text='You may choose up to 3.' />
+                                                        )}
                                                     </Text>
                                                 </div>
                                                 <EditAdFormPaymentMethods

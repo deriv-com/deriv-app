@@ -12,7 +12,7 @@
         "url": "git+https://github.com/binary-com/deriv-app.git"
     },
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.16.0"
     },
     "scripts": {
         "start": "echo \"No start specified\"",
@@ -24,7 +24,7 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\""
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
     },
     "bugs": {
         "url": "https://github.com/binary-com/deriv-app/issues"
@@ -32,6 +32,9 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
+        "@types/react": "^18.0.7",
+        "@types/react-dom": "^18.0.0",
+        "typescript": "^4.6.3",
         "chai": "^4.2.0",
         "jsdom": "^16.2.1",
         "moment": "^2.29.2"

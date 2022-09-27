@@ -7,12 +7,12 @@ import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shar
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import { ad_type } from 'Constants/floating-rate.js';
+import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
-import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value.js';
+import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -91,6 +91,7 @@ const BuySellForm = props => {
     React.useEffect(() => {
         const receive_amount = input_amount * calculated_rate;
         buy_sell_store.setReceiveAmount(receive_amount);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input_amount, effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
@@ -129,7 +130,7 @@ const BuySellForm = props => {
                 validate={buy_sell_store.validatePopup}
                 validateOnMount={!should_disable_field}
                 initialValues={{
-                    amount: input_amount,
+                    amount: min_order_amount_limit,
                     contact_info: buy_sell_store.contact_info,
                     payment_info: buy_sell_store.payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,
@@ -137,7 +138,7 @@ const BuySellForm = props => {
                 initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
                 onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
             >
-                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
+                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched }) => {
                     buy_sell_store.form_props.setIsSubmitDisabled(
                         !isValid ||
                             isSubmitting ||
@@ -379,7 +380,7 @@ const BuySellForm = props => {
                                                     onChange={event => {
                                                         if (event.target.value === '') {
                                                             setFieldValue('amount', '');
-                                                            setInputAmount(0);
+                                                            setInputAmount('');
                                                         } else {
                                                             const amount = getRoundedNumber(
                                                                 event.target.value,
@@ -390,7 +391,7 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     required
-                                                    value={values.amount}
+                                                    value={input_amount}
                                                     disabled={should_disable_field}
                                                 />
                                             )}

@@ -31,6 +31,7 @@ const ALIASES = {
     Services: path.resolve(__dirname, '../src/Services'),
     Stores: path.resolve(__dirname, '../src/Stores'),
     Styles: path.resolve(__dirname, '../src/Styles'),
+    Types: path.resolve(__dirname, '../src/Types'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [

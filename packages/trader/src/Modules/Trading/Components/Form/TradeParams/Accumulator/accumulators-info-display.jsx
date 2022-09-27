@@ -43,7 +43,6 @@ AccumulatorsInfoDisplay.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    // TODO:: when API is ready, connect real max_ticks_number
     currency: modules.trade.currency,
     max_ticks_number: modules.trade.max_ticks_number,
     max_payout: modules.trade.max_payout,

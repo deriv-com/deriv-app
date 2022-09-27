@@ -32,7 +32,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         exit_tick_time,
         profit,
         date_start,
-        max_ticks_number,
+        current_ticks_count,
         tick_count,
         transaction_ids: { buy, sell } = {},
     } = contract_info;
@@ -40,7 +40,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     const is_profit = profit >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
     const ticks_duration_text = isAccumulatorContract(contract_type)
-        ? `${tick_count}/${max_ticks_number} ${localize('ticks')}`
+        ? `${current_ticks_count}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
 
     const getLabel = () => {

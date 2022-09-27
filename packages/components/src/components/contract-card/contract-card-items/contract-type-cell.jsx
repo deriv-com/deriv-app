@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IconTradeTypes from '../../icon-trade-types';
 import { getGrowthRatePercentage } from '@deriv/shared';
+import classNames from 'classnames';
 
 const ContractTypeCell = ({ getContractTypeDisplay, growth_rate, is_high_low, multiplier, type }) => (
-    <div className='dc-contract-type'>
+    <div className={classNames('dc-contract-type', { 'dc-contract-type--accumulators': growth_rate })}>
         <div className='dc-contract-type__type-wrapper'>
             <IconTradeTypes
                 type={is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase()}

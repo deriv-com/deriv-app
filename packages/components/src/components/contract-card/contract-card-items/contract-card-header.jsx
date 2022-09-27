@@ -30,7 +30,7 @@ const ContractCardHeader = ({
     const {
         growth_rate,
         underlying,
-        max_ticks_number,
+        current_ticks_count,
         multiplier,
         contract_type,
         shortcode,
@@ -93,7 +93,7 @@ const ContractCardHeader = ({
                 </MobileWrapper>
             </div>
             {!is_sold && is_accumulator && (
-                <TickCounterBar current_tick={current_tick} max_ticks_duration={max_ticks_number} />
+                <TickCounterBar current_tick={current_ticks_count} max_ticks_duration={tick_count} />
             )}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />

@@ -974,7 +974,7 @@ export default class TradeStore extends BaseStore {
 
         if (this.is_accumulator && this.proposal_info && (this.proposal_info.ACCU || this.proposal_info.DECCU)) {
             const {
-                max_ticks_number,
+                tick_count,
                 ticks_history_stats: stay_in_history,
                 tick_size_barrier,
                 max_payout,
@@ -986,10 +986,11 @@ export default class TradeStore extends BaseStore {
                     this.break_out_history,
                     this.proposal_info.DECCU.ticks_history_stats
                 );
-            } else this.break_out_history = dummy_break_out_history;
+            } else
+                this.break_out_history = getUpdatedTicksHistoryStats(this.break_out_history, dummy_break_out_history);
             this.stay_in_history = getUpdatedTicksHistoryStats(this.stay_in_history, stay_in_history);
             this.tick_size_barrier = tick_size_barrier;
-            this.max_ticks_number = max_ticks_number;
+            this.max_ticks_number = tick_count;
             this.max_payout = max_payout;
             this.barrier_1 = high_barrier;
             this.barrier_2 = low_barrier;

@@ -2,7 +2,7 @@
     "name": "@deriv/bot-skeleton",
     "version": "1.0.0",
     "description": "Visual automation for Deriv.com",
-    "main": "src/app.js",
+    "main": "src/app.ts",
     "private": true,
     "scripts": {
         "start": "npm run test && npm run serve",

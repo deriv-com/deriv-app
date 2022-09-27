@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
-import IdvDocumentVerified from '../../../../Assets/ic-idv-verified.svg';
+import IdvDocumentVerified from 'Assets/ic-idv-verified.svg';
 
 const IdvVerified = ({ needs_poa, is_from_external }) => {
     const header_Text = needs_poa

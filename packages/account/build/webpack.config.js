@@ -8,7 +8,7 @@ module.exports = function (env) {
         context: path.resolve(__dirname, '../src'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            account: path.resolve(__dirname, '../src', 'index.tsx'),
+            account: path.resolve(__dirname, '../src', 'index.js'),
             'accept-risk-config': 'Configs/accept-risk-config',
             'account-limits': 'Components/account-limits',
             'address-details': 'Components/address-details',

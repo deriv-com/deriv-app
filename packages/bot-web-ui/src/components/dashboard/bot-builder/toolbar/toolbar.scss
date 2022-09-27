@@ -18,14 +18,17 @@
             & .dc-btn__icon {
                 padding-right: 0.4rem;
             }
+
             > * {
                 align-self: center;
             }
+
             &-text {
                 @include typeface(--title-center-bold-active, none);
             }
         }
     }
+
     &__section {
         display: flex;
 
@@ -34,6 +37,7 @@
             margin: 0 4px;
         }
     }
+
     &__icon {
         cursor: pointer;
         border: none;
@@ -41,6 +45,7 @@
         height: 16px;
         width: 16px;
     }
+
     &__group {
         display: flex;
         border-radius: $BORDER_RADIUS;
@@ -56,9 +61,11 @@
             }
         }
     }
+
     &__animation {
         margin-right: 0.5rem;
     }
+
     &__dialog {
         &-text--second {
             margin-top: 2.4rem;
@@ -70,6 +77,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }

@@ -14,11 +14,13 @@ export type TClientStore = {
     };
     account_status: GetAccountStatus;
     balance?: string;
+    can_change_fiat_currency: boolean;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => void;
     is_account_setting_loaded: boolean;
+    is_eu: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_financial_account: boolean;
@@ -28,8 +30,11 @@ export type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_switching: boolean;
+    is_tnc_needed: boolean;
+    is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
+    landing_company_shortcode: string;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -37,6 +42,9 @@ export type TClientStore = {
     loginid?: string;
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
+    standpoint: {
+        iom: string;
+    };
     switchAccount: (value?: string) => void;
     verification_code: {
         payment_agent_withdraw: string;

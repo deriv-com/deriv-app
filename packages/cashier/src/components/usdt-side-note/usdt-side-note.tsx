@@ -3,7 +3,11 @@ import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import './usdt-side-note.scss';
 
-const USDTSideNote = ({ type }) => {
+type TUSDTSideNoteProps = {
+    type: 'eusdt' | 'usdt';
+};
+
+const USDTSideNote = ({ type }: TUSDTSideNoteProps) => {
     const [is_modal_open, setModalOpen] = React.useState(false);
 
     const handleLearnMore = () => {

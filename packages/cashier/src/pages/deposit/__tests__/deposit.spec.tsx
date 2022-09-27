@@ -11,16 +11,42 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
 }));
-jest.mock('Components/cashier-container/virtual', () => () => <div>Virtual</div>);
-jest.mock('Components/cashier-locked', () => () => <div>CashierLocked</div>);
-jest.mock('Components/funds-protection', () => () => <div>FundsProtection</div>);
-jest.mock('Components/crypto-transactions-history', () => () => <div>CryptoTransactionsHistory</div>);
-jest.mock('Components/error', () => () => <div>Error</div>);
-jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
-jest.mock('Components/cashier-container/real', () => () => <div>Real</div>);
-jest.mock('Components/cashier-onboarding/cashier-onboarding', () => () => <div>CashierOnboarding</div>);
-jest.mock('../crypto-deposit', () => () => <div>CryptoDeposit</div>);
-jest.mock('../deposit-locked', () => () => <div>DepositLocked</div>);
+jest.mock('Components/cashier-container/virtual', () => {
+    const CashierContainerVirtual = () => <div>Virtual</div>;
+    return CashierContainerVirtual;
+});
+jest.mock('Components/cashier-locked', () => {
+    const CashierLocked = () => <div>CashierLocked</div>;
+    return CashierLocked;
+});
+jest.mock('Components/funds-protection', () => {
+    const FundsProtection = () => <div>FundsProtection</div>;
+    return FundsProtection;
+});
+jest.mock('Components/crypto-transactions-history', () => {
+    const CryptoTransactionsHistory = () => <div>CryptoTransactionsHistory</div>;
+    return CryptoTransactionsHistory;
+});
+jest.mock('Components/error', () => {
+    const Error = () => <div>Error</div>;
+    return Error;
+});
+jest.mock('../crypto-deposit', () => {
+    const CryptoDeposit = () => <div>CryptoDeposit</div>;
+    return CryptoDeposit;
+});
+jest.mock('Components/cashier-container/real', () => {
+    const CashierContainerReal = () => <div>Real</div>;
+    return CashierContainerReal;
+});
+jest.mock('Components/cashier-onboarding/cashier-onboarding', () => {
+    const CashierOnboarding = () => <div>CashierOnboarding</div>;
+    return CashierOnboarding;
+});
+jest.mock('../deposit-locked', () => {
+    const DepositLocked = () => <div>DepositLocked</div>;
+    return DepositLocked;
+});
 
 describe('<Deposit />', () => {
     const props = {

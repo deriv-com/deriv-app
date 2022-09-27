@@ -18,9 +18,9 @@ describe('<SideNote />', () => {
     });
 
     it('should show side note bullet dots when "has_bullets=true"', () => {
-        const { container } = render(<SideNote {...props} has_bullets />);
+        render(<SideNote {...props} has_bullets />);
 
-        expect(container.querySelector('.side-note__bullet-wrapper')).not.toBeNull();
-        expect(container.querySelector('.side-note__bullet')).not.toBeNull();
+        expect(screen.getByTestId('dt_side_note_bullet_wrapper_0')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_side_note_bullet_0')).toBeInTheDocument();
     });
 });

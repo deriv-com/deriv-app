@@ -1,11 +1,33 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import './error.scss';
 
-const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
+type TErrorComponentProps = {
+    button_link?: string;
+    button_text?: string;
+    footer?: JSX.Element;
+    header?: JSX.Element | string;
+    message?: JSX.Element;
+    onClickButton?: () => void;
+};
+
+type TErrorFields = {
+    [k: string]: string;
+};
+
+type TErrorProps = {
+    error: {
+        onClickButton?: () => void;
+        setErrorMessage?: (message: string) => void;
+        message?: JSX.Element | string;
+        code?: string;
+        fields?: string[];
+    };
+};
+
+const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }: TErrorComponentProps) => (
     <div className='cashier__wrapper cashier__wrapper-error'>
         <Icon icon='IcCashierError' className='error__icon' />
         {header && (
@@ -34,8 +56,8 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({ error }) => {
-    const error_fields = {
+const Error = ({ error }: TErrorProps) => {
+    const error_fields: TErrorFields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
         address_postcode: localize('Postal Code/ZIP'),
@@ -53,7 +75,7 @@ const Error = ({ error }) => {
     };
 
     const clearErrorMessage = () => {
-        error.setErrorMessage('');
+        error.setErrorMessage?.('');
     };
 
     let AccountError;
@@ -86,7 +108,9 @@ const Error = ({ error }) => {
                                 <Localize
                                     i18n_default_text={'Please update your {{details}} to continue.'}
                                     values={{
-                                        details: error.fields.map(field => error_fields[field] || field).join(', '),
+                                        details: error.fields
+                                            .map((field: string) => error_fields[field] || field)
+                                            .join(', '),
                                         interpolation: { escapeValue: false },
                                     }}
                                 />
@@ -124,10 +148,6 @@ const Error = ({ error }) => {
             break;
     }
     return AccountError;
-};
-
-Error.propTypes = {
-    error: PropTypes.object,
 };
 
 export default Error;

@@ -59,6 +59,8 @@ describe('ChangePasswordConfirmation', () => {
         render(<ChangePasswordConfirmation {...mock_props} />);
 
         expect(screen.getByText(/Confirm to change your Deriv MT5 password/i)).toBeInTheDocument();
-        expect(screen.getByText(/This will change the password to all of your DMT5 accounts/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/This will change the password to all of your Deriv MT5 accounts/i)
+        ).toBeInTheDocument();
     });
 });

@@ -1,12 +1,23 @@
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import QRCode from 'qrcode.react';
 import { connect } from 'Stores/connect';
+import { TRootStore, TClientStore, TCryptoTransactionDetails } from 'Types';
 import RecentTransaction from 'Components/recent-transaction';
 import './crypto-deposit.scss';
+
+type TCryptoDeposit = {
+    api_error: string;
+    crypto_transactions: Array<TCryptoTransactionDetails>;
+    currency: TClientStore['currency'];
+    deposit_address: string;
+    is_deposit_address_loading: boolean;
+    recentTransactionOnMount: () => void;
+    pollApiForDepositAddress: (poll: boolean) => void;
+    setIsDeposit: (is_deposit: boolean) => void;
+};
 
 const CryptoDeposit = ({
     api_error,
@@ -17,7 +28,7 @@ const CryptoDeposit = ({
     recentTransactionOnMount,
     pollApiForDepositAddress,
     setIsDeposit,
-}) => {
+}: TCryptoDeposit) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -39,11 +50,11 @@ const CryptoDeposit = ({
         { text: <Localize i18n_default_text='Ethereum (ETH)' />, value: 5 },
     ];
 
-    const [option_message, setOptionMessage] = useState('');
-    const [option_list_value, setOptionListValue] = useState(0);
-    const [qrcode_header, setQRCodeHeader] = useState('');
+    const [option_message, setOptionMessage] = useState<JSX.Element | string>('');
+    const [option_list_value, setOptionListValue] = useState<string | number>(0);
+    const [qrcode_header, setQRCodeHeader] = useState<JSX.Element | string>('');
 
-    const onChangeListOption = event => {
+    const onChangeListOption = (event: { target: { value: number | string } }) => {
         const token_ETH = 'ETH';
         const token_USDC_eUSDT = 'ERC20';
         let token = '';
@@ -245,18 +256,7 @@ const CryptoDeposit = ({
     );
 };
 
-CryptoDeposit.propTypes = {
-    api_error: PropTypes.string,
-    crypto_transactions: PropTypes.array,
-    currency: PropTypes.string,
-    deposit_address: PropTypes.string,
-    is_deposit_address_loading: PropTypes.bool,
-    recentTransactionOnMount: PropTypes.func,
-    pollApiForDepositAddress: PropTypes.func,
-    setIsDeposit: PropTypes.func,
-};
-
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client }: TRootStore) => ({
     api_error: modules.cashier.onramp.api_error,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,

@@ -51,7 +51,6 @@ export const ApiCallProxyHandler = {
                     const result = target_value.apply(this, args);
                     if (result instanceof Promise) {
                         return new Promise(resolve => {
-                            let return_value;
                             result
                                 .then(response => {
                                     if (response.error) {
@@ -66,16 +65,13 @@ export const ApiCallProxyHandler = {
                                         }
                                     }
                                     queue.push(response);
-                                    return_value = response;
+                                    resolve(response);
                                 })
                                 .catch(error => {
                                     if (window.TrackJS) {
                                         window.TrackJS.console.log(queue.list);
                                         window.TrackJS.track(error.getMessage());
                                     }
-                                })
-                                .then(() => {
-                                    resolve(return_value);
                                 });
                         });
                     }

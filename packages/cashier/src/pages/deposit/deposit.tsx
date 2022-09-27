@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import { TRootStore, TClientStore } from 'Types';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
@@ -13,6 +13,41 @@ import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from 'Components/side-note';
+
+type TDeposit = {
+    can_change_fiat_currency: TClientStore['can_change_fiat_currency'];
+    container: string;
+    crypto_transactions: Array<object>;
+    currency: TClientStore['currency'];
+    current_currency_type: TClientStore['current_currency_type'];
+    clearIframe: () => void;
+    error: {
+        is_ask_uk_funds_protection?: boolean;
+        message?: string;
+    };
+    iframe_height: number | string;
+    iframe_url: string;
+    is_cashier_locked: boolean;
+    is_cashier_onboarding: boolean;
+    is_crypto_transactions_visible: boolean;
+    is_crypto: boolean;
+    is_deposit_locked: boolean;
+    is_deposit: boolean;
+    is_eu: TClientStore['is_eu'];
+    is_loading: boolean;
+    is_switching: TClientStore['is_switching'];
+    is_system_maintenance: boolean;
+    is_virtual: TClientStore['is_virtual'];
+    landing_company_shortcode: TClientStore['landing_company_shortcode'];
+    onMount: () => void;
+    recentTransactionOnMount: () => void;
+    setActiveTab: (container: string) => void;
+    setErrorMessage: (error: string) => void;
+    setIsDeposit: (isDeposit: boolean) => void;
+    setSideNotes: (notes: object | null) => void;
+    standpoint: TClientStore['standpoint'];
+    tab_index: number;
+};
 
 const Deposit = ({
     can_change_fiat_currency,
@@ -43,7 +78,7 @@ const Deposit = ({
     setIsDeposit,
     setSideNotes,
     tab_index,
-}) => {
+}: TDeposit) => {
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
     React.useEffect(() => {
@@ -137,58 +172,26 @@ const Deposit = ({
     return <CashierOnboarding setSideNotes={setSideNotes} />;
 };
 
-Deposit.propTypes = {
-    can_change_fiat_currency: PropTypes.bool,
-    clearIframe: PropTypes.func,
-    crypto_transactions: PropTypes.array,
-    container: PropTypes.string,
-    currency: PropTypes.string,
-    current_currency_type: PropTypes.string,
-    error: PropTypes.object,
-    is_cashier_onboarding: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
-    is_deposit: PropTypes.bool,
-    is_crypto: PropTypes.bool,
-    is_crypto_transactions_visible: PropTypes.bool,
-    is_deposit_locked: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    iframe_url: PropTypes.string,
-    is_loading: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    is_system_maintenance: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
-    onMount: PropTypes.func,
-    recentTransactionOnMount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-    setErrorMessage: PropTypes.func,
-    setIsDeposit: PropTypes.func,
-    setSideNotes: PropTypes.func,
-    standpoint: PropTypes.object,
-    tab_index: PropTypes.number,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     can_change_fiat_currency: client.can_change_fiat_currency,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
+    clearIframe: modules.cashier.iframe.clearIframe,
     container: modules.cashier.deposit.container,
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     error: modules.cashier.deposit.error,
-    is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
-    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_crypto: modules.cashier.general_store.is_crypto,
-    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_deposit: modules.cashier.general_store.is_deposit,
-    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
-    is_eu: client.is_eu,
     iframe_height: modules.cashier.iframe.iframe_height,
     iframe_url: modules.cashier.iframe.iframe_url,
-    clearIframe: modules.cashier.iframe.clearIframe,
+    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
+    is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
+    is_crypto: modules.cashier.general_store.is_crypto,
+    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
+    is_deposit: modules.cashier.general_store.is_deposit,
+    is_eu: client.is_eu,
     is_loading: modules.cashier.general_store.is_loading,
-    is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_switching: client.is_switching,
+    is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
     is_virtual: client.is_virtual,
     landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.cashier.deposit.onMountDeposit,

@@ -3,7 +3,7 @@ import { TCommonStore } from './common-store.types';
 import { TUiStore } from './ui-store.types';
 import CashierStore from '../../stores/cashier-store';
 
-export type RootStore = {
+export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
     modules: {
@@ -11,5 +11,3 @@ export type RootStore = {
     };
     ui: TUiStore;
 };
-
-export type TRootStore = RootStore;

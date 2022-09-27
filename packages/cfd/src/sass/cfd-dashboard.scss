@@ -647,6 +647,7 @@
 
     &__balance {
         margin-bottom: 0.8rem;
+        padding: 0 0.8rem;
         &--region {
             border: 1px solid #2a3052;
             border-radius: 1rem;
@@ -1437,6 +1438,47 @@
         .poi-form-on-signup {
             display: grid;
             grid-template-rows: minmax(20rem, 1fr);
+        }
+
+        .manual-poi {
+            margin: auto;
+            width: max-content;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            &-details {
+                margin: auto;
+
+                &__form {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+                &__btns {
+                    height: 7.2rem;
+                    padding-bottom: 0;
+                }
+
+                &__field {
+                    margin-bottom: 0.5rem;
+                }
+
+                &__fields-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .account-management__message-wrapper {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
     }
 

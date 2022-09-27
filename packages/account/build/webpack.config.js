@@ -52,12 +52,11 @@ module.exports = function (env) {
             'self-exclusion': 'Components/self-exclusion',
             'scrollbars-container': 'Components/scrollbars-container',
             'sent-email-modal': 'Components/sent-email-modal',
-            'text-container': 'Components/text-container',
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
             'proof-of-identity-config': 'Configs/proof-of-identity-config',
             'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
-            'proof-of-identity-containerfor-mt5':
+            'proof-of-identity-container-for-mt5':
                 'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
             'poi-poa-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
         },

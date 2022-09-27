@@ -2,18 +2,9 @@ import React from 'react';
 import { Text, Button, Icon, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
-import {
-    getCurrencyDisplayCode,
-    isMobile,
-    routes,
-    getCurrencyName,
-    getCFDAccountDisplay,
-    isBot,
-    formatMoney,
-} from '@deriv/shared';
-import { useHistory, useLocation } from 'react-router-dom';
+import { getCurrencyDisplayCode, isMobile, getCurrencyName, getCFDAccountDisplay, isBot } from '@deriv/shared';
 import classNames from 'classnames';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 interface Icountry_standpoint {
     is_united_kingdom: string;
@@ -33,7 +24,6 @@ interface Iserver {
 
 type TOptionsAccountprops = RouteComponentProps & {
     currency_icon: string | undefined;
-    // account_title?: string;
     loginid_text: string;
     balance?: string;
     account_button?: string;
@@ -82,12 +72,10 @@ type TAccountDisplay = {
 
 const OptionsAccount = ({
     currency_icon,
-    //account_title,
     loginid_text,
     balance,
     currency,
     display_type,
-    has_balance,
     has_reset_balance,
     is_disabled,
     is_virtual,
@@ -97,21 +85,15 @@ const OptionsAccount = ({
     server,
     sub_account_type,
     has_error,
-    history,
     platform,
     is_dark_mode_on,
     shortcode,
     should_show_server_name,
     onClickResetVirtualBalance,
-    selected_loginid,
     redirectAccount,
     activeAccount,
     onClickDeposit,
 }: TOptionsAccountprops) => {
-    //const history = useHistory();
-    // const onClickDeposit = () => {
-    //     history.push(routes.cashier_deposit);
-    // };
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
         <div
@@ -161,17 +143,6 @@ const OptionsAccount = ({
                 </Text>
             </div>
             <div className='account__container--account-reset-button-wrapper'>
-                {/* <Text className='account__container--account-reset-button--label' onClick={onClickDeposit}>
-                    <Localize i18n_default_text={account_button} />
-                </Text> */}
-
-                {/* <Button
-                    className='account__container--account-reset-button--label'
-                    has_effect
-                    text={localize('Deposit')}
-                    onClick={onClickDeposit}
-                /> */}
-
                 {has_reset_balance ? (
                     <Button
                         is_disabled={is_disabled}

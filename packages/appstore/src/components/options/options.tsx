@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useStores } from 'Stores';
 import { Text, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -32,11 +32,11 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         should_show_server_name,
         resetVirtualBalance,
     } = client;
-    const sortedAccountList = useMemo(
+    const sortedAccountList = React.useMemo(
         () => getSortedAccountList(account_list, accounts).filter(account => !account.is_virtual),
         [account_list, accounts]
     );
-    const [isActiveId, setIsActiveId] = useState(sortedAccountList[0].loginid);
+    const [isActiveId, setIsActiveId] = React.useState(sortedAccountList[0].loginid);
     const toggleAccountsDialog = ui.toggleAccountsDialog;
     const resetBalance = async () => {
         closeAccountsDialog();

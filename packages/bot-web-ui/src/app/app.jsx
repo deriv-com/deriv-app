@@ -3,13 +3,13 @@ import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
-    Dashboard,
+    Audio,
+    BotFooterExtensions,
     BotNotificationMessages,
+    Dashboard,
     NetworkToastPopup,
     QuickStrategy,
-    Audio,
     RoutePromptDialog,
-    BotFooterExtensions,
 } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
@@ -59,6 +59,7 @@ const App = ({ passthrough }) => {
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -69,6 +70,7 @@ const App = ({ passthrough }) => {
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return is_loading ? (
@@ -76,13 +78,13 @@ const App = ({ passthrough }) => {
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot-dashboard'>
-                <BotNotificationMessages />
-                <NetworkToastPopup />
-                <Dashboard />
-                <QuickStrategy />
                 <Audio />
-                <RoutePromptDialog />
                 <BotFooterExtensions />
+                <BotNotificationMessages />
+                <Dashboard />
+                <NetworkToastPopup />
+                <QuickStrategy />
+                <RoutePromptDialog />
             </div>
         </MobxContentProvider>
     );

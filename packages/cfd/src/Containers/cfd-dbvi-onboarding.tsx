@@ -56,6 +56,22 @@ const CFDDbViOnBoarding = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
+    const getModalContent = () =>
+        showSubmittedModal ? (
+            <PoiPoaDocsSubmitted
+                onClickOK={toggleCFDVerificationModal}
+                updateAccountStatus={updateAccountStatus}
+                account_status={account_status}
+                is_vanuatu_selected={is_vanuatu_selected}
+            />
+        ) : (
+            <CFDFinancialStpRealAccountSignup
+                onFinish={() => {
+                    setShowSubmittedModal(true);
+                }}
+            />
+        );
+
     return is_loading ? (
         <Loading />
     ) : (
@@ -73,20 +89,7 @@ const CFDDbViOnBoarding = ({
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
-                    {showSubmittedModal ? (
-                        <PoiPoaDocsSubmitted
-                            onClickOK={toggleCFDVerificationModal}
-                            updateAccountStatus={updateAccountStatus}
-                            account_status={account_status}
-                            is_vanuatu_selected={is_vanuatu_selected}
-                        />
-                    ) : (
-                        <CFDFinancialStpRealAccountSignup
-                            onFinish={() => {
-                                setShowSubmittedModal(true);
-                            }}
-                        />
-                    )}
+                    {getModalContent()}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -97,20 +100,7 @@ const CFDDbViOnBoarding = ({
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
                 >
-                    {showSubmittedModal ? (
-                        <PoiPoaDocsSubmitted
-                            onClickOK={toggleCFDVerificationModal}
-                            updateAccountStatus={updateAccountStatus}
-                            account_status={account_status}
-                            is_vanuatu_selected={is_vanuatu_selected}
-                        />
-                    ) : (
-                        <CFDFinancialStpRealAccountSignup
-                            onFinish={() => {
-                                setShowSubmittedModal(true);
-                            }}
-                        />
-                    )}
+                    {getModalContent()}
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>

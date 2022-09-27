@@ -167,7 +167,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
                             <Text
-                                color={general_store.is_listed ? 'profit-success' : 'disabled'}
+                                color={
+                                    general_store.is_listed && !general_store.is_barred ? 'profit-success' : 'disabled'
+                                }
                                 line_height='m'
                                 size='xs'
                                 weight='bold'

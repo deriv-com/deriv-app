@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Body from './modal-body';
 import Footer from './modal-footer';
-import Icon from '../icon/icon';
 import Text from '../text/text';
+import Icon from '../icon/icon';
 import { useOnClickOutside } from '../../hooks';
 
 type TClickEvent = React.MouseEvent<HTMLElement, MouseEvent> & {

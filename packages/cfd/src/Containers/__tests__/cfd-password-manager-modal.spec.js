@@ -110,12 +110,12 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(
             screen.getByText(/use this password to log in to your dmt5 accounts on the desktop, web, and mobile apps/i)
         ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /change deriv mt5 password/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /change dmt5 password/i })).toBeInTheDocument();
     });
 
-    it('should render CFDPasswordManagerModal if change deriv mt5 password button is clicked', () => {
+    it('should render CFDPasswordManagerModal if change dmt5 password button is clicked', () => {
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
-        fireEvent.click(screen.getByRole('button', { name: /change deriv mt5 password/i }));
+        fireEvent.click(screen.getByRole('button', { name: /change dmt5 password/i }));
         expect(screen.getByText(/confirm to change your dmt5 password/i)).toBeInTheDocument();
         expect(screen.getByText(/this will change the password to all of your dmt5 accounts/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
@@ -124,11 +124,11 @@ describe('<CFDPasswordManagerModal />', () => {
 
     it('should render SentEmailModal if confirm button is clicked', async () => {
         renderwithRouter(<CFDPasswordManagerModal {...mock_props} />);
-        fireEvent.click(screen.getByRole('button', { name: /change deriv mt5 password/i }));
+        fireEvent.click(screen.getByRole('button', { name: /change dmt5 password/i }));
         fireEvent.click(screen.getByRole('button', { name: /confirm/i }));
         expect(await screen.findByText(/we've sent you an email/i)).toBeInTheDocument();
         expect(
-            await screen.findByText(/please click on the link in the email to change your deriv mt5 password./i)
+            await screen.findByText(/please click on the link in the email to change your dmt5 password./i)
         ).toBeInTheDocument();
 
         expect(await screen.findByText(/didn't receive the email?/i)).toBeInTheDocument();
@@ -314,6 +314,6 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(screen.getByText(/investor password/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/investor password/i));
 
-        expect(await screen.findByText(/manage deriv mt5 real derived account password/i)).toBeInTheDocument();
+        expect(await screen.findByText(/manage dmt5 real derived account password/i)).toBeInTheDocument();
     });
 });

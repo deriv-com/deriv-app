@@ -11,6 +11,9 @@ export type TRoute = {
     path?: string;
     routes?: TRoute[];
     subroutes?: TRoute[];
+    to?: string;
+    is_logged_in?: boolean;
+    is_logging_in?: boolean;
 };
 
 export type TRouteGroup = {

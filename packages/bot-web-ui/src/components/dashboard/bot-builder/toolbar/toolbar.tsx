@@ -108,8 +108,8 @@ const Toolbar = (props: TToolbar) => {
 };
 
 export default connect(
-    ({ main_content, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }: RootStore) => ({
-        active_tab: main_content.active_tab,
+    ({ blockly_store, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }: RootStore) => ({
+        active_tab: blockly_store.active_tab,
         file_name: toolbar.file_name,
         has_redo_stack: toolbar.has_redo_stack,
         has_undo_stack: toolbar.has_undo_stack,

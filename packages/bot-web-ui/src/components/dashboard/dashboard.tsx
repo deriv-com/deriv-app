@@ -7,7 +7,7 @@ import ReactJoyride from 'react-joyride';
 import { DBOT_ONBOARDING } from './joyride-config';
 import BotBuilder from './bot-builder';
 import classNames from 'classnames';
-import RunStrategy from '../toolbar/run-strategy';
+import RunStrategy from './dashboard-components/run-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
@@ -69,12 +69,12 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
 
             <div
                 className={classNames('dashboard__run-strategy-wrapper', {
-                    'dashboard__sidebar-wrapper--active': !show_side_bar || active_tab !== 0,
+                    'dashboard__sidebar-wrapper--active': active_tab !== 0 || !show_side_bar,
                 })}
             >
                 <RunStrategy />
                 {active_tab === 0 && <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />}
-                {(active_tab === 1 || active_tab === 2) && <RunPanel />}
+                {(active_tab !== 0 || !show_side_bar) && <RunPanel />}
             </div>
         </div>
     );

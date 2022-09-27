@@ -62,13 +62,14 @@ describe('<Error />', () => {
     });
 
     it('should clear an error.message if one of the buttons ["Resend email", "Update my details", "Try again"] was clicked', () => {
-        let checkButton = (btn_name, error_code) => {
+        const checkButton = (btn_name, error_code) => {
             const history = createBrowserHistory();
             const error = {
                 code: error_code,
                 setErrorMessage(value) {
                     this.message = value;
                 },
+                message: '',
             };
             const { unmount } = render(
                 <Router history={history}>

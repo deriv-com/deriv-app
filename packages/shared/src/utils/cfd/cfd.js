@@ -10,7 +10,7 @@ const CFD_text = {
     cfd: 'CFDs',
     synthetic: 'Derived',
     synthetic_bvi: 'Derived BVI',
-    synthetic_svg: 'MT5 Derived SVG',
+    synthetic_svg: 'Derived SVG',
     financial: 'Financial',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',

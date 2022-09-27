@@ -87,12 +87,12 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@deriv/api-types": "1.0.48",
+        "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/deriv-charts": "^0.6.3",
-        "@deriv/shared": "^1.0.0",
         "@deriv/reports": "^1.0.0",
+        "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@types/classnames": "^2.2.11",
         "@types/react-loadable": "^5.5.6",

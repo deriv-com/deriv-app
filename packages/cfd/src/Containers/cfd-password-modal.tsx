@@ -192,10 +192,13 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        if (type === 'synthetic') {
-            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
-        } else if (type === 'financial') {
-            return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+        switch (type) {
+            case 'synthetic':
+                return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
+            case 'financial':
+                return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+            default:
+                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
     }
 

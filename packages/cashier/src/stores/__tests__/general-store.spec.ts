@@ -1,10 +1,10 @@
-import React from 'react';
 import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import CashierNotifications from 'Components/cashier-notifications';
+import CashierNotificationsIcon from '../../components/cashier-notifications/cashier-notifications-icon';
+import { TWebSocket, TRootStore, DeepPartial } from '../../types';
 
-let cashier_menu, general_store, root_store, WS;
+let cashier_menu, general_store: GeneralStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     root_store = {
@@ -88,11 +88,11 @@ beforeEach(() => {
         },
         wait: jest.fn(),
     };
-    general_store = new GeneralStore({ root_store, WS });
+    general_store = new GeneralStore(WS, root_store);
 
     cashier_menu = {
         id: 'dt_cashier_tab',
-        icon: <CashierNotifications p2p_notification_count={general_store.p2p_notification_count} />,
+        icon: CashierNotificationsIcon(general_store.p2p_notification_count),
         text: expect.any(Function),
         link_to: routes.cashier,
         onClick: false,
@@ -107,9 +107,10 @@ describe('GeneralStore', () => {
     });
 
     it('should set function on remount', () => {
-        general_store.setOnRemount('function');
+        const remountFunc = () => 'function';
+        general_store.setOnRemount(remountFunc);
 
-        expect(general_store.onRemount).toBe('function');
+        expect(general_store.onRemount).toBe(remountFunc);
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {
@@ -332,6 +333,8 @@ describe('GeneralStore', () => {
             expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
         });
         expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
+        // TODO
+        // eslint-disable-next-line testing-library/await-async-utils
         expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
         expect(general_store.root_store.modules.cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(
             1

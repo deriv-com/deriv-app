@@ -30,8 +30,10 @@ type TWebSocketCall = {
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse>;
     cashierPayments?: ({ provider, transaction_type }: TCashierPayments) => Promise<any>;
-    getAccountStatus: () => Promise<AccountStatusResponse>;
-    transferBetweenAccounts: (
+    getAccountStatus?: () => Promise<AccountStatusResponse>;
+    p2pAdvertiserInfo?: () => Promise<any>;
+    send?: (obj: any) => Promise<any>;
+    transferBetweenAccounts?: (
         account_from?: string,
         account_to?: string,
         currency?: string,

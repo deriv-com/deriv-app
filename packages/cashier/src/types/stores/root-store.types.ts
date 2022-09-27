@@ -6,6 +6,7 @@ import { TUiStore } from './ui-store.types';
 export type RootStore = {
     client: TClientStore;
     common: TCommonStore;
+    menu: any;
     modules: any;
     notifications: TNotificationStore;
     ui: TUiStore;

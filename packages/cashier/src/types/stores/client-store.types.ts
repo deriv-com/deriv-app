@@ -3,6 +3,8 @@ import { TMT5LoginAccount } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
+type TAccountList = Array<TAccount & { title: string }>;
+
 // balance is missing in @deriv/api-types
 type TActiveAccounts = TAccount & {
     balance?: number;
@@ -26,6 +28,7 @@ export type TClientStore = {
             };
         };
     };
+    account_list: TAccountList;
     account_status: GetAccountStatus;
     available_crypto_currencies: string[];
     active_accounts: Array<TActiveAccounts>;
@@ -36,6 +39,7 @@ export type TClientStore = {
     current_fiat_currency?: string;
     email: string;
     getLimits: () => void;
+    has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
     is_account_setting_loaded: boolean;

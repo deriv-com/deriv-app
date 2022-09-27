@@ -47,8 +47,8 @@ type TCashierOnboardingProps = {
 };
 
 const CashierOnboarding = ({
+    accounts,
     available_crypto_currencies,
-    accounts_list,
     can_change_fiat_currency,
     currency,
     has_set_currency,
@@ -73,8 +73,18 @@ const CashierOnboarding = ({
 }: TCashierOnboardingProps) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
-    const has_crypto_account = accounts_list.some(x => x.is_crypto);
-    const has_fiat_account = accounts_list.some(x => !x.is_crypto);
+    const has_crypto_account = React.useMemo(
+        () => Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency)),
+        [accounts]
+    );
+    const has_fiat_account = React.useMemo(
+        () =>
+            Object.values(accounts).some(
+                acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency)
+            ),
+        [accounts]
+    );
+
     const is_currency_banner_visible =
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
 
@@ -94,14 +104,14 @@ const CashierOnboarding = ({
         if (
             typeof setSideNotes === 'function' &&
             !is_switching &&
-            accounts_list.length > 0 &&
+            Object.keys(accounts).length > 0 &&
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
             setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching, accounts_list, is_landing_company_loaded]);
+    }, [is_switching, accounts, is_landing_company_loaded]);
 
     const openRealAccount = (target: string) => {
         openRealAccountSignup('choose');
@@ -175,7 +185,7 @@ const CashierOnboarding = ({
         return options;
     };
 
-    if (is_switching || accounts_list.length === 0 || !is_landing_company_loaded)
+    if (is_switching || Object.keys(accounts).length === 0 || !is_landing_company_loaded)
         return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
     return (
@@ -226,7 +236,7 @@ const CashierOnboarding = ({
 };
 
 export default connect(({ client, common, modules, ui }: TRootStore) => ({
-    accounts_list: modules.cashier.account_transfer.accounts_list,
+    accounts: client.accounts,
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,

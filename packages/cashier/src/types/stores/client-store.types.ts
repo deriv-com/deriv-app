@@ -38,6 +38,7 @@ export type TClientStore = {
     getLimits: () => { get_limits?: GetLimits };
     has_maltainvest_account: boolean;
     is_account_setting_loaded: boolean;
+    is_eu: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
@@ -65,6 +66,9 @@ export type TClientStore = {
     }: TResponseTradingPlatformAccountsList) => Array<TMT5LoginAccount>;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
+    standpoint: {
+        iom: string;
+    };
     switchAccount: (value?: string) => void;
     verification_code: {
         payment_agent_withdraw: string;
@@ -76,4 +80,13 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    setVerificationCode: (code: string, action: string) => void;
+    updateAccountStatus: () => Promise<void>;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
+    is_authentication_needed: boolean;
+    is_tnc_needed: boolean;
+    is_financial_account: boolean;
+    is_financial_information_incomplete: boolean;
+    is_trading_experience_incomplete: boolean;
+    is_eu: boolean;
 };

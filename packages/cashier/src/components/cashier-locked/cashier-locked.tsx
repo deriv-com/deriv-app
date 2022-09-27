@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { TRootStore } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -292,7 +292,7 @@ const CashierLocked = ({
     );
 };
 
-export default connect(({ client, modules }: RootStore) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     account_status: client.account_status,
     accounts: client.accounts,
     current_currency_type: client.current_currency_type,

@@ -296,22 +296,6 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
-    @computed
-    get notifications_count_p2p() {
-        const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-        const local_storage_settings = p2p_settings[this.root_store.client.loginid];
-
-        if (isEmptyObject(local_storage_settings)) {
-            return { is_cached: false, notifications: [] };
-        }
-
-        const unseen_notifications = local_storage_settings.notifications.filter(
-            notification => notification.is_seen === false
-        );
-
-        return unseen_notifications.length;
-    }
-
     @action.bound
     async onMountCommon(should_remount) {
         const { client, common, modules } = this.root_store;

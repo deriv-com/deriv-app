@@ -4,9 +4,16 @@ import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
-const ErrorModal = ({ error_message, error_modal_title, has_close_icon, is_error_modal_open, setIsErrorModalOpen }) => {
+const ErrorModal = ({
+    error_message,
+    error_modal_title,
+    has_close_icon,
+    is_error_modal_open,
+    setIsErrorModalOpen,
+    width,
+}) => {
     return (
-        <Modal has_close_icon={has_close_icon} is_open={is_error_modal_open} title={error_modal_title}>
+        <Modal has_close_icon={has_close_icon} is_open={is_error_modal_open} title={error_modal_title} width={width}>
             <Modal.Body>{error_message}</Modal.Body>
             <Modal.Footer>
                 <Button large primary onClick={() => setIsErrorModalOpen(false)}>
@@ -23,6 +30,7 @@ ErrorModal.propTypes = {
     has_close_icon: PropTypes.bool,
     is_error_modal_open: PropTypes.bool,
     setIsErrorModalOpen: PropTypes.func,
+    width: PropTypes.string,
 };
 
 export default observer(ErrorModal);

@@ -85,7 +85,10 @@ const AdvertiserPage = () => {
                 is_error_modal_open={is_error_modal_open}
                 setIsErrorModalOpen={is_open => {
                     if (!is_open) buy_sell_store.hideAdvertiserPage();
+                    advertiser_page_store.onCancel();
+                    general_store.setBlockUnblockUserError('');
                 }}
+                width={isMobile() ? '80rem' : '50rem'}
             />
             <BlockUserModal
                 advertiser_name={name}

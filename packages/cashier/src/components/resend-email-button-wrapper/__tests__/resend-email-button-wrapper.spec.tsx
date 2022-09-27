@@ -26,7 +26,7 @@ describe('<ResendEmailButtonWrapper/>', () => {
     it('Resend button should not be disabled when resend_timeout is greater then 60', () => {
         render(<ResendEmailButtonWrapper resend_timeout={70} resendVerificationEmail={resendVerificationEmail} />);
 
-        expect(screen.getByRole('button')).not.toBeDisabled();
+        expect(screen.getByRole('button')).toBeEnabled();
     });
 
     it('resendVerificationEmail function to be called when resend button is called', () => {

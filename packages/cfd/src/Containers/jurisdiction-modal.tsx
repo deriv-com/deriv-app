@@ -3,7 +3,13 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { GetAccountSettingsResponse, GetSettings, LandingCompany, GetAccountStatus } from '@deriv/api-types';
+import {
+    GetAccountSettingsResponse,
+    GetSettings,
+    LandingCompany,
+    GetAccountStatus,
+    DetailsOfEachMT5Loginid,
+} from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { WS, getIdentityStatusInfo } from '@deriv/shared';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
@@ -47,6 +53,8 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     toggleCFDVerificationModal: () => void;
     account_status: GetAccountStatus;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
+    updateAccountStatus: () => void;
 };
 
 const JurisdictionModal = ({
@@ -67,6 +75,9 @@ const JurisdictionModal = ({
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
     account_status,
+    updateAccountStatus,
+
+    mt5_login_list,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
@@ -92,13 +103,28 @@ const JurisdictionModal = ({
     const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
     const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
 
-    React.useEffect(() => {
-        if (is_jurisdiction_modal_visible) {
-            if ((poa_status === 'pending' || poi_status === 'pending') && !is_eu) {
+    const selectSVGJurisdiction = () => {
+        if (account_type.type && !is_eu) {
+            const created_svg_accounts = mt5_login_list.filter(
+                data =>
+                    data.market_type === account_type.type &&
+                    data.landing_company_short === 'svg' &&
+                    data.account_type === 'real'
+            );
+            if (!created_svg_accounts.length && (poa_status === 'pending' || poi_status === 'pending')) {
                 setJurisdictionSelectedShortcode('svg');
             } else {
                 setJurisdictionSelectedShortcode('');
             }
+        } else {
+            setJurisdictionSelectedShortcode('');
+        }
+    };
+
+    React.useEffect(() => {
+        if (is_jurisdiction_modal_visible) {
+            updateAccountStatus();
+            selectSVGJurisdiction();
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
                 if (!account_settings) {
@@ -347,4 +373,6 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     account_status: client.account_status,
+    mt5_login_list: client.mt5_login_list,
+    updateAccountStatus: client.updateAccountStatus,
 }))(JurisdictionModal);

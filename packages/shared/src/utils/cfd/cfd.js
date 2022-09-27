@@ -6,7 +6,7 @@ let CFD_text_translated;
 const CFD_text = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
-    mt5_cfds_mfsa: 'MT5 CFDs MFSA',
+    mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
     synthetic: 'Synthetic',
     synthetic_bvi: 'Synthetic BVI',
@@ -24,6 +24,10 @@ const CFD_text = {
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }) => {
+    if (market_type === 'all') {
+        return 'dxtrade';
+    }
+
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {
@@ -103,7 +107,7 @@ export const getCFDAccountDisplay = ({
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
-        if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds_mfsa';
+        if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
         else cfd_account_key = 'cfd';
     }
 

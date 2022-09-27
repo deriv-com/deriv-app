@@ -6,9 +6,9 @@ import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkModal from 'Components/unlink-modal';
-import DerivComLogo from '../../../Assets/ic-brand-deriv-red.svg';
-import DerivGoLight from '../../../Assets/ic-brand-deriv-go-light.svg';
-import DerivGoDark from '../../../Assets/ic-brand-deriv-go-dark.svg';
+import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
+import DerivGoLight from 'Assets/ic-brand-deriv-go-light.svg';
+import DerivGoDark from 'Assets/ic-brand-deriv-go-dark.svg';
 
 const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identity_provider }) => {
     const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);

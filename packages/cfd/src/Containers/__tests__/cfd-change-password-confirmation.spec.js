@@ -58,7 +58,7 @@ describe('ChangePasswordConfirmation', () => {
     it('check whether the text is according to the platform', () => {
         render(<ChangePasswordConfirmation {...mock_props} />);
 
-        expect(screen.getByText(/Confirm to change your Deriv MT5 password/i)).toBeInTheDocument();
+        expect(screen.getByText(/Confirm to change your DMT5 password/i)).toBeInTheDocument();
         expect(screen.getByText(/This will change the password to all of your DMT5 accounts/i)).toBeInTheDocument();
     });
 });

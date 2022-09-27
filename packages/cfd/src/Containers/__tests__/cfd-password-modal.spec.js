@@ -352,7 +352,7 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should create Deriv MT5 password when clicked on Create Deriv MT5 password', async () => {
+    it('should create DMT5 password when clicked on Create DMT5 password', async () => {
         const user_input = 'zo8lAet#2q01Ih';
         validPassword.mockReturnValue(true);
 
@@ -367,7 +367,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
         fireEvent.change(await screen.findByTestId('dt_mt5_password'), { target: { value: user_input } });
-        fireEvent.click(await screen.findByRole('button', { name: 'Create Deriv MT5 password' }));
+        fireEvent.click(await screen.findByRole('button', { name: 'Create DMT5 password' }));
 
         await waitFor(() => {
             expect(mockSubmitMt5Password).toHaveBeenCalled();

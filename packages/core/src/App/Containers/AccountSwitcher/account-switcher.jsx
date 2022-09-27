@@ -206,7 +206,10 @@ const AccountSwitcher = props => {
     };
 
     const openDXTradeDemoAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
+        sessionStorage.setItem(
+            'open_cfd_account_type',
+            `demo.${CFD_PLATFORMS.DXTRADE}.${account_type === 'dxtrade' ? 'all' : account_type}`
+        );
         redirectToDXTradeDemo();
     };
 
@@ -241,7 +244,17 @@ const AccountSwitcher = props => {
     // * we should map them to landing_company:
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
-    const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu, getIsEligibleForMoreAccounts) => {
+    const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu, is_demo, getIsEligibleForMoreAccounts) => {
+        const all_config = getCFDConfig(
+            'all',
+            props.landing_companies?.dxtrade_all_company,
+            existing_cfd_accounts,
+            props.mt5_trading_servers,
+            platform,
+            is_eu,
+            props.trading_platform_available_accounts,
+            getIsEligibleForMoreAccounts
+        );
         const gaming_config = getCFDConfig(
             'gaming',
             platform === CFD_PLATFORMS.MT5
@@ -271,6 +284,11 @@ const AccountSwitcher = props => {
         if (is_eu) {
             return [...financial_config];
         }
+
+        // TODO: change this condition before real release
+        if (is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+            return [...all_config];
+        }
         return [...gaming_config, ...financial_config];
     };
 
@@ -293,15 +311,23 @@ const AccountSwitcher = props => {
     };
 
     const getDemoDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(isDemo);
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(
+            account => isDemo(account) && account.enabled === 1
+        );
     };
 
     const getRemainingDemoMT5 = () => {
-        return getRemainingAccounts(getDemoMT5(), CFD_PLATFORMS.MT5, props.is_eu, props.isEligibleForMoreDemoMt5Svg);
+        return getRemainingAccounts(
+            getDemoMT5(),
+            CFD_PLATFORMS.MT5,
+            props.is_eu,
+            true,
+            props.isEligibleForMoreDemoMt5Svg
+        );
     };
 
     const getRemainingDemoDXTrade = () => {
-        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu);
+        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu, true);
     };
 
     const getRealMT5 = () => {
@@ -309,7 +335,9 @@ const AccountSwitcher = props => {
     };
 
     const getRealDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(
+            account => !isDemo(account) && account.enabled === 1
+        );
     };
 
     const findServerForAccount = acc => {
@@ -320,7 +348,13 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingRealMT5 = () => {
-        return getRemainingAccounts(getRealMT5(), CFD_PLATFORMS.MT5, props.is_eu, props.isEligibleForMoreRealMt5);
+        return getRemainingAccounts(
+            getRealMT5(),
+            CFD_PLATFORMS.MT5,
+            props.is_eu,
+            false,
+            props.isEligibleForMoreRealMt5
+        );
     };
 
     const getRemainingRealDXTrade = () => {

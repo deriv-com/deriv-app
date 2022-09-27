@@ -118,6 +118,9 @@
             }
         }
     }
+    &__trade-button:hover {
+        background: var(--button-primary-hover);
+    }
 }
 .applauncher {
     height: auto !important;

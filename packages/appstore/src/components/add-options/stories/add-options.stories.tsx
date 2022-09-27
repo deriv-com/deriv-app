@@ -8,6 +8,6 @@ export default {
     title: 'AddOptions',
 } as Meta<AddOptionsProps>;
 
-const Template: Story<AddOptionsProps> = args => <AddOptions />;
+const Template: Story<AddOptionsProps> = args => <AddOptions numberofAccounts={4} />;
 
 export const AppLauncherTemplate = Template.bind({});

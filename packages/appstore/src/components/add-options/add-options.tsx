@@ -1,17 +1,17 @@
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 import { Text } from '@deriv/ui';
 import classNames from 'classnames';
 import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { useStores } from 'Stores';
 
-export interface TAddOptionsProps extends HTMLAttributes<HTMLDivElement> {
-    onClickHandler: () => void;
-    class_names?: string;
-    numberofAccounts?: number;
+interface TAddOptionsProps {
+    numberofAccounts: number;
 }
 
-const AddOptions = ({ numberofAccounts }) => {
+const AddOptions = ({ numberofAccounts }: TAddOptionsProps) => {
+    const { ui } = useStores();
     const getHeightWidthOfIcon = () => {
         return isMobile()
             ? {
@@ -25,7 +25,7 @@ const AddOptions = ({ numberofAccounts }) => {
     };
     const class_names = '';
     const onClickHandler = () => {
-        return true;
+        return ui.openRealAccountSignup('manage');
     };
     return (
         <React.Fragment>

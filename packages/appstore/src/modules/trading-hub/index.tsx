@@ -9,8 +9,9 @@ const TradingHub = () => {
     /*TODO: We need to show this component whenever user click on tour guide button*/
     return (
         <React.Fragment>
-            {/* <AddOptionsAccount /> */}
-            <Options platformlauncherprops={platform_config} />;{/* <Onboarding contents={trading_hub_contents} /> */}
+            <AddOptionsAccount />
+            <Onboarding contents={trading_hub_contents} />
+            <Options platformlauncherprops={platform_config} />
         </React.Fragment>
     );
 };

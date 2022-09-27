@@ -5,7 +5,7 @@ import RootStore from 'Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import { WS, getAuthenticationStatusInfo } from '@deriv/shared';
-import { AccountStatusResponse } from '@deriv/api-types';
+import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
 type TVerificationModalProps = {
@@ -14,6 +14,8 @@ type TVerificationModalProps = {
     is_cfd_verification_modal_visible: boolean;
     toggleCFDVerificationModal: () => void;
     jurisdiction_selected_shortcode: string;
+    updateAccountStatus: () => void;
+    account_status: GetAccountStatus;
 };
 
 const CFDDbViOnBoarding = ({
@@ -22,9 +24,12 @@ const CFDDbViOnBoarding = ({
     is_cfd_verification_modal_visible,
     toggleCFDVerificationModal,
     jurisdiction_selected_shortcode,
+    updateAccountStatus,
+    account_status,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
+    const is_vanuatu_selected = jurisdiction_selected_shortcode === 'vanuatu';
 
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
@@ -32,7 +37,7 @@ const CFDDbViOnBoarding = ({
             if (get_account_status?.authentication) {
                 const { need_poi_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
                     getAuthenticationStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
+                if (is_vanuatu_selected && need_poi_for_vanuatu) {
                     setShowSubmittedModal(false);
                 } else if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged) {
                     setShowSubmittedModal(true);
@@ -69,7 +74,12 @@ const CFDDbViOnBoarding = ({
                     exit_classname='cfd-modal--custom-exit'
                 >
                     {showSubmittedModal ? (
-                        <PoiPoaDocsSubmitted onClickOK={toggleCFDVerificationModal} />
+                        <PoiPoaDocsSubmitted
+                            onClickOK={toggleCFDVerificationModal}
+                            updateAccountStatus={updateAccountStatus}
+                            account_status={account_status}
+                            is_vanuatu_selected={is_vanuatu_selected}
+                        />
                     ) : (
                         <CFDFinancialStpRealAccountSignup
                             onFinish={() => {
@@ -88,7 +98,12 @@ const CFDDbViOnBoarding = ({
                     onClose={toggleCFDVerificationModal}
                 >
                     {showSubmittedModal ? (
-                        <PoiPoaDocsSubmitted onClickOK={toggleCFDVerificationModal} />
+                        <PoiPoaDocsSubmitted
+                            onClickOK={toggleCFDVerificationModal}
+                            updateAccountStatus={updateAccountStatus}
+                            account_status={account_status}
+                            is_vanuatu_selected={is_vanuatu_selected}
+                        />
                     ) : (
                         <CFDFinancialStpRealAccountSignup
                             onFinish={() => {
@@ -102,10 +117,12 @@ const CFDDbViOnBoarding = ({
     );
 };
 
-export default connect(({ modules, ui }: RootStore) => ({
+export default connect(({ client, modules, ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_cfd_verification_modal_visible: modules.cfd.is_cfd_verification_modal_visible,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
+    updateAccountStatus: client.updateAccountStatus,
+    account_status: client.account_status,
 }))(CFDDbViOnBoarding);

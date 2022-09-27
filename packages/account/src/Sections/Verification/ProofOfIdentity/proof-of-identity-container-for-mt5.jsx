@@ -22,7 +22,7 @@ const ShowDemoMessage = () => (
         </Text>
     </div>
 );
-const ProofOfIdentityContainerforMt5 = ({
+const ProofOfIdentityContainerForMt5 = ({
     account_status,
     fetchResidenceList,
     height,
@@ -97,4 +97,4 @@ const ProofOfIdentityContainerforMt5 = ({
     );
 };
 
-export default ProofOfIdentityContainerforMt5;
+export default ProofOfIdentityContainerForMt5;

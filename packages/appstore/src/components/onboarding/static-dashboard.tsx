@@ -6,6 +6,7 @@ import StaticPlatformLauncher from './static-platform-launcher';
 import StaticAppLauncher from './static-applauncher';
 
 import './static-dashboard.scss';
+import classNames from 'classnames';
 
 type TStaticDashboard = {
     loginid?: string;
@@ -13,7 +14,9 @@ type TStaticDashboard = {
     currency?: string;
     has_account?: boolean;
     derived_amount?: string;
+    is_get_blurry?: boolean;
     financial_amount?: string;
+    is_icon_blurry?: boolean;
     is_trade_blurry?: boolean;
     is_topup_blurry?: boolean;
     is_text_animated?: boolean;
@@ -25,7 +28,9 @@ type TStaticDashboard = {
     is_options_item_blurry?: boolean;
     is_options_text_blurry?: boolean;
     has_applauncher_account?: boolean;
+    is_cfd_description_blurry?: boolean;
     is_platformlauncher_blurry?: boolean;
+    is_options_description_blurry?: boolean;
 };
 
 const StaticDashboard = ({
@@ -33,7 +38,8 @@ const StaticDashboard = ({
     is_grey,
     currency,
     has_account,
-    derived_amount,
+    is_get_blurry,
+    is_icon_blurry,
     is_topup_blurry,
     is_trade_blurry,
     financial_amount,
@@ -46,7 +52,9 @@ const StaticDashboard = ({
     is_options_item_blurry,
     is_options_text_blurry,
     has_applauncher_account,
+    is_cfd_description_blurry,
     is_platformlauncher_blurry,
+    is_options_description_blurry,
 }: TStaticDashboard) => {
     const Divider = () => <div className='divider' />;
     return (
@@ -60,21 +68,44 @@ const StaticDashboard = ({
                             color={is_cfd_text_blurry ? 'less-prominent' : 'prominent'}
                             className={is_text_animated ? 'static-dashboard-wrapper__header--animated' : ''}
                         >
-                            {localize('CFDs')}
-                            <Text
-                                color={'red'}
-                                size='xxxs'
-                                weight='bold'
-                                className='static-dashboard-wrapper__header--compare-accounts'
-                            >
-                                {localize('Compare accounts')}
-                            </Text>
+                            <Localize
+                                i18n_default_text='CFD <0>Compare accounts</0>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        color={'red'}
+                                        size='xxxs'
+                                        weight='bold'
+                                        className={classNames('static-dashboard-wrapper__header-compare-accounts', {
+                                            'static-dashboard-wrapper__header-compare-accounts--blurry':
+                                                is_cfd_description_blurry,
+                                        })}
+                                    />,
+                                ]}
+                            />
                         </Text>
-
-                        <Text as='p' size='xxs' color={is_cfd_text_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize(
-                                'Trade with leverage and tight spreads for better returns on successful trades. Learn more'
-                            )}
+                    </div>
+                    <div className='static-dashboard-wrapper__description'>
+                        <Text
+                            as='p'
+                            size='xxs'
+                            color={is_cfd_text_blurry || is_cfd_description_blurry ? 'less-prominent' : 'prominent'}
+                        >
+                            <Localize
+                                i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                                components={[
+                                    <Text
+                                        key={0}
+                                        color={'red'}
+                                        size='xxs'
+                                        weight='bold'
+                                        className={classNames('static-dashboard-wrapper__header--underlined', {
+                                            'static-dashboard-wrapper__header-compare-accounts--blurry':
+                                                is_cfd_description_blurry,
+                                        })}
+                                    />,
+                                ]}
+                            />
                         </Text>
                     </div>
                     <div className='static-dashboard-wrapper__body'>
@@ -86,7 +117,8 @@ const StaticDashboard = ({
                             loginid={loginid}
                             currency={currency}
                             has_account={has_account}
-                            derived_amount={derived_amount}
+                            is_get_blurry={is_get_blurry}
+                            is_icon_blurry={is_icon_blurry}
                             is_topup_blurry={is_topup_blurry}
                             is_trade_blurry={is_trade_blurry}
                             is_item_blurry={is_cfd_item_blurry}
@@ -103,6 +135,8 @@ const StaticDashboard = ({
                             loginid={loginid}
                             currency={currency}
                             has_account={has_account}
+                            is_get_blurry={is_get_blurry}
+                            is_icon_blurry={is_icon_blurry}
                             is_trade_blurry={is_trade_blurry}
                             is_topup_blurry={is_topup_blurry}
                             is_item_blurry={is_cfd_item_blurry}
@@ -118,6 +152,8 @@ const StaticDashboard = ({
                             loginid={loginid}
                             currency={currency}
                             has_account={has_account}
+                            is_get_blurry={is_get_blurry}
+                            is_icon_blurry={is_icon_blurry}
                             is_topup_blurry={is_topup_blurry}
                             is_trade_blurry={is_trade_blurry}
                             is_item_blurry={is_cfd_item_blurry}
@@ -137,7 +173,15 @@ const StaticDashboard = ({
                         >
                             {localize('Options')}
                         </Text>
-                        <Text as='p' size='xxs' color={is_options_text_blurry ? 'less-prominent' : 'prominent'}>
+                    </div>
+                    <div className='static-dashboard-wrapper__description'>
+                        <Text
+                            as='p'
+                            size='xxs'
+                            color={
+                                is_options_text_blurry || is_options_description_blurry ? 'less-prominent' : 'prominent'
+                            }
+                        >
                             <Localize
                                 i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simplicity of Options with <1>Multipliers</1> '
                                 components={[
@@ -166,6 +210,8 @@ const StaticDashboard = ({
                                 description='Get a real Options account, start trading and manage your funds.'
                                 currency={currency}
                                 has_account={has_account}
+                                is_get_blurry={is_get_blurry}
+                                is_icon_blurry={is_icon_blurry}
                                 is_topup_blurry={is_topup_blurry}
                                 is_trade_blurry={is_trade_blurry}
                                 is_trade_animated={is_trade_animated}

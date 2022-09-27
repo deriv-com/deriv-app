@@ -7,11 +7,23 @@
     &-wrapper {
         border: 2rem solid var(--general-section-1);
         height: 100%;
-        &__header {
-            padding: 1rem;
 
-            &--compare-accounts {
+        &__description {
+            margin-left: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        &__header {
+            display: flex;
+            padding-left: 1rem;
+            padding-top: 1rem;
+
+            &-compare-accounts {
                 margin-left: 1rem;
+
+                &--blurry {
+                    opacity: 0.2;
+                }
             }
 
             &--underlined {
@@ -19,7 +31,8 @@
             }
 
             &--animated {
-                animation: triggerAnimation 2s linear;
+                position: inherit;
+                animation: triggerAnimation 2s linear infinite;
             }
         }
         &__body {

@@ -20,7 +20,9 @@ export const trading_hub_contents: TTradingHubContents = {
         has_next_content: false,
     },
     step2: {
-        component: <StaticDashboard is_cfd_text_blurry is_options_text_blurry is_platformlauncher_blurry />,
+        component: (
+            <StaticDashboard is_cfd_text_blurry is_options_text_blurry is_platformlauncher_blurry is_button_animated />
+        ),
         footer_header: localize('Trading accounts'),
         footer_text: localize(
             'These are the trading accounts available to you. You can click on an account to find out more.'
@@ -28,7 +30,18 @@ export const trading_hub_contents: TTradingHubContents = {
         has_next_content: false,
     },
     step3: {
-        component: <StaticDashboard is_cfd_item_blurry is_options_item_blurry is_platformlauncher_blurry />,
+        component: (
+            <StaticDashboard
+                is_cfd_item_blurry
+                is_options_item_blurry
+                is_platformlauncher_blurry
+                is_get_blurry
+                is_icon_blurry
+                is_text_animated
+                is_cfd_description_blurry
+                is_options_description_blurry
+            />
+        ),
         footer_header: localize('CFDs, Options or Multipliers'),
         footer_text: localize('You can choose between CFD trading accounts or Options and Multipliers accounts'),
         has_next_content: false,

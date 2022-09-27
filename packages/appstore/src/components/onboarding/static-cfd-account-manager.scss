@@ -49,5 +49,11 @@
                 animation: triggerAnimation 3s linear infinite;
             }
         }
+
+        &-get {
+            &--blurry {
+                opacity: 0.2;
+            }
+        }
     }
 }

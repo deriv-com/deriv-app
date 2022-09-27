@@ -17,8 +17,10 @@ type TStaticCFDAccountManager = {
     is_animated?: boolean;
     has_account?: boolean;
     derived_amount?: string;
+    is_icon_blurry?: boolean;
     is_item_blurry?: boolean;
     is_text_blurry?: boolean;
+    is_get_blurry?: boolean;
     is_topup_blurry?: boolean;
     is_trade_blurry?: boolean;
     financial_amount?: string;
@@ -36,6 +38,8 @@ const StaticCFDAccountManager = ({
     platform,
     has_account,
     description,
+    is_icon_blurry,
+    is_get_blurry,
     is_item_blurry,
     derived_amount,
     is_trade_blurry,
@@ -49,9 +53,29 @@ const StaticCFDAccountManager = ({
         <div className='static-cfd-account-manager'>
             <div className='static-cfd-account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
-                    (type === 'financial' ? <WalletIcon icon={'Financial'} /> : <WalletIcon icon={'Derived'} />)}
-                {platform === CFD_PLATFORMS.DXTRADE && <WalletIcon icon={'DerivX'} />}
-                {platform === 'options' && <WalletIcon icon={'Options'} />}
+                    (type === 'financial' ? (
+                        <WalletIcon
+                            icon={'Financial'}
+                            className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        />
+                    ) : (
+                        <WalletIcon
+                            icon={'Derived'}
+                            className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        />
+                    ))}
+                {platform === CFD_PLATFORMS.DXTRADE && (
+                    <WalletIcon
+                        icon={'DerivX'}
+                        className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                    />
+                )}
+                {platform === 'options' && (
+                    <WalletIcon
+                        icon={'Options'}
+                        className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                    />
+                )}
             </div>
             <div className='static-cfd-account-manager__details'>
                 <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
@@ -99,7 +123,10 @@ const StaticCFDAccountManager = ({
                 ) : (
                     <Button
                         primary_light
-                        className={is_button_animated ? 'static-cfd-account-manager__buttons--animated' : ''}
+                        className={classNames('', {
+                            'static-cfd-account-manager__buttons--animated': is_button_animated,
+                            'static-cfd-account-manager__buttons-get--blurry': is_get_blurry,
+                        })}
                     >
                         <Localize i18n_default_text='Get' />
                     </Button>

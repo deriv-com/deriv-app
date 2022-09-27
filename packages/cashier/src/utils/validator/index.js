@@ -1,1 +1,1 @@
-export default from './validator';
+export Validator from './validator';

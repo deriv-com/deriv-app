@@ -36,6 +36,7 @@ export type TClientStore = {
     current_fiat_currency?: string;
     email: string;
     getLimits: () => void;
+    has_logged_out: boolean;
     has_maltainvest_account: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
@@ -65,6 +66,8 @@ export type TClientStore = {
     }: TResponseTradingPlatformAccountsList) => Array<TMT5LoginAccount>;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
+    setInitialized: (status: boolean) => void;
+    setLogout: (status: boolean) => void;
     setVerificationCode: (code: string, container: string) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;

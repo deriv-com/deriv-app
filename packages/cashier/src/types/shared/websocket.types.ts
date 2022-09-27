@@ -41,22 +41,14 @@ type TWebSocketCall = {
 
 export type TWebSocket = {
     authorized: TWebSocketCall;
-    cancelCryptoTransaction?: (transaction_id: string) => Promise<any>;
-    subscribeCashierPayments?: (response: any) => Promise<any>;
-    verifyEmail?: (email: string, withdrawal_type: string) => Promise<any>;
-    wait?: (value: string) => Promise<any>;
     balanceAll: () => Promise<Balance>;
-    mt5LoginList: () => {
-        mt5_login_list: Array<TMT5LoginAccount>;
-    };
+    cancelCryptoTransaction?: (transaction_id: string) => Promise<any>;
+    mt5LoginList: () => { mt5_login_list: Array<TMT5LoginAccount> };
     send: (obj: any) => Promise<any>;
     serviceToken: (req: TServiceTokenRequest) => Promise<any>;
-    storage: {
-        mt5LoginList: () => {
-            mt5_login_list: Array<TMT5LoginAccount>;
-        };
-    };
-    tradingPlatformAccountsList: (platform: string) => {
-        trading_platform_accounts: Array<TMT5LoginAccount>;
-    };
+    storage: { mt5LoginList: () => { mt5_login_list: Array<TMT5LoginAccount> } };
+    subscribeCashierPayments?: (response: any) => Promise<any>;
+    tradingPlatformAccountsList: (platform: string) => { trading_platform_accounts: Array<TMT5LoginAccount> };
+    verifyEmail?: (email: string, withdrawal_type: string) => Promise<any>;
+    wait?: (value: string) => Promise<any>;
 };

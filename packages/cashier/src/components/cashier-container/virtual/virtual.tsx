@@ -6,7 +6,7 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { RootStore } from 'Types';
 import './virtual.scss';
 
 type TVirtualProps = RouteComponentProps & {
@@ -51,7 +51,7 @@ const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
     );
 };
 
-export default connect(({ ui }: TRootStore) => ({
+export default connect(({ ui }: RootStore) => ({
     is_dark_mode_on: ui.is_dark_mode_on,
     toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(withRouter(Virtual));

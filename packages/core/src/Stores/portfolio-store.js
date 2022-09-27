@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle';
-import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import {
     isEmptyObject,
@@ -26,70 +26,31 @@ import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import BaseStore from './base-store';
 
 export default class PortfolioStore extends BaseStore {
-    positions = [];
-    all_positions = [];
+    @observable.shallow positions = [];
+    @observable.shallow all_positions = [];
     positions_map = {};
-    is_loading = false;
-    error = '';
+    @observable is_loading = false;
+    @observable error = '';
 
     // barriers
-    barriers = [];
-    main_barrier = null;
-    contract_type = '';
+    @observable barriers = [];
+    @observable main_barrier = null;
+    @observable contract_type = '';
 
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
     responseQueue = [];
 
-    active_positions = [];
+    @observable.shallow active_positions = [];
 
     constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super(root_store);
-
-        makeObservable(this, {
-            positions: observable.shallow,
-            all_positions: observable.shallow,
-            is_loading: observable,
-            error: observable,
-            barriers: observable,
-            main_barrier: observable,
-            contract_type: observable,
-            active_positions: observable.shallow,
-            initializePortfolio: action.bound,
-            clearTable: action.bound,
-            portfolioHandler: action.bound,
-            onBuyResponse: action.bound,
-            transactionHandler: action.bound,
-            proposalOpenContractHandler: action.bound,
-            onClickCancel: action.bound,
-            onClickSell: action.bound,
-            handleSell: action.bound,
-            populateResultDetailsFromTransaction: action.bound,
-            populateResultDetails: action.bound,
-            populateContractUpdate: action.bound,
-            pushNewPosition: action.bound,
-            removePositionById: action.bound,
-            onHoverPosition: action.bound,
-            logoutListener: action.bound,
-            networkStatusChangeListener: action.bound,
-            onMount: action.bound,
-            onUnmount: override,
-            totals: computed,
-            setActivePositions: action.bound,
-            is_active_empty: computed,
-            active_positions_count: computed,
-            is_empty: computed,
-            setPurchaseSpotBarrier: action,
-            updateBarrierColor: action,
-            updateLimitOrderBarriers: action,
-            setContractType: action,
-            is_multiplier: computed,
+        super({
+            root_store,
         });
 
         this.root_store = root_store;
     }
-
+    @action.bound
     async initializePortfolio() {
         if (this.has_subscribed_to_poc_and_transaction) {
             this.clearTable();
@@ -102,6 +63,7 @@ export default class PortfolioStore extends BaseStore {
         this.has_subscribed_to_poc_and_transaction = true;
     }
 
+    @action.bound
     clearTable() {
         this.positions = [];
         this.positions_map = {};
@@ -114,6 +76,7 @@ export default class PortfolioStore extends BaseStore {
         this.has_subscribed_to_poc_and_transaction = false;
     }
 
+    @action.bound
     portfolioHandler(response) {
         this.is_loading = false;
         if ('error' in response) {
@@ -133,6 +96,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     onBuyResponse({ contract_id, longcode, contract_type }) {
         const new_pos = {
             contract_id,
@@ -142,6 +106,7 @@ export default class PortfolioStore extends BaseStore {
         this.pushNewPosition(new_pos);
     }
 
+    @action.bound
     async transactionHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
@@ -213,6 +178,7 @@ export default class PortfolioStore extends BaseStore {
         this.throttledUpdatePositions();
     };
 
+    @action.bound
     proposalOpenContractHandler(response) {
         if ('error' in response) {
             this.updateContractTradeStore(response);
@@ -280,6 +246,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         if (this.positions[i].is_sell_requested) return;
@@ -299,6 +266,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         if (this.positions[i].is_sell_requested) return;
@@ -310,6 +278,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     handleSell(response) {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
@@ -335,6 +304,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     populateResultDetailsFromTransaction = response => {
         const transaction_response = response.transaction;
         const { contract_id, amount } = transaction_response;
@@ -360,6 +330,7 @@ export default class PortfolioStore extends BaseStore {
         this.updatePositions();
     };
 
+    @action.bound
     populateResultDetails = response => {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
@@ -391,6 +362,7 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].is_loading = false;
     };
 
+    @action.bound
     populateContractUpdate({ contract_update }, contract_id) {
         const position = this.getPositionById(contract_id);
         if (position) {
@@ -399,6 +371,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     pushNewPosition(new_pos) {
         const position = formatPortfolioPosition(new_pos, this.root_store.active_symbols.active_symbols);
         if (this.positions_map[position.id]) return;
@@ -408,6 +381,7 @@ export default class PortfolioStore extends BaseStore {
         this.updatePositions();
     }
 
+    @action.bound
     removePositionById(contract_id) {
         const contract_idx = this.getPositionIndexById(contract_id);
 
@@ -422,6 +396,7 @@ export default class PortfolioStore extends BaseStore {
         return Promise.resolve();
     }
 
+    @action.bound
     onHoverPosition(is_over, position, underlying) {
         if (
             position.contract_info.underlying !== underlying ||
@@ -440,15 +415,18 @@ export default class PortfolioStore extends BaseStore {
         return Promise.resolve();
     }
 
+    @action.bound
     logoutListener() {
         this.clearTable();
         return Promise.resolve();
     }
 
+    @action.bound
     networkStatusChangeListener(is_online) {
         this.is_loading = !is_online;
     }
 
+    @action.bound
     onMount() {
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -471,6 +449,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     onUnmount() {
         const is_reports_path = /^\/reports/.test(window.location.pathname);
         if (!is_reports_path) {
@@ -485,6 +464,7 @@ export default class PortfolioStore extends BaseStore {
         return this.positions.findIndex(pos => +pos.id === +contract_id);
     }
 
+    @computed
     get totals() {
         let indicative = 0;
         let payout = 0;
@@ -502,6 +482,7 @@ export default class PortfolioStore extends BaseStore {
         };
     }
 
+    @action.bound
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
         this.all_positions = [...this.positions];
@@ -515,19 +496,23 @@ export default class PortfolioStore extends BaseStore {
 
     throttledUpdatePositions = throttle(this.updatePositions, 500);
 
+    @computed
     get is_active_empty() {
         return !this.is_loading && this.active_positions.length === 0;
     }
 
+    @computed
     get active_positions_count() {
         return this.active_positions.length || 0;
     }
 
+    @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
     }
 
     // from trade store
+    @action.bound
     setPurchaseSpotBarrier(is_over, position) {
         const key = 'PURCHASE_SPOT_BARRIER';
         if (!is_over) {
@@ -553,6 +538,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     updateBarrierColor(is_dark_mode) {
         const { main_barrier } = JSON.parse(localStorage.getItem('trade_store')) || {};
         this.main_barrier = main_barrier;
@@ -561,6 +547,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
+    @action.bound
     updateLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
         const { barriers } = this;
@@ -572,10 +559,12 @@ export default class PortfolioStore extends BaseStore {
         });
     }
 
+    @action.bound
     setContractType(contract_type) {
         this.contract_type = contract_type;
     }
 
+    @computed
     get is_multiplier() {
         return this.contract_type === 'multiplier';
     }

@@ -59,7 +59,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         }
     };
     const onClickAdd = () => {
-        if (general_store.is_listed) {
+        if (general_store.is_listed && !general_store.is_barred) {
             setAdvert(advert);
             my_ads_store.showQuickAddModal(advert);
         }

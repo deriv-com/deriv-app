@@ -1,7 +1,5 @@
 import { Step, Styles, Locale } from 'react-joyride';
 
-const text_content = 'We have a short turorial that might help. Hit Repeat tour to begin.';
-
 export const tour_step_config: Step[] = [
     {
         title: 'Switch accounts',
@@ -12,7 +10,7 @@ export const tour_step_config: Step[] = [
     },
     {
         title: 'Trading Hub tour',
-        content: `Need help moving around?\n\n${text_content}`,
+        content: `Need help moving around?\n\nWe have a short turorial that might help. Hit Repeat tour to begin.`,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
     },

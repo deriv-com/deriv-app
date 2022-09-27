@@ -15,7 +15,6 @@ const TradingHub = () => {
             <Joyride
                 run={is_tour_open}
                 continuous
-                callback={() => is_tour_open}
                 disableScrolling
                 hideCloseButton
                 disableCloseOnEsc

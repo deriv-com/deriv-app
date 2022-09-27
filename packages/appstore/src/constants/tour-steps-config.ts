@@ -3,7 +3,7 @@ import { Step, Styles, Locale } from 'react-joyride';
 export const tour_step_config: Step[] = [
     {
         title: 'Switch accounts',
-        content: 'You can switch between real and demo accounts',
+        content: 'You can switch between real and demo accounts.',
         target: '.toggle-account-type__button',
         disableBeacon: true,
         placement: 'bottom-end',
@@ -11,7 +11,7 @@ export const tour_step_config: Step[] = [
     {
         title: 'Trading Hub tour',
         content: `Need help moving around?
-                  We have a short turorial that might help. Hit Repeat Tour to begin`,
+                  We have a short turorial that might help. Hit Repeat Tour to begin.`,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
     },

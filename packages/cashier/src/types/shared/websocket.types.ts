@@ -31,12 +31,7 @@ type TWebSocketCall = {
 export type TWebSocket = {
     authorized: TWebSocketCall;
     cryptoConfig: () => { crypto_config: CryptoConfig };
-    cryptoWithdraw: (args: {
-        address: string;
-        amount: number;
-        verification_code: string;
-        dry_run?: number;
-    }) => Promise<any>;
+    cryptoWithdraw: (args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>) => Promise<any>;
     balanceAll: () => Promise<Balance>;
     mt5LoginList: () => {
         mt5_login_list: Array<TMT5LoginAccount>;

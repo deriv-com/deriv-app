@@ -1,9 +1,10 @@
 import { ReadMore } from '@deriv/components';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { localize } from '@deriv/translations';
+import { TReactElement } from 'Types';
 
 type TReadMoreWrapperProps = {
-    error_content: string | ReactElement;
+    error_content: string | TReactElement;
     openDialog: () => void;
 };
 

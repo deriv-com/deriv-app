@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import { action, computed, observable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -7,7 +6,7 @@ import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
-import { TRootStore, TWebSocket } from 'Types';
+import { TReactElement, TRootStore, TWebSocket } from 'Types';
 
 export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -274,7 +273,7 @@ export default class WithdrawStore {
 
     @action.bound
     validateWithdrawFromAmount() {
-        let error_message: string | ReactElement = '';
+        let error_message: string | TReactElement = '';
 
         const { client, modules } = this.root_store;
         const { balance, currency } = client;

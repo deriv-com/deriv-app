@@ -72,7 +72,12 @@ export default class GeneralStore extends BaseStore {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }
 
-    // To get the notifications count from p2p when outside of p2p
+    /**
+     * Gets the notifications from local storage, within p2p_settings, where it checks which notification has
+     * been seen. The number of unseen notifications is displayed in vertical tab, notifications count, for P2P.
+     *
+     * @returns {number} Notifications that have not been seen by the user.
+     */
     @computed
     get p2p_unseen_notifications() {
         const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');

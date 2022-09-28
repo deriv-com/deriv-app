@@ -262,7 +262,7 @@
             display: flex;
 
             @media (max-height: 580px) {
-                height: 10rem;
+                height: 5rem;
             }
             @include mobile {
                 display: flex;
@@ -340,7 +340,6 @@
             @include mobile {
                 display: flex;
                 flex-flow: column;
-                margin-top: 1rem;
                 width: 100vw;
             }
 

@@ -18,7 +18,7 @@ import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
 import BlockUserModal from 'Components/block-user/block-user-modal';
-import ErrorModal from '../error-modal/error-modal.jsx';
+import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
 import './advertiser-page.scss';
 
@@ -80,12 +80,15 @@ const AdvertiserPage = () => {
             <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
             <ErrorModal
                 error_message={general_store.block_unblock_user_error}
-                error_modal_title='Unable to block advertiser.'
+                error_modal_title='Unable to block advertiser'
                 has_close_icon={false}
                 is_error_modal_open={is_error_modal_open}
                 setIsErrorModalOpen={is_open => {
                     if (!is_open) buy_sell_store.hideAdvertiserPage();
+                    advertiser_page_store.onCancel();
+                    general_store.setBlockUnblockUserError('');
                 }}
+                small
             />
             <BlockUserModal
                 advertiser_name={name}

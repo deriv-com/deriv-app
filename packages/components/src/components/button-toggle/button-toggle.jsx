@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
-import Button from '../button/button.jsx';
 import Counter from '../counter/counter';
+import Button from '../button/button';
 
 const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_animated, name, onChange, value }) => {
     const changeValue = selected_value => {

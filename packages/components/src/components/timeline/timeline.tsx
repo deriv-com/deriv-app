@@ -9,7 +9,7 @@ type TOval = {
 const Oval = ({ children }: TOval) => {
     return (
         <div className='dc-timeline__oval'>
-            <Text color='colored-background' sizd='s' weight='bold' className='dc-timeline__number'>
+            <Text color='colored-background' size='s' weight='bold' className='dc-timeline__number'>
                 {children}
             </Text>
         </div>

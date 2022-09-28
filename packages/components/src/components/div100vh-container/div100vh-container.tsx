@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { use100vh } from 'react-div-100vh';
 
 type TDiv100vhContainerProps = {
     id?: string;
-    children: ReactNode;
     height_offset?: string;
     is_bypassed: boolean;
     is_disabled: boolean;
@@ -20,7 +19,7 @@ const Div100vhContainer = ({
     id,
     height_offset,
     max_autoheight_offset,
-}: TDiv100vhContainerProps) => {
+}: PropsWithChildren<TDiv100vhContainerProps>) => {
     const screen_vertical_height = use100vh();
     const height = screen_vertical_height ? `${screen_vertical_height}px` : '100vh';
     const height_rule = height_offset ? `calc(${height} - ${height_offset})` : `calc(${height})`;

@@ -95,7 +95,6 @@
             order: 2;
             flex-grow: 0;
             margin: 0px;
-            font-size: small;
         }
     }
 
@@ -143,6 +142,7 @@
             border: unset;
             background-color: unset;
             padding: unset;
+            font-size: small;
             &:focus {
                 border-color: unset;
             }

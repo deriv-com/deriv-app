@@ -86,7 +86,7 @@ const FloatingRate = ({
                     </Text>
                     <Text
                         as='span'
-                        size='xs'
+                        size='xxs'
                         color='prominent'
                         weight='normal'
                         line_height='xs'

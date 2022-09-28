@@ -28,7 +28,7 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from 'Components/success-dialog.jsx';
+import SuccessDialog from 'Components/success-dialog';
 import 'Sass/cfd.scss';
 import { connect } from 'Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
@@ -192,10 +192,13 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        if (type === 'synthetic') {
-            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
-        } else if (type === 'financial') {
-            return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+        switch (type) {
+            case 'synthetic':
+                return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
+            case 'financial':
+                return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+            default:
+                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
     }
 
@@ -262,7 +265,10 @@ const CreatePassword = ({
                 validateForm,
             }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
+                    <div
+                        className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'
+                        data-testid='dt_create_password'
+                    >
                         <Icon
                             icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
                             width='122'
@@ -306,6 +312,7 @@ const CreatePassword = ({
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                         }}
+                                        data_testId={`dt_${platform}_password`}
                                     />
                                 )}
                             </PasswordMeter>
@@ -390,7 +397,6 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
 
     const has_cancel_button =
         (isDesktop() ? !props.should_set_trading_password : true) || props.error_type === 'PasswordReset';
-
     const cancel_button_label = getCancelButtonLabel(props);
 
     const handleCancel = () => {
@@ -493,6 +499,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
                                 }}
+                                data_testId={`dt_${props.platform}_password`}
                             />
                         </div>
 
@@ -561,7 +568,6 @@ const CFDPasswordModal = ({
     submitCFDPassword,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
-
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
     const should_set_trading_password =
@@ -575,7 +581,6 @@ const CFDPasswordModal = ({
 
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
-
         if (
             !validLength(values.password, {
                 min: 8,
@@ -592,7 +597,6 @@ const CFDPasswordModal = ({
         if (values.password?.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');
         }
-
         return errors;
     };
 
@@ -635,7 +639,6 @@ const CFDPasswordModal = ({
             platform === CFD_PLATFORMS.MT5
                 ? 'trading_platform_mt5_password_reset'
                 : 'trading_platform_dxtrade_password_reset';
-
         WS.verifyEmail(email, password_reset_code, {
             url_parameters: {
                 redirect_to,

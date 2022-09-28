@@ -35,10 +35,10 @@
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
-        "babel-eslint": "^10.1.0",
-        "babel-loader": "^8.1.0",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
+        "babel-eslint": "^10.1.0",
+        "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "circular-dependency-plugin": "^5.2.2",
         "clean-webpack-plugin": "^3.0.0",
@@ -87,7 +87,7 @@
     },
     "dependencies": {
         "@deriv/account": "^1.0.0",
-        "@deriv/api-types": "1.0.48",
+        "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/shared": "^1.0.0",
@@ -107,6 +107,7 @@
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
+        "react-qrcode": "^0.3.5",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2"

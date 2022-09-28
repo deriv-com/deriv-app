@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IdvDocumentRejected from '../../../../Assets/ic-idv-document-rejected.svg';
+import IdvDocumentRejected from 'Assets/ic-idv-document-rejected.svg';
 
 const IdvRejected = ({ handleRequireSubmission }) => {
     return (

@@ -15,7 +15,7 @@ import {
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
 import { getDocumentData, getRegex } from '../../idv-document-submit/utils';
-import DocumentSubmitLogo from '../../../../Assets/ic-document-submit-icon.svg';
+import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
     const [document_list, setDocumentList] = React.useState([]);

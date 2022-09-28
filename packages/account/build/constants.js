@@ -18,6 +18,7 @@ const {
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const ALIASES = {
+    Assets: path.resolve(__dirname, '../src/Assets'),
     Components: path.resolve(__dirname, '../src/Components'),
     Containers: path.resolve(__dirname, '../src/Containers'),
     Constants: path.resolve(__dirname, '../src/Constants'),
@@ -35,19 +36,19 @@ const ALIASES = {
 const rules = (is_test_env = false, is_mocha_only = false) => [
     ...(is_test_env && !is_mocha_only
         ? [
-            {
-                test: /\.(js|jsx|ts|tsx)$/,
-                exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
-                include: /src/,
-                loader: 'eslint-loader',
-                enforce: 'pre',
-                options: {
-                    formatter: require('eslint-formatter-pretty'),
-                    configFile: path.resolve(__dirname, '../.eslintrc.js'),
-                    ignorePath: path.resolve(__dirname, '../.eslintignore'),
-                },
-            },
-        ]
+              {
+                  test: /\.(js|jsx|ts|tsx)$/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  include: /src/,
+                  loader: 'eslint-loader',
+                  enforce: 'pre',
+                  options: {
+                      formatter: require('eslint-formatter-pretty'),
+                      configFile: path.resolve(__dirname, '../.eslintrc.js'),
+                      ignorePath: path.resolve(__dirname, '../.eslintignore'),
+                  },
+              },
+          ]
         : []),
     {
         test: /\.(js|jsx|ts|tsx)$/,
@@ -78,24 +79,24 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     },
     is_test_env
         ? {
-            test: /\.(sc|sa|c)ss$/,
-            loaders: 'null-loader',
-        }
+              test: /\.(sc|sa|c)ss$/,
+              loaders: 'null-loader',
+          }
         : {
-            test: /\.(sc|sa|c)ss$/,
-            use: css_loaders,
-        },
+              test: /\.(sc|sa|c)ss$/,
+              use: css_loaders,
+          },
 ];
 
 const MINIMIZERS = !IS_RELEASE
     ? []
     : [
-        new TerserPlugin({
-            test: /\.js$/,
-            parallel: 2,
-        }),
-        new CssMinimizerPlugin(),
-    ];
+          new TerserPlugin({
+              test: /\.js$/,
+              parallel: 2,
+          }),
+          new CssMinimizerPlugin(),
+      ];
 
 const plugins = () => [
     new CleanWebpackPlugin(),

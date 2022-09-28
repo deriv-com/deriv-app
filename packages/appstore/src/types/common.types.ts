@@ -17,11 +17,7 @@ export type TMissingRealAccount = {
     onClickSignup: () => void;
 };
 
-export type TMt5StatusServerType = {
-    all: number;
-    platform: number;
-    server_number: number;
-};
+export type TMt5StatusServerType = Record<'all' | 'platform' | 'server_number', number>;
 
 export type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
@@ -41,10 +37,7 @@ export type TStandPoint = {
     svg: boolean;
 };
 
-export type TCategotyTypes = {
-    real: boolean;
-    demo: boolean;
-};
+export type TCategotyTypes = Record<'demo' | 'real', boolean>;
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;

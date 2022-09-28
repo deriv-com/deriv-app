@@ -1,10 +1,10 @@
-import React from 'react';
 import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import CashierNotifications from 'Components/cashier-notifications';
+import CashierNotificationsIcon from '../../components/cashier-notifications/cashier-notifications-icon';
+import { TWebSocket, TRootStore, DeepPartial } from '../../types';
 
-let cashier_menu, general_store, root_store, WS;
+let cashier_menu, general_store: GeneralStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     root_store = {
@@ -14,7 +14,7 @@ beforeEach(() => {
                 status: [],
                 cashier_validation: [],
             },
-            balance: null,
+            balance: undefined,
             currency: 'USD',
             has_active_real_account: false,
             is_logged_in: true,
@@ -34,6 +34,7 @@ beforeEach(() => {
                 account_prompt_dialog: {
                     last_location: null,
                     resetIsConfirmed: jest.fn(),
+                    resetLastLocation: jest.fn(),
                 },
                 account_transfer: {
                     accounts_list: [],
@@ -69,7 +70,7 @@ beforeEach(() => {
                     setIsCryptoTransactionsVisible: jest.fn(),
                 },
                 withdraw: {
-                    check10kLimit: jest.fn().mockResolvedValueOnce(),
+                    check10kLimit: jest.fn(),
                     setIsWithdrawConfirmed: jest.fn(),
                     verification: {
                         clearVerification: jest.fn(),
@@ -87,11 +88,11 @@ beforeEach(() => {
         },
         wait: jest.fn(),
     };
-    general_store = new GeneralStore({ root_store, WS });
+    general_store = new GeneralStore(WS, root_store);
 
     cashier_menu = {
         id: 'dt_cashier_tab',
-        icon: <CashierNotifications p2p_notification_count={general_store.p2p_notification_count} />,
+        icon: CashierNotificationsIcon(general_store.p2p_notification_count),
         text: expect.any(Function),
         link_to: routes.cashier,
         onClick: false,
@@ -106,9 +107,10 @@ describe('GeneralStore', () => {
     });
 
     it('should set function on remount', () => {
-        general_store.setOnRemount('function');
+        const remountFunc = () => 'function';
+        general_store.setOnRemount(remountFunc);
 
-        expect(general_store.onRemount).toBe('function');
+        expect(general_store.onRemount).toBe(remountFunc);
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {
@@ -331,8 +333,11 @@ describe('GeneralStore', () => {
             expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
         });
         expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
+        // TODO
+        // eslint-disable-next-line testing-library/await-async-utils
         expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
-        expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
+        expect(cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(1);
+        expect(cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
 
     it('should set advertiser error', async () => {
@@ -403,6 +408,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page of payment agent tab  when is_payment_agent_visible is false and location.pahname = /cashier/payment-agent when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_pa,
@@ -417,6 +424,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_onramp,
@@ -430,6 +439,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page and call proper methods if is_crypto_transactions_visible equal to false and location.pahname = /cashier/crypto-transactions when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_crypto_transactions,
@@ -465,6 +476,8 @@ describe('GeneralStore', () => {
     });
 
     it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_p2p,

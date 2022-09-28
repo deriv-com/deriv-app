@@ -1,58 +1,59 @@
 import { action, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
+import { TRootStore, TWebSocket } from 'Types';
 
 export default class VerificationStore {
-    constructor({ WS, root_store }) {
-        this.root_store = root_store;
-        this.WS = WS;
-    }
+    // eslint-disable-next-line no-useless-constructor
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {}
 
     @observable is_button_clicked = false;
-    @observable timeout_button = '';
+    @observable timeout_button = 0;
     @observable error = new ErrorStore();
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
 
     @action.bound
-    setIsButtonClicked(value) {
+    setIsButtonClicked(value: boolean): void {
         this.is_button_clicked = value;
     }
 
     @action.bound
-    setTimeoutButton(value) {
+    setTimeoutButton(value: number): void {
         this.timeout_button = value;
     }
 
     @action.bound
-    setIsEmailSent(value) {
+    setIsEmailSent(value: boolean): void {
         this.is_email_sent = value;
     }
 
     @action.bound
-    setIsResendClicked(value) {
+    setIsResendClicked(value: boolean): void {
         this.is_resend_clicked = value;
     }
 
     @action.bound
-    setResendTimeout(value) {
+    setResendTimeout(value: number): void {
         this.resend_timeout = value;
     }
 
-    clearTimeoutVerification() {
+    clearTimeoutVerification(): void {
         if (this.timeout_button) {
             clearTimeout(this.timeout_button);
         }
     }
 
     @action.bound
-    setTimeoutVerification() {
+    setTimeoutVerification(): void {
         this.clearTimeoutVerification();
         this.setTimeoutButton(
-            setTimeout(() => {
-                this.clearVerification();
-            }, 3600000)
+            Number(
+                setTimeout(() => {
+                    this.clearVerification();
+                }, 3600000)
+            )
         );
     }
 
@@ -61,16 +62,16 @@ export default class VerificationStore {
         const { client, modules } = this.root_store;
         const { resetPaymentAgent } = modules.cashier.payment_agent;
         const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container];
+        const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
         if (this.is_button_clicked || !client.email) {
             return;
         }
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ message: '', code: '' });
         this.setIsButtonClicked(true);
         const withdrawal_type = container === 'payment_agent_withdraw' ? 'paymentagent_withdraw' : 'payment_withdraw';
-        const response_verify_email = await this.WS.verifyEmail(client.email, withdrawal_type);
+        const response_verify_email = await this.WS.verifyEmail?.(client.email, withdrawal_type);
 
         if (response_verify_email.error) {
             if (
@@ -88,7 +89,7 @@ export default class VerificationStore {
                 this.error.setErrorMessage(
                     response_verify_email.error,
                     () => {
-                        this.error.setErrorMessage('', null, null);
+                        this.error.setErrorMessage({ message: '', code: '' }, null, null);
                     },
                     null
                 );
@@ -125,14 +126,14 @@ export default class VerificationStore {
     clearVerification() {
         const { client, modules } = this.root_store;
         const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container];
+        const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
         this.clearTimeoutVerification();
         this.setIsButtonClicked(false);
         this.setIsEmailSent(false);
         this.setIsResendClicked(false);
         this.setResendTimeout(60);
-        this.error.setErrorMessage('', null, null);
+        this.error.setErrorMessage({ message: '', code: '' }, null, null);
         client.setVerificationCode('', container);
     }
 }

@@ -1,6 +1,7 @@
 import VerificationStore from '../verification-store';
+import { TWebSocket, TRootStore, DeepPartial } from '../../types';
 
-let root_store, verification_store, WS;
+let root_store: DeepPartial<TRootStore>, verification_store: VerificationStore, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     WS = {
@@ -20,7 +21,7 @@ beforeEach(() => {
             },
         },
     };
-    verification_store = new VerificationStore({ WS, root_store });
+    verification_store = new VerificationStore(WS, root_store);
 });
 
 describe('VerificationStore', () => {
@@ -34,9 +35,9 @@ describe('VerificationStore', () => {
         expect(verification_store.is_button_clicked).toBeTruthy();
     });
     it('should change value of the variable timeout_button', () => {
-        verification_store.setTimeoutButton('100');
+        verification_store.setTimeoutButton(100);
 
-        expect(verification_store.timeout_button).toBe('100');
+        expect(verification_store.timeout_button).toBe(100);
     });
     it('should change value of the variable is_email_sent', () => {
         verification_store.setIsEmailSent(false);
@@ -57,17 +58,17 @@ describe('VerificationStore', () => {
         expect(verification_store.is_resend_clicked).toBeTruthy();
     });
     it('should change value of the variable resend_timeout', () => {
-        verification_store.setResendTimeout('20');
+        verification_store.setResendTimeout(20);
 
-        expect(verification_store.resend_timeout).toBe('20');
+        expect(verification_store.resend_timeout).toBe(20);
     });
     it('should clear verification timeout', () => {
         jest.useFakeTimers();
-        verification_store.setTimeoutButton('123');
+        verification_store.setTimeoutButton(123);
         verification_store.clearTimeoutVerification();
 
         expect(clearTimeout).toHaveBeenCalledTimes(1);
-        expect(clearTimeout).toHaveBeenCalledWith('123');
+        expect(clearTimeout).toHaveBeenCalledWith(123);
         jest.useRealTimers();
     });
     it('should set verification timeout', () => {

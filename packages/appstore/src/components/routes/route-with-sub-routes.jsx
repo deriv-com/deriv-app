@@ -2,10 +2,9 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { TRoute } from 'Types';
 
-const RouteWithSubRoutes = (route: TRoute) => {
-    const renderFactory = (props: unknown) => {
+const RouteWithSubRoutes = route => {
+    const renderFactory = props => {
         let result = null;
 
         if (route.component instanceof Redirect) {

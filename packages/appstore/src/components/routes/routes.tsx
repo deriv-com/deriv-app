@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Switch } from 'react-router-dom';
-import RouteWithSubroutes from './route-with-sub-routes';
+import RouteWithSubroutes from './route-with-sub-routes.jsx';
 import { Localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import getRoutesConfig from 'Constants/routes-config';

@@ -346,8 +346,10 @@ export default class MyAdsStore extends BaseStore {
             }).then(response => {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_adverts;
+                    const is_first_page = startIndex === 0;
+                    const adverts_list = is_first_page ? list : [...this.adverts, ...list];
                     this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-                    this.setAdverts(this.adverts.concat(list));
+                    this.setAdverts(adverts_list);
                     if (!floating_rate_store.change_ad_alert) {
                         let should_update_ads = false;
                         if (floating_rate_store.rate_type === ad_type.FLOAT) {

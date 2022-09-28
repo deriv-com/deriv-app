@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 import Text from '../text';
 import { useOnClickOutside } from '../../hooks';
 

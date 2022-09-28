@@ -9,7 +9,7 @@ import VerticalTabHeaders from './vertical-tab-headers.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 import VerticalTabLayout from './vertical-tab-layout.jsx';
 import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
     let index;

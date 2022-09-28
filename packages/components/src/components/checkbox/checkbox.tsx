@@ -1,19 +1,19 @@
 import classNames from 'classnames';
-import React, { MouseEventHandler, HTMLProps } from 'react';
+import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
 
-type TCheckBoxProps = Omit<HTMLProps<HTMLInputElement>, 'value'> & {
-    className: string;
-    classNameLabel: string;
-    defaultChecked: boolean;
-    disabled: boolean;
-    greyDisabled: boolean;
-    id: string;
+type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
+    className?: string;
+    classNameLabel?: string;
+    defaultChecked?: boolean;
+    disabled?: boolean;
+    greyDisabled?: boolean;
+    id?: string;
     label: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
-    value: boolean;
-    withTabIndex: string;
+    value?: boolean;
+    withTabIndex?: string;
 };
 
 const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
@@ -21,12 +21,12 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
         {
             className,
             classNameLabel,
-            disabled,
+            disabled = false,
             id,
             label,
             defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
-            value,
+            value = false,
             withTabIndex,
             greyDisabled = false,
             ...otherProps
@@ -77,7 +77,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                         'dc-checkbox__box--disabled': disabled,
                         'dc-checkbox--grey-disabled': disabled && greyDisabled,
                     })}
-                    {...(withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
+                    {...(withTabIndex && withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
                     tabIndex={0}
                     onKeyDown={handleKeyDown}
                 >

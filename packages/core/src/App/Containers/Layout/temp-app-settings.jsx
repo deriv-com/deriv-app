@@ -47,7 +47,7 @@ const TempAppSettings = ({ balance, currency }) => {
                     />
                 )}
                 currency={currency}
-                header_backgound_color='var(--general-section-1)'
+                header_background_color='var(--general-section-1)'
                 header_big_text={localize('Settings')}
                 header_contents_color='var(--text-general)'
                 header_icon='IcBrandDerivApps' // TODO: Update to actual app icon.

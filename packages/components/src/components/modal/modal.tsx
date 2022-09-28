@@ -206,34 +206,10 @@ const ModalElement = ({
     );
 };
 
-type TModal = {
-    className?: string;
-    close_icon_color?: string;
-    elements_to_ignore?: HTMLElement[];
+type TModal = TModalElement & {
     exit_classname?: string;
-    has_close_icon?: boolean;
-    header?: React.ReactNode;
-    header_background_color?: string;
-    height?: string;
-    id?: string;
-    is_confirmation_modal?: boolean;
-    is_open: boolean;
-    is_risk_warning_visible?: boolean;
-    is_title_centered?: boolean;
-    is_vertical_bottom?: boolean;
-    is_vertical_centered?: boolean;
-    is_vertical_top?: boolean;
     onEntered?: () => void;
     onExited?: () => void;
-    onMount?: () => void;
-    onUnmount?: () => void;
-    portalId?: string;
-    renderTitle?: () => React.ReactNode;
-    should_header_stick_body?: boolean;
-    small?: boolean;
-    title?: string | React.ReactNode;
-    toggleModal?: (e?: React.MouseEvent<HTMLElement>) => void;
-    width?: string;
 };
 
 const Modal = ({

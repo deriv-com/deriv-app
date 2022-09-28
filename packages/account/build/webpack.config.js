@@ -67,7 +67,6 @@ module.exports = function (env) {
             'scrollbars-container': 'Components/scrollbars-container',
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
-            'text-container': 'Components/text-container',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

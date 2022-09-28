@@ -1,26 +1,14 @@
-import { observable, action, computed, makeObservable } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 export default class SelfExclusionStore {
     constructor(root_store) {
-        makeObservable(this, {
-            api_max_losses: observable,
-            run_limit: observable,
-            is_restricted: observable,
-            initial_values: computed,
-            should_bot_run: computed,
-            setIsRestricted: action.bound,
-            setApiMaxLosses: action.bound,
-            setRunLimit: action.bound,
-            resetSelfExclusion: action.bound,
-            checkRestriction: action.bound,
-        });
-
         this.root_store = root_store;
     }
 
-    api_max_losses = 0;
-    run_limit = -1;
-    is_restricted = false;
+    @observable api_max_losses = 0;
+    @observable run_limit = -1;
+    @observable is_restricted = false;
+    @computed
     get initial_values() {
         return {
             form_max_losses: this.api_max_losses || '',
@@ -28,6 +16,7 @@ export default class SelfExclusionStore {
         };
     }
 
+    @computed
     get should_bot_run() {
         const { client } = this.root_store.core;
         if (client.is_eu && !client.is_virtual && (this.api_max_losses === 0 || this.run_limit === -1)) {
@@ -36,18 +25,22 @@ export default class SelfExclusionStore {
         return true;
     }
 
+    @action.bound
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
     }
 
+    @action.bound
     setApiMaxLosses(api_max_losses) {
         this.api_max_losses = api_max_losses;
     }
 
+    @action.bound
     setRunLimit(run_limit) {
         this.run_limit = run_limit;
     }
 
+    @action.bound
     resetSelfExclusion() {
         this.is_restricted = false;
         this.api_max_losses = 0;
@@ -55,6 +48,7 @@ export default class SelfExclusionStore {
         this.run_limit = -1;
     }
 
+    @action.bound
     async checkRestriction() {
         const { client } = this.root_store.core;
         await client.getSelfExclusion();

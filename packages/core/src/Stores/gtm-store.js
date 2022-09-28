@@ -1,5 +1,5 @@
 import * as Cookies from 'js-cookie';
-import { action, computed, makeObservable } from 'mobx';
+import { action, computed } from 'mobx';
 import { getAppId, toMoment, epochToMoment, CFD_PLATFORMS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
@@ -12,19 +12,10 @@ export default class GTMStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
 
-        makeObservable(this, {
-            visitorId: computed,
-            common_variables: computed,
-            accountSwitcherListener: action.bound,
-            pushDataLayer: action.bound,
-            pushTransactionData: action.bound,
-            eventHandler: action.bound,
-            setLoginFlag: action.bound,
-        });
-
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    @computed
     get visitorId() {
         return this.root_store.client.loginid;
     }
@@ -34,6 +25,7 @@ export default class GTMStore extends BaseStore {
      *
      * @returns {object}
      */
+    @computed
     get common_variables() {
         const platform = () => {
             const url = new URL(window.location.href);
@@ -69,6 +61,7 @@ export default class GTMStore extends BaseStore {
         };
     }
 
+    @action.bound
     accountSwitcherListener() {
         return new Promise(resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
     }
@@ -78,6 +71,7 @@ export default class GTMStore extends BaseStore {
      *
      * @param {object} data
      */
+    @action.bound
     async pushDataLayer(data) {
         if (this.is_gtm_applicable) {
             BinarySocket.wait('authorize').then(() => {
@@ -95,6 +89,7 @@ export default class GTMStore extends BaseStore {
      * @param {object} response
      * @param {object} extra_data
      */
+    @action.bound
     pushTransactionData(response, extra_data = {}) {
         if (!this.is_gtm_applicable || this.root_store.client.is_virtual) return;
         if (!response.transaction || !response.transaction.action) return;
@@ -135,6 +130,7 @@ export default class GTMStore extends BaseStore {
         }
     }
 
+    @action.bound
     eventHandler(get_settings) {
         if (!this.is_gtm_applicable) return;
 
@@ -173,6 +169,7 @@ export default class GTMStore extends BaseStore {
         this.pushDataLayer(data);
     }
 
+    @action.bound
     setLoginFlag(event_name) {
         if (this.is_gtm_applicable && event_name) {
             localStorage.setItem('GTM_login', event_name);

@@ -1,101 +1,57 @@
-import { action, computed, observable, makeObservable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
 import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
-    active_index = 0;
-    ad = null;
-    advertiser_first_name = '';
-    advertiser_last_name = '';
-    advertiser_info = {};
-    adverts = [];
-    counterparty_type = buy_sell.BUY;
-    api_error_message = '';
-    form_error_message = '';
-    has_more_adverts_to_load = false;
-    is_loading = true;
-    is_loading_adverts = true;
-    is_submit_disabled = true;
-    show_ad_popup = false;
-    submitForm = () => {};
+    @observable active_index = 0;
+    @observable ad = null;
+    @observable advertiser_first_name = '';
+    @observable advertiser_last_name = '';
+    @observable advertiser_info = {};
+    @observable adverts = [];
+    @observable counterparty_type = buy_sell.BUY;
+    @observable api_error_message = '';
+    @observable form_error_message = '';
+    @observable has_more_adverts_to_load = false;
+    @observable is_loading = true;
+    @observable is_loading_adverts = true;
+    @observable is_submit_disabled = true;
+    @observable show_ad_popup = false;
+    @observable submitForm = () => {};
 
-    constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
-        super(root_store);
-
-        makeObservable(this, {
-            active_index: observable,
-            ad: observable,
-            advertiser_first_name: observable,
-            advertiser_last_name: observable,
-            advertiser_info: observable,
-            adverts: observable,
-            counterparty_type: observable,
-            api_error_message: observable,
-            form_error_message: observable,
-            has_more_adverts_to_load: observable,
-            is_loading: observable,
-            is_loading_adverts: observable,
-            is_submit_disabled: observable,
-            show_ad_popup: observable,
-            submitForm: observable,
-            account_currency: computed,
-            advert: computed,
-            advertiser_details: computed,
-            advertiser_details_id: computed,
-            advertiser_details_name: computed,
-            advertiser_full_name: computed,
-            short_name: computed,
-            getAdvertiserInfo: action.bound,
-            handleTabItemClick: action.bound,
-            onCancelClick: action.bound,
-            onConfirmClick: action.bound,
-            onMount: action.bound,
-            setActiveIndex: action.bound,
-            setAd: action.bound,
-            setAdvertiserFirstName: action.bound,
-            setAdvertiserLastName: action.bound,
-            setAdvertiserInfo: action.bound,
-            setAdverts: action.bound,
-            setCounterpartyType: action.bound,
-            setErrorMessage: action.bound,
-            setFormErrorMessage: action.bound,
-            setHasMoreAdvertsToLoad: action.bound,
-            setIsLoading: action.bound,
-            setIsLoadingAdverts: action.bound,
-            setIsSubmitDisabled: action.bound,
-            setShowAdPopup: action.bound,
-            setSubmitForm: action.bound,
-            showAdPopup: action.bound,
-        });
-    }
-
+    @computed
     get account_currency() {
         return this.advert?.account_currency;
     }
 
+    @computed
     get advert() {
         return this.root_store.buy_sell_store.selected_ad_state;
     }
 
+    @computed
     get advertiser_details() {
         return this.advert?.advertiser_details || {};
     }
 
+    @computed
     get advertiser_details_id() {
         return this.advert?.advertiser_details?.id;
     }
 
+    @computed
     get advertiser_details_name() {
         return this.advert?.advertiser_details?.name;
     }
 
+    @computed
     get advertiser_full_name() {
         return `${this.advertiser_first_name} ${this.advertiser_last_name}`;
     }
 
+    @computed
     get short_name() {
         return getShortNickname(this.advertiser_details_name);
     }
@@ -126,6 +82,7 @@ export default class AdvertiserPageStore extends BaseStore {
         });
     }
 
+    @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
 
@@ -146,6 +103,7 @@ export default class AdvertiserPageStore extends BaseStore {
         });
     }
 
+    @action.bound
     handleTabItemClick(idx) {
         this.setActiveIndex(idx);
         if (idx === 0) {
@@ -155,15 +113,18 @@ export default class AdvertiserPageStore extends BaseStore {
         }
     }
 
+    @action.bound
     onCancelClick() {
         this.setShowAdPopup(false);
     }
 
+    @action.bound
     onConfirmClick(order_info) {
         const nav = { location: 'buy_sell' };
         this.root_store.general_store.redirectTo('orders', { order_info, nav });
     }
 
+    @action.bound
     onMount() {
         this.getAdvertiserInfo();
     }
@@ -173,66 +134,82 @@ export default class AdvertiserPageStore extends BaseStore {
         this.loadMoreAdvertiserAdverts({ startIndex: 0 });
     }
 
+    @action.bound
     setActiveIndex(active_index) {
         this.active_index = active_index;
     }
 
+    @action.bound
     setAd(ad) {
         this.ad = ad;
     }
 
+    @action.bound
     setAdvertiserFirstName(advertiser_first_name) {
         this.advertiser_first_name = advertiser_first_name;
     }
 
+    @action.bound
     setAdvertiserLastName(advertiser_last_name) {
         this.advertiser_last_name = advertiser_last_name;
     }
 
+    @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
     }
 
+    @action.bound
     setAdverts(adverts) {
         this.adverts = adverts;
     }
 
+    @action.bound
     setCounterpartyType(counterparty_type) {
         this.counterparty_type = counterparty_type;
     }
 
+    @action.bound
     setErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
 
+    @action.bound
     setFormErrorMessage(form_error_message) {
         this.form_error_message = form_error_message;
     }
 
+    @action.bound
     setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
         this.has_more_adverts_to_load = has_more_adverts_to_load;
     }
 
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
+    @action.bound
     setIsLoadingAdverts(is_loading_adverts) {
         this.is_loading_adverts = is_loading_adverts;
     }
 
+    @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
     }
 
+    @action.bound
     setShowAdPopup(show_ad_popup) {
         this.show_ad_popup = show_ad_popup;
     }
 
+    @action.bound
     setSubmitForm(submitFormFn) {
         this.submitForm = submitFormFn;
     }
 
+    @action.bound
     showAdPopup() {
         if (!this.root_store.general_store.is_advertiser) {
             this.root_store.buy_sell_store.showVerification();

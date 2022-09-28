@@ -1,39 +1,10 @@
-import { observable, action, computed, reaction, makeObservable } from 'mobx';
+import { observable, action, computed, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 import { tabs_title } from 'Constants/load-modal';
 
 export default class LoadModalStore {
     constructor(root_store) {
-        makeObservable(this, {
-            active_index: observable,
-            is_load_modal_open: observable,
-            is_explanation_expand: observable,
-            is_open_button_loading: observable,
-            loaded_local_file: observable,
-            recent_strategies: observable,
-            selected_strategy_id: observable,
-            preview_workspace: computed,
-            selected_strategy: computed,
-            tab_name: computed,
-            handleFileChange: action.bound,
-            loadFileFromRecent: action.bound,
-            loadFileFromLocal: action.bound,
-            onActiveIndexChange: action.bound,
-            onDriveConnect: action.bound,
-            onDriveOpen: action.bound,
-            onEntered: action.bound,
-            onLoadModalClose: action.bound,
-            onZoomInOutClick: action.bound,
-            previewRecentStrategy: action.bound,
-            setActiveTabIndex: action.bound,
-            setLoadedLocalFile: action.bound,
-            setRecentStrategies: action.bound,
-            setSelectedStrategyId: action.bound,
-            toggleExplanationExpand: action.bound,
-            toggleLoadModal: action.bound,
-        });
-
         this.root_store = root_store;
 
         reaction(
@@ -56,20 +27,22 @@ export default class LoadModalStore {
     local_workspace;
     drop_zone;
 
-    active_index = 0;
-    is_load_modal_open = false;
-    is_explanation_expand = false;
-    is_open_button_loading = false;
-    loaded_local_file = null;
-    recent_strategies = [];
-    selected_strategy_id = undefined;
+    @observable active_index = 0;
+    @observable is_load_modal_open = false;
+    @observable is_explanation_expand = false;
+    @observable is_open_button_loading = false;
+    @observable loaded_local_file = null;
+    @observable recent_strategies = [];
+    @observable selected_strategy_id = undefined;
 
+    @computed
     get preview_workspace() {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
         if (this.tab_name === tabs_title.TAB_RECENT) return this.recent_workspace;
         return null;
     }
 
+    @computed
     get selected_strategy() {
         if (this.recent_strategies.length > 0) {
             return this.recent_strategies.find(ws => ws.id === this.selected_strategy_id) || this.recent_strategies[0];
@@ -78,6 +51,7 @@ export default class LoadModalStore {
         return null;
     }
 
+    @computed
     get tab_name() {
         if (this.root_store.ui.is_mobile) {
             if (this.active_index === 0) return tabs_title.TAB_LOCAL;
@@ -89,6 +63,7 @@ export default class LoadModalStore {
         return '';
     }
 
+    @action.bound
     handleFileChange(event, is_body = true) {
         let files;
         if (event.type === 'drop') {
@@ -114,6 +89,7 @@ export default class LoadModalStore {
         return true;
     }
 
+    @action.bound
     loadFileFromRecent() {
         this.is_open_button_loading = true;
 
@@ -133,6 +109,7 @@ export default class LoadModalStore {
         this.toggleLoadModal();
     }
 
+    @action.bound
     loadFileFromLocal() {
         this.is_open_button_loading = true;
         this.readFile(false, {}, this.loaded_local_file);
@@ -140,6 +117,7 @@ export default class LoadModalStore {
         this.toggleLoadModal();
     }
 
+    @action.bound
     onActiveIndexChange() {
         if (this.tab_name === tabs_title.TAB_RECENT) {
             if (this.selected_strategy) {
@@ -183,6 +161,7 @@ export default class LoadModalStore {
         }
     }
 
+    @action.bound
     async onDriveConnect() {
         const { google_drive } = this.root_store;
 
@@ -193,6 +172,7 @@ export default class LoadModalStore {
         }
     }
 
+    @action.bound
     async onDriveOpen() {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
@@ -200,12 +180,14 @@ export default class LoadModalStore {
         this.toggleLoadModal();
     }
 
+    @action.bound
     onEntered() {
         if (this.tab_name === tabs_title.TAB_RECENT && this.selected_strategy) {
             this.previewRecentStrategy(this.selected_strategy.id);
         }
     }
 
+    @action.bound
     onLoadModalClose() {
         if (this.recent_workspace) {
             this.recent_workspace.dispose();
@@ -220,12 +202,14 @@ export default class LoadModalStore {
         this.setLoadedLocalFile(null);
     }
 
+    @action.bound
     onZoomInOutClick(is_zoom_in) {
         if (this.preview_workspace) {
             this.preview_workspace.zoomCenter(is_zoom_in ? 1 : -1);
         }
     }
 
+    @action.bound
     previewRecentStrategy(workspace_id) {
         this.setSelectedStrategyId(workspace_id);
 
@@ -256,26 +240,32 @@ export default class LoadModalStore {
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
     }
 
+    @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
     }
 
+    @action.bound
     setLoadedLocalFile(loaded_local_file) {
         this.loaded_local_file = loaded_local_file;
     }
 
+    @action.bound
     setRecentStrategies(recent_strategies) {
         this.recent_strategies = recent_strategies;
     }
 
+    @action.bound
     setSelectedStrategyId(selected_strategy_id) {
         this.selected_strategy_id = selected_strategy_id;
     }
 
+    @action.bound
     toggleExplanationExpand() {
         this.is_explanation_expand = !this.is_explanation_expand;
     }
 
+    @action.bound
     toggleLoadModal() {
         this.is_load_modal_open = !this.is_load_modal_open;
     }

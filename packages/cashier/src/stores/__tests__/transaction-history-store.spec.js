@@ -45,13 +45,13 @@ describe('TransactionHistoryStore', () => {
         expect(transaction_history_store.crypto_transactions).toEqual(crypto_transactions);
     });
 
-    // it('should subscribe to crypto transactions', async () => {
-    //     const spyUpdateCryptoTransactions = jest.spyOn(transaction_history_store, 'updateCryptoTransactions');
+    it('should subscribe to crypto transactions', async () => {
+        const spyUpdateCryptoTransactions = jest.spyOn(transaction_history_store, 'updateCryptoTransactions');
 
-    //     await transaction_history_store.getCryptoTransactions();
-    //     expect(spyUpdateCryptoTransactions).toHaveBeenCalledWith(crypto_transactions);
-    //     expect(transaction_history_store.crypto_transactions).toEqual(crypto_transactions);
-    // });
+        await transaction_history_store.getCryptoTransactions();
+        expect(spyUpdateCryptoTransactions).toHaveBeenCalledWith(crypto_transactions);
+        expect(transaction_history_store.crypto_transactions).toEqual(crypto_transactions);
+    });
 
     it('should update the list of crypto transactions if there is a new crypto transaction or an update with an existing transaction', () => {
         const updated_crypto_transactions = [
@@ -92,24 +92,24 @@ describe('TransactionHistoryStore', () => {
         expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBeFalsy();
     });
 
-    // it('should not proceed with the cancellation of a crypto transaction if there is an error', async () => {
-    //     const spySetIsCryptoTransactionsCancelModalVisible = jest.spyOn(
-    //         transaction_history_store,
-    //         'setIsCryptoTransactionsCancelModalVisible'
-    //     );
-    //     const spySetSelectedCryptoTransactionId = jest.spyOn(
-    //         transaction_history_store,
-    //         'setSelectedCryptoTransactionId'
-    //     );
+    it('should not proceed with the cancellation of a crypto transaction if there is an error', async () => {
+        const spySetIsCryptoTransactionsCancelModalVisible = jest.spyOn(
+            transaction_history_store,
+            'setIsCryptoTransactionsCancelModalVisible'
+        );
+        const spySetSelectedCryptoTransactionId = jest.spyOn(
+            transaction_history_store,
+            'setSelectedCryptoTransactionId'
+        );
 
-    //     try {
-    //         transaction_history_store.WS.cancelCryptoTransaction.mockResolvedValue(Promise.resolve({ error: 'error' }));
-    //         await transaction_history_store.cancelCryptoTransaction('175');
-    //     } catch (e) {
-    //         expect(spySetIsCryptoTransactionsCancelModalVisible).not.toHaveBeenCalled();
-    //         expect(spySetSelectedCryptoTransactionId).not.toHaveBeenCalled();
-    //     }
-    // });
+        try {
+            transaction_history_store.WS.cancelCryptoTransaction.mockResolvedValue(Promise.resolve({ error: 'error' }));
+            await transaction_history_store.cancelCryptoTransaction('175');
+        } catch (e) {
+            expect(spySetIsCryptoTransactionsCancelModalVisible).not.toHaveBeenCalled();
+            expect(spySetSelectedCryptoTransactionId).not.toHaveBeenCalled();
+        }
+    });
 
     it('should set selected crypto transaction id', () => {
         transaction_history_store.setSelectedCryptoTransactionId('1');

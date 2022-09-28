@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action, computed, makeObservable } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
 import GTM from 'Utils/gtm';
 
@@ -15,54 +15,31 @@ export default class FlyoutStore {
         sounds: false,
     };
 
-    is_help_content = false;
-    flyout_content = [];
-    flyout_width = this.flyout_min_width;
-    is_visible = false;
-    is_search_flyout = false;
-    is_loading = false;
-    search_term = '';
-    selected_category = null;
+    @observable is_help_content = false;
+    @observable flyout_content = [];
+    @observable flyout_width = this.flyout_min_width;
+    @observable is_visible = false;
+    @observable is_search_flyout = false;
+    @observable is_loading = false;
+    @observable search_term = '';
+    @observable selected_category = null;
 
     constructor(root_store) {
-        makeObservable(this, {
-            is_help_content: observable,
-            flyout_content: observable,
-            flyout_width: observable,
-            is_visible: observable,
-            is_search_flyout: observable,
-            is_loading: observable,
-            search_term: observable,
-            selected_category: observable,
-            onMount: action.bound,
-            onUnmount: action.bound,
-            initFlyout: action.bound,
-            initBlockWorkspace: action.bound,
-            getFlyout: action.bound,
-            setContents: action.bound,
-            setFlyoutWidth: action.bound,
-            setVisibility: action.bound,
-            setIsSearchFlyout: action.bound,
-            setSelectedCategory: action.bound,
-            getSelectedCategory: action.bound,
-            onClickOutsideFlyout: action.bound,
-            refreshCategory: action.bound,
-            variables_blocks_count: computed,
-            first_get_variable_block_index: computed,
-        });
-
         this.root_store = root_store;
     }
 
+    @action.bound
     onMount() {
         this.initFlyout();
         window.addEventListener('click', this.onClickOutsideFlyout);
     }
 
+    @action.bound
     onUnmount() {
         window.removeEventListener('click', this.onClickOutsideFlyout);
     }
 
+    @action.bound
     initFlyout() {
         const workspace = Blockly.derivWorkspace;
         const options = {
@@ -97,6 +74,7 @@ export default class FlyoutStore {
      * @param {Element} block_node DOM of a Blockly.Block
      * @memberof FlyoutStore
      */
+    @action.bound
     initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, this.options);
 
@@ -134,6 +112,7 @@ export default class FlyoutStore {
         Blockly.svgResize(workspace);
     }
 
+    @action.bound
     getFlyout() {
         return this.flyout;
     }
@@ -145,6 +124,7 @@ export default class FlyoutStore {
      * @param {Element[]} xml_list list of XML nodes
      * @memberof FlyoutStore
      */
+    @action.bound
     setContents(xml_list, search_term = '') {
         const text_limit = 20;
         const processed_xml = xml_list;
@@ -172,6 +152,7 @@ export default class FlyoutStore {
      * @param {Element[]} xmlList
      * @memberof FlyoutStore
      */
+    @action.bound
     setFlyoutWidth(xmlList) {
         let longest_block_width = 0;
 
@@ -198,6 +179,7 @@ export default class FlyoutStore {
      * @param {boolean} is_visible
      * @memberof FlyoutStore
      */
+    @action.bound
     setVisibility(is_visible) {
         this.is_visible = is_visible;
 
@@ -212,14 +194,17 @@ export default class FlyoutStore {
      * @param {boolean} is_search
      * @memberof FlyoutStore
      */
+    @action.bound
     setIsSearchFlyout(is_search) {
         this.is_search_flyout = is_search;
     }
 
+    @action.bound
     setSelectedCategory(selected_category) {
         this.selected_category = selected_category;
     }
 
+    @action.bound
     getSelectedCategory() {
         return this.selected_category;
     }
@@ -227,6 +212,7 @@ export default class FlyoutStore {
     /**
      * Close the flyout on click outside itself or parent toolbox.
      */
+    @action.bound
     onClickOutsideFlyout(event) {
         if (!this.is_visible || !Blockly.derivWorkspace) {
             return;
@@ -244,6 +230,7 @@ export default class FlyoutStore {
         }
     }
 
+    @action.bound
     refreshCategory() {
         const category = this.getSelectedCategory();
         const { toolbox } = this.root_store;
@@ -251,10 +238,12 @@ export default class FlyoutStore {
         this.setContents(flyout_content);
     }
 
+    @computed
     get variables_blocks_count() {
         return this.flyout_content.filter(block => block.getAttribute('type') === 'variables_get').length;
     }
 
+    @computed
     get first_get_variable_block_index() {
         return this.flyout_content.length - this.variables_blocks_count;
     }

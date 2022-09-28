@@ -94,14 +94,14 @@ describe('PaymentAgentTransferStore', () => {
         windowSpy.mockRestore();
     });
 
-    // it('shoud clear an error and set correct is_try_transfer_successful value', () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
+    it('shoud clear an error and set correct is_try_transfer_successful value', () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
 
-    //     payment_agent_transfer_store.setIsTryTransferSuccessful(true);
+        payment_agent_transfer_store.setIsTryTransferSuccessful(true);
 
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith('');
-    //     expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
-    // });
+        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
+    });
 
     it('shoud set correct is_transfer_successful value', () => {
         payment_agent_transfer_store.setIsTransferSuccessful(true);
@@ -148,13 +148,13 @@ describe('PaymentAgentTransferStore', () => {
         });
     });
 
-    // it('shoud reset payment agent transfer', () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
-    //     payment_agent_transfer_store.resetPaymentAgentTransfer();
+    it('shoud reset payment agent transfer', () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
+        payment_agent_transfer_store.resetPaymentAgentTransfer();
 
-    //     expect(payment_agent_transfer_store.is_transfer_successful).toBeFalsy();
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith('');
-    // });
+        expect(payment_agent_transfer_store.is_transfer_successful).toBeFalsy();
+        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+    });
 
     it('should get current payment agent from response_payment_agent', async () => {
         payment_agent_transfer_store.root_store.client.loginid = 'CR9000000';
@@ -218,22 +218,22 @@ describe('PaymentAgentTransferStore', () => {
         expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
     });
 
-    // it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestTryPaymentAgentTransfer', async () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
-    //     payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
-    //         paymentagent_transfer: 0,
-    //         error: {
-    //             message: 'Error message!',
-    //         },
-    //     });
+    it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestTryPaymentAgentTransfer', async () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
+        payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
+            paymentagent_transfer: 0,
+            error: {
+                message: 'Error message!',
+            },
+        });
 
-    //     await payment_agent_transfer_store.requestTryPaymentAgentTransfer(transfer_data);
+        await payment_agent_transfer_store.requestTryPaymentAgentTransfer(transfer_data);
 
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith(
-    //         { message: 'Error message!' },
-    //         payment_agent_transfer_store.resetPaymentAgentTransfer
-    //     );
-    // });
+        expect(spySetErrorMessage).toHaveBeenCalledWith(
+            { message: 'Error message!' },
+            payment_agent_transfer_store.resetPaymentAgentTransfer
+        );
+    });
 
     it('shoud set correct confirmation transfer value if there is no any errors in response (dry_run = 0)', async () => {
         payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
@@ -253,20 +253,20 @@ describe('PaymentAgentTransferStore', () => {
         expect(payment_agent_transfer_store.confirm).toEqual({});
     });
 
-    // it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestPaymentAgentTransfer', async () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
-    //     payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
-    //         paymentagent_transfer: 0,
-    //         error: {
-    //             message: 'Error message!',
-    //         },
-    //     });
+    it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestPaymentAgentTransfer', async () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
+        payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
+            paymentagent_transfer: 0,
+            error: {
+                message: 'Error message!',
+            },
+        });
 
-    //     await payment_agent_transfer_store.requestPaymentAgentTransfer(transfer_data);
+        await payment_agent_transfer_store.requestPaymentAgentTransfer(transfer_data);
 
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith(
-    //         { message: 'Error message!' },
-    //         payment_agent_transfer_store.resetPaymentAgentTransfer
-    //     );
-    // });
+        expect(spySetErrorMessage).toHaveBeenCalledWith(
+            { message: 'Error message!' },
+            payment_agent_transfer_store.resetPaymentAgentTransfer
+        );
+    });
 });

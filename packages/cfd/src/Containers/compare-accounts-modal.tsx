@@ -7,6 +7,7 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
+import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
@@ -33,6 +34,51 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     toggleCompareAccounts: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     openDerivRealAccountNeededModal: () => void;
+};
+
+type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
+    is_demo_tab: boolean;
+    show_eu_related: boolean;
+    residence: string;
+    is_eu: boolean;
+};
+
+// TODO: Remove this component and use one component for both when real released.
+const DxtradeCompareAccountContent = ({
+    is_demo_tab,
+    is_logged_in,
+    landing_companies,
+    platform,
+    show_eu_related,
+    residence,
+    is_eu,
+    is_uk,
+}: TDxtradeCompareAccountContent) => {
+    if (is_demo_tab) {
+        return (
+            <CfdDxtradeCompareContent
+                is_logged_in={is_logged_in}
+                landing_companies={landing_companies}
+                platform={platform}
+                show_eu_related={show_eu_related}
+                residence={residence}
+                is_eu={is_eu}
+                is_uk={is_uk}
+            />
+        );
+    }
+
+    return (
+        <ModalContent
+            is_logged_in={is_logged_in}
+            landing_companies={landing_companies}
+            platform={platform}
+            show_eu_related={show_eu_related}
+            residence={residence}
+            is_eu={is_eu}
+            is_uk={is_uk}
+        />
+    );
 };
 
 const CompareAccountsModal = ({
@@ -62,7 +108,9 @@ const CompareAccountsModal = ({
     ];
 
     const cfd_account_button_label =
-        mt5_accounts.filter(Boolean).length === 1 ? localize('Account Information') : localize('Compare accounts');
+        mt5_accounts.filter(Boolean).length === 1 || (is_demo_tab && platform === CFD_PLATFORMS.DXTRADE)
+            ? localize('Account Information')
+            : localize('Compare accounts');
 
     const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
 
@@ -112,7 +160,8 @@ const CompareAccountsModal = ({
                             exit_classname={is_dxtrade ? '' : 'cfd-modal--custom-exit'}
                         >
                             {is_dxtrade ? (
-                                <ModalContent
+                                <DxtradeCompareAccountContent
+                                    is_demo_tab={is_demo_tab}
                                     is_logged_in={is_logged_in}
                                     landing_companies={landing_companies}
                                     platform={platform}
@@ -144,7 +193,8 @@ const CompareAccountsModal = ({
                             header_classname={is_dxtrade ? '' : 'cfd-real-compare-accounts-mobile-header'}
                         >
                             {is_dxtrade ? (
-                                <ModalContent
+                                <DxtradeCompareAccountContent
+                                    is_demo_tab={is_demo_tab}
                                     is_logged_in={is_logged_in}
                                     landing_companies={landing_companies}
                                     platform={platform}

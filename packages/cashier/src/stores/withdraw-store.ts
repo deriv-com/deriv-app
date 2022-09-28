@@ -75,7 +75,7 @@ export default class WithdrawStore {
     async saveWithdraw(verification_code: string): Promise<void> {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: Number(converter_from_amount),
@@ -135,7 +135,7 @@ export default class WithdrawStore {
         setOnRemount(this.onMountWithdraw);
         await onMountCommon();
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         setContainerHeight(0);
         clearIframe();
         setLoading(true);
@@ -154,7 +154,7 @@ export default class WithdrawStore {
             return;
         }
 
-        const response_cashier = await this.WS.authorized.cashier(active_container, {
+        const response_cashier = await this.WS.authorized.cashier(active_container as 'deposit' | 'withdraw', {
             verification_code,
         });
 
@@ -177,7 +177,7 @@ export default class WithdrawStore {
         } else {
             await checkIframeLoaded();
             setLoading(false);
-            setIframeUrl(response_cashier.cashier);
+            setIframeUrl(response_cashier.cashier as string);
             setSessionTimeout(false);
             setTimeoutCashierUrl();
         }
@@ -313,7 +313,7 @@ export default class WithdrawStore {
             if (isMobile() && (error_message as string).length > 35) {
                 const error_content = error_message;
                 const openDialog = () => {
-                    this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content });
+                    this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content as string });
                 };
                 error_message = ReadMoreWrapper({ error_content, openDialog });
             }

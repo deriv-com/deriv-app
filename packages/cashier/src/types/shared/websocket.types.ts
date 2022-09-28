@@ -24,7 +24,7 @@ type TWebSocketCall = {
     cashier: (
         action: CashierInformationRequest['cashier'],
         parameters: Omit<CashierInformationRequest, 'cashier'>
-    ) => Promise<CashierInformationResponse>;
+    ) => Promise<CashierInformationResponse & { error: TServerError }>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
     transferBetweenAccounts: (
         account_from?: string,

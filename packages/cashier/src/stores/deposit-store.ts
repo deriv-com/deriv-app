@@ -50,7 +50,7 @@ export default class DepositStore {
         }
 
         if (!is_crypto) {
-            const response_cashier = await this.WS.authorized.cashier(active_container, {
+            const response_cashier = await this.WS.authorized.cashier(active_container as 'deposit' | 'withdraw', {
                 verification_code: 'undefined',
             });
 
@@ -65,7 +65,7 @@ export default class DepositStore {
                 clearTimeoutCashierUrl();
             } else {
                 await checkIframeLoaded();
-                setIframeUrl(response_cashier.cashier);
+                setIframeUrl(response_cashier.cashier as string);
                 setSessionTimeout(false);
                 setTimeoutCashierUrl();
             }

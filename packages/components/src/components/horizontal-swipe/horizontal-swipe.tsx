@@ -3,10 +3,10 @@ import { Swipeable } from 'react-swipeable';
 
 type THorizontalSwipeProps = {
     is_left_swipe: boolean;
-    is_left_swipe_disabled: boolean;
-    is_right_swipe: boolean;
-    is_right_swipe_disabled: boolean;
-    left_hidden_component: ReactNode;
+    is_left_swipe_disabled?: boolean;
+    is_right_swipe?: boolean;
+    is_right_swipe_disabled?: boolean;
+    left_hidden_component?: ReactNode;
     left_hidden_component_width?: string;
     right_hidden_component: ReactNode;
     right_hidden_component_width?: string;

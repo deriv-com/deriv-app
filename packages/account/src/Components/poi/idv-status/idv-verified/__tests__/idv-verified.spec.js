@@ -10,7 +10,7 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('../../../../../Assets/ic-idv-verified.svg', () => jest.fn(() => 'mockedSVGIcon'));
+jest.mock('Assets/ic-idv-verified.svg', () => jest.fn(() => 'mockedSVGIcon'));
 
 describe('<IdvVerified />', () => {
     const needs_poa_header = /your id is verified\. you will also need to submit proof of your address\./i;

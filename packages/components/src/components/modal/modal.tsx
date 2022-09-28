@@ -1,45 +1,76 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Body from './modal-body.jsx';
-import Footer from './modal-footer.jsx';
+import Body from './modal-body';
+import Footer from './modal-footer';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 import { useOnClickOutside } from '../../hooks';
 
+type TClickEvent = React.MouseEvent<HTMLElement, MouseEvent> & {
+    path?: HTMLElement[];
+    composedPath?: () => HTMLElement[];
+};
+
+type TModalElement = {
+    className?: string;
+    close_icon_color?: string;
+    elements_to_ignore?: HTMLElement[];
+    has_close_icon?: boolean;
+    header?: React.ReactNode;
+    header_background_color?: string;
+    height?: string;
+    id?: string;
+    is_confirmation_modal?: boolean;
+    is_open: boolean;
+    is_risk_warning_visible?: boolean;
+    is_title_centered?: boolean;
+    is_vertical_bottom?: boolean;
+    is_vertical_centered?: boolean;
+    is_vertical_top?: boolean;
+    onMount?: () => void;
+    onUnmount?: () => void;
+    portalId?: string;
+    renderTitle?: () => React.ReactNode;
+    should_header_stick_body?: boolean;
+    small?: boolean;
+    title?: string | React.ReactNode;
+    toggleModal?: (e?: React.MouseEvent<HTMLElement>) => void;
+    width?: string;
+};
+
 const ModalElement = ({
+    children,
+    className,
     close_icon_color,
     elements_to_ignore,
-    has_close_icon,
-    onMount,
-    onUnmount,
+    has_close_icon = true,
+    header,
+    header_background_color,
+    height,
+    id,
+    is_confirmation_modal,
     is_open,
     is_risk_warning_visible,
-    toggleModal,
-    id,
-    title,
-    className,
-    is_confirmation_modal,
-    is_vertical_centered,
-    is_vertical_bottom,
-    is_vertical_top,
     is_title_centered,
-    header,
-    header_backgound_color,
+    is_vertical_bottom,
+    is_vertical_centered,
+    is_vertical_top,
+    onMount,
+    onUnmount,
     portalId,
-    children,
-    height,
-    should_header_stick_body,
-    width,
     renderTitle,
+    should_header_stick_body = true,
     small,
-}) => {
+    title,
+    toggleModal,
+    width,
+}: React.PropsWithChildren<TModalElement>) => {
     const el_ref = React.useRef(document.createElement('div'));
-    const el_portal_node = document.getElementById(portalId);
+    const el_portal_node = portalId && document.getElementById(portalId);
     const modal_root_ref = React.useRef(el_portal_node || document.getElementById('modal_root'));
-    const wrapper_ref = React.useRef();
+    const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
     const portal_elements_selector = [
         '.dc-datepicker__picker',
@@ -49,9 +80,9 @@ const ModalElement = ({
     ];
 
     const isPortalElementVisible = () =>
-        modal_root_ref.current.querySelectorAll(portal_elements_selector.join(', ')).length;
+        modal_root_ref.current?.querySelectorAll(portal_elements_selector.join(', ')).length;
 
-    const validateClickOutside = e => {
+    const validateClickOutside = (e: TClickEvent): boolean => {
         const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
@@ -63,8 +94,8 @@ const ModalElement = ({
         );
     };
 
-    const closeModal = e => {
-        if (is_open) toggleModal(e);
+    const closeModal = (e: React.MouseEvent<HTMLElement>) => {
+        if (is_open) toggleModal?.(e);
     };
 
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
@@ -74,17 +105,17 @@ const ModalElement = ({
         const local_modal_root_ref = modal_root_ref;
 
         local_el_ref.current.classList.add('dc-modal');
-        local_modal_root_ref.current.appendChild(local_el_ref.current);
-        if (typeof onMount === 'function') onMount();
+        local_modal_root_ref.current?.appendChild(local_el_ref.current);
+        onMount?.();
 
         return () => {
-            local_modal_root_ref.current.removeChild(local_el_ref.current);
-            if (typeof onUnmount === 'function') onUnmount();
+            local_modal_root_ref.current?.removeChild(local_el_ref.current);
+            onUnmount?.();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const closeOnEscButton = React.useCallback(
-        e => {
+        (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 toggleModal?.();
             }
@@ -96,7 +127,7 @@ const ModalElement = ({
         return () => window.removeEventListener('keydown', closeOnEscButton);
     }, [closeOnEscButton]);
 
-    const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
+    const rendered_title = renderTitle ? renderTitle() : null;
 
     return ReactDOM.createPortal(
         <div
@@ -124,7 +155,7 @@ const ModalElement = ({
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
                     })}
                     style={{
-                        background: header_backgound_color,
+                        background: header_background_color,
                     }}
                 >
                     {rendered_title && (
@@ -175,61 +206,42 @@ const ModalElement = ({
     );
 };
 
-ModalElement.defaultProps = {
-    has_close_icon: true,
-    should_header_stick_body: true,
-};
-
-ModalElement.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    close_icon_color: PropTypes.string,
-    has_close_icon: PropTypes.bool,
-    header_backgound_color: PropTypes.string,
-    header: PropTypes.node,
-    id: PropTypes.string,
-    is_open: PropTypes.bool,
-    is_title_centered: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-    small: PropTypes.bool,
-    should_header_stick_body: PropTypes.bool,
-    renderTitle: PropTypes.func,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
-    toggleModal: PropTypes.func,
-    elements_to_ignore: PropTypes.array,
+type TModal = TModalElement & {
+    exit_classname?: string;
+    onEntered?: () => void;
+    onExited?: () => void;
 };
 
 const Modal = ({
     children,
     className,
     close_icon_color,
+    elements_to_ignore,
     exit_classname,
+    has_close_icon = true,
     header,
+    header_background_color,
+    height,
     id,
+    is_confirmation_modal,
     is_open,
     is_risk_warning_visible,
-    has_close_icon,
-    header_backgound_color,
-    height,
+    is_title_centered,
+    is_vertical_bottom,
+    is_vertical_centered,
+    is_vertical_top,
     onEntered,
     onExited,
     onMount,
     onUnmount,
     portalId,
-    small,
-    is_confirmation_modal,
-    is_vertical_bottom,
-    is_vertical_centered,
-    is_vertical_top,
-    is_title_centered,
     renderTitle,
-    should_header_stick_body,
+    should_header_stick_body = true,
+    small,
     title,
     toggleModal,
     width,
-    elements_to_ignore,
-}) => (
+}: React.PropsWithChildren<TModal>) => (
     <CSSTransition
         appear
         in={is_open}
@@ -249,7 +261,7 @@ const Modal = ({
             close_icon_color={close_icon_color}
             should_header_stick_body={should_header_stick_body}
             header={header}
-            header_backgound_color={header_backgound_color}
+            header_background_color={header_background_color}
             id={id}
             is_open={is_open}
             is_risk_warning_visible={is_risk_warning_visible}
@@ -277,41 +289,5 @@ const Modal = ({
 
 Modal.Body = Body;
 Modal.Footer = Footer;
-
-Modal.defaultProps = {
-    has_close_icon: true,
-    should_header_stick_body: true,
-};
-
-Modal.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    close_icon_color: PropTypes.string,
-    exit_classname: PropTypes.string,
-    should_header_stick_body: PropTypes.bool,
-    has_close_icon: PropTypes.bool,
-    header: PropTypes.node,
-    header_backgound_color: PropTypes.string,
-    height: PropTypes.string,
-    id: PropTypes.string,
-    is_open: PropTypes.bool,
-    is_confirmation_modal: PropTypes.bool,
-    is_vertical_bottom: PropTypes.bool,
-    is_vertical_centered: PropTypes.bool,
-    is_vertical_top: PropTypes.bool,
-    is_title_centered: PropTypes.bool,
-    onEntered: PropTypes.func,
-    onExited: PropTypes.func,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-    portalId: PropTypes.string,
-    renderTitle: PropTypes.func,
-    small: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
-    toggleModal: PropTypes.func,
-    width: PropTypes.string,
-    elements_to_ignore: PropTypes.array,
-    is_risk_warning_visible: PropTypes.bool,
-};
 
 export default Modal;

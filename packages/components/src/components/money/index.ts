@@ -1,4 +1,4 @@
-import Money from './money.jsx';
+import Money from './money';
 import './money.scss';
 
 export default Money;

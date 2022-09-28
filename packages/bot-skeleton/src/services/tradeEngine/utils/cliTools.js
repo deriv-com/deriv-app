@@ -1,10 +1,10 @@
 import TicksService from '../../api/ticks_service';
 import Observer from '../../../utils/observer';
-import { WS } from '@deriv/shared';
+import { generateDerivApiInstance } from '../../api/appId';
 
 export const createScope = () => {
     const observer = new Observer();
-    const api = WS.get();
+    const api = generateDerivApiInstance();
     const ticksService = new TicksService(api);
     const stopped = false;
     return { observer, api, ticksService, stopped };

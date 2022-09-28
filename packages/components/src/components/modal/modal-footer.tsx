@@ -1,8 +1,13 @@
-import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-const Footer = ({ children, className, has_separator, is_bypassed }) => {
+type TFooter = {
+    className: string;
+    has_separator: boolean;
+    is_bypassed: boolean;
+};
+
+const Footer = ({ children, className, has_separator, is_bypassed }: React.PropsWithChildren<Partial<TFooter>>) => {
     if (is_bypassed) return children;
     return (
         <div
@@ -18,13 +23,6 @@ const Footer = ({ children, className, has_separator, is_bypassed }) => {
             {children}
         </div>
     );
-};
-
-Footer.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    has_separator: PropTypes.bool,
-    is_bypassed: PropTypes.bool,
 };
 
 export default Footer;

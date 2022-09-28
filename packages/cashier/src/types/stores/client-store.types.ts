@@ -32,7 +32,9 @@ export type TClientStore = {
     email: string;
     getLimits: () => void;
     has_active_real_account: boolean;
+    has_logged_out: boolean;
     has_maltainvest_account: boolean;
+    initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_authentication_needed: boolean;
     is_deposit_lock: boolean;
@@ -53,6 +55,7 @@ export type TClientStore = {
     local_currency_config: { currency: string; decimal_places?: number };
     loginid?: string;
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
+    pre_switch_broadcast: boolean;
     residence: string;
     responseMt5LoginList: ({ mt5_login_list }: TResponseMt5LoginList) => Array<DetailsOfEachMT5Loginid>;
     responseTradingPlatformAccountsList: ({
@@ -64,6 +67,7 @@ export type TClientStore = {
     setLogout: (status?: boolean) => void;
     setPreSwitchAccount: (status?: boolean) => void;
     setVerificationCode: (code: string, action: string) => void;
+    switch_broadcast: boolean;
     switched: boolean;
     switchEndSignal: () => void;
     standpoint: { iom: string };

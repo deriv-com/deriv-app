@@ -4,13 +4,13 @@ import { observer } from 'mobx-react-lite';
 import { setWebsocket } from '@deriv/shared';
 import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
+import { TRootStore } from 'Types';
 import './app.scss';
-import { CoreStoreTypes } from 'Stores/root-store';
 import { CFDStore } from '@deriv/cfd';
 
 type TAppProps = {
     passthrough: {
-        root_store: CoreStoreTypes;
+        root_store: TRootStore;
         WS: Record<string, any>;
     };
 };
@@ -27,7 +27,7 @@ const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
     React.useEffect(initCFDStore, []);
 
     setWebsocket(WS);
-    const { ui } = useStores();
+    const { ui }: TRootStore = useStores();
 
     return (
         <main

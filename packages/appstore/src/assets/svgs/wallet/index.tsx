@@ -103,6 +103,10 @@ import BinaryBot from 'Assets/svgs/wallet/ic-brand-binarybot.svg';
 import DBot from 'Assets/svgs/wallet/ic-brand-dbot.svg';
 import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
+import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
+import Derived from 'Assets/svgs/wallet/ic-appstore-derived.svg';
+import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
+import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
 
 const Icons = {
     '1foryouDark': OneforyouDark,
@@ -209,12 +213,26 @@ const Icons = {
     DBot,
     DTrader,
     SmartTrader,
+    Derived,
+    Financial,
+    DerivX,
+    Options,
 };
 
-const WalletIcon = ({ icon, className }: { icon: string; className?: string }) => {
+const WalletIcon = ({
+    icon,
+    className,
+    size,
+    onClick,
+}: {
+    icon: string;
+    className?: string;
+    size?: number;
+    onClick?: () => void;
+}) => {
     const Icon = Icons[icon as keyof typeof Icons] as React.ElementType;
 
-    return Icon ? <Icon className={className} /> : null;
+    return Icon ? <Icon className={className} style={{ width: size, height: size }} onClick={onClick} /> : null;
 };
 
 export default WalletIcon;

@@ -1,15 +1,12 @@
 import * as React from 'react';
-import Onboarding from 'Components/onboarding';
-import { trading_hub_contents } from 'Constants/trading-hub-content';
-import AddOptionsAccount from 'Components/add-options-account';
+import CFDAccounts from 'Components/CFDs';
 
 const TradingHub = () => {
-    /*TODO: We need to show this component whenever user click on tour guide button*/
     return (
-        <React.Fragment>
-            <AddOptionsAccount />
-            <Onboarding contents={trading_hub_contents} />
-        </React.Fragment>
+        <div className='trading-hub'>
+            Trading Hub
+            <CFDAccounts account_type='real' />
+        </div>
     );
 };
 

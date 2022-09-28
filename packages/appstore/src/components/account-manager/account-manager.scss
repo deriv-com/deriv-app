@@ -1,19 +1,27 @@
-.cfd-account-manager {
+.account-manager {
     display: flex;
-    width: 27.6rem;
+    width: 36.8rem;
     align-items: center;
     justify-content: space-between;
+
+    &__icon {
+        margin-right: 0.8rem;
+        cursor: pointer;
+    }
 
     &__details {
         display: flex;
         flex-direction: column;
+        margin-left: 0 0.8rem;
+        &--title {
+            cursor: pointer;
+        }
     }
 
     &__buttons {
         display: flex;
         flex-direction: column;
-        margin-left: 5rem;
-
+        margin-left: auto;
         &-topup {
             margin-bottom: 0.5rem;
         }

@@ -25,6 +25,7 @@ import './appstore/ic-appstore-linked-wallets.svg';
 import './appstore/ic-appstore-menu-homepage.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
+import './appstore/ic-appstore-options.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';
 import './appstore/ic-appstore-success.svg';
 import './appstore/ic-appstore-trading-hub-onboarding-dark.svg';

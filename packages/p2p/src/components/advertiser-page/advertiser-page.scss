@@ -5,6 +5,7 @@
 
     @include mobile {
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     &__dropdown {

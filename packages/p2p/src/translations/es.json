@@ -276,7 +276,6 @@
     "-727433417": "{{status}}",
     "-1667041441": "Tasa (1 {{ offered_currency }})",
     "-1886565882": "Sus anuncios con tasas flotantes han sido desactivados. Establezca las tasas fijas para reactivarlos.",
-    "-1797936681": "Las tasas fijas están activas para {{local_currency}}. Los anuncios con tasas flotantes se desactivarán. Cambie a tasas fijas antes del {{end_date}}.",
     "-792015701": "El cajero Deriv P2P no está disponible en su país.",
     "-1220275347": "Puede elegir hasta 3 métodos de pago para este anuncio.",
     "-1889014820": "<0>¿No ve su método de pago?</0> <1>Agregar nuevo.</1>",

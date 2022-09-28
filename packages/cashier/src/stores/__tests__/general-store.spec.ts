@@ -14,7 +14,7 @@ beforeEach(() => {
                 status: [],
                 cashier_validation: [],
             },
-            balance: null,
+            balance: undefined,
             currency: 'USD',
             has_active_real_account: false,
             is_logged_in: true,
@@ -70,7 +70,7 @@ beforeEach(() => {
                     setIsCryptoTransactionsVisible: jest.fn(),
                 },
                 withdraw: {
-                    check10kLimit: jest.fn().mockResolvedValueOnce(),
+                    check10kLimit: jest.fn(),
                     setIsWithdrawConfirmed: jest.fn(),
                     verification: {
                         clearVerification: jest.fn(),
@@ -336,10 +336,8 @@ describe('GeneralStore', () => {
         // TODO
         // eslint-disable-next-line testing-library/await-async-utils
         expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
-        expect(general_store.root_store.modules.cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(
-            1
-        );
-        expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
+        expect(cashier.account_prompt_dialog.resetLastLocation).toHaveBeenCalledTimes(1);
+        expect(cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
 
     it('should set advertiser error', async () => {
@@ -410,6 +408,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page of payment agent tab  when is_payment_agent_visible is false and location.pahname = /cashier/payment-agent when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_pa,
@@ -424,6 +424,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_onramp,
@@ -437,6 +439,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page and call proper methods if is_crypto_transactions_visible equal to false and location.pahname = /cashier/crypto-transactions when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_crypto_transactions,
@@ -472,6 +476,8 @@ describe('GeneralStore', () => {
     });
 
     it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_p2p,

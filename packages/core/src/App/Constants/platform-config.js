@@ -28,7 +28,7 @@ const platform_config = [
         icon: getPlatformSettings('dxtrade').icon,
         title: () => getPlatformSettings('dxtrade').name,
         name: getPlatformSettings('dxtrade').name,
-        description: () => localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
+        description: () => localize('Trade CFDs on a customizable, easy-to-use trading platform.'),
         link_to: routes.dxtrade,
     },
     {

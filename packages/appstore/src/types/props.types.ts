@@ -1,10 +1,3 @@
-import ConfigStore from 'Stores/config-store';
-
-export type TConfigProps = {
-    has_router: boolean;
-    routes: ConfigStore['routes'];
-};
-
 type ReactTypes = React.ComponentType | React.ElementType;
 
 type TLocalizeProps = {

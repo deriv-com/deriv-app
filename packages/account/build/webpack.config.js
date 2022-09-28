@@ -57,7 +57,7 @@ module.exports = function (env) {
             'proof-of-identity': 'Sections/Verification/ProofOfIdentity/proof-of-identity.jsx',
             'proof-of-identity-config': 'Configs/proof-of-identity-config',
             'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
-            'proof-of-identity-containerfor-mt5':
+            'proof-of-identity-container-for-mt5':
                 'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
             'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
             'proof-of-income': 'Sections/Verification/ProofOfIncome/proof-of-income.jsx',

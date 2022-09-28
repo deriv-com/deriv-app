@@ -4,7 +4,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { TRootStore } from 'Types';
 
 type TNoBalanceProps = RouteComponentProps & {
     currency: string;
@@ -48,7 +48,7 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }: TNoBal
 };
 
 export default withRouter(
-    connect(({ client, modules }: RootStore) => ({
+    connect(({ client, modules }: TRootStore) => ({
         currency: client.currency,
         is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
         setTabIndex: modules.cashier.general_store.setCashierTabIndex,

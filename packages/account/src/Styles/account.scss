@@ -888,12 +888,6 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 4rem;
         }
     }
-    .account__text_container {
-        margin-top: 1.2rem;
-        @include mobile {
-            margin-bottom: 1.6rem;
-        }
-    }
     .two-factor {
         height: 100%;
         width: 100%;

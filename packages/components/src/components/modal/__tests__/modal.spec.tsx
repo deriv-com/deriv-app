@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Modal from '../modal.jsx';
+import Modal from '../modal';
 
 const modalRoot = document.createElement('div');
 modalRoot.setAttribute('id', 'modal_root');

@@ -6,7 +6,7 @@ import Tabs from '../tabs';
 const PopupBody = () => {
     const {
         active_tab_icon_color,
-        header_backgound_color,
+        header_background_color,
         tab_icon_color,
         tabs_detail,
         overlay_ref,
@@ -21,7 +21,7 @@ const PopupBody = () => {
     return (
         <Tabs
             active_icon_color={active_tab_icon_color}
-            background_color={header_backgound_color}
+            background_color={header_background_color}
             className='popup'
             center
             fit_content

@@ -7,7 +7,7 @@ type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {
     weight?: string;
     line_height?: string;
     styles?: CSSProperties;
-    size: string;
+    size?: string;
 };
 const Text = ({
     children,

@@ -10,7 +10,7 @@ import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 
 const BlockUserList = observer(() => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     const loadBlockedAdvertisers = debounce(search => {
         my_profile_store.setSearchTerm(search.trim());
@@ -32,7 +32,7 @@ const BlockUserList = observer(() => {
 
     return (
         <div className='block-user__list'>
-            {my_profile_store.blocked_advertisers_list.length > 0 && (
+            {my_profile_store.blocked_advertisers_list.length > 0 && !general_store.is_barred && (
                 <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search')} />
             )}
             <BlockUserTable />

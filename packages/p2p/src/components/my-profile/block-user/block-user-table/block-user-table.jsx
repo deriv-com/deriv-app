@@ -1,4 +1,5 @@
 import React from 'react';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
@@ -16,6 +17,15 @@ const BlockUserTable = () => {
         my_profile_store.getBlockedAdvertisersList();
         my_profile_store.setSearchTerm('');
 
+        reaction(
+            () => general_store.is_barred,
+            () => {
+                if (!general_store.is_barred) general_store.setBlockUnblockUserError('');
+                my_profile_store.getBlockedAdvertisersList();
+                my_profile_store.setSearchTerm('');
+            }
+        );
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -23,7 +33,7 @@ const BlockUserTable = () => {
         return <Loading is_fullscreen={isMobile()} />;
     }
 
-    if (general_store.block_unblock_user_error) {
+    if (general_store.block_unblock_user_error && general_store.is_barred) {
         return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
     }
 

@@ -20,14 +20,14 @@ export type TAccount = {
 
 export type TTransferAccount = {
     account_type?: 'trading' | 'mt5' | 'wallet' | 'dxtrade' | 'binary';
-    sub_account_type?: string;
     balance?: string;
     currency?: string;
     demo_account?: 0 | 1;
+    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
     loginid?: string;
     market_type?: 'financial' | 'synthetic';
     mt5_group?: string;
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
+    sub_account_type?: string;
 };
 
 export type TTransferBetweensAccounts = TransferBetweenAccountsResponse;

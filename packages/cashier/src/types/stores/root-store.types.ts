@@ -7,6 +7,7 @@ import CashierStore from '../../stores/cashier-store';
 export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
+    menu: any;
     modules: {
         cashier: CashierStore;
     };

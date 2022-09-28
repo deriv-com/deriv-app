@@ -15,6 +15,7 @@ type TError = {
 export type TCommonStore = {
     error: TError;
     is_from_derivgo: boolean;
+    is_network_online: boolean;
     has_error: boolean;
     platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;

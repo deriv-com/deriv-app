@@ -45,7 +45,7 @@ describe('AccountPromptDialogStore', () => {
     it('should reset last_location', () => {
         account_prompt_dialog_store.resetLastLocation();
 
-        expect(account_prompt_dialog_store.last_location).toBeNull();
+        expect(account_prompt_dialog_store.last_location).toBe('');
     });
 
     it('should reset is_confirmed', () => {

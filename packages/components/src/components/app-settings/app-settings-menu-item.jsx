@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 
 const AppSettingsMenuItem = ({ is_active, title, refSetter, onClick }) => {
     const text_colour = is_active ? 'prominent' : 'less-prominent';

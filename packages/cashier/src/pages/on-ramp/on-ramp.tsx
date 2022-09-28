@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
-import { TCommonStore, TClientStore, TProviderDetails, TReactFormEvent, TRootStore } from 'Types';
+import { TCommonStore, TClientStore, TProviderDetails, TReactFormEvent, TRootStore, TSideNotesProps } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
@@ -35,7 +35,7 @@ type TOnRampProps = {
     resetPopup: () => void;
     routeTo: TCommonStore['routeTo'];
     setIsOnRampModalOpen: (set_is_on_ramp_modal_open: boolean) => void;
-    setSideNotes: (ReactComponent: React.ReactElement[]) => void;
+    setSideNotes: (notes: TSideNotesProps) => void;
     should_show_dialog: boolean;
     tab_index: number;
 };
@@ -103,8 +103,8 @@ const OnRamp = ({
         }
 
         return () => {
-            onUnmountOnramp();
             setSideNotes([]);
+            onUnmountOnramp();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, tab_index]);

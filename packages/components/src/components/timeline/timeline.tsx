@@ -5,6 +5,8 @@ import Text from '../text';
 type TOval = {
     children: number;
 };
+type TItem = React.HTMLAttributes<HTMLDivElement> & { item_title: React.ReactNode };
+type TTimeline = React.HTMLAttributes<HTMLDivElement> & { disabled_items?: number[] };
 
 const Oval = ({ children }: TOval) => {
     return (
@@ -16,10 +18,6 @@ const Oval = ({ children }: TOval) => {
     );
 };
 
-type TItem = React.HTMLAttributes<HTMLDivElement> & { item_title: string | React.ReactNode };
-
-type TTimeline = React.HTMLAttributes<HTMLDivElement> & { disabled_items: number[] };
-
 const Timeline = ({ children, disabled_items, ...props }: React.PropsWithChildren<TTimeline>) => {
     return (
         <div {...props}>
@@ -29,7 +27,7 @@ const Timeline = ({ children, disabled_items, ...props }: React.PropsWithChildre
                         key={idx}
                         className={classNames('dc-timeline__flex', {
                             'dc-timeline__flex--no-border': children.length === idx + 1,
-                            'dc-timeline__flex--disabled': disabled_items && disabled_items.includes(idx + 1),
+                            'dc-timeline__flex--disabled': disabled_items?.includes(idx + 1),
                         })}
                     >
                         <Oval>{idx + 1}</Oval>

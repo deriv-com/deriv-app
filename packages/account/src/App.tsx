@@ -2,8 +2,8 @@ import React from 'react';
 import Routes from 'Containers/routes';
 import ResetTradingPassword from 'Containers/reset-trading-password';
 import { MobxContentProvider } from 'Stores/connect';
-import initStore from 'Stores/init-store';
-import { TCoreStore } from 'Stores/index';
+import initStore from './Stores/init-store';
+import TCoreStore from './Stores/index';
 
 // TODO: add correct types for stores and WS after implementing them
 type TAppProps = {

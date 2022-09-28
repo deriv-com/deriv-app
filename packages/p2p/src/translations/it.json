@@ -276,7 +276,6 @@
     "-727433417": "{{status}}",
     "-1667041441": "Tasso (1 {{ offered_currency }})",
     "-1886565882": "Gli annunci con tassi variabili sono stati disattivati. Imposta i tassi fissi per riattivarli.",
-    "-1797936681": "I tassi fissi sono attivi per {{local_currency}}. Gli annunci con tassi variabili verranno disattivati. Passa a tassi fissi entro il {{end_date}}.",
     "-792015701": "La cassa Deriv P2P non è disponibile nel tuo Paese.",
     "-1220275347": "Puoi scegliere fino a 3 modalità di pagamento per questo annuncio.",
     "-1889014820": "<0>Non vedi la tua modalità di pagamento?</0><1>Aggiungi una nuova.</1>",

@@ -54,10 +54,11 @@
             width: 33%;
             padding: 16px 0px 2px 0;
             cursor: pointer;
+            color: var(--text-general);
 
             &-item {
                 display: inline-block;
-                border-bottom: 1px dotted #4b4b4b;
+                border-bottom: 1px dotted var(--text-general);
             }
         }
         &--tiles {

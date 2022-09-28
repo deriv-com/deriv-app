@@ -32,7 +32,7 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                         <Tab icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                             <DashboardComponents />
                         </Tab>
-                        <Tab icon='IcBotbuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
+                        <Tab icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
                         <Tab
                             icon='IcQuickStrategyIcon'
                             label={localize('Quick Strategy')}

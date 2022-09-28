@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
-import Modal from '../modal/modal.jsx';
+import Modal from '../modal/modal';
 import Button from '../button/button.jsx';
 import Popover from '../popover/popover.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 import './popover-mobile.scss';
 
 const PopoverMobile = ({

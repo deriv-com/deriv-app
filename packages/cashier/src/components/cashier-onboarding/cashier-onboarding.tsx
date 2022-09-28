@@ -16,13 +16,14 @@ type TAccountList = {
     is_crypto: boolean;
     is_dxtrade: boolean;
     is_mt: boolean;
+    is_virtual: boolean;
     text: string;
     value: string;
 };
 
 type TCashierOnboardingProps = {
     available_crypto_currencies: TClientStore['available_crypto_currencies'];
-    accounts_list: TAccountList[];
+    accounts: TAccountList[];
     can_change_fiat_currency: TClientStore['can_change_fiat_currency'];
     currency: TClientStore['currency'];
     has_set_currency: boolean;

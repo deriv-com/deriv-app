@@ -1,6 +1,6 @@
 import React from 'react';
-import Routes from 'Containers/routes.jsx';
-import ResetTradingPassword from 'Containers/reset-trading-password.jsx';
+import Routes from 'Containers/routes';
+import ResetTradingPassword from 'Containers/reset-trading-password';
 import { MobxContentProvider } from 'Stores/connect';
 import initStore from 'Stores/init-store';
 import { TCoreStore } from 'Stores/index';

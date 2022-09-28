@@ -4,12 +4,7 @@
     flex-direction: column;
 
     @include mobile {
-        overflow: auto;
         overflow-y: auto;
-        overflow-x: hidden;
-        position: relative;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
     }
 
     &__dropdown {

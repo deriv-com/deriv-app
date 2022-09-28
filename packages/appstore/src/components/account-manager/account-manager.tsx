@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon, Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS, getStaticUrl } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TPlatform } from 'Types';
+import WalletIcon from 'Assets/svgs/wallet';
 
 type TAccountManager = {
     type?: string;
@@ -36,7 +37,7 @@ const AccountManager = ({
     const openStaticPage = () => {
         if (platform === CFD_PLATFORMS.MT5) window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
-        else if (type === 'options') window.open(getStaticUrl(`/trade-types/options/`));
+        else if (type === 'Options') window.open(getStaticUrl(`/trade-types/options/`));
     };
 
     return (
@@ -44,16 +45,12 @@ const AccountManager = ({
             <div className='account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
-                        <Icon icon='IcAppstoreFinancial' size={64} onClick={openStaticPage} />
+                        <WalletIcon icon='Financial' size={64} onClick={openStaticPage} />
                     ) : (
-                        <Icon icon='IcAppstoreDerived' size={64} onClick={openStaticPage} />
+                        <WalletIcon icon='Derived' size={64} onClick={openStaticPage} />
                     ))}
-                {platform === CFD_PLATFORMS.DXTRADE && (
-                    <Icon icon='IcAppstoreDerivx' size={64} onClick={openStaticPage} />
-                )}
-                {!platform && type === 'options' && (
-                    <Icon icon='IcAppstoreOptions' size={64} onClick={openStaticPage} />
-                )}
+                {platform === CFD_PLATFORMS.DXTRADE && <WalletIcon icon='DerivX' size={64} onClick={openStaticPage} />}
+                {!platform && type === 'Options' && <WalletIcon icon='Options' size={64} onClick={openStaticPage} />}
             </div>
             <div className='account-manager__details'>
                 <Text

@@ -1,6 +1,12 @@
 .buy-sell__modal {
     opacity: 1 !important;
 
+    @include mobile {
+        .dc-mobile-full-page-modal__header--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
+    }
+
     &-body {
         position: relative;
         display: block;

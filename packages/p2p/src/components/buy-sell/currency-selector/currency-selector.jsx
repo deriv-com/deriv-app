@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { Field, Formik } from 'formik';
 import { Autocomplete, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import './currency-selector.scss';
 
 const CurrencySelector = ({ className, default_value, list, onSelect }) => {
-    const filtered_currency_list = list.filter(item => item.has_adverts);
+    const filtered_currency_list = list.filter(item => item.is_default || item.has_adverts);
 
     return (
         <Formik enableReinitialize initialValues={{ currency: '' }}>
@@ -36,7 +35,7 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                             onItemSelection={({ value }) => {
                                 if (value) onSelect?.(value);
                             }}
-                            placeholder={localize('Search currency')}
+                            placeholder={localize('Search')}
                             trailing_icon={
                                 field.value ? (
                                     <Icon

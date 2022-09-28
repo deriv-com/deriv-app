@@ -14,6 +14,7 @@ export default class GeneralStore extends BaseStore {
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
     @observable balance;
+    @observable feature_level = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_blocked = false;
@@ -127,9 +128,13 @@ export default class GeneralStore extends BaseStore {
     getWebsiteStatus() {
         requestWS({ website_status: 1 }).then(response => {
             if (response && !response.error) {
+                const { buy_sell_store } = this.root_store;
                 const { p2p_config } = response.website_status;
+                const { feature_level, local_currencies, review_period } = p2p_config || {};
 
-                this.setReviewPeriod(p2p_config.review_period);
+                this.setFeatureLevel(feature_level);
+                buy_sell_store.setLocalCurrencies(local_currencies);
+                this.setReviewPeriod(review_period);
             }
         });
     }
@@ -398,6 +403,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setAppProps(props) {
         this.props = props;
+    }
+
+    @action.bound
+    setFeatureLevel(feature_level) {
+        this.feature_level = feature_level;
     }
 
     @action.bound

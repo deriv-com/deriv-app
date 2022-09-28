@@ -1,0 +1,64 @@
+.currency-selector {
+    position: absolute;
+
+    @include desktop {
+        margin-top: 0.4rem;
+        width: 24rem;
+    }
+
+    &__search-icon {
+        margin-right: 1rem;
+    }
+
+    .dc-dropdown-list {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-top: 0;
+
+        @include mobile {
+            box-shadow: none;
+            transition: unset;
+        }
+
+        &__item {
+            border-radius: 4px;
+            padding: 0.8rem 1.6rem;
+            margin: 0.8rem;
+
+            @include mobile {
+                margin: 0.8rem 1.6rem;
+            }
+
+            &--active {
+                font-weight: bold;
+            }
+
+            &--not-found {
+                background-color: var(--general-main-1);
+                word-break: break-word;
+
+                @include mobile {
+                    display: block;
+                    font-weight: bold;
+                    position: fixed;
+                    text-align: center;
+                    top: 14rem;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .dc-input {
+        border: 0;
+        border-bottom: 1px solid var(--border-normal);
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        box-shadow: 0 8px 16px 0 var(--shadow-menu);
+        background: var(--general-main-2);
+
+        &__field {
+            padding-left: 3.4rem;
+        }
+    }
+}

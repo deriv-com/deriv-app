@@ -1,3 +1,4 @@
+import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
@@ -21,14 +22,17 @@ export default class BuySellStore extends BaseStore {
     @observable is_sort_dropdown_open = false;
     @observable is_submit_disabled = true;
     @observable items = [];
+    @observable local_currencies = [];
     @observable payment_info = '';
     @observable receive_amount = 0;
     @observable search_results = [];
     @observable search_term = '';
     @observable selected_ad_state = {};
+    @observable selected_local_currency = null;
     @observable selected_payment_method_value = [];
     @observable selected_payment_method_text = [];
     @observable selected_value = 'rate';
+    @observable should_show_currency_selector_modal = false;
     @observable should_show_popup = false;
     @observable should_show_verification = false;
     @observable should_use_client_limits = false;
@@ -155,6 +159,18 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    getWebsiteStatus() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response) {
+                const { error, website_status } = response;
+
+                if (error) this.setErrorMessage(error.message);
+                else this.setLocalCurrencies(website_status.p2p_config?.local_currencies);
+            }
+        });
+    }
+
+    @action.bound
     handleChange(e) {
         this.setIsLoading(true);
         this.setSelectedValue(e.target.value);
@@ -235,6 +251,7 @@ export default class BuySellStore extends BaseStore {
                 ...(this.selected_payment_method_value.length > 0
                     ? { payment_method: this.selected_payment_method_value }
                     : {}),
+                ...(this.selected_local_currency ? { local_currency: this.selected_local_currency } : {}),
             }).then(response => {
                 if (response) {
                     if (!response.error) {
@@ -326,6 +343,14 @@ export default class BuySellStore extends BaseStore {
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
     }
 
+    @action.bound
+    onLocalCurrencySelect(local_currency) {
+        this.setSelectedLocalCurrency(local_currency);
+        this.setItems([]);
+        this.setIsLoading(true);
+        this.loadMoreItems({ startIndex: 0 });
+    }
+
     registerIsListedReaction() {
         const { general_store } = this.root_store;
         const disposeIsListedReaction = reaction(
@@ -407,6 +432,32 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setLocalCurrencies(local_currencies) {
+        const currency_list = [];
+
+        local_currencies.forEach(currency => {
+            const { display_name, has_adverts, is_default, symbol } = currency;
+
+            if (is_default) this.setSelectedLocalCurrency(currency.symbol);
+
+            currency_list.push({
+                component: (
+                    <div className='currency-dropdown__list-item'>
+                        <div>{symbol}</div>
+                        <div>{display_name}</div>
+                    </div>
+                ),
+                has_adverts,
+                is_default,
+                text: symbol,
+                value: symbol,
+            });
+        });
+
+        this.local_currencies = currency_list;
+    }
+
+    @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
     }
@@ -437,6 +488,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setSelectedLocalCurrency(selected_local_currency) {
+        this.selected_local_currency = selected_local_currency;
+    }
+
+    @action.bound
     setSelectedPaymentMethodValue(payment_method_value) {
         this.selected_payment_method_value = [...payment_method_value];
     }
@@ -449,6 +505,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setSelectedValue(selected_value) {
         this.selected_value = selected_value;
+    }
+
+    @action.bound
+    setShouldShowCurrencySelectorModal(should_show_currency_selector_modal) {
+        this.should_show_currency_selector_modal = should_show_currency_selector_modal;
     }
 
     @action.bound

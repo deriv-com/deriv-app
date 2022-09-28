@@ -12,6 +12,7 @@ import SearchBox from 'Components/search-box';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
 import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
+import CurrencyDropdown from 'Components/buy-sell/currency-dropdown.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
 
 const getBuySellFilters = () => [
@@ -26,8 +27,8 @@ const getBuySellFilters = () => [
 ];
 
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
-    const { buy_sell_store } = useStores();
-
+    const { buy_sell_store, general_store } = useStores();
+    const is_currency_selector_visible = general_store.feature_level >= 2;
     const onChangeTableType = event => setTableType(event.target.value);
 
     const returnedFunction = debounce(() => {
@@ -57,6 +58,14 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             buy_sell_store.setItems([]);
             buy_sell_store.setIsLoading(true);
             buy_sell_store.loadMoreItems({ startIndex: 0 });
+
+            const interval = setInterval(() => {
+                buy_sell_store.getWebsiteStatus();
+            }, 60000);
+
+            return () => {
+                if (interval) clearInterval(interval);
+            };
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -83,6 +92,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                     </ToggleContainer>
                 </AnimationWrapper>
                 <div className='buy-sell__header-row'>
+                    {is_currency_selector_visible && <CurrencyDropdown />}
                     <SearchBox
                         onClear={onClear}
                         onSearch={onSearch}

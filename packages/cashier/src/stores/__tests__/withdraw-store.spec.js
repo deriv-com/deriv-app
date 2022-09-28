@@ -139,7 +139,7 @@ describe('WithdrawStore', () => {
         const verification_code = 'aBcDefXa';
 
         await withdraw_store.saveWithdraw(verification_code);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
 

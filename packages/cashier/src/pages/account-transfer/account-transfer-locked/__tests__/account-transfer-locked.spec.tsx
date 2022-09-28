@@ -36,7 +36,7 @@ describe('AccountTransferLocked', () => {
     });
 
     it('Should trigger click on the checklist item', () => {
-        const onClick = jest.fn();
+        const onClick: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement> = jest.fn();
         const items = [
             {
                 content: 'Complete the financial assessment form',

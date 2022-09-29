@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
 
-jest.mock('../../../Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
+jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
 jest.mock('../utils.js', () => ({
     getDocumentData: function (country_code, key) {
         const data = {

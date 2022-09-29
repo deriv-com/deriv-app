@@ -781,9 +781,11 @@ export default class ClientStore extends BaseStore {
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
 
+        // TODO: Remove two first conditions after real released
         return (
             'dxtrade_financial_company' in landing_companies ||
             'dxtrade_gaming_company' in landing_companies ||
+            'dxtrade_all_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
     };

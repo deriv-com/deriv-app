@@ -18,6 +18,7 @@ import ServerTime from '../server-time.jsx';
 import { isBot, routes } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
+import { Popover } from '@deriv/components';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -88,11 +89,13 @@ const TradingHubFooter = ({
                     <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
                 )}
                 <div className='footer__links--dark-mode'>
-                    {is_dark_mode ? (
-                        <LightModeToggleIcon onClick={changeTheme} />
-                    ) : (
-                        <DarkModeToggleIcon onClick={changeTheme} />
-                    )}
+                    <Popover alignment='top' message='Change theme'>
+                        {is_dark_mode ? (
+                            <LightModeToggleIcon onClick={changeTheme} />
+                        ) : (
+                            <DarkModeToggleIcon onClick={changeTheme} />
+                        )}
+                    </Popover>
                 </div>
                 <FooterIconSeparator />
                 <HelpCentre />

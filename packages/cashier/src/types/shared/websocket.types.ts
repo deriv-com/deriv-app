@@ -1,9 +1,10 @@
 import {
+    AccountStatusResponse,
     Balance,
     CashierInformationRequest,
     CashierInformationResponse,
-    AccountStatusResponse,
     TransferBetweenAccountsResponse,
+    CryptoConfig,
 } from '@deriv/api-types';
 import { TMT5LoginAccount } from 'Types';
 
@@ -23,7 +24,7 @@ type TWebSocketCall = {
     cashier: (
         action: CashierInformationRequest['cashier'],
         parameters: Omit<CashierInformationRequest, 'cashier'>
-    ) => Promise<CashierInformationResponse>;
+    ) => Promise<CashierInformationResponse & { error: TServerError }>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
     transferBetweenAccounts: (
         account_from?: string,
@@ -35,6 +36,10 @@ type TWebSocketCall = {
 
 export type TWebSocket = {
     authorized: TWebSocketCall;
+    cryptoConfig: () => { crypto_config: CryptoConfig };
+    cryptoWithdraw: (
+        args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>
+    ) => Promise<CashierInformationResponse & { error: TServerError }>;
     balanceAll: () => Promise<Balance>;
     mt5LoginList: () => {
         mt5_login_list: Array<TMT5LoginAccount>;

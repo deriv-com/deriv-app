@@ -1,5 +1,5 @@
-import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TMT5LoginAccount } from 'Types';
+import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, GetLimits } from '@deriv/api-types';
+import { TAccountsList, TMT5LoginAccount } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -26,6 +26,7 @@ export type TClientStore = {
             };
         };
     };
+    account_list: TAccountsList[];
     account_status: GetAccountStatus;
     available_crypto_currencies: string[];
     active_accounts: Array<TActiveAccounts>;
@@ -34,10 +35,10 @@ export type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => void;
+    getLimits: () => { get_limits?: GetLimits };
     has_maltainvest_account: boolean;
     is_account_setting_loaded: boolean;
-    is_eu: boolean;
+    is_authentication_needed: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
@@ -48,6 +49,7 @@ export type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_switching: boolean;
+    is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
@@ -68,6 +70,7 @@ export type TClientStore = {
     standpoint: {
         iom: string;
     };
+    setVerificationCode: (code: string, action: string) => void;
     switchAccount: (value?: string) => void;
     verification_code: {
         payment_agent_withdraw: string;
@@ -79,13 +82,5 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
-    setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
-    is_authentication_needed: boolean;
-    is_tnc_needed: boolean;
-    is_financial_account: boolean;
-    is_financial_information_incomplete: boolean;
-    is_trading_experience_incomplete: boolean;
-    is_eu: boolean;
 };

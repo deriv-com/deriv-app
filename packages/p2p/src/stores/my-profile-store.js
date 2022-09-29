@@ -13,6 +13,7 @@ export default class MyProfileStore extends BaseStore {
     @observable advertiser_payment_methods_error = '';
     @observable available_payment_methods = {};
     @observable balance_available = null;
+    @observable blocked_advertisers_list = [];
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
@@ -33,6 +34,7 @@ export default class MyProfileStore extends BaseStore {
     @observable payment_method_to_edit = {};
     @observable search_results = [];
     @observable search_term = '';
+    @observable selected_blocked_user = {};
     @observable selected_payment_method = '';
     @observable selected_payment_method_display_name = '';
     @observable selected_payment_method_fields = [];
@@ -138,6 +140,20 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    /**
+     * Evaluates a new blocked_advertiser_list based on if the user has searched a blocked advertiser
+     * By default it returns the blocked_advertisers_list when there are no searches
+     *
+     * @returns {Array} Either the entire blocked advertisers list or filtered advertisers list by search term
+     */
+    @computed
+    get rendered_blocked_advertisers_list() {
+        if (this.search_term) {
+            return this.search_results;
+        }
+        return this.blocked_advertisers_list;
+    }
+
     @action.bound
     createPaymentMethod(values, { setSubmitting }) {
         setSubmitting(true);
@@ -197,6 +213,24 @@ export default class MyProfileStore extends BaseStore {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
                 this.setErrorMessage(response.error.message);
+            }
+            this.setIsLoading(false);
+        });
+    }
+
+    @action.bound
+    getBlockedAdvertisersList() {
+        this.setIsLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setBlockedAdvertisersList(response.p2p_advertiser_relations?.blocked_advertisers);
+                    this.loadMoreBlockedAdvertisers();
+                } else {
+                    this.root_store.general_store.setBlockUnblockUserError(response.error.message);
+                }
             }
             this.setIsLoading(false);
         });
@@ -345,6 +379,27 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    /**
+     * This function loads more blocked advertisers as necessary if the user is searching for a blocked advertiser
+     * It updates the search_results based on the searched advertiser
+     */
+    @action.bound
+    loadMoreBlockedAdvertisers() {
+        if (this.search_term) {
+            const search_results = this.blocked_advertisers_list.filter(blocked_advertiser =>
+                blocked_advertiser.name.toLowerCase().includes(this.search_term.toLowerCase().trim())
+            );
+
+            // if user deletes the last blocked advertiser while searching, display 'You have no blocked advertisers' message condition
+            if (this.search_term && search_results.length === 0 && this.blocked_advertisers_list.length === 0) {
+                this.setSearchTerm('');
+            }
+
+            this.setSearchResults(search_results);
+        }
+        this.setIsLoading(false);
+    }
+
     @action.bound
     onClickDelete() {
         requestWS({
@@ -362,6 +417,23 @@ export default class MyProfileStore extends BaseStore {
                 );
             }
         });
+    }
+
+    @action.bound
+    onClickUnblock(advertiser) {
+        const { general_store } = this.root_store;
+
+        general_store.setIsBlockUserModalOpen(true);
+        this.setSelectedBlockedUser(advertiser);
+    }
+
+    @action.bound
+    onSubmit() {
+        const { general_store } = this.root_store;
+
+        general_store.setIsBlockUserModalOpen(false);
+        general_store.blockUnblockUser(false, this.selected_blocked_user.id);
+        this.getBlockedAdvertisersList();
     }
 
     @action.bound
@@ -502,6 +574,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    setBlockedAdvertisersList(blocked_advertisers_list) {
+        this.blocked_advertisers_list = blocked_advertisers_list;
+    }
+
+    @action.bound
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
     }
@@ -589,6 +666,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setSearchTerm(search_term) {
         this.search_term = search_term;
+    }
+
+    @action.bound
+    setSelectedBlockedUser(selected_blocked_user) {
+        this.selected_blocked_user = selected_blocked_user;
     }
 
     @action.bound

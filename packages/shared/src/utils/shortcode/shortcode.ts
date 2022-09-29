@@ -8,11 +8,13 @@ const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 // category_underlying_amount_starttime_endtime_barrier
 const options_regex = new RegExp(`${base_pattern}_([A-Z\\d]+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
 
-export const extractInfoFromShortcode = shortcode => {
+export const extractInfoFromShortcode = (shortcode: string) => {
     const info_from_shortcode = {
         category: '',
         underlying: '',
         barrier_1: '',
+        multiplier: '',
+        start_time: '',
     };
 
     const is_multipliers = /^MULT/i.test(shortcode);
@@ -38,19 +40,23 @@ export const extractInfoFromShortcode = shortcode => {
     return info_from_shortcode;
 };
 
-export const isHighLow = ({ shortcode = '', shortcode_info = '' }) => {
+type TIsHighLow = {
+    shortcode?: string;
+    shortcode_info?: {
+        category?: string;
+        underlying?: string;
+        barrier_1?: string;
+        multiplier?: string;
+        start_time?: string;
+    };
+};
+
+export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {
     const info_from_shortcode = shortcode ? extractInfoFromShortcode(shortcode) : shortcode_info;
     return info_from_shortcode && info_from_shortcode.barrier_1 ? !/^S0P$/.test(info_from_shortcode.barrier_1) : false;
 };
 
-export const isMultiplier = ({ shortcode = '', shortcode_info = '' }) => {
-    const info_from_shortcode = shortcode ? extractInfoFromShortcode(shortcode) : shortcode_info;
-    return info_from_shortcode && info_from_shortcode.category
-        ? /^mult(up|down)$/.test(info_from_shortcode.category)
-        : false;
-};
-
-export const isForwardStarting = (shortcode, purchase_time) => {
+export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     if (shortcode_info?.multiplier) return false;
     const start_time = shortcode_info?.start_time;

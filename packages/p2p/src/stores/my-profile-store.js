@@ -431,9 +431,10 @@ export default class MyProfileStore extends BaseStore {
     onSubmit() {
         const { general_store } = this.root_store;
 
+        clearTimeout(delay);
         general_store.setIsBlockUserModalOpen(false);
         general_store.blockUnblockUser(false, this.selected_blocked_user.id);
-        this.getBlockedAdvertisersList();
+        const delay = setTimeout(() => this.getBlockedAdvertisersList(), 250);
     }
 
     @action.bound

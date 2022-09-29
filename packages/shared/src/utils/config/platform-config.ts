@@ -5,17 +5,14 @@ import { initMoment } from '../date';
 import { routes } from '../routes';
 
 type TPlatform = {
-    icon_text: undefined;
+    icon_text?: string;
     is_hard_redirect: boolean;
     platform_name: string;
     route_to_path: string;
     url: string;
 };
 
-type TPlatforms = {
-    p2p: TPlatform;
-    derivgo: TPlatform;
-};
+type TPlatforms = Record<'p2p' | 'derivgo', TPlatform>;
 
 // TODO: This should be moved to PlatformContext
 export const platforms: TPlatforms = {

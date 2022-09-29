@@ -1,18 +1,19 @@
+/* eslint-disable */
 const extend = require('extend');
 
-export const removeObjProperties = (property_arr, { ...obj }) => {
+export const removeObjProperties = (property_arr: string[], { ...obj }) => {
     property_arr.forEach(property => delete obj[property]);
     return obj;
 };
 
-export const filterObjProperties = ({ ...obj }, property_arr) =>
+export const filterObjProperties = ({ ...obj }, property_arr: string[]) =>
     Object.fromEntries(
         Object.entries(obj)
             // eslint-disable-next-line no-unused-vars
             .filter(([key, _]) => property_arr.includes(key))
     );
 
-export const isEmptyObject = obj => {
+export const isEmptyObject = (obj: any) => {
     let is_empty = true;
     if (obj && obj instanceof Object) {
         Object.keys(obj).forEach(key => {
@@ -22,10 +23,10 @@ export const isEmptyObject = obj => {
     return is_empty;
 };
 
-export const cloneObject = obj => (!isEmptyObject(obj) ? extend(true, Array.isArray(obj) ? [] : {}, obj) : obj);
+export const cloneObject = (obj: any) => (!isEmptyObject(obj) ? extend(true, Array.isArray(obj) ? [] : {}, obj) : obj);
 
 // Note that this function breaks on objects with circular references.
-export const isDeepEqual = (a, b) => {
+export const isDeepEqual = (a: any, b: any) => {
     if (typeof a !== typeof b) {
         return false;
     } else if (Array.isArray(a)) {
@@ -39,19 +40,19 @@ export const isDeepEqual = (a, b) => {
     return a === b;
 };
 
-export const isEqualArray = (arr1, arr2) =>
+export const isEqualArray = (arr1: any[], arr2: any[]): boolean =>
     arr1 === arr2 || (arr1.length === arr2.length && arr1.every((value, idx) => isDeepEqual(value, arr2[idx])));
 
-export const isEqualObject = (obj1, obj2) =>
+export const isEqualObject = (obj1: any, obj2: any): boolean =>
     obj1 === obj2 ||
     (Object.keys(obj1).length === Object.keys(obj2).length &&
         Object.keys(obj1).every(key => isDeepEqual(obj1[key], obj2[key])));
 
 // Filters out duplicates in an array of objects by key
-export const unique = (array, key) =>
+export const unique = (array: any[], key: string) =>
     array.filter((e, idx) => array.findIndex((a, i) => (a[key] ? a[key] === e[key] : i === idx)) === idx);
 
-export const getPropertyValue = (obj, k) => {
+export const getPropertyValue = (obj: any, k: string | string[]): any => {
     let keys = k;
     if (!Array.isArray(keys)) keys = [keys];
     if (!isEmptyObject(obj) && keys[0] in obj && keys && keys.length > 1) {
@@ -61,7 +62,7 @@ export const getPropertyValue = (obj, k) => {
     return obj ? cloneObject(obj[keys[0]]) : undefined;
 };
 
-export const removeEmptyPropertiesFromObject = obj => {
+export const removeEmptyPropertiesFromObject = (obj: any) => {
     const clone = { ...obj };
 
     Object.getOwnPropertyNames(obj).forEach(key => {
@@ -73,16 +74,16 @@ export const removeEmptyPropertiesFromObject = obj => {
     return clone;
 };
 
-export const sequence = n => Array.from(Array(n).keys());
+export const sequence = (n: number) => Array.from(Array(n).keys());
 
-export const pick = (source, fields) => {
-    return fields.reduce((target, prop) => {
+export const pick = (source: any, fields: any) => {
+    return fields.reduce((target: any, prop: any) => {
         if (Object.prototype.hasOwnProperty.call(source, prop)) target[prop] = source[prop];
         return target;
     }, {});
 };
 
-export const findValueByKeyRecursively = (obj, key) => {
+export const findValueByKeyRecursively = (obj: any, key: string) => {
     let return_value;
 
     Object.keys(obj).some(obj_key => {
@@ -109,7 +110,7 @@ export const findValueByKeyRecursively = (obj, key) => {
 };
 
 // Recursively freeze an object (deep freeze)
-export const deepFreeze = obj => {
+export const deepFreeze = (obj: any) => {
     Object.getOwnPropertyNames(obj).forEach(key => {
         const value = obj[key];
         if (value && typeof value === 'object' && !Object.isFrozen(value)) {

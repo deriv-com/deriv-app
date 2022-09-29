@@ -1,3 +1,14 @@
+declare global {
+    interface Window {
+        opera?: string;
+        MSStream?: {
+            readonly type: string;
+            msClose: () => void;
+            msDetachStream: () => void;
+        };
+    }
+}
+
 export const systems = {
     mac: ['Mac68K', 'MacIntel', 'MacPPC'],
     linux: [
@@ -41,7 +52,7 @@ export const OSDetect = () => {
     if (typeof navigator !== 'undefined' && navigator.platform) {
         return Object.keys(systems)
             .map(os => {
-                if (systems[os].some(platform => navigator.platform === platform)) {
+                if (systems[os as keyof typeof systems].some(platform => navigator.platform === platform)) {
                     return os;
                 }
                 return false;
@@ -53,7 +64,7 @@ export const OSDetect = () => {
 };
 
 export const mobileOSDetect = () => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
 
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {

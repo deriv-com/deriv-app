@@ -16,14 +16,13 @@ type TAccountList = {
     is_crypto: boolean;
     is_dxtrade: boolean;
     is_mt: boolean;
-    is_virtual: boolean;
     text: string;
     value: string;
 };
 
 type TCashierOnboardingProps = {
     available_crypto_currencies: TClientStore['available_crypto_currencies'];
-    accounts: TAccountList[];
+    accounts_list: TAccountList[];
     can_change_fiat_currency: TClientStore['can_change_fiat_currency'];
     currency: TClientStore['currency'];
     has_set_currency: boolean;
@@ -48,6 +47,7 @@ type TCashierOnboardingProps = {
 };
 
 const CashierOnboarding = ({
+    // eslint-disable-next-line react/prop-types
     accounts,
     available_crypto_currencies,
     can_change_fiat_currency,

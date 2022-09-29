@@ -27,7 +27,7 @@ describe('<CashierOnboarding />', () => {
         has_set_currency: true,
         is_switching: false,
         is_landing_company_loaded: true,
-        accounts: {},
+        accounts_list: [{}],
     });
 
     it('should show the proper messages when <CashierOnboarding /> is rendered with fiat account', () => {

@@ -3,7 +3,7 @@ import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { P2PAdvertInfo } from '@deriv/api-types';
 import Constants from 'Constants/constants';
-import CashierNotificationsIcon from 'Components/cashier-notifications/cashier-notifications-icon';
+import CashierNotifications from 'Components/cashier-notifications/';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
 import { TRootStore, TWebSocket } from 'Types';
@@ -100,7 +100,7 @@ export default class GeneralStore extends BaseStore {
 
         menu.attach({
             id: 'dt_cashier_tab',
-            icon: CashierNotificationsIcon(this.p2p_notification_count),
+            icon: CashierNotifications({ p2p_notification_count: this.p2p_notification_count }),
             text: () => localize('Cashier'),
             link_to: this.has_set_currency && routes.cashier,
             onClick: !this.has_set_currency && ui.toggleSetCurrencyModal,
@@ -117,7 +117,7 @@ export default class GeneralStore extends BaseStore {
         menu.update(
             {
                 id: 'dt_cashier_tab',
-                icon: CashierNotificationsIcon(this.p2p_notification_count),
+                icon: CashierNotifications({ p2p_notification_count: this.p2p_notification_count }),
                 text: () => localize('Cashier'),
                 link_to: this.has_set_currency && routes.cashier,
                 onClick: !this.has_set_currency ? ui.toggleSetCurrencyModal : false,
@@ -165,9 +165,9 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer } = modules.cashier;
 
         if (this.active_container === account_transfer.container) {
-            this.percentage = (amount / Number(account_transfer.selected_from.balance)) * 100;
+            this.percentage = Number(((amount / Number(account_transfer.selected_from.balance)) * 100).toFixed(0));
         } else {
-            this.percentage = (amount / Number(client.balance)) * 100;
+            this.percentage = Number(((amount / Number(client.balance)) * 100).toFixed(0));
         }
         if (!isFinite(this.percentage)) {
             this.percentage = 0;

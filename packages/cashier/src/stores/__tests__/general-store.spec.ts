@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import CashierNotificationsIcon from '../../components/cashier-notifications/cashier-notifications-icon';
+import CashierNotifications from '../../components/cashier-notifications';
 import { TWebSocket, TRootStore, DeepPartial } from '../../types';
 
 let cashier_menu, general_store: GeneralStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
@@ -92,7 +92,7 @@ beforeEach(() => {
 
     cashier_menu = {
         id: 'dt_cashier_tab',
-        icon: CashierNotificationsIcon(general_store.p2p_notification_count),
+        icon: CashierNotifications({ p2p_notification_count: general_store.p2p_notification_count }),
         text: expect.any(Function),
         link_to: routes.cashier,
         onClick: false,

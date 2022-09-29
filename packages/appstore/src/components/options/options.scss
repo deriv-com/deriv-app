@@ -19,7 +19,6 @@
         flex-direction: column;
         align-items: flex-start;
         width: 115.2rem;
-        height: 6rem;
         @include mobile {
             width: 32.8rem;
             height: 5.4rem;
@@ -30,11 +29,6 @@
             line-height: 1.8rem;
         }
         &--title {
-            width: 115.2rem;
-            height: 3.6rem;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 2.4rem;
             line-height: 3.6rem;
             color: #333333;
             @include mobile {
@@ -49,12 +43,6 @@
         }
         &--description {
             align-items: flex-start;
-
-            gap: 0.4rem;
-            font-weight: 340;
-            font-size: 1.6rem;
-            line-height: 2.4rem;
-            height: 2.4rem;
             .link {
                 height: 2.4rem;
                 font-style: normal;

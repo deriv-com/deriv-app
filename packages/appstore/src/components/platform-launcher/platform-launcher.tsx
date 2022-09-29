@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 import { routes } from '@deriv/shared';
@@ -25,21 +25,54 @@ const PlatformLauncher = ({ icon, title, description, link_to, has_real_account 
                 <div className='platform-launcher__container--icon'>
                     <WalletIcon icon={icon} />
                 </div>
-                <div className='platform-launcher__container--title-desc-wrapper'>
-                    <Text className='platform-launcher__container--title-desc-wrapper--title' weight='bold'>
-                        <Localize i18n_default_text={title} />
-                    </Text>
-                    <Text className='platform-launcher__container--title-desc-wrapper--description'>
-                        <Localize i18n_default_text={description} />
-                    </Text>
-                </div>
+                <DesktopWrapper>
+                    <div className='platform-launcher__container--title-desc-wrapper'>
+                        <Text
+                            size='xxs'
+                            line_height='l'
+                            className='platform-launcher__container--title-desc-wrapper--title'
+                            weight='bold'
+                        >
+                            <Localize i18n_default_text={title} />
+                        </Text>
+                        <Text
+                            size='xxs'
+                            line_height='l'
+                            className='platform-launcher__container--title-desc-wrapper--description'
+                        >
+                            <Localize i18n_default_text={description} />
+                        </Text>
+                    </div>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div className='platform-launcher__container--title-desc-wrapper'>
+                        <Text
+                            size='xxs'
+                            line_height='l'
+                            className='platform-launcher__container--title-desc-wrapper--title'
+                            weight='bold'
+                        >
+                            <Localize i18n_default_text={title} />
+                        </Text>
+                        <Text
+                            size='xxxs'
+                            line_height='l'
+                            className='platform-launcher__container--title-desc-wrapper--description'
+                        >
+                            <Localize i18n_default_text={description} />
+                        </Text>
+                    </div>
+                </MobileWrapper>
             </div>
             {has_real_account && (
-                <div className='platform-launcher__trade-button'>
-                    <Button primary small onClick={() => onClickTrade(link_to)} type='button'>
-                        <Localize i18n_default_text='Trade' />
-                    </Button>
-                </div>
+                <Button
+                    primary
+                    onClick={() => onClickTrade(link_to)}
+                    type='button'
+                    className='platform-launcher__trade-button'
+                >
+                    <Localize i18n_default_text='Trade' />
+                </Button>
             )}
         </div>
     );

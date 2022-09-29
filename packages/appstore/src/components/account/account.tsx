@@ -111,7 +111,12 @@ const OptionsAccount = ({
             </div>
             <div className='account__container--account-details-wrapper'>
                 <div className='account__container--account-details-wrapper--name-number'>
-                    <Text className='account__container--account-details-wrapper--name-number--name' weight='bold'>
+                    <Text
+                        size='xxs'
+                        line_height='l'
+                        className='account__container--account-details-wrapper--name-number--name'
+                        weight='bold'
+                    >
                         {display_type === 'currency' ? (
                             <CurrencyDisplay
                                 country_standpoint={country_standpoint}
@@ -133,12 +138,21 @@ const OptionsAccount = ({
                             />
                         )}
                     </Text>
-                    <Text className='account__container--account-details-wrapper--name-number--number'>
+                    <Text
+                        size='xxxs'
+                        line_height='s'
+                        className='account__container--account-details-wrapper--name-number--number'
+                    >
                         {loginid_text}
                     </Text>
                 </div>
 
-                <Text className='account__container--account-details-wrapper--balance'>
+                <Text
+                    size='s'
+                    line_height='l'
+                    weight='bold'
+                    className='account__container--account-details-wrapper--balance'
+                >
                     {`${balance} ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>

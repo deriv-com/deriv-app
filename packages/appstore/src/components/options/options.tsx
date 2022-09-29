@@ -54,11 +54,11 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         <div className={`options-container ${!client.has_any_real_account ? 'options-container-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
                 {!isMobile() && (
-                    <Text className='options-container__title-description-container--title' weight='bold'>
+                    <Text size='m' className='options-container__title-description-container--title' weight='bold'>
                         <Localize i18n_default_text={'Options'} />
                     </Text>
                 )}
-                <Text className='options-container__title-description-container--description'>
+                <Text size='s' className='options-container__title-description-container--description'>
                     <Localize
                         key={1}
                         i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simpliciy of Options with <1>Multipliers</1>.'

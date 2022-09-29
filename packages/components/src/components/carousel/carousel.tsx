@@ -4,7 +4,7 @@ import { Swipeable } from 'react-swipeable';
 import Card from './carousel-card';
 import Nav from './carousel-nav';
 import Icon from '../icon';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 import { useInterval } from '../../hooks';
 
 type TCarousel = {

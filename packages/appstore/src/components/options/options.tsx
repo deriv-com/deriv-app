@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import PlatformLauncher from '../platform-launcher/index';
 import OptionsAccount from '../account/index';
@@ -53,21 +53,41 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
     return (
         <div className={`options-container ${!client.has_any_real_account ? 'options-container-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
-                {!isMobile() && (
+                <DesktopWrapper>
                     <Text size='m' className='options-container__title-description-container--title' weight='bold'>
                         <Localize i18n_default_text={'Options'} />
                     </Text>
-                )}
-                <Text size='s' className='options-container__title-description-container--description'>
-                    <Localize
-                        key={1}
-                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simpliciy of Options with <1>Multipliers</1>.'
-                        components={[
-                            <StaticUrl key={0} className='link' href='trade-types/options/' />,
-                            <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,
-                        ]}
-                    />
-                </Text>
+                    <Text
+                        size='s'
+                        line_height='xxl'
+                        className='options-container__title-description-container--description'
+                    >
+                        <Localize
+                            key={1}
+                            i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simpliciy of Options with <1>Multipliers</1>.'
+                            components={[
+                                <StaticUrl key={0} className='link' href='trade-types/options/' />,
+                                <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,
+                            ]}
+                        />
+                    </Text>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <Text
+                        size='xxs'
+                        line_height='l'
+                        className='options-container__title-description-container--description'
+                    >
+                        <Localize
+                            key={1}
+                            i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simpliciy of Options with <1>Multipliers</1>.'
+                            components={[
+                                <StaticUrl key={0} className='link' href='trade-types/options/' />,
+                                <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,
+                            ]}
+                        />
+                    </Text>
+                </MobileWrapper>
             </div>
             <div className='options-container__accounts-platform-container'>
                 {client.has_any_real_account ? (
@@ -173,7 +193,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                       />
                                   )
                               )}
-                        {client.getClientAccountType !== 'demo' && (
+                        {client.getClientAccountType !== 'virtual' && (
                             <div className='options-container__accounts-platform-container--add-options'>
                                 <AddOptions
                                     numberofAccounts={

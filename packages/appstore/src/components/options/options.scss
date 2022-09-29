@@ -18,11 +18,9 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        width: 115.2rem;
         @include mobile {
             width: 32.8rem;
             height: 5.4rem;
-            font-family: 'IBM Plex Sans';
             font-style: normal;
             font-weight: 400;
             font-size: 1.2rem;
@@ -30,16 +28,7 @@
         }
         &--title {
             line-height: 3.6rem;
-            color: #333333;
-            @include mobile {
-                width: 16.4rem;
-                height: 1.4rem;
-                font-family: 'IBM Plex Sans';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 1rem;
-                line-height: 1.4rem;
-            }
+            color: $color-black-1;
         }
         &--description {
             align-items: flex-start;
@@ -50,22 +39,13 @@
                 font-size: 1.6rem;
                 line-height: 2.4rem;
                 text-decoration-line: underline;
-                color: #ff444f;
-            }
-            @include mobile {
-                width: 32.8rem;
-                height: 5.4rem;
-                font-style: normal;
-                font-weight: 400;
-                font-size: 1.2rem;
-                line-height: 1.8rem;
+                color: $color-red;
             }
         }
     }
     &__accounts-platform-container {
         display: flex;
         flex-direction: column;
-        width: 115.2rem;
         height: 21.9rem;
         background: #ffffff;
         border-radius: 1.6rem;
@@ -82,7 +62,6 @@
             display: flex;
             flex-direction: row;
             align-items: flex-start;
-            width: 115.2rem;
             height: 7.2rem;
             //max-width: 105rem;
             //overflow-x: auto;

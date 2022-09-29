@@ -6,7 +6,6 @@ export const getClientAccountType = loginid => {
     if (/^VR/.test(loginid)) account_type = 'virtual';
     else if (/^MF/.test(loginid)) account_type = 'financial';
     else if (/^MLT|MX/.test(loginid)) account_type = 'gaming';
-    else if (/^VRTC/.test(loginid)) account_type = 'demo';
     return account_type;
 };
 

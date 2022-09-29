@@ -6,21 +6,21 @@ import { getCurrencyDisplayCode, isMobile, getCurrencyName, getCFDAccountDisplay
 import classNames from 'classnames';
 import { RouteComponentProps } from 'react-router';
 
-interface Icountry_standpoint {
-    is_united_kingdom: string;
-    is_isle_of_man: string;
-}
+type Icountry_standpoint = {
+    is_united_kingdom: boolean;
+    is_isle_of_man: boolean;
+};
 
-interface Igeolocation {
+type Igeolocation = {
     region: any;
     sequence: number;
-}
-interface Iserver_info {
+};
+type Iserver_info = {
     geolocation: Igeolocation;
-}
-interface Iserver {
+};
+type Iserver = {
     server_info: Iserver_info;
-}
+};
 
 type TOptionsAccountprops = RouteComponentProps & {
     currency_icon: string | undefined;
@@ -97,24 +97,25 @@ const OptionsAccount = ({
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
         <div
-            className={`account__container ${
-                activeAccount === loginid_text ? 'account__container-active' : 'account__container-disabled'
-            }`}
+            className={classNames('account-container', {
+                'account-container-active': activeAccount === loginid_text,
+                'account-container-disabled': activeAccount !== loginid_text,
+            })}
             onClick={redirectAccount}
         >
-            <div className='account__container--icon'>
+            <div className='account-container--icon'>
                 <Icon
                     icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
                     className={'acc-switcher__id-icon'}
                     size={40}
                 />
             </div>
-            <div className='account__container--account-details-wrapper'>
-                <div className='account__container--account-details-wrapper--name-number'>
+            <div className='account-container--account-details-wrapper'>
+                <div className='account-container--account-details-wrapper--name-number'>
                     <Text
                         size='xxs'
                         line_height='l'
-                        className='account__container--account-details-wrapper--name-number--name'
+                        className='account-container--account-details-wrapper--name-number--name'
                         weight='bold'
                     >
                         {display_type === 'currency' ? (
@@ -141,7 +142,7 @@ const OptionsAccount = ({
                     <Text
                         size='xxxs'
                         line_height='s'
-                        className='account__container--account-details-wrapper--name-number--number'
+                        className='account-container--account-details-wrapper--name-number--number'
                     >
                         {loginid_text}
                     </Text>
@@ -151,12 +152,12 @@ const OptionsAccount = ({
                     size='s'
                     line_height='l'
                     weight='bold'
-                    className='account__container--account-details-wrapper--balance'
+                    className='account-container--account-details-wrapper--balance'
                 >
                     {`${balance} ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>
-            <div className='account__container--account-reset-button-wrapper'>
+            <div className='account-container--account-reset-button-wrapper'>
                 {has_reset_balance ? (
                     <Button
                         is_disabled={is_disabled}
@@ -183,7 +184,7 @@ const OptionsAccount = ({
                 )}
             </div>
             {isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
-                <div className='account__container--dropdown'>
+                <div className='account-container--dropdown'>
                     <WalletIcon icon={'DropDown'} />
                 </div>
             )}

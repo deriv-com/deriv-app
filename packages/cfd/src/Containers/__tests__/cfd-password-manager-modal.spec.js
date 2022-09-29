@@ -318,6 +318,6 @@ describe('<CFDPasswordManagerModal />', () => {
         expect(screen.getByText(/investor password/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/investor password/i));
 
-        expect(await screen.findByText(/manage deriv mt5 real derived account password/i)).toBeInTheDocument();
+        expect(await screen.findByText(/manage deriv mt5 password/i)).toBeInTheDocument();
     });
 });

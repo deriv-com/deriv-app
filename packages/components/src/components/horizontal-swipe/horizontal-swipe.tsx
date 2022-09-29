@@ -1,6 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ReactNode } from 'react';
 import { Swipeable } from 'react-swipeable';
+
+type THorizontalSwipeProps = {
+    is_left_swipe: boolean;
+    is_left_swipe_disabled?: boolean;
+    is_right_swipe?: boolean;
+    is_right_swipe_disabled?: boolean;
+    left_hidden_component?: ReactNode;
+    left_hidden_component_width?: string;
+    right_hidden_component: ReactNode;
+    right_hidden_component_width?: string;
+    visible_component: ReactNode;
+};
 
 const HorizontalSwipe = ({
     is_left_swipe,
@@ -12,10 +23,10 @@ const HorizontalSwipe = ({
     right_hidden_component,
     right_hidden_component_width = '7rem',
     visible_component,
-}) => {
+}: THorizontalSwipeProps) => {
     const [should_show_left_hidden_component, setShouldShowLeftHiddenComponent] = React.useState(false);
     const [should_show_right_hidden_component, setShouldShowRightHiddenComponent] = React.useState(false);
-    const visible_component_height_ref = React.useRef();
+    const visible_component_height_ref = React.useRef<HTMLDivElement>(null);
 
     const onSwipeLeft = () => {
         if (!is_left_swipe_disabled) {
@@ -52,6 +63,15 @@ const HorizontalSwipe = ({
         }
     };
 
+    const transform_style = {
+        ...(should_show_left_hidden_component && {
+            transform: `translate(${left_hidden_component_width})`,
+        }),
+        ...(should_show_right_hidden_component && {
+            transform: `translate(-${right_hidden_component_width})`,
+        }),
+    };
+
     return (
         <Swipeable onSwipedLeft={onSwipeLeft} onSwipedRight={onSwipeRight}>
             <div className='dc-horizontal-swipe'>
@@ -66,15 +86,7 @@ const HorizontalSwipe = ({
                         {left_hidden_component}
                     </div>
                 )}
-                <div
-                    className='dc-horizontal-swipe--main'
-                    ref={visible_component_height_ref}
-                    style={{
-                        transform:
-                            (should_show_left_hidden_component && `translate(${left_hidden_component_width})`) ||
-                            (should_show_right_hidden_component && `translate(-${right_hidden_component_width})`),
-                    }}
-                >
+                <div className='dc-horizontal-swipe--main' ref={visible_component_height_ref} style={transform_style}>
                     {visible_component}
                 </div>
                 {visible_component_height_ref && (
@@ -91,18 +103,6 @@ const HorizontalSwipe = ({
             </div>
         </Swipeable>
     );
-};
-
-HorizontalSwipe.propTypes = {
-    is_left_swipe: PropTypes.bool,
-    is_left_swipe_disabled: PropTypes.bool,
-    is_right_swipe: PropTypes.bool,
-    is_right_swipe_disabled: PropTypes.bool,
-    left_hidden_component: PropTypes.object,
-    left_hidden_component_width: PropTypes.string,
-    right_hidden_component: PropTypes.object,
-    right_hidden_component_width: PropTypes.string,
-    visible_component: PropTypes.object,
 };
 
 export default HorizontalSwipe;

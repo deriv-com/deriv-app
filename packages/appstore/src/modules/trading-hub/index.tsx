@@ -4,15 +4,17 @@ import { trading_hub_contents } from 'Constants/trading-hub-content';
 import Options from 'Components/options';
 import platform_config from 'Constants/platform-config';
 import AddOptionsAccount from 'Components/add-options-account';
+import CFDAccounts from 'Components/CFDs';
 
 const TradingHub = () => {
-    /*TODO: We need to show this component whenever user click on tour guide button*/
     return (
-        <React.Fragment>
+        <div className='trading-hub'>
+            Trading Hub
+            <CFDAccounts account_type='real' />
             {/* <AddOptionsAccount />
             <Onboarding contents={trading_hub_contents} /> */}
             <Options platformlauncherprops={platform_config} />
-        </React.Fragment>
+        </div>
     );
 };
 

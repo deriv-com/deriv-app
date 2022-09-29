@@ -10,7 +10,7 @@ import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
 import { TClientStore, TCommonStore, TRootStore, TUiStore } from 'Types';
 
-type TAccountList = {
+type TAccountsDetails = {
     balance: string;
     currency: string;
     is_crypto: boolean;
@@ -23,7 +23,7 @@ type TAccountList = {
 
 type TCashierOnboardingProps = {
     available_crypto_currencies: TClientStore['available_crypto_currencies'];
-    accounts: TAccountList[];
+    accounts: { [key: string]: TAccountsDetails };
     can_change_fiat_currency: TClientStore['can_change_fiat_currency'];
     currency: TClientStore['currency'];
     has_set_currency: boolean;

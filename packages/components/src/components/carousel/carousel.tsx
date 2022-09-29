@@ -1,31 +1,47 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { Swipeable } from 'react-swipeable';
-import Card from './carousel-card.jsx';
-import Nav from './carousel-nav.jsx';
+import Card from './carousel-card';
+import Nav from './carousel-nav';
 import Icon from '../icon';
 import Button from '../button/button';
 import { useInterval } from '../../hooks';
 
+type TCarousel = {
+    active_bullet_color?: string;
+    autoplay_time?: number | null;
+    bullet_color?: string;
+    bullet_position?: 'bottom' | 'top';
+    className?: string;
+    initial_index?: number;
+    is_mt5?: boolean;
+    item_per_window?: number;
+    list: React.ReactNode[];
+    nav_position?: 'top' | 'middle' | 'bottom';
+    onItemSelect?: (active_index: number) => void;
+    show_bullet?: boolean;
+    show_nav?: boolean;
+    width?: number;
+};
+
 const Carousel = ({
-    active_bullet_color,
-    autoplay_time,
-    bullet_color,
-    bullet_position,
+    active_bullet_color = 'var(--text-prominent)',
+    autoplay_time = null,
+    bullet_color = 'var(--text-less-prominent)',
+    bullet_position = 'bottom',
     className,
-    initial_index,
+    initial_index = 0,
     is_mt5,
-    item_per_window,
+    item_per_window = 1,
     list,
-    nav_position,
+    nav_position = 'bottom',
     onItemSelect,
-    show_bullet,
-    show_nav,
-    width,
-}) => {
-    const [active_index, setActiveIndex] = React.useState(initial_index);
-    const computed_item_per_window = React.useMemo(() => {
+    show_bullet = true,
+    show_nav = true,
+    width = 400,
+}: TCarousel) => {
+    const [active_index, setActiveIndex] = React.useState<number>(initial_index);
+    const computed_item_per_window = React.useMemo<number>(() => {
         return Math.min(item_per_window, list.length);
     }, [item_per_window, list]);
     const sliced_list_length = list.slice(computed_item_per_window - 1).length;
@@ -60,8 +76,8 @@ const Carousel = ({
     useInterval(handleNextClick, autoplay_time);
 
     React.useEffect(() => {
-        if (typeof onItemSelect === 'function') onItemSelect(active_index, list);
-    }, [active_index, list, onItemSelect]);
+        if (onItemSelect) onItemSelect(active_index);
+    }, [active_index, onItemSelect]);
 
     return (
         <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
@@ -146,35 +162,6 @@ const Carousel = ({
             </div>
         </Swipeable>
     );
-};
-
-Carousel.defaultProps = {
-    initial_index: 0,
-    bullet_color: 'var(--text-less-prominent)',
-    active_bullet_color: 'var(--text-prominent)',
-    nav_position: 'bottom',
-    bullet_position: 'bottom',
-    show_bullet: true,
-    show_nav: true,
-    autoplay_time: null,
-    width: 400,
-    item_per_window: 1,
-};
-Carousel.propTypes = {
-    className: PropTypes.string,
-    onItemSelect: PropTypes.func,
-    bullet_color: PropTypes.string,
-    active_bullet_color: PropTypes.string,
-    list: PropTypes.array,
-    nav_position: PropTypes.oneOf(['top', 'middle', 'bottom']),
-    show_nav: PropTypes.bool,
-    bullet_position: PropTypes.oneOf(['top', 'bottom']),
-    show_bullet: PropTypes.bool,
-    autoplay_time: PropTypes.number,
-    width: PropTypes.number,
-    initial_index: PropTypes.number,
-    is_mt5: PropTypes.bool,
-    item_per_window: PropTypes.number,
 };
 
 export default Carousel;

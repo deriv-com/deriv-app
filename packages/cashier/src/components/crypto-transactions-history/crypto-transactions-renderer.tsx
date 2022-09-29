@@ -5,7 +5,7 @@ import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getStatus } from 'Constants/transaction-status';
 import { connect } from 'Stores/connect';
-import { RootStore, TCryptoTransactionDetails } from 'Types';
+import { TRootStore, TCryptoTransactionDetails } from 'Types';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
@@ -304,7 +304,7 @@ const CryptoTransactionsRenderer = ({
     );
 };
 
-export default connect(({ client, modules }: RootStore) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     currency: client.currency,
     cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
     showCryptoTransactionsCancelModal: modules.cashier.transaction_history.showCryptoTransactionsCancelModal,

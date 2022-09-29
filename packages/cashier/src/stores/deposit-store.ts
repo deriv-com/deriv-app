@@ -1,9 +1,10 @@
-import { action, computed, observable, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
+import { TRootStore, TWebSocket } from 'Types';
 
 export default class DepositStore {
-    constructor({ WS, root_store }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             container: observable,
             error: observable,
@@ -19,7 +20,7 @@ export default class DepositStore {
     container = Constants.containers.deposit;
     error = new ErrorStore();
 
-    async onMountDeposit() {
+    async onMountDeposit(): Promise<void> {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const {
@@ -37,7 +38,7 @@ export default class DepositStore {
         setOnRemount(this.onMountDeposit);
         await onMountCommon();
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
         setLoading(true);
 
@@ -84,7 +85,7 @@ export default class DepositStore {
         setLoading(false);
     }
 
-    get is_deposit_locked() {
+    get is_deposit_locked(): boolean {
         const {
             is_authentication_needed,
             is_tnc_needed,
@@ -118,7 +119,7 @@ export default class DepositStore {
         );
     }
 
-    submitFundsProtection() {
+    submitFundsProtection(): void {
         this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
             if (response.error) {
                 this.error.setMessage(response.error.message);

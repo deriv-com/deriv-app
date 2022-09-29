@@ -28,11 +28,13 @@ export default class UIStore extends BaseStore {
     account_switcher_disabled_message = '';
 
     has_only_forward_starting_contracts = false;
+    has_read_scam_message = localStorage.getItem('readScamMessage') || false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
     is_services_error_visible = false;
     is_unsupported_contract_modal_visible = false;
+    is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
     is_set_residence_modal_visible = false;
     is_reset_password_modal_visible = false;
@@ -164,6 +166,7 @@ export default class UIStore extends BaseStore {
             'is_dark_mode_on',
             'is_positions_drawer_on',
             'is_reports_visible',
+            'is_warning_scam_message_modal_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
             'should_show_cancellation_warning',
@@ -188,8 +191,10 @@ export default class UIStore extends BaseStore {
             is_accounts_switcher_on: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
+            has_read_scam_message: observable,
             is_services_error_visible: observable,
             is_unsupported_contract_modal_visible: observable,
+            is_new_account: observable,
             is_account_signup_modal_visible: observable,
             is_set_residence_modal_visible: observable,
             is_reset_password_modal_visible: observable,
@@ -243,6 +248,9 @@ export default class UIStore extends BaseStore {
             choose_crypto_currency_target: observable,
             should_show_cancel: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_warning_scam_message_modal_visible: computed,
+            setScamMessageLocalStorage: action.bound,
+            setIsNewAccount: action.bound,
             init: action.bound,
             populateFooterExtensions: action.bound,
             populateHeaderExtensions: action.bound,
@@ -341,6 +349,25 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
+
+    get is_warning_scam_message_modal_visible() {
+        return (
+            this.root_store.client.is_logged_in &&
+            this.root_store.client.is_brazil &&
+            !this.has_read_scam_message &&
+            !this.is_new_account
+        );
+    }
+
+    setScamMessageLocalStorage() {
+        localStorage.setItem('readScamMessage', !this.has_read_scam_message);
+        this.has_read_scam_message = localStorage.getItem('readScamMessage') || false;
+    }
+
+    setIsNewAccount() {
+        localStorage.setItem('isNewAccount', !this.is_new_account);
+        this.is_new_account = localStorage.getItem('isNewAccount') || false;
+    }
 
     init(notification_messages) {
         this.notification_messages_ui = notification_messages;

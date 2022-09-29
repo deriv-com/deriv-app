@@ -1,12 +1,13 @@
-import { action, observable, makeObservable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { getPropertyValue } from '@deriv/shared';
+import { TServerError } from 'Types';
 
 export default class ErrorStore {
     message = '';
     code = '';
     fields = '';
     is_show_full_page = false;
-    onClickButton = null;
+    onClickButton: VoidFunction | null = null;
     is_ask_uk_funds_protection = false;
     is_self_exclusion_max_turnover_set = false;
     is_ask_authentication = false;
@@ -33,7 +34,7 @@ export default class ErrorStore {
         });
     }
 
-    setErrorMessage(error, onClickButton, is_show_full_page) {
+    setErrorMessage(error: TServerError, onClickButton?: VoidFunction | null, is_show_full_page?: boolean): void {
         // for errors that need to show a button, reset the form
         const error_object = {
             onClickButton,
@@ -41,7 +42,7 @@ export default class ErrorStore {
             message: error.message,
             is_show_full_page: is_show_full_page || /InvalidToken|WrongResponse/.test(error.code),
             ...(getPropertyValue(error, ['details', 'fields']) && {
-                fields: error.details.fields,
+                fields: error.details?.fields,
             }),
         };
 
@@ -56,7 +57,7 @@ export default class ErrorStore {
         this.is_ask_financial_risk_approval = error_object?.is_ask_financial_risk_approval;
     }
 
-    handleCashierError(error) {
+    handleCashierError(error: TServerError): void {
         switch (error.code) {
             case 'ASK_TNC_APPROVAL':
                 this.setErrorMessage(error, null, true);
@@ -86,23 +87,23 @@ export default class ErrorStore {
         }
     }
 
-    setMessage(value) {
+    setMessage(value: string): void {
         this.message = value;
     }
 
-    setIsAskUkFundsProtection(value) {
+    setIsAskUkFundsProtection(value: boolean): void {
         this.is_ask_uk_funds_protection = value;
     }
 
-    setIsSelfExclusionMaxTurnoverSet(value) {
+    setIsSelfExclusionMaxTurnoverSet(value: boolean): void {
         this.is_self_exclusion_max_turnover_set = value;
     }
 
-    setIsAskAuthentication(value) {
+    setIsAskAuthentication(value: boolean): void {
         this.is_ask_authentication = value;
     }
 
-    setIsAskFinancialRiskApproval(value) {
+    setIsAskFinancialRiskApproval(value: boolean): void {
         this.is_ask_financial_risk_approval = value;
     }
 }

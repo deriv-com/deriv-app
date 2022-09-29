@@ -13,10 +13,14 @@ export default class GeneralStore extends BaseStore {
     active_index = 0;
     active_notification_count = 0;
     advertiser_id = null;
+    block_unblock_user_error = '';
     balance;
     inactive_notification_count = 0;
     is_advertiser = false;
+    is_advertiser_blocked = null;
     is_blocked = false;
+    is_block_unblock_user_loading = false;
+    is_block_user_modal_open = false;
     is_listed = false;
     is_loading = false;
     is_p2p_blocked_for_pa = false;
@@ -32,6 +36,7 @@ export default class GeneralStore extends BaseStore {
     review_period;
     should_show_real_name = false;
     should_show_popup = false;
+    user_blocked_count = 0;
     user_blocked_until = null;
     is_high_risk_fully_authed_without_fa = false;
     is_modal_open = false;
@@ -54,10 +59,14 @@ export default class GeneralStore extends BaseStore {
             active_index: observable,
             active_notification_count: observable,
             advertiser_id: observable,
+            block_unblock_user_error: observable,
             balance: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
+            is_advertiser_blocked: observable,
             is_blocked: observable,
+            is_block_unblock_user_loading: observable,
+            is_block_user_modal_open: observable,
             is_listed: observable,
             is_loading: observable,
             is_p2p_blocked_for_pa: observable,
@@ -73,6 +82,7 @@ export default class GeneralStore extends BaseStore {
             review_period: observable,
             should_show_real_name: observable,
             should_show_popup: observable,
+            user_blocked_count: observable,
             user_blocked_until: observable,
             is_high_risk_fully_authed_without_fa: observable,
             is_modal_open: observable,
@@ -84,6 +94,7 @@ export default class GeneralStore extends BaseStore {
             is_barred: computed,
             is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
+            blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
             getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
@@ -115,8 +126,13 @@ export default class GeneralStore extends BaseStore {
             setParameters: action.bound,
             setPoiStatus: action.bound,
             setReviewPeriod: action.bound,
+            setBlockUnblockUserError: action.bound,
+            setIsAdvertiserBlocked: action.bound,
+            setIsBlockUnblockUserLoading: action.bound,
+            setIsBlockUserModalOpen: action.bound,
             setShouldShowRealName: action.bound,
             setShouldShowPopup: action.bound,
+            setUserBlockedCount: action.bound,
             setUserBlockedUntil: action.bound,
             setWebsocketInit: action.bound,
             toggleNicknamePopup: action.bound,
@@ -155,6 +171,30 @@ export default class GeneralStore extends BaseStore {
 
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+    }
+
+    blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
+        const { advertiser_page_store } = this.root_store;
+        this.setIsBlockUnblockUserLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+            [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setIsBlockUserModalOpen(false);
+                    if (should_set_is_counterparty_blocked) {
+                        const { p2p_advertiser_relations } = response;
+                        advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
+                            p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
+                        );
+                    }
+                } else {
+                    this.setBlockUnblockUserError(response.error.message);
+                }
+            }
+            this.setIsBlockUnblockUserLoading(false);
+        });
     }
 
     createAdvertiser(name) {
@@ -458,6 +498,10 @@ export default class GeneralStore extends BaseStore {
         this.props = props;
     }
 
+    setBlockUnblockUserError(block_unblock_user_error) {
+        this.block_unblock_user_error = block_unblock_user_error;
+    }
+
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -466,8 +510,20 @@ export default class GeneralStore extends BaseStore {
         this.is_advertiser = is_advertiser;
     }
 
+    setIsAdvertiserBlocked(is_advertiser_blocked) {
+        this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
+    }
+
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
     setIsHighRiskFullyAuthedWithoutFa(is_high_risk_fully_authed_without_fa) {
@@ -580,6 +636,10 @@ export default class GeneralStore extends BaseStore {
         this.should_show_popup = should_show_popup;
     }
 
+    setUserBlockedCount(user_blocked_count) {
+        this.user_blocked_count = user_blocked_count;
+    }
+
     setUserBlockedUntil(user_blocked_until) {
         this.user_blocked_until = user_blocked_until;
     }
@@ -594,13 +654,17 @@ export default class GeneralStore extends BaseStore {
     }
 
     updateAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
+        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
+            response?.p2p_advertiser_info || {};
+
         if (!response.error) {
-            this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsListed(!!p2p_advertiser_info.is_listed);
-            this.setNickname(p2p_advertiser_info.name);
-            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            this.setAdvertiserId(id);
+            this.setIsAdvertiser(!!is_approved);
+            this.setIsAdvertiserBlocked(!!is_blocked);
+            this.setIsListed(!!is_listed);
+            this.setNickname(name);
+            this.setUserBlockedUntil(blocked_until);
+            this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
             if (response.error.code === 'RestrictedCountry') {

@@ -1,4 +1,4 @@
-import { action, computed, observable, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
@@ -15,6 +15,8 @@ export default class AdvertiserPageStore extends BaseStore {
     api_error_message = '';
     form_error_message = '';
     has_more_adverts_to_load = false;
+    is_counterparty_advertiser_blocked = false;
+    is_dropdown_menu_visible = false;
     is_loading = true;
     is_loading_adverts = true;
     is_submit_disabled = true;
@@ -22,7 +24,6 @@ export default class AdvertiserPageStore extends BaseStore {
     submitForm = () => {};
 
     constructor(root_store) {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
         super(root_store);
 
         makeObservable(this, {
@@ -36,6 +37,8 @@ export default class AdvertiserPageStore extends BaseStore {
             api_error_message: observable,
             form_error_message: observable,
             has_more_adverts_to_load: observable,
+            is_counterparty_advertiser_blocked: observable,
+            is_dropdown_menu_visible: observable,
             is_loading: observable,
             is_loading_adverts: observable,
             is_submit_disabled: observable,
@@ -50,25 +53,30 @@ export default class AdvertiserPageStore extends BaseStore {
             short_name: computed,
             getAdvertiserInfo: action.bound,
             handleTabItemClick: action.bound,
+            onCancel: action.bound,
             onCancelClick: action.bound,
             onConfirmClick: action.bound,
             onMount: action.bound,
+            onSubmit: action.bound,
             setActiveIndex: action.bound,
             setAd: action.bound,
             setAdvertiserFirstName: action.bound,
             setAdvertiserLastName: action.bound,
             setAdvertiserInfo: action.bound,
             setAdverts: action.bound,
+            setIsCounterpartyAdvertiserBlocked: action.bound,
             setCounterpartyType: action.bound,
             setErrorMessage: action.bound,
             setFormErrorMessage: action.bound,
             setHasMoreAdvertsToLoad: action.bound,
+            setIsDropdownMenuVisible: action.bound,
             setIsLoading: action.bound,
             setIsLoadingAdverts: action.bound,
             setIsSubmitDisabled: action.bound,
             setShowAdPopup: action.bound,
             setSubmitForm: action.bound,
             showAdPopup: action.bound,
+            showBlockUserModal: action.bound,
         });
     }
 
@@ -103,7 +111,6 @@ export default class AdvertiserPageStore extends BaseStore {
     loadMoreAdvertiserAdverts({ startIndex }) {
         const { general_store } = this.root_store;
         this.setIsLoadingAdverts(true);
-
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
@@ -119,7 +126,6 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
-
                 this.setIsLoadingAdverts(false);
                 resolve();
             });
@@ -128,15 +134,14 @@ export default class AdvertiserPageStore extends BaseStore {
 
     getAdvertiserInfo() {
         this.setIsLoading(true);
-
         requestWS({
             p2p_advertiser_info: 1,
             id: this.advertiser_details_id,
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
-
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
@@ -155,6 +160,11 @@ export default class AdvertiserPageStore extends BaseStore {
         }
     }
 
+    onCancel() {
+        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        this.setIsDropdownMenuVisible(false);
+    }
+
     onCancelClick() {
         this.setShowAdPopup(false);
     }
@@ -166,6 +176,14 @@ export default class AdvertiserPageStore extends BaseStore {
 
     onMount() {
         this.getAdvertiserInfo();
+    }
+
+    onSubmit() {
+        this.root_store.general_store.blockUnblockUser(
+            !this.is_counterparty_advertiser_blocked,
+            this.advertiser_details_id
+        );
+        this.setIsDropdownMenuVisible(false);
     }
 
     onTabChange() {
@@ -197,6 +215,10 @@ export default class AdvertiserPageStore extends BaseStore {
         this.adverts = adverts;
     }
 
+    setIsCounterpartyAdvertiserBlocked(is_counterparty_advertiser_blocked) {
+        this.is_counterparty_advertiser_blocked = is_counterparty_advertiser_blocked;
+    }
+
     setCounterpartyType(counterparty_type) {
         this.counterparty_type = counterparty_type;
     }
@@ -211,6 +233,10 @@ export default class AdvertiserPageStore extends BaseStore {
 
     setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
         this.has_more_adverts_to_load = has_more_adverts_to_load;
+    }
+
+    setIsDropdownMenuVisible(is_dropdown_menu_visible) {
+        this.is_dropdown_menu_visible = is_dropdown_menu_visible;
     }
 
     setIsLoading(is_loading) {
@@ -238,6 +264,15 @@ export default class AdvertiserPageStore extends BaseStore {
             this.root_store.buy_sell_store.showVerification();
         } else {
             this.setShowAdPopup(true);
+        }
+    }
+
+    showBlockUserModal() {
+        if (
+            !this.is_counterparty_advertiser_blocked &&
+            this.advertiser_info.id !== this.root_store.general_store.advertiser_id
+        ) {
+            this.root_store.general_store.setIsBlockUserModalOpen(true);
         }
     }
 }

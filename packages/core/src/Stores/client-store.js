@@ -251,6 +251,7 @@ export default class ClientStore extends BaseStore {
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
+            is_brazil: computed,
             country_standpoint: computed,
             can_have_mlt_account: computed,
             can_have_mx_account: computed,
@@ -742,6 +743,10 @@ export default class ClientStore extends BaseStore {
             : eu_excluded_regex.test(this.residence);
     }
 
+    get is_brazil() {
+        return this.clients_country === 'br';
+    }
+
     get is_uk() {
         return this.residence === 'gb';
     }
@@ -920,9 +925,11 @@ export default class ClientStore extends BaseStore {
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
 
+        // TODO: Remove two first conditions after real released
         return (
             'dxtrade_financial_company' in landing_companies ||
             'dxtrade_gaming_company' in landing_companies ||
+            'dxtrade_all_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
     };
@@ -1379,6 +1386,10 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
+        if (action_param === 'signup') {
+            this.root_store.ui.setIsNewAccount();
+        }
+
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
@@ -1819,6 +1830,8 @@ export default class ClientStore extends BaseStore {
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.landing_companies = {};
+        localStorage.removeItem('readScamMessage');
+        localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 

@@ -36,7 +36,7 @@ const platform_config = [
         title: getPlatformSettingsAppstore('go').name,
         name: getPlatformSettingsAppstore('go').name,
         description: localize('Trade on the go with our mobile app.'),
-        link_to: routes.binarybot,
+        link_to: routes.dxtrade,
     },
 ];
 

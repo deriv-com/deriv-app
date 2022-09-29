@@ -16,7 +16,8 @@ type TPlatformLauncherProps = {
 const PlatformLauncher = ({ icon, title, description, link_to, has_real_account }: TPlatformLauncherProps) => {
     const history = useHistory();
     const onClickTrade = (url_path: string) => {
-        history.push(routes[url_path]);
+        //history.push(routes[url_path]);
+        window.location.href = url_path;
     };
 
     return (

@@ -1,8 +1,8 @@
-import React, { HTMLProps } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import Text from '../text/text';
 
-type TLoadingProps = HTMLProps<HTMLDivElement> & {
+export type TLoadingProps = React.HTMLProps<HTMLDivElement> & {
     is_fullscreen: boolean;
     is_slow_loading: boolean;
     status: string[];

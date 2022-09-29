@@ -30,6 +30,9 @@ const TradingHub: React.FC = () => {
                 steps={tour_step_config}
                 styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
                 locale={tour_step_locale}
+                floaterProps={{
+                    disableAnimation: true,
+                }}
             />
             <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
         </React.Fragment>

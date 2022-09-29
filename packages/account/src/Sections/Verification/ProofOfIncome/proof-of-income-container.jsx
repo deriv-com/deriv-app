@@ -47,11 +47,8 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    const onSubmit = status => {
+    const handleSubmit = status => {
         setAuthenticationStatus({ ...authentication_status, ...{ income_status: status } });
-    };
-    const onReSubmit = () => {
-        setAuthenticationStatus({ ...authentication_status, ...{ income_status: 'none' } });
     };
 
     const { allow_document_upload, income_status, needs_poinc, is_age_verified } = authentication_status;
@@ -62,13 +59,13 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
 
     switch (income_status) {
         case income_status_codes.none:
-            return <ProofOfIncomeForm onSubmit={onSubmit} poinc_documents_list={poinc_documents_list} />;
+            return <ProofOfIncomeForm onSubmit={handleSubmit} poinc_documents_list={poinc_documents_list} />;
         case income_status_codes.pending:
             return <PoincReceived />;
         case income_status_codes.verified:
             return <PoincVerified />;
         case income_status_codes.rejected:
-            return <PoincUnverified onReSubmit={onReSubmit} />;
+            return <PoincUnverified onReSubmit={handleSubmit} />;
         case income_status_codes.locked:
             return <PoincLimited />;
         default:

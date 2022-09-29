@@ -13,7 +13,7 @@ export const PoincUnverified = ({ onReSubmit }) => {
             <Button
                 type='button'
                 className='account-management__continue'
-                onClick={onReSubmit}
+                onClick={() => onReSubmit('none')}
                 large
                 text={localize('Try Again')}
                 primary

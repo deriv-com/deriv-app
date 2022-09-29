@@ -3,20 +3,45 @@ import { localize } from '@deriv/translations';
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
 
-// TODO: mix mt and dxtrade method
 export const getDxCompanies = () => {
-    const all_config = {
-        mt5_account_type: '',
+    const synthetic_config = {
+        account_type: '',
         leverage: 500,
-        title: localize('Demo'),
-        short_title: localize('CFDs'),
+        short_title: localize('Synthetic'),
+    };
+    const financial_config = {
+        account_type: 'financial',
+        leverage: 1000,
+        short_title: localize('Financial'),
     };
     return {
         demo: {
-            all: all_config,
+            synthetic: {
+                dxtrade_account_type: synthetic_config.account_type,
+                leverage: synthetic_config.leverage,
+                title: localize('Demo Synthetic'),
+                short_title: synthetic_config.short_title,
+            },
+            financial: {
+                dxtrade_account_type: financial_config.account_type,
+                leverage: financial_config.leverage,
+                title: localize('Demo Financial'),
+                short_title: financial_config.short_title,
+            },
         },
         real: {
-            all: all_config,
+            synthetic: {
+                dxtrade_account_type: synthetic_config.account_type,
+                leverage: synthetic_config.leverage,
+                title: localize('Synthetic'),
+                short_title: synthetic_config.short_title,
+            },
+            financial: {
+                dxtrade_account_type: financial_config.account_type,
+                leverage: financial_config.leverage,
+                title: localize('Financial'),
+                short_title: financial_config.short_title,
+            },
         },
     };
 };

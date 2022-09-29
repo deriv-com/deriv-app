@@ -38,6 +38,8 @@ jest.mock('@deriv/components', () => {
 describe('CFDAccountCard', () => {
     let props: TCFDAccountCard;
 
+    const all_descriptor =
+        'Trade CFDs on forex, derived indices, cryptocurrencies, and commodities with high leverage.';
     const synthetic_descriptor = 'Trade CFDs on our synthetic indices that simulate real-world market movement.';
     const financial_descriptor =
         'Trade major (standard & micro-lots) and minor forex, stocks & stock indices, commodities, basket indices, and crypto with high leverage.';
@@ -432,7 +434,7 @@ describe('CFDAccountCard', () => {
 
     it('should render the account card for Demo DerivX Synthetic account ', () => {
         const type = {
-            type: 'synthetic',
+            type: 'all',
             category: 'demo',
             platform: 'dxtrade',
         };
@@ -440,17 +442,16 @@ describe('CFDAccountCard', () => {
             <CFDAccountCard
                 {...props}
                 type={type}
-                descriptor={synthetic_descriptor}
-                title='Synthetic'
+                descriptor={all_descriptor}
+                title='Deriv X'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
                 is_eu={false}
             />
         );
-        expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcDxtradeSyntheticPlatform/i)).toBeInTheDocument();
-        expect(screen.getAllByText(/synthetic/i)[0]).toBeInTheDocument();
+        expect(screen.getByText(/IcDxtradeDerivxPlatform/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/deriv x/i)[0]).toBeInTheDocument();
         expect(screen.getByText(/username/i)).toBeInTheDocument();
         expect(screen.getByText(/mtd20103240/i)).toBeInTheDocument();
         expect(screen.getByText(/password/i)).toBeInTheDocument();

@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany, Mt5NewAccount } from '@deriv/api-types';
 import RootStore from 'Stores/index';
-import { getMtCompanies, TMtCompanies, getDxCompanies, TDxCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -157,11 +157,9 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
 
-    const dxtrade_type_label =
-        getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
-    const mt5_type_label =
+    // TODO
+    const type_label =
         getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
-    const type_label = platform === CFD_PLATFORMS.MT5 ? mt5_type_label : dxtrade_type_label;
 
     if (category === 'real') {
         if (needs_poi) {

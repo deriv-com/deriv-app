@@ -2,12 +2,14 @@ import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
 import { Text, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import '../components/toggle-account-type/toggle-account-type.scss';
 
 export const tour_step_config: Step[] = [
     {
         title: (
-            <Text as='p' size='s' weight='bold' color='brand-red-coral'>
+            <Text as='p' weight='bold' color='brand-red-coral'>
                 {localize('Switch accounts')}
+                <div className='toggle-account-type__divider' />
             </Text>
         ),
         content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
@@ -17,8 +19,9 @@ export const tour_step_config: Step[] = [
     },
     {
         title: (
-            <Text as='p' size='s' weight='bold' color='brand-red-coral'>
+            <Text as='p' weight='bold' color='brand-red-coral'>
                 {localize('Trading hub tour')}
+                <div className='toggle-account-type__divider' />
             </Text>
         ),
         content: (
@@ -59,7 +62,7 @@ export const tour_styles: Styles = {
 export const tour_styles_dark_mode: Styles = {
     options: {
         width: 350,
-        backgroundColor: '#0e0e0e',
+        backgroundColor: 'var(--brand-dark-grey)',
         arrowColor: '#0e0e0e',
     },
     tooltipTitle: {
@@ -82,8 +85,8 @@ export const tour_styles_dark_mode: Styles = {
 
 export const tour_step_locale: Locale = {
     back: <Button has_effect text={localize('Repeat tour')} secondary medium />,
-    close: 'Close',
-    last: 'OK',
-    next: 'Next',
-    skip: 'Skip',
+    close: localize('Close'),
+    last: localize('OK'),
+    next: localize('Next'),
+    skip: localize('Skip'),
 };

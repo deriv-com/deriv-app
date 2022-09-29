@@ -23,4 +23,11 @@
         height: 3.2rem;
         width: 28rem;
     }
+
+    &__divider {
+        border-bottom: 1px solid var(--general-section-1);
+        padding: 0.6rem;
+        width: 108%;
+        margin-left: -1.2rem;
+    }
 }

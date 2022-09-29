@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-expressions */
+import { generateDerivApiInstance } from '../appId';
 import TicksService from '../ticks_service';
-import { WS } from '@deriv/shared';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
-const ticksService = new TicksService(WS.get());
+const ticksService = new TicksService(generateDerivApiInstance());
 
 const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote);
 

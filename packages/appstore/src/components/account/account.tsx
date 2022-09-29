@@ -70,6 +70,102 @@ type TAccountDisplay = {
     should_show_server_name?: string;
 };
 
+const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }: TCurrentDisplay) => {
+    const user_is_from_this_country_list = Object.values(country_standpoint).includes(true);
+    const account_type = loginid.replace(/\d/g, '');
+
+    if (user_is_from_this_country_list) {
+        if (account_type === 'MLT') {
+            return <Localize i18n_default_text='Options' />;
+        } else if (account_type === 'MX') {
+            if (country_standpoint.is_united_kingdom) {
+                return <Localize i18n_default_text='Gaming' />;
+            }
+            if (country_standpoint.is_isle_of_man) {
+                return getCurrencyName(currency);
+            }
+            return <Localize i18n_default_text='Synthetic' />;
+        } else if (account_type === 'MF') {
+            return <Localize i18n_default_text='Multipliers' />;
+        }
+    }
+
+    if (is_virtual) {
+        return <Localize i18n_default_text='Demo' />;
+    }
+
+    if (!currency) {
+        return <Localize i18n_default_text='No currency assigned' />;
+    }
+
+    return getCurrencyName(currency);
+};
+
+const AccountDisplay = ({
+    has_error,
+    market_type,
+    sub_account_type,
+    platform,
+    server,
+    is_dark_mode_on,
+    is_eu,
+    shortcode,
+    should_show_server_name,
+}: TAccountDisplay) => {
+    // TODO: Remove once account with error has market_type and sub_account_type in details response
+    const getServerName = React.useCallback(
+        (account: { server_info: { geolocation: { region: any; sequence: number } } }) => {
+            if (account) {
+                const server_region = account.server_info?.geolocation?.region;
+                if (server_region) {
+                    return `${server_region} ${
+                        account?.server_info?.geolocation?.sequence === 1
+                            ? ''
+                            : account?.server_info?.geolocation?.sequence
+                    }`;
+                }
+            }
+            return '';
+        },
+        []
+    );
+    if (has_error)
+        return (
+            <div>
+                <Text color='disabled' size='xs'>
+                    <Localize i18n_default_text='Unavailable' />
+                </Text>
+                {server?.server_info?.geolocation &&
+                    should_show_server_name &&
+                    market_type === 'synthetic' &&
+                    shortcode === 'svg' && (
+                        <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                            {getServerName(server)}
+                        </Text>
+                    )}
+            </div>
+        );
+    return (
+        <div>
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
+            {server?.server_info?.geolocation &&
+                should_show_server_name &&
+                market_type === 'synthetic' &&
+                shortcode === 'svg' && (
+                    <Text
+                        color={is_dark_mode_on ? 'general' : 'colored-background'}
+                        size='xxs'
+                        className={classNames('badge-server', {
+                            'badge-server-bot': isBot(),
+                        })}
+                    >
+                        {getServerName(server)}
+                    </Text>
+                )}
+        </div>
+    );
+};
+
 const OptionsAccount = ({
     currency_icon,
     loginid_text,
@@ -193,99 +289,3 @@ const OptionsAccount = ({
 };
 
 export default OptionsAccount;
-
-const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }: TCurrentDisplay) => {
-    const user_is_from_this_country_list = Object.values(country_standpoint).includes(true);
-    const account_type = loginid.replace(/\d/g, '');
-
-    if (user_is_from_this_country_list) {
-        if (account_type === 'MLT') {
-            return <Localize i18n_default_text='Options' />;
-        } else if (account_type === 'MX') {
-            if (country_standpoint.is_united_kingdom) {
-                return <Localize i18n_default_text='Gaming' />;
-            }
-            if (country_standpoint.is_isle_of_man) {
-                return getCurrencyName(currency);
-            }
-            return <Localize i18n_default_text='Synthetic' />;
-        } else if (account_type === 'MF') {
-            return <Localize i18n_default_text='Multipliers' />;
-        }
-    }
-
-    if (is_virtual) {
-        return <Localize i18n_default_text='Demo' />;
-    }
-
-    if (!currency) {
-        return <Localize i18n_default_text='No currency assigned' />;
-    }
-
-    return getCurrencyName(currency);
-};
-
-const AccountDisplay = ({
-    has_error,
-    market_type,
-    sub_account_type,
-    platform,
-    server,
-    is_dark_mode_on,
-    is_eu,
-    shortcode,
-    should_show_server_name,
-}: TAccountDisplay) => {
-    // TODO: Remove once account with error has market_type and sub_account_type in details response
-    const getServerName = React.useCallback(
-        (account: { server_info: { geolocation: { region: any; sequence: number } } }) => {
-            if (account) {
-                const server_region = account.server_info?.geolocation?.region;
-                if (server_region) {
-                    return `${server_region} ${
-                        account?.server_info?.geolocation?.sequence === 1
-                            ? ''
-                            : account?.server_info?.geolocation?.sequence
-                    }`;
-                }
-            }
-            return '';
-        },
-        []
-    );
-    if (has_error)
-        return (
-            <div>
-                <Text color='disabled' size='xs'>
-                    <Localize i18n_default_text='Unavailable' />
-                </Text>
-                {server?.server_info?.geolocation &&
-                    should_show_server_name &&
-                    market_type === 'synthetic' &&
-                    shortcode === 'svg' && (
-                        <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
-                            {getServerName(server)}
-                        </Text>
-                    )}
-            </div>
-        );
-    return (
-        <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
-            {server?.server_info?.geolocation &&
-                should_show_server_name &&
-                market_type === 'synthetic' &&
-                shortcode === 'svg' && (
-                    <Text
-                        color={is_dark_mode_on ? 'general' : 'colored-background'}
-                        size='xxs'
-                        className={classNames('badge-server', {
-                            'badge-server-bot': isBot(),
-                        })}
-                    >
-                        {getServerName(server)}
-                    </Text>
-                )}
-        </div>
-    );
-};

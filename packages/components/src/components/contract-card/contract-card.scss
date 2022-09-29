@@ -215,6 +215,24 @@
                 fill: var(--brand-secondary) !important;
             }
         }
+        &--accumulators {
+            @include mobile {
+                justify-content: flex-end;
+
+                .dc-contract-type__type {
+                    &-label {
+                        width: fit-content;
+                    }
+                    &-wrapper {
+                        padding: 0.5em 0.8em 0.5em 0.3em;
+                    }
+                }
+            }
+            .dc-contract-type__type-wrapper .category-type {
+                width: unset;
+                height: unset;
+            }
+        }
     }
     &__symbol {
         margin-left: 0.4rem;
@@ -532,7 +550,6 @@
 
 /** @define dc-contract-type */
 .dc-contract-type {
-    $self: &;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -561,21 +578,6 @@
             font-size: 1rem;
             line-height: 1rem;
             color: var(--text-less-prominent);
-        }
-    }
-    &--accumulators {
-        @include mobile {
-            #{$self}__type-label {
-                width: 5.5rem;
-            }
-            #{$self}__type-wrapper {
-                padding: 0.5em 0.8em 0.5em 0.3em;
-
-                .category-type {
-                    width: unset;
-                    height: unset;
-                }
-            }
         }
     }
 }

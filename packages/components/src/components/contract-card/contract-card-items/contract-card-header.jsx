@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, isBot } from '@deriv/shared';
+import { isHighLow, getCurrentTick, getGrowthRatePercentage, isBot } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -40,6 +40,9 @@ const ContractCardHeader = ({
     } = contract_info;
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = contract_type === 'ACCU';
+    const displayed_accumulator = growth_rate && `${getGrowthRatePercentage(growth_rate)}%`;
+    const displayed_multiplier = multiplier && `x${multiplier}`;
+    const displayed_trade_param = is_accumulator ? displayed_accumulator : displayed_multiplier;
 
     return (
         <>
@@ -55,12 +58,16 @@ const ContractCardHeader = ({
                         {display_name || contract_info.display_name}
                     </Text>
                 </div>
-                <div id='dc-contract_card_type_label' className='dc-contract-card__type'>
+                <div
+                    id='dc-contract_card_type_label'
+                    className={classNames('dc-contract-card__type', {
+                        'dc-contract-card__type--accumulators': is_accumulator,
+                    })}
+                >
                     <ContractTypeCell
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
-                        multiplier={multiplier}
-                        growth_rate={is_accumulator ? growth_rate : null}
+                        displayed_trade_param={displayed_trade_param}
                         type={contract_type}
                     />
                 </div>

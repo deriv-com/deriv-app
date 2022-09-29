@@ -5,13 +5,16 @@
  * @returns an array of 100 objects of type: { counter_value: number, epoch: number } starting with the latest counter.
  */
 export const getUpdatedTicksHistoryStats = (ticks_history_stats = [], new_ticks_history_stats = []) => {
-    // we anticipate that the latest counter object will be the last one in the array:
-    if (Array.isArray(new_ticks_history_stats)) return [...new_ticks_history_stats].reverse();
+    // we anticipate that the latest counter object will be the last one in the received new_ticks_history_stats array:
+    if (Array.isArray(new_ticks_history_stats))
+        return new_ticks_history_stats.length ? [...new_ticks_history_stats].reverse() : ticks_history_stats;
     else if (
         new_ticks_history_stats.counter_value <= ticks_history_stats[0].counter_value &&
         new_ticks_history_stats.epoch > ticks_history_stats[0].epoch
     ) {
         return [new_ticks_history_stats, ...ticks_history_stats.slice(0, ticks_history_stats.length - 1)];
+    } else if (new_ticks_history_stats.epoch === ticks_history_stats[0].epoch) {
+        return ticks_history_stats;
     }
     return [new_ticks_history_stats, ...ticks_history_stats.slice(1)];
 };

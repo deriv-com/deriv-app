@@ -30,7 +30,9 @@ describe('TradingPasswordManager', () => {
         expect(screen.getByTestId('dt_mocked_icon')).toHaveTextContent('IcMt5OnePassword');
         expect(screen.getAllByText(/Deriv MT5 password/i)[0]).toBeInTheDocument();
         expect(
-            screen.getByText(/Use this password to log in to your DMT5 accounts on the desktop, web, and mobile apps/i)
+            screen.getByText(
+                /Use this password to log in to your Deriv MT5 accounts on the desktop, web, and mobile apps/i
+            )
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Change password/i })).toBeInTheDocument();
     });

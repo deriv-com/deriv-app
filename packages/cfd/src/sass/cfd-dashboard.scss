@@ -817,7 +817,6 @@
             border-bottom-color: var(--brand-secondary);
         }
         &--server {
-            // TODO: Add a CSS variable
             border-bottom-color: $color-blue-2;
         }
         @include mobile {

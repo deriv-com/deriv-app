@@ -31,10 +31,9 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
-// TODO: Change these imports after real released
-import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
+import CFDDxtradeAccountDisplay from 'Components/cfd-dxtrade-account-display';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -492,46 +491,80 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                     platform={platform}
                                                 />
                                             )}
-                                            <CFDRealAccountDisplay
-                                                is_accounts_switcher_on={is_accounts_switcher_on}
-                                                is_eu={is_eu}
-                                                is_eu_country={is_eu_country}
-                                                is_logged_in={is_logged_in}
-                                                has_cfd_account_error={
-                                                    platform === CFD_PLATFORMS.MT5
-                                                        ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
-                                                        : is_suspended_mt5_real_server ||
-                                                          dxtrade_disabled_signup_types.real ||
-                                                          !!dxtrade_accounts_list_error
-                                                }
-                                                current_list={current_list}
-                                                account_status={account_status}
-                                                onSelectAccount={createCFDAccount}
-                                                realSyntheticAccountsExistingData={getRealSyntheticAccountsExistingData}
-                                                realFinancialAccountsExistingData={getRealFinancialAccountsExistingData}
-                                                is_virtual={is_virtual}
-                                                isSyntheticCardVisible={isSyntheticCardVisible}
-                                                isFinancialCardVisible={isFinancialCardVisible}
-                                                openAccountTransfer={openAccountTransfer}
-                                                openPasswordManager={togglePasswordManagerModal}
-                                                platform={platform}
-                                                isAccountOfTypeDisabled={isAccountOfTypeDisabled}
-                                                has_real_account={has_real_account}
-                                                standpoint={standpoint}
-                                                toggleAccountsDialog={toggleAccountsDialog}
-                                                toggleMT5TradeModal={toggleMT5TradeModal}
-                                                toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                                                residence={residence}
-                                                openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
-                                                should_enable_add_button={should_enable_add_button}
-                                            />
+                                            {platform === CFD_PLATFORMS.DXTRADE && (
+                                                <CFDDxtradeAccountDisplay
+                                                    account_status={account_status}
+                                                    current_list={current_list}
+                                                    has_cfd_account_error={
+                                                        is_suspended_mt5_real_server ||
+                                                        dxtrade_disabled_signup_types.real ||
+                                                        !!dxtrade_accounts_list_error
+                                                    }
+                                                    has_real_account={has_real_account}
+                                                    is_accounts_switcher_on={is_accounts_switcher_on}
+                                                    is_eu_country={is_eu_country}
+                                                    is_eu={is_eu}
+                                                    is_logged_in={is_logged_in}
+                                                    is_virtual={is_virtual}
+                                                    onSelectAccount={createCFDAccount}
+                                                    openAccountTransfer={openAccountTransfer}
+                                                    openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
+                                                    openPasswordManager={togglePasswordManagerModal}
+                                                    platform={platform}
+                                                    should_enable_add_button={should_enable_add_button}
+                                                    standpoint={standpoint}
+                                                    toggleAccountsDialog={toggleAccountsDialog}
+                                                    toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                                                />
+                                            )}
+                                            {platform === CFD_PLATFORMS.MT5 && (
+                                                <CFDRealAccountDisplay
+                                                    is_accounts_switcher_on={is_accounts_switcher_on}
+                                                    is_eu={is_eu}
+                                                    is_eu_country={is_eu_country}
+                                                    is_logged_in={is_logged_in}
+                                                    has_cfd_account_error={
+                                                        platform === CFD_PLATFORMS.MT5
+                                                            ? is_suspended_mt5_real_server ||
+                                                              mt5_disabled_signup_types.real
+                                                            : is_suspended_mt5_real_server ||
+                                                              dxtrade_disabled_signup_types.real ||
+                                                              !!dxtrade_accounts_list_error
+                                                    }
+                                                    current_list={current_list}
+                                                    account_status={account_status}
+                                                    onSelectAccount={createCFDAccount}
+                                                    realSyntheticAccountsExistingData={
+                                                        getRealSyntheticAccountsExistingData
+                                                    }
+                                                    realFinancialAccountsExistingData={
+                                                        getRealFinancialAccountsExistingData
+                                                    }
+                                                    is_virtual={is_virtual}
+                                                    isSyntheticCardVisible={isSyntheticCardVisible}
+                                                    isFinancialCardVisible={isFinancialCardVisible}
+                                                    openAccountTransfer={openAccountTransfer}
+                                                    openPasswordManager={togglePasswordManagerModal}
+                                                    platform={platform}
+                                                    isAccountOfTypeDisabled={isAccountOfTypeDisabled}
+                                                    has_real_account={has_real_account}
+                                                    standpoint={standpoint}
+                                                    toggleAccountsDialog={toggleAccountsDialog}
+                                                    toggleMT5TradeModal={toggleMT5TradeModal}
+                                                    toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                                                    residence={residence}
+                                                    openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
+                                                    should_enable_add_button={should_enable_add_button}
+                                                />
+                                            )}
                                         </React.Fragment>
                                     </div>
                                 )}
                                 {is_demo_enabled && (
                                     <div label={localize('Demo account')} hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
-                                            <CFDDxtradeDemoAccountDisplay
+                                            <CFDDxtradeAccountDisplay
+                                                is_demo_tab
                                                 is_logged_in={is_logged_in}
                                                 has_cfd_account_error={
                                                     is_suspended_mt5_demo_server ||

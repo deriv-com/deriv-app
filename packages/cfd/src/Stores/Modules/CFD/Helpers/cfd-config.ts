@@ -3,51 +3,25 @@ import { localize } from '@deriv/translations';
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
 
+// TODO: mix mt and dxtrade method
 export const getDxCompanies = () => {
-    const synthetic_config = {
-        account_type: '',
+    const all_config = {
+        mt5_account_type: '',
         leverage: 500,
-        short_title: localize('Synthetic'),
-    };
-    const financial_config = {
-        account_type: 'financial',
-        leverage: 1000,
-        short_title: localize('Financial'),
+        title: localize('Demo'),
+        short_title: localize('CFDs'),
     };
     return {
         demo: {
-            synthetic: {
-                dxtrade_account_type: synthetic_config.account_type,
-                leverage: synthetic_config.leverage,
-                title: localize('Demo Synthetic'),
-                short_title: synthetic_config.short_title,
-            },
-            financial: {
-                dxtrade_account_type: financial_config.account_type,
-                leverage: financial_config.leverage,
-                title: localize('Demo Financial'),
-                short_title: financial_config.short_title,
-            },
+            all: all_config,
         },
         real: {
-            synthetic: {
-                dxtrade_account_type: synthetic_config.account_type,
-                leverage: synthetic_config.leverage,
-                title: localize('Synthetic'),
-                short_title: synthetic_config.short_title,
-            },
-            financial: {
-                dxtrade_account_type: financial_config.account_type,
-                leverage: financial_config.leverage,
-                title: localize('Financial'),
-                short_title: financial_config.short_title,
-            },
+            all: all_config,
         },
     };
 };
 
 export const getMtCompanies = (is_eu: boolean) => {
-    // TODO: Move this to the getDxCompanies for real release and when separating MT5 and DerivX components.
     const all_config = {
         account_type: '',
         leverage: 500,
@@ -110,7 +84,12 @@ export const getMtCompanies = (is_eu: boolean) => {
             },
         },
         real: {
-            // TODO: Add All here before real release
+            all: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo'),
+                short_title: all_config.short_title,
+            },
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,

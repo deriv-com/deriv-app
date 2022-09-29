@@ -205,16 +205,13 @@ const AccountSwitcher = props => {
         redirectToMt5Demo();
     };
 
-    const openDXTradeDemoAccount = account_type => {
-        sessionStorage.setItem(
-            'open_cfd_account_type',
-            `demo.${CFD_PLATFORMS.DXTRADE}.${account_type === 'dxtrade' ? 'all' : account_type}`
-        );
+    const openDXTradeDemoAccount = () => {
+        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.DXTRADE}.all`);
         redirectToDXTradeDemo();
     };
 
-    const openDXTradeRealAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `real.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
+    const openDXTradeRealAccount = () => {
+        sessionStorage.setItem('open_cfd_account_type', `real.${CFD_PLATFORMS.DXTRADE}.all`);
         redirectToDXTradeReal();
     };
 
@@ -285,8 +282,7 @@ const AccountSwitcher = props => {
             return [...financial_config];
         }
 
-        // TODO: change this condition before real release
-        if (is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+        if (platform === CFD_PLATFORMS.DXTRADE) {
             return [...all_config];
         }
         return [...gaming_config, ...financial_config];

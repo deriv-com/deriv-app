@@ -234,7 +234,9 @@ export default class CFDStore extends BaseStore {
 
     realCFDSignup(set_password) {
         switch (this.account_type.type) {
+            case 'all':
             case 'financial':
+            case 'synthetic':
                 this.enableCFDPasswordModal();
                 break;
             case 'financial_stp':
@@ -243,9 +245,6 @@ export default class CFDStore extends BaseStore {
                 this.root_store.client.fetchAccountSettings();
                 if (set_password) this.enableCFDPasswordModal();
                 else this.enableMt5FinancialStpModal();
-                break;
-            case 'synthetic':
-                this.enableCFDPasswordModal();
                 break;
             default:
                 throw new Error('Cannot determine mt5 account signup.');

@@ -95,12 +95,12 @@ const CFDRealAccountDisplay = ({
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         const is_australian = residence === 'au';
         if (is_australian) {
-            return specifications[platform as keyof TSpecifications].au_real_financial_specs;
+            return specifications[platform as 'mt5'].au_real_financial_specs;
         }
         if (should_show_eu) {
-            return specifications[platform as keyof TSpecifications].eu_real_financial_specs;
+            return specifications[platform as 'mt5'].eu_real_financial_specs;
         }
-        return specifications[platform as keyof TSpecifications].real_financial_specs;
+        return specifications[platform as 'mt5'].real_financial_specs;
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealAccount = (type: string) => {
@@ -193,7 +193,7 @@ const CFDRealAccountDisplay = ({
             onClickFund={onClickFundReal}
             platform={platform}
             descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
-            specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
+            specs={specifications[platform as 'mt5'].real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}

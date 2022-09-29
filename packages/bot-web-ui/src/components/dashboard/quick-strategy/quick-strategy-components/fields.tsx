@@ -51,15 +51,17 @@ const QuickStrategyFields = React.memo(
                         label_className,
                         field_className,
                         input_value,
+                        select_value,
                         label,
                         placeholder,
                         trailing_icon_message,
                         zIndex,
                         is_able_disabled,
+                        is_basic_field,
                     } = item as TDataFields;
 
                     const is_uniq_strategy_field = Array.isArray(item);
-                    const is_input_field = is_uniq_strategy_field || input_value.startsWith('input_');
+                    const is_input_field = is_uniq_strategy_field || input_value;
 
                     //dropdowns
                     const types_strategies_drop = id?.endsWith('types-strategies') && types_strategies_dropdown;
@@ -81,7 +83,7 @@ const QuickStrategyFields = React.memo(
                         type_strategy_pick || symbol_pick || trade_type_pick || duration_unit_pick || {};
                     const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field ? selected_item : {};
 
-                    const is_base_field = !is_uniq_strategy_field && id.startsWith('base__');
+                    const is_base_field = !is_uniq_strategy_field && is_basic_field;
                     const is_current_strategy_fields = is_base_field || is_uniq_strategy_field;
 
                     const is_duration_unit_field = !is_uniq_strategy_field && id.endsWith('duration-unit');
@@ -111,7 +113,7 @@ const QuickStrategyFields = React.memo(
                                         dropdown_list={dropdown_list}
                                         selected_value={selected_value}
                                         label={label}
-                                        input_value={input_value as TDropdownItems}
+                                        select_value={select_value as TDropdownItems}
                                         setFieldValue={setFieldValue}
                                         className={className}
                                         is_able_disabled={is_able_disabled}
@@ -152,7 +154,7 @@ const QuickStrategyFields = React.memo(
                                         label_className={label_className}
                                         field_className={field_className}
                                         label={label}
-                                        input_value={input_value as TInputBaseFields}
+                                        input_value={input_value}
                                         placeholder={placeholder}
                                         is_uniq_strategy_field={is_uniq_strategy_field}
                                         trailing_icon_message={trailing_icon_message}
@@ -181,7 +183,7 @@ const QuickStrategyFields = React.memo(
                                         dropdown_list={dropdown_list}
                                         selected_value={selected_value}
                                         label={label}
-                                        input_value={input_value as TDropdownItems}
+                                        select_value={select_value as TDropdownItems}
                                         setFieldValue={setFieldValue}
                                         className={className}
                                         is_able_disabled={is_able_disabled}

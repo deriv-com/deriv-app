@@ -95,7 +95,7 @@ export type TSelectFieldProps = React.PropsWithChildren<{
     dropdown_list: TDropdowns;
     selected_value: Partial<TSelectedValuesSelect>;
     label: string;
-    input_value: TDropdownItems;
+    select_value: TDropdownItems;
     setFieldValue: TSetFieldValue;
     className?: string;
     is_able_disabled?: boolean;

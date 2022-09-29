@@ -56,7 +56,7 @@ const Button = ({
     medium,
     onClick,
     rounded,
-    tabIndex,
+    tabIndex = 0,
     text,
     wrapperClassName,
     type,
@@ -99,9 +99,9 @@ const Button = ({
         <button
             id={id}
             className={classes}
-            onClick={onClick || undefined}
+            onClick={onClick}
             disabled={is_disabled}
-            tabIndex={tabIndex || 0}
+            tabIndex={tabIndex}
             type={is_submit_success ? 'button' : type || 'submit'}
             {...props}
         >

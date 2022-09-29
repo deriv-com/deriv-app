@@ -3,6 +3,70 @@
     display: flex;
     flex-direction: column;
 
+    @include mobile {
+        overflow-y: auto;
+    }
+
+    &__dropdown {
+        box-shadow: 0 1rem 2rem var(--shadow-menu);
+        border-radius: $BORDER_RADIUS;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        z-index: 2;
+
+        .dc-dropdown__display {
+            background-color: var(--general-main-2);
+            border: 1px solid var(--general-active);
+
+            span {
+                background-color: var(--general-main-2);
+            }
+
+            &-placeholder {
+                top: auto;
+            }
+        }
+
+        &-container {
+            margin-top: 0;
+        }
+
+        &:hover {
+            .dc-dropdown__display {
+                background-color: var(--border-normal);
+                border: 1px solid var(--border-normal);
+
+                span {
+                    background-color: var(--border-normal);
+                }
+            }
+        }
+    }
+
+    &__menu-dots-icon {
+        cursor: pointer;
+        margin-bottom: 0.8rem;
+    }
+
+    &__menu-dots-toggle {
+        position: absolute;
+        right: 2.4rem;
+
+        @include mobile {
+            bottom: 0.8rem;
+            right: 1.2rem;
+        }
+    }
+
+    &__page-return-header {
+        position: relative;
+    }
+
+    &--no-scroll {
+        overflow: hidden;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;
@@ -21,7 +85,9 @@
                 margin: 0 0 1rem;
 
                 .dp2p-avatar {
-                    align-self: center;
+                    align-self: flex-start;
+                    margin-top: 0.6rem;
+                    margin-right: 0.7rem;
                 }
             }
         }
@@ -191,7 +257,7 @@
             display: flex;
 
             @media (max-height: 580px) {
-                height: 10rem;
+                height: 5rem;
             }
             @include mobile {
                 display: flex;
@@ -269,7 +335,6 @@
             @include mobile {
                 display: flex;
                 flex-flow: column;
-                margin-top: 1rem;
                 width: 100vw;
             }
 
@@ -352,6 +417,10 @@
             padding: 2.4rem;
             border: 1px solid var(--general-hover);
             border-radius: 0.8rem;
+
+            @include mobile {
+                border-radius: unset;
+            }
         }
     }
 

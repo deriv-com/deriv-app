@@ -88,7 +88,7 @@ export default class GeneralStore extends BaseStore {
         }
 
         const unseen_notifications = local_storage_settings.notifications.filter(
-            notification => notification.is_seen === false
+            notification => !notification.is_seen
         );
 
         return unseen_notifications.length;

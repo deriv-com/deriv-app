@@ -16,7 +16,6 @@ const CFDPersonalDetailsModal = ({
     disableApp,
     enableApp,
     getChangeableFields,
-    is_fully_authenticated,
     is_open,
     landing_company,
     openPasswordModal,
@@ -131,8 +130,6 @@ const CFDPersonalDetailsModal = ({
                     form_error={form_error}
                     has_previous_button
                     index={0}
-                    is_fully_authenticated={is_fully_authenticated}
-                    is_in_personal_details_modal
                     is_loading={is_loading}
                     landing_company={landing_company}
                     onCancel={prevStep}
@@ -184,7 +181,6 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
-    is_fully_authenticated: client.is_fully_authenticated,
     is_open: modules.cfd.is_cfd_personal_details_modal_visible,
     landing_company: client.landing_company,
     openPasswordModal: modules.cfd.enableCFDPasswordModal,

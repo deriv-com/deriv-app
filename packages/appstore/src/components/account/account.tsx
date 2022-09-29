@@ -209,8 +209,8 @@ const OptionsAccount = ({
             <div className='account-container--account-details-wrapper'>
                 <div className='account-container--account-details-wrapper--name-number'>
                     <Text
-                        size='xxs'
-                        line_height='l'
+                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        line_height={isMobile() ? 's' : 'l'}
                         className='account-container--account-details-wrapper--name-number--name'
                         weight='bold'
                     >
@@ -236,8 +236,9 @@ const OptionsAccount = ({
                         )}
                     </Text>
                     <Text
-                        size='xxxs'
-                        line_height='s'
+                        size={isMobile() ? 'xxxxs' : 'xxxs'}
+                        line_height={isMobile() ? 'xs' : 's'}
+                        weight='bold'
                         className='account-container--account-details-wrapper--name-number--number'
                     >
                         {loginid_text}
@@ -245,8 +246,8 @@ const OptionsAccount = ({
                 </div>
 
                 <Text
-                    size='s'
-                    line_height='l'
+                    size={isMobile() ? 'xs' : 's'}
+                    line_height={isMobile() ? 'xl' : 'l'}
                     weight='bold'
                     className='account-container--account-details-wrapper--balance'
                 >

@@ -45,29 +45,12 @@
             padding: 0;
             width: 6.9rem;
             height: 3.2rem;
-            &--name {
-                @include mobile {
-                    font-size: 1rem;
-                    height: 1.4rem;
-                }
-            }
             &--number {
                 color: $color-grey-1;
-                @include mobile {
-                    font-weight: 700;
-                    font-size: 0.8rem;
-                    line-height: 1.2rem;
-                }
             }
         }
         &--balance {
             color: $color-black-1;
-            @include mobile {
-                width: 9.9rem;
-                height: 2rem;
-                font-size: 1.4rem;
-                line-height: 2rem;
-            }
         }
     }
     &--account-reset-button-wrapper {

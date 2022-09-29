@@ -5,7 +5,7 @@ import Button from '../button';
 
 type TItemStatusProps = {
     button_text: string;
-    onClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
+    onClick: () => void;
     status: string;
 };
 

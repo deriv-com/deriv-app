@@ -11,6 +11,24 @@ import MyProfilePrivacy from './my-profile-privacy';
 const MyStats = () => {
     const { my_profile_store } = useStores();
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
+    const tabs = [
+        {
+            default_text: 'Stats',
+            onClick: () => setShouldShowStatsAndRatings(true),
+        },
+        {
+            default_text: 'Payment methods',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.PAYMENT_METHODS),
+        },
+        {
+            default_text: 'Ad details',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE),
+        },
+        {
+            default_text: 'Blocked advertisers',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.BLOCKED_ADVERTISERS),
+        },
+    ];
 
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -33,33 +51,21 @@ const MyStats = () => {
             <MobileWrapper>
                 <MyProfilePrivacy />
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
-                <div className='my-profile__navigation' onClick={() => setShouldShowStatsAndRatings(true)}>
-                    <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='Stats' />
-                    </Text>
-                    <Icon icon='IcChevronRight' />
-                </div>
-                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
-                <div
-                    className='my-profile__navigation'
-                    onClick={() => my_profile_store.setActiveTab(my_profile_tabs.PAYMENT_METHODS)}
-                >
-                    <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='Payment methods' />
-                    </Text>
-                    <Icon icon='IcChevronRight' />
-                </div>
-                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
-                <div
-                    className='my-profile__navigation'
-                    onClick={() => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE)}
-                >
-                    <Text color='prominent' size='xxs'>
-                        <Localize i18n_default_text='Ad details' />
-                    </Text>
-                    <Icon icon='IcChevronRight' />
-                </div>
-                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                {tabs.map((tab, key) => {
+                    return (
+                        <React.Fragment key={key}>
+                            <div className='my-profile__navigation' onClick={tab.onClick}>
+                                <Text color='prominent' size='xxs'>
+                                    <Localize i18n_default_text={tab.default_text} />
+                                </Text>
+                                <Icon icon='IcChevronRight' />
+                            </div>
+                            {key !== tabs.length - 1 && (
+                                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                            )}
+                        </React.Fragment>
+                    );
+                })}
             </MobileWrapper>
         </React.Fragment>
     );

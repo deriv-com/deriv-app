@@ -4,40 +4,33 @@ import HighlightWrapper from './button-highlight-wrapper';
 import Button from '../button/button.jsx';
 import Counter from '../counter/counter';
 
-//TODO: Move the general types to types folder and file
-type TGenericObjectType = {
-    [key: string]: React.ReactNode;
-};
-
-type TOnChangeFuncParams = {
-    target: {
-        value: React.ReactNode;
-        name: string;
-    };
-};
-
 type TButtonToggleProps = {
-    buttons_arr: TGenericObjectType[];
-    className: string;
-    id: string;
-    is_animated: boolean;
+    buttons_arr: Array<{ text: string; value: string; count?: number }>;
+    className?: string;
+    id?: string;
+    is_animated?: boolean;
     name: string;
-    onChange: (param: TOnChangeFuncParams) => void;
-    has_rounded_button: boolean;
+    onChange: (new_values: {
+        target: {
+            value: string;
+            name: string;
+        };
+    }) => void;
+    has_rounded_button?: boolean;
     value: number | string;
 };
 
 const ButtonToggle = ({
     buttons_arr,
     className,
-    has_rounded_button,
+    has_rounded_button = false,
     id,
-    is_animated,
+    is_animated = false,
     name,
     onChange,
     value,
 }: TButtonToggleProps) => {
-    const changeValue = (selected_value: React.ReactNode) => {
+    const changeValue = (selected_value: string) => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
     };
@@ -57,7 +50,7 @@ const ButtonToggle = ({
                         is_button_toggle
                     >
                         {`${val.text?.toString().charAt(0).toUpperCase()}${val.text?.toString().slice(1)}`}
-                        {!!val.count && <Counter className='dc-button-menu__counter' count={val.count as number} />}
+                        {!!val.count && <Counter className='dc-button-menu__counter' count={val.count} />}
                     </Button>
                 );
             }),

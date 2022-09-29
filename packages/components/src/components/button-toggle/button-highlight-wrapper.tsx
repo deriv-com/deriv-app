@@ -2,15 +2,10 @@ import classnames from 'classnames';
 import React from 'react';
 import { Highlight } from './button-highlight';
 
-type TGenericObjectType = {
-    // TODO: Move this to types folder
-    [key: string]: string;
-};
-
-type THighlightWrapperProps = {
-    children: React.ReactNode[];
-    className?: string;
+type THighlightWrapperProps = Omit<React.HTMLProps<HTMLDivElement>, 'children'> & {
+    children: React.ReactElement | React.ReactElement[];
     has_rounded_button?: boolean;
+    highlight_color?: string;
 };
 
 const class_selector = 'dc-button-menu__button--active';
@@ -22,9 +17,9 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
 
     React.useEffect(() => {
         if (wrapper_ref.current) {
-            const active_button_el = wrapper_ref.current
-                .getElementsByClassName(class_selector)
-                .item(0) as HTMLButtonElement;
+            const active_button_el = wrapper_ref?.current
+                ?.getElementsByClassName(class_selector)
+                ?.item(0) as HTMLButtonElement;
             updateHighlightPosition(active_button_el);
         }
         return () => resetHighlight();
@@ -32,9 +27,9 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
     }, []);
 
     React.useEffect(() => {
-        const active_button_el = wrapper_ref.current
+        const active_button_el = wrapper_ref?.current
             ?.getElementsByClassName(class_selector)
-            .item(0) as HTMLButtonElement;
+            ?.item(0) as HTMLButtonElement;
         if (active_button_el) updateHighlightPosition(active_button_el);
         else if (left !== 0) resetHighlight(); // clear highlight when active element doesn't exist
     });
@@ -42,9 +37,7 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
     const onClick = (e: Event, buttonClick: () => void) => {
         if (!e.target) return;
         updateHighlightPosition((e.target as HTMLButtonElement).closest('button'));
-        if (typeof buttonClick === 'function') {
-            buttonClick();
-        }
+        buttonClick?.();
     };
 
     const resetHighlight = () => setLeft(0);
@@ -59,18 +52,18 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
         className: classnames('dc-button-menu__wrapper', className),
         ...other_props,
     };
-    const button_width = (100 / (children?.length || 1)).toFixed(2);
+    const button_width = (100 / ((Array.isArray(children) && children?.length) || 1)).toFixed(2);
 
     return (
         <div ref={wrapper_ref} {...props}>
             {React.Children.map(children, child =>
-                React.cloneElement(child as React.ReactElement, {
-                    onClick: (e: Event) => onClick(e, (child as React.ReactElement).props.onClick),
+                React.cloneElement(child, {
+                    onClick: (e: Event) => onClick(e, child.props.onClick),
                 })
             )}
             <Highlight
                 has_rounded_button={has_rounded_button || false}
-                highlight_color={(other_props as TGenericObjectType)?.highlight_color}
+                highlight_color={other_props.highlight_color}
                 left={left}
                 width={`${button_width}%`}
             />

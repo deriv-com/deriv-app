@@ -2,7 +2,7 @@ import React from 'react';
 
 type THighlightProps = {
     has_rounded_button: boolean;
-    highlight_color: string;
+    highlight_color?: string;
     left: number;
     width: number | string;
 };

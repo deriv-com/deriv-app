@@ -9,8 +9,8 @@ import CFDAccounts from 'Components/CFDs';
 const TradingHub = () => {
     return (
         <div className='trading-hub'>
-            Trading Hub
-            <CFDAccounts account_type='real' />
+            {/* Trading Hub
+            <CFDAccounts account_type='real' /> */}
             {/* <AddOptionsAccount />
             <Onboarding contents={trading_hub_contents} /> */}
             <Options platformlauncherprops={platform_config} />

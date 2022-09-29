@@ -2,9 +2,9 @@ import React from 'react';
 import { useStores } from 'Stores';
 import { Text, StaticUrl, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import PlatformLauncher from '../platform-launcher/index';
-import OptionsAccount from '../account/index';
-import AddOptions from '../add-options/index';
+import PlatformLauncher from '../platform-launcher';
+import OptionsAccount from '../account';
+import AddOptions from '../add-options';
 import { isMobile, routes } from '@deriv/shared';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -31,6 +31,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         shortcode,
         should_show_server_name,
         resetVirtualBalance,
+        has_any_real_account,
     } = client;
     const sortedAccountList = React.useMemo(
         () => getSortedAccountList(account_list, accounts).filter(account => !account.is_virtual),
@@ -46,12 +47,11 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         toggleAccountsDialog(false);
     };
 
-    const doDeposit = () => {
+    const onClickDeposit = () => {
         props.history.push(routes.cashier_deposit);
     };
-
     return (
-        <div className={`options-container ${!client.has_any_real_account ? 'options-container-app-launcher' : ''}`}>
+        <div className={`options-container ${!has_any_real_account ? 'options-container-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
                 <DesktopWrapper>
                     <Text size='m' className='options-container__title-description-container--title' weight='bold'>
@@ -90,7 +90,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                 </MobileWrapper>
             </div>
             <div className='options-container__accounts-platform-container'>
-                {client.has_any_real_account ? (
+                {has_any_real_account ? (
                     <div className='options-container__accounts-platform-container--accounts'>
                         {false
                             ? getSortedAccountList(account_list, accounts)
@@ -157,7 +157,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                               location={props.location}
                                               match={props.match}
                                               activeAccount={isActiveId}
-                                              onClickDeposit={doDeposit}
+                                              onClickDeposit={onClickDeposit}
                                           />
                                       )
                                   ) : (
@@ -189,7 +189,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                           location={props.location}
                                           match={props.match}
                                           activeAccount={isActiveId}
-                                          onClickDeposit={doDeposit}
+                                          onClickDeposit={onClickDeposit}
                                       />
                                   )
                               )}
@@ -208,12 +208,10 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                 ) : (
                     <div>{/* Apps launcher goes here */}</div>
                 )}
-                {!client.has_any_real_account && (
-                    <span className='options-container__accounts-platform-container--divider' />
-                )}
+                {!has_any_real_account && <span className='options-container__accounts-platform-container--divider' />}
                 <div
                     className={`options-container__accounts-platform-container--platform ${
-                        !client.has_any_real_account
+                        !has_any_real_account
                             ? 'options-container__accounts-platform-container--platform-with-applauncher'
                             : ''
                     }`}
@@ -221,11 +219,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                     {props.platformlauncherprops.map((item, index) => {
                         return (
                             <>
-                                <PlatformLauncher
-                                    key={item.title}
-                                    {...item}
-                                    has_real_account={client.has_any_real_account}
-                                />
+                                <PlatformLauncher key={item.title} {...item} has_real_account={has_any_real_account} />
                                 {!isMobile() && props.platformlauncherprops.length - 1 !== index && (
                                     <span className='options-container__accounts-platform-container--platform--divider' />
                                 )}

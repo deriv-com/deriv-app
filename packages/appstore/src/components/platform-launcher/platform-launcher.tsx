@@ -48,7 +48,7 @@ const PlatformLauncher = ({ icon, title, description, link_to, has_real_account 
                     <div className='platform-launcher__container--title-desc-wrapper'>
                         <Text
                             size='xxs'
-                            line_height='l'
+                            line_height='s'
                             className='platform-launcher__container--title-desc-wrapper--title'
                             weight='bold'
                         >

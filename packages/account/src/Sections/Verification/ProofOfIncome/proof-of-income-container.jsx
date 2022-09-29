@@ -47,8 +47,8 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    const onSubmit = () => {
-        setAuthenticationStatus({ ...authentication_status, ...{ income_status: 'pending' } });
+    const onSubmit = status => {
+        setAuthenticationStatus({ ...authentication_status, ...{ income_status: status } });
     };
     const onReSubmit = () => {
         setAuthenticationStatus({ ...authentication_status, ...{ income_status: 'none' } });

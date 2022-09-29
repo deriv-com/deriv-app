@@ -82,7 +82,7 @@ const ProofOfIncomeForm = ({
                         removeNotificationByKey({ key: 'needs_poinc' });
                         removeNotificationMessage({ key: 'poinc_upload_limited' });
                         removeNotificationByKey({ key: 'poinc_upload_limited' });
-                        onSubmit();
+                        onSubmit(income?.status);
                         if (needs_poinc) {
                             addNotificationByKey('needs_poinc');
                         }

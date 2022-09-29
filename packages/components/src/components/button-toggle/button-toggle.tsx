@@ -1,12 +1,43 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import HighlightWrapper from './button-highlight-wrapper.jsx';
+import HighlightWrapper from './button-highlight-wrapper';
 import Button from '../button/button.jsx';
 import Counter from '../counter/counter';
 
-const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_animated, name, onChange, value }) => {
-    const changeValue = selected_value => {
+//TODO: Move the general types to types folder and file
+type TGenericObjectType = {
+    [key: string]: React.ReactNode;
+};
+
+type TOnChangeFuncParams = {
+    target: {
+        value: React.ReactNode;
+        name: string;
+    };
+};
+
+type TButtonToggleProps = {
+    buttons_arr: TGenericObjectType[];
+    className: string;
+    id: string;
+    is_animated: boolean;
+    name: string;
+    onChange: (param: TOnChangeFuncParams) => void;
+    has_rounded_button: boolean;
+    value: number | string;
+};
+
+const ButtonToggle = ({
+    buttons_arr,
+    className,
+    has_rounded_button,
+    id,
+    is_animated,
+    name,
+    onChange,
+    value,
+}: TButtonToggleProps) => {
+    const changeValue = (selected_value: React.ReactNode) => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
     };
@@ -25,8 +56,8 @@ const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_anima
                         className={menuClassNames}
                         is_button_toggle
                     >
-                        {`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
-                        {!!val.count && <Counter className='dc-button-menu__counter' count={val.count} />}
+                        {`${val.text?.toString().charAt(0).toUpperCase()}${val.text?.toString().slice(1)}`}
+                        {!!val.count && <Counter className='dc-button-menu__counter' count={val.count as number} />}
                     </Button>
                 );
             }),
@@ -43,17 +74,6 @@ const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_anima
             )}
         </div>
     );
-};
-
-ButtonToggle.propTypes = {
-    buttons_arr: PropTypes.array,
-    className: PropTypes.string,
-    id: PropTypes.string,
-    is_animated: PropTypes.bool,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    has_rounded_button: PropTypes.bool,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default ButtonToggle;

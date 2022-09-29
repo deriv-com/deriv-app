@@ -46,7 +46,6 @@ const QuickStrategyFields = React.memo(
                 data_fields.map((item, idx) => {
                     const {
                         id,
-                        name,
                         field_name,
                         className,
                         label_className,
@@ -63,30 +62,30 @@ const QuickStrategyFields = React.memo(
                     const is_input_field = is_uniq_strategy_field || input_value.startsWith('input_');
 
                     //dropdowns
-                    const types_strategies_drop = name?.endsWith('types-strategies') && types_strategies_dropdown;
-                    const symbol_drop = name?.endsWith('symbol') && symbol_dropdown;
-                    const trade_type_drop = name?.endsWith('trade-type') && trade_type_dropdown;
-                    const duration_unit_drop = name?.endsWith('duration-unit') && duration_unit_dropdown;
+                    const types_strategies_drop = id?.endsWith('types-strategies') && types_strategies_dropdown;
+                    const symbol_drop = id?.endsWith('symbol') && symbol_dropdown;
+                    const trade_type_drop = id?.endsWith('trade-type') && trade_type_dropdown;
+                    const duration_unit_drop = id?.endsWith('duration-unit') && duration_unit_dropdown;
 
                     const dropdowns: TDropdowns =
                         types_strategies_drop || symbol_drop || trade_type_drop || duration_unit_drop || [];
                     const dropdown_list: TDropdowns = !is_uniq_strategy_field ? dropdowns : [];
 
                     //selected_items
-                    const type_strategy_pick = name?.endsWith('types-strategies') && selected_type_strategy;
-                    const symbol_pick = name?.endsWith('symbol') && selected_symbol;
-                    const trade_type_pick = name?.endsWith('trade-type') && selected_trade_type;
-                    const duration_unit_pick = name?.endsWith('duration-unit') && selected_duration_unit;
+                    const type_strategy_pick = id?.endsWith('types-strategies') && selected_type_strategy;
+                    const symbol_pick = id?.endsWith('symbol') && selected_symbol;
+                    const trade_type_pick = id?.endsWith('trade-type') && selected_trade_type;
+                    const duration_unit_pick = id?.endsWith('duration-unit') && selected_duration_unit;
 
                     const selected_item =
                         type_strategy_pick || symbol_pick || trade_type_pick || duration_unit_pick || {};
                     const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field ? selected_item : {};
 
-                    const is_base_field = !is_uniq_strategy_field && name.startsWith('base__');
+                    const is_base_field = !is_uniq_strategy_field && id.startsWith('base__');
                     const is_current_strategy_fields = is_base_field || is_uniq_strategy_field;
 
-                    const is_duration_unit_field = !is_uniq_strategy_field && name.endsWith('duration-unit');
-                    const is_duration_value_field = !is_uniq_strategy_field && name.endsWith('duration-value');
+                    const is_duration_unit_field = !is_uniq_strategy_field && id.endsWith('duration-unit');
+                    const is_duration_value_field = !is_uniq_strategy_field && id.endsWith('duration-value');
 
                     if (is_double_idx_ref.current === idx || is_duration_value_field) {
                         return false;
@@ -194,7 +193,7 @@ const QuickStrategyFields = React.memo(
                                         selected_symbol={selected_symbol}
                                     />
                                 </div>
-                                {name.endsWith('types-strategies') && (
+                                {id.endsWith('types-strategies') && (
                                     <div key='description' className='quick-strategy__description'>
                                         {description}
                                     </div>

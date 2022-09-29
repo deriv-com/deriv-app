@@ -7,7 +7,6 @@ const getMessage = (property: string) => `The bot will stop trading if your tota
 
 export type TDataFields = {
     id: string;
-    name: string;
     field_name: TSelectsFieldNames | TInputsFieldNames;
     className?: string;
     input_value: TDropdownItems | TInputBaseFields;
@@ -20,7 +19,6 @@ export type TDataFields = {
 const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = [
     {
         id: 'base__types-strategies',
-        name: 'base__types-strategies',
         field_name: 'quick-strategy__type-strategy',
         className: '',
         input_value: 'type-strategy',
@@ -28,7 +26,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     },
     {
         id: 'base__symbol',
-        name: 'base__symbol',
         field_name: 'quick-strategy__symbol',
         className: 'quick-strategy__dropdown quick-strategy__leading',
         input_value: 'symbol',
@@ -36,7 +33,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     },
     {
         id: 'base__trade-type',
-        name: 'base__trade-type',
         field_name: 'quick-strategy__trade-type',
         className: 'quick-strategy__dropdown quick-strategy__leading',
         input_value: 'trade-type',
@@ -44,7 +40,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     },
     {
         id: 'base__duration-unit',
-        name: 'base__duration-unit',
         field_name: 'quick-strategy__duration-unit',
         className: '',
         input_value: 'duration-unit',
@@ -53,7 +48,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     },
     {
         id: 'base__duration-value',
-        name: 'base__duration-value',
         field_name: 'quick-strategy__duration-value',
         input_value: 'input_duration_value',
         label: 'Duration value',
@@ -63,7 +57,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     },
     {
         id: 'base__stake',
-        name: 'base__stake',
         field_name: 'quick-strategy__stake',
         input_value: 'input_stake',
         label: 'Initial stake',
@@ -73,7 +66,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     },
     {
         id: 'base__loss',
-        name: 'base__loss',
         field_name: 'quick-strategy__loss',
         input_value: 'input_loss',
         label: 'Loss threshold',
@@ -84,7 +76,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
     ...[data_uniq_input_obj],
     {
         id: 'base__profit',
-        name: 'base__profit',
         field_name: 'quick-strategy__profit',
         input_value: 'input_profit',
         label: 'Profit threshold',

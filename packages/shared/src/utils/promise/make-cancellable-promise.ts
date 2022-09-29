@@ -1,6 +1,6 @@
-export const makeCancellablePromise = listener => {
+export const makeCancellablePromise = (listener: Promise<unknown>) => {
     let done = false;
-    let cancel = () => (done = true);
+    let cancel: () => boolean | void = () => (done = true);
     const promise = new Promise((resolve, reject) => {
         cancel = () => {
             // If it is already done, don't do anything.
@@ -18,7 +18,7 @@ export const makeCancellablePromise = listener => {
                 done = true;
                 resolve(result);
             })
-            .catch(error => {
+            .catch((error: Error) => {
                 done = true;
                 reject(error);
             });

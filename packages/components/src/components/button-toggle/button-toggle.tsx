@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import HighlightWrapper from './button-highlight-wrapper';
-import Button from '../button/button.jsx';
 import Counter from '../counter/counter';
+import Button from '../button/button';
 
 type TButtonToggleProps = {
     buttons_arr: Array<{ text: string; value: string; count?: number }>;

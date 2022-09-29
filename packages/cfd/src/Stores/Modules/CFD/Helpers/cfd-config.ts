@@ -56,7 +56,7 @@ export const getMtCompanies = (is_eu: boolean) => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('Derived SVG'),
+        short_title: localize('Derived'),
     };
     const financial_config = {
         account_type: 'financial',

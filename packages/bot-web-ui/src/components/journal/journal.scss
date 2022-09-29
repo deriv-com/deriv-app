@@ -41,7 +41,7 @@
     &__data-list {
         .ReactVirtualized__Grid__innerScrollContainer {
             > div:nth-child(even) {
-                background: var(--status-default);
+                background: var(--general-section-2);
             }
         }
     }

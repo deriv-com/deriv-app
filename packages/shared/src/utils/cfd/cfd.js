@@ -141,7 +141,7 @@ export const getAccountListKey = (account, platform, shortcode) => {
 export const getCFDPlatformLabel = platform => {
     switch (platform) {
         case CFD_PLATFORMS.MT5:
-            return 'DMT5';
+            return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
         default:

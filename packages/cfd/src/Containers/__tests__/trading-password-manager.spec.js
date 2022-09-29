@@ -32,12 +32,12 @@ describe('TradingPasswordManager', () => {
         expect(
             screen.getByText(/Use this password to log in to your DMT5 accounts on the desktop, web, and mobile apps/i)
         ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Change DMT5 password/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Change Deriv MT5 password/i })).toBeInTheDocument();
     });
 
     it('should call ChangePasswordConfirmation component as the next step if the button is clicked ', () => {
         render(<TradingPasswordManager {...mock_props} />);
-        fireEvent.click(screen.getByRole('button', { name: /Change DMT5 password/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Change Deriv MT5 password/i }));
         expect(screen.getByText(/IcMt5OnePassword/i)).toBeInTheDocument();
         expect(screen.getByText(/Confirm to change your DMT5 password/i)).toBeInTheDocument();
         expect(screen.getByText(/This will change the password to all of your DMT5 accounts/i)).toBeInTheDocument();
@@ -67,14 +67,14 @@ describe('TradingPasswordManager', () => {
 
     it('should return to the previous Modal (TradingPasswordManager) if cancel button is clicked', () => {
         render(<TradingPasswordManager {...mock_props} />);
-        fireEvent.click(screen.getByRole('button', { name: /Change DMT5 password/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Change Deriv MT5 password/i }));
         fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
-        expect(screen.getByText(/Change DMT5 password/i)).toBeInTheDocument();
+        expect(screen.getByText(/Change Deriv MT5 password/i)).toBeInTheDocument();
     });
 
     it('should call SendEmailModal if the confirm button is clicked for DMT5 account', async () => {
         render(<TradingPasswordManager {...mock_props} />);
-        fireEvent.click(screen.getByRole('button', { name: /Change DMT5 password/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Change Deriv MT5 password/i }));
         fireEvent.click(screen.getByRole('button', { name: /Confirm/i }));
         await waitFor(() => expect(screen.getByText(/We've sent you an email/i)).toBeInTheDocument());
         await waitFor(() =>

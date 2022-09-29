@@ -31,7 +31,7 @@ jest.mock('react-router-dom', () => ({
 
 const interactWithPasswordField = async (trigger_click = true) => {
     await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-    fireEvent.change(screen.getByLabelText('DMT5 password', { selector: 'input' }), {
+    fireEvent.change(screen.getByLabelText('Deriv MT5 password', { selector: 'input' }), {
         target: { value: 'hN795jCWkDtPy5' },
     });
     if (trigger_click) {
@@ -85,7 +85,7 @@ describe('<ResetTradingPasswordModal/>', () => {
         );
         await interactWithPasswordField();
 
-        expect(await screen.findByText('Reset DMT5 password')).toBeInTheDocument();
+        expect(await screen.findByText('Reset Deriv MT5 password')).toBeInTheDocument();
     });
 
     it('should display error message returned by API', async () => {

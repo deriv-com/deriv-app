@@ -1,6 +1,13 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import posed, { PoseGroup } from 'react-pose';
+
+type TFadeWrapperProps = {
+    children: ReactNode;
+    is_visible: boolean;
+    keyname?: string;
+    type?: 'top' | 'bottom';
+    className?: string;
+};
 
 const FadeInFromTopDiv = posed.div({
     enter: {
@@ -46,7 +53,7 @@ const FadeInOnlyDiv = posed.div({
 });
 
 // `flipMove={false}` is necessary to fix react-pose bug: https://github.com/Popmotion/popmotion/issues/805
-const FadeWrapper = ({ children, className, is_visible, keyname, type }) => {
+const FadeWrapper = ({ children, className, is_visible, keyname, type }: TFadeWrapperProps) => {
     if (type === 'top') {
         return (
             <PoseGroup flipMove={false}>
@@ -78,14 +85,6 @@ const FadeWrapper = ({ children, className, is_visible, keyname, type }) => {
             )}
         </PoseGroup>
     );
-};
-
-FadeWrapper.propTypes = {
-    children: PropTypes.node,
-    is_visible: PropTypes.bool,
-    keyname: PropTypes.string,
-    type: PropTypes.string,
-    className: PropTypes.string,
 };
 
 export default FadeWrapper;

@@ -36,7 +36,7 @@ describe('AccountTransferLocked', () => {
     });
 
     it('Should trigger click on the checklist item', () => {
-        const onClick: () => void = jest.fn();
+        const onClick = jest.fn();
         const items = [
             {
                 content: 'Complete the financial assessment form',

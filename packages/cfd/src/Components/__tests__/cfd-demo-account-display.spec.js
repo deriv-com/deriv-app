@@ -223,7 +223,7 @@ describe('<CFDDemoAccountDisplay />', () => {
             />
         );
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        const dxtrade_fund_top_up_button = screen.getByRole('button', { name: /fund top up/i });
+        const dxtrade_fund_top_up_button = screen.getByRole('button', { name: /top up/i });
         const dxtrade_trade_on_web_terminal_button = screen.getByRole('link', { name: /trade on web terminal/i });
         expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx-demo.deriv.com');
 

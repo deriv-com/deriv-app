@@ -60,7 +60,6 @@ const ProofOfIncomeForm = ({
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         const uploading_value = poinc_documents_list.find(doc => doc.text === values.document_type)?.value;
         setUploadingDocumentType(uploading_value);
-        setStatus({ msg: '' });
 
         file_uploader_ref?.current
             .upload()
@@ -103,7 +102,17 @@ const ProofOfIncomeForm = ({
 
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
-            {({ values, errors, status, touched, handleChange, handleSubmit, isSubmitting, setFieldValue }) => (
+            {({
+                values,
+                errors,
+                status,
+                touched,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+                setStatus,
+            }) => (
                 <form noValidate className='account-poinc-form' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={isDesktop() ? '0' : '200px'}>
                         <Timeline disabled_items={disabled_items} className='account-poinc-form__timeline-container'>
@@ -129,6 +138,7 @@ const ProofOfIncomeForm = ({
                                                         onChange={handleChange}
                                                         onItemSelection={({ value, text }) => {
                                                             setFieldValue('document_type', value ? text : '', true);
+                                                            setStatus({ msg: '' });
                                                         }}
                                                         required
                                                     />
@@ -145,6 +155,7 @@ const ProofOfIncomeForm = ({
                                                         use_text={true}
                                                         onChange={e => {
                                                             setFieldValue('document_type', e.target.value, true);
+                                                            setStatus({ msg: '' });
                                                         }}
                                                         required
                                                     />
@@ -172,12 +183,13 @@ const ProofOfIncomeForm = ({
                                     </div>
                                     <PoincFileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
-                                        onFileDrop={df =>
+                                        onFileDrop={df => {
                                             setDocumentFile({
                                                 files: df.files,
                                                 error_message: df.error_message,
-                                            })
-                                        }
+                                            });
+                                            setStatus({ msg: '' });
+                                        }}
                                         getSocket={WS.getSocket}
                                         document_type={uploading_document_type}
                                     />
@@ -194,7 +206,8 @@ const ProofOfIncomeForm = ({
                                 isSubmitting ||
                                 !!(!values.document_type || errors.document_type) ||
                                 (document_file.files && document_file.files.length < 1) ||
-                                !!document_file.error_message
+                                !!document_file.error_message ||
+                                !!status.msg
                             }
                             is_loading={isSubmitting}
                             has_effect

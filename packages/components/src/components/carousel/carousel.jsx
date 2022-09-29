@@ -5,7 +5,7 @@ import { Swipeable } from 'react-swipeable';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
 import Icon from '../icon';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 import { useInterval } from '../../hooks';
 
 const Carousel = ({

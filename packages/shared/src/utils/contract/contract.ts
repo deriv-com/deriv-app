@@ -54,6 +54,7 @@ export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
 
 type TGetCurrentTick = TContractInfo & {
     contract_type: string;
+    tick_stream: TTickItem[];
 };
 
 export const getCurrentTick = (contract_info: TGetCurrentTick) => {

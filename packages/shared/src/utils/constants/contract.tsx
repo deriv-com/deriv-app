@@ -1,14 +1,8 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
-import {
-    TGetLocalizedBasis,
-    TGetContractTypesConfig,
-    TGetCardLabels,
-    TGetUnsupportedContracts,
-} from './constants-types';
 
-export const getLocalizedBasis = (): TGetLocalizedBasis => ({
+export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -18,6 +12,17 @@ export const getLocalizedBasis = (): TGetLocalizedBasis => ({
  * components can be undef or an array containing any of: 'start_date', 'barrier', 'last_digit'
  *     ['duration', 'amount'] are omitted, as they're available in all contract types
  */
+type TContractTypesConfig = {
+    title: string;
+    trade_types: string[];
+    basis: string[];
+    components: string[];
+    barrier_count?: number;
+    config?: { hide_duration: boolean };
+};
+
+type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
+
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
         title: localize('Rise/Fall'),
@@ -124,7 +129,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     }, // hide Duration for Multiplier contracts for now
 });
 
-export const getContractCategoriesConfig = (): { [key: string]: string[] } => ({
+export const getContractCategoriesConfig = () => ({
     [localize('Multipliers')]: ['multiplier'],
     [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
     [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
@@ -147,7 +152,7 @@ export const unsupported_contract_types_list = [
     'lb_high_low',
 ];
 
-export const getCardLabels = (): TGetCardLabels => ({
+export const getCardLabels = () => ({
     APPLY: localize('Apply'),
     STAKE: localize('Stake:'),
     CLOSE: localize('Close'),
@@ -275,7 +280,7 @@ export const getMarketNamesMap = () => ({
     CRYLTCUSD: localize('LTC/USD'),
 });
 
-export const getUnsupportedContracts = (): TGetUnsupportedContracts => ({
+export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
         name: <Localize i18n_default_text='Ends Outside' />,
         position: 'top',

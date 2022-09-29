@@ -1,29 +1,10 @@
 import { ContractUpdate } from '@deriv/api-types';
 
-export type TStatus = 'open' | 'sold' | 'won';
+export type TStatus = 'open' | 'sold' | 'won' | 'lost' | 'cancelled';
 
 export type TGetFinalPrice = {
     sell_price: number;
     bid_price: number;
-};
-
-export type TIsValidToSell = TIsEnded & {
-    is_valid_to_sell: 0 | 1;
-};
-
-export type TGetTotalProfit = {
-    bid_price: number;
-    buy_price: number;
-};
-
-export type TGetDisplayStatus = TGetTotalProfit & {
-    status: TStatus;
-};
-
-export type TTickItem = {
-    epoch?: number;
-    tick?: null | number;
-    tick_display_value?: null | string;
 };
 
 export type TIsEnded = {
@@ -53,6 +34,23 @@ export type TContractInfo = {
     contract_type?: string;
 };
 
+export type TIsValidToSell = TIsEnded & {
+    is_valid_to_sell: 0 | 1;
+};
+
+export type TTickItem = {
+    epoch?: number;
+    tick?: null | number;
+    tick_display_value?: null | string;
+};
+
+export type TDigitsInfo = { [key: number]: { digit: number; spot: string } };
+
+export type TGetTotalProfit = {
+    bid_price: number;
+    buy_price: number;
+};
+
 export type TLimitOrder = {
     stop_loss?: {
         display_name?: string;
@@ -74,9 +72,11 @@ export type TLimitOrder = {
     };
 };
 
+export type TGetDisplayStatus = TGetTotalProfit & {
+    status: TStatus;
+};
+
 export type TGetContractUpdateConfig = {
     contract_update: ContractUpdate;
     limit_order: TLimitOrder;
 };
-
-export type TDigitsInfo = { [key: number]: { digit: number; spot: string } };

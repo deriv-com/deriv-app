@@ -5,11 +5,11 @@ import classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
-import { QStrategyFields, QStrategyFooter } from '.';
+import { QuickStrategyFields, QuickStrategyFooter } from '.';
 import { TQuickStrategyFormValues } from '../quick-strategy.types';
-import { TQStrategyForm } from './components.types';
+import { TQuickStrategyForm } from './components.types';
 
-const QStrategyForm = ({
+const QuickStrategyForm = ({
     createStrategy,
     duration_unit_dropdown,
     types_strategies_dropdown,
@@ -30,7 +30,7 @@ const QStrategyForm = ({
     selected_type_strategy,
     description,
     setActiveTab,
-}: TQStrategyForm) => {
+}: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
     const setDefaultValidationNumber = () =>
@@ -91,7 +91,7 @@ const QStrategyForm = ({
                                     {localize('Choose a template and set your trade parameters.')}
                                 </div>
 
-                                <QStrategyFields
+                                <QuickStrategyFields
                                     is_mobile={is_mobile}
                                     types_strategies_dropdown={types_strategies_dropdown}
                                     symbol_dropdown={symbol_dropdown}
@@ -114,7 +114,7 @@ const QStrategyForm = ({
                                 />
                             </div>
                         </ThemedScrollbars>
-                        <QStrategyFooter
+                        <QuickStrategyFooter
                             is_onscreen_keyboard_active={is_onscreen_keyboard_active}
                             is_mobile={is_mobile}
                             is_submit_enabled={is_submit_enabled}
@@ -130,4 +130,4 @@ const QStrategyForm = ({
     );
 };
 
-export default React.memo(QStrategyForm);
+export default React.memo(QuickStrategyForm);

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TQuickStrategyProps } from './quick-strategy.types';
-import { QStrategyContainer } from './quick-strategy-components';
+import { QuickStrategyContainer } from './quick-strategy-components';
 import { localize } from '@deriv/translations';
 import { MobileFullPageModal } from '@deriv/components';
 
@@ -24,11 +24,11 @@ const QuickStrategy = (props: TQuickStrategyProps) => {
                     height_offset='80px'
                     page_overlay
                 >
-                    <QStrategyContainer {...props} />
+                    <QuickStrategyContainer {...props} />
                 </MobileFullPageModal>
             ) : (
                 <div className='quick-strategy__container'>
-                    <QStrategyContainer {...props} />
+                    <QuickStrategyContainer {...props} />
                 </div>
             )}
         </>

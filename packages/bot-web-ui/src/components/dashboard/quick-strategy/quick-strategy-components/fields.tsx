@@ -10,9 +10,9 @@ import {
     TDropdowns,
     TSelectedValuesSelect,
 } from '../quick-strategy.types';
-import { TQStrategyFields } from './components.types';
+import { TQuickStrategyFields } from './components.types';
 
-const QStrategyFields = React.memo(
+const QuickStrategyFields = React.memo(
     ({
         is_mobile,
         types_strategies_dropdown,
@@ -33,7 +33,7 @@ const QStrategyFields = React.memo(
         values,
         description,
         errors,
-    }: TQStrategyFields) => {
+    }: TQuickStrategyFields) => {
         const is_double_idx_ref: React.MutableRefObject<number | undefined> = React.useRef();
 
         const uniq_selected_input = React.useMemo(
@@ -223,6 +223,6 @@ const QStrategyFields = React.memo(
     (prevProps, nextProps) => prevProps.values === nextProps.values && prevProps.errors === nextProps.errors
 );
 
-QStrategyFields.displayName = 'QStrategyFields';
+QuickStrategyFields.displayName = 'QuickStrategyFields';
 
-export default QStrategyFields;
+export default QuickStrategyFields;

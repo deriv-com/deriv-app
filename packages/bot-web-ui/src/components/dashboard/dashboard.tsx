@@ -12,7 +12,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
-import QStrategy from './quick-strategy';
+import QuickStrategy from './quick-strategy';
 
 interface DashboardProps {
     active_tab: number;
@@ -50,10 +50,10 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                     >
                         <div
                             className={classNames('quick-strategy', {
-                                'quick-strategy--is-notifications-container-panel-open': !is_drawer_open,
+                                'quick-strategy__notifications-container--open': !is_drawer_open,
                             })}
                         >
-                            <QStrategy />
+                            <QuickStrategy />
                         </div>
                     </Tab>
                     <Tab icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>

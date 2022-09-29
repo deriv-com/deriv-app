@@ -1,8 +1,8 @@
 import React from 'react';
 import { TQuickStrategyProps, TSymbolItem } from '../quick-strategy.types';
-import { QStrategyForm, MarketOption, TradeTypeOption } from '.';
+import { QuickStrategyForm, MarketOption, TradeTypeOption } from '.';
 
-const QStrategyContainer = (props: TQuickStrategyProps) => {
+const QuickStrategyContainer = (props: TQuickStrategyProps) => {
     const {
         symbol_dropdown,
         trade_type_dropdown,
@@ -50,7 +50,7 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
 
     return (
         <>
-            <QStrategyForm
+            <QuickStrategyForm
                 active_index={active_index}
                 description={description}
                 createStrategy={createStrategy}
@@ -78,4 +78,4 @@ const QStrategyContainer = (props: TQuickStrategyProps) => {
     );
 };
 
-export default React.memo(QStrategyContainer);
+export default React.memo(QuickStrategyContainer);

@@ -1,7 +1,7 @@
 .quick-strategy {
     $quick-strategy: &;
 
-    &--is-notifications-container-panel-open {
+    &__notifications-container--open {
         display: flex;
         justify-content: center;
     }

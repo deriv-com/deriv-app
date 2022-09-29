@@ -28,7 +28,7 @@ import {
 import { TDataUniqInput } from './data/data-uniq-input-obj';
 import { TCommonInputsProperties } from './data/common-input-properties';
 
-export type TQStrategyForm = {
+export type TQuickStrategyForm = {
     active_index: number;
     createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
@@ -53,7 +53,7 @@ export type TQStrategyForm = {
     setActiveTab: (active_tab: number) => void;
 };
 
-export type TQStrategyFields = {
+export type TQuickStrategyFields = {
     is_mobile: boolean;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     symbol_dropdown: TSymbolDropdown;
@@ -75,7 +75,7 @@ export type TQStrategyFields = {
     errors: FormikErrors<TQuickStrategyFormValues>;
 };
 
-export type TQStrategyFooter = {
+export type TQuickStrategyFooter = {
     is_onscreen_keyboard_active: boolean;
     is_mobile: boolean;
     is_submit_enabled: boolean;

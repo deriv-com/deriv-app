@@ -2,9 +2,9 @@ import React from 'react';
 import { Button } from '@deriv/components';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { TQStrategyFooter } from './components.types';
+import { TQuickStrategyFooter } from './components.types';
 
-const QStrategyFooter = ({
+const QuickStrategyFooter = ({
     is_onscreen_keyboard_active,
     is_mobile,
     is_submit_enabled,
@@ -12,7 +12,7 @@ const QStrategyFooter = ({
     setFieldValue,
     submitForm,
     setActiveTab,
-}: TQStrategyFooter) => (
+}: TQuickStrategyFooter) => (
     <div
         className={classNames('quick-strategy__form-footer', {
             'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
@@ -51,4 +51,4 @@ const QStrategyFooter = ({
     </div>
 );
 
-export default React.memo(QStrategyFooter);
+export default React.memo(QuickStrategyFooter);

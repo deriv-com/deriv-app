@@ -8,5 +8,5 @@ export * from './toggle-fullscreen.jsx';
 export * from './toggle-settings.jsx';
 export * from './help-centre.jsx';
 export * from './responsible-trading.jsx';
-export * from './account-limits.jsx';
+export * from './account-limits';
 export * from './regulatory-information.jsx';

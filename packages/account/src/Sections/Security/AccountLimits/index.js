@@ -1,1 +1,3 @@
-export default from './account-limits.jsx';
+import AccountLimits from 'Components/account-limits';
+
+export default AccountLimits;

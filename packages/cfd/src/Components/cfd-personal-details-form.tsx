@@ -511,7 +511,6 @@ const CFDPersonalDetailsForm = ({
                                             !values.citizen ||
                                             !values.place_of_birth ||
                                             !values.tax_residence ||
-                                            !values.tax_identification_number ||
                                             !values.account_opening_reason
                                         }
                                         is_absolute={isMobile()}

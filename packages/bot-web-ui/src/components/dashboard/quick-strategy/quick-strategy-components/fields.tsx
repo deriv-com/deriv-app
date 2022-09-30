@@ -5,7 +5,6 @@ import { TDataFields } from './data/data-fields';
 import {
     TSelectsFieldNames,
     TDropdownItems,
-    TInputBaseFields,
     TInputsFieldNames,
     TDropdowns,
     TSelectedValuesSelect,
@@ -64,13 +63,13 @@ const QuickStrategyFields = React.memo(
                     const is_input_field = is_uniq_strategy_field || input_value;
 
                     //dropdowns
-                    const types_strategies_drop = id?.endsWith('types-strategies') && types_strategies_dropdown;
-                    const symbol_drop = id?.endsWith('symbol') && symbol_dropdown;
-                    const trade_type_drop = id?.endsWith('trade-type') && trade_type_dropdown;
-                    const duration_unit_drop = id?.endsWith('duration-unit') && duration_unit_dropdown;
+                    const types_strategies_options = id?.endsWith('types-strategies') && types_strategies_dropdown;
+                    const symbol_options = id?.endsWith('symbol') && symbol_dropdown;
+                    const trade_type_options = id?.endsWith('trade-type') && trade_type_dropdown;
+                    const duration_unit_options = id?.endsWith('duration-unit') && duration_unit_dropdown;
 
                     const dropdowns: TDropdowns =
-                        types_strategies_drop || symbol_drop || trade_type_drop || duration_unit_drop || [];
+                        types_strategies_options || symbol_options || trade_type_options || duration_unit_options || [];
                     const dropdown_list: TDropdowns = !is_uniq_strategy_field ? dropdowns : [];
 
                     //selected_items

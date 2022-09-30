@@ -6,7 +6,7 @@ type TTick = {
 };
 
 type TTickProgress = {
-    className?: string;
+    className: string;
     columns: number;
     value: number;
     rows: number;

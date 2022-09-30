@@ -1,36 +1,29 @@
-.dc-modal {
-    $strategy-modal: 'modal--strategy';
-
-    &__container {
-        &_#{$strategy-modal} {
-            max-height: 57.1rem !important;
-
-            .modal__scrollbar {
-                max-height: 516px;
-                margin-bottom: 75px;
-            }
-            .modal__content {
-                padding: 1.6rem 2.4rem;
-                height: calc(100% - 200px);
-                max-height: 636px;
-            }
-        }
-    }
-}
-
-.dc-mobile-full-page-modal.quick-strategy__wrapper {
-    height: 100%;
-    overflow-y: visible;
-}
-
 .quick-strategy {
     $quick-strategy: &;
 
+    &__notifications-container--open {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__container {
+        width: 77.5rem;
+        transform: translateY(0);
+    }
+
+    &__title {
+        margin: 15px 0;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.43;
+        color: var(--text-general);
+    }
+
     &__description {
         margin: 15px 0;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: normal;
-        line-height: 1.43;
+        line-height: 1.5;
         color: var(--text-general);
     }
     &__tab-content {
@@ -47,10 +40,14 @@
         }
 
         &-row {
-            align-items: flex-end;
             display: flex;
             justify-content: space-between;
-            margin: 4.5rem 0;
+            align-items: flex-end;
+            margin: 3.5rem 0;
+
+            .dc-dropdown-list__item--active {
+                font-weight: bold;
+            }
 
             > * + * {
                 @include mobile {
@@ -104,8 +101,10 @@
             }
         }
         &-content {
-            margin-bottom: 12rem;
-            padding: 0 1.6rem;
+            margin: 0 1.6rem 0 4.8rem;
+            @include mobile {
+                margin-left: 1.6rem;
+            }
 
             &--active-keyboard {
                 margin-bottom: 12rem;
@@ -119,7 +118,6 @@
         &-footer {
             border-top: 1px solid var(--general-section-1);
             padding: 1.6rem 2.4rem;
-            position: fixed;
             bottom: 0px;
             left: 0px;
             background: var(--general-main-1);

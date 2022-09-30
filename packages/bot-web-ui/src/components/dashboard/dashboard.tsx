@@ -9,17 +9,22 @@ import RunStrategy from './dashboard-components/run-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import RunPanel from '../run-panel';
+import QuickStrategy from './quick-strategy';
+import classNames from 'classnames';
 
 interface DashboardProps {
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
+    toggleStrategyModal: () => void;
+    is_drawer_open: boolean;
 }
 
-const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
+const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: DashboardProps) => {
     const [tour_run, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
+        toggleStrategyModal();
     };
 
     return (
@@ -38,7 +43,15 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                             label={localize('Quick Strategy')}
                             id='id-quick-strategy'
                             onTabItemClick={handleClick}
-                        />
+                        >
+                            <div
+                                className={classNames('quick-strategy', {
+                                    'quick-strategy__notifications-container--open': !is_drawer_open,
+                                })}
+                            >
+                                <QuickStrategy />
+                            </div>
+                        </Tab>
                         <Tab icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <div className='dashboard__chart-wrapper'>
                                 <Chart />
@@ -52,13 +65,15 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
             </div>
             <div className='dashboard__run-strategy-wrapper'>
                 <RunStrategy />
-                {(active_tab === 1 || active_tab === 2) && <RunPanel />}
+                {[0, 1, 2].includes(active_tab) && <RunPanel />}
             </div>
         </>
     );
 };
 
-export default connect(({ dashboard }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy, run_panel }: RootStore) => ({
     active_tab: dashboard.active_tab,
     setActiveTab: dashboard.setActiveTab,
+    toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    is_drawer_open: run_panel.is_drawer_open,
 }))(Dashboard);

@@ -3,12 +3,10 @@ import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
-    Audio,
     BotFooterExtensions,
     BotNotificationMessages,
     Dashboard,
     NetworkToastPopup,
-    QuickStrategy,
     RoutePromptDialog,
 } from 'Components';
 import { setWebsocket } from '@deriv/shared';
@@ -81,13 +79,11 @@ const App = ({ passthrough }) => {
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot-dashboard'>
-                <Audio />
                 <BotFooterExtensions />
                 <BotNotificationMessages />
                 <Dashboard />
                 <NetworkToastPopup />
                 <BotBuilder />
-                <QuickStrategy />
                 <RoutePromptDialog />
             </div>
         </MobxContentProvider>

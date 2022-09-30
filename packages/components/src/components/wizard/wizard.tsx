@@ -29,7 +29,7 @@ const Wizard = ({
         if (local_initial_step && local_children[local_initial_step]) {
             setActiveStep(initial_step);
         }
-    }, [initial_step]);
+    }, [initial_step, getSteps]);
 
     const onChangeStep = (stats: { [key: string]: number }) => {
         // User callback

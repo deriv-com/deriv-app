@@ -23,7 +23,7 @@ describe('<AccountLimitsArticle/>', () => {
 
     it('should go to help-centre page if the Help Centre link on the text is clicked', () => {
         render(<AccountLimitsArticle />);
-        expect(screen.getByText('Help Centre.').closest('a')).toHaveAttribute(
+        expect(screen.getByText('Help Centre.')).toHaveAttribute(
             'href',
             'https://deriv.com/help-centre/trading/#trading-limits'
         );

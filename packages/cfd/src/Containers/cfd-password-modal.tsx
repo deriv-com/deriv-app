@@ -166,26 +166,26 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
                     type: type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
-                components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+                components={[<strong className='cfd-account__platform' key={0} />]}
             />
         );
     }
 
     return (
         <Localize
-            i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
+            i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account.'
             values={{
                 type: type_label,
                 platform: getCFDPlatformLabel(platform),
                 category: category_label,
             }}
-            components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+            components={[<strong className='cfd-account__platform' key={0} />]}
         />
     );
 };

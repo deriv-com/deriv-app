@@ -49,32 +49,30 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
     );
 
     return (
-        <>
-            <QuickStrategyForm
-                active_index={active_index}
-                description={description}
-                createStrategy={createStrategy}
-                duration_unit_dropdown={duration_unit_dropdown}
-                types_strategies_dropdown={types_strategies_dropdown}
-                getSizeDesc={getSizeDesc}
-                initial_values={initial_values}
-                is_onscreen_keyboard_active={is_onscreen_keyboard_active}
-                is_stop_button_visible={is_stop_button_visible}
-                onChangeDropdownItem={onChangeDropdownItem}
-                onChangeInputValue={onChangeInputValue}
-                onHideDropdownList={onHideDropdownList}
-                onScrollStopDropdownList={onScrollStopDropdownList}
-                symbol_dropdown={symbol_dropdown_options}
-                trade_type_dropdown={trade_type_dropdown_options}
-                is_mobile={is_mobile}
-                selected_symbol={selected_symbol}
-                selected_trade_type={selected_trade_type}
-                selected_duration_unit={selected_duration_unit}
-                selected_type_strategy={selected_type_strategy}
-                setCurrentFocus={setCurrentFocus}
-                setActiveTab={setActiveTab}
-            />
-        </>
+        <QuickStrategyForm
+            active_index={active_index}
+            description={description}
+            createStrategy={createStrategy}
+            duration_unit_dropdown={duration_unit_dropdown}
+            types_strategies_dropdown={types_strategies_dropdown}
+            getSizeDesc={getSizeDesc}
+            initial_values={initial_values}
+            is_onscreen_keyboard_active={is_onscreen_keyboard_active}
+            is_stop_button_visible={is_stop_button_visible}
+            onChangeDropdownItem={onChangeDropdownItem}
+            onChangeInputValue={onChangeInputValue}
+            onHideDropdownList={onHideDropdownList}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+            symbol_dropdown={symbol_dropdown_options}
+            trade_type_dropdown={trade_type_dropdown_options}
+            is_mobile={is_mobile}
+            selected_symbol={selected_symbol}
+            selected_trade_type={selected_trade_type}
+            selected_duration_unit={selected_duration_unit}
+            selected_type_strategy={selected_type_strategy}
+            setCurrentFocus={setCurrentFocus}
+            setActiveTab={setActiveTab}
+        />
     );
 };
 

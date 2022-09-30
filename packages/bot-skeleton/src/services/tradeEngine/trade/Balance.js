@@ -14,8 +14,7 @@ export default Engine =>
                     } = data;
 
                     balance_string = getFormattedText(b, currency);
-
-                    info({ accountID: this.accountInfo.loginid, balance: balance_string });
+                    info({ accountID: this.accountInfo?.loginid, balance: balance_string });
                 }
             });
         }

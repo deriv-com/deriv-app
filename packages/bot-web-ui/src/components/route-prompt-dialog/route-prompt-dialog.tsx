@@ -2,8 +2,25 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
-const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_show, onCancel, onConfirm }) => {
+type TRoutePromptDialog = {
+    onCancel: () => void;
+    onConfirm: () => void;
+    continueRoute: () => void;
+    is_confirmed: boolean;
+    should_show: boolean;
+    last_location: string[];
+};
+
+const RoutePromptDialog = ({
+    continueRoute,
+    is_confirmed,
+    last_location,
+    should_show,
+    onCancel,
+    onConfirm,
+}: TRoutePromptDialog) => {
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     return (
@@ -20,7 +37,7 @@ const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_
     );
 };
 
-export default connect(({ route_prompt_dialog }) => ({
+export default connect(({ route_prompt_dialog }: RootStore) => ({
     continueRoute: route_prompt_dialog.continueRoute,
     should_show: route_prompt_dialog.should_show,
     is_confirmed: route_prompt_dialog.is_confirmed,

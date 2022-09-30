@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getBrandName } from '@deriv/shared';
 import CorrectMessageContent from './correct-message-content';
 import FakeMessageContent from './fake-message-content';
 
@@ -10,16 +9,12 @@ const WarningScamMessageContent = () => (
         <div className='warning-scam-message--content__info--title'>
             <Icon icon='IcAccountWebsite' className='warning-scam-message__website-icon' size={24} />
             <Text weight='bold'>
-                <Localize
-                    i18n_default_text={`Do not get lured to fake "{{ brandName }}" pages!`}
-                    values={{ brandName: getBrandName() }}
-                />
+                <Localize i18n_default_text={`Do not get lured to fake "Deriv" pages!`} />
             </Text>
         </div>
         <Text size='xxs' className='warning-scam-message__small-text-message'>
             <Localize
-                i18n_default_text={`You may see links to websites with a fake {{ brandName }} login page where you’ll get scammed for your money.`}
-                values={{ brandName: getBrandName() }}
+                i18n_default_text={`You may see links to websites with a fake Deriv login page where you’ll get scammed for your money.`}
             />
         </Text>
         <div className='warning-scam-message--content__info--message'>

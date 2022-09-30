@@ -5,7 +5,7 @@ import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
 import ReactJoyride from 'react-joyride';
 import { DBOT_ONBOARDING } from './joyride-config';
-import RunStrategy from '../toolbar/run-strategy';
+import RunStrategy from './dashboard-components/run-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import RunPanel from '../run-panel';

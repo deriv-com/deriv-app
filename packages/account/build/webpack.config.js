@@ -57,7 +57,7 @@ module.exports = function (env) {
             'terms-of-use-config': 'Configs/terms-of-use-config',
             'proof-of-identity-config': 'Configs/proof-of-identity-config',
             'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
-            'proof-of-identity-containerfor-mt5':
+            'proof-of-identity-container-for-mt5':
                 'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
             'poi-poa-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
         },

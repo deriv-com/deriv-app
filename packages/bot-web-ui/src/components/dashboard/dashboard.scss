@@ -82,6 +82,9 @@
             position: fixed;
             right: 0;
         }
+        &--hidden {
+            display: none;
+        }
     }
 }
 

@@ -12,7 +12,6 @@ import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
-import MainContentStore from './main-content-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
 import DataCollectionStore from './data-collection-store';
 import BlocklyStore from './blockly-store';
@@ -21,6 +20,7 @@ import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 import DashboardStore from './dashboard-store';
 
+//Todo need to write types for the root store
 export default class RootStore {
     constructor(core, ws, dbot) {
         this.core = core;
@@ -32,7 +32,6 @@ export default class RootStore {
         this.server_time = core.common.server_time;
         this.app = new AppStore(this);
         this.summary_card = new SummaryCardStore(this);
-        this.blockly_store = new BlocklyStore(this);
         this.download = new DownloadStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);
@@ -52,7 +51,7 @@ export default class RootStore {
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
-        this.main_content = new MainContentStore(this);
+        this.blockly_store = new BlocklyStore(this);
         this.data_collection_store = new DataCollectionStore(this);
     }
 }

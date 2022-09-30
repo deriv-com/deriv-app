@@ -12,13 +12,13 @@ export default class AppStore {
 
     @action.bound
     onMount() {
-        const { blockly_store, core, main_content } = this.root_store;
+        const { blockly_store, core } = this.root_store;
         const { client, common, ui } = core;
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.startLoading();
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
-            main_content.setContainerSize();
+            blockly_store.setContainerSize();
             blockly_store.endLoading();
         });
         this.registerReloadOnLanguageChange(this);
@@ -30,7 +30,7 @@ export default class AppStore {
         window.addEventListener('click', this.onClickOutsideBlockly);
         window.addEventListener('beforeunload', this.onBeforeUnload);
 
-        main_content.getCachedActiveTab();
+        blockly_store.getCachedActiveTab();
     }
 
     @action.bound

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getBrandName } from '@deriv/shared';
 
 const FakeMessageContent = () => (
     <div className='fake-link__container'>
@@ -9,8 +8,7 @@ const FakeMessageContent = () => (
         <div className='fake-link__message-container'>
             <Text>
                 <Localize
-                    i18n_default_text={`Fake links often contain the word that looks like "{{ brandName }}" but look out for these differences.`}
-                    values={{ brandName: getBrandName() }}
+                    i18n_default_text={`Fake links often contain the word that looks like "Deriv" but look out for these differences.`}
                 />
             </Text>
             <div className='fake-link__link-container'>

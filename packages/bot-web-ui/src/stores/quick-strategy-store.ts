@@ -165,7 +165,7 @@ export default class QuickStrategyStore {
 
             if (symbol) {
                 this.setSelectedSymbol(symbol);
-                setFieldValue(field_map.field_name, symbol.text);
+                setFieldValue(field_map?.field_name, symbol.text);
             }
         } else if (type === 'trade-type') {
             this.updateDurationDropdown(this.selected_symbol.value, value, setFieldValue);
@@ -174,7 +174,7 @@ export default class QuickStrategyStore {
 
             if (trade_type) {
                 this.setSelectedTradeType(trade_type);
-                setFieldValue(field_map.field_name, trade_type.text);
+                setFieldValue(field_map?.field_name, trade_type.text);
             }
         } else if (type === 'duration-unit') {
             this.updateDurationValue(value, setFieldValue);
@@ -183,7 +183,7 @@ export default class QuickStrategyStore {
 
             if (duration_unit) {
                 this.setSelectedDurationUnit(duration_unit);
-                setFieldValue(field_map.field_name, duration_unit.text);
+                setFieldValue(field_map?.field_name, duration_unit.text);
             }
         } else if (type === 'type-strategy') {
             const typeStrategy = this.types_strategies_dropdown.find(item => item.value === value);
@@ -191,7 +191,7 @@ export default class QuickStrategyStore {
             if (typeStrategy) {
                 this.setSelectedTypeStrategy(typeStrategy);
                 this.setActiveTypeStrategyIndex((typeStrategy as TTypeStrategy).index);
-                setFieldValue(field_map.field_name, typeStrategy.text);
+                setFieldValue(field_map?.field_name, typeStrategy.text);
             }
         }
     }
@@ -212,12 +212,12 @@ export default class QuickStrategyStore {
 
         // Don't allow bogus input.
         if (!item) {
-            setFieldValue(field_map.field_name, '');
+            setFieldValue(field_map?.field_name, '');
             return;
         }
         // Restore value if user closed list.
         if (item.text !== value) {
-            setFieldValue(field_map.field_name, item.text);
+            setFieldValue(field_map?.field_name, item.text);
         }
         // Update item if different item was typed.
         if (item !== field_map.selected) {

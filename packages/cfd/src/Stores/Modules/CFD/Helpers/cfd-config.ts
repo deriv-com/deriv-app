@@ -186,7 +186,7 @@ export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
             formatted_label = localize('Vanuatu');
             break;
         default:
-            formatted_label = jurisdiction_code.toUpperCase();
+            formatted_label = jurisdiction_code?.toUpperCase();
             break;
     }
 

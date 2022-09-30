@@ -60,6 +60,7 @@ describe('<CFDPasswordModal/>', () => {
         is_cfd_password_modal_enabled: true,
         is_cfd_success_dialog_enabled: false,
         is_dxtrade_allowed: false,
+        jurisdiction_selected_shortcode: 'svg',
         platform: 'mt5',
         has_cfd_error: false,
         landing_companies: {},

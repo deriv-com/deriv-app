@@ -1,9 +1,9 @@
-.platform-launcher {
+.platform-launcher,
+.platform-launcher-applauncher {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.6rem;
-    height: 10.2rem;
     @include mobile {
         display: flex;
         flex-direction: row;
@@ -55,6 +55,9 @@
         background: var(--button-primary-hover);
     }
 }
-.applauncher {
-    height: auto !important;
+.platform-launcher {
+    height: 10.2rem;
+}
+.platform-launcher-applauncher {
+    height: auto;
 }

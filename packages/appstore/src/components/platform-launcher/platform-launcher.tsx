@@ -20,7 +20,7 @@ const PlatformLauncher = ({ icon, title, description, link_to, has_real_account 
     };
 
     return (
-        <div className={`platform-launcher ${has_real_account ? '' : 'applauncher'}`}>
+        <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
             <div className='platform-launcher__container'>
                 <div className='platform-launcher__container--icon'>
                     <WalletIcon icon={icon} />

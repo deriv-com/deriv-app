@@ -28,7 +28,7 @@ const joyride_config: TJoyrideConfig = {
     showProgress: true,
     showSkipButton: true,
     spotlightClicks: true,
-    disableBeacon: false,
+    disableBeacon: true,
 };
 
 export const DBOT_ONBOARDING = [

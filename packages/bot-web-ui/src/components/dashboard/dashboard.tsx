@@ -65,7 +65,12 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
             </div>
             <div className='dashboard__run-strategy-wrapper'>
                 <RunStrategy />
-                {[0, 1, 2].includes(active_tab) && <RunPanel />}
+                {/*
+                    1. Bot-Builder
+                    2. Quick Strategy
+                    3. Charts
+                */}
+                {[1, 2, 3].includes(active_tab) && <RunPanel />}
             </div>
         </>
     );

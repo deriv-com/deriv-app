@@ -13,42 +13,45 @@ import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
-import { GetLimits } from '@deriv/api-types';
 
-type TAccountLimits = {
+export type TAccountLimits = {
     account_limits: {
-        api_initial_load_error: string;
-        open_positions: any;
-        account_balance: number;
-        payout: number;
-        market_specific: {
-            commodities: Array<object>;
+        api_initial_load_error?: string;
+        open_positions?: any;
+        account_balance?: number;
+        daily_transfers?: object;
+        payout?: number;
+        lifetime_limit?: number;
+        market_specific?: {
+            commodities?: Array<object>;
+            cryptocurrency?: Array<object>;
             forex?: Array<object | undefined>;
-            indices: Array<object>;
-            synthetic_index: Array<object>;
+            indices?: Array<object>;
+            synthetic_index?: Array<object>;
         };
-        num_of_days_limit: number;
-        remainder: number;
-        withdrawal_since_inception_monetary: number;
+        num_of_days?: number;
+        num_of_days_limit?: number;
+        remainder?: number;
+        withdrawal_for_x_days_monetary?: number;
+        withdrawal_since_inception_monetary?: number;
     };
     currency: string;
-    footer_ref: Element | DocumentFragment | undefined;
-    is_app_settings: boolean;
-    getLimits: () => Promise<GetLimits>;
+    footer_ref?: Element | DocumentFragment | object;
+    is_app_settings?: boolean;
+    getLimits: () => Promise<{ data: object }>;
     is_fully_authenticated: boolean;
-    is_from_derivgo: boolean;
+    is_from_derivgo?: boolean;
     is_switching: boolean;
     is_virtual: boolean;
-    overlay_ref:
-        | undefined
+    overlay_ref?:
         | ((...args: unknown[]) => unknown)
         | import('prop-types').InferProps<{
               current: import('prop-types').Requireable<unknown>;
           }>;
-    setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
-    setIsPopupOverlayShown: (is_popup_overlay_shown: boolean) => void;
-    should_bypass_scrollbars: boolean;
-    should_show_article: boolean;
+    setIsOverlayShown?: (is_overlay_shown: boolean | undefined) => void;
+    setIsPopupOverlayShown?: (is_popup_overlay_shown: boolean) => void;
+    should_bypass_scrollbars?: boolean;
+    should_show_article?: boolean;
 };
 
 type TPlarformContext = {
@@ -107,6 +110,7 @@ const AccountLimits = ({
     if (is_virtual) {
         return (
             <div
+                data-testid='dt_account_demo_message_wrapper'
                 className={classNames('account__demo-message-wrapper', {
                     'account__demo-message-wrapper-dashboard': is_appstore,
                 })}
@@ -136,7 +140,7 @@ const AccountLimits = ({
     }
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-    const forex_ordered = forex?.slice().sort((a: any, b: any) => (a.name < b.name ? 1 : -1));
+    const forex_ordered = forex?.slice().sort((a: any, b: any) => (a?.name < b?.name ? 1 : -1));
 
     if (forex_ordered && forex_ordered.push) {
         forex_ordered.push(forex_ordered.shift());

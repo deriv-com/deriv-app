@@ -1,7 +1,7 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, within } from '@testing-library/react';
 import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import AccountLimits from '../account-limits';
+import AccountLimits, { TAccountLimits } from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('Stores/connect.js', () => ({
@@ -31,7 +31,7 @@ jest.mock('Components/load-error-message', () => jest.fn(() => 'mockedLoadErrorM
 jest.mock('../account-limits-footer.jsx', () => jest.fn(() => 'mockedAccountLimitsFooter'));
 
 describe('<AccountLimits/>', () => {
-    const props = {
+    const props: TAccountLimits = {
         currency: 'AUD',
         is_fully_authenticated: true,
         is_switching: false,
@@ -124,9 +124,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should render DemoMessage component if is_virtual is true', () => {
-        const { container } = render(<AccountLimits {...props} is_virtual />);
-        expect(container.firstChild).toHaveClass('account__demo-message-wrapper');
-
+        render(<AccountLimits {...props} is_virtual />);
+        expect(screen.queryByTestId('dt_account_demo_message_wrapper')).toHaveClass('account__demo-message-wrapper');
         expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
     });
 
@@ -153,8 +152,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should render AccountLimitsArticle component if should_show_article is true  and is_from_derivgo is false  in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(<AccountLimits {...props} should_show_article />);
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(
@@ -163,8 +162,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should render AccountLimitsArticle component if should_show_article is true and is_from_derivgo is true in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(<AccountLimits {...props} should_show_article is_from_derivgo />);
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(
@@ -173,8 +172,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should not render AccountLimitsArticle component if should_show_article is false', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(<AccountLimits {...props} should_show_article={false} />);
         expect(screen.queryByText('/account limits/i')).not.toBeInTheDocument();
     });
@@ -300,13 +299,10 @@ describe('<AccountLimits/>', () => {
             </PlatformContext.Provider>
         );
         expect(screen.getByText(/to increase limit please verify your identity/i)).toBeInTheDocument();
-
         expect(
-            screen
-                .getByRole('link', {
-                    name: /verify/i,
-                })
-                .closest('a')
+            screen.getByRole('link', {
+                name: /verify/i,
+            })
         ).toHaveAttribute('href', '/account/proof-of-identity');
         const { num_of_days_limit } = props.account_limits;
         expect(formatMoney).toHaveBeenCalledWith(props.currency, num_of_days_limit, true);
@@ -330,8 +326,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false in mobile mode', () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
                 <BrowserRouter>
@@ -343,8 +339,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should not  show limit_notice message when is_appstore is false and is_fully_authenticated is false', () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(true);
         render(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <BrowserRouter>
@@ -358,8 +354,8 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should show AccountLimitsArticle when should_show_article and isDesktop is true', () => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(true);
         render(<AccountLimits {...props} should_show_article />);
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(screen.getByText(/these are default limits that we apply to your accounts\./i)).toBeInTheDocument();
@@ -367,11 +363,9 @@ describe('<AccountLimits/>', () => {
             screen.getByText(/to learn more about trading limits and how they apply, please go to the/i)
         ).toBeInTheDocument();
         expect(
-            screen
-                .getByRole('link', {
-                    name: /help centre/i,
-                })
-                .closest('a')
+            screen.getByRole('link', {
+                name: /help centre/i,
+            })
         ).toHaveAttribute('href', 'https://deriv.com/help-centre/trading/#trading-limits');
     });
 

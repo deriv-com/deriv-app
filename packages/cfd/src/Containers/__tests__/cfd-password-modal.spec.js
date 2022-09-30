@@ -158,9 +158,6 @@ describe('<CFDPasswordModal/>', () => {
         const ele_password_field = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_field, { target: { value: user_input } });
 
-        expect(
-            await screen.findByText(/enter your Deriv MT5 password to add a Deriv MT5 account/i)
-        ).toBeInTheDocument();
         expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
 
         await waitFor(() => {

@@ -181,6 +181,7 @@ import './common/ic-bank.svg';
 import './common/ic-bell.svg';
 import './common/ic-black-warning.svg';
 import './common/ic-block.svg';
+import './common/ic-blocked-advertisers-barred.svg';
 import './common/ic-box.svg';
 import './common/ic-button-back.svg';
 import './common/ic-calendar-datefrom.svg';

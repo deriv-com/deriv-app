@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany, Mt5NewAccount } from '@deriv/api-types';
 import RootStore from 'Stores/index';
-import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { getMtCompanies, getFormattedJurisdictionCode, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -110,6 +110,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
+    jurisdiction_selected_shortcode: string;
     platform: string;
     has_cfd_error: boolean;
     landing_companies: LandingCompany;
@@ -152,12 +153,20 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, type?: string, category?: string) => {
+const getSubmitText = (
+    platform: string,
+    is_eu: boolean,
+    needs_poi: boolean,
+    jurisdiction_selected_shortcode: string,
+    type?: string,
+    category?: string
+) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
     const type_label =
         getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
+    const jurisdiction_label = getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
 
     if (category === 'real') {
         if (needs_poi) {
@@ -166,11 +175,12 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
                     type: type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
+                    jurisdiction_selected_shortcode: jurisdiction_label,
                 }}
                 components={[<strong className='cfd-account__platform' key={0} />]}
             />
@@ -557,6 +567,7 @@ const CFDPasswordModal = ({
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,
+    jurisdiction_selected_shortcode,
     platform,
     has_cfd_error,
     landing_companies,
@@ -780,7 +791,14 @@ const CFDPasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 heading={success_heading}
-                message={getSubmitText(platform, is_eu, needs_poi, account_type.type, account_type.category)}
+                message={getSubmitText(
+                    platform,
+                    is_eu,
+                    needs_poi,
+                    jurisdiction_selected_shortcode,
+                    account_type.type,
+                    account_type.category
+                )}
                 icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
@@ -816,6 +834,7 @@ export default connect(({ client, modules }: RootStore) => ({
     is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
     is_cfd_password_modal_enabled: modules.cfd.is_cfd_password_modal_enabled,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     setMt5Error: modules.cfd.setError,
     setCFDSuccessDialog: modules.cfd.setCFDSuccessDialog,
     submitMt5Password: modules.cfd.submitMt5Password,

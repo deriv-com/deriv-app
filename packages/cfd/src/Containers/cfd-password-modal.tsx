@@ -79,6 +79,10 @@ type TMultiStepRefProps = {
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     account_title: string;
+    account_type: {
+        category?: string;
+        type?: string;
+    };
     closeModal: () => void;
     error_type?: string;
     form_error?: string;
@@ -86,6 +90,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     is_bvi: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
+    jurisdiction_selected_shortcode: string;
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
@@ -484,13 +489,27 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                <Localize
-                                    i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
-                                    values={{
-                                        platform: getCFDPlatformLabel(props.platform),
-                                        account: props.account_title,
-                                    }}
-                                />
+                                {props.account_type.category === 'real' && (
+                                    <Localize
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
+                                        values={{
+                                            platform: getCFDPlatformLabel(props.platform),
+                                            account: props.account_title,
+                                            jurisdiction_shortcode: getFormattedJurisdictionCode(
+                                                props.jurisdiction_selected_shortcode
+                                            ),
+                                        }}
+                                    />
+                                )}
+                                {props.account_type.category === 'demo' && (
+                                    <Localize
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
+                                        values={{
+                                            platform: getCFDPlatformLabel(props.platform),
+                                            account: props.account_title,
+                                        }}
+                                    />
+                                )}
                             </Text>
                         )}
                         <div className='input-element'>
@@ -714,11 +733,13 @@ const CFDPasswordModal = ({
         <CFDPasswordForm
             is_bvi={is_bvi}
             account_title={account_title}
+            account_type={account_type}
             closeModal={closeModal}
             error_type={error_type}
             error_message={error_message}
             has_mt5_account={has_mt5_account}
             form_error={form_error}
+            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
             should_set_trading_password={should_set_trading_password}
             is_real_financial_stp={is_real_financial_stp}
             validatePassword={validatePassword}

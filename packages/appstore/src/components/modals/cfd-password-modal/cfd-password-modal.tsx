@@ -13,6 +13,7 @@ type TCFDPasswordFormProps = {
     validatePassword: any;
     submitMt5Password: any;
     is_real_financial_stp: boolean;
+    jurisdiction_selected_shortcode: string;
     closeModal: any;
     form_error?: any;
     account_title: any;
@@ -113,6 +114,7 @@ const CFDPasswordModal = () => {
         has_cfd_error,
         is_cfd_success_dialog_enabled,
         is_cfd_password_modal_enabled,
+        jurisdiction_selected_shortcode,
         setError,
         setCFDSuccessDialog,
     } = cfd;
@@ -178,6 +180,7 @@ const CFDPasswordModal = () => {
                 closeModal={closeModal}
                 submitMt5Password={submit}
                 is_real_financial_stp={is_real_financial_stp}
+                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 validatePassword={validatePassword}
             />
         </Modal>

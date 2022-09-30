@@ -51,7 +51,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         props.history.push(routes.cashier_deposit);
     };
     return (
-        <div className={`options-container ${!has_any_real_account ? 'options-container-app-launcher' : ''}`}>
+        <div className={`options-container${!has_any_real_account ? '-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
                 <DesktopWrapper>
                     <Text size='m' className='options-container__title-description-container--title' weight='bold'>
@@ -210,10 +210,8 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                 )}
                 {!has_any_real_account && <span className='options-container__accounts-platform-container--divider' />}
                 <div
-                    className={`options-container__accounts-platform-container--platform ${
-                        !has_any_real_account
-                            ? 'options-container__accounts-platform-container--platform-with-applauncher'
-                            : ''
+                    className={`options-container__accounts-platform-container--${
+                        !has_any_real_account ? 'platform-with-applauncher' : 'platform'
                     }`}
                 >
                     {props.platformlauncherprops.map((item, index) => {

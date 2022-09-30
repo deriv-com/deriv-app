@@ -16,7 +16,7 @@
         height: 6.2rem;
         border-radius: 0.4rem 0.4rem 0 0;
     }
-    &--dropdown {
+    &__dropdown {
         @include mobile {
             height: 6rem;
             position: absolute;
@@ -24,36 +24,27 @@
             top: 2.3rem;
         }
     }
-    &--icon {
+    &__icon {
         width: 6.4rem;
         @include mobile {
             width: 4.1rem;
         }
     }
-    &--account-details-wrapper {
+    &__details-wrapper {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         padding: 0;
-        width: 13.3rem;
+        width: 6.9rem;
         height: 5.6rem;
-        &--name-number {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 0;
-            width: 6.9rem;
-            height: 3.2rem;
-            &--number {
-                color: $color-grey-1;
-            }
+        &--number {
+            color: $color-grey-1;
         }
         &--balance {
             color: $color-black-1;
         }
     }
-    &--account-reset-button-wrapper {
+    &__button-wrapper {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -64,14 +55,9 @@
         height: 2.4rem;
         right: 0.8rem;
         top: 0.8rem;
-        border: 0.1rem solid $color-grey-1;
         border-radius: 0.4rem;
-        button {
-            border: none !important;
-        }
         @include mobile {
-            top: 1.5rem;
-            border: 0.1rem solid $color-grey-1;
+            top: 0.5rem;
             border-radius: 0.4rem;
             right: 3.1rem;
             width: 5rem;

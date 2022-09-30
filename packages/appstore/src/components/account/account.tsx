@@ -199,62 +199,59 @@ const OptionsAccount = ({
             })}
             onClick={redirectAccount}
         >
-            <div className='account-container--icon'>
+            <div className='account-container__icon'>
                 <Icon
                     icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
                     className={'acc-switcher__id-icon'}
                     size={40}
                 />
             </div>
-            <div className='account-container--account-details-wrapper'>
-                <div className='account-container--account-details-wrapper--name-number'>
-                    <Text
-                        size={isMobile() ? 'xxxs' : 'xxs'}
-                        line_height={isMobile() ? 's' : 'l'}
-                        className='account-container--account-details-wrapper--name-number--name'
-                        weight='bold'
-                    >
-                        {display_type === 'currency' ? (
-                            <CurrencyDisplay
-                                country_standpoint={country_standpoint}
-                                currency={currency}
-                                loginid={loginid_text}
-                                is_virtual={is_virtual}
-                            />
-                        ) : (
-                            <AccountDisplay
-                                is_eu={is_eu}
-                                market_type={market_type}
-                                server={server}
-                                sub_account_type={sub_account_type}
-                                has_error={has_error}
-                                platform={platform}
-                                is_dark_mode_on={is_dark_mode_on}
-                                shortcode={shortcode}
-                                should_show_server_name={should_show_server_name}
-                            />
-                        )}
-                    </Text>
-                    <Text
-                        size={isMobile() ? 'xxxxs' : 'xxxs'}
-                        line_height={isMobile() ? 'xs' : 's'}
-                        weight='bold'
-                        className='account-container--account-details-wrapper--name-number--number'
-                    >
-                        {loginid_text}
-                    </Text>
-                </div>
-
+            <div className='account-container__details-wrapper'>
+                <Text
+                    size={isMobile() ? 'xxxs' : 'xxs'}
+                    line_height={isMobile() ? 's' : 'l'}
+                    className='account-container__details-wrapper--name'
+                    weight='bold'
+                >
+                    {display_type === 'currency' ? (
+                        <CurrencyDisplay
+                            country_standpoint={country_standpoint}
+                            currency={currency}
+                            loginid={loginid_text}
+                            is_virtual={is_virtual}
+                        />
+                    ) : (
+                        <AccountDisplay
+                            is_eu={is_eu}
+                            market_type={market_type}
+                            server={server}
+                            sub_account_type={sub_account_type}
+                            has_error={has_error}
+                            platform={platform}
+                            is_dark_mode_on={is_dark_mode_on}
+                            shortcode={shortcode}
+                            should_show_server_name={should_show_server_name}
+                        />
+                    )}
+                </Text>
+                <Text
+                    size={isMobile() ? 'xxxxs' : 'xxxs'}
+                    line_height={isMobile() ? 'xs' : 's'}
+                    weight='bold'
+                    className='account-container__details-wrapper--number'
+                >
+                    {loginid_text}
+                </Text>
                 <Text
                     size={isMobile() ? 'xs' : 's'}
                     line_height={isMobile() ? 'xl' : 'l'}
                     weight='bold'
-                    className='account-container--account-details-wrapper--balance'
+                    className='account-container__details-wrapper--balance'
                 >
                     {`${balance} ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>
-            <div className='account-container--account-reset-button-wrapper'>
+            <div className='account-container__button-wrapper'>
                 {has_reset_balance ? (
                     <Button
                         is_disabled={is_disabled}
@@ -262,26 +259,19 @@ const OptionsAccount = ({
                             e.stopPropagation();
                             onClickResetVirtualBalance();
                         }}
-                        className='acc-switcher__reset-account-btn'
                         secondary
                         small
                     >
                         {localize('Reset')}
                     </Button>
                 ) : (
-                    <Button
-                        is_disabled={is_disabled}
-                        onClick={onClickDeposit}
-                        className='acc-switcher__reset-account-btn'
-                        secondary
-                        small
-                    >
+                    <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
                         {localize('Deposit')}
                     </Button>
                 )}
             </div>
             {isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
-                <div className='account-container--dropdown'>
+                <div className='account-container__dropdown'>
                     <WalletIcon icon={'DropDown'} />
                 </div>
             )}

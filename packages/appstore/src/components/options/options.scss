@@ -1,4 +1,5 @@
-.options-container {
+.options-container,
+.options-container-app-launcher {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -47,7 +48,6 @@
         display: flex;
         flex-direction: column;
         height: 21.9rem;
-        background: $COLOR_WHITE;
         border-radius: 1.6rem;
         @include mobile {
             display: flex;
@@ -70,9 +70,8 @@
                 padding: 0.8rem 1.6rem 0.8rem 0.8rem;
                 gap: 0.4rem;
                 isolation: isolate;
-                width: 13.5rem;
+                width: 80%;
                 height: 6.2rem;
-                background: $color-grey-2;
                 border-radius: 0.4rem 0.4rem 0rem 0rem;
             }
         }
@@ -116,7 +115,7 @@
             }
         }
         &--platform-with-applauncher {
-            background: var(--general-main-1) !important;
+            background: var(--general-main-1);
         }
         &--divider {
             width: 100%;
@@ -128,9 +127,12 @@
         }
     }
 }
+.options-container {
+    gap: 1.5rem;
+}
 .options-container-app-launcher {
-    gap: 0rem !important;
+    gap: 0rem;
     @include mobile {
-        gap: 1.5rem !important;
+        gap: 1.5rem;
     }
 }

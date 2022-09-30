@@ -33,7 +33,7 @@ const Wizard = ({
 
     const onChangeStep = (stats: { [key: string]: number }) => {
         // User callback
-        if (typeof onStepChange === 'function') onStepChange(stats);
+        onStepChange?.(stats);
     };
 
     const isInvalidStep = (next: number) => next < 0 || next >= getTotalSteps();

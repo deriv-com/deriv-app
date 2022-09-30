@@ -1,12 +1,16 @@
 import classNames from 'classnames';
-import React, { HTMLProps, ReactNode } from 'react';
+import React from 'react';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon';
 
-type TAccordionProps = HTMLProps<HTMLDivElement> & {
+type TAccordionProps = {
+    className: string;
     icon_close?: string;
     icon_open?: string;
-    list: Array<{ [key: string]: ReactNode }>;
+    list: Array<{
+        header: string;
+        content: React.ReactNode;
+    }>;
 };
 
 const Accordion = ({ className, icon_close, icon_open, list }: TAccordionProps) => {

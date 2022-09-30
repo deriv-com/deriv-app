@@ -1,25 +1,19 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
-import { routes } from '@deriv/shared';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type TPlatformLauncherProps = {
     icon: string;
     title?: string;
     description?: string;
-    link_to: string;
+    link_to?: string;
+    href?: string;
     has_real_account: boolean;
 };
 
-const PlatformLauncher = ({ icon, title, description, link_to, has_real_account }: TPlatformLauncherProps) => {
-    const history = useHistory();
-    const onClickTrade = (url_path: string) => {
-        //history.push(routes[url_path]);
-        window.location.href = url_path;
-    };
-
+const PlatformLauncher = ({ icon, title, description, link_to, href, has_real_account }: TPlatformLauncherProps) => {
     return (
         <div className={`platform-launcher ${has_real_account ? '' : 'applauncher'}`}>
             <div className='platform-launcher__container'>
@@ -36,10 +30,16 @@ const PlatformLauncher = ({ icon, title, description, link_to, has_real_account 
                 </div>
             </div>
             {has_real_account && (
-                <div className='platform-launcher__trade-button'>
-                    <Button primary small onClick={() => onClickTrade(link_to)} type='button'>
-                        <Localize i18n_default_text='Trade' />
-                    </Button>
+                <div className='platform-launcher__trade-link'>
+                    {link_to ? (
+                        <Link to={link_to}>
+                            <Localize i18n_default_text='Trade' />
+                        </Link>
+                    ) : (
+                        <a href={href}>
+                            <Localize i18n_default_text='Trade' />
+                        </a>
+                    )}
                 </div>
             )}
         </div>

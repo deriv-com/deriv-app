@@ -77,7 +77,7 @@
             height: 3.2rem;
         }
     }
-    &__trade-button {
+    &__trade-link {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -90,17 +90,13 @@
 
         background: #ff444f;
         border-radius: 0.4rem;
-
-        &--label {
-            width: 3.8rem;
-            height: 2rem;
-            font-family: 'IBM Plex Sans';
-            font-style: normal;
-            font-weight: 700;
+        a {
+            text-decoration: none;
             font-size: 1.4rem;
-            line-height: 2rem;
-            text-align: center;
             color: $color-white;
+            width: 100%;
+            text-align: center;
+            line-height: 3rem;
         }
 
         @include mobile {
@@ -110,11 +106,8 @@
             left: 21.9rem;
             top: 0.2rem;
             border-radius: 0.4rem;
-            &--label {
-                width: 3.3rem;
-                height: 1.8rem;
+            a {
                 font-size: 1.2rem;
-                line-height: 1.8rem;
             }
         }
     }

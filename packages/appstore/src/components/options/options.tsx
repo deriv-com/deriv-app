@@ -10,7 +10,13 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { getSortedAccountList } from '../../helpers';
 
-type TPlatformLauncherPropsArray = { icon: string; title: string; description: string; link_to: string }[];
+type TPlatformLauncherPropsArray = {
+    icon: string;
+    title: string;
+    description: string;
+    link_to?: string;
+    href?: string;
+}[];
 type TOptionsProps = {
     platformlauncherprops: TPlatformLauncherPropsArray;
 };

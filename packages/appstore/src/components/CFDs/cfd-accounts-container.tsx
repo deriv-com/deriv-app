@@ -7,13 +7,15 @@ import { Localize } from '@deriv/translations';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType, TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
+import { CompareAccountsModal } from '@deriv/cfd';
 
 type TCFDAccountsProps = {
     account_type: TAccountCategory;
 };
 
 const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
-    const { client, cfd_account }: TRootStore = useStores();
+    const store = useStores();
+    const { client, cfd_account, modules }: TRootStore = store;
     const {
         is_eu,
         is_eu_country,
@@ -30,6 +32,8 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
     } = client;
 
     const { current_list } = cfd_account;
+    const { is_compare_accounts_visible, toggleCompareAccountsModal } = modules.cfd;
+    const is_demo_tab = account_type === 'demo';
 
     const hasAccount = (platform: TPlatform, landing_company_short?: string) =>
         Object.keys(current_list).some(key =>
@@ -73,9 +77,11 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                 <Text weight='bold' size='m'>
                     CFDs
                 </Text>
-                <Text weight='bold' size='xxs' color='red'>
-                    <Localize i18n_default_text='Compare accounts' />
-                </Text>
+                <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
+                    <Text weight='bold' size='xxs' color='red'>
+                        <Localize i18n_default_text='Compare accounts' />
+                    </Text>
+                </div>
             </div>
             <div className='cfd-demo-account__description'>
                 <Text>
@@ -116,6 +122,15 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                     }}
                     current_list={current_list}
                     available_accounts={trading_platform_available_accounts}
+                />
+            )}
+            {is_compare_accounts_visible && (
+                <CompareAccountsModal
+                    context={store}
+                    is_demo_tab={is_demo_tab}
+                    // TODO: Will handle it in CFD flows
+                    // openPasswordModal={openRealPasswordModal}
+                    is_real_enabled={has_active_real_account}
                 />
             )}
         </div>

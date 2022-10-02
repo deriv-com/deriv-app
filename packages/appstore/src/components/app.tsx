@@ -27,7 +27,7 @@ const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
     React.useEffect(initCFDStore, []);
 
     setWebsocket(WS);
-    const { ui }: TRootStore = useStores();
+    const { ui, modules }: TRootStore = useStores();
 
     return (
         <main
@@ -36,9 +36,7 @@ const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
                 'theme--dark': ui.is_dark_mode_on,
             })}
         >
-            <div className='dw-dashboard'>
-                <Routes />
-            </div>
+            <div className='dw-dashboard'>{!!modules.cfd && <Routes />}</div>
         </main>
     );
 };

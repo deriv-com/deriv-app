@@ -3,7 +3,7 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, PlatformContext, isLandingCompanyEnabled } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
@@ -33,6 +33,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     toggleCompareAccounts: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     openDerivRealAccountNeededModal: () => void;
+    context: RootStore;
 };
 
 const CompareAccountsModal = ({
@@ -52,7 +53,27 @@ const CompareAccountsModal = ({
     toggleCompareAccounts,
     openPasswordModal,
     openDerivRealAccountNeededModal,
+    context,
 }: TCompareAccountsModalProps) => {
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+    const location = window.location.pathname;
+    const is_pre_appstore_setting = is_pre_appstore && location.startsWith('/appstore/trading-hub');
+
+    // TODO : should change the type to all after changing derivx api
+    const has_derivx =
+        isLandingCompanyEnabled({
+            landing_companies,
+            platform: CFD_PLATFORMS.DXTRADE,
+            type: 'financial',
+        }) ||
+        isLandingCompanyEnabled({
+            landing_companies,
+            platform: CFD_PLATFORMS.DXTRADE,
+            type: 'gaming',
+        });
+
+    const should_show_derivx = is_pre_appstore_setting && has_derivx;
+
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
     const mt5_accounts = [
@@ -67,7 +88,12 @@ const CompareAccountsModal = ({
     const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
 
     const getModalStyle = () => {
-        if (is_dxtrade) {
+        if (should_show_derivx) {
+            return {
+                height: '506px',
+                width: '1200px',
+            };
+        } else if (is_dxtrade) {
             return {
                 height: '696px',
                 width: '903px',
@@ -87,8 +113,9 @@ const CompareAccountsModal = ({
     return (
         <>
             <div className='cfd-compare-accounts-modal__wrapper' style={{ marginTop: is_dxtrade ? '5rem' : '2.4rem' }}>
-                {!(is_demo_tab && platform === 'mt5') && (
+                {!(is_demo_tab && platform === 'mt5' && !is_pre_appstore_setting) && (
                     <Button
+                        context={context}
                         className='cfd-dashboard__welcome-message--button'
                         has_effect
                         text={cfd_account_button_label}
@@ -111,7 +138,7 @@ const CompareAccountsModal = ({
                             width={getModalStyle().width}
                             exit_classname={is_dxtrade ? '' : 'cfd-modal--custom-exit'}
                         >
-                            {is_dxtrade ? (
+                            {is_dxtrade && !should_show_derivx ? (
                                 <ModalContent
                                     is_logged_in={is_logged_in}
                                     landing_companies={landing_companies}
@@ -123,6 +150,7 @@ const CompareAccountsModal = ({
                                 />
                             ) : (
                                 <DMT5CompareModalContent
+                                    context={context}
                                     is_logged_in={is_logged_in}
                                     openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                     openPasswordModal={openPasswordModal}
@@ -130,6 +158,7 @@ const CompareAccountsModal = ({
                                     show_eu_related={show_eu_related}
                                     is_real_enabled={is_real_enabled}
                                     toggleCompareAccounts={toggleCompareAccounts}
+                                    should_show_derivx={should_show_derivx}
                                 />
                             )}
                         </Modal>
@@ -155,6 +184,7 @@ const CompareAccountsModal = ({
                                 />
                             ) : (
                                 <DMT5CompareModalContent
+                                    context={context}
                                     is_logged_in={is_logged_in}
                                     openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                     openPasswordModal={openPasswordModal}
@@ -162,6 +192,7 @@ const CompareAccountsModal = ({
                                     show_eu_related={show_eu_related}
                                     is_real_enabled={is_real_enabled}
                                     toggleCompareAccounts={toggleCompareAccounts}
+                                    should_show_derivx={should_show_derivx}
                                 />
                             )}
                         </MobileDialog>

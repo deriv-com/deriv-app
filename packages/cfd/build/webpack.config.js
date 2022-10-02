@@ -11,6 +11,7 @@ module.exports = function (env) {
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
             CFDStore: 'Stores/Modules/CFD/cfd-store',
             'success-dialog': 'Components/success-dialog.jsx',
+            CompareAccountsModal: 'Containers/compare-accounts-modal.tsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

@@ -49,26 +49,14 @@ export type TGetTotalProfit = {
     buy_price: number;
 };
 
-export type TLimitOrder = {
-    stop_loss?: {
-        display_name?: string;
-        order_amount?: null | number;
-        order_date?: number;
-        value?: null | string;
-    };
-    stop_out?: {
-        display_name?: string;
-        order_amount?: number;
-        order_date?: number;
-        value?: string;
-    };
-    take_profit?: {
-        display_name?: string;
-        order_amount?: null | number;
-        order_date?: number;
-        value?: null | string;
-    };
+type TLimitProperty = {
+    display_name?: string;
+    order_amount?: null | number;
+    order_date?: number;
+    value?: null | string;
 };
+
+export type TLimitOrder = Partial<Record<'stop_loss' | 'stop_out' | 'take_profit', TLimitProperty>>;
 
 export type TGetDisplayStatus = TGetTotalProfit & {
     status: TStatus;

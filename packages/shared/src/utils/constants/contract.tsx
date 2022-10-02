@@ -416,9 +416,12 @@ export const getContractConfig = (is_high_low: boolean) => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type].name || '';
-};
+/*
+// TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
+the difference between these two functions is just the property they return. (name/position)
+*/
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) =>
+    getContractConfig(is_high_low)[type].name;
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>
     getContractConfig(is_high_low)[type].position || 'top';

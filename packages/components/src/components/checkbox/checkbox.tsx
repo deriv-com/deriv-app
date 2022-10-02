@@ -13,7 +13,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
     label: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
-    withTabIndex?: string;
+    withTabIndex?: number;
 };
 
 const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
@@ -27,7 +27,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
             defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
             value = false,
-            withTabIndex,
+            withTabIndex = 0,
             greyDisabled = false,
             ...otherProps
         },
@@ -77,8 +77,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                         'dc-checkbox__box--disabled': disabled,
                         'dc-checkbox--grey-disabled': disabled && greyDisabled,
                     })}
-                    {...(withTabIndex && withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
-                    tabIndex={0}
+                    tabIndex={withTabIndex}
                     onKeyDown={handleKeyDown}
                 >
                     {!!checked && <Icon icon='IcCheckmark' color='active' />}

@@ -91,7 +91,7 @@ const ChooseCurrency = ({
     const doSwitch = async value => {
         const target_account = account_list.filter(account => account.title === value);
         const loginid = target_account.map(x => x.loginid)[0];
-        await switchAccount(loginid);
+        if (loginid) await switchAccount(loginid);
     };
 
     const onSubmit = async obj => {

@@ -290,7 +290,8 @@ describe('<CFDDashboard />', () => {
     const account_information_button_label = /account information/i;
     const top_up_button_label = /top up/i;
     const dmt5_download_header = /run mt5 from your browser or download the mt5 app for your devices/i;
-    const derivx_download_header = /run deriv x on your browser or download the mobile app/i;
+    const derivx_mobile_app_download_header = /download the deriv X mobile app/i;
+    const derivx_web_terminal_header = /run deriv X on your browser/i;
     const mt5_account_error = /some of your dmt5 accounts are unavailable at the moment./i;
     const dxtrade_account_error = /some of your deriv X accounts are unavailable at the moment./i;
 
@@ -327,7 +328,8 @@ describe('<CFDDashboard />', () => {
         renderCFDDashboardWithRouter({ platform: CFD_PLATFORMS.DXTRADE }, rerender);
 
         expect(screen.getByRole('heading', { name: derivx_welcome_header })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: derivx_download_header })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: derivx_mobile_app_download_header })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: derivx_web_terminal_header })).toBeInTheDocument();
     });
     it('Real account tab is active initially, and Demo account tab gets active when clicked', () => {
         renderCFDDashboardWithRouter();

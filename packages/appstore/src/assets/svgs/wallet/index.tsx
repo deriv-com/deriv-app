@@ -227,10 +227,20 @@ const Icons = {
     SmartTraderBlue,
 };
 
-const WalletIcon = ({ icon, className }: { icon: string; className?: string }) => {
+const WalletIcon = ({
+    icon,
+    className,
+    size,
+    onClick,
+}: {
+    icon: string;
+    className?: string;
+    size?: number;
+    onClick?: () => void;
+}) => {
     const Icon = Icons[icon as keyof typeof Icons] as React.ElementType;
 
-    return Icon ? <Icon className={className} /> : null;
+    return Icon ? <Icon className={className} style={{ width: size, height: size }} onClick={onClick} /> : null;
 };
 
 export default WalletIcon;

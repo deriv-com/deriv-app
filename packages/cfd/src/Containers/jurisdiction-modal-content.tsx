@@ -173,7 +173,7 @@ const JurisdictionCard = ({
                 if (!is_fully_authenticated)
                     return (
                         <div className={`${card_classname}__footer`}>
-                            <Text size={one_or_two_cards ? 'xxxs' : 'xxxxs'} color={'less-prominent'}>
+                            <Text size='xxxs' color={'less-prominent'}>
                                 <Localize i18n_default_text='You will need to submit proof of identity and address once you reach certain thresholds' />
                             </Text>
                         </div>

@@ -28,6 +28,10 @@
             padding-left: 1rem;
             padding-top: 1rem;
 
+            @include mobile {
+                padding-left: 0;
+            }
+
             &--toggle-account {
                 background-color: var(--general-section-1);
                 padding: 0.4rem;

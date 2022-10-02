@@ -7,6 +7,7 @@
 
     @include mobile {
         width: auto;
+        margin-top: 3rem;
     }
 
     &__icon {
@@ -25,6 +26,10 @@
         display: flex;
         flex-direction: column;
         margin-left: auto;
+
+        @include mobile {
+            margin-right: 2rem;
+        }
 
         &--animated {
             animation: triggerAnimation 3s linear infinite;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
 import WalletIcon from 'Assets/svgs/wallet';
 
@@ -40,15 +41,20 @@ const PlatformLauncher = ({
                     <WalletIcon icon={app_icon} />
                 </div>
                 <div className='static-platform-launcher__container--title-desc-wrapper'>
-                    <Text weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'} size='xs'>
+                    <Text as='h2' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'} size='xs'>
                         <Localize i18n_default_text={app_title} />
                     </Text>
-                    <Text color={is_item_blurry ? 'less-prominent' : 'prominent'} size='xxs'>
+                    <Text as='p' color={is_item_blurry ? 'less-prominent' : 'prominent'} size='xxs'>
                         <Localize i18n_default_text={app_desc} />
                     </Text>
                 </div>
+                {isMobile() && has_applauncher_account && (
+                    <Button primary className='static-platform-launcher__container__trade-button'>
+                        <Localize i18n_default_text='Trade' />
+                    </Button>
+                )}
             </div>
-            {has_applauncher_account && (
+            {has_applauncher_account && !isMobile() && (
                 <Button primary className='static-platform-launcher__trade-button'>
                     <Localize i18n_default_text='Trade' />
                 </Button>

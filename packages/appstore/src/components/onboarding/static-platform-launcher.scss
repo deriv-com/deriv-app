@@ -1,14 +1,8 @@
 .static-platform-launcher {
     &--grey {
         background: var(--general-section-1);
-    }
-
-    @include mobile {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        padding: 0;
-        height: 5.6rem;
+        width: 90%;
+        margin-left: 1.4rem;
     }
 
     &__container {
@@ -21,6 +15,10 @@
         height: 5.4rem;
         margin-bottom: 1.6rem;
         margin-left: 1rem;
+
+        @include mobile {
+            width: auto;
+        }
 
         &--icon {
             width: 3.2rem;
@@ -41,32 +39,8 @@
             height: 5.4rem;
 
             @include mobile {
-                width: 18.3rem;
-                height: 2.8rem;
-                left: 0;
-                top: 0;
-                &--title {
-                    width: 16.4rem;
-                    height: 1.4rem;
-                    font-size: 1rem;
-                }
-                &--description {
-                    width: 18.3rem;
-                    height: 1.4rem;
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 0.96rem;
-                    line-height: 1.4rem;
-                    color: $color-black-1;
-                }
+                width: auto;
             }
-        }
-        @include mobile {
-            justify-content: center;
-            padding: 0 0 0 0.8rem;
-            gap: 1.2rem;
-            width: 27.8rem;
-            height: 3.2rem;
         }
     }
     &__trade-button {
@@ -74,18 +48,7 @@
         margin-bottom: 2rem;
 
         @include mobile {
-            padding: 0.3rem 0.8rem;
-            width: 4.9rem;
-            height: 2.4rem;
-            left: 21.9rem;
-            top: 0.2rem;
-            border-radius: 0.4rem;
-            &--label {
-                width: 3.3rem;
-                height: 1.8rem;
-                font-size: 1.2rem;
-                line-height: 1.8rem;
-            }
+            margin-left: auto;
         }
     }
 }

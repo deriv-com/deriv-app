@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 import { TPlatform } from 'Types';
 
@@ -55,24 +55,28 @@ const StaticCFDAccountManager = ({
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
                         <WalletIcon
-                            icon={'Financial'}
+                            icon='Financial'
+                            size={64}
                             className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
                         />
                     ) : (
                         <WalletIcon
-                            icon={'Derived'}
+                            icon='Derived'
+                            size={64}
                             className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
                         />
                     ))}
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <WalletIcon
-                        icon={'DerivX'}
+                        icon='DerivX'
+                        size={58}
                         className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}
                 {platform === 'options' && (
                     <WalletIcon
-                        icon={'Options'}
+                        icon='Options'
+                        size={58}
                         className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}

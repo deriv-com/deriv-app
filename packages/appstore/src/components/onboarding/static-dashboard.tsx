@@ -65,19 +65,19 @@ const StaticDashboard = ({
         { text: 'Options', value: 'Options' },
     ];
 
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = React.useState(1);
 
-    React.useEffect(() => {
-        const changeIndex = setInterval(() => {
-            if (index === 0) {
-                setIndex(1);
-            } else {
-                setIndex(0);
-            }
-        }, 5000);
+    // React.useEffect(() => {
+    //     const changeIndex = setInterval(() => {
+    //         if (index === 0) {
+    //             setIndex(1);
+    //         } else {
+    //             setIndex(0);
+    //         }
+    //     }, 5000);
 
-        return () => clearInterval(changeIndex);
-    }, [index]);
+    //     return () => clearInterval(changeIndex);
+    // }, [index]);
     return (
         <div className='static-dashboard'>
             <div className='static-dashboard-wrapper'>
@@ -144,6 +144,19 @@ const StaticDashboard = ({
                                     ]}
                                 />
                             </Text>
+                            {isMobile() && (
+                                <Text
+                                    color={'red'}
+                                    size='xxs'
+                                    weight='bold'
+                                    className={classNames('static-dashboard-wrapper__header', {
+                                        'static-dashboard-wrapper__header-compare-accounts--blurry':
+                                            is_cfd_description_blurry,
+                                    })}
+                                >
+                                    {localize('Compare accounts')}
+                                </Text>
+                            )}
                         </div>
                         <div className='static-dashboard-wrapper__body'>
                             <div>
@@ -302,26 +315,30 @@ const StaticDashboard = ({
                                         'static-dashboard-wrapper__body--grey': is_grey,
                                     })}
                                 >
-                                    <StaticAppLauncher icon_type={'USD'} is_grey />
-                                    <StaticAppLauncher icon_type={'Bitcoin'} />
-                                    <StaticAppLauncher icon_type={'Ethereum'} />
-                                    <StaticAppLauncher icon_type={'Litecoin'} />
+                                    {!isMobile() ? (
+                                        <React.Fragment>
+                                            <StaticAppLauncher icon_type={'USD'} is_grey />
+                                            <StaticAppLauncher icon_type={'Bitcoin'} />
+                                            <StaticAppLauncher icon_type={'Ethereum'} />
+                                            <StaticAppLauncher icon_type={'Litecoin'} />
+                                        </React.Fragment>
+                                    ) : (
+                                        <StaticAppLauncher icon_type={'USD'} is_grey />
+                                    )}
                                 </div>
                             )}
                         </div>
-                        {(!has_applauncher_account || !isMobile) && <Divider />}
+                        {!has_applauncher_account && <Divider />}
 
                         <div className='static-dashboard-wrapper__body--apps'>
-                            <div>
-                                <StaticPlatformLauncher
-                                    is_grey={is_grey}
-                                    app_icon={`DTrader`}
-                                    app_title={'DTrader'}
-                                    app_desc={'Options & multipliers trading platform.'}
-                                    is_item_blurry={is_platformlauncher_blurry}
-                                    has_applauncher_account={has_applauncher_account}
-                                />
-                            </div>
+                            <StaticPlatformLauncher
+                                is_grey={is_grey}
+                                app_icon={`DTrader`}
+                                app_title={'DTrader'}
+                                app_desc={'Options & multipliers trading platform.'}
+                                is_item_blurry={is_platformlauncher_blurry}
+                                has_applauncher_account={has_applauncher_account}
+                            />
                             <StaticPlatformLauncher
                                 is_grey={is_grey}
                                 app_icon={`DBot`}

@@ -10,6 +10,11 @@
         width: 100%;
         height: 100%;
         margin-left: 0;
+
+        @include mobile {
+            width: 55%;
+            margin-left: 1.5rem;
+        }
     }
 
     &__icon {

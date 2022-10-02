@@ -5,3 +5,4 @@ export { default as useSubscription } from './useSubscription';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
+export { default as useRealSTPAccount } from './useRealSTPAccount';

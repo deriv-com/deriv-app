@@ -7,9 +7,7 @@ export type TGetFinalPrice = {
     bid_price: number;
 };
 
-export type TIsEnded = {
-    sell_price?: number;
-    bid_price?: number;
+export type TIsEnded = Partial<TGetFinalPrice> & {
     is_valid_to_sell?: 0 | 1;
     status?: TStatus;
     is_expired?: 0 | 1;

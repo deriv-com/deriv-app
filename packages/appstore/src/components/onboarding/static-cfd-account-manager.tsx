@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 import { TPlatform } from 'Types';
 
@@ -102,7 +102,7 @@ const StaticCFDAccountManager = ({
                 {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
                     <>
                         <Button
-                            primary
+                            secondary
                             className={classNames('static-cfd-account-manager__buttons-topup', {
                                 'static-cfd-account-manager__buttons-topup--blurry': is_topup_blurry,
                                 'static-cfd-account-manager__buttons-topup--animated': is_topup_animated,
@@ -111,7 +111,7 @@ const StaticCFDAccountManager = ({
                             <Localize i18n_default_text='Top-up' />
                         </Button>
                         <Button
-                            secondary
+                            primary
                             className={classNames('static-cfd-account-manager__buttons-trade', {
                                 'static-cfd-account-manager__buttons-trade--blurry': is_trade_blurry,
                                 'static-cfd-account-manager__buttons-topup--animated': is_trade_animated,

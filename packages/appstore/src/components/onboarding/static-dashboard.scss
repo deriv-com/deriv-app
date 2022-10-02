@@ -1,12 +1,22 @@
 .static-dashboard {
     background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS;
-    padding: 3rem;
+    padding: 2rem;
     height: 65vh;
+
+    @include mobile {
+        width: 80%;
+        margin: 0 10%;
+        padding: 0;
+    }
 
     &-wrapper {
         border: 2rem solid var(--general-section-1);
         height: 100%;
+
+        @include mobile {
+            border: none;
+        }
 
         &__description {
             margin-left: 1.2rem;
@@ -17,6 +27,18 @@
             display: flex;
             padding-left: 1rem;
             padding-top: 1rem;
+
+            &--toggle-account {
+                background-color: var(--general-section-1);
+                padding: 0.4rem;
+                border-radius: $BORDER_RADIUS;
+                align-self: center;
+                width: 80%;
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
 
             &-compare-accounts {
                 margin-left: 1rem;
@@ -37,10 +59,31 @@
         }
         &__body {
             display: flex;
-            padding: 0.5rem;
+
+            &--grey {
+                padding: 0;
+            }
+
+            &--add-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &-text {
+                    margin-left: 0.3rem;
+                }
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
 
             &--apps {
                 display: flex;
+
+                @include mobile {
+                    flex-direction: column;
+                }
             }
         }
     }

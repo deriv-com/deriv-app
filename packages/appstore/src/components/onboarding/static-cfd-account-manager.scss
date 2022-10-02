@@ -5,6 +5,10 @@
     align-items: center;
     justify-content: space-between;
 
+    @include mobile {
+        width: auto;
+    }
+
     &__icon {
         &--blurry {
             opacity: 0.2;

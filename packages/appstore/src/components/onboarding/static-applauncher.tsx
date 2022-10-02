@@ -1,8 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Button, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
 
 import './static-applauncher.scss';
 
@@ -70,7 +70,7 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                         <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
                             'BTC',
                             '0',
                             true
@@ -85,7 +85,7 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                         <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
                             'ETH',
                             '0',
                             true
@@ -100,7 +100,7 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                         <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
                             'LTC',
                             '0',
                             true

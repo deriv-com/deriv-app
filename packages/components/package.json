@@ -78,7 +78,7 @@
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.7.2",
     "react-content-loader": "^4.3.2",
-    "react-div-100vh": "^0.3.8",
+    "react-div-100vh": "^0.7.0",
     "react-dom": "^16.14.0",
     "react-drag-drawer": "^3.3.4",
     "react-dropzone": "11.0.1",

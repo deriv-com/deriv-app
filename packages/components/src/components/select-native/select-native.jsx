@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from '../field/field.jsx';
+import Field from '../field/field';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 

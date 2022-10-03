@@ -20,9 +20,7 @@ export const general_messages = {
     },
     getFinancialAccountDescriptor: (platform, is_eu) => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
-            return localize(
-                'Trade CFDs on forex, derived indices, cryptocurrencies, and commodities with high leverage.'
-            );
+            return localize('Trade forex, basket indices, commodities, and cryptocurrencies with high leverage.');
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (is_eu) {
                 return localize(

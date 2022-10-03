@@ -2,16 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon';
-
-type TAccordionProps = {
-    className: string;
-    icon_close?: string;
-    icon_open?: string;
-    list: Array<{
-        header: string;
-        content: React.ReactNode;
-    }>;
-};
+import { TAccordionProps } from '../types';
 
 const Accordion = ({ className, icon_close, icon_open, list }: TAccordionProps) => {
     const [open_idx, setOpenIdx] = React.useState<number | null>(null);

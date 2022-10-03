@@ -49,13 +49,13 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
             <div className='static-applauncher__details'>
                 {icon_type === 'USD' && (
                     <>
-                        <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('US Dollar')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
                             'USD',
                             '0',
                             true
@@ -64,10 +64,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                 )}
                 {icon_type === 'Bitcoin' && (
                     <>
-                        <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('Bitcoin')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
                         <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
@@ -79,10 +79,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                 )}
                 {icon_type === 'Ethereum' && (
                     <>
-                        <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('Ethereum')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
                         <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
@@ -94,10 +94,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                 )}
                 {icon_type === 'Litecoin' && (
                     <>
-                        <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('Litecoin')}
                         </Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('CR5236585')}
                         </Text>
                         <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
@@ -115,6 +115,7 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
             </div>
         </div>
     );
+    //
 };
 
 export default StaticAppLauncher;

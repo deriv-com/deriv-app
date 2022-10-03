@@ -12,7 +12,7 @@
         margin-left: 0;
 
         @include mobile {
-            width: 60%;
+            width: 70%;
             margin-left: 1.5rem;
         }
     }
@@ -35,16 +35,13 @@
         flex-direction: column;
         margin-left: 1rem;
         margin-right: 0.5rem;
+        width: auto;
 
         &--animated {
             animation: triggerAnimation 2s linear infinite;
         }
 
         &-topup {
-            margin-bottom: 0.5rem;
-        }
-
-        &-trade {
             margin-bottom: 0.5rem;
         }
     }

@@ -110,7 +110,7 @@ const StaticCFDAccountManager = ({
                         </Text>
                     </>
                 ) : (
-                    <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                    <Text size='xxxs' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
                         {description}
                     </Text>
                 )}

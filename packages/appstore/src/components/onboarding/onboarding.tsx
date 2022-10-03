@@ -81,7 +81,7 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
                                     secondary
                                     className={step !== 1 ? 'onboarding-footer-buttons--mobile' : ''}
                                     onClick={prevStep}
-                                    style={step === 1 ? { visibility: 'hidden' } : {}}
+                                    style={step === 1 ? { display: 'none' } : {}}
                                 >
                                     {localize('Back')}
                                 </Button>

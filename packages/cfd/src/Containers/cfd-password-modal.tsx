@@ -182,7 +182,8 @@ const getSubmitText = (
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
-                    type: type_label,
+                    // TODO: remove below condition once deriv x changes are completed
+                    type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                     jurisdiction_selected_shortcode: jurisdiction_label,

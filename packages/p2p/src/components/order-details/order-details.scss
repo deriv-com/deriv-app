@@ -13,6 +13,12 @@ $card-width: 456px;
         margin-bottom: 3rem;
     }
 
+    @include mobile {
+        .dc-mobile-full-page-modal__header--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
+    }
+
     &--body {
         display: flex;
         flex-direction: column;

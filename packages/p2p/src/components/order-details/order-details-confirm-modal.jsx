@@ -91,14 +91,8 @@ const OrderDetailsConfirmModal = ({
                             large
                             onClick={() => {
                                 hideConfirmOrderModal();
-                                order_store.confirmOrderRequest(id);
-                                if (!is_buy_order_for_user) {
-                                    clearTimeout(wait);
-
-                                    const wait = setTimeout(() => {
-                                        order_store.setIsRatingModalOpen(true);
-                                    }, 250);
-                                }
+                                setIsCheckboxChecked(false);
+                                order_store.confirmOrderRequest(id, is_buy_order_for_user);
                             }}
                         >
                             {is_buy_order_for_user ? (

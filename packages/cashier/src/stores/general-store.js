@@ -224,14 +224,13 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { account_prompt_dialog, payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
+            const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
 
             if (is_logged_in) {
                 await this.getAdvertizerError();
-                account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);

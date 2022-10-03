@@ -16,10 +16,9 @@ describe('PaymentAgentStore', () => {
                 min_withdrawal: '10',
                 name: 'Payment Agent of CR90000000',
                 paymentagent_loginid: 'CR90000000',
-                phones: '+12345678',
+                phone_numbers: [{ phone_number: '+12345678' }],
                 supported_payment_methods: [{ payment_method: 'Visa' }],
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
+                urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: 0,
             },
             {
@@ -31,11 +30,9 @@ describe('PaymentAgentStore', () => {
                 min_withdrawal: '10',
                 name: 'Payment Agent of CR90000002',
                 paymentagent_loginid: 'CR90000002',
-                phones: '+12345678',
-                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                phone_numbers: [{ phone_number: '+12345678' }],
                 supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
+                urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: 0,
             },
         ],
@@ -49,10 +46,10 @@ describe('PaymentAgentStore', () => {
             max_withdrawal: '2000',
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000000',
-            phones: '+12345678',
             paymentagent_loginid: 'CR90000000',
+            phones: [{ phone_number: '+12345678' }],
             supported_banks: [{ payment_method: 'Visa' }],
-            urls: 'http://www.pa.com',
+            urls: [{ url: 'http://www.pa.com' }],
             withdrawal_commission: 0,
         },
         {
@@ -64,9 +61,9 @@ describe('PaymentAgentStore', () => {
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000002',
             paymentagent_loginid: 'CR90000002',
-            phones: '+12345678',
+            phones: [{ phone_number: '+12345678' }],
             supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-            urls: 'http://www.pa.com',
+            urls: [{ url: 'http://www.pa.com' }],
             withdrawal_commission: 0,
         },
     ];
@@ -196,9 +193,9 @@ describe('PaymentAgentStore', () => {
                     min_withdrawal: '10',
                     name: 'Payment Agent of CR90000000',
                     paymentagent_loginid: 'CR90000000',
-                    phones: '+12345678',
+                    phones: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }],
-                    urls: 'http://www.pa.com',
+                    urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
                 },
             ])
@@ -232,9 +229,9 @@ describe('PaymentAgentStore', () => {
                     min_withdrawal: '10',
                     name: 'Payment Agent of CR90000002',
                     paymentagent_loginid: 'CR90000002',
-                    phones: '+12345678',
+                    phones: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                    urls: 'http://www.pa.com',
+                    urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
                 },
             ])
@@ -257,9 +254,9 @@ describe('PaymentAgentStore', () => {
                     min_withdrawal: '10',
                     name: 'Payment Agent of CR90000002',
                     paymentagent_loginid: 'CR90000002',
-                    phones: '+12345678',
+                    phones: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                    urls: 'http://www.pa.com',
+                    urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
                 },
             ])
@@ -356,8 +353,8 @@ describe('PaymentAgentStore', () => {
             max_withdrawal: '2000',
             min_withdrawal: '10',
             email: 'pa@example.com',
-            telephone: '+12345678',
-            url: 'http://www.pa.com',
+            phone_numbers: [{ phone_number: '+12345678' }],
+            urls: [{ url: 'http://www.pa.com' }],
         };
 
         payment_agent_store.addPaymentAgent(payment_agent);
@@ -369,8 +366,8 @@ describe('PaymentAgentStore', () => {
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',
-                    phone: '+12345678',
-                    url: 'http://www.pa.com',
+                    phone: [{ phone_number: '+12345678' }],
+                    url: [{ url: 'http://www.pa.com' }],
                 },
             ])
         );
@@ -390,17 +387,8 @@ describe('PaymentAgentStore', () => {
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',
-                    phone: '+12345678',
-                    url: 'http://www.pa.com',
-                },
-                {
-                    text: 'Payment Agent of CR90000002',
-                    value: 'CR90000002',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    email: 'pa@example.com',
-                    phone: '+12345678',
-                    url: 'http://www.pa.com',
+                    phone: [{ phone_number: '+12345678' }],
+                    url: [{ url: 'http://www.pa.com' }],
                 },
             ])
         );
@@ -481,8 +469,8 @@ describe('PaymentAgentStore', () => {
             payment_agent_email: 'pa@example.com',
             payment_agent_id: 'CR90000000',
             payment_agent_name: 'Payment Agent of CR90000000',
-            payment_agent_phone: '+12345678',
-            payment_agent_url: 'http://www.pa.com',
+            payment_agent_phone: [{ phone_number: '+12345678' }],
+            payment_agent_url: [{ url: 'http://www.pa.com' }],
         });
         expect(payment_agent_store.is_withdraw_successful).toBeTruthy();
         expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();

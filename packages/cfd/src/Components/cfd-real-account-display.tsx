@@ -176,7 +176,7 @@ const CFDRealAccountDisplay = ({
         <CFDAccountCard
             key='real.synthetic'
             has_cfd_account_error={has_cfd_account_error}
-            title={localize('Synthetic')}
+            title={platform === 'mt5' ? localize('Derived') : localize('Synthetic')}
             has_real_account={has_real_account}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_disabled={isMT5AccountCardDisabled('synthetic')}
@@ -192,7 +192,11 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
+            descriptor={
+                platform === 'mt5'
+                    ? localize('Trade CFDs on our synthetics, basket indices.')
+                    : localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')
+            }
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}

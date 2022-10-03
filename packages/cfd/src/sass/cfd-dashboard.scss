@@ -638,7 +638,7 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 24rem;
+    min-height: 21rem;
     width: 30.4em;
     position: relative;
     @include desktop {
@@ -723,7 +723,7 @@
     }
 
     &__logged-out {
-        min-height: 12rem;
+        min-height: 15rem;
     }
 
     &__add-server {
@@ -804,9 +804,9 @@
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 13.7rem;
-        left: 19.4rem;
-        top: 2.8rem;
+        width: 11.7rem;
+        left: 21.1rem;
+        top: 2.1rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
@@ -841,7 +841,7 @@
         }
         &--has-banner {
             .cfd-account-card--paragraph {
-                width: 15rem;
+                width: 18rem;
             }
         }
     }

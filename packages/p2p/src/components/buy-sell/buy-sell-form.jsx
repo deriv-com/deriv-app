@@ -35,10 +35,11 @@ const BuySellForm = props => {
     } = buy_sell_store?.advert || {};
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
+    const { advertiser_available_limit, balance } = general_store;
+
     const should_disable_field =
         !buy_sell_store.is_buy_advert &&
-        (parseFloat(general_store.balance) === 0 ||
-            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit);
+        (parseFloat(balance) === 0 || parseFloat(balance) < buy_sell_store.advert?.min_order_amount_limit);
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -360,7 +361,11 @@ const BuySellForm = props => {
                                                             i18n_default_text='Limit: {{min}}–{{max}} {{currency}}'
                                                             values={{
                                                                 min: min_order_amount_limit_display,
-                                                                max: max_order_amount_limit_display,
+                                                                max:
+                                                                    advertiser_available_limit <
+                                                                    max_order_amount_limit_display
+                                                                        ? roundOffDecimal(advertiser_available_limit)
+                                                                        : max_order_amount_limit_display,
                                                                 currency: buy_sell_store.account_currency,
                                                             }}
                                                         />

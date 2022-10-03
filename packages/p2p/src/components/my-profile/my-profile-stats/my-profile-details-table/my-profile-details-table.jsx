@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 const MyProfileDetailsTable = () => {
     const { general_store, my_profile_store } = useStores();
 
-    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit } = my_profile_store.advertiser_info;
+    const { daily_buy_limit, daily_sell, daily_sell_limit } = my_profile_store.advertiser_info;
 
     return (
         <div className='my-profile-details-table'>
@@ -32,7 +32,7 @@ const MyProfileDetailsTable = () => {
                         </Text>
                         <Text color='prominent' size='xs' weight='bold'>
                             <Money
-                                amount={`${daily_buy_limit - daily_buy}`}
+                                amount={`${general_store.advertiser_available_limit}`}
                                 currency={general_store.client.currency}
                                 show_currency
                             />

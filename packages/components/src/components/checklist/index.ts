@@ -1,4 +1,4 @@
-import Checklist from './checklist.jsx';
+import Checklist from './checklist';
 import './checklist.scss';
 
 export default Checklist;

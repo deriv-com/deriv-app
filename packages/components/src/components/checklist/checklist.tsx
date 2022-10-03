@@ -1,10 +1,26 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import Icon from '../icon';
 import Button from '../button';
 
-const ItemStatus = ({ status, onClick, button_text }) => {
+type TItemStatusProps = {
+    button_text: string;
+    onClick: () => void;
+    status: string;
+};
+
+type TChecklistItem = TItemStatusProps & {
+    is_disabled: boolean;
+    content: string;
+};
+
+type TChecklistProps = {
+    items: TChecklistItem[];
+    className: string;
+    itemClassName: string;
+};
+
+const ItemStatus = ({ status, onClick, button_text }: TItemStatusProps) => {
     switch (status) {
         case 'done':
             return (
@@ -28,13 +44,7 @@ const ItemStatus = ({ status, onClick, button_text }) => {
     }
 };
 
-ItemStatus.propTypes = {
-    button_text: PropTypes.string,
-    onClick: PropTypes.func,
-    status: PropTypes.string,
-};
-
-const Checklist = ({ items, className, itemClassName }) => (
+const Checklist = ({ items, className, itemClassName }: TChecklistProps) => (
     <div className={classNames('dc-checklist', className)}>
         {items.map((item, idx) => (
             <div
@@ -56,11 +66,5 @@ const Checklist = ({ items, className, itemClassName }) => (
         ))}
     </div>
 );
-
-Checklist.propTypes = {
-    items: PropTypes.array,
-    className: PropTypes.string,
-    itemClassName: PropTypes.string,
-};
 
 export default Checklist;

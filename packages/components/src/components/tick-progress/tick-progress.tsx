@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import React from 'react';
 
 type TTickProgress = {
-    className: string;
-    columns: number;
-    value: number;
-    rows: number;
-    size: number;
+    className?: string;
+    columns?: number;
+    value?: number;
+    rows?: number;
+    size?: number;
 };
 
 const Tick = ({ is_on }: { is_on?: boolean }) => {
@@ -19,7 +19,7 @@ const Tick = ({ is_on }: { is_on?: boolean }) => {
     );
 };
 
-const TickProgress = ({ className, rows = 2, columns = 5, size = 10, value = 0 }: Partial<TTickProgress>) => {
+const TickProgress = ({ className, rows = 2, columns = 5, size = 10, value = 0 }: TTickProgress) => {
     return (
         <div
             className={classNames('dc-tick-progress', className)}

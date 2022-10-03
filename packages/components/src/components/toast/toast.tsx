@@ -4,12 +4,12 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 type TToast = {
-    className: string;
-    is_open: boolean;
-    onClick: (event: React.MouseEvent<HTMLElement>) => void;
-    onClose: () => void;
-    type: 'error' | 'info';
-    timeout: number;
+    className?: string;
+    is_open?: boolean;
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
+    onClose?: () => void;
+    type?: 'error' | 'info';
+    timeout?: number;
 };
 
 const Toast = ({
@@ -20,7 +20,7 @@ const Toast = ({
     onClick,
     type = 'info',
     timeout = 0,
-}: React.PropsWithChildren<Partial<TToast>>) => {
+}: React.PropsWithChildren<TToast>) => {
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -59,7 +59,7 @@ const Toast = ({
                     [`dc-toast__${type}`]: type,
                 })}
                 onMouseDown={e => {
-                    // To prevent clickoutside for modal
+                    // To prevent click outside for modal
                     e.nativeEvent.preventDefault();
                     e.nativeEvent.stopPropagation();
                     e.nativeEvent.stopImmediatePropagation();

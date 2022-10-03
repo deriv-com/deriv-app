@@ -8,7 +8,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import DemoMessage from 'Components/demo-message';
 import AccountLimitsArticle from './account-limits-article.jsx';
 import AccountLimitsContext from './account-limits-context';
-import AccountLimitsExtraInfo from './account-limits-extra-info.jsx';
+import AccountLimitsExtraInfo from './account-limits-extra-info';
 import AccountLimitsFooter from './account-limits-footer.jsx';
 import AccountLimitsOverlay from './account-limits-overlay.jsx';
 import AccountLimitsTableCell from './account-limits-table-cell.jsx';

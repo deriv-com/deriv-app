@@ -105,7 +105,7 @@ const StaticCFDAccountManager = ({
                             type === 'financial' ? financial_amount : derived_amount,
                             true
                         )} ${currency}`}</Text>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                        <Text size='xs' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
                             {loginid}
                         </Text>
                     </>

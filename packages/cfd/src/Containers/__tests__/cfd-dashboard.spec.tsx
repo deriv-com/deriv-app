@@ -317,7 +317,7 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
         expect(screen.getByText(real_tab_name)).toBeInTheDocument();
         expect(screen.getByText(demo_tab_name)).toBeInTheDocument();
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
+        expect(screen.getByText('Derived')).toBeInTheDocument();
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: compare_accounts_button_label })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: dmt5_download_header })).toBeInTheDocument();

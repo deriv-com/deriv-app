@@ -49,6 +49,7 @@ type TOptionsAccountprops = RouteComponentProps & {
     redirectAccount: () => void;
     activeAccount?: string;
     onClickDeposit?: () => void;
+    switchAccountModal?: () => void;
 };
 
 type TCurrentDisplay = {
@@ -189,6 +190,7 @@ const OptionsAccount = ({
     redirectAccount,
     activeAccount,
     onClickDeposit,
+    switchAccountModal,
 }: TOptionsAccountprops) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -272,7 +274,7 @@ const OptionsAccount = ({
             </div>
             {isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
                 <div className='account-container__dropdown'>
-                    <WalletIcon icon={'DropDown'} />
+                    <WalletIcon icon={'DropDown'} onClick={switchAccountModal} />
                 </div>
             )}
         </div>

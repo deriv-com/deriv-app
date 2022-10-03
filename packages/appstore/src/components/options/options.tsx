@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import { Text, StaticUrl, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Text, StaticUrl, DesktopWrapper, MobileWrapper, Modal } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import PlatformLauncher from '../platform-launcher';
 import OptionsAccount from '../account';
@@ -17,6 +17,7 @@ type TOptionsProps = {
 
 const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = props => {
     const { client, ui } = useStores();
+    const [is_modal_open, setIsModalOpen] = React.useState(false);
     const {
         account_list,
         accounts,
@@ -49,6 +50,9 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
 
     const onClickDeposit = () => {
         props.history.push(routes.cashier_deposit);
+    };
+    const switchAccount = () => {
+        setIsModalOpen(true);
     };
     return (
         <div className={`options-container${!has_any_real_account ? '-app-launcher' : ''}`}>
@@ -117,7 +121,9 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                           is_dark_mode_on={is_dark_mode_on}
                                           shortcode={shortcode}
                                           should_show_server_name={should_show_server_name}
-                                          redirectAccount={() => setIsActiveId(account.loginid)}
+                                          redirectAccount={() =>
+                                              isMobile ? setIsActiveId(account.loginid) : switchAccount
+                                          }
                                           onClickResetVirtualBalance={resetBalance}
                                           selected_loginid={account.loginid}
                                           history={props.history}
@@ -158,6 +164,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                               match={props.match}
                                               activeAccount={isActiveId}
                                               onClickDeposit={onClickDeposit}
+                                              switchAccountModal={switchAccount}
                                           />
                                       )
                                   ) : (
@@ -190,6 +197,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                           match={props.match}
                                           activeAccount={isActiveId}
                                           onClickDeposit={onClickDeposit}
+                                          switchAccountModal={switchAccount}
                                       />
                                   )
                               )}
@@ -226,6 +234,11 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                     })}
                 </div>
             </div>
+
+            <Modal is_open={is_modal_open} small>
+                <Modal.Body>test</Modal.Body>
+                <Modal.Footer className='da-api-token__modal-footer'>footer</Modal.Footer>
+            </Modal>
         </div>
     );
 };

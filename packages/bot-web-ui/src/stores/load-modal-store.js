@@ -3,6 +3,12 @@ import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 import { tabs_title } from 'Constants/load-modal';
 
+const clearInjectionDiv = () => {
+    const element = document.getElementById('load-strategy__blockly-container');
+    if (element?.getElementsByClassName('injectionDiv').length > 1) {
+        element.removeChild(element.getElementsByClassName('injectionDiv')[0]);
+    }
+};
 export default class LoadModalStore {
     constructor(root_store) {
         this.root_store = root_store;
@@ -21,6 +27,14 @@ export default class LoadModalStore {
                 }
             }
         );
+        reaction(
+            () => this.load_recent_strategies,
+            async load_recent_strategies => {
+                if (load_recent_strategies) {
+                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
+                }
+            }
+        );
     }
 
     recent_workspace;
@@ -29,6 +43,7 @@ export default class LoadModalStore {
 
     @observable active_index = 0;
     @observable is_load_modal_open = false;
+    @observable load_recent_strategies = false;
     @observable is_explanation_expand = false;
     @observable is_open_button_loading = false;
     @observable loaded_local_file = null;
@@ -44,11 +59,7 @@ export default class LoadModalStore {
 
     @computed
     get selected_strategy() {
-        if (this.recent_strategies.length > 0) {
-            return this.recent_strategies.find(ws => ws.id === this.selected_strategy_id) || this.recent_strategies[0];
-        }
-
-        return null;
+        return this.recent_strategies.find(ws => ws.id === this.selected_strategy_id) || this.recent_strategies[0];
     }
 
     @computed
@@ -159,6 +170,9 @@ export default class LoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
+        if (this.selected_strategy) {
+            this.previewRecentStrategy(this.selected_strategy_id);
+        }
     }
 
     @action.bound
@@ -183,6 +197,8 @@ export default class LoadModalStore {
     @action.bound
     onEntered() {
         if (this.tab_name === tabs_title.TAB_RECENT && this.selected_strategy) {
+            this.previewRecentStrategy(this.selected_strategy.id);
+        } else {
             this.previewRecentStrategy(this.selected_strategy.id);
         }
     }
@@ -217,27 +233,27 @@ export default class LoadModalStore {
             return;
         }
 
-        if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const ref = document.getElementById('load-strategy__blockly-container');
+        const ref = document.getElementById('load-strategy__blockly-container');
 
-            if (!ref) {
-                // eslint-disable-next-line no-console
-                console.warn('Could not find preview workspace element.');
-                return;
-            }
-
-            this.recent_workspace = Blockly.inject(ref, {
-                media: `${__webpack_public_path__}media/`,
-                zoom: {
-                    wheel: true,
-                    startScale: config.workspaces.previewWorkspaceStartScale,
-                },
-                readOnly: true,
-                scrollbars: true,
-            });
+        if (!ref) {
+            // eslint-disable-next-line no-console
+            console.warn('Could not find preview workspace element.');
+            return;
         }
 
+        this.recent_workspace = Blockly.inject(ref, {
+            media: `${__webpack_public_path__}media/`,
+            zoom: {
+                wheel: true,
+                startScale: config.workspaces.previewWorkspaceStartScale,
+            },
+            readOnly: true,
+            scrollbars: true,
+        });
+
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+
+        clearInjectionDiv();
     }
 
     @action.bound
@@ -268,6 +284,10 @@ export default class LoadModalStore {
     @action.bound
     toggleLoadModal() {
         this.is_load_modal_open = !this.is_load_modal_open;
+    }
+    @action.bound
+    toggleStrategies(load_recent_strategies) {
+        this.load_recent_strategies = load_recent_strategies;
     }
 
     getRecentFileIcon = save_type => {

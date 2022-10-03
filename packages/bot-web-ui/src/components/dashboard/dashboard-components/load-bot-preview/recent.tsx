@@ -1,40 +1,44 @@
 import classnames from 'classnames';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentFooter from './recent-footer.jsx';
-import RecentWorkspace from './recent-workspace.jsx';
-import WorkspaceControl from './workspace-control.jsx';
+import RecentWorkspace from './recent-workspace';
+import RootStore from 'Stores/index';
 
-const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExplanationExpand }) => {
+type TRecentComponent = {
+    is_explanation_expand: boolean;
+    recent_strategies: [];
+    toggleExplanationExpand: boolean;
+    handleFileChange: () => void;
+    onEntered: () => void;
+    toggleStrategies: (param: boolean) => void;
+};
+
+const RecentComponent = ({
+    is_explanation_expand,
+    recent_strategies,
+    toggleExplanationExpand,
+    handleFileChange,
+    toggleStrategies,
+    onEntered,
+}: TRecentComponent) => {
+    React.useEffect(() => {
+        toggleStrategies(true);
+    }, []);
+
     if (recent_strategies.length) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div className='load-strategy__recent'>
                     <div className='load-strategy__recent-files'>
                         <div className='load-strategy__title'>
-                            <Localize i18n_default_text='Recent' />
+                            <Localize i18n_default_text='Your Bots' />
                         </div>
                         <div className='load-strategy__recent-files-list'>
-                            {recent_strategies.map(workspace => (
-                                <RecentWorkspace
-                                    key={workspace.id}
-                                    workspace={workspace}
-                                    selectedStrategy={workspace.id[0]}
-                                />
+                            {recent_strategies.map((workspace, index) => (
+                                <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />
                             ))}
-                        </div>
-                    </div>
-                    <div className='load-strategy__recent-preview'>
-                        <div className='load-strategy__title load-strategy__recent-preview-title'>
-                            <Localize i18n_default_text='Preview' />
-                        </div>
-                        <div className='load-strategy__preview-workspace'>
-                            <div id='load-strategy__blockly-container' style={{ height: '100%' }}>
-                                <WorkspaceControl />
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,19 +84,14 @@ const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExpla
     );
 };
 
-RecentComponent.propTypes = {
-    is_explanation_expand: PropTypes.bool,
-    recent_strategies: PropTypes.array,
-    toggleExplanationExpand: PropTypes.bool,
-};
-
-const Recent = connect(({ load_modal }) => ({
+const Recent = connect(({ load_modal }: RootStore) => ({
     is_explanation_expand: load_modal.is_explanation_expand,
     recent_strategies: load_modal.recent_strategies,
+    handleFileChange: load_modal.handleFileChange,
     toggleExplanationExpand: load_modal.toggleExplanationExpand,
+    onEntered: load_modal.onEntered,
+    load_recent_strategies: load_modal.load_recent_strategies,
+    toggleStrategies: load_modal.toggleStrategies,
 }))(RecentComponent);
-
-Recent.Footer = RecentFooter;
-Recent.Workspace = RecentWorkspace;
 
 export default Recent;

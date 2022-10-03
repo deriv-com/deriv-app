@@ -32,7 +32,7 @@ export default class SaveModalStore {
     };
 
     @action.bound
-    async onConfirmSave({ is_local, save_as_collection, bot_name }) {
+    async onConfirmSave({ is_local = true, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);
 
         const { saveFile } = this.root_store.google_drive;
@@ -40,7 +40,6 @@ export default class SaveModalStore {
 
         xml.setAttribute('is_dbot', 'true');
         xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
-
         if (is_local) {
             save(bot_name, save_as_collection, xml);
         } else {

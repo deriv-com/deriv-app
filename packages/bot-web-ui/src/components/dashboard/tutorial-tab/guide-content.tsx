@@ -19,7 +19,7 @@ const contentArray: TcontentArray[] = [
         url: 'https://www.youtube.com/watch?v=tvBiEIq3G7k',
     },
     {
-        id: 1,
+        id: 2,
         type: 'DBotTour',
         content: 'How to build your bot from scratch using a simple strategy.',
     },
@@ -44,11 +44,13 @@ const GuideContent = ({
     dialog_options,
 }: TGuideContent) => {
     let finalContentArray = contentArray;
-    if (faq_search_value) {
-        finalContentArray = contentArray.filter(data => {
-            return data.content.toLowerCase().includes(faq_search_value);
-        });
-    }
+    React.useEffect(() => {
+        if (faq_search_value) {
+            finalContentArray = contentArray.filter(data => {
+                return data.content.toLowerCase().includes(faq_search_value);
+            });
+        }
+    }, [faq_search_value]);
 
     return (
         <div className='dc-tabs__inner-content'>

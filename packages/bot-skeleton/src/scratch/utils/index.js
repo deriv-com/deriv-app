@@ -164,7 +164,11 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
 
     const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
-    const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
+    const added_blocks = block_ids.map(block_id => {
+        if (block_id !== null) {
+            workspace.getBlockById(block_id);
+        }
+    });
 
     if (drop_event && Object.keys(drop_event).length !== 0) {
         cleanUpOnLoad(added_blocks, drop_event, workspace);

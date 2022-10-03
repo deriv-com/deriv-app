@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
@@ -36,13 +35,6 @@ const RecentWorkspace = ({
             </div>
         </div>
     );
-};
-
-RecentWorkspace.propTypes = {
-    getRecentFileIcon: PropTypes.func,
-    getSaveType: PropTypes.func,
-    previewRecentStrategy: PropTypes.func,
-    selected_strategy_id: PropTypes.string,
 };
 
 export default connect(({ load_modal }) => ({

@@ -9,7 +9,6 @@ export default class GoogleDriveStore {
         this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
         this.google_auth = null;
         this.setKey();
-
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
@@ -29,7 +28,7 @@ export default class GoogleDriveStore {
                     .init({
                         apiKey: this.api_key,
                         clientId: this.client_id,
-                        scope: 'https://www.googleapis.com/auth/drive.file',
+                        scope: 'https://www.googleapis.com/auth/drive',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(
@@ -164,20 +163,20 @@ export default class GoogleDriveStore {
 
     createLoadFilePicker(mime_type, title) {
         return new Promise(resolve => {
-            const loadPickerCallback = async data => {
+            const loadPickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
                     const file_name = file.name;
                     const fileId = file.id;
                     const { files } = gapi.client.drive;
 
-                    const response = await files.get({
+                    const response = files.get({
                         alt: 'media',
                         fileId,
                         mimeType: 'text/plain',
                     });
 
-                    resolve({ xml_doc: response.body, file_name });
+                    resolve({ xml_doc: response.path, file_name });
                 }
             };
 

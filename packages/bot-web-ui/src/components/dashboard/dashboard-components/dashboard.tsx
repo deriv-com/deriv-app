@@ -1,45 +1,44 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Cards from './cards';
-import WorkspaceControl from '../../load-modal/workspace-control';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
+import Local from './load-bot-preview/local';
+import AppStore from 'Stores/app-store';
 
 type TDashboardProps = {
     load_modal: LoadModalStore;
+    app: AppStore;
 };
-const Dashboard = ({ load_modal }: TDashboardProps) => {
-    const file_input_ref = React.useRef<HTMLInputElement>(null);
-    const openFileLoader = () => {
-        file_input_ref?.current?.click();
-    };
-    const { onDriveConnect, toggleLoadModal, handleFileChange } = load_modal;
+type TgetFile = {
+    getFile: [];
+};
+const getFile: TgetFile[] = [];
+const Dashboard = ({ load_modal, app }: TDashboardProps) => {
+    const { handleFileChange, onEntered } = load_modal;
     const [is_file_supported, setIsFileSupported] = React.useState(true);
+    const { onMount, onUnmount } = app;
+
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, []);
     return (
-        <>
-            <div style={{ display: 'flex' }}>
-                <div className='dc-tabs__content_group'>
-                    <span className='dc-tabs__content_group_heading'>{localize('Load or build your bot')}</span>
-                    <span className='dc-tabs__content_group_description'>
-                        {localize(
-                            'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
-                        )}
-                    </span>
-                    <Cards openFileLoader={openFileLoader} />
-                </div>
-                <input
-                    type='file'
-                    ref={file_input_ref}
-                    accept='.xml'
-                    style={{ display: 'none' }}
-                    onChange={e => setIsFileSupported(handleFileChange(e, false))}
-                />
-                <div id='load-strategy__blockly-container' style={{ height: '100%', width: '100%' }}>
-                    <WorkspaceControl />
-                </div>
+        <div style={{ display: 'flex' }}>
+            <div className='dc-tabs__content_group'>
+                <span className='dc-tabs__content_group_heading'>{localize('Load or build your bot')}</span>
+                <span className='dc-tabs__content_group_description'>
+                    {localize(
+                        'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
+                    )}
+                </span>
+                <Cards />
             </div>
-        </>
+            <div style={{ width: '50%' }}>
+                <Local />
+            </div>
+        </div>
     );
 };
 
@@ -49,4 +48,7 @@ export default connect((store: RootStore) => ({
     setActiveTab: store.dashbaord.setActiveTab,
     handleFileChange: store.load_modal.handleFileChange,
     toggleLoadModal: store.load_modal.toggleLoadModal,
+    onMount: store.main_content.onMount,
+    onUnmount: store.main_content.onUnmount,
+    app: store.app,
 }))(Dashboard);

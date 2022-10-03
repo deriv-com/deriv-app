@@ -74,7 +74,7 @@ export default class ToolbarStore {
 
     @action.bound
     setHasUndoStack() {
-        this.has_undo_stack = Blockly.derivWorkspace.hasUndoStack();
+        this.has_undo_stack = Blockly.derivWorkspace?.hasUndoStack();
     }
 
     @action.bound

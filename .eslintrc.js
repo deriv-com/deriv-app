@@ -81,7 +81,7 @@ module.exports = {
         'import/prefer-default-export': 0,
         'import/extensions': [0, { jsx: 'always', json: 'always' }],
         'no-sequences': ['warn'],
-        'import/no-unresolved': 0,
+        'import/no-unresolved': [2, { ignore: ['@deriv/components', '@deriv/shared'] }],
 
         // react rules
         // 'jsx-quotes'                        : ['error', 'prefer-single'],

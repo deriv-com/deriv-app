@@ -40,7 +40,7 @@ describe('should render the CompareAccountsContent component properly', () => {
 
     it('should render the proper column headers properly', () => {
         render(<CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} />);
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
+        expect(screen.getByText('Derived')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
     });
 

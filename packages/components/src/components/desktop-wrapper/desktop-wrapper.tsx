@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
 import { isDesktop } from '@deriv/shared';
 
 type TDesktopProps = {
-    children: ReactNode;
+    children: React.ReactNode;
 };
 
 const Desktop = ({ children }: TDesktopProps) => {

@@ -50,6 +50,7 @@ type TOptionsAccountprops = RouteComponentProps & {
     activeAccount?: string;
     onClickDeposit?: () => void;
     switchAccountModal?: () => void;
+    isModal?: boolean;
 };
 
 type TCurrentDisplay = {
@@ -191,6 +192,7 @@ const OptionsAccount = ({
     activeAccount,
     onClickDeposit,
     switchAccountModal,
+    isModal,
 }: TOptionsAccountprops) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -198,6 +200,7 @@ const OptionsAccount = ({
             className={classNames('account-container', {
                 'account-container-active': activeAccount === loginid_text,
                 'account-container-disabled': activeAccount !== loginid_text,
+                'account-container-modal': isModal,
             })}
             onClick={redirectAccount}
         >
@@ -236,14 +239,16 @@ const OptionsAccount = ({
                         />
                     )}
                 </Text>
-                <Text
-                    size={isMobile() ? 'xxxxs' : 'xxxs'}
-                    line_height={isMobile() ? 'xs' : 's'}
-                    weight='bold'
-                    className='account-container__details-wrapper--number'
-                >
-                    {loginid_text}
-                </Text>
+                {!isModal && (
+                    <Text
+                        size={isMobile() ? 'xxxxs' : 'xxxs'}
+                        line_height={isMobile() ? 'xs' : 's'}
+                        weight='bold'
+                        className='account-container__details-wrapper--number'
+                    >
+                        {loginid_text}
+                    </Text>
+                )}
                 <Text
                     size={isMobile() ? 'xs' : 's'}
                     line_height={isMobile() ? 'xl' : 'l'}
@@ -253,26 +258,28 @@ const OptionsAccount = ({
                     {`${balance} ${getCurrencyDisplayCode(currency)}`}
                 </Text>
             </div>
-            <div className='account-container__button-wrapper'>
-                {has_reset_balance ? (
-                    <Button
-                        is_disabled={is_disabled}
-                        onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            e.stopPropagation();
-                            onClickResetVirtualBalance();
-                        }}
-                        secondary
-                        small
-                    >
-                        {localize('Reset')}
-                    </Button>
-                ) : (
-                    <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
-                        {localize('Deposit')}
-                    </Button>
-                )}
-            </div>
-            {isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
+            {!isModal && (
+                <div className='account-container__button-wrapper'>
+                    {has_reset_balance ? (
+                        <Button
+                            is_disabled={is_disabled}
+                            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                e.stopPropagation();
+                                onClickResetVirtualBalance();
+                            }}
+                            secondary
+                            small
+                        >
+                            {localize('Reset')}
+                        </Button>
+                    ) : (
+                        <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
+                            {localize('Deposit')}
+                        </Button>
+                    )}
+                </div>
+            )}
+            {!isModal && isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
                 <div className='account-container__dropdown'>
                     <WalletIcon icon={'DropDown'} onClick={switchAccountModal} />
                 </div>

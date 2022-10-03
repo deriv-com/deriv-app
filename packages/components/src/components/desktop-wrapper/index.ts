@@ -1,4 +1,4 @@
-import DesktopWrapper from './desktop-wrapper.jsx';
+import DesktopWrapper from './desktop-wrapper';
 import './desktop-wrapper.scss';
 
 export default DesktopWrapper;

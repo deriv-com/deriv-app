@@ -9,6 +9,7 @@
     width: 24rem;
     border: 0.2rem dashed $color-red-6;
     border-radius: $BORDER_RADIUS;
+    border: 2px dashed $color-red-7;
     cursor: pointer;
     &_title {
         display: flex;
@@ -41,6 +42,6 @@
     width: 3.4rem;
     height: 3.4rem;
     border-radius: $BORDER_RADIUS;
-    background-color: $color-red-6;
+    background-color: $color-red-7;
     cursor: pointer;
 }

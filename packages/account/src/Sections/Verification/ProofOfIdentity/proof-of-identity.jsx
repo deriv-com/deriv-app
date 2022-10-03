@@ -11,6 +11,8 @@ const ProofOfIdentity = ({
     is_from_external,
     is_switching,
     is_virtual,
+    is_high_risk,
+    is_withdrawal_lock,
     onStateChange,
     refreshNotifications,
     routeBackInApp,
@@ -29,6 +31,8 @@ const ProofOfIdentity = ({
                             is_from_external={is_from_external}
                             is_switching={is_switching}
                             is_virtual={is_virtual}
+                            is_high_risk={is_high_risk}
+                            is_withdrawal_lock={is_withdrawal_lock}
                             onStateChange={onStateChange}
                             refreshNotifications={refreshNotifications}
                             routeBackInApp={routeBackInApp}
@@ -48,6 +52,8 @@ export default connect(({ client, common, notifications }) => ({
     fetchResidenceList: client.fetchResidenceList,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
+    is_high_risk: client.is_high_risk,
+    is_withdrawal_lock: client.is_withdrawal_lock,
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,

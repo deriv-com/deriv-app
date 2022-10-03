@@ -59,6 +59,10 @@
             padding: 1.6rem 0;
         }
 
+        @include desktop {
+            margin-top: 0.8rem;
+        }
+
         .account-transfer-form__notes-header {
             margin-top: 0;
         }

@@ -2,7 +2,14 @@ import React from 'react';
 import { Text, Button, Icon, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
-import { getCurrencyDisplayCode, isMobile, getCurrencyName, getCFDAccountDisplay, isBot } from '@deriv/shared';
+import {
+    getCurrencyDisplayCode,
+    isMobile,
+    getCurrencyName,
+    getCFDAccountDisplay,
+    isBot,
+    formatMoney,
+} from '@deriv/shared';
 import classNames from 'classnames';
 import { RouteComponentProps } from 'react-router';
 
@@ -248,7 +255,14 @@ const OptionsAccount = ({
                     weight='bold'
                     className='account-container__details-wrapper--balance'
                 >
-                    {`${balance} ${getCurrencyDisplayCode(currency)}`}
+                    {currency && (
+                        <Money
+                            currency={getCurrencyDisplayCode(currency)}
+                            amount={formatMoney(currency, balance, true)}
+                            should_format={false}
+                            show_currency
+                        />
+                    )}
                 </Text>
             </div>
             <div className='account-container__button-wrapper'>

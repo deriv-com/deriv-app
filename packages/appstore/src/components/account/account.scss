@@ -25,7 +25,7 @@
         }
     }
     &__icon {
-        width: 6.4rem;
+        width: 25%;
         @include mobile {
             width: 4.1rem;
         }
@@ -35,8 +35,7 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 0;
-        width: 6.9rem;
-        height: 5.6rem;
+        width: 50%;
         &--number {
             color: $color-grey-1;
         }
@@ -51,8 +50,7 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        width: 6rem;
-        height: 2.4rem;
+        width: 25%;
         right: 0.8rem;
         top: 0.8rem;
         border-radius: 0.4rem;
@@ -61,16 +59,6 @@
             border-radius: 0.4rem;
             right: 3.1rem;
             width: 5rem;
-        }
-        &--label {
-            width: 4.5rem;
-            height: 1.8rem;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 1.2rem;
-            line-height: 1.8rem;
-            text-align: center;
-            color: $color-black-1;
         }
     }
 }

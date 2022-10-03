@@ -8,8 +8,8 @@ export default class AccountPromptDialogStore {
 
     @observable should_show = false;
     @observable is_confirmed = false;
-    @observable last_location = '';
-    @observable current_location = '';
+    @observable last_location: string | null = null;
+    @observable current_location: string | null = null;
 
     @action.bound
     shouldNavigateAfterPrompt(next_location: string, current_location: string) {
@@ -22,7 +22,7 @@ export default class AccountPromptDialogStore {
 
     @action.bound
     resetLastLocation() {
-        this.last_location = '';
+        this.last_location = null;
     }
 
     @action.bound
@@ -67,7 +67,7 @@ export default class AccountPromptDialogStore {
 
     @action.bound
     continueRoute() {
-        if (this.is_confirmed && this.last_location !== '') {
+        if (this.is_confirmed && this.last_location) {
             this.root_store.common.routeTo(this.last_location);
         }
     }

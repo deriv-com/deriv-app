@@ -192,7 +192,11 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={localize('Trade CFDs on our synthetics, basket indices.')}
+            descriptor={
+                platform === 'mt5'
+                    ? localize('Trade CFDs on our synthetics, basket indices.')
+                    : localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')
+            }
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}

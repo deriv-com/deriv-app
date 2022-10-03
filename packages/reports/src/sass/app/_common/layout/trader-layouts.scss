@@ -403,6 +403,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
     height: 212px;
     position: relative;
 
+    .trade-container--accumulators & {
+        height: 270px;
+    }
     &__content-loader {
         position: absolute;
         height: 100%;

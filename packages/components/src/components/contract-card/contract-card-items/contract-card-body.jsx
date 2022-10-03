@@ -165,7 +165,7 @@ const AccumulatorCardBody = ({
     status,
     is_positions,
 }) => {
-    const { buy_price, bid_price, profit, limit_order, sell_price } = contract_info;
+    const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
 
@@ -175,33 +175,17 @@ const AccumulatorCardBody = ({
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                {is_positions ? (
-                    <ContractCardItem header={getCardLabels().INDICATIVE_PRICE}>
-                        <Money currency={currency} amount={sell_price || indicative} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
-                    </ContractCardItem>
-                ) : (
-                    <ContractCardItem
-                        header={getCardLabels().CURRENT_PRICE}
-                        className='dc-contract-card__current-stake'
+                <ContractCardItem header={getCardLabels().INDICATIVE_PRICE}>
+                    <Money currency={currency} amount={sell_price || indicative} />
+                    <div
+                        className={classNames('dc-contract-card__indicative--movement', {
+                            'dc-contract-card__indicative--movement-complete': is_sold,
+                        })}
                     >
-                        <div
-                            className={classNames({
-                                'dc-contract-card--profit': +profit > 0,
-                                'dc-contract-card--loss': +profit < 0,
-                            })}
-                        >
-                            <Money amount={bid_price} currency={currency} />
-                        </div>
-                    </ContractCardItem>
-                )}
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss' && <Icon icon='IcLoss' />}
+                    </div>
+                </ContractCardItem>
                 <ContractCardItem
                     header={getCardLabels().TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}

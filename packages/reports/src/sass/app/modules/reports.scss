@@ -985,16 +985,16 @@ $side-padding: 1.2em;
 .open-positions-accumulator {
     .open-positions {
         &__row {
-            /* icon accumulator currency stake take_profit total_profit_loss current_price action */
+            /* icon accumulator currency stake take_profit bid_price total_profit_loss action */
             /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
                 minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr)
-                minmax(149px, 1fr) minmax(110px, 1fr) minmax(90px, 1fr);
+                minmax(112px, 1fr) minmax(149px, 1fr) minmax(90px, 1fr);
 
-            .limit_order,
-            .current_price {
+            .limit_order {
                 @include desktop {
                     justify-content: center;
+                    align-items: center;
                 }
             }
         }

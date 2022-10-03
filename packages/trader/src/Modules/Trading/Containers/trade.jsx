@@ -47,6 +47,7 @@ const Trade = ({
     prepareTradeStore,
     setContractTypes,
     setMobileDigitView,
+    show_accumulators_stats,
     show_digits_stats,
     should_show_multipliers_onboarding,
     symbol,
@@ -140,7 +141,12 @@ const Trade = ({
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
 
     return (
-        <div id='trade_container' className='trade-container'>
+        <div
+            id='trade_container'
+            className={classNames('trade-container', {
+                'trade-container--accumulators': show_accumulators_stats,
+            })}
+        >
             <DesktopWrapper>
                 <PositionsDrawer />
             </DesktopWrapper>
@@ -151,7 +157,7 @@ const Trade = ({
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset='259px'
+                height_offset={show_accumulators_stats ? '317px' : '259px'}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -160,7 +166,11 @@ const Trade = ({
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                            <ChartTrade topWidgets={topWidgets} charts_ref={charts_ref} />
+                            <ChartTrade
+                                topWidgets={topWidgets}
+                                charts_ref={charts_ref}
+                                show_accumulators_stats={show_accumulators_stats}
+                            />
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -230,6 +240,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_trade_enabled: modules.trade.is_trade_enabled,
     prepareTradeStore: modules.trade.prepareTradeStore,
     setMobileDigitView: modules.trade.setMobileDigitView,
+    show_accumulators_stats: modules.trade.show_accumulators_stats,
     symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,
@@ -245,6 +256,7 @@ export default connect(({ client, common, modules, ui }) => ({
 
 /* eslint-disable */
 import { SmartChart } from 'Modules/SmartChart';
+import classNames from 'classnames';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
@@ -443,7 +455,6 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
     extra_barriers: modules.trade.barriers_flattened,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,
-    show_accumulators_stats: modules.trade.show_accumulators_stats,
     symbol: modules.trade.symbol,
     exportLayout: modules.trade.exportLayout,
     setChartStatus: modules.trade.setChartStatus,

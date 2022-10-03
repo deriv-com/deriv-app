@@ -48,6 +48,11 @@
         align-items: center;
         width: 11.7rem;
 
+        @include mobile {
+            width: unset;
+            min-width: 6.8rem;
+            flex-shrink: 1;
+        }
         .info {
             margin-right: 0.4rem;
             opacity: 0.45;
@@ -57,10 +62,11 @@
             }
         }
     }
-    &__nav-buttons {
+    &__switcher {
         display: flex;
         flex-direction: column;
         margin: 0 0.8rem 0 0.4rem;
+        cursor: pointer;
 
         @include mobile {
             margin: 0 0.4rem;
@@ -151,13 +157,18 @@
                 }
             }
         }
+        @include mobile {
+            justify-content: space-between;
+            flex-grow: 1;
+        }
     }
-    &__accordion-toggle-arrow {
+    .accordion-toggle-arrow {
         position: absolute;
         right: 0.4rem;
         top: 0;
         bottom: 0;
         margin: auto;
+        cursor: pointer;
     }
 }
 
@@ -172,13 +183,11 @@
 
         @include mobile {
             margin: 0.8rem 0 1.6rem;
-            height: 35.5rem;
+            max-width: 100%;
         }
     }
     @include mobile {
-        &__text {
-            width: 29.6rem;
-        }
+        height: calc(100% - 5.2rem);
     }
 }
 

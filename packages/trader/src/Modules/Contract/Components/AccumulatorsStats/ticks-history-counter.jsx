@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const TicksHistoryCounter = ({ has_progress_dots, value }) => (
-    <div className='accumulators-stats__history-counter'>
+    <div data-testid='dt_accu_stats_history_counter' className='accumulators-stats__history-counter'>
         {value}
         {has_progress_dots && (
             <div className='accumulators-stats__progress-dots'>

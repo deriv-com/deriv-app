@@ -482,6 +482,25 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
         },
     },
     {
+        title: localize('Current stake'),
+        col_index: 'bid_price',
+        renderCellContent: ({ row_obj }) => {
+            if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
+
+            const total_profit = getTotalProfit(row_obj.contract_info);
+            return (
+                <div
+                    className={classNames('open-positions__bid_price', {
+                        'open-positions__bid_price--negative': total_profit < 0,
+                        'open-positions__bid_price--positive': total_profit > 0,
+                    })}
+                >
+                    <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                </div>
+            );
+        },
+    },
+    {
         title: localize('Total profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
@@ -502,11 +521,6 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
                 </div>
             );
         },
-    },
-    {
-        title: localize('Current price'),
-        col_index: 'current_price',
-        renderCellContent: ({ row_obj }) => <Money amount={row_obj.contract_info.bid_price} currency={currency} />,
     },
     {
         title: localize('Action'),

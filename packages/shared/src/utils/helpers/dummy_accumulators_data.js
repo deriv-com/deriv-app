@@ -18,12 +18,6 @@ const limit_order = {
         value: `${take_profit_price}`,
     },
 };
-const contract_status = 'open'; // 'lost', 'won' or 'open'
-const position_status = 'profit'; // 'profit' or 'loss'
-const result = ''; // 'won' or 'lost'
-const profit_loss = +0.15;
-const profit_percentage = +1.5;
-const is_sold = 0; // 0 || 1
 const ticks_history_stats = [
     ...new Array(33).fill({ counter_value: 1573, epoch: 120120120 }),
     ...new Array(33).fill({ counter_value: 4033, epoch: 120120121 }),
@@ -32,6 +26,19 @@ const ticks_history_stats = [
 ];
 const current_ticks_count = 4;
 const tick_count = 1000;
+const symbol = 'R_10';
+const symbol_display_name = 'Volatility 10 Index';
+const market = 'synthetic_index';
+const submarket = 'random_index';
+const exchange_name = 'RANDOM';
+
+const contract_status = 'open'; // 'lost', 'won' or 'open'
+const position_status = 'profit'; // 'profit' or 'loss'
+const result = ''; // 'won' or 'lost'
+const profit = +0.15;
+const profit_percentage = +1.5;
+const is_sold = 0; // 0 || 1
+
 // let first_time;
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
@@ -39,7 +46,7 @@ const tick_count = 1000;
 //             contract_status = 'won'; // 'lost', 'won' or 'open'
 //             position_status = 'profit'; // 'profit' or 'loss'
 //             result = 'won'; // 'won' or 'lost'
-//             profit_loss = +0.15;
+//             profit = +0.15;
 //             profit_percentage = +1.5;
 //             is_sold = 1; // 0 || 1
 //         }, ms1);
@@ -47,25 +54,25 @@ const tick_count = 1000;
 //             contract_status = 'lost'; // 'lost', 'won' or 'open'
 //             position_status = 'loss'; // 'profit' or 'loss'
 //             result = 'lost'; // 'won' or 'lost'
-//             profit_loss = -0.15;
-//             profit_percentage = -1.5;
+//             profit = -10;
+//             profit_percentage = -100;
 //             is_sold = 1; // 0 || 1
 //         }, ms2);
 //         setTimeout(() => {
 //             contract_status = 'open'; // 'lost', 'won' or 'open'
 //             position_status = 'profit'; // 'profit' or 'loss'
 //             result = ''; // 'won' or 'lost'
-//             profit_loss = +0.15;
+//             profit = +0.15;
 //             profit_percentage = +1.5;
 //             is_sold = 0; // 0 || 1
 //         }, ms3);
 //     }, ms3);
 // };
 const tick_size_barrier = 0.000409;
-const longcode = `Win payout when every tick of your contract is within ± ${tick_size_barrier} % of the previous tick in AUD/JPY`;
+const longcode = `Win payout when every tick of your contract is within ± ${tick_size_barrier} % of the previous tick in ${symbol_display_name}`;
 const stake = '10.00';
 const contract_type = 'ACCU'; // 'ACCU'
-const shortcode = 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'; // 'ACCU_FRXAUDJPY_10.00_6_0.01_1_0.000409_1653292620'
+const shortcode = `ACCU_${symbol}_10.00_6_0.01_1_0.000409_1653292620`; // `DECCU_${symbol}_10.00_6_0.01_1_0.000409_1653292620`
 
 export const dummy_break_out_history = [
     ...new Array(33).fill({ counter_value: 8884, epoch: 120120124 }),
@@ -101,7 +108,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             date_expiry: dummy_end_time,
             date_settlement: dummy_end_time + 1,
             date_start: dummy_start_time,
-            display_name: 'AUD/JPY',
+            display_name: symbol_display_name,
             entry_spot,
             entry_spot_display_value: `${entry_spot}`,
             entry_tick: entry_spot,
@@ -121,7 +128,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             current_ticks_count,
             longcode,
             growth_rate: 0.01,
-            profit: profit_loss,
+            profit,
             profit_percentage,
             purchase_time: dummy_start_time,
             shortcode,
@@ -153,7 +160,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             transaction_ids: {
                 buy: 45479,
             },
-            underlying: 'frxAUDJPY',
+            underlying: symbol,
         },
         req_id: 32,
         subscription: {
@@ -167,7 +174,7 @@ export const getDummyPortfolioContractsForACCU = time_now => {
     const dummy_start_time = dummy_current_time - 7;
     const dummy_end_time = dummy_current_time + 6;
     // if (!first_time) {
-    //     const interval = 10000;
+    //     const interval = 5000;
     //     winLoseAndOpenContractInSec(interval, interval * 2, interval * 3);
     //     first_time = true;
     // }
@@ -185,7 +192,7 @@ export const getDummyPortfolioContractsForACCU = time_now => {
             payout: 27.45,
             purchase_time: dummy_start_time,
             shortcode,
-            symbol: 'frxAUDJPY',
+            symbol,
             transaction_id: 45479,
         },
     ];
@@ -269,7 +276,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 date_expiry: dummy_end_time,
                 date_settlement: dummy_end_time + 1,
                 date_start: dummy_start_time,
-                display_name: 'AUD/JPY',
+                display_name: symbol_display_name,
                 entry_spot,
                 entry_spot_display_value: `${entry_spot}`,
                 entry_tick: entry_spot,
@@ -290,7 +297,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 longcode,
                 growth_rate: 0.01,
                 payout: 27.45,
-                profit: profit_loss,
+                profit,
                 profit_percentage,
                 purchase_time: dummy_start_time,
                 shortcode,
@@ -322,17 +329,17 @@ export const getDummyAllPositionsForACCU = time_now => {
                 transaction_ids: {
                     buy: 45479,
                 },
-                underlying: 'frxAUDJPY',
+                underlying: symbol,
             },
-            details: `Win payout when every tick of your contract is within ± ${tick_size_barrier} % of the previous tick in AUD/JPY`,
-            display_name: 'AUD/JPY',
+            details: longcode,
+            display_name: symbol_display_name,
             indicative: 8.46,
             payout: 27.45,
             purchase: 10,
             reference: 45479,
             type: contract_type,
             is_unsupported: false,
-            profit_loss,
+            profit_loss: profit,
             is_valid_to_sell: true,
             current_tick: 4,
             barrier_count: 2,
@@ -364,13 +371,13 @@ export const getDummyProposalInfoForACCU = (growth_rate, response) => {
         has_increased: null,
         id: '2b88e20f-f976-a380-904d-04db08e10eeb',
         limit_order,
-        message: `Win payout when every tick of your contract is within ± ${tick_size_barrier} % of the previous tick in AUD/JPY`,
+        message: longcode,
         obj_contract_basis: {
             text: '',
             value: '',
         },
         payout: 27.45,
-        profit: `${profit_loss}`,
+        profit: `${profit}`,
         returns: '-100.00%',
         stake,
     };
@@ -384,15 +391,15 @@ export const dummy_accu_in_contracts_for_available = {
     contract_category_display: 'Stay in/Break out',
     contract_display: 'Stay in',
     contract_type: 'ACCU',
-    exchange_name: 'FOREX',
-    expiry_type: 'daily',
-    market: 'forex',
+    exchange_name,
+    expiry_type: 'tick',
+    market,
     max_contract_duration: '1d',
-    min_contract_duration: '1m',
+    min_contract_duration: '1s',
     sentiment: 'inside',
     start_type: 'spot',
-    submarket: 'major_pairs',
-    underlying_symbol: 'frxAUDJPY',
+    submarket,
+    underlying_symbol: symbol,
 };
 
 export const dummy_accumulators_proposals = {
@@ -403,7 +410,7 @@ export const dummy_accumulators_proposals = {
         basis: 'stake',
         contract_type: 'ACCU',
         currency: 'USD',
-        symbol: 'frxAUDJPY',
+        symbol,
         multiplier: 30,
     },
 };
@@ -427,13 +434,12 @@ export const getDummyProposalResponseForACCU = time_now => {
             proposal: 1,
             req_id: 32,
             subscribe: 1,
-            symbol: 'frxAUDJPY',
+            symbol,
         },
         msg_type: 'proposal',
         proposal: {
             ticks_history_stats,
             tick_size_barrier,
-            current_ticks_count,
             tick_count,
             max_payout: 20000,
             high_barrier,

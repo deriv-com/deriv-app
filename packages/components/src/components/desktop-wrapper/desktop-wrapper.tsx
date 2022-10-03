@@ -1,7 +1,11 @@
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 import { isDesktop } from '@deriv/shared';
 
-const Desktop = ({ children }: PropsWithChildren<never>) => {
+type TDesktopProps = {
+    children: ReactNode;
+};
+
+const Desktop = ({ children }: TDesktopProps) => {
     if (!isDesktop()) return null;
     return children;
 };

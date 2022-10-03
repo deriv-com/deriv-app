@@ -318,11 +318,6 @@ const DMT5CompareModalContent = ({
     const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) =>
         !has_submitted_personal_details ? toggleCFDPersonalDetailsModal() : openPasswordModal(type_of_account);
 
-    const onSelectRegulated = (type_of_account: { category: string; type: string }) =>
-        poi_poa_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted
-            ? openPersonalDetailsFormOrPasswordForm(type_of_account)
-            : toggleCFDVerificationModal();
-
     const onSelectRealAccount = (item: TFooterButtonData) => {
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
 
@@ -362,11 +357,19 @@ const DMT5CompareModalContent = ({
                 break;
             case 'financial_labuan':
                 setJurisdictionSelectedShortcode('labuan');
-                onSelectRegulated(type_of_account);
+                if (poi_poa_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+                    openPersonalDetailsFormOrPasswordForm(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
                 break;
             case 'financial_maltainvest':
                 setJurisdictionSelectedShortcode('maltainvest');
-                onSelectRegulated(type_of_account);
+                if (poi_poa_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
+                    openPasswordModal(type_of_account);
+                } else {
+                    toggleCFDVerificationModal();
+                }
                 break;
 
             default:

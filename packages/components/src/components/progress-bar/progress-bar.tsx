@@ -6,14 +6,14 @@ import Text from '../text';
 type TRangeFloatZeroToOne = 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1;
 
 type TProgressBarProps = {
+    className?: string;
+    danger_limit?: TRangeFloatZeroToOne;
     label: string;
     value: TRangeFloatZeroToOne;
-    danger_limit?: TRangeFloatZeroToOne;
     warning_limit?: TRangeFloatZeroToOne;
-    className?: string;
 };
 
-const ProgressBar = ({ label, value = 0, danger_limit = 0.2, warning_limit = 0.5, className }: TProgressBarProps) => {
+const ProgressBar = ({ label, value, danger_limit = 0.2, warning_limit = 0.5, className }: TProgressBarProps) => {
     let status: 'danger' | 'warning' | 'normal' = 'normal';
 
     if (value <= danger_limit) {

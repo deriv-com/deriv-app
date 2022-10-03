@@ -82,6 +82,8 @@
             display: flex;
 
             @include mobile {
+                display: inline-grid;
+                grid-template-columns: auto auto;
                 margin: 0 0 1rem;
 
                 .dp2p-avatar {

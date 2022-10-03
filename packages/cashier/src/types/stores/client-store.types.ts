@@ -1,5 +1,5 @@
-import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TMT5LoginAccount } from 'Types';
+import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, GetLimits } from '@deriv/api-types';
+import { TAccountsList, TMT5LoginAccount } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 type TAccountList = Array<TAccount & { title: string }>;
@@ -19,7 +19,7 @@ type TResponseTradingPlatformAccountsList = {
 
 export type TClientStore = {
     account_limits: { daily_transfers?: { [k: string]: { allowed: boolean; available: boolean } } };
-    account_list: TAccountList;
+    account_list: TAccountsList[];
     account_status: GetAccountStatus;
     accounts: { [k: string]: TAccount };
     active_accounts: Array<TActiveAccounts>;
@@ -30,9 +30,9 @@ export type TClientStore = {
     current_currency_type?: string;
     current_fiat_currency?: string;
     email: string;
-    getLimits: () => void;
     has_active_real_account: boolean;
     has_logged_out: boolean;
+    getLimits: () => { get_limits?: GetLimits };
     has_maltainvest_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;

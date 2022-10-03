@@ -41,8 +41,10 @@ export type TMT5LoginAccount = DetailsOfEachMT5Loginid & {
 };
 
 export type TAccountsList = {
-    mt5_login_list: TMt5LoginList;
     account: TAccount;
+    loginid?: string;
+    mt5_login_list: TMt5LoginList;
+    icon?: string;
     idx: string | number;
     is_dark_mode_on: boolean;
 };

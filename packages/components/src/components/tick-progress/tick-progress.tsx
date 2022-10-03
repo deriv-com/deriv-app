@@ -1,10 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type TTick = {
-    is_on?: boolean;
-};
-
 type TTickProgress = {
     className: string;
     columns: number;
@@ -13,7 +9,7 @@ type TTickProgress = {
     size: number;
 };
 
-const Tick = ({ is_on }: TTick) => {
+const Tick = ({ is_on }: { is_on?: boolean }) => {
     return (
         <div
             className={classNames('dc-tick-progress__tick', {

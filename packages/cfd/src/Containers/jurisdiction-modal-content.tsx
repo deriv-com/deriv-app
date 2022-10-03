@@ -131,7 +131,7 @@ const JurisdictionCard = ({
     const getAccountTitle = () => {
         switch (account_type) {
             case 'synthetic':
-                return 'Synthetic';
+                return 'Derived';
             case 'financial':
                 return 'Financial';
             default:
@@ -423,7 +423,7 @@ const JurisdictionModalContent = ({
     };
 
     const ModalFootNote = () => {
-        const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
+        const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';
 
         return (
             <>
@@ -431,7 +431,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
+                                i18n_default_text='Add your Deriv MT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>
@@ -442,7 +442,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
+                                i18n_default_text='Add your Deriv MT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
                                 values={{ account_type: account_type_name, line_break: '\n' }}
                             />
                         </Text>
@@ -462,7 +462,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
+                                i18n_default_text='Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>
@@ -472,7 +472,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
+                                i18n_default_text='Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>

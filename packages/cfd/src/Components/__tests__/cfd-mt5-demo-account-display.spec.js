@@ -100,7 +100,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
 
     const checkAccountCardsRendering = tested_case => {
         const component_testid = 'dt_cfd_demo_accounts_display';
-        const first_account_card = 'Synthetic';
+        const first_account_card = 'Derived';
         const second_account_card = {
             eu: 'CFDs',
             non_eu: 'Financial',

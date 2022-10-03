@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import IdvSubmitComplete from '../idv-submit-complete';
 
-jest.mock('../../../../../Assets/ic-idv-document-pending.svg', () => jest.fn(() => 'IdvDocumentPending'));
+jest.mock('Assets/ic-idv-document-pending.svg', () => jest.fn(() => 'IdvDocumentPending'));
 
 describe('<IdvSubmitComplete/>', () => {
     const mock_props = {

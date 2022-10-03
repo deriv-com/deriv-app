@@ -41,6 +41,8 @@
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-knobs": "^6.4.0",
     "@testing-library/react": "^12.0.0",
+    "@types/react": "^18.0.7",
+    "@types/react-dom": "^18.0.0",
     "babel-loader": "^8.1.0",
     "copy-webpack-plugin": "^9.0.1",
     "copy-webpack-plugin-v6": "npm:copy-webpack-plugin@6",
@@ -60,6 +62,7 @@
     "style-loader": "^1.2.1",
     "svg-sprite-loader": "^5.2.1",
     "svgo-loader": "^3.0.0",
+    "typescript": "^4.6.3",
     "webpack": "^5.46.0",
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-cli": "^4.7.2"

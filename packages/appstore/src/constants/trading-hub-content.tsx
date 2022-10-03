@@ -21,7 +21,13 @@ export const trading_hub_contents: TTradingHubContents = {
     },
     step2: {
         component: (
-            <StaticDashboard is_cfd_text_blurry is_options_text_blurry is_platformlauncher_blurry is_button_animated />
+            <StaticDashboard
+                is_cfd_text_blurry
+                is_options_text_blurry
+                is_platformlauncher_blurry
+                is_button_animated
+                is_options_description_blurry
+            />
         ),
         footer_header: localize('Trading accounts'),
         footer_text: localize(

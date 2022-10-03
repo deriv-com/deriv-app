@@ -54,6 +54,9 @@
 
             &--underlined {
                 text-decoration: underline;
+                &--blurry {
+                    opacity: 0.2;
+                }
             }
 
             &--animated {

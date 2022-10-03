@@ -117,7 +117,7 @@ const StaticDashboard = ({
                                                     'static-dashboard-wrapper__header-compare-accounts',
                                                     {
                                                         'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                            is_cfd_description_blurry,
+                                                            is_cfd_description_blurry || is_cfd_text_blurry,
                                                     }
                                                 )}
                                             />,
@@ -142,7 +142,7 @@ const StaticDashboard = ({
                                             weight='bold'
                                             className={classNames('static-dashboard-wrapper__header--underlined', {
                                                 'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                    is_cfd_description_blurry,
+                                                    is_cfd_description_blurry || is_cfd_text_blurry,
                                             })}
                                         />,
                                     ]}
@@ -155,7 +155,7 @@ const StaticDashboard = ({
                                     weight='bold'
                                     className={classNames('static-dashboard-wrapper__header', {
                                         'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                            is_cfd_description_blurry,
+                                            is_cfd_description_blurry || is_cfd_text_blurry,
                                     })}
                                 >
                                     {localize('Compare accounts')}
@@ -306,13 +306,19 @@ const StaticDashboard = ({
                                             key={0}
                                             size='xs'
                                             color='red'
-                                            className='static-dashboard-wrapper__header--underlined'
+                                            className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                    is_options_description_blurry,
+                                            })}
                                         />,
                                         <Text
                                             key={1}
                                             size='xs'
                                             color='red'
-                                            className='static-dashboard-wrapper__header--underlined'
+                                            className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                    is_options_description_blurry,
+                                            })}
                                         />,
                                     ]}
                                 />

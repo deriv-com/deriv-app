@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
-import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
+import CFDMT5DemoAccountDisplay from '../cfd-mt5-demo-account-display';
 
 const mock_connect_props = {
     dxtrade_tokens: {
@@ -17,7 +17,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
 }));
 
-describe('<CFDDemoAccountDisplay />', () => {
+describe('<CFDMT5DemoAccountDisplay />', () => {
     const TESTED_CASES = {
         EU: 'eu',
         LOADING: 'loading',
@@ -126,7 +126,7 @@ describe('<CFDDemoAccountDisplay />', () => {
     };
 
     it('should render Synthetic & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
-        render(<CFDDemoAccountDisplay {...props} />);
+        render(<CFDMT5DemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -140,7 +140,7 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should render Synthetic & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
+        render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
@@ -149,7 +149,7 @@ describe('<CFDDemoAccountDisplay />', () => {
     it('should render a CFDs card only with enabled "Add demo account" button on DMT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
         props.standpoint.iom = true;
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDDemoAccountDisplay {...props} is_eu />);
+        render(<CFDMT5DemoAccountDisplay {...props} is_eu />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         const add_demo_account_button = screen.getByRole('button', { name: /add demo account/i });
@@ -161,14 +161,14 @@ describe('<CFDDemoAccountDisplay />', () => {
 
     it('should render a CFDs card only without "Add demo account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} is_eu_country />);
+        render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} is_eu_country />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
     it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
-        render(<CFDDemoAccountDisplay {...props} platform='dxtrade' />);
+        render(<CFDMT5DemoAccountDisplay {...props} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -190,7 +190,7 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should render Synthetic & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
+        render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
@@ -198,7 +198,7 @@ describe('<CFDDemoAccountDisplay />', () => {
 
     it('should render 1 open account with an enabled "Top up" ("Fund top up" for Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
         props.current_list['mt5.demo.financial@p01_ts02'] = mt5_demo_financial_account;
-        const { container, rerender } = render(<CFDDemoAccountDisplay {...props} />);
+        const { container, rerender } = render(<CFDMT5DemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.getAllByRole('button', { name: /add demo account/i }).length).toBe(1);
@@ -214,7 +214,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
 
         rerender(
-            <CFDDemoAccountDisplay
+            <CFDMT5DemoAccountDisplay
                 {...props}
                 platform='dxtrade'
                 current_list={{
@@ -232,7 +232,7 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should disable all "Add demo account" buttons when has_cfd_account_error=true', () => {
-        render(<CFDDemoAccountDisplay {...props} has_cfd_account_error />);
+        render(<CFDMT5DemoAccountDisplay {...props} has_cfd_account_error />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -241,7 +241,7 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should show loading when is_loading=true', () => {
-        render(<CFDDemoAccountDisplay {...props} is_loading />);
+        render(<CFDMT5DemoAccountDisplay {...props} is_loading />);
 
         expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
         checkAccountCardsRendering(TESTED_CASES.LOADING);

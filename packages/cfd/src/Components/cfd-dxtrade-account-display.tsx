@@ -2,10 +2,9 @@ import React from 'react';
 import { CFDAccountCard } from 'Components/cfd-account-card';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { general_messages } from 'Constants/cfd-shared-strings';
-import { getAccountListKey, getCFDAccountKey } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TTradingPlatformAccounts, TCFDPlatform, TExistingData } from 'Components/props.types';
+import { TTradingPlatformAccounts, TCFDPlatform } from 'Components/props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 import specifications from 'Constants/cfd-specifications';
 
@@ -80,6 +79,7 @@ const CFDDxtradeAccountDisplay = ({
     const acc_type = 'dxtrade';
     const category = is_demo_tab ? 'demo' : 'real';
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+
     const current_list_index =
         Object.keys(current_list).find(key => key.startsWith(`${platform}.${category}.${acc_type}`)) || '';
 
@@ -105,18 +105,12 @@ const CFDDxtradeAccountDisplay = ({
         }
     };
 
-    const onClickFund = (account: TExistingData) => {
+    const onClickFund = () => {
         if (is_demo_tab) {
             return openAccountTransfer(current_list[current_list_index], { category: 'demo', type: 'all' });
         }
-        return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
-            category: account.account_type as keyof TOpenAccountTransferMeta,
-            type: getCFDAccountKey({
-                market_type: account.market_type,
-                sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
-                platform,
-            }),
-        });
+
+        return openAccountTransfer(current_list[current_list_index], { category: 'real', type: 'all' });
     };
 
     return (
@@ -137,7 +131,7 @@ const CFDDxtradeAccountDisplay = ({
                         is_logged_in={is_logged_in}
                         is_virtual={is_virtual}
                         key='cfd'
-                        onClickFund={() => onClickFund}
+                        onClickFund={() => onClickFund()}
                         onPasswordManager={openPasswordManager}
                         onSelectAccount={() => onSelectCfdAccount()}
                         platform={platform}

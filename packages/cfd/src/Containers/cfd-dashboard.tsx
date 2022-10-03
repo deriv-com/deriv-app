@@ -32,7 +32,7 @@ import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
-import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
+import CFDMT5RealAccountDisplay from '../Components/cfd-mt5-real-account-display';
 import CFDDxtradeAccountDisplay from 'Components/cfd-dxtrade-account-display';
 
 declare module 'react' {
@@ -319,7 +319,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const isDxtradeAllCardVisible = () => {
-        const { platform, landing_companies, is_logged_in } = props;
+        const { platform, landing_companies } = props;
 
         return isLandingCompanyEnabled({
             landing_companies,
@@ -529,7 +529,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 />
                                             )}
                                             {platform === CFD_PLATFORMS.MT5 && (
-                                                <CFDRealAccountDisplay
+                                                <CFDMT5RealAccountDisplay
                                                     is_accounts_switcher_on={is_accounts_switcher_on}
                                                     is_eu={is_eu}
                                                     is_eu_country={is_eu_country}

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
-import { CFDRealAccountDisplay } from '../cfd-real-account-display';
+import CFDMT5RealAccountDisplay from '../cfd-mt5-real-account-display';
 
 const mock_connect_props = {
     dxtrade_tokens: {
@@ -17,7 +17,7 @@ jest.mock('Stores/connect.js', () => ({
     connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
 }));
 
-describe('<CFDRealAccountDisplay />', () => {
+describe('<CFDMT5RealAccountDisplay />', () => {
     const TESTED_CASES = {
         EU: 'eu',
         NON_EU_DMT5: 'non_eu_dmt5',
@@ -213,7 +213,7 @@ describe('<CFDRealAccountDisplay />', () => {
     };
 
     it('should render Synthetic & Financial cards with enabled buttons on DMT5 when is_logged_in=true & is_eu=false', () => {
-        render(<CFDRealAccountDisplay {...props} />);
+        render(<CFDMT5RealAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
@@ -227,7 +227,7 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should render Synthetic & Financial cards without "Add real account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} />);
+        render(<CFDMT5RealAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
@@ -236,7 +236,12 @@ describe('<CFDRealAccountDisplay />', () => {
     it('should render a CFDs card only with enabled "Add real account" button on DMT5 when is_logged_in=true, should_enable_add_button=true & is_eu=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(
-            <CFDRealAccountDisplay {...props} is_eu should_enable_add_button account_settings={account_settings_eu} />
+            <CFDMT5RealAccountDisplay
+                {...props}
+                is_eu
+                should_enable_add_button
+                account_settings={account_settings_eu}
+            />
         );
 
         checkAccountCardsRendering(TESTED_CASES.EU);
@@ -249,14 +254,14 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render a CFDs card only without "Add real account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
+        render(<CFDMT5RealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
     it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
-        render(<CFDRealAccountDisplay {...props} platform='dxtrade' />);
+        render(<CFDMT5RealAccountDisplay {...props} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
@@ -278,7 +283,7 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should render Synthetic & Financial cards without "Add real account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
+        render(<CFDMT5RealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
@@ -286,7 +291,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render 1 open account with an enabled "Top up" ("Fund transfer" in Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
         props.current_list['mt5.real.financial@p01_ts01'] = mt5_real_financial_account;
-        const { rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
+        const { rerender } = render(<CFDMT5RealAccountDisplay {...props} has_real_account={true} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(1);
@@ -302,7 +307,7 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
 
         rerender(
-            <CFDRealAccountDisplay
+            <CFDMT5RealAccountDisplay
                 {...props}
                 platform='dxtrade'
                 current_list={{
@@ -320,7 +325,7 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should show "Switch to your real account", which opens Account Switcher, on Deriv X cards when has_real_account=true & is_virtual=true', () => {
-        render(<CFDRealAccountDisplay {...props} is_virtual platform='dxtrade' />);
+        render(<CFDMT5RealAccountDisplay {...props} is_virtual platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
@@ -333,7 +338,7 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should disable all "Add real account" buttons when has_cfd_account_error=true', () => {
-        render(<CFDRealAccountDisplay {...props} has_cfd_account_error />);
+        render(<CFDMT5RealAccountDisplay {...props} has_cfd_account_error />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });

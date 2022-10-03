@@ -157,7 +157,6 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
 
-    // TODO
     const type_label =
         getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
 

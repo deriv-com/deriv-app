@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deriv/shared';
-import specifications, { TSpecifications } from '../Constants/cfd-specifications';
+import specifications from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -28,7 +28,7 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
 
-type TCFDRealAccountDisplayProps = {
+type TCFDMT5RealAccountDisplayProps = {
     has_real_account: boolean;
     is_accounts_switcher_on: boolean;
     is_eu: boolean;
@@ -63,7 +63,7 @@ type TCFDRealAccountDisplayProps = {
     should_enable_add_button?: boolean;
 };
 
-const CFDRealAccountDisplay = ({
+const CFDMT5RealAccountDisplay = ({
     has_real_account,
     is_accounts_switcher_on,
     is_eu,
@@ -88,19 +88,20 @@ const CFDRealAccountDisplay = ({
     residence,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
-}: TCFDRealAccountDisplayProps) => {
+}: TCFDMT5RealAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         const is_australian = residence === 'au';
         if (is_australian) {
-            return specifications[platform as 'mt5'].au_real_financial_specs;
+            return specifications.mt5.au_real_financial_specs;
         }
         if (should_show_eu) {
-            return specifications[platform as 'mt5'].eu_real_financial_specs;
+            return specifications.mt5.eu_real_financial_specs;
         }
-        return specifications[platform as 'mt5'].real_financial_specs;
+        return specifications.mt5.real_financial_specs;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealAccount = (type: string) => {
@@ -112,16 +113,6 @@ const CFDRealAccountDisplay = ({
     };
 
     const onClickFundReal = (account: TExistingData) => {
-        if (platform === 'dxtrade') {
-            return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
-                category: account.account_type as keyof TOpenAccountTransferMeta,
-                type: getCFDAccountKey({
-                    market_type: account.market_type,
-                    sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
-                    platform,
-                }),
-            });
-        }
         return openAccountTransfer(account, {
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
@@ -152,13 +143,7 @@ const CFDRealAccountDisplay = ({
     };
 
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
-        // We need to check enabled property for DXTRADE accounts only.
-        // TODO: This condition should be removed after separating the DXTRADE and MT5 component.
-        const should_be_enabled = (list_item: TCurrentList) =>
-            platform === 'dxtrade' ? list_item.enabled === 1 : true;
-        const acc = Object.keys(current_list).some(
-            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
-        )
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((_acc, cur) => {
@@ -193,7 +178,7 @@ const CFDRealAccountDisplay = ({
             onClickFund={onClickFundReal}
             platform={platform}
             descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
-            specs={specifications[platform as 'mt5'].real_synthetic_specs}
+            specs={specifications.mt5.real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
@@ -249,4 +234,4 @@ const CFDRealAccountDisplay = ({
     );
 };
 
-export { CFDRealAccountDisplay };
+export default CFDMT5RealAccountDisplay;

@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import specifications, { TSpecifications } from '../Constants/cfd-specifications';
+import specifications from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
@@ -22,7 +22,7 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-type TCFDDemoAccountDisplayProps = {
+type TCFDMT5DemoAccountDisplayProps = {
     is_eu: boolean;
     is_eu_country: boolean;
     has_maltainvest_account: boolean;
@@ -64,7 +64,7 @@ const CFDMT5DemoAccountDisplay = ({
     openPasswordManager,
     residence,
     toggleMT5TradeModal,
-}: TCFDDemoAccountDisplayProps) => {
+}: TCFDMT5DemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const openAccountTransferList = (type: 'synthetic' | 'financial') => {
@@ -98,16 +98,17 @@ const CFDMT5DemoAccountDisplay = ({
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         if (residence === 'au') {
-            return specifications[platform as 'mt5'].au_real_financial_specs;
+            return specifications.mt5.au_real_financial_specs;
         }
         if (should_show_eu) {
-            return specifications[platform as 'mt5'].eu_real_financial_specs;
+            return specifications.mt5.eu_real_financial_specs;
         }
-        return specifications[platform as 'mt5'].real_financial_specs;
+        return specifications.mt5.real_financial_specs;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_logged_in, is_eu, is_eu_country, residence, platform]);
 
     return (
-        <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
+        <div>
             {is_loading ? (
                 <Loading />
             ) : (
@@ -142,7 +143,7 @@ const CFDMT5DemoAccountDisplay = ({
                             descriptor={localize(
                                 'Trade CFDs on our synthetic indices that simulate real-world market movements.'
                             )}
-                            specs={specifications[platform as 'mt5'].real_synthetic_specs}
+                            specs={specifications.mt5.real_synthetic_specs}
                             has_banner
                             toggleMT5TradeModal={toggleMT5TradeModal}
                         />

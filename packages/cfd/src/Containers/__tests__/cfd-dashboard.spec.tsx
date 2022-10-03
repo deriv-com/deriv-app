@@ -265,7 +265,7 @@ describe('<CFDDashboard />', () => {
                 },
                 sub_account_type: 'financial',
             },
-            'dxtrade.real.synthetic@synthetic': {
+            'dxtrade.real.dxtrade@all': {
                 account_id: 'DXR1000',
                 account_type: 'real',
                 balance: 0,
@@ -455,12 +455,11 @@ describe('<CFDDashboard />', () => {
         expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(1);
         expect(window.location.pathname).toBe(routes.cashier_acc_transfer);
 
-        // TODO
-        // window.location = { pathname: routes.dxtrade, hash: '' } as (string | Location) & Location;
-        // renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.DXTRADE }, rerender);
-        // fireEvent.click(screen.getByRole('button', { name: /fund transfer/i }));
-        // expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(2);
-        // expect(window.location.pathname).toBe(routes.cashier_acc_transfer);
+        window.location = { pathname: routes.dxtrade, hash: '' } as (string | Location) & Location;
+        renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.DXTRADE }, rerender);
+        fireEvent.click(screen.getByRole('button', { name: /fund transfer/i }));
+        expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(2);
+        expect(window.location.pathname).toBe(routes.cashier_acc_transfer);
 
         renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.MT5 }, rerender);
         fireEvent.click(screen.getByText(demo_tab_name));

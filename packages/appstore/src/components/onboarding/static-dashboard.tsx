@@ -8,13 +8,13 @@ import StaticPlatformLauncher from './static-platform-launcher';
 import StaticAppLauncher from './static-applauncher';
 
 import './static-dashboard.scss';
-import { getStorybook } from '@storybook/react';
 
 type TStaticDashboard = {
     loginid?: string;
     is_grey?: boolean;
     currency?: string;
     has_account?: boolean;
+    is_last_step?: boolean;
     derived_amount?: string;
     is_get_blurry?: boolean;
     financial_amount?: string;
@@ -29,6 +29,8 @@ type TStaticDashboard = {
     is_cfd_text_blurry?: boolean;
     is_options_item_blurry?: boolean;
     is_options_text_blurry?: boolean;
+    is_derivx_last_step?: boolean;
+    is_financial_last_step?: boolean;
     has_applauncher_account?: boolean;
     is_cfd_description_blurry?: boolean;
     is_platformlauncher_blurry?: boolean;
@@ -40,6 +42,7 @@ const StaticDashboard = ({
     is_grey,
     currency,
     has_account,
+    is_last_step,
     is_get_blurry,
     is_icon_blurry,
     is_topup_blurry,
@@ -51,6 +54,8 @@ const StaticDashboard = ({
     is_button_animated,
     is_cfd_item_blurry,
     is_cfd_text_blurry,
+    is_derivx_last_step,
+    is_financial_last_step,
     is_options_item_blurry,
     is_options_text_blurry,
     has_applauncher_account,
@@ -65,19 +70,19 @@ const StaticDashboard = ({
         { text: 'Options', value: 'Options' },
     ];
 
-    const [index, setIndex] = React.useState(1);
+    const [index, setIndex] = React.useState(0);
 
-    // React.useEffect(() => {
-    //     const changeIndex = setInterval(() => {
-    //         if (index === 0) {
-    //             setIndex(1);
-    //         } else {
-    //             setIndex(0);
-    //         }
-    //     }, 5000);
+    React.useEffect(() => {
+        const changeIndex = setInterval(() => {
+            if (index === 0) {
+                setIndex(1);
+            } else {
+                setIndex(0);
+            }
+        }, 5000);
 
-    //     return () => clearInterval(changeIndex);
-    // }, [index]);
+        return () => clearInterval(changeIndex);
+    }, [index]);
     return (
         <div className='static-dashboard'>
             <div className='static-dashboard-wrapper'>
@@ -179,7 +184,12 @@ const StaticDashboard = ({
                                 />
                                 {has_account && (
                                     <div className='static-dashboard-wrapper__body--add-button'>
-                                        <Icon icon='icAppstoreAddRounded' width='24' height='24' />
+                                        <Icon
+                                            icon='icAppstoreAddRounded'
+                                            width='24'
+                                            height='24'
+                                            className='Add-Rounded'
+                                        />
                                         <Text size='xs' className='static-dashboard-wrapper__body--add-button-text'>
                                             {localize('More derived accounts')}
                                         </Text>
@@ -196,6 +206,7 @@ const StaticDashboard = ({
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}
+                                    is_last_step={is_last_step}
                                     is_get_blurry={is_get_blurry}
                                     is_icon_blurry={is_icon_blurry}
                                     is_trade_blurry={is_trade_blurry}
@@ -204,10 +215,17 @@ const StaticDashboard = ({
                                     is_trade_animated={is_trade_animated}
                                     is_topup_animated={is_topup_animated}
                                     is_button_animated={is_button_animated}
+                                    is_derivx_last_step={is_derivx_last_step}
+                                    is_financial_last_step={is_financial_last_step}
                                 />
                                 {has_account && (
                                     <div className='static-dashboard-wrapper__body--add-button'>
-                                        <Icon icon='icAppstoreAddRounded' width='24' height='24' />
+                                        <Icon
+                                            icon='icAppstoreAddRounded'
+                                            width='24'
+                                            height='24'
+                                            className='Add-Rounded'
+                                        />
                                         <Text size='xs' className='static-dashboard-wrapper__body--add-button-text'>
                                             {localize('More [account name] accounts')}
                                         </Text>
@@ -223,6 +241,7 @@ const StaticDashboard = ({
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}
+                                    is_last_step={is_last_step}
                                     is_get_blurry={is_get_blurry}
                                     is_icon_blurry={is_icon_blurry}
                                     is_topup_blurry={is_topup_blurry}
@@ -231,6 +250,8 @@ const StaticDashboard = ({
                                     is_trade_animated={is_trade_animated}
                                     is_topup_animated={is_topup_animated}
                                     is_button_animated={is_button_animated}
+                                    is_derivx_last_step={is_derivx_last_step}
+                                    is_financial_last_step={is_financial_last_step}
                                 />
                             </div>
                         </div>
@@ -321,9 +342,17 @@ const StaticDashboard = ({
                                             <StaticAppLauncher icon_type={'Bitcoin'} />
                                             <StaticAppLauncher icon_type={'Ethereum'} />
                                             <StaticAppLauncher icon_type={'Litecoin'} />
+                                            <div className='Add-Square'>
+                                                <Icon icon='icAppstoreAddSquare' width='36' height='36' />
+                                            </div>
                                         </React.Fragment>
                                     ) : (
-                                        <StaticAppLauncher icon_type={'USD'} is_grey />
+                                        <div className={classNames('static-dashboard-wrapper__body--with-add')}>
+                                            <StaticAppLauncher icon_type={'USD'} is_grey />
+                                            <div className='Add-Square'>
+                                                <Icon icon='icAppstoreAddSquare' width='36' height='36' />
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             )}

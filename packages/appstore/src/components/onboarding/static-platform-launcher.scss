@@ -1,8 +1,11 @@
 .static-platform-launcher {
     &--grey {
         background: var(--general-section-1);
-        width: 90%;
-        margin-left: 1.4rem;
+        width: 100%;
+        @include mobile {
+            width: 90%;
+            margin-left: 1.4rem;
+        }
     }
 
     &__container {
@@ -48,7 +51,10 @@
         margin-bottom: 2rem;
 
         @include mobile {
+            width: auto;
+            margin-right: 1rem;
             margin-left: auto;
+            margin-top: 2rem;
         }
     }
 }

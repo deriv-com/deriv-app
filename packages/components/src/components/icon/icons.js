@@ -1,6 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
 import './appstore/ic-appstore-add-rounded.svg';
+import './appstore/ic-appstore-add-square.svg';
 import './appstore/ic-appstore-add.svg';
 import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';

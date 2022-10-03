@@ -16,6 +16,7 @@ type TStaticCFDAccountManager = {
     description?: string;
     is_animated?: boolean;
     has_account?: boolean;
+    is_last_step?: boolean;
     derived_amount?: string;
     is_icon_blurry?: boolean;
     is_item_blurry?: boolean;
@@ -27,7 +28,9 @@ type TStaticCFDAccountManager = {
     is_topup_animated?: boolean;
     is_trade_animated?: boolean;
     is_button_animated?: boolean;
+    is_derivx_last_step?: boolean;
     platform: TPlatform | 'options';
+    is_financial_last_step?: boolean;
 };
 
 const StaticCFDAccountManager = ({
@@ -38,6 +41,7 @@ const StaticCFDAccountManager = ({
     platform,
     has_account,
     description,
+    is_last_step,
     is_icon_blurry,
     is_get_blurry,
     is_item_blurry,
@@ -48,6 +52,8 @@ const StaticCFDAccountManager = ({
     is_trade_animated,
     is_topup_animated,
     is_button_animated,
+    is_derivx_last_step,
+    is_financial_last_step,
 }: TStaticCFDAccountManager) => {
     return (
         <div className='static-cfd-account-manager'>
@@ -57,7 +63,9 @@ const StaticCFDAccountManager = ({
                         <WalletIcon
                             icon='Financial'
                             size={64}
-                            className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                            className={classNames('', {
+                                'static-cfd-account-manager__icon--blurry': is_icon_blurry || is_last_step,
+                            })}
                         />
                     ) : (
                         <WalletIcon
@@ -70,24 +78,29 @@ const StaticCFDAccountManager = ({
                     <WalletIcon
                         icon='DerivX'
                         size={58}
-                        className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        className={classNames('', {
+                            'static-cfd-account-manager__icon--blurry': is_icon_blurry || is_last_step,
+                        })}
                     />
                 )}
                 {platform === 'options' && (
                     <WalletIcon
                         icon='Options'
                         size={58}
-                        className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        className={is_item_blurry || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}
             </div>
             <div className='static-cfd-account-manager__details'>
-                <Text size='xs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                <Text size='xs' weight='bold' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
                     {appname}
                 </Text>
                 {has_account ? (
                     <>
-                        <Text size='xs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                        <Text
+                            size='xs'
+                            color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}
+                        >{`${formatMoney(
                             currency,
                             type === 'financial' ? financial_amount : derived_amount,
                             true
@@ -128,7 +141,8 @@ const StaticCFDAccountManager = ({
                     <Button
                         primary_light
                         className={classNames('', {
-                            'static-cfd-account-manager__buttons--animated': is_button_animated,
+                            'static-cfd-account-manager__buttons--animated':
+                                is_button_animated || is_financial_last_step || is_derivx_last_step,
                             'static-cfd-account-manager__buttons-get--blurry': is_get_blurry,
                         })}
                     >

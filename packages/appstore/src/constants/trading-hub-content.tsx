@@ -67,6 +67,9 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_cfd_text_blurry
                 is_options_text_blurry
                 has_applauncher_account
+                is_last_step
+                is_derivx_last_step
+                is_financial_last_step
             />
         ),
         footer_header: localize('Top-up your account'),
@@ -86,6 +89,9 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_cfd_text_blurry
                 is_options_text_blurry
                 has_applauncher_account
+                is_last_step
+                is_derivx_last_step
+                is_financial_last_step
             />
         ),
         footer_header: localize('Start trading'),

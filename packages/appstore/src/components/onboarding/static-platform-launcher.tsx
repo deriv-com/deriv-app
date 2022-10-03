@@ -49,7 +49,7 @@ const PlatformLauncher = ({
                     </Text>
                 </div>
                 {isMobile() && has_applauncher_account && (
-                    <Button primary className='static-platform-launcher__container__trade-button'>
+                    <Button primary className='static-platform-launcher__trade-button'>
                         <Localize i18n_default_text='Trade' />
                     </Button>
                 )}

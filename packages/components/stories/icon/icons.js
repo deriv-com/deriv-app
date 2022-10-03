@@ -4,6 +4,7 @@ export const icons =
 {
     'appstore': [
         'IcAppstoreAddRounded',
+        'IcAppstoreAddSquare',
         'IcAppstoreAdd',
         'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',

@@ -84,16 +84,20 @@ const CFDDxtradeAccountDisplay = ({
         Object.keys(current_list).find(key => key.startsWith(`${platform}.${category}.${acc_type}`)) || '';
 
     const existing_accounts_data = () => {
-        const acc = Object.keys(current_list).some(
-            key => key.startsWith(`${platform}.${category}.${acc_type}`) && current_list[key].enabled === 1
-        )
-            ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.${category}.${acc_type}`))
-                  .reduce((_acc, cur) => {
-                      _acc.push(current_list[cur]);
-                      return _acc;
-                  }, [] as DetailsOfEachMT5Loginid[])
-            : undefined;
+        const keyword = `${platform}.${category}.${acc_type}`;
+
+        const accounts = Object.keys(current_list).some(
+            key => key.startsWith(keyword) && current_list[key].enabled === 1
+        );
+
+        const filter_accounts = Object.keys(current_list)
+            .filter(key => key.startsWith(`${platform}.${category}.${acc_type}`))
+            .reduce((_acc, cur) => {
+                _acc.push(current_list[cur]);
+                return _acc;
+            }, [] as DetailsOfEachMT5Loginid[]);
+
+        const acc = accounts ? filter_accounts : undefined;
         return acc;
     };
 

@@ -33,6 +33,7 @@
 
         &--animated {
             animation: triggerAnimation 3s linear infinite;
+            box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
         }
 
         &-topup {
@@ -45,6 +46,7 @@
 
             &--animated {
                 animation: triggerAnimation 3s linear infinite;
+                box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
             }
         }
 
@@ -58,6 +60,7 @@
 
             &--animated {
                 animation: triggerAnimation 3s linear infinite;
+                box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
             }
         }
 

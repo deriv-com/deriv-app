@@ -501,7 +501,7 @@ const AccountSwitcher = props => {
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
-        return account.is_virtual && account.balance < account_init_balance;
+        return account.is_virtual && account.balance !== account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {
@@ -902,7 +902,10 @@ const AccountSwitcher = props => {
                                     >
                                         <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {/* TODO: Remove the below condition once Deriv X update is released */}
+                                            {account.title === localize('Derived')
+                                                ? localize('Synthetic')
+                                                : account.title}
                                         </Text>
                                         <Button
                                             onClick={() => openDXTradeRealAccount(account.type)}

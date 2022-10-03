@@ -253,6 +253,7 @@ const CFDPersonalDetailsForm = ({
                 })
             }
             onSubmit={onSubmitForm}
+            validateOnMount
         >
             {({
                 handleSubmit,
@@ -470,7 +471,6 @@ const CFDPersonalDetailsForm = ({
                                                                 handleBlur={handleBlur}
                                                                 error={account_opening_reason_error}
                                                                 list_portal_id='modal_root'
-                                                                test_id='account_opening_reason'
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -504,15 +504,7 @@ const CFDPersonalDetailsForm = ({
                                     {form_error && <FormSubmitErrorMessage message={form_error} />}
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
-                                        is_disabled={
-                                            isSubmitting ||
-                                            !isValid ||
-                                            Object.keys(errors).length > 0 ||
-                                            !values.citizen ||
-                                            !values.place_of_birth ||
-                                            !values.tax_residence ||
-                                            !values.account_opening_reason
-                                        }
+                                        is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={() => handleCancel(values)}

@@ -42,7 +42,7 @@ describe('CurrencyUtils', () => {
         });
 
         it('works when exclude currency', () => {
-            expect(CurrencyUtils.formatMoney('USD', '123.55', 1)).to.eq('123.55');
+            expect(CurrencyUtils.formatMoney('USD', '123.55', true)).to.eq('123.55');
         });
     });
 

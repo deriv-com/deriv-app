@@ -1,7 +1,7 @@
 import { getPropertyValue, deepFreeze } from '../object';
 
 export type TCurrenciesConfig = {
-    [k: string]: {
+    [key: string]: {
         fractional_digits: number;
         is_deposit_suspended?: 0 | 1;
         is_suspended?: 0 | 1;
@@ -9,14 +9,14 @@ export type TCurrenciesConfig = {
         name?: string;
         stake_default?: number;
         transfer_between_accounts?: {
-            fees?: { [k: string]: number };
+            fees?: { [key: string]: number };
             limits: {
                 max?: number;
                 min: number;
-                [k: string]: unknown;
+                [key: string]: unknown;
             } | null;
-            limits_dxtrade?: { [k: string]: unknown };
-            limits_mt5?: { [k: string]: unknown };
+            limits_dxtrade?: { [key: string]: unknown };
+            limits_mt5?: { [key: string]: unknown };
         };
         type: string;
     };
@@ -69,7 +69,7 @@ export const getFormattedText = (number: number, currency: string) => {
 export const formatMoney = (
     currency_value: string,
     amount: number | string,
-    exclude_currency?: number,
+    exclude_currency?: boolean,
     decimals = 0,
     minimumFractionDigits = 0
 ) => {

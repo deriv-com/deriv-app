@@ -32,7 +32,7 @@ const MyProfileDetailsTable = () => {
                         </Text>
                         <Text color='prominent' size='xs' weight='bold'>
                             <Money
-                                amount={`${general_store.advertiser_available_limit}`}
+                                amount={general_store.advertiser_available_limit}
                                 currency={general_store.client.currency}
                                 show_currency
                             />

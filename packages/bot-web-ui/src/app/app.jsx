@@ -13,8 +13,8 @@ import { setWebsocket } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
-import './app.scss';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import './app.scss';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;

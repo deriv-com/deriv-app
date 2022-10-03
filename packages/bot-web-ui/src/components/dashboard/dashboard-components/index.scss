@@ -8,6 +8,7 @@
     .run-panel__container {
         height: calc(100vh - 16.6rem) !important;
         position: unset !important;
+        // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
         transition: all 0.4s;
         margin-top: 1rem;

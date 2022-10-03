@@ -1,25 +1,25 @@
 import React from 'react';
-import { Tabs, Tab } from '@deriv/components';
+import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
-import DashboardComponents from './dashboard-components';
+import DashboardComponent from './dashboard-component';
 import ReactJoyride from 'react-joyride';
 import { DBOT_ONBOARDING } from './joyride-config';
-import RunStrategy from './dashboard-components/run-strategy';
+import RunStrategy from './dashboard-component/run-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
 import classNames from 'classnames';
 
-interface DashboardProps {
+type TDashboard = {
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
     toggleStrategyModal: () => void;
     is_drawer_open: boolean;
-}
+};
 
-const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: DashboardProps) => {
+const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: TDashboard) => {
     const [tour_run, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -34,11 +34,11 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                     <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
                     <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
                         {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
-                        <Tab icon='IcDashboardComponentTab' label={localize('Dashboard')}>
-                            <DashboardComponents />
-                        </Tab>
-                        <Tab icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
-                        <Tab
+                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
+                            <DashboardComponent />
+                        </div>
+                        <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
+                        <div
                             icon='IcQuickStrategyIcon'
                             label={localize('Quick Strategy')}
                             id='id-quick-strategy'
@@ -51,15 +51,15 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                             >
                                 <QuickStrategy />
                             </div>
-                        </Tab>
-                        <Tab icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
+                        </div>
+                        <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <div className='dashboard__chart-wrapper'>
                                 <Chart />
                             </div>
-                        </Tab>
-                        <Tab icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
+                        </div>
+                        <div icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
                             <div>{localize('Under Developments')}</div>
-                        </Tab>
+                        </div>
                     </Tabs>
                 </div>
             </div>

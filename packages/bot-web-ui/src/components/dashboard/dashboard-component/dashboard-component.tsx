@@ -11,7 +11,7 @@ type TDashboard = {
     is_info_panel_visible: boolean;
 };
 
-const Dashboard = ({ is_info_panel_visible }: TDashboard) => {
+const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => {
     return (
         <div className='tab__dashboard'>
             <div className='tab__dashboard__content'>
@@ -44,4 +44,4 @@ const Dashboard = ({ is_info_panel_visible }: TDashboard) => {
 
 export default connect(({ dashboard }: RootStore) => ({
     is_info_panel_visible: dashboard.is_info_panel_visible,
-}))(Dashboard);
+}))(DashboardComponent);

@@ -25,7 +25,7 @@ const Money = ({
 
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
     const value = has_sign || should_format ? Math.abs(Number(amount)) : amount;
-    const final_amount = should_format ? formatMoney(currency, value, true) : value;
+    const final_amount = should_format ? formatMoney(currency, value, true, 0, 0) : value;
 
     return (
         <React.Fragment>

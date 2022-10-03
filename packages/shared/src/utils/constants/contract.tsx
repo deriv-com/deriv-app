@@ -12,7 +12,18 @@ export const getLocalizedBasis = () => ({
  * components can be undef or an array containing any of: 'start_date', 'barrier', 'last_digit'
  *     ['duration', 'amount'] are omitted, as they're available in all contract types
  */
-export const getContractTypesConfig = symbol => ({
+type TContractTypesConfig = {
+    title: string;
+    trade_types: string[];
+    basis: string[];
+    components: string[];
+    barrier_count?: number;
+    config?: { hide_duration: boolean };
+};
+
+type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
+
+export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
         title: localize('Rise/Fall'),
         trade_types: ['CALL', 'PUT'],
@@ -340,7 +351,8 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-export const getSupportedContracts = is_high_low => ({
+type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+export const getSupportedContracts = (is_high_low?: boolean) => ({
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -399,17 +411,20 @@ export const getSupportedContracts = is_high_low => ({
     },
 });
 
-export const getContractConfig = is_high_low => ({
+export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
-};
+/*
+// TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
+the difference between these two functions is just the property they return. (name/position)
+*/
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) =>
+    getContractConfig(is_high_low)[type].name;
 
-export const getContractTypePosition = (type, is_high_low = false) =>
-    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top';
+export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>
+    getContractConfig(is_high_low)[type].position || 'top';
 
-export const isCallPut = trade_type =>
+export const isCallPut = (trade_type: 'rise_fall' | 'rise_fall_equal' | 'high_low'): boolean =>
     trade_type === 'rise_fall' || trade_type === 'rise_fall_equal' || trade_type === 'high_low';

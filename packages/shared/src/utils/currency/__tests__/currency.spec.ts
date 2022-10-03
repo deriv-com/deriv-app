@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import * as CurrencyUtils from '../currency';
+import { TCurrenciesConfig } from '../currency';
 
 describe('CurrencyUtils', () => {
-    const currencies_config = {
+    const website_status: { currencies_config: TCurrenciesConfig } = {
         currencies_config: {
             AUD: { fractional_digits: 2, type: 'fiat' },
             EUR: { fractional_digits: 2, type: 'fiat' },
@@ -12,7 +13,7 @@ describe('CurrencyUtils', () => {
         },
     };
     beforeEach(() => {
-        CurrencyUtils.setCurrencies(currencies_config);
+        CurrencyUtils.setCurrencies(website_status);
     });
 
     describe('.formatMoney()', () => {
@@ -41,7 +42,7 @@ describe('CurrencyUtils', () => {
         });
 
         it('works when exclude currency', () => {
-            expect(CurrencyUtils.formatMoney('USD', '123.55', 1)).to.eq('123.55');
+            expect(CurrencyUtils.formatMoney('USD', '123.55', true)).to.eq('123.55');
         });
     });
 
@@ -93,7 +94,7 @@ describe('CurrencyUtils', () => {
 
     describe('.getCurrencies()', () => {
         it('works as expected', () => {
-            expect(CurrencyUtils.getCurrencies()).to.deep.eq(currencies_config.currencies_config);
+            expect(CurrencyUtils.getCurrencies()).to.deep.eq(website_status.currencies_config);
         });
     });
 
@@ -108,15 +109,6 @@ describe('CurrencyUtils', () => {
 
         it('works with undefined currencies', () => {
             expect(CurrencyUtils.isCryptocurrency('ZZZ')).to.eq(false);
-        });
-    });
-
-    describe('.getTransferLimits()', () => {
-        it('returns limits based on input', () => {
-            expect(CurrencyUtils.getTransferLimits('USD')).to.eq('1.00');
-            expect(CurrencyUtils.getTransferLimits('USD', 'max')).to.eq('2500.00');
-            expect(CurrencyUtils.getTransferLimits('BTC')).to.eq(undefined);
-            expect(CurrencyUtils.getTransferLimits('BTC', 'max')).to.eq(undefined);
         });
     });
 });

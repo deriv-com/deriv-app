@@ -189,7 +189,11 @@ const StaticDashboard = ({
                                             height='24'
                                             className='Add-Rounded'
                                         />
-                                        <Text size='xs' className='static-dashboard-wrapper__body--add-button-text'>
+                                        <Text
+                                            size='xs'
+                                            color='less-prominent'
+                                            className='static-dashboard-wrapper__body--add-button-text'
+                                        >
                                             {localize('More derived accounts')}
                                         </Text>
                                     </div>
@@ -225,7 +229,11 @@ const StaticDashboard = ({
                                             height='24'
                                             className='Add-Rounded'
                                         />
-                                        <Text size='xs' className='static-dashboard-wrapper__body--add-button-text'>
+                                        <Text
+                                            size='xs'
+                                            color='less-prominent'
+                                            className='static-dashboard-wrapper__body--add-button-text'
+                                        >
                                             {localize('More [account name] accounts')}
                                         </Text>
                                     </div>

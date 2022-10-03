@@ -1,13 +1,25 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
-const Highlight = ({ has_rounded_button, highlight_color = 'var(--button-toggle-secondary)', left, width }) => {
+type THighlightProps = {
+    has_rounded_button: boolean;
+    highlight_color?: string;
+    left: number;
+    width: number | string;
+};
+
+const Highlight = ({
+    has_rounded_button,
+    highlight_color = 'var(--button-toggle-secondary)',
+    left,
+    width,
+}: THighlightProps) => {
     const border_radius_size = '4px';
     const highlight_style = {
         backgroundColor: highlight_color,
         left: 0,
         transform: `translate3d(${left}px, 0, 0)`,
         width,
+        borderRadius: '0',
     };
 
     if (has_rounded_button) {
@@ -22,13 +34,6 @@ const Highlight = ({ has_rounded_button, highlight_color = 'var(--button-toggle-
     }
 
     return <span style={highlight_style} className='dc-button-menu--highlight' />;
-};
-
-Highlight.propTypes = {
-    has_rounded_button: PropTypes.bool,
-    highlight_color: PropTypes.string,
-    left: PropTypes.number,
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export { Highlight };

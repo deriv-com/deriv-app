@@ -97,7 +97,6 @@ const StaticDashboard = ({
                                     is_animated
                                     name='CFDs'
                                     value={'CFDs'}
-                                    onChange={'CFDs'}
                                 />
                             ) : (
                                 <Text

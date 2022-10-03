@@ -140,7 +140,7 @@ const StaticCFDAccountManager = ({
                 ) : (
                     <Button
                         primary_light
-                        className={classNames('', {
+                        className={classNames('static-cfd-account-manager__buttons-get', {
                             'static-cfd-account-manager__buttons--animated':
                                 is_button_animated || is_financial_last_step || is_derivx_last_step,
                             'static-cfd-account-manager__buttons-get--blurry': is_get_blurry,

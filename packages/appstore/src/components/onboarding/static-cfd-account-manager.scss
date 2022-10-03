@@ -37,7 +37,7 @@
 
         &-topup {
             margin-bottom: 0.5rem;
-            cursor: none;
+            cursor: not-allowed;
 
             &--blurry {
                 opacity: 0.2;
@@ -50,7 +50,7 @@
 
         &-trade {
             margin-bottom: 0.5rem;
-            cursor: none;
+            cursor: not-allowed;
 
             &--blurry {
                 opacity: 0.2;
@@ -62,7 +62,7 @@
         }
 
         &-get {
-            cursor: none;
+            cursor: not-allowed;
             &--blurry {
                 opacity: 0.2;
             }

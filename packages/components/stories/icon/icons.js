@@ -469,6 +469,7 @@ export const icons =
     ],
     'dxtrade': [
         'IcDxtradeDerivX',
+        'IcDxtradeDerived',
         'IcDxtradeDerivxPlatform',
         'IcDxtradeDeviceDesktopLight',
         'IcDxtradeDeviceDesktop',
@@ -482,7 +483,6 @@ export const icons =
         'IcDxtradeFinancial',
         'IcDxtradeOnePassword',
         'IcDxtradeSyntheticPlatform',
-        'IcDxtradeSynthetic',
     ],
     'flag': [
         'IcFlagDe',
@@ -503,6 +503,7 @@ export const icons =
     'mt5': [
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
+        'IcMt5Derived',
         'IcMt5DeviceDesktop',
         'IcMt5DeviceLaptop',
         'IcMt5DevicePhone',
@@ -524,7 +525,6 @@ export const icons =
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
-        'IcMt5Synthetic',
         'IcMt5TradeTypes',
     ],
     'option': [

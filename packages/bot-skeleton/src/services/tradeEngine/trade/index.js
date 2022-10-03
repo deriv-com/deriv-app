@@ -74,9 +74,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             forget_proposal_ids: [],
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
-        this.api.connection.onclose = () => {
-            globalObserver.setState({ transaction_subscription_id: null });
-        };
     }
 
     init(...args) {
@@ -133,28 +130,19 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                     }, 1500);
                 }
                 if (data.msg_type === 'authorize') {
-                    const { authorize = {} } = data;
-                    this.accountInfo = authorize;
+                    this.accountInfo = data;
                     this.token = token;
 
                     // Only subscribe to balance in browser, not for tests.
                     if (document) {
-                        doUntilDone(() => this.api.send({ balance: 1 })).then(r => {
+                        doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 })).then(r => {
                             this.balance = Number(r.balance.balance);
                             resolve();
                         });
                     } else {
                         resolve();
                     }
-                    if (!globalObserver.getState('transaction_subscription_id')) {
-                        doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }))
-                            .then(({ transaction }) => {
-                                globalObserver.setState({ transaction_subscription_id: transaction.id });
-                            })
-                            .catch(err => {
-                                this.$scope.observer.emit('Error', err);
-                            });
-                    }
+                    doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }));
                 }
             });
         });

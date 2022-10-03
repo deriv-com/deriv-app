@@ -9,7 +9,6 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
-import { setWebsocket } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
@@ -24,7 +23,6 @@ const App = ({ passthrough }) => {
     const { showDigitalOptionsMaltainvestError } = app;
 
     React.useEffect(() => {
-        setWebsocket(WS);
         /**
          * Inject: External Script Hotjar - for DBot only
          */

@@ -32,7 +32,16 @@ const VerificationStatusBanner = ({
         poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
-    const getAccountTitle = () => account_type && (account_type === 'synthetic' ? 'Synthetics' : 'Financial');
+    const getAccountTitle = () => {
+        switch (account_type) {
+            case 'synthetic':
+                return 'Derived';
+            case 'financial':
+                return 'Financial';
+            default:
+                return '';
+        }
+    };
 
     const is_svg = type_of_card === 'svg';
     const is_vanuatu = type_of_card === 'vanuatu';

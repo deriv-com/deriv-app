@@ -87,9 +87,9 @@ const JurisdictionModal = ({
     );
 
     const modal_title = is_eu
-        ? localize('Jurisdiction for your DMT5 CFDs account')
-        : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
-              account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
+        ? localize('Jurisdiction for your Deriv MT5 CFDs account')
+        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
+              account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
           });
 
     const is_svg_selected = jurisdiction_selected_shortcode === 'svg';

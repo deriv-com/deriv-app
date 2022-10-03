@@ -31,12 +31,13 @@ const FooterNote = ({
     const is_vanuatu_type = jurisdiction_selected_shortcode === 'vanuatu';
     const is_bvi_type = jurisdiction_selected_shortcode === 'bvi';
     const is_labuan_maltainvest_type = ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode);
+    const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';
+
     if (is_svg_type)
         return (
             <Localize
-                i18n_default_text='Add your DMT5 <0>{{account_type}}</0> account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
-                values={{ account_type }}
-                components={[<span key={0} className='text_capitalize' />]}
+                i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0> account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
+                values={{ account_type_name }}
             />
         );
     else if (poi_or_poa_not_submitted && (is_vanuatu_type || is_bvi_type || is_labuan_maltainvest_type))
@@ -55,30 +56,27 @@ const FooterNote = ({
     } else if (poi_verified_for_bvi_labuan_maltainvest && is_bvi_type)
         return (
             <Localize
-                i18n_default_text='Add your DMT5 <0>{{account_type}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
-                values={{ account_type }}
-                components={[<span key={0} className='text_capitalize' />]}
+                i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
+                values={{ account_type_name }}
             />
         );
     else if (poi_verified_for_vanuatu && is_vanuatu_type)
         return (
             <Localize
-                i18n_default_text='Add Your DMT5 <0>{{account_type}}</0>  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
-                values={{ account_type }}
-                components={[<span key={0} className='text_capitalize' />]}
+                i18n_default_text='Add Your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
+                values={{ account_type_name }}
             />
         );
     else if (poi_poa_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'labuan')
         return (
             <Localize
-                i18n_default_text='Add your DMT5 <0>{{account_type}}</0>  STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
-                values={{ account_type }}
-                components={[<span key={0} className='text_capitalize' />]}
+                i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
+                values={{ account_type_name }}
             />
         );
     else if (poi_poa_verified_for_bvi_labuan_maltainvest && jurisdiction_selected_shortcode === 'maltainvest')
         return (
-            <Localize i18n_default_text='Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).' />
+            <Localize i18n_default_text='Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).' />
         );
     else if (
         (is_vanuatu_type && poi_pending_for_vanuatu) ||

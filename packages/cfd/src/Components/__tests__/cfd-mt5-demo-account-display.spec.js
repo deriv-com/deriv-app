@@ -125,7 +125,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         }
     };
 
-    it('should render Synthetic & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
+    it('should render Derived & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
         render(<CFDMT5DemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -139,7 +139,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'demo', platform: 'mt5' });
     });
 
-    it('should render Synthetic & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Derived & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -167,7 +167,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
+    it('should render Derived & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
         render(<CFDMT5DemoAccountDisplay {...props} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
@@ -189,7 +189,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         });
     });
 
-    it('should render Synthetic & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Derived & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);

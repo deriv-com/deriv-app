@@ -1,7 +1,7 @@
 .static-dashboard {
     background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS;
-    padding: 2rem;
+    padding: 3rem;
     height: 65vh;
 
     @include mobile {
@@ -11,8 +11,9 @@
     }
 
     &-wrapper {
+        height: 90%;
+        border-radius: $BORDER_RADIUS;
         border: 2rem solid var(--general-section-1);
-        height: 100%;
 
         @include mobile {
             border: none;

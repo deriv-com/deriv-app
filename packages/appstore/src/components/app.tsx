@@ -5,8 +5,6 @@ import { setWebsocket } from '@deriv/shared';
 import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
 import { TRootStore } from 'Types';
-import Onboarding from './onboarding';
-import { trading_hub_contents } from 'Constants/trading-hub-content';
 import './app.scss';
 
 type TAppProps = {
@@ -30,7 +28,6 @@ const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
             })}
         >
             <div className='dw-dashboard'>
-                <Onboarding contents={trading_hub_contents} />
                 <Routes />
             </div>
         </main>

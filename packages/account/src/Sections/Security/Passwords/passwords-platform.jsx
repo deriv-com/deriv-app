@@ -71,14 +71,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize
-                                i18n_default_text='Your {{platform_name_dxtrade}} password is for logging in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.'
-                                values={{ platform_name_dxtrade }}
-                            />
-                        </Text>
-                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize
-                                i18n_default_text='Click the <0>Change password</0> button to change your {{platform_name_dxtrade}} password.'
-                                components={[<strong key={0} />]}
+                                i18n_default_text='Use the {{platform_name_dxtrade}} password to log in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.'
                                 values={{ platform_name_dxtrade }}
                             />
                         </Text>

@@ -15,14 +15,15 @@ describe('<AccountLimitsExtraInfo/>', () => {
     });
 
     it('should render PopoverComponent if isMobile is false', () => {
-        isMobile.mockReturnValue(false);
-        const { container } = render(<AccountLimitsExtraInfo message='Lorem Epsom' />);
-        expect(container.getElementsByClassName('da-account-limits__popover').length).toBe(1);
+        (isMobile as jest.Mock).mockReturnValue(false);
+        render(<AccountLimitsExtraInfo message='Lorem Epsom' />);
+        expect(screen.queryByTestId('dt_acc_limits_popover')).toHaveClass('da-account-limits__popover');
     });
 
-    it('should pass props to PopoverComponent if isMobile is false', () => {
-        isMobile.mockReturnValue(false);
-        const { container } = render(<AccountLimitsExtraInfo message='Lorem Epsom' className='test_class' />);
-        expect(container.getElementsByClassName('test_class').length).toBe(1);
+    it('should pass props to PopoverComponent if isMobile is false', async () => {
+        (isMobile as jest.Mock).mockReturnValue(false);
+        render(<AccountLimitsExtraInfo message='Lorem Ipsum' className='test_class' />);
+        const popover = await screen.findByTestId('dt_acc_limits_popover');
+        expect(popover).toHaveClass('test_class');
     });
 });

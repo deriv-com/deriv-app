@@ -31,6 +31,7 @@ const Popover = ({
     should_show_cursor,
     window_border,
     zIndex,
+    data_testid,
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
@@ -169,7 +170,7 @@ const Popover = ({
                         );
                     }}
                 >
-                    <div className={classNames('dc-popover', className)} id={id}>
+                    <div data-testid={data_testid} className={classNames('dc-popover', className)} id={id}>
                         <div className={classNames(classNameTarget, 'dc-popover__target')}>
                             {!disable_target_icon && (
                                 <i

@@ -222,7 +222,7 @@ Blockly.Css.CONTENT = [
     'margin: 4px;',
     'border-radius: 4px;',
     'background: $colour_numPadBackground;',
-    'color: var(--text-general);',
+    'color: #333333;',
     'outline: none;',
     'border: 1px solid $colour_numPadBorder;',
     'cursor: pointer;',

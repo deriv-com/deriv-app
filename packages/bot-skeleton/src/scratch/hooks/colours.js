@@ -22,7 +22,7 @@ if (isDarkModeEnabled()) {
     Blockly.Colours.Special1 = {
         colour: '#C2C2C2',
         colourSecondary: '#0e0e0e',
-        colourTertiary: '#D27954',
+        colourTertiary: '#6d7278',
     };
 
     Blockly.Colours.Special2 = {

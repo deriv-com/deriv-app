@@ -15,7 +15,7 @@ export const getActionFromUrl = () => {
 };
 
 export const getUrlSmartTrader = () => {
-    const { is_staging_deriv_app } = getPlatformFromUrl();
+    const { is_staging_deriv_app, is_localhost } = getPlatformFromUrl();
     const url_lang = getlangFromUrl();
     const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
 
@@ -23,6 +23,8 @@ export const getUrlSmartTrader = () => {
 
     if (is_staging_deriv_app) {
         base_link = deriv_urls.SMARTTRADER_STAGING;
+    } else if (is_localhost) {
+        base_link = deriv_urls.SMARTTRADER_TESTLINK;
     } else {
         base_link = deriv_urls.SMARTTRADER_PRODUCTION;
     }
@@ -41,6 +43,7 @@ export const getPlatformFromUrl = (domain = window.location.hostname) => {
         is_staging_deriv_app: /^staging-app\.deriv\.(com|me|be)$/i.test(domain),
         is_deriv_app: /^app\.deriv\.(com|me|be)$/i.test(domain),
         is_test_link: /^(.*)\.binary\.sx$/i.test(domain),
+        is_localhost: /^localhost\.binary\.sx$/i.test(domain),
     };
 
     return {

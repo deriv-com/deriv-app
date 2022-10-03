@@ -2247,6 +2247,9 @@ export default class ClientStore extends BaseStore {
         binaryBot.origin = getUrlBinaryBot();
 
         [smartTrader, binaryBot].forEach(platform => {
+            /* eslint-disable no-console */
+            console.log(platform.iframe.contentWindow, 'platform.iframe.contentWindow');
+            console.log(platform.origin, 'platform.origin');
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(

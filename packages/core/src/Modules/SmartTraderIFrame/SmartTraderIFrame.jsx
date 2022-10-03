@@ -2,12 +2,14 @@ import React from 'react';
 import { deriv_urls, getPlatformFromUrl } from '@deriv/shared';
 
 const SmartTraderIFrame = () => {
-    const { is_staging_deriv_app } = getPlatformFromUrl();
+    const { is_staging_deriv_app, is_localhost } = getPlatformFromUrl();
 
     let base_link = '';
 
     if (is_staging_deriv_app) {
         base_link = deriv_urls.SMARTTRADER_STAGING;
+    } else if (is_localhost) {
+        base_link = deriv_urls.SMARTTRADER_TESTLINK;
     } else {
         base_link = deriv_urls.SMARTTRADER_PRODUCTION;
     }

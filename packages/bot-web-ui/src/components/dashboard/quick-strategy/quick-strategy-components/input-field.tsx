@@ -46,7 +46,7 @@ const InputField = ({
         placeholder: new_placeholder,
         trailing_icon_message: new_trailing_icon_message,
         zIndex: new_zIndex,
-    } = dataField() as TDataUniqInput | TDataFields;
+    } = (dataField() as TDataUniqInput | TDataFields) || {};
 
     return (
         <Field name={field_name || new_field_name} key={id || new_id} id={id || new_id}>

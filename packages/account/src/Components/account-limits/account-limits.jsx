@@ -9,7 +9,7 @@ import DemoMessage from 'Components/demo-message';
 import AccountLimitsArticle from './account-limits-article.jsx';
 import AccountLimitsContext from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info.jsx';
-import AccountLimitsFooter from './account-limits-footer.jsx';
+import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay.jsx';
 import AccountLimitsTableCell from './account-limits-table-cell.jsx';
 import AccountLimitsTableHeader from './account-limits-table-header.jsx';

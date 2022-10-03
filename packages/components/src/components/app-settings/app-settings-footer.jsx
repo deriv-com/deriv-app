@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-const AppSettingsFooter = ({ children }) => <div className='dc-app-settings__footer'>{children}</div>;
+const AppSettingsFooter = ({ children }) => (
+    <div data-testid='dt_app_settings_footer' className='dc-app-settings__footer'>
+        {children}
+    </div>
+);
 const AppSettingsFooterLeft = ({ children }) => <div className='dc-app-settings__footer-left'>{children}</div>;
 const AppSettingsFooterRight = ({ children }) => <div className='dc-app-settings__footer-right'>{children}</div>;
 

@@ -54,6 +54,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     toggleCFDVerificationModal: () => void;
     account_status: GetAccountStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
+    updateAccountStatus: () => void;
 };
 
 const JurisdictionModal = ({
@@ -74,6 +75,8 @@ const JurisdictionModal = ({
     setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal,
     account_status,
+    updateAccountStatus,
+
     mt5_login_list,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
@@ -117,8 +120,10 @@ const JurisdictionModal = ({
             setJurisdictionSelectedShortcode('');
         }
     };
+
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
+            updateAccountStatus();
             selectSVGJurisdiction();
             if (!has_submitted_personal_details) {
                 let get_settings_response: GetSettings = {};
@@ -155,9 +160,9 @@ const JurisdictionModal = ({
     );
 
     const modal_title = is_eu
-        ? localize('Jurisdiction for your DMT5 CFDs account')
-        : localize('Choose a jurisdiction for your DMT5 {{account_type}} account', {
-              account_type: account_type.type === 'synthetic' ? 'Synthetic' : 'Financial',
+        ? localize('Jurisdiction for your Deriv MT5 CFDs account')
+        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
+              account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
           });
 
     const isNextButtonEnabled = () => {
@@ -369,4 +374,5 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     account_status: client.account_status,
     mt5_login_list: client.mt5_login_list,
+    updateAccountStatus: client.updateAccountStatus,
 }))(JurisdictionModal);

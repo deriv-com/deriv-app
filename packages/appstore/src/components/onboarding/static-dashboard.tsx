@@ -269,7 +269,6 @@ const StaticDashboard = ({
                                     is_animated
                                     name='Options'
                                     value={'Options'}
-                                    onChange={() => setIndex(1)}
                                 />
                             ) : (
                                 <Text

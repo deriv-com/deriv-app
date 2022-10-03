@@ -1,48 +1,53 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
 
-const Checkbox = React.forwardRef(
+type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
+    className?: string;
+    classNameLabel?: string;
+    defaultChecked?: boolean;
+    disabled?: boolean;
+    greyDisabled?: boolean;
+    id?: string;
+    label: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
+    value?: boolean;
+    withTabIndex?: number;
+};
+
+const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
     (
         {
             className,
             classNameLabel,
-            disabled,
+            disabled = false,
             id,
             label,
             defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
-            value,
-            withTabIndex,
+            value = false,
+            withTabIndex = 0,
             greyDisabled = false,
             ...otherProps
         },
         ref
     ) => {
         const [checked, setChecked] = React.useState(defaultChecked || value);
-        const input_ref = React.useRef();
-
-        const setRef = el_input => {
-            input_ref.current = el_input;
-            if (ref) ref.current = el_input;
-        };
-
         React.useEffect(() => {
             setChecked(defaultChecked || value);
         }, [value, defaultChecked]);
 
-        const onInputChange = e => {
+        const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
             e.persist();
             setChecked(!checked);
             onChange(e);
         };
 
-        const handleKeyDown = e => {
+        const handleKeyDown: React.KeyboardEventHandler<HTMLSpanElement> = e => {
             // Enter or space
             if (!disabled && (e.key === 'Enter' || e.keyCode === 32)) {
-                onChange({ target: { name: input_ref.current.name, checked: !checked } });
+                onChange(e);
                 setChecked(!checked);
             }
         };
@@ -59,11 +64,11 @@ const Checkbox = React.forwardRef(
                     className='dc-checkbox__input'
                     type='checkbox'
                     id={id}
-                    ref={setRef}
+                    ref={ref}
                     disabled={disabled}
                     onChange={onInputChange}
                     defaultChecked={checked}
-                    value={value}
+                    checked={value}
                     {...otherProps}
                 />
                 <span
@@ -72,8 +77,7 @@ const Checkbox = React.forwardRef(
                         'dc-checkbox__box--disabled': disabled,
                         'dc-checkbox--grey-disabled': disabled && greyDisabled,
                     })}
-                    {...(withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
-                    tabIndex='0'
+                    tabIndex={withTabIndex}
                     onKeyDown={handleKeyDown}
                 >
                     {!!checked && <Icon icon='IcCheckmark' color='active' />}
@@ -87,18 +91,5 @@ const Checkbox = React.forwardRef(
 );
 
 Checkbox.displayName = 'Checkbox';
-
-Checkbox.propTypes = {
-    className: PropTypes.string,
-    classNameLabel: PropTypes.string,
-    defaultChecked: PropTypes.bool,
-    disabled: PropTypes.bool,
-    greyDisabled: PropTypes.bool,
-    id: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    onChange: PropTypes.func,
-    value: PropTypes.bool,
-    withTabIndex: PropTypes.string,
-};
 
 export default Checkbox;

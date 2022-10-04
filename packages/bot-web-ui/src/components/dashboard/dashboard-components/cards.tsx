@@ -57,8 +57,8 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
     );
 };
 
-export default connect((store: RootStore) => ({
-    load_modal: store.load_modal,
-    active_tab: store.dashbaord.active_tab,
-    setActiveTab: store.dashbaord.setActiveTab,
+export default connect(({ load_modal, dashboard }: RootStore) => ({
+    load_modal,
+    active_tab: dashboard.active_tab,
+    setActiveTab: dashboard.setActiveTab,
 }))(Cards);

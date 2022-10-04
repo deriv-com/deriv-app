@@ -12,6 +12,8 @@ const TradingHub = () => {
             {/* Trading Hub
             <CFDAccounts account_type='real' />
             <AddOptionsAccount />
+        <React.Fragment>
+            {/* <AddOptionsAccount />
             <Onboarding contents={trading_hub_contents} /> */}
             <Options platformlauncherprops={platform_config} />
         </div>

@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
+import { isCryptocurrency } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const AccountPromptDialog = ({
-    accounts_list,
+    accounts,
     continueRoute,
     is_confirmed,
     last_location,
@@ -15,8 +16,15 @@ const AccountPromptDialog = ({
 }) => {
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
-    const non_crypto_accounts = accounts_list.filter(x => !x.is_crypto);
-    const non_crypto_currency = non_crypto_accounts.map(x => x.currency)[0];
+    const non_crypto_account_loginid = React.useMemo(
+        () =>
+            Object.entries(accounts).reduce((initial_value, [loginid, settings]) => {
+                return !settings.is_virtual && !isCryptocurrency(settings.currency) ? loginid : initial_value;
+            }, ''),
+        [accounts]
+    );
+
+    const non_crypto_currency = non_crypto_account_loginid && accounts[non_crypto_account_loginid].currency;
 
     return (
         <Dialog
@@ -39,7 +47,7 @@ const AccountPromptDialog = ({
 };
 
 AccountPromptDialog.propTypes = {
-    accounts_list: PropTypes.array,
+    accounts: PropTypes.object,
     continueRoute: PropTypes.func,
     is_confirmed: PropTypes.bool,
     last_location: PropTypes.string,
@@ -48,8 +56,8 @@ AccountPromptDialog.propTypes = {
     should_show: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
-    accounts_list: modules.cashier.account_transfer.accounts_list,
+export default connect(({ modules, client }) => ({
+    accounts: client.accounts,
     continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
     is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,
     last_location: modules.cashier.account_prompt_dialog.last_location,

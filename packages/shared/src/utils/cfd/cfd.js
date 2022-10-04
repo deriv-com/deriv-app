@@ -8,9 +8,9 @@ const CFD_text = {
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
-    synthetic: 'Synthetic',
-    synthetic_bvi: 'Synthetic BVI',
-    synthetic_svg: 'Synthetic SVG',
+    synthetic: 'Derived',
+    synthetic_bvi: 'Derived BVI',
+    synthetic_svg: 'Derived SVG',
     financial: 'Financial',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',
@@ -24,6 +24,10 @@ const CFD_text = {
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }) => {
+    if (market_type === 'all') {
+        return 'dxtrade';
+    }
+
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {
@@ -137,7 +141,7 @@ export const getAccountListKey = (account, platform, shortcode) => {
 export const getCFDPlatformLabel = platform => {
     switch (platform) {
         case CFD_PLATFORMS.MT5:
-            return 'DMT5';
+            return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
         default:

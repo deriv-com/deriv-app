@@ -59,7 +59,7 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     loadMoreAdvertiserAdverts({ startIndex }) {
-        const { general_store } = this.root_store;
+        const { buy_sell_store, general_store } = this.root_store;
         this.setIsLoadingAdverts(true);
         return new Promise(resolve => {
             requestWS({
@@ -68,6 +68,9 @@ export default class AdvertiserPageStore extends BaseStore {
                 advertiser_id: this.advertiser_details_id,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
+                ...(buy_sell_store.selected_local_currency
+                    ? { local_currency: buy_sell_store.selected_local_currency }
+                    : {}),
             }).then(response => {
                 if (response.error) {
                     this.setErrorMessage(response.error);

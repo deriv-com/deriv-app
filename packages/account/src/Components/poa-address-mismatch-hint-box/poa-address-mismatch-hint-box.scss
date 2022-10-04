@@ -1,0 +1,13 @@
+.poa-address-mismatch-hint-box {
+    &--wrapper {
+        .dc-hint-box {
+            align-items: start;
+            max-width: 400px;
+
+            &__icon {
+                min-width: 16px;
+                min-height: 16px;
+            }
+        }
+    }
+}

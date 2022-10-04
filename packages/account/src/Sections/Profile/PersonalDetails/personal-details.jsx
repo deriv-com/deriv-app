@@ -43,6 +43,7 @@ import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
+import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -939,6 +940,8 @@ export const PersonalDetailsForm = ({
                                     )}
                                     {!is_appstore && !is_virtual && (
                                         <React.Fragment>
+                                            {/* Todo: render conditionally based on `poa_address_mismatch` */}
+                                            <POAAddressMismatchHintBox />
                                             <FormSubHeader title={localize('Address')} />
                                             <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>

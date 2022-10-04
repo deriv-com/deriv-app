@@ -1098,6 +1098,29 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
+            poa_address_mismatch_warning: {
+                key: 'poa_address_mismatch_warning',
+                header: localize('Please update your address'),
+                message: localize(
+                    'It appears that the address in your document doesn’t match the address in your Deriv profile. Please update your personal details now with the correct address.'
+                ),
+                action: {
+                    route: routes.personal_details,
+                    text: localize('Go to Personal details'),
+                },
+                type: 'warning',
+            },
+            poa_address_mismatch_success: {
+                key: 'poa_address_mismatch_success',
+                header: localize('Your proof of address has been verified'),
+                type: 'announce',
+            },
+            poa_address_mismatch_error: {
+                key: 'poa_address_mismatch_error',
+                header: localize('Your address doesn’t match your profile'),
+                message: localize('Update the address in your profile.'),
+                type: 'danger',
+            },
         };
         this.client_notifications = notifications;
     }

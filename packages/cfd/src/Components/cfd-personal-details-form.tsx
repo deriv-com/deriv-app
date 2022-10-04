@@ -279,7 +279,7 @@ const CFDPersonalDetailsForm = ({
                     is_in_personal_details_modal && touched.place_of_birth && errors.place_of_birth;
                 const tax_residence_error = touched.tax_residence && errors.tax_residence;
                 const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
-                const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
+                const is_citizenship_disabled = !!(value.citizen && !changeable_fields?.includes('citizen'));
                 const is_place_of_birth_disabled =
                     !!(value.place_of_birth && is_fully_authenticated) ||
                     changeable_fields?.every(field => field !== 'place_of_birth');

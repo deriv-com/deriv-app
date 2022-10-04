@@ -64,7 +64,7 @@ const LinearProgressContainer = React.forwardRef(
         return (
             <div className='dc-linear-progress-container'>
                 <div className='dc-linear-progress__countdown'>{render(getRemaining())}</div>
-                <LinearProgress className={className} progress={getProgress()} height={4} />
+                <LinearProgress className={className} progress={getProgress()} />
             </div>
         );
     }

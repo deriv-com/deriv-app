@@ -1,8 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 
-export const LinearProgress = ({ progress }: { progress: number }) => (
-    <div className={classNames('dc-linear-progress')}>
+type TLinearProgress = {
+    progress: number;
+    className?: string;
+};
+
+export const LinearProgress = ({ progress, className }: TLinearProgress) => (
+    <div className={classNames('dc-linear-progress', className)}>
         <div className={classNames('dc-linear-progress__bar')} style={{ width: `${progress}%` }} />
     </div>
 );

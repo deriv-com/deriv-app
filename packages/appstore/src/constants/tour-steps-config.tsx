@@ -27,7 +27,7 @@ export const tour_step_config: Step[] = [
         content: (
             <Text as='p'>
                 {localize(
-                    `Need help moving around?\n\n We have a short turorial that might help. Hit Repeat tour to begin.`
+                    `Need help moving around?\n\nWe have a short turorial that might help. Hit Repeat tour to begin.`
                 )}
             </Text>
         ),

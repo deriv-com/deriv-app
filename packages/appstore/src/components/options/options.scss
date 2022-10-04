@@ -140,3 +140,11 @@
         gap: 1.5rem;
     }
 }
+.dc-mobile-dialog__account-switcher-container {
+    margin: 20px 16px 0px 20px;
+    .dc-modal-footer {
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+    }
+}

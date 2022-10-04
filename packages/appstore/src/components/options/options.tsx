@@ -241,6 +241,13 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                 portal_element_id='deriv_app'
                 onClose={() => setIsModalOpen(false)}
                 wrapper_classname='account-switcher-container'
+                footer={
+                    <Modal.Footer has_separator style={{ position: 'fixed', bottom: '0px', width: '100%' }}>
+                        <Button style={{ width: '100%' }} secondary onClick={() => setIsModalOpen(false)}>
+                            {'Back to trading hub'}
+                        </Button>
+                    </Modal.Footer>
+                }
             >
                 {sortedAccountList.map(account => (
                     <OptionsAccount
@@ -279,11 +286,6 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                         isModal={true}
                     />
                 ))}
-                <Modal.Footer has_separator style={{ position: 'fixed', bottom: '0px', width: '100%' }}>
-                    <Button style={{ width: '100%' }} secondary onClick={() => setIsModalOpen(false)}>
-                        {'Back to trading hub'}
-                    </Button>
-                </Modal.Footer>
             </MobileDialog>
         </div>
     );

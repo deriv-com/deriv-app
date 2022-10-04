@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, Icon, Money } from '@deriv/components';
+import { Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 import { getCurrencyDisplayCode, isMobile, getCurrencyName, getCFDAccountDisplay, isBot } from '@deriv/shared';
@@ -208,7 +208,7 @@ const OptionsAccount = ({
                 <Icon
                     icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
                     className={'acc-switcher__id-icon'}
-                    size={40}
+                    size={isMobile() ? 30 : 40}
                 />
             </div>
             <div className='account-container__details-wrapper'>
@@ -216,7 +216,7 @@ const OptionsAccount = ({
                     size={isMobile() ? 'xxxs' : 'xxs'}
                     line_height={isMobile() ? 's' : 'l'}
                     className='account-container__details-wrapper--name'
-                    weight='bold'
+                    weight={isModal ? '' : 'bold'}
                 >
                     {display_type === 'currency' ? (
                         <CurrencyDisplay
@@ -251,7 +251,8 @@ const OptionsAccount = ({
                 )}
                 <Text
                     size={isMobile() ? 'xs' : 's'}
-                    line_height={isMobile() ? 'xl' : 'l'}
+                    // eslint-disable-next-line no-nested-ternary
+                    line_height={isMobile() ? 'xs' : 'l'}
                     weight='bold'
                     className='account-container__details-wrapper--balance'
                 >

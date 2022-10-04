@@ -55,9 +55,17 @@ const CompareAccountsModal = ({
 }: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
+    const mt5_accounts = [
+        landing_companies?.mt_gaming_company?.financial,
+        landing_companies?.mt_financial_company?.financial,
+        landing_companies?.mt_financial_company?.financial_stp,
+    ];
 
-    const getCFDModalTitle = () =>
-        is_dxtrade ? localize('Account Information') : localize('Compare available accounts');
+    const cfd_account_button_label =
+        mt5_accounts.filter(Boolean).length === 1 || platform === CFD_PLATFORMS.DXTRADE
+            ? localize('Account Information')
+            : localize('Compare accounts');
+    const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
 
     const getModalStyle = () => {
         if (is_dxtrade) {

@@ -60,6 +60,7 @@ describe('<CFDPasswordModal/>', () => {
         is_cfd_password_modal_enabled: true,
         is_cfd_success_dialog_enabled: false,
         is_dxtrade_allowed: false,
+        jurisdiction_selected_shortcode: 'svg',
         platform: 'mt5',
         has_cfd_error: false,
         landing_companies: {},
@@ -157,7 +158,6 @@ describe('<CFDPasswordModal/>', () => {
         const ele_password_field = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_field, { target: { value: user_input } });
 
-        expect(await screen.findByText(/enter your dmt5 password to add a dmt5 account/i)).toBeInTheDocument();
         expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
 
         await waitFor(() => {
@@ -352,7 +352,7 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should create DMT5 password when clicked on Create DMT5 password', async () => {
+    it('should create Deriv MT5 password when clicked on Create Deriv MT5 password', async () => {
         const user_input = 'zo8lAet#2q01Ih';
         validPassword.mockReturnValue(true);
 
@@ -367,7 +367,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
         fireEvent.change(await screen.findByTestId('dt_mt5_password'), { target: { value: user_input } });
-        fireEvent.click(await screen.findByRole('button', { name: 'Create DMT5 password' }));
+        fireEvent.click(await screen.findByRole('button', { name: 'Create Deriv MT5 password' }));
 
         await waitFor(() => {
             expect(mockSubmitMt5Password).toHaveBeenCalled();

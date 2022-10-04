@@ -103,7 +103,7 @@ describe('PaymentAgentTransferStore', () => {
 
         payment_agent_transfer_store.setIsTryTransferSuccessful(true);
 
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
     });
 
@@ -157,7 +157,7 @@ describe('PaymentAgentTransferStore', () => {
         payment_agent_transfer_store.resetPaymentAgentTransfer();
 
         expect(payment_agent_transfer_store.is_transfer_successful).toBeFalsy();
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
     });
 
     it('should get current payment agent from response_payment_agent', async () => {

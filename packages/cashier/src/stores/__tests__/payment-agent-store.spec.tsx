@@ -226,7 +226,7 @@ describe('PaymentAgentStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
 
         payment_agent_store.setIsTryWithdrawSuccessful(true);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });
 
@@ -320,7 +320,7 @@ describe('PaymentAgentStore', () => {
 
         await payment_agent_store.onMountPaymentAgentWithdraw();
         await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.confirm).toEqual({
             amount: '200',
             currency: 'USD',
@@ -345,7 +345,7 @@ describe('PaymentAgentStore', () => {
         const spyClearVerification = jest.spyOn(payment_agent_store.verification, 'clearVerification');
 
         payment_agent_store.resetPaymentAgent();
-        expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenLastCalledWith({ code: '', message: '' });
         expect(payment_agent_store.is_withdraw).toBeFalsy();
         expect(spyClearVerification).toHaveBeenCalled();
         expect(payment_agent_store.active_tab_index).toBe(0);

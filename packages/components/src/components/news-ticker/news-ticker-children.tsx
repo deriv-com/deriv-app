@@ -2,7 +2,7 @@ import React from 'react';
 
 type TNewsTickerChildren = {
     animation_duration: number;
-    is_exceeding_parent: boolean;
+    is_exceeding_parent?: boolean;
     is_second_container?: boolean;
     react_children: React.ReactNode;
 };

@@ -103,7 +103,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     const tax_id_required_error = 'Tax identification number is required';
     const opening_reason_required_error = 'Account opening reason is required';
 
-    it('should render properly on desktop', () => {
+    it('should render properly on desktop', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         expect(screen.getByTestId('dt_cfd_details_form_description')).toBeInTheDocument();
@@ -111,7 +111,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeInTheDocument();
         expect(screen.getByText(/account opening reason/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
     });
 
     it('should not render scrollbars or modal footer wrapper on mobile', () => {
@@ -136,7 +136,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
     });
 
-    it('should disable Citizenship and Tax residence fields if they were submitted earlier & immutable from BE', () => {
+    it('should disable Citizenship and Tax residence fields if they were submitted earlier & immutable from BE', async () => {
         const values = {
             citizen: 'Indonesia',
             tax_residence: 'Indonesia',
@@ -160,16 +160,16 @@ describe('<CFDPersonalDetailsForm />', () => {
         expect(screen.getByRole('textbox', { name: /place of birth/i })).toBeDisabled();
         expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeEnabled();
         expect(screen.getByText(/account opening reason/i)).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
     });
 
-    it('should show an error message received from server that is passed via props as form_error', () => {
+    it('should show an error message received from server that is passed via props as form_error', async () => {
         const form_error = 'Input validation failed: citizen!';
         render(<CFDPersonalDetailsForm {...props} form_error={form_error} />);
 
         expect(screen.getByTestId('form_submit_error')).toHaveClass('dc-icon');
         expect(screen.getByText(form_error)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
     });
 
     it('should show validation errors in fields', async () => {
@@ -212,7 +212,8 @@ describe('<CFDPersonalDetailsForm />', () => {
         const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
 
-        expect(next_button).toBeDisabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
+
         fireEvent.change(citizenship_input, { target: { value: 'Aland Islands' } });
         fireEvent.change(place_of_birth_input, { target: { value: 'Indonesia' } });
         fireEvent.change(tax_residence_input, { target: { value: 'Indonesia' } });

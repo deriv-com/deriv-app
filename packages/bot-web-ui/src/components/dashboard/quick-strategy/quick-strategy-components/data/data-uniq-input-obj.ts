@@ -5,7 +5,6 @@ import { TInputUniqFields } from '../../quick-strategy.types';
 const quick_strategy_store = new QuickStrategyStore();
 
 export type TDataUniqInput = {
-    index: number;
     id: TFieldNameUniqInput;
     field_name: TFieldNameUniqInput;
     input_value: TInputUniqFields;
@@ -19,7 +18,6 @@ type TFieldNameUniqLabel = 'Size' | '' | 'Units';
 
 const data_uniq_input_obj: ReadonlyArray<TDataUniqInput> = [
     {
-        index: 0,
         id: 'martingale-size',
         field_name: 'martingale-size',
         input_value: 'input_martingale_size',
@@ -29,7 +27,6 @@ const data_uniq_input_obj: ReadonlyArray<TDataUniqInput> = [
         ...common_inputs_properties,
     },
     {
-        index: 1,
         id: 'alembert-unit',
         field_name: 'alembert-unit',
         input_value: 'input_alembert_unit',
@@ -39,7 +36,6 @@ const data_uniq_input_obj: ReadonlyArray<TDataUniqInput> = [
         ...common_inputs_properties,
     },
     {
-        index: 2,
         id: 'oscar-unit',
         field_name: 'oscar-unit',
         input_value: 'input_oscar_unit',

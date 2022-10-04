@@ -36,7 +36,7 @@ const QuickStrategyFields = React.memo(
         const is_double_idx_ref: React.MutableRefObject<number | undefined> = React.useRef();
 
         const uniq_selected_input = React.useMemo(
-            () => data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0],
+            () => data_uniq_input_obj.filter((_elem, index) => index === selected_type_strategy.index)[0],
             [selected_type_strategy]
         );
 

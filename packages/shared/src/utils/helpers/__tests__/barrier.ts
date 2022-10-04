@@ -48,9 +48,9 @@ describe('buildBarriersConfig', () => {
         const contract = {
             ...contract_obj,
             barriers: 1,
-            low_barrier: 22,
-            barrier: 33,
-            high_barrier: 44,
+            low_barrier: '22',
+            barrier: '33',
+            high_barrier: '44',
         };
         expect(buildBarriersConfig(contract)).to.eql({
             count: 1,
@@ -66,8 +66,8 @@ describe('buildBarriersConfig', () => {
         const contract = {
             ...contract_obj,
             barriers: 1,
-            low_barrier: 22,
-            barrier: 33,
+            low_barrier: '22',
+            barrier: '33',
         };
         expect(buildBarriersConfig(contract)).to.eql({
             count: 1,

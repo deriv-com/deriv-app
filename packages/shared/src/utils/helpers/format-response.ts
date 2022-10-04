@@ -1,7 +1,6 @@
 import { getUnsupportedContracts } from '../constants';
-import { getSymbolDisplayName } from './active-symbols';
+import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
-import { ActiveSymbols } from '@deriv/api-types';
 
 type TPortfolioPos = {
     buy_price: number;
@@ -32,7 +31,7 @@ const isUnSupportedContract = (portfolio_pos: TIsUnSupportedContract) =>
 
 export const formatPortfolioPosition = (
     portfolio_pos: TPortfolioPos,
-    active_symbols: ActiveSymbols = [],
+    active_symbols: TActiveSymbols = [],
     indicative?: number
 ) => {
     const purchase = portfolio_pos.buy_price;

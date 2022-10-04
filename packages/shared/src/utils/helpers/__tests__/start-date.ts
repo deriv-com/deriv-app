@@ -20,8 +20,10 @@ describe('start_date', () => {
                 start_type: 'spot',
                 submarket: 'major_pairs',
                 underlying_symbol: 'frxAUDJPY',
+                forward_starting_options: [],
             };
-            expect(buildForwardStartingConfig(contract, {})).to.be.empty;
+            /* eslint-disable no-unused-expressions */
+            expect(buildForwardStartingConfig(contract, [])).to.be.empty;
         });
     });
 });

@@ -156,7 +156,12 @@ const isSymbolOffered = async (symbol?: string) => {
     return !['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code);
 };
 
-export const getSymbolDisplayName = (active_symbols: ActiveSymbols = [], symbol: string) =>
+export type TActiveSymbols = {
+    symbol: string;
+    display_name: string;
+}[];
+
+export const getSymbolDisplayName = (active_symbols: TActiveSymbols = [], symbol: string) =>
     (
         active_symbols.find(symbol_info => symbol_info.symbol.toUpperCase() === symbol.toUpperCase()) || {
             display_name: '',

@@ -1,5 +1,5 @@
 import { getPreBuildDVRs } from '@deriv/shared';
-import { template } from '_common/utility';
+import { template } from '../utility';
 import Error from './errors';
 
 class Validator {

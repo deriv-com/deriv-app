@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -90,7 +89,7 @@ PaymentAgentDeposit.propTypes = {
     onChangePaymentMethod: PropTypes.func,
     payment_agent_list: PropTypes.array,
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    supported_banks: MobxPropTypes.arrayOrObservableArray,
+    supported_banks: PropTypes.any,
 };
 
 export default connect(({ modules }) => ({

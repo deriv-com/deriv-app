@@ -11,4 +11,3 @@ After a new version has been published the action will automatically create a PR
 Required GitHub secrets:
 
 -   `NPM_ACCESS_TOKEN`: To allow for automatic publishing of new version of `@deriv/api-types`
--   `PERSONAL_ACCESS_TOKEN`: (GitHub PAT) To allow the action to authenticate with Git for git operations.

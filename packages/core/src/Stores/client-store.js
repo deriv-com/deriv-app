@@ -116,7 +116,6 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable account_limits = {};
-    @observable account_limits = {};
 
     @observable self_exclusion = {};
 
@@ -566,6 +565,18 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_restricted_mt5_account() {
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
+    }
+
+    @computed
+    get should_restrict_bvi_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
+        ).length;
+    }
+
+    @computed
     get is_virtual() {
         return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
@@ -582,6 +593,11 @@ export default class ClientStore extends BaseStore {
                   eu_shortcode_regex.test(gaming_shortcode) ||
                   eu_shortcode_regex.test(mt_gaming_shortcode)
             : eu_excluded_regex.test(this.residence);
+    }
+
+    @computed
+    get is_brazil() {
+        return this.clients_country === 'br';
     }
 
     @computed
@@ -777,9 +793,11 @@ export default class ClientStore extends BaseStore {
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
 
+        // TODO: Remove two first conditions after real released
         return (
             'dxtrade_financial_company' in landing_companies ||
             'dxtrade_gaming_company' in landing_companies ||
+            'dxtrade_all_company' in landing_companies ||
             (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
         );
     };
@@ -1265,6 +1283,10 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
+        if (action_param === 'signup') {
+            this.root_store.ui.setIsNewAccount();
+        }
+
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
@@ -1730,6 +1752,8 @@ export default class ClientStore extends BaseStore {
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.landing_companies = {};
+        localStorage.removeItem('readScamMessage');
+        localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 

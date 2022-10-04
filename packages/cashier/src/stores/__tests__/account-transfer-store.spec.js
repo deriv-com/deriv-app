@@ -84,7 +84,7 @@ beforeEach(() => {
                 ],
             }),
         },
-        balanceAll: jest.fn().mockResolvedValue(),
+        balanceAll: jest.fn().mockResolvedValue({ balance_response: { balance: '20' } }),
         mt5LoginList: jest.fn().mockResolvedValue(),
         tradingPlatformAccountsList: jest.fn().mockResolvedValue({
             trading_platform_accounts: [

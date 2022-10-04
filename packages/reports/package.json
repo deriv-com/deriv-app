@@ -19,7 +19,7 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.16.0"
     },
     "repository": {
         "type": "git",
@@ -83,7 +83,7 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@deriv/api-types": "1.0.53",
+        "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/shared": "^1.0.0",
@@ -119,7 +119,7 @@
         "react-pose": "^4.0.10",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "^4.3.0",
+        "react-transition-group": "4.4.2",
         "typescript": "^4.6.3",
         "workbox-webpack-plugin": "^6.0.2"
     }

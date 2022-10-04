@@ -2,6 +2,11 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+
+    @include mobile {
+        overflow: hidden;
+    }
+
     & .initial-loader {
         @include mobile {
             height: 80%;

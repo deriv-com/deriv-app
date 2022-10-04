@@ -25,6 +25,7 @@ const RatingModal = ({
             is_open={is_rating_modal_open}
             title={localize('How would you rate this transaction?')}
             toggleModal={onClickSkip}
+            width={isMobile() && '90vw'}
         >
             <Modal.Body className='rating-modal--body'>
                 <div className='rating-modal--body__star'>
@@ -38,7 +39,7 @@ const RatingModal = ({
                         onClick={onClickStar}
                         rating_value={rating_value}
                         should_allow_half_icon={false}
-                        star_size={isMobile() ? 17 : 20}
+                        star_size={isMobile() ? 25 : 20}
                     />
                 </div>
                 {rating_value > 0 && (

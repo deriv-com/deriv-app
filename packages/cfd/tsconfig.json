@@ -9,11 +9,11 @@
             "Modules/*": ["./src/Modules/*"],
             "Sass/*": ["./src/sass/*"],
             "Stores/*": ["./src/Stores/*"],
-            "Utils/*": ["./src/Utils/*"]
+            "Utils/*": ["./src/Utils/*"],
+            "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
-        "rootDir": "./src",
         "baseUrl": "./"
     },
-    "include": ["./src/**/*.ts", "./src/**/*.tsx", "globals.d.ts"]
+    "include": ["src", "globals.d.ts"]
 }

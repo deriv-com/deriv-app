@@ -208,8 +208,8 @@ export default class PaymentAgentStore {
             max_withdrawal: payment_agent.max_withdrawal,
             min_withdrawal: payment_agent.min_withdrawal,
             email: payment_agent.email,
-            phone: payment_agent.telephone,
-            url: payment_agent.url,
+            phone: payment_agent.phone_numbers,
+            url: payment_agent.urls,
         });
     }
 

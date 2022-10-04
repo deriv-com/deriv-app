@@ -47,11 +47,12 @@ const RedirectToOldInterface = () => {
 const TradingHubOnboarding = ({ is_dark_mode }) => {
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
-            {is_dark_mode ? (
-                <Icon icon='IcAppstoreTradingHubOnboardingDark' size={20} />
-            ) : (
-                <Icon icon='IcAppstoreTradingHubOnboarding' size={20} />
-            )}
+            <div className='trading-hub-header__tradinghub--onboarding--logo'>
+                <Icon
+                    icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
+                    size={20}
+                />
+            </div>
         </div>
     );
 };

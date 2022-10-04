@@ -46,13 +46,13 @@ describe('CompareAccountsModal', () => {
     it('should render the modal', async () => {
         render(<CompareAccountsModal {...mock_props} />);
         await waitFor(() => {
-            expect(screen.getByText(/compare accounts/i)).toBeInTheDocument();
+            expect(screen.getByText(/Compare available accounts/i)).toBeInTheDocument();
         });
     });
     it('should render the MockedMT5CompareTableContent for mt5', async () => {
         render(<CompareAccountsModal {...mock_props} />);
         await waitFor(() => {
-            expect(screen.getByText(/compare accounts/i)).toBeInTheDocument();
+            expect(screen.getByText(/Compare available accounts/i)).toBeInTheDocument();
         });
         expect(screen.getByText(/MockedMt5CompareTableContent/i)).toBeInTheDocument();
     });
@@ -66,7 +66,7 @@ describe('CompareAccountsModal', () => {
     it('should render the MockedMt5CompareTableContent if the user is not logged in', async () => {
         render(<CompareAccountsModal {...mock_props} is_logged_in={false} />);
         await waitFor(() => {
-            expect(screen.getByText(/compare accounts/i)).toBeInTheDocument();
+            expect(screen.getByText(/Compare available accounts/i)).toBeInTheDocument();
         });
         expect(screen.getByText(/MockedMt5CompareTableContent/i)).toBeInTheDocument();
     });

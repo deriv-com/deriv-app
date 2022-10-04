@@ -387,8 +387,8 @@ describe('<CFDDashboard />', () => {
             typeof render
         >;
 
-        expect(screen.getByRole('button', { name: compare_accounts_button_label })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: account_information_button_label })).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: account_information_button_label })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: compare_accounts_button_label })).not.toBeInTheDocument();
 
         mock_connect_props.landing_companies = {};
         renderCFDDashboardWithRouter({ is_logged_in: false, is_eu_country: true }, rerender);

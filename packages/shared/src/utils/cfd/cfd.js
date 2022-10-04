@@ -161,40 +161,75 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) =
     return false;
 };
 
-export const getIdentityStatusInfo = account_status => {
-    const poa_status = account_status?.authentication?.document?.status;
+export const getAuthenticationStatusInfo = account_status => {
     const poi_status = account_status?.authentication?.identity?.status;
+    const poa_status = account_status?.authentication?.document?.status;
 
     const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
     const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
     const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
 
     const acknowledged_status = ['pending', 'verified'];
+    const failed_cases = ['rejected', 'expired', 'suspected'];
 
+    const poa_not_submitted = poa_status === 'none';
+    const poa_acknowledged = acknowledged_status.includes(poa_status);
+    const need_poa_submission = !poa_acknowledged;
+    const need_poa_resubmission = failed_cases.includes(poa_status);
+    const poa_verified = poa_status === 'verified';
+    const poa_pending = poa_status === 'pending';
+
+    const poi_not_submitted = poi_status === 'none';
+    const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
+
+    //vanuatu
+
+    const poi_verified_for_vanuatu = [onfido_status, manual_status].includes('verified');
     const poi_acknowledged_for_vanuatu =
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
 
-    const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
+    const poi_pending_for_vanuatu =
+        onfido_status &&
+        manual_status &&
+        [onfido_status, manual_status].includes('pending') &&
+        !poi_verified_for_vanuatu;
 
-    const poi_acknowledged_for_bvi_labuan =
+    const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
+    const poi_not_submitted_for_vanuatu =
+        onfido_status && manual_status && [onfido_status, manual_status].every(status => status === 'none');
+    const poi_resubmit_for_vanuatu =
+        !poi_pending_for_vanuatu && !poi_not_submitted_for_vanuatu && !poi_verified_for_vanuatu;
+
+    const poi_poa_verified_for_vanuatu = poi_verified_for_vanuatu && poa_verified;
+
+    //bvi-labuan-maltainvest
+    const poi_acknowledged_for_bvi_labuan_maltainvest =
         (idv_status && acknowledged_status.includes(idv_status)) ||
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
-    const need_poi_for_bvi_labuan = !poi_acknowledged_for_bvi_labuan;
 
-    const poa_acknowledged = acknowledged_status.includes(poa_status);
-    const poi_acknowledged = acknowledged_status.includes(poi_status);
-    const poa_poi_verified = poa_status === 'verified' && poi_status === 'verified';
+    const need_poi_for_bvi_labuan_maltainvest = !poi_acknowledged_for_bvi_labuan_maltainvest;
+    const poi_not_submitted_for_bvi_labuan_maltainvest =
+        idv_status &&
+        onfido_status &&
+        manual_status &&
+        [idv_status, onfido_status, manual_status].every(status => status === 'none');
 
-    const need_poa_submission = !poa_acknowledged;
+    const poi_verified_for_bvi_labuan_maltainvest = [idv_status, onfido_status, manual_status].includes('verified');
 
-    const idv_acknowledged = idv_status && acknowledged_status.includes(idv_status);
+    const poi_pending_for_bvi_labuan_maltainvest =
+        idv_status &&
+        onfido_status &&
+        manual_status &&
+        [idv_status, onfido_status, manual_status].includes('pending') &&
+        !poi_verified_for_bvi_labuan_maltainvest;
 
-    const poi_verified_for_vanuatu = onfido_status === 'verified' || manual_status === 'verified';
-    const poi_verified_for_labuan_bvi =
-        idv_status === 'verified' || onfido_status === 'verified' || manual_status === 'verified';
-    const poa_verified = poa_status === 'verified';
+    const poi_resubmit_for_bvi_labuan_maltainvest =
+        !poi_pending_for_bvi_labuan_maltainvest &&
+        !poi_not_submitted_for_bvi_labuan_maltainvest &&
+        !poi_verified_for_bvi_labuan_maltainvest;
+    const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poa_verified;
 
     return {
         poa_status,
@@ -204,16 +239,25 @@ export const getIdentityStatusInfo = account_status => {
         manual_status,
         acknowledged_status,
         poi_acknowledged_for_vanuatu,
+        poi_poa_verified_for_bvi_labuan_maltainvest,
         poa_acknowledged,
-        poi_acknowledged,
-        poa_poi_verified,
-        idv_acknowledged,
-        need_poi_for_vanuatu,
-        need_poi_for_bvi_labuan,
-        poi_acknowledged_for_bvi_labuan,
+        poi_poa_verified_for_vanuatu,
         need_poa_submission,
         poi_verified_for_vanuatu,
-        poi_verified_for_labuan_bvi,
+        poi_acknowledged_for_bvi_labuan_maltainvest,
+        poi_verified_for_bvi_labuan_maltainvest,
         poa_verified,
+        poi_or_poa_not_submitted,
+        need_poa_resubmission,
+        poa_not_submitted,
+        poi_not_submitted,
+        need_poi_for_vanuatu,
+        need_poi_for_bvi_labuan_maltainvest,
+        poi_not_submitted_for_vanuatu,
+        poi_pending_for_bvi_labuan_maltainvest,
+        poi_pending_for_vanuatu,
+        poi_resubmit_for_vanuatu,
+        poi_resubmit_for_bvi_labuan_maltainvest,
+        poa_pending,
     };
 };

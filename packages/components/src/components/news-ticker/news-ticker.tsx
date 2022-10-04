@@ -1,13 +1,17 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import NewsTickerChildren from './news-ticker-children.jsx';
+import NewsTickerChildren from './news-ticker-children';
 
-const NewsTicker = ({ children, className, speed }) => {
+type TNewsTicker = {
+    className?: string;
+    speed: number;
+};
+
+const NewsTicker = ({ children, className, speed }: React.PropsWithChildren<TNewsTicker>) => {
     const [element_width, setElementWidth] = React.useState(-1);
     const [is_exceeding_parent, setIsExceedingParent] = React.useState(false);
 
-    const onRefChange = ref => {
+    const onRefChange = (ref: HTMLDivElement) => {
         if (ref) {
             setIsExceedingParent(ref.scrollWidth > ref.clientWidth);
 
@@ -36,12 +40,6 @@ const NewsTicker = ({ children, className, speed }) => {
             )}
         </div>
     );
-};
-
-NewsTicker.propTypes = {
-    children: PropTypes.any.isRequired,
-    className: PropTypes.string,
-    speed: PropTypes.number.isRequired,
 };
 
 export default NewsTicker;

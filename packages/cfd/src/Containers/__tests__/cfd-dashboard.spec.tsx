@@ -60,7 +60,10 @@ jest.mock('../cfd-password-modal.tsx', () => props => props.is_cfd_password_moda
 jest.mock('../cfd-top-up-demo-modal', () => props => props.is_top_up_virtual_open ? 'CFDTopUpDemoModal' : '');
 jest.mock('../cfd-personal-details-modal', () => () => 'CFDPersonalDetailsModal');
 jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' : '');
-jest.mock('../jurisdiction-modal', () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : '');
+jest.mock(
+    '../jurisdiction-modal/jurisdiction-modal',
+    () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : ''
+);
 
 describe('<CFDDashboard />', () => {
     const props: Partial<TCFDDashboardProps> = {

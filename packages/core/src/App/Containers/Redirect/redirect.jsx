@@ -23,7 +23,7 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
 
@@ -40,6 +40,9 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
+            }
+            if (is_pre_appstore) {
+                //TODO: redirect
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);

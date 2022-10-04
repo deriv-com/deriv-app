@@ -119,6 +119,10 @@ const Account = ({
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
                 route.is_disabled = !should_allow_authentication;
             }
+
+            if (route.path === shared_routes.proof_of_ownership) {
+                route.is_disabled = is_virtual;
+            }
         });
     });
 

@@ -228,6 +228,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     /proof-of-address/.test(subroute.path)) ||
                                                 (!should_allow_authentication &&
                                                     /proof-of-identity/.test(subroute.path)) ||
+                                                (is_virtual && /proof-of-ownership/.test(subroute.path)) ||
                                                 (is_virtual && /financial-assessment/.test(subroute.path)) ||
                                                 subroute.is_disabled
                                             }

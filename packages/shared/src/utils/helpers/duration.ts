@@ -65,13 +65,13 @@ export const buildDurationConfig = (
     const obj_min = getDurationFromString(contract.min_contract_duration);
     const obj_max = getDurationFromString(contract.max_contract_duration);
 
-    durations.min_max[contract.start_type][contract.expiry_type] = {
+    durations.min_max[contract.start_type as TDurationMinMax][contract.expiry_type] = {
         min: convertDurationUnit(obj_min.duration, obj_min.unit, 's'),
         max: convertDurationUnit(obj_max.duration, obj_max.unit, 's'),
     };
 
-    const arr_units: Array<string> = [];
-    durations.units_display[contract.start_type].forEach(obj => {
+    const arr_units: [] = [];
+    durations.units_display[contract.start_type as TDurationUnits].forEach(obj => {
         arr_units.push(obj.value);
     });
 
@@ -94,9 +94,9 @@ export const buildDurationConfig = (
         });
     }
 
-    durations.units_display[contract.start_type] = arr_units
+    durations.units_display[contract.start_type as TDurationUnits] = arr_units
         .sort((a, b) => (duration_maps[a as TDurationMap].order > duration_maps[b as TDurationMap].order ? 1 : -1))
-        .reduce((o, c) => [...o, { text: duration_maps[c].display, value: c }], []);
+        .reduce((o, c) => [...o, { text: duration_maps[c as TDurationMap].display, value: c }], []);
 
     return durations;
 };

@@ -1,8 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { storeSetting, getSetting } from '../../utils/settings';
-import { Text, Localize, Icon } from '@deriv/components';
-import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import { Text, Icon } from '@deriv/components';
 
 export const setJoyRideToken = () => {
     return storeSetting('joyride_trigger', new Date().getTime());

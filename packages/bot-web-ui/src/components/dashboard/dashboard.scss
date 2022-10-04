@@ -1,5 +1,4 @@
 @import '../dashboard/dashboard-components/index.scss';
-@import './tutorial-tab/index.scss';
 
 .dashboard {
     &__container {
@@ -22,12 +21,12 @@
                 line-height: 2.6rem;
                 position: relative;
                 cursor: pointer;
-                .chevron {
+                &__chevron {
                     position: absolute;
                     right: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
-                    &.active {
+                    &--active {
                         transform: rotate(180deg);
                         top: -0.2rem;
                     }
@@ -46,9 +45,9 @@
             &__content-wrapper {
                 height: 0;
                 transition: height 0.4s ease;
-                &.active {
-                    height: auto;
-                }
+            }
+            &__content-wrapper.active {
+                height: 100%;
             }
         }
     }
@@ -59,10 +58,6 @@
         background-color: var(--general-main-1);
     }
     &__run-strategy-wrapper {
-        position: absolute;
-        right: 0;
-        top: 10px;
-        z-index: 100;
         .animation {
             &__button {
                 background-color: var(--purchase-main-1);
@@ -70,6 +65,15 @@
             &__container {
                 background-color: var(--general-main-1);
             }
+        }
+    }
+    &__sidebar-wrapper {
+        &--active {
+            position: fixed;
+            right: 0;
+        }
+        &--hidden {
+            display: none;
         }
     }
 }

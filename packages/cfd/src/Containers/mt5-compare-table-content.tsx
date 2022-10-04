@@ -177,19 +177,23 @@ const content: TModalContentProps[] = [
         id: 'instruments',
         attribute: localize('Trading instruments'),
         values: {
-            synthetic_svg: { text: localize('Synthetics') },
+            synthetic_svg: { text: [localize('Synthetics'), localize('Basket indices')] },
             financial_svg: {
                 text: [
                     localize('Forex: standard/micro'),
                     localize('Stocks'),
                     localize('Stock indices'),
                     localize('Commodities'),
-                    localize('Basket indices'),
                     localize('Cryptocurrencies'),
                 ],
             },
             financial_vanuatu: {
-                text: [localize('Forex'), localize('Commodities')],
+                text: [
+                    localize('Forex'),
+                    localize('Stock indices'),
+                    localize('Commodities'),
+                    localize('Cryptocurrencies'),
+                ],
             },
             financial_labuan: { text: [localize('Forex'), localize('Cryptocurrencies')] },
         },
@@ -525,7 +529,7 @@ const DMT5CompareModalContent = ({
                                 <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
                                 {!show_eu_related && synthetic_accounts_count > 0 && (
                                     <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                        {localize('Synthetic')}
+                                        {localize('Derived')}
                                     </Table.Head>
                                 )}
                                 {financial_accounts_count > 0 && (

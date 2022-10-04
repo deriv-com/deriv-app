@@ -174,21 +174,21 @@ const Toolbar = (props: TToolbar) => {
                             button_id='db-toolbar__import-button--mobile'
                             button_classname='toolbar__btn--icon'
                             buttonOnClick={toggleLoadModal}
-                            icon={<Icon icon='IcFolderOpenFilled' color='active' size={16} />}
+                            icon={<Icon icon='IcFolderOpenFilled' color='active' />}
                             button_text={localize('Load')}
                         />
                         <ToolbarButton
                             button_id='db-toolbar__quick-strategy-button--mobile'
                             button_classname='toolbar__btn--icon'
                             buttonOnClick={toggleStrategyModal}
-                            icon={<Icon icon='IcPuzzle' color='active' size={16} />}
+                            icon={<Icon icon='IcPuzzle' color='active' />}
                             button_text={localize('Quick')}
                         />
                         <ToolbarButton
                             button_id='db-toolbar__save-button--mobile'
                             button_classname='toolbar__btn--icon'
                             buttonOnClick={toggleSaveModal}
-                            icon={<Icon icon='IcSaveFilled' color='active' size={16} />}
+                            icon={<Icon icon='IcSaveFilled' color='active' />}
                             button_text={localize('Save')}
                         />
                     </div>
@@ -227,8 +227,8 @@ const Toolbar = (props: TToolbar) => {
 };
 
 export default connect(
-    ({ main_content, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }: RootStore) => ({
-        active_tab: main_content.active_tab,
+    ({ blockly_store, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }: RootStore) => ({
+        active_tab: blockly_store.active_tab,
         file_name: toolbar.file_name,
         has_redo_stack: toolbar.has_redo_stack,
         has_undo_stack: toolbar.has_undo_stack,

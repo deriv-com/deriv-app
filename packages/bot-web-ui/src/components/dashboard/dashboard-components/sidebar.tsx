@@ -3,14 +3,12 @@ import { Icon } from '@deriv/components';
 import classNames from 'classnames';
 import { SIDEBAR_INTRO } from './constants';
 
-interface SideBarProps {
+type TSideBar = {
     is_sidebar_open: boolean;
     setSideBarState: (state: boolean) => void;
-}
+};
 
-const Sidebar = (props: SideBarProps) => {
-    const { setSideBarState, is_sidebar_open } = props;
-
+const Sidebar = ({ setSideBarState, is_sidebar_open }: TSideBar) => {
     return (
         <div
             className={classNames('db-sidebar', {

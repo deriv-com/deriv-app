@@ -3,17 +3,11 @@ import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
-    Audio,
-    BlocklyLoading,
     BotFooterExtensions,
     BotNotificationMessages,
-    MainContent,
-    QuickStrategy,
-    RunPanel,
-    RoutePromptDialog,
-    Toolbar,
-    NetworkToastPopup,
     Dashboard,
+    NetworkToastPopup,
+    RoutePromptDialog,
 } from 'Components';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
@@ -23,10 +17,9 @@ import './app.scss';
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
-    const show_dashboard = true;
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
-    const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
+    const { showDigitalOptionsMaltainvestError } = app;
 
     React.useEffect(() => {
         /**
@@ -63,17 +56,9 @@ const App = ({ passthrough }) => {
         setIsLoading(true);
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
-            if (!show_dashboard) {
-                onMount();
-            }
         });
-        return () => {
-            if (!show_dashboard) {
-                onUnmount();
-            }
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMount, onUnmount]);
+    }, []);
 
     React.useEffect(() => {
         const onDisconnectFromNetwork = () => {
@@ -83,30 +68,19 @@ const App = ({ passthrough }) => {
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return is_loading ? (
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
-            <div className={show_dashboard ? 'bot-dashboard' : 'bot'}>
+            <div className='bot-dashboard'>
+                <BotFooterExtensions />
                 <BotNotificationMessages />
+                <Dashboard />
                 <NetworkToastPopup />
-
-                {show_dashboard ? (
-                    <Dashboard />
-                ) : (
-                    <>
-                        <Toolbar />
-                        <MainContent />
-                        <RunPanel />
-                        <QuickStrategy />
-                        <BotFooterExtensions />
-                        <Audio />
-                        <RoutePromptDialog />
-                        <BlocklyLoading />
-                    </>
-                )}
+                <RoutePromptDialog />
             </div>
         </MobxContentProvider>
     );

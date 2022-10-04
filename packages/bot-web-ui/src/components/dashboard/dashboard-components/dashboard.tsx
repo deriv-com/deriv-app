@@ -42,13 +42,13 @@ const Dashboard = ({ load_modal, app }: TDashboardProps) => {
     );
 };
 
-export default connect((store: RootStore) => ({
-    load_modal: store.load_modal,
-    active_tab: store.dashbaord.active_tab,
-    setActiveTab: store.dashbaord.setActiveTab,
-    handleFileChange: store.load_modal.handleFileChange,
-    toggleLoadModal: store.load_modal.toggleLoadModal,
-    onMount: store.main_content.onMount,
-    onUnmount: store.main_content.onUnmount,
-    app: store.app,
+export default connect(({ load_modal, dashbaord, main_content, app, blockly_store }: RootStore) => ({
+    load_modal,
+    active_tab: dashbaord.active_tab,
+    setActiveTab: dashbaord.setActiveTab,
+    handleFileChange: load_modal.handleFileChange,
+    toggleLoadModal: load_modal.toggleLoadModal,
+    onMount: blockly_store.onMount,
+    onUnmount: blockly_store.onUnmount,
+    app,
 }))(Dashboard);

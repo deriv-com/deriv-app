@@ -222,7 +222,7 @@ Blockly.Css.CONTENT = [
     'margin: 4px;',
     'border-radius: 4px;',
     'background: $colour_numPadBackground;',
-    'color: $colour_numPadText;',
+    'color: var(--text-general);',
     'outline: none;',
     'border: 1px solid $colour_numPadBorder;',
     'cursor: pointer;',
@@ -235,6 +235,7 @@ Blockly.Css.CONTENT = [
     'margin-top: 10%;',
     'width: 80%;',
     'height: 80%;',
+    'filter: invert(1);',
     '}',
 
     '.blocklyNumPadButton:active {',

@@ -92,7 +92,7 @@ const CompareAccountsModal = ({
                     <Button
                         className='cfd-dashboard__welcome-message--button'
                         has_effect
-                        text={getCFDModalTitle()}
+                        text={cfd_account_button_label}
                         onClick={toggleCompareAccounts}
                         secondary
                         disabled={is_loading}

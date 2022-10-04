@@ -428,6 +428,19 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
+    onEditDeletePaymentMethodCard(event, payment_method) {
+        if (event.target.value === 'edit') {
+            this.setPaymentMethodToEdit(payment_method);
+            this.setSelectedPaymentMethodDisplayName(payment_method?.display_name);
+            this.getSelectedPaymentMethodDetails();
+            this.setShouldShowEditPaymentMethodForm(true);
+        } else {
+            this.setPaymentMethodToDelete(payment_method);
+            this.setIsConfirmDeleteModalOpen(true);
+        }
+    }
+
+    @action.bound
     onSubmit() {
         const { general_store } = this.root_store;
 

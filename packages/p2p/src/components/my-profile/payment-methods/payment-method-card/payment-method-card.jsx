@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 const PaymentMethodCard = ({
     add_payment_method,
+    disabled,
     is_add = false,
     is_vertical_ellipsis_visible = true,
     label = undefined,
@@ -18,12 +19,11 @@ const PaymentMethodCard = ({
     show_payment_method_name = true,
     small,
     style,
-    disabled,
 }) => {
     const { my_profile_store } = useStores();
     const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
-    const payment_account_name = payment_method?.fields?.account?.display_name;
+    const payment_account_name = payment_method?.display_name;
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
     const payment_name = payment_method?.fields?.name?.value;
 
@@ -88,17 +88,7 @@ const PaymentMethodCard = ({
                                 value: 'delete',
                             },
                         ]}
-                        onChange={e => {
-                            if (e.target.value === 'edit') {
-                                my_profile_store.setPaymentMethodToEdit(payment_method);
-                                my_profile_store.setSelectedPaymentMethodDisplayName(payment_method?.display_name);
-                                my_profile_store.getSelectedPaymentMethodDetails();
-                                my_profile_store.setShouldShowEditPaymentMethodForm(true);
-                            } else {
-                                my_profile_store.setPaymentMethodToDelete(payment_method);
-                                my_profile_store.setIsConfirmDeleteModalOpen(true);
-                            }
-                        }}
+                        onChange={e => my_profile_store.onEditDeletePaymentMethodCard(e, payment_method)}
                         suffix_icon='IcCashierVerticalEllipsis'
                         is_align_text_left
                     />
@@ -123,18 +113,18 @@ const PaymentMethodCard = ({
 
 PaymentMethodCard.propTypes = {
     add_payment_method: PropTypes.string,
+    disabled: PropTypes.bool,
     is_add: PropTypes.bool,
     is_vertical_ellipsis_visible: PropTypes.bool,
-    show_payment_method_name: PropTypes.bool,
     label: PropTypes.string,
     large: PropTypes.bool,
     medium: PropTypes.bool,
     onClick: PropTypes.func,
     onClickAdd: PropTypes.func,
     payment_method: PropTypes.object,
+    show_payment_method_name: PropTypes.bool,
     small: PropTypes.bool,
     style: PropTypes.object,
-    disabled: PropTypes.bool,
 };
 
 export default PaymentMethodCard;

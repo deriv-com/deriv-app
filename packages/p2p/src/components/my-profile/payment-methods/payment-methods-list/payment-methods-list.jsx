@@ -148,9 +148,8 @@ const PaymentMethodsList = () => {
                 has_close_icon={false}
                 onMount={() => general_store.setIsModalOpen(true)}
                 onUnmount={() => general_store.setIsModalOpen(false)}
-            >
-                <Modal.Body className='payment-methods-list__modal-wrapper'>
-                    <Text as='p' size='xs' color='prominent'>
+                title={
+                    <Text color='prominent' size='s' weight='bold'>
                         <Localize
                             i18n_default_text='Delete {{payment_method_name}}?'
                             values={{
@@ -160,6 +159,12 @@ const PaymentMethodsList = () => {
                                     my_profile_store?.payment_method_to_delete?.fields?.account?.value,
                             }}
                         />
+                    </Text>
+                }
+            >
+                <Modal.Body className='payment-methods-list__modal-wrapper'>
+                    <Text as='p' size='xs' color='prominent'>
+                        <Localize i18n_default_text='Are you sure you want to remove this payment method?' />
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>

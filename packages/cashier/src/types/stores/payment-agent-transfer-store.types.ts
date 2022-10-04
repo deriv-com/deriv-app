@@ -15,3 +15,11 @@ export type TTransferLimit = {
     min_withdrawal?: null | string | number;
     max_withdrawal?: null | string | number;
 };
+
+export type TPaymentAgentTransferRequest = {
+    amount: string;
+    currency: string;
+    description: string;
+    dry_run?: number;
+    transfer_to: string;
+};

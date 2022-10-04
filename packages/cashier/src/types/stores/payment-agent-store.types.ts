@@ -51,6 +51,14 @@ export type TSupportedBank = {
     value: string;
 };
 
+export type TPaymentAgentWithdrawRequest = {
+    amount: string;
+    currency: string;
+    dry_run?: number;
+    loginid: string;
+    verification_code: string;
+};
+
 type TExtendedPaymentAgentFields = {
     phone_numbers: TPhoneNumber[];
     supported_payment_methods: TPaymentMethod[];

@@ -10,6 +10,7 @@ import {
     TPaymentAgentTransferConfirm,
     TPaymentAgentTransferRequest,
     TRootStore,
+    TServerError,
     TTransferLimit,
     TWebSocket,
 } from 'Types';
@@ -28,7 +29,7 @@ export default class PaymentAgentTransferStore {
     @observable confirm: TPaymentAgentTransferConfirm = {};
     @observable receipt: TPaymentAgentTransferReceipt = {};
     @observable transfer_limit: TTransferLimit = {};
-    @observable onRemount: VoidFunction = null;
+    @observable onRemount: VoidFunction | null = null;
 
     @computed
     get is_payment_agent_transfer_visible(): boolean {
@@ -55,7 +56,7 @@ export default class PaymentAgentTransferStore {
 
     @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful: boolean): void {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         this.is_try_transfer_successful = is_try_transfer_successful;
     }
 
@@ -132,7 +133,7 @@ export default class PaymentAgentTransferStore {
         description,
         transfer_to,
     }: TPaymentAgentTransferRequest): Promise<PaymentAgentTransferResponse> => {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
             currency,
@@ -150,7 +151,7 @@ export default class PaymentAgentTransferStore {
             });
             this.setIsTryTransferSuccessful(true);
         } else {
-            this.error.setErrorMessage(payment_agent_transfer?.error, this.resetPaymentAgentTransfer);
+            this.error.setErrorMessage(payment_agent_transfer.error as TServerError, this.resetPaymentAgentTransfer);
         }
 
         return payment_agent_transfer;
@@ -163,7 +164,7 @@ export default class PaymentAgentTransferStore {
         description,
         transfer_to,
     }: TPaymentAgentTransferRequest): Promise<PaymentAgentTransferResponse> => {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
             currency,
@@ -180,7 +181,7 @@ export default class PaymentAgentTransferStore {
             this.setIsTryTransferSuccessful(false);
             this.setConfirmationPaymentAgentTransfer({});
         } else {
-            this.error.setErrorMessage(payment_agent_transfer?.error, this.resetPaymentAgentTransfer);
+            this.error.setErrorMessage(payment_agent_transfer.error as TServerError, this.resetPaymentAgentTransfer);
         }
 
         return payment_agent_transfer;
@@ -189,6 +190,6 @@ export default class PaymentAgentTransferStore {
     @action.bound
     resetPaymentAgentTransfer = (): void => {
         this.setIsTransferSuccessful(false);
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
     };
 }

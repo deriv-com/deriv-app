@@ -13,6 +13,7 @@ import {
     TPaymentAgentWithdrawRequest,
     TPaymentAgentWithdrawReceipt,
     TRootStore,
+    TServerError,
     TSupportedBank,
     TTarget,
     TWebSocket,
@@ -24,11 +25,11 @@ export default class PaymentAgentStore {
         this.WS = WS;
     }
 
-    @observable list: IObservableArray<TPartialPaymentAgentList> = [];
-    @observable agents: IObservableArray<TAgent> = [];
+    @observable list: IObservableArray<TPartialPaymentAgentList> | [] = [];
+    @observable agents: IObservableArray<TAgent> | [] = [];
     @observable container = Constants.containers.payment_agent;
     @observable error: TRootStore['modules']['cashier']['error'] = new ErrorStore();
-    @observable filtered_list: IObservableArray<TPartialPaymentAgentList> = [];
+    @observable filtered_list: IObservableArray<TPartialPaymentAgentList> | [] = [];
     @observable is_name_selected = true;
     @observable is_withdraw = false;
     @observable is_try_withdraw_successful = false;
@@ -36,11 +37,11 @@ export default class PaymentAgentStore {
     @observable confirm: TPaymentAgentWithdrawConfirm = {};
     @observable receipt: TPaymentAgentWithdrawReceipt = {};
     @observable selected_bank: number | string = 0;
-    @observable supported_banks: IObservableArray<TSupportedBank> = [];
+    @observable supported_banks: IObservableArray<TSupportedBank> | [] = [];
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable active_tab_index = 0;
-    @observable all_payment_agent_list: TExtendedPaymentAgentListResponse = null;
-    @observable onRemount: VoidFunction = null;
+    @observable all_payment_agent_list: TExtendedPaymentAgentListResponse | null = null;
+    @observable onRemount: VoidFunction | null = null;
 
     @action.bound
     setOnRemount(func: VoidFunction): void {
@@ -87,19 +88,19 @@ export default class PaymentAgentStore {
             supported_bank => supported_bank.value === bank.toLowerCase()
         );
         if (!supported_bank_exists) {
-            this.supported_banks.push({ text: bank, value: bank.toLowerCase() });
+            (this.supported_banks as IObservableArray<TSupportedBank>).push({ text: bank, value: bank.toLowerCase() });
         }
     }
 
     @action.bound
     clearSupportedBanks(): void {
-        this.supported_banks = [] as unknown as IObservableArray<TSupportedBank>;
+        this.supported_banks = [];
     }
 
     @action.bound
     sortSupportedBanks(): void {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
-        this.supported_banks.replace(
+        (this.supported_banks as IObservableArray<TSupportedBank>).replace(
             this.supported_banks.slice().sort((a, b) => {
                 if (a.value < b.value) {
                     return -1;
@@ -114,12 +115,12 @@ export default class PaymentAgentStore {
 
     @action.bound
     setList(pa_list: TPartialPaymentAgentList): void {
-        this.list.push(pa_list);
+        (this.list as IObservableArray<TPartialPaymentAgentList>).push(pa_list);
     }
 
     @action.bound
     clearList(): void {
-        this.list = [] as unknown as IObservableArray<TPartialPaymentAgentList>;
+        this.list = [];
     }
 
     @action.bound
@@ -137,7 +138,7 @@ export default class PaymentAgentStore {
                     urls: payment_agent?.urls,
                 });
                 const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
-                supported_banks_array.forEach(bank => this.addSupportedBank(bank));
+                supported_banks_array.forEach(bank => bank && this.addSupportedBank(bank));
             });
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -150,12 +151,13 @@ export default class PaymentAgentStore {
     @action.bound
     filterPaymentAgentList(bank?: number | string): void {
         if (bank && typeof bank === 'string') {
-            this.filtered_list = [] as unknown as IObservableArray<TPartialPaymentAgentList>;
+            this.filtered_list = [];
             this.list.forEach(payment_agent => {
                 const supported_banks = payment_agent?.supported_banks;
                 if (supported_banks) {
                     const bank_index = supported_banks.map(x => x.payment_method.toLowerCase()).indexOf(bank);
-                    if (bank_index !== -1) this.filtered_list.push(payment_agent);
+                    if (bank_index !== -1)
+                        (this.filtered_list as IObservableArray<TPartialPaymentAgentList>).push(payment_agent);
                 }
             });
         } else {
@@ -177,7 +179,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful: boolean): void {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         this.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -217,7 +219,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     addPaymentAgent(payment_agent: TExtendedPaymentAgentList[0]): void {
-        this.agents.push({
+        (this.agents as IObservableArray<TAgent>).push({
             text: payment_agent.name,
             value: payment_agent.paymentagent_loginid,
             max_withdrawal: payment_agent.max_withdrawal,
@@ -263,7 +265,7 @@ export default class PaymentAgentStore {
         amount,
         verification_code,
     }: TPaymentAgentWithdrawRequest): Promise<void> {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -282,13 +284,13 @@ export default class PaymentAgentStore {
             });
             this.setIsTryWithdrawSuccessful(true);
         } else {
-            this.error.setErrorMessage(payment_agent_withdraw?.error, this.resetPaymentAgent);
+            this.error.setErrorMessage(payment_agent_withdraw.error as TServerError, this.resetPaymentAgent);
         }
     }
 
     @action.bound
     resetPaymentAgent = (): void => {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         this.setIsWithdraw(false);
         this.verification.clearVerification();
         this.setActiveTabIndex(0);
@@ -328,7 +330,7 @@ export default class PaymentAgentStore {
         amount,
         verification_code,
     }: TPaymentAgentWithdrawRequest): Promise<void> {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -354,7 +356,7 @@ export default class PaymentAgentStore {
             this.setIsTryWithdrawSuccessful(false);
             this.setConfirmation({});
         } else {
-            this.error.setErrorMessage(payment_agent_withdraw?.error, this.resetPaymentAgent);
+            this.error.setErrorMessage(payment_agent_withdraw.error as TServerError, this.resetPaymentAgent);
         }
     }
 }

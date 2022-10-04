@@ -10,7 +10,12 @@ import {
     PaymentAgentWithdrawResponse,
     TransferBetweenAccountsResponse,
 } from '@deriv/api-types';
-import { TMT5LoginAccount, TExtendedPaymentAgentListResponse } from 'Types';
+import {
+    TExtendedPaymentAgentListResponse,
+    TMT5LoginAccount,
+    TPaymentAgentTransferRequest,
+    TPaymentAgentWithdrawRequest,
+} from 'Types';
 
 export type TServerError = {
     code: string;
@@ -22,14 +27,6 @@ type TPassthrough = {
     [k: string]: unknown;
 };
 
-export type TPaymentAgentWithdrawRequest = {
-    amount: string;
-    currency: string;
-    dry_run?: number;
-    loginid: string;
-    verification_code: string;
-};
-
 type TStorage = {
     getSettings: () => Promise<GetAccountSettingsResponse>;
 };
@@ -38,14 +35,6 @@ type TServiceTokenRequest = {
     service_token: number;
     service: string;
     referrer: string;
-};
-
-export type TPaymentAgentTransferRequest = {
-    amount: string;
-    currency: string;
-    description: string;
-    dry_run?: number;
-    transfer_to: string;
 };
 
 type TWebSocketCall = {

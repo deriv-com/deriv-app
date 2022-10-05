@@ -4,6 +4,8 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import GuideContent from './guide-content';
+import debounce from 'lodash.debounce';
+import './sidebar.scss';
 
 type DashboardProps = {
     active_tab_tutotials: number;
@@ -13,37 +15,30 @@ type DashboardProps = {
 };
 
 const Sidebar = ({ active_tab_tutotials, setActiveTabTutorial, setFAQSearchValue }: DashboardProps) => {
+    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        debounce(() => {
+            setFAQSearchValue(value);
+        }, 700)();
+    };
+
     return (
         <div className='dc-tabs__wrapper'>
-            <div className='dc-tabs__wrapper_group'>
+            <div className='dc-tabs__wrapper__group'>
                 <Icon width='1.6rem' height='1.6rem' icon={'IcSearch'} />
                 <input
                     type='text'
                     placeholder='Search'
-                    className='dc-tabs__wrapper__search_input'
-                    onChange={e => {
-                        setFAQSearchValue(e.target.value);
-                    }}
+                    className='dc-tabs__wrapper__group--search_input'
+                    onChange={onSearch}
                 />
             </div>
-            {/* TODO: need to use search box here issues passing proptypes */}
-            {/* <SearchBox
-                className='dc-tabs__wrapper__search_input'
-                onClear={() => {
-                    // setFAQSearchValue('');
-                }}
-                onSearch={(search: string) => {
-                    // setFAQSearchValue(search);
-                }}
-                placeholder={localize('Search')}
-            /> */}
             <Tabs active_index={active_tab_tutotials} onTabItemClick={setActiveTabTutorial} top>
-                {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
                 <Tab label={localize('Guide')}>
                     <GuideContent />
                 </Tab>
                 <Tab label={localize('FAQ')} id='id-bot-builder'>
-                    FAQ Description
+                    {localize('FAQ Description')}
                 </Tab>
             </Tabs>
         </div>

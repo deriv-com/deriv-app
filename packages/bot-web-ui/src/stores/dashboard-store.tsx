@@ -9,7 +9,7 @@ export interface IDashboardStore {
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
     onCloseDialog: () => void;
-    showVideoDialog: (url: string, type: string) => boolean;
+    showVideoDialog: (url: string, component: HTMLVideoElement, type?: string) => boolean;
 }
 
 export default class DashboardStore {
@@ -21,7 +21,7 @@ export default class DashboardStore {
 
     @observable active_tab = 0;
     @observable active_tab_tutotials = 0;
-    @observable faq_search_value = '';
+    @observable faq_search_value = null || '';
     @observable dialog_options = {};
     @observable is_dialog_open = false;
 
@@ -43,10 +43,10 @@ export default class DashboardStore {
     }
 
     @action.bound
-    showVideoDialog(url: string, type?: string): boolean {
+    showVideoDialog(url: string, component: HTMLVideoElement, type?: string): boolean {
         if (url) {
             this.dialog_options = {
-                message: <video src={url} width='100%' height='100%' controls />,
+                message: component,
             };
             return (this.is_dialog_open = true);
         }

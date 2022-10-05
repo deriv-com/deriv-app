@@ -1,81 +1,86 @@
 import React from 'react';
 import { Icon, Dialog, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 
 type TGuideContent = {
+    dialog_options: { [key: string]: string };
     faq_search_value: string;
     is_dialog_open: boolean;
-    is_running: boolean;
-    closeResetDialog: () => void;
     onOkButtonClick: () => void;
-    showVideoDialog: (type: string, url?: string) => void;
-    dialog_options: { [key: string]: string };
+    showVideoDialog: (type: string, component: HTMLVideoElement, url?: string) => void;
 };
 
+type TContentArray = {
+    id: number;
+    type: string;
+    content: string;
+    url?: string;
+};
+
+const contentArray: TContentArray[] = [
+    {
+        id: 1,
+        type: 'DBotVideo',
+        content: localize('DBot -- your automated trading partner'),
+        url: 'https://www.youtube.com/watch?v=tvBiEIq3G7k',
+    },
+    {
+        id: 2,
+        type: 'DBotTour',
+        content: localize('How to build your bot from scratch using a simple strategy.'),
+    },
+];
+
 const GuideContent = ({
+    dialog_options,
     faq_search_value,
     is_dialog_open,
     onOkButtonClick,
-    closeResetDialog,
     showVideoDialog,
-    dialog_options,
 }: TGuideContent) => {
-    type TcontentArray = {
-        id: number;
-        type: string;
-        content: string;
-        url?: string;
-    };
-
-    const contentArray: TcontentArray[] = [
-        {
-            id: 1,
-            type: 'DBotVideo',
-            content: 'DBot -- your automated trading partner',
-            url: 'https://www.youtube.com/watch?v=tvBiEIq3G7k',
-        },
-        {
-            id: 2,
-            type: 'DBotTour',
-            content: 'How to build your bot from scratch using a simple strategy.',
-        },
-    ];
-    const [finalContentArray, setfinalContentArray] = React.useState(contentArray);
+    const [finalContentArray, setfinalContentArray] = React.useState<TContentArray[]>(contentArray);
 
     React.useEffect(() => {
-        if (faq_search_value) {
+        if (faq_search_value && faq_search_value.length) {
             const filteredArray = contentArray.filter(data => {
                 return data.content.toLowerCase().includes(faq_search_value);
             });
-            setfinalContentArray(filteredArray);
+            return setfinalContentArray(filteredArray);
         }
+        return setfinalContentArray(contentArray);
     }, [faq_search_value]);
 
     return (
-        <div className='dc-tabs__inner-content'>
-            <h1 className='dc-tabs__inner-content--heading'>Guides</h1>
-            <div className='dc-tabs__inner-content--card'>
+        <div className='tutorials-wrap'>
+            <h1 className='tutorials-wrap__header'>Guides</h1>
+            <div className='tutorials-wrap__group'>
                 {finalContentArray.length > 0 ? (
                     finalContentArray.map(items => {
                         const { id, content, type, url } = items;
                         return (
-                            <div className='dc-tabs__inner-content--card-holder' key={id}>
-                                <div className='dc-tabs__inner-content--card-holder-placeholder'>
-                                    <div className='dc-tabs__inner-content--card-holder-placeholder--button-group'>
+                            <div className='tutorials-wrap__group__cards' key={id}>
+                                <div className='tutorials-wrap__placeholder'>
+                                    <div className='tutorials-wrap__placeholder__button-group'>
                                         <Icon
-                                            className='dc-tabs__inner-content--card-holder-placeholder--button-group-play'
+                                            className='tutorials-wrap__placeholder__button-group--play'
                                             width='4rem'
                                             height='4rem'
                                             icon={'IcPlayOutline'}
                                             onClick={() => {
-                                                showVideoDialog(type, url);
+                                                showVideoDialog(
+                                                    type,
+                                                    <video src={url} width='100%' height='100%' controls />,
+                                                    url
+                                                );
                                             }}
                                         />
                                     </div>
                                 </div>
-                                <span className='dc-tabs__inner-content--card-holder-label'>{content}</span>
+                                <Text align='center' color='prominent' line_height='s' size='s'>
+                                    {content}
+                                </Text>
                             </div>
                         );
                     })
@@ -90,9 +95,9 @@ const GuideContent = ({
                     title={dialog_options.title}
                     is_visible={is_dialog_open}
                     cancel_button_text={localize('Cancel')}
-                    onCancel={closeResetDialog}
+                    onCancel={onOkButtonClick}
                     confirm_button_text={localize('OK')}
-                    onConfirm={onOkButtonClick || onOkButtonClick}
+                    onConfirm={onOkButtonClick}
                     is_mobile_full_width
                     className={'dc-dialog dc-dialog__wrapper-guide--fixed'}
                     has_close_icon
@@ -109,7 +114,6 @@ export default connect(({ dashboard, load_modal }: RootStore) => ({
     faq_search_value: dashboard.faq_search_value,
     is_dialog_open: dashboard.is_dialog_open,
     onOkButtonClick: dashboard.onCloseDialog,
-    closeResetDialog: dashboard.onCloseDialog,
     showVideoDialog: dashboard.showVideoDialog,
     dialog_options: dashboard.dialog_options,
     toggleLoadModal: load_modal.toggleLoadModal,

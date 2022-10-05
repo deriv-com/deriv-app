@@ -63,7 +63,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                         </div>
                     </Tab>
                     <Tab icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
-                        <div>
+                        <div className='tutorials-wrapper'>
                             <Tutorial />
                         </div>
                     </Tab>

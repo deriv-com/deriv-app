@@ -58,7 +58,7 @@ const Tutorial = ({ active_tab_tutotials, setActiveTabTutorial, setFAQSearchValu
                                                     />
                                                 );
                                             case 'image':
-                                                return <Icon size={124} icon={item.src} />;
+                                                return <img src={item.src} />;
                                             default:
                                                 return null;
                                         }

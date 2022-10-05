@@ -1,10 +1,13 @@
 import { localize } from '@deriv/translations';
+import { getUrlBase } from '@deriv/shared';
 
 export type TTutorialItem = {
     title: string;
     description: { [key: string]: string }[];
     image?: string;
 };
+
+const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
 export const FAQ_QUESTIONS: TTutorialItem[] = [
     {
@@ -37,7 +40,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcClipboard',
+                src: getImageLocation('blocks_menu.png'),
             },
             {
                 type: 'text',
@@ -47,7 +50,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcBlocksMenuSearch',
+                src: getImageLocation('blocks_menu_search.png'),
             },
             {
                 type: 'text',
@@ -217,7 +220,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcResetTransactionLog',
+                src: getImageLocation('reset_transaction_log.png'),
             },
             {
                 type: 'text',
@@ -225,7 +228,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcResetTransactionLog',
+                src: getImageLocation('reset_transaction_log_message.png'),
             },
         ],
     },
@@ -240,7 +243,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcLossControl',
+                src: getImageLocation('loss_control.png'),
             },
             {
                 type: 'text',
@@ -249,7 +252,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>currentPL</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to 0.'
+                    '- <strong>currentPL</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to <strong>0</strong>.'
                 ),
             },
             {
@@ -267,12 +270,12 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>tradeAgain</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to true.'
+                    '- <strong>tradeAgain</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to <strong>true</strong>.'
                 ),
             },
             {
                 type: 'image',
-                src: 'IcLossControlTradeParameters',
+                src: getImageLocation('loss_control_trade_parameters.png'),
             },
             {
                 type: 'text',
@@ -282,7 +285,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcLossControlPurchaseConditions',
+                src: getImageLocation('loss_control_purchase_conditions.png'),
             },
             {
                 type: 'text',
@@ -292,7 +295,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'image',
-                src: 'IcLossControlRestartTradingConditions',
+                src: getImageLocation('loss_control_restart_trade_conditions.png'),
             },
         ],
     },

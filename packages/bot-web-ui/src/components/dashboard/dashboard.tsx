@@ -7,24 +7,28 @@ import ReactJoyride from 'react-joyride';
 import { DBOT_ONBOARDING } from './joyride-config';
 import BotBuilder from './bot-builder';
 import classNames from 'classnames';
-import RunStrategy from '../toolbar/run-strategy';
+import RunStrategy from './dashboard-components/run-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
 import Tutorial from './tutorial-components';
+import QuickStrategy from './quick-strategy';
 
 interface DashboardProps {
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
+    toggleStrategyModal: () => void;
+    is_drawer_open: boolean;
 }
 
-const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
+const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: DashboardProps) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [tour_run, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
+        toggleStrategyModal();
     };
 
     return (
@@ -44,7 +48,15 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
                         label={localize('Quick Strategy')}
                         id='id-quick-strategy'
                         onTabItemClick={handleClick}
-                    />
+                    >
+                        <div
+                            className={classNames('quick-strategy', {
+                                'quick-strategy__notifications-container--open': !is_drawer_open,
+                            })}
+                        >
+                            <QuickStrategy />
+                        </div>
+                    </Tab>
                     <Tab icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                         <div className='dashboard__chart-wrapper'>
                             <Chart />
@@ -60,18 +72,20 @@ const Dashboard = ({ active_tab, setActiveTab }: DashboardProps) => {
 
             <div
                 className={classNames('dashboard__run-strategy-wrapper', {
-                    'dashboard__sidebar-wrapper--active': !show_side_bar || active_tab !== 0,
+                    'dashboard__sidebar-wrapper--active': active_tab !== 0 || !show_side_bar,
                 })}
             >
                 <RunStrategy />
                 {active_tab === 0 && <Sidebar is_sidebar_open={show_side_bar} setSideBarState={setShowSideBar} />}
-                {(active_tab === 1 || active_tab === 2) && <RunPanel />}
+                {(active_tab !== 0 || !show_side_bar) && <RunPanel />}
             </div>
         </div>
     );
 };
 
-export default connect((store: RootStore) => ({
-    active_tab: store.dashbaord.active_tab,
-    setActiveTab: store.dashbaord.setActiveTab,
+export default connect(({ dashbaord, quick_strategy, run_panel }: RootStore) => ({
+    active_tab: dashbaord.active_tab,
+    setActiveTab: dashbaord.setActiveTab,
+    toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    is_drawer_open: run_panel.is_drawer_open,
 }))(Dashboard);

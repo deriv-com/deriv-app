@@ -15,17 +15,10 @@ jest.mock('@deriv/components', () => ({
 
 describe('<AccountPromptDialog />', () => {
     const props = {
-        accounts_list: [
-            {
-                balance: '10000.00',
-                currency: 'USD',
-                is_crypto: false,
-                is_dxtrade: false,
-                is_mt: false,
-                text: 'USD',
-                value: 'CR90000195',
-            },
-        ],
+        accounts: {
+            CR90000001: { is_virtual: 0, currency: 'USD' },
+            CR90000002: { is_virtual: 0, currency: 'BTC' },
+        },
         currency: 'USD',
         continueRoute: jest.fn(),
     };

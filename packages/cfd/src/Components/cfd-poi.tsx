@@ -1,4 +1,4 @@
-import { ProofOfIdentityContainerforMt5 } from '@deriv/account';
+import { ProofOfIdentityContainerForMt5 } from '@deriv/account';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import React from 'react';
 import RootStore from 'Stores/index';
@@ -53,7 +53,7 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
         onSubmit(index, { poi_state });
     };
     return (
-        <ProofOfIdentityContainerforMt5
+        <ProofOfIdentityContainerForMt5
             {...props}
             height={height}
             is_from_external={true}

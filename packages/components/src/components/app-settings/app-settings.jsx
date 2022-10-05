@@ -3,7 +3,7 @@ import { isMobile } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import AppSettingsFooter from './app-settings-footer.jsx';
 import AppSettingsMenuItem from './app-settings-menu-item.jsx';
-import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
 const AppSettings = ({ menu_items, overlay_ref, setIsOverlayShown }) => {
     const active_item_ref = React.useRef(null);

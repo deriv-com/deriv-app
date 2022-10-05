@@ -20,9 +20,10 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                             className={classNames('currency-selector', className)}
                             data-lpignore='true'
                             historyValue={default_value}
+                            has_updating_list={false}
                             is_list_visible
                             leading_icon={<Icon className='currency-selector__search-icon' icon='IcSearch' />}
-                            list_height={isMobile() ? '100%' : '220px'}
+                            list_height={isMobile() ? '100%' : '240px'}
                             list_items={filtered_currency_list}
                             not_found_text={
                                 list.filter(

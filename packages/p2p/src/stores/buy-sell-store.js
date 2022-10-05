@@ -438,7 +438,7 @@ export default class BuySellStore extends BaseStore {
         local_currencies.forEach(currency => {
             const { display_name, has_adverts, is_default, symbol } = currency;
 
-            if (is_default) this.setSelectedLocalCurrency(symbol);
+            if (is_default && !this.selected_local_currency) this.setSelectedLocalCurrency(symbol);
 
             currency_list.push({
                 component: (

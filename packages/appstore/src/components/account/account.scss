@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.4rem 1rem;
+    padding: 0.4rem 2rem;
     isolation: isolate;
     position: relative;
     width: 24rem;
@@ -12,8 +12,9 @@
         gap: 0.4rem;
         isolation: isolate;
         width: 22rem;
-        height: 6.2rem;
+        height: 5.2rem;
         border-radius: 0.4rem 0.4rem 0 0;
+        padding: 0.4rem 2rem;
     }
     &__dropdown {
         @include mobile {
@@ -26,7 +27,7 @@
     &__icon {
         width: 25%;
         @include mobile {
-            width: 4.1rem;
+            width: 3.1rem;
         }
     }
     &__details-wrapper {
@@ -35,6 +36,9 @@
         align-items: flex-start;
         padding: 0;
         width: 45%;
+        @include mobile {
+            width: 100%;
+        }
         &--number {
             color: $color-grey-1;
         }
@@ -66,7 +70,5 @@
 }
 .account-container-modal {
     width: 100%;
-    .account-container__details-wrapper {
-        margin-top: 2rem;
-    }
+    padding: 0.4rem 1rem;
 }

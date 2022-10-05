@@ -2,6 +2,7 @@ import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
+type TAuthenticationStatus = { document_status: string; identity_status: string };
 export type TClientStore = {
     accounts: { [k: string]: TAccount };
     account_limits: {
@@ -65,4 +66,5 @@ export type TClientStore = {
     is_financial_information_incomplete: boolean;
     is_trading_experience_incomplete: boolean;
     is_eu: boolean;
+    authentication_status: TAuthenticationStatus;
 };

@@ -16,7 +16,7 @@ type TRoute = RouteProps & { default: boolean };
 type TRoutesWithSubroutes = {
     component: React.ElementType | typeof Redirect;
     exact?: boolean;
-    getTitle: () => string;
+    getTitle?: () => string;
     is_authenticated?: boolean;
     is_logged_in?: boolean;
     path: string;

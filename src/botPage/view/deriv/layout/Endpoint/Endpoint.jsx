@@ -7,10 +7,10 @@ import { isLoggedIn } from '../../utils';
 import useLogout from '../../../../../common/hooks/useLogout';
 
 const getError = server => (
-        <>
-            Unable to connect to <b>{server}</b>. Switching connection to default endpoint.
-        </>
-    );
+    <React.Fragment>
+        Unable to connect to <b>{server}</b>. Switching connection to default endpoint.
+    </React.Fragment>
+);
 
 let api; // to close the error connection
 const Endpoint = () => {

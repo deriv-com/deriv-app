@@ -18,7 +18,7 @@ class Xml {
 }
 
 const e1 = new Xml({
-    name       : 'Some meaningless name',
+    name: 'Some meaningless name',
     'i18n-text': 'Logic',
 });
 
@@ -32,8 +32,8 @@ const dom = new Xml(
     },
     {
         category: {
-            0     : e1,
-            1     : e2,
+            0: e1,
+            1: e2,
             length: 2,
         },
     }

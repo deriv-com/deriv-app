@@ -9,7 +9,7 @@ const parseFilenameWithoutVersion = chunk => {
   const newFileName = `${filename}-${chunk.revHash}${ext}`;
   return {
     old: oldFile.base,
-    new: newFileName
+    new: newFileName,
   };
 };
 
@@ -19,7 +19,7 @@ const parseFilenameWithVersion = file => {
   const filename = newFile.base.slice(0, newFile.base.indexOf("-"));
   return {
     old: filename + ext,
-    new: newFile.base
+    new: newFile.base,
   };
 };
 
@@ -37,6 +37,6 @@ const addToManifest = (chunk, enc, cb) => {
 const getManifest = str => manifest[str];
 
 module.exports = {
-  addToManifest: addToManifest,
-  getManifest: getManifest
+  addToManifest,
+  getManifest,
 };

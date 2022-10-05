@@ -15,7 +15,7 @@ gulp.task(
             root: 'www',
             port: 80,
             livereload: true,
-            fallback: path.resolve('www/index.html')
+            fallback: path.resolve('www/index.html'),
         });
         done();
     })

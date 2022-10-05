@@ -6,16 +6,16 @@ Blockly.Blocks.webhook = {
     init() {
         this.jsonInit({
             message0: translate('Webhook URL: %1'),
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'WEBHOOK_URL',
                 },
             ],
-            colour           : '#dedede',
+            colour: '#dedede',
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : translate('Sends a POST request to a URL'),
+            nextStatement: null,
+            tooltip: translate('Sends a POST request to a URL'),
         });
 
         this.itemCount_ = 1;

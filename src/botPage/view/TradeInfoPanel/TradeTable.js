@@ -21,8 +21,9 @@ const getProfit = ({ sell_price, buy_price, currency }) => {
 
 const getTimestamp = date => {
     const buy_date = new Date(date * 1000);
-    return `${buy_date.toISOString().split('T')[0]} ${buy_date.toTimeString().slice(0, 8)} ${buy_date.toTimeString().split(' ')[1]
-        }`;
+    return `${buy_date.toISOString().split('T')[0]} ${buy_date.toTimeString().slice(0, 8)} ${
+        buy_date.toTimeString().split(' ')[1]
+    }`;
 };
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
@@ -217,16 +218,16 @@ const TradeTable = ({ account_id, api }) => {
 
         return (
             <React.Fragment key={dataKey}>
-                <div className="ReactVirtualized__Table__headerTruncatedText">{label}</div>
+                <div className='ReactVirtualized__Table__headerTruncatedText'>{label}</div>
                 {!isLastColumn && (
                     <Draggable
-                        axis="x"
-                        defaultClassName="DragHandle"
-                        defaultClassNameDragging="DragHandleActive"
+                        axis='x'
+                        defaultClassName='DragHandle'
+                        defaultClassNameDragging='DragHandleActive'
                         position={{ x: 0 }}
                         zIndex={999}
                     >
-                        <span className="DragHandleIcon" />
+                        <span className='DragHandleIcon' />
                     </Draggable>
                 )}
             </React.Fragment>

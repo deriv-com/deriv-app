@@ -22,13 +22,15 @@ const ServerTime = ({ api }) => {
     };
 
     const getServerTime = () => {
-        api.send({ time: 1 }).then(response => {
-            const newDate = new Date(response.time * 1000);
-            setDate(newDate);
-            setHasApiResponse(true);
-        }).catch(e => {
-            globalObserver.emit('Error', e);
-        });
+        api.send({ time: 1 })
+            .then(response => {
+                const newDate = new Date(response.time * 1000);
+                setDate(newDate);
+                setHasApiResponse(true);
+            })
+            .catch(e => {
+                globalObserver.emit('Error', e);
+            });
     };
 
     React.useEffect(() => {

@@ -1,10 +1,30 @@
 .my-profile {
+    display: flex;
+
+    @include mobile {
+        display: block;
+    }
+
     &__content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-x: hidden;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        & .p2p-toggle-container {
+            margin-bottom: 3.4rem;
+        }
+
         @include tablet-up {
             max-width: 100%;
             min-width: 672px;
         }
         @include mobile {
+            display: block;
             padding: 0 1.6rem;
             width: 100vw;
 
@@ -17,5 +37,9 @@
     &__navigation {
         display: flex;
         justify-content: space-between;
+
+        &:last-child {
+            margin-bottom: 1.6rem;
+        }
     }
 }

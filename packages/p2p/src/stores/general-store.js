@@ -130,6 +130,7 @@ export default class GeneralStore extends BaseStore {
             } else {
                 this.setAdvertiserId(p2p_advertiser_create.id);
                 this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
+                this.setIsListed(p2p_advertiser_create.is_listed);
                 this.setNickname(p2p_advertiser_create.name);
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);

@@ -157,6 +157,10 @@
             }
         }
     }
+
+    .dc-mobile-dialog__account-signup-mobile-dialog {
+        margin: 20px 15px 10px;
+    }
 }
 .options-container {
     gap: 1.5rem;
@@ -165,5 +169,13 @@
     gap: 0rem;
     @include mobile {
         gap: 1.5rem;
+    }
+}
+.dc-mobile-dialog__account-switcher-container {
+    margin: 20px 16px 0px 20px;
+    .dc-modal-footer {
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
     }
 }

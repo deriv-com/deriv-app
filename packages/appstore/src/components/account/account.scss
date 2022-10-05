@@ -9,7 +9,6 @@
     height: 7.2rem;
     border-radius: 0.6rem 0.6rem 0 0;
     @include mobile {
-        padding: 0.8rem 0.8rem 0.8rem 0rem;
         gap: 0.4rem;
         isolation: isolate;
         width: 22rem;
@@ -64,4 +63,10 @@
 }
 .account-container-active {
     background: $color-grey-2;
+}
+.account-container-modal {
+    width: 100%;
+    .account-container__details-wrapper {
+        margin-top: 2rem;
+    }
 }

@@ -13,9 +13,10 @@ type TOnboardingProps = {
             has_next_content: boolean;
         }
     >;
+    setIsTourOpen: (is_tour_open: boolean) => void;
 };
 
-const Onboarding = ({ contents }: TOnboardingProps) => {
+const Onboarding = ({ contents, setIsTourOpen }: TOnboardingProps) => {
     const number_of_steps = Object.keys(contents);
 
     const [step, setStep] = React.useState<number>(1);
@@ -26,6 +27,9 @@ const Onboarding = ({ contents }: TOnboardingProps) => {
 
     const nextStep = () => {
         if (step < number_of_steps.length) setStep(step + 1);
+        if (step === number_of_steps.length) {
+            setIsTourOpen(true);
+        }
     };
 
     const onboarding_step = number_of_steps[step - 1];

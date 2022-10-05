@@ -13,7 +13,7 @@ type TCFDAccountsProps = {
 };
 
 const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
-    const { client, cfd_account }: TRootStore = useStores();
+    const { client, modules }: TRootStore = useStores();
     const {
         is_eu,
         is_eu_country,
@@ -29,7 +29,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         trading_platform_available_accounts,
     } = client;
 
-    const { current_list } = cfd_account;
+    const { current_list } = modules.cfd;
 
     const hasAccount = (platform: TPlatform, landing_company_short?: string) =>
         Object.keys(current_list).some(key =>

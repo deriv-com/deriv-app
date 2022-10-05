@@ -9,6 +9,7 @@ import { isMobile, routes } from '@deriv/shared';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { getSortedAccountList } from '../../helpers';
+import AccountManager from '../account-manager';
 
 type TPlatformLauncherPropsArray = {
     icon: string;
@@ -212,7 +213,16 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                         )}
                     </div>
                 ) : (
-                    <div>{/* Apps launcher goes here */}</div>
+                    <div className='options-container__accounts-platform-container--account-launcher'>
+                        <AccountManager
+                            has_account={false}
+                            type={'Options'}
+                            appname={`Options account`}
+                            disabled={false}
+                            onClickGet={() => ui.openRealAccountSignup()}
+                            description={'Get a real Options account, start trading and manage your funds.'}
+                        />
+                    </div>
                 )}
                 {!has_any_real_account && <span className='options-container__accounts-platform-container--divider' />}
                 <div

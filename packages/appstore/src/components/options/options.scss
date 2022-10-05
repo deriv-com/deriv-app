@@ -75,6 +75,12 @@
                 border-radius: 0.4rem 0.4rem 0rem 0rem;
             }
         }
+        &--account-launcher {
+            padding: 1.6rem 2.3rem 1.6rem 2.4rem;
+            @include mobile {
+                padding: 1.6rem 1.3rem 1.6rem 1rem;
+            }
+        }
         &--add-options {
             display: flex;
             flex-direction: column;
@@ -116,14 +122,39 @@
         }
         &--platform-with-applauncher {
             background: var(--general-main-1);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 1.6rem 2.3rem 1.6rem 2.4rem;
+            width: 100%;
+            border-radius: 0rem 0.6rem 0.6rem;
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0.8rem 0 0;
+                width: 32.8rem;
+                height: 28rem;
+                left: 0;
+            }
+            &--divider {
+                width: 4rem;
+                height: 0.1rem;
+                background: $color-grey-4;
+                transform: rotate(90deg);
+            }
         }
         &--divider {
-            width: 100%;
+            width: 96%;
             height: 0.1rem;
             background: $color-grey-4;
             flex: none;
             align-self: stretch;
             flex-grow: 0;
+            margin-left: 2.4rem;
+            @include mobile {
+                margin-left: 1rem;
+            }
         }
     }
 }

@@ -149,7 +149,7 @@ const PaymentMethodsList = () => {
                 onMount={() => general_store.setIsModalOpen(true)}
                 onUnmount={() => general_store.setIsModalOpen(false)}
                 title={
-                    <Text color='prominent' size='s' weight='bold'>
+                    <Text color='prominent' weight='bold'>
                         <Localize
                             i18n_default_text='Delete {{payment_method_name}}?'
                             values={{

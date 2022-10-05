@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
 import TradingHub from 'Modules/trading-hub';
 import { routes, moduleLoader } from '@deriv/shared';
-import AppStore from 'Modules/appstore';
 import React from 'react';
 
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));

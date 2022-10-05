@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, RedirectProps, Route, RouteComponentProps, RouteProps } from 'react-router-dom';
 import {
     alternateLinkTagChange,
     canonicalLinkTagChange,
@@ -9,6 +10,22 @@ import {
     isEmptyObject,
     default_title,
 } from '@deriv/shared';
+
+type TRoute = RouteProps & { default: boolean };
+
+type TRoutesWithSubroutes = {
+    component: React.ElementType | typeof Redirect;
+    exact?: boolean;
+    getTitle: () => void;
+    is_authenticated?: boolean;
+    is_logged_in?: boolean;
+    path: string;
+    routes: TRoute[];
+    to: RedirectProps['to'];
+    language: string;
+    Component404: React.ElementType;
+    should_redirect_login: boolean;
+};
 
 const RouteWithSubRoutes = ({
     component: Component,
@@ -22,8 +39,8 @@ const RouteWithSubRoutes = ({
     language,
     Component404,
     should_redirect_login,
-}) => {
-    const validateRoute = pathname => {
+}: TRoutesWithSubroutes) => {
+    const validateRoute = (pathname: string) => {
         if (pathname === '') return true;
 
         if (path?.includes(':')) {
@@ -34,7 +51,7 @@ const RouteWithSubRoutes = ({
         return path === pathname || !!(routes && routes.find(route => pathname === route.path));
     };
 
-    const renderFactory = props => {
+    const renderFactory = (props: RouteComponentProps<{ [key: string]: string | undefined }>) => {
         let result = null;
 
         if (Component === Redirect) {
@@ -62,7 +79,7 @@ const RouteWithSubRoutes = ({
 
             result = (
                 <React.Fragment>
-                    {has_default_subroute && pathname === path && <Redirect to={default_subroute.path} />}
+                    {has_default_subroute && pathname === path && <Redirect to={(default_subroute as TRoute)?.path} />}
                     {is_valid_route ? (
                         <Component {...props} routes={routes} />
                     ) : (
@@ -74,7 +91,7 @@ const RouteWithSubRoutes = ({
             );
         }
 
-        const title = getTitle?.() || '';
+        const title = getTitle ? getTitle() : '';
         document.title = `${title} | ${default_title}`;
 
         alternateLinkTagChange();

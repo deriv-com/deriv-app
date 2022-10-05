@@ -27,6 +27,10 @@
         }
 
         .dc-tabs {
+            &__wrapper {
+                width: 85%;
+            }
+
             &--top {
                 display: flex;
                 height: calc(100vh - 16rem);

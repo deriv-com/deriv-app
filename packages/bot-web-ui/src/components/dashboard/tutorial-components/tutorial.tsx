@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, Text, Accordion } from '@deriv/components';
+import { Tabs, Tab, Text, Accordion, Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
@@ -30,7 +30,7 @@ const Tutorial = ({ active_tab_tutotials, setActiveTabTutorial, setFAQSearchValu
                 <Tab label={localize('Guide')} />
                 <Tab label={localize('FAQ')} id='id-bot-builder'>
                     <div className='dc-tabs__wrapper'>
-                        <Text as='p' size={'s'} line_height='l' className='dc-tabs__wrapper__faq_header' weight='bold'>
+                        <Text as='p' size={'s'} line_height='xl' className='dc-tabs__wrapper__faq_header' weight='bold'>
                             FAQ
                         </Text>
                         <Accordion
@@ -38,7 +38,7 @@ const Tutorial = ({ active_tab_tutotials, setActiveTabTutorial, setFAQSearchValu
                             list={FAQ_QUESTIONS.map(({ title, description }) => {
                                 return {
                                     header: (
-                                        <Text as='p' size={'s'} line_height='l' className='faq_title' weight='bold'>
+                                        <Text as='p' size={'s'} line_height='xl' className='faq_title' weight='bold'>
                                             {title}
                                         </Text>
                                     ),
@@ -50,15 +50,15 @@ const Tutorial = ({ active_tab_tutotials, setActiveTabTutorial, setFAQSearchValu
                                                     <Text
                                                         as='p'
                                                         size={'s'}
-                                                        line_height='m'
+                                                        line_height='xxl'
                                                         className='faq_description'
                                                         text-weight='normal'
                                                         key={index}
-                                                    >
-                                                        {item.content}
-                                                    </Text>
+                                                        dangerouslySetInnerHTML={{ __html: item.content }}
+                                                    />
                                                 );
-
+                                            case 'image':
+                                                return <Icon size={124} icon={item.src} />;
                                             default:
                                                 return null;
                                         }

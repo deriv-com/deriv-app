@@ -3,6 +3,7 @@ import { localize } from '@deriv/translations';
 export type TTutorialItem = {
     title: string;
     description: { [key: string]: string }[];
+    image?: string;
 };
 
 export const FAQ_QUESTIONS: TTutorialItem[] = [
@@ -12,7 +13,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    "DBot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own trading bot using drag-and-drop 'blocks'."
+                    "DBot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
                 ),
             },
         ],
@@ -26,13 +27,17 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'text',
-                content: localize('1. Go to Bot Builder.'),
+                content: localize('1. Go to <strong>Bot Builder</strong>.'),
             },
             {
                 type: 'text',
                 content: localize(
-                    "2. Under the Blocks menu, you'll see a list of categories. Blocks are grouped within these categories. Choose the block you want and drag them to the workspace."
+                    "2. Under the <strong>Blocks menu</strong>, you'll see a list of categories. Blocks are grouped within these categories. Choose the block you want and drag them to the workspace."
                 ),
+            },
+            {
+                type: 'image',
+                src: 'IcClipboard',
             },
             {
                 type: 'text',
@@ -41,8 +46,14 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
                 ),
             },
             {
+                type: 'image',
+                src: 'IcBlocksMenuSearch',
+            },
+            {
                 type: 'text',
-                content: localize('For more info, check out this blog post on the basics of building a trading bot.'),
+                content: localize(
+                    'For more info, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/">check out this blog post</a> on the basics of building a trading bot.'
+                ),
             },
         ],
     },
@@ -51,11 +62,9 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
         description: [
             {
                 type: 'text',
-                content: localize('Change the answer to:'),
-            },
-            {
-                type: 'text',
-                content: localize('Click on the block you want to remove and press Delete on your keyboard.'),
+                content: localize(
+                    'Click on the block you want to remove and press <strong>Delete</strong> on your keyboard.'
+                ),
             },
         ],
     },
@@ -64,12 +73,14 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
         description: [
             {
                 type: 'text',
-                content: localize('1. Under the Blocks menu, go to Utility > Variables.'),
+                content: localize(
+                    '1. Under the <strong>Blocks</strong> menu, go to <strong>Utility > Variables</strong>.'
+                ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '2. Enter a name for your variable, and hit Create. New blocks containing your new variable will appear below.'
+                    '2. Enter a name for your variable, and hit <strong>Create</strong>. New blocks containing your new variable will appear below.'
                 ),
             },
             {
@@ -84,7 +95,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    "Yes, you can get started with a pre-built bot using the Quick strategy feature. You’ll find some of the most popular trading strategies here: Martingale, D'Alembert, and Oscar's Grind. Just select the strategy, enter your trade parameters, and your bot will be created for you. You can always tweak the parameters later."
+                    "Yes, you can get started with a pre-built bot using the <strong>Quick strategy</strong> feature. You’ll find some of the most popular trading strategies here: Martingale, D'Alembert, and Oscar's Grind. Just select the strategy, enter your trade parameters, and your bot will be created for you. You can always tweak the parameters later."
                 ),
             },
         ],
@@ -100,11 +111,11 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'text',
-                content: localize('Using a quick strategy'),
+                content: localize('<strong>Using a quick strategy</strong>'),
             },
             {
                 type: 'text',
-                content: localize('1. Go to Quick strategy and select the strategy you want.'),
+                content: localize('1. Go to <strong>Quick strategy</strong> and select the strategy you want.'),
             },
             {
                 type: 'text',
@@ -112,18 +123,18 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'text',
-                content: localize('3. Set your trade parameters and hit Create.'),
+                content: localize('3. Set your trade parameters and hit <strong>Create</strong>.'),
             },
             {
                 type: 'text',
                 content: localize(
-                    '4. Once the blocks are loaded onto the workspace, tweak the parameters if you want, or hit Run to start trading.'
+                    '4. Once the blocks are loaded onto the workspace, tweak the parameters if you want, or hit <strong>Run</strong> to start trading.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '5. Hit Save to download your bot. You can choose to download your bot to your device or your Google Drive.'
+                    '5. Hit <strong>Save</strong> to download your bot. You can choose to download your bot to your device or your Google Drive.'
                 ),
             },
         ],
@@ -134,7 +145,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    'In Bot Builder, hit Save on the toolbar at the top to download your bot. Give your bot a name, and choose to download your bot to your device or Google Drive. Your bot will be downloaded as an XML file.'
+                    'In <strong>Bot Builder</strong>, hit <strong>Save</strong> on the toolbar at the top to download your bot. Give your bot a name, and choose to download your bot to your device or Google Drive. Your bot will be downloaded as an XML file.'
                 ),
             },
         ],
@@ -145,20 +156,22 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    'Just drag the XML file from your computer onto the workspace, and your bot will be loaded accordingly. Alternatively, you can hit Import in Bot Builder, and choose to import your bot from your computer or from your Google Drive.'
+                    'Just drag the XML file from your computer onto the workspace, and your bot will be loaded accordingly. Alternatively, you can hit <strong>Import</strong> in <strong>Bot Builder</strong>, and choose to import your bot from your computer or from your Google Drive.'
                 ),
             },
             {
                 type: 'text',
-                content: localize('Import from your computer'),
+                content: localize('<strong>Import from your computer</strong>'),
             },
             {
                 type: 'text',
-                content: localize('1. After hitting Import, select Local and click Continue.'),
+                content: localize(
+                    '1. After hitting <strong>Import</strong>, select <strong>Local</strong> and click <strong>Continue</strong>.'
+                ),
             },
             {
                 type: 'text',
-                content: localize('2. Select your XML file and hit Open.'),
+                content: localize('2. Select your XML file and hit <strong>Open</strong>.'),
             },
             {
                 type: 'text',
@@ -166,15 +179,17 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             },
             {
                 type: 'text',
-                content: localize('Import from your Google Drive'),
+                content: localize('<strong>Import from your Google Drive</strong>'),
             },
             {
                 type: 'text',
-                content: localize('1. After hitting Import, select Google Drive and click Continue.'),
+                content: localize(
+                    '1. After hitting <strong>Import</strong>, select <strong>Google Drive</strong> and click <strong>Continue</strong>.'
+                ),
             },
             {
                 type: 'text',
-                content: localize('2. Select your XML file and hit Select.'),
+                content: localize('2. Select your XML file and hit <strong>Select</strong>.'),
             },
             {
                 type: 'text',
@@ -188,7 +203,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    'In Bot Builder, hit Reset on the toolbar at the top. This will clear the workspace. Please note that any unsaved changes will be lost.'
+                    'In <strong>Bot Builder</strong>, hit <strong>Reset</strong> on the toolbar at the top. This will clear the workspace. Please note that any unsaved changes will be lost.'
                 ),
             },
         ],
@@ -198,15 +213,19 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
         description: [
             {
                 type: 'text',
-                content: localize('1. Hit Reset at the bottom of stats panel.'),
+                content: localize('1. Hit <strong>Reset</strong> at the bottom of stats panel.'),
             },
-            // {
-            //     type: 'image',
-            //     src: ' ',
-            // },
+            {
+                type: 'image',
+                src: 'IcResetTransactionLog',
+            },
             {
                 type: 'text',
-                content: localize('2. Hit OK to confirm.'),
+                content: localize('2. Hit <strong>Ok</strong> to confirm.'),
+            },
+            {
+                type: 'image',
+                src: 'IcResetTransactionLog',
             },
         ],
     },
@@ -220,44 +239,60 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
                 ),
             },
             {
+                type: 'image',
+                src: 'IcLossControl',
+            },
+            {
                 type: 'text',
                 content: localize('1. Create the following variables:'),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- currentPL: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to 0.'
+                    '- <strong>currentPL</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to 0.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- currentStake: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
+                    '- <strong>currentStake</strong>: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- maximumLoss: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
+                    '- <strong>maximumLoss</strong>: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- tradeAgain: Use this variable to stop trading when your loss limit is reached. Set the initial value to true.'
+                    '- <strong>tradeAgain</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to true.'
                 ),
+            },
+            {
+                type: 'image',
+                src: 'IcLossControlTradeParameters',
             },
             {
                 type: 'text',
                 content: localize(
-                    '2. Use a logic block to check if currentPL exceeds maximumLoss. If it does, set tradeAgain to false to prevent the bot from running another cycle.'
+                    '2. Use a logic block to check if <strong>currentPL</strong> exceeds <strong>maximumLoss</strong>. If it does, set <strong>tradeAgain</strong> to false to prevent the bot from running another cycle.'
                 ),
+            },
+            {
+                type: 'image',
+                src: 'IcLossControlPurchaseConditions',
             },
             {
                 type: 'text',
                 content: localize(
-                    '3. Update currentPL with the profit from the last contract. If the last contract was lost, the value of currentPL will be negative.'
+                    '3. Update <strong>currentPL</strong> with the profit from the last contract. If the last contract was lost, the value of <strong>currentPL</strong> will be negative.'
                 ),
+            },
+            {
+                type: 'image',
+                src: 'IcLossControlRestartTradingConditions',
             },
         ],
     },
@@ -267,7 +302,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    'Yes, you can. However, there are limits on your account, such as maximum number of open positions and maximum aggregate payouts on open positions. So, just keep these limits in mind when opening multiple positions. You can find more info about these limits at Settings > Account limits.'
+                    'Yes, you can. However, there are limits on your account, such as maximum number of open positions and maximum aggregate payouts on open positions. So, just keep these limits in mind when opening multiple positions. You can find more info about these limits at <a href="https://app.deriv.com/account/account-limits">Settings > Account limits</a>.'
                 ),
             },
         ],
@@ -298,7 +333,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    'We offer our services in all countries, except for the ones mentioned in our terms and conditions.'
+                    'We offer our services in all countries, except for the ones <a href="https://deriv.com/tnc/general-terms.pdf">mentioned in our terms and conditions.</a>'
                 ),
             },
         ],
@@ -308,9 +343,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
         description: [
             {
                 type: 'text',
-                content: localize(
-                    'No, DBot will stop running when your web browser is closed.No, DBot will stop running when your web browser is closed.'
-                ),
+                content: localize('No, DBot will stop running when your web browser is closed.'),
             },
         ],
     },
@@ -331,7 +364,7 @@ export const FAQ_QUESTIONS: TTutorialItem[] = [
             {
                 type: 'text',
                 content: localize(
-                    'Watch this video to learn how to build a trading bot on DBot. Also, check out this blog post on building a trading bot.'
+                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s">Watch this video</a> to learn how to build a trading bot on DBot. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/">check out this blog post</a> on building a trading bot.'
                 ),
             },
         ],

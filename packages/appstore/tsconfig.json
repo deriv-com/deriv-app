@@ -1,6 +1,7 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "experimentalDecorators": true,
         "outDir": "./dist",
         "baseUrl": "./",
         "paths": {
@@ -14,8 +15,7 @@
             "Types": ["src/types"],
             "Utils": ["src/utils"],
             "@deriv/*": ["../*/src"]
-        },
-        "experimentalDecorators": true
+        }
     },
     "include": ["src"]
 }

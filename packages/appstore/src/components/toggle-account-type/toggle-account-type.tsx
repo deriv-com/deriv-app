@@ -8,21 +8,23 @@ type TAccountTypeProps = {
 
 const ToggleAccountType = ({ accountTypeChange, value }: TAccountTypeProps) => {
     const toggle_options = [
-        { text: 'Real', value: 'Real' },
-        { text: 'Demo', value: 'Demo' },
+        { text: 'Real Account', value: 'Real' },
+        { text: 'Demo Account', value: 'Demo' },
     ];
 
     return (
-        <div className='toggle-account-type'>
-            <ButtonToggle
-                buttons_arr={toggle_options}
-                className='toggle-account-type__button'
-                has_rounded_button
-                is_animated
-                name='account_type'
-                onChange={accountTypeChange}
-                value={value}
-            />
+        <div className='toggle-account-type--parent'>
+            <div className='toggle-account-type--button'>
+                <ButtonToggle
+                    buttons_arr={toggle_options}
+                    className='toggle-account-type__button'
+                    has_rounded_button
+                    is_animated
+                    name='account_type'
+                    onChange={accountTypeChange}
+                    value={value}
+                />
+            </div>
         </div>
     );
 };

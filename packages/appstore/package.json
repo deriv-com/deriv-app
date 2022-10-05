@@ -27,6 +27,7 @@
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
+        "@deriv/cfd": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
@@ -38,8 +39,8 @@
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
-        "react-dom": "^16.14.0",
         "react-router": "^5.2.0",
+        "react-joyride": "^2.5.3",
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {

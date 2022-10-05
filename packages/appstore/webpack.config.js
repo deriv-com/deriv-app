@@ -85,6 +85,9 @@ module.exports = function (env) {
                             loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
                         },
                         {
+                            loader: '@deriv/shared/src/loaders/deriv-cfd-loader.js',
+                        },
+                        {
                             loader: 'babel-loader',
                             options: {
                                 cacheDirectory: true,
@@ -165,6 +168,7 @@ module.exports = function (env) {
                 '@deriv/components': true,
                 '@deriv/translations': true,
                 '@deriv/account': true,
+                '@deriv/cfd': true,
             },
         ],
         plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],

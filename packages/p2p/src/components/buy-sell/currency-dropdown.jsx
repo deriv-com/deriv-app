@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import { Dropdown, useOnClickOutside } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
@@ -48,4 +49,4 @@ const CurrencyDropdown = () => {
     );
 };
 
-export default CurrencyDropdown;
+export default observer(CurrencyDropdown);

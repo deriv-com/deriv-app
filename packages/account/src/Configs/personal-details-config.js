@@ -6,9 +6,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         return {};
     }
 
-    const disabled_items = [
-        ...Object.keys(account_settings).filter(field_name => field_name !== 'account_opening_reason' && !!field_name),
-    ];
+    const disabled_items = account_settings.immutable_fields;
 
     // minimum characters required is 9 numbers (excluding +- signs or space)
     const min_phone_number = 9;

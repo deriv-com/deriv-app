@@ -411,6 +411,7 @@ const PersonalDetails = ({
                                                 }
                                                 maxLength={50}
                                                 data-testid='phone'
+                                                disabled={disabled_items.includes('phone')}
                                             />
                                         )}
                                         {('tax_residence' in props.value ||
@@ -442,6 +443,9 @@ const PersonalDetails = ({
                                                                         }
                                                                         list_portal_id='modal_root'
                                                                         data-testid='tax_residence'
+                                                                        disabled={disabled_items.includes(
+                                                                            'tax_residence'
+                                                                        )}
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
@@ -467,6 +471,9 @@ const PersonalDetails = ({
                                                                         {...field}
                                                                         required
                                                                         data_testid='tax_residence_mobile'
+                                                                        disabled={disabled_items.includes(
+                                                                            'tax_residence'
+                                                                        )}
                                                                     />
                                                                 </MobileWrapper>
                                                                 <div
@@ -500,6 +507,9 @@ const PersonalDetails = ({
                                                             placeholder={localize('Tax Identification Number')}
                                                             warn={warning_items?.tax_identification_number}
                                                             data-testid='tax_identification_number'
+                                                            disabled={disabled_items.includes(
+                                                                'tax_identification_number'
+                                                            )}
                                                         />
                                                         <div
                                                             data-testid='tax_identification_number_pop_over'
@@ -617,6 +627,9 @@ const PersonalDetails = ({
                                                                     {...field}
                                                                     required
                                                                     data_testid='account_opening_reason_mobile'
+                                                                    disabled={disabled_items.includes(
+                                                                        'account_opening_reason'
+                                                                    )}
                                                                 />
                                                             </MobileWrapper>
                                                         </React.Fragment>

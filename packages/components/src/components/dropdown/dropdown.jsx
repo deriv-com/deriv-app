@@ -460,7 +460,7 @@ Dropdown.propTypes = {
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
     disabled: PropTypes.bool,
-    error: PropTypes.string,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     handleBlur: PropTypes.func,
     has_symbol: PropTypes.bool,
     hint: PropTypes.string,

@@ -29,6 +29,8 @@ const DetailComponent = ({
     is_onfido_supported,
     is_from_external,
     setIsCfdPoiCompleted,
+    is_mt5,
+    handlePOIforMT5Complete,
     ...props
 }) => {
     const [status, setStatus] = React.useState();
@@ -83,10 +85,13 @@ const DetailComponent = ({
 
     const onComplete = values => {
         setStatus(STATUS.IS_UPLOADING);
-
         uploadFiles(values).then(() => {
             if (!is_any_failed) {
-                setStatus(STATUS.IS_COMPLETED);
+                if (is_mt5) {
+                    handlePOIforMT5Complete();
+                } else {
+                    setStatus(STATUS.IS_COMPLETED);
+                }
             }
         });
     };
@@ -119,7 +124,7 @@ const DetailComponent = ({
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
                                 height={height ?? null}
-                                handleComplete={handleComplete}
+                                handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 is_from_external={false}
                                 {...props}
                             />
@@ -144,6 +149,8 @@ DetailComponent.propTypes = {
     onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     country_code_key: PropTypes.number,
     height: PropTypes.number,
+    handlePOIforMT5Complete: PropTypes.func,
+    is_mt5: PropTypes.bool,
 };
 
 export default DetailComponent;

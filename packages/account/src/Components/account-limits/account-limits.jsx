@@ -159,7 +159,7 @@ const AccountLimits = ({
                                             <Localize i18n_default_text='*Maximum account cash balance' />
                                         </AccountLimitsTableCell>
                                         <AccountLimitsTableCell align='right'>
-                                            {account_balance > 0 ? (
+                                            {account_balance ? (
                                                 formatMoney(currency, account_balance, true)
                                             ) : (
                                                 <Localize i18n_default_text='Not set' />

@@ -65,19 +65,16 @@ class GoogleDriveUtil {
                                 store.dispatch(setGdReady(true));
                             }
                         },
-                        (error) => {
-                            if (error.error === "idpiframe_initialization_failed" && error.details.includes('Cookies')) {
-                                $.notify(
-                                    translate(
-                                        "There was an error initialising Google Drive. Please enable Cookies on your browser settings to use this feature."
-                                    ),
-                                    { position: "bottom left" }
-                                );
+                        error => {
+                            if (
+                                error.error === 'idpiframe_initialization_failed' &&
+                                error.details.includes('Cookies')
+                            ) {
+                                $.notify(translate('To use Google Drive, enable cookies in your browser settings.'), {
+                                    position: 'bottom left',
+                                });
                             } else {
-                                errLogger(
-                                    error,
-                                    translate("There was an error initialising Google Drive.")
-                                );
+                                errLogger(error, translate('There was an error initialising Google Drive.'));
                             }
                         }
                     );

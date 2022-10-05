@@ -6,13 +6,11 @@ import { getDefaultEndpoint, getServerAddressFallback, getAppIdFallback, getLang
 import { isLoggedIn } from '../../utils';
 import useLogout from '../../../../../common/hooks/useLogout';
 
-const getError = server => {
-    return (
+const getError = server => (
         <>
             Unable to connect to <b>{server}</b>. Switching connection to default endpoint.
         </>
     );
-};
 
 let api; // to close the error connection
 const Endpoint = () => {
@@ -35,7 +33,7 @@ const Endpoint = () => {
             }
 
             const socket_url = `wss://${apiUrl || getServerAddressFallback()}/websockets/v3?app_id=${appId ||
-                getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+                getAppIdFallback()}&l=${getLanguage().toUpperCase()}&brand=deriv`;
 
             api = new DerivAPIBasic({
                 connection: new WebSocket(socket_url),
@@ -61,7 +59,7 @@ const Endpoint = () => {
         setConnected(false);
         e.preventDefault();
 
-        if (server == getStorage('config.server_url') && app_id == getStorage('config.app_id')) return;
+        if (server === getStorage('config.server_url') && app_id === getStorage('config.app_id')) return;
 
         setStorage('config.server_url', server);
         setStorage('config.app_id', app_id);

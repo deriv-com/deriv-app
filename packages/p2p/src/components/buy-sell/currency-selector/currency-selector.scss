@@ -1,7 +1,6 @@
 .currency-selector {
-    position: absolute;
-
     @include desktop {
+        position: absolute;
         margin-top: 0.4rem;
         width: 24rem;
     }
@@ -17,6 +16,8 @@
 
         @include mobile {
             box-shadow: none;
+            max-height: calc(100% - 11.8rem);
+            overflow: auto;
             transition: unset;
         }
 
@@ -40,9 +41,8 @@
                 @include mobile {
                     display: block;
                     font-weight: bold;
-                    position: fixed;
+                    margin-top: 14rem;
                     text-align: center;
-                    top: 14rem;
                     width: 100%;
                 }
             }

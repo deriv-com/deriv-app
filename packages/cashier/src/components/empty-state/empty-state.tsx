@@ -10,7 +10,7 @@ type TAction = {
     disabled?: boolean;
 };
 
-type TEmptyStateProps = {
+export type TEmptyStateProps = {
     icon?: string;
     title?: string | React.ReactNode;
     description?: string | React.ReactNode;

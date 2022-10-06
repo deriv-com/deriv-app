@@ -1,22 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type TLabel = {
-    mode:
-        | 'adjustment'
-        | 'default'
-        | 'success'
-        | 'warn'
-        | 'danger'
-        | 'info'
-        | 'transfer'
-        | 'default-invert'
-        | 'success-invert'
-        | 'warn-invert';
-    size: 'regular' | 'large';
-    className?: string;
-};
-
 const available_modes = [
     'adjustment',
     'default',
@@ -28,9 +12,15 @@ const available_modes = [
     'default-invert',
     'success-invert',
     'warn-invert',
-];
+] as const;
 
-const available_sizes = ['regular', 'large'];
+const available_sizes = ['regular', 'large'] as const;
+
+type TLabel = {
+    mode: typeof available_modes[number];
+    size: typeof available_sizes[number];
+    className?: string;
+};
 
 const Label = ({ mode, children, size = 'regular', className }: React.PropsWithChildren<TLabel>) => {
     const type = available_modes.some((m: string) => m === mode) ? mode : 'default';

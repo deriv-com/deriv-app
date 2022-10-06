@@ -7,7 +7,7 @@ import Icon from '../icon/icon.jsx';
 const SideNotes = ({ class_name, side_notes }) => {
     return (
         <div
-            className={classNames('dc-vertical-tab__content-side-note', class_name)}
+            className={classNames('dc-vertical-tab__content-side-note', { [class_name]: !!side_notes })}
             data-testid='vertical_tab_side_note'
         >
             {side_notes?.map((note, i) => (

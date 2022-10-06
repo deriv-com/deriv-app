@@ -95,6 +95,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                     identifier_title={identifier}
                     onClose={() => setIsSentEmailModalOpen(false)}
                     onClickSendEmail={onClickSendEmail}
+                    is_modal_when_mobile
                 />
                 {/*
                 <SuccessDialog

@@ -32,10 +32,8 @@ const OrderDetails = observer(() => {
     const {
         account_currency,
         advert_details,
-        advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
-        client_details,
         completion_time,
         contact_info,
         has_timer_expired,
@@ -46,10 +44,12 @@ const OrderDetails = observer(() => {
         is_completed_order,
         is_pending_order,
         is_reviewable,
+        is_user_rated_previously,
         labels,
         local_currency,
         other_user_details,
         payment_info,
+        previous_recommendation,
         purchase_time,
         rate,
         review_details,
@@ -111,20 +111,13 @@ const OrderDetails = observer(() => {
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
 
-    const is_recommended_by_user =
-        general_store.client?.loginid === client_details?.loginid
-            ? advertiser_details?.is_recommended
-            : client_details?.is_recommended;
-
     return (
         <OrderDetailsWrapper page_title={page_title}>
             {is_active_order && (
                 <RatingModal
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
-                    is_user_rated_previously={
-                        is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
-                    }
+                    is_user_rated_previously={is_user_rated_previously}
                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                     onClickDone={() => {
                         order_store.setOrderRating(id);
@@ -138,9 +131,7 @@ const OrderDetails = observer(() => {
                         order_store.setIsRatingModalOpen(false);
                     }}
                     onClickStar={order_store.handleRating}
-                    previous_recommendation={
-                        is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
-                    }
+                    previous_recommendation={previous_recommendation}
                     rating_value={order_store.rating_value}
                 />
             )}
@@ -324,7 +315,7 @@ const OrderDetails = observer(() => {
                                 <RatingModal
                                     is_buy_order_for_user={is_buy_order_for_user}
                                     is_rating_modal_open={order_store.is_rating_modal_open}
-                                    is_user_rated_previously={is_recommended_by_user}
+                                    is_user_rated_previously={is_user_rated_previously}
                                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                                     onClickDone={() => {
                                         order_store.setOrderRating(id);
@@ -338,7 +329,7 @@ const OrderDetails = observer(() => {
                                         order_store.setIsRatingModalOpen(false);
                                     }}
                                     onClickStar={order_store.handleRating}
-                                    previous_recommendation={is_recommended_by_user}
+                                    previous_recommendation={previous_recommendation}
                                     rating_value={order_store.rating_value}
                                 />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />

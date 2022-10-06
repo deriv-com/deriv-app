@@ -1,4 +1,4 @@
-import Wizard from './wizard.jsx';
+import Wizard from './wizard';
 import './wizard.scss';
 
 export default Wizard;

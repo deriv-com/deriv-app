@@ -52,7 +52,7 @@ const DefaultHeader = ({
     notifications_count,
     openRealAccountSignup,
     platform,
-    replaceCashierMenuOnclick,
+    // replaceCashierMenuOnclick,
     removeNotificationMessage,
     setDarkMode,
     should_allow_authentication,
@@ -91,6 +91,12 @@ const DefaultHeader = ({
             }
             return true;
         });
+    // React.useEffect(() => {
+    //     if (menu_items && is_logged_in) {
+    //         replaceCashierMenuOnclick();
+    //     }
+    // }, [menu_items, is_logged_in, replaceCashierMenuOnclick]);
+
     return (
         <header
             className={classNames('header', {
@@ -140,7 +146,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
+                    {/* {menu_items && is_logged_in && replaceCashierMenuOnclick()} */}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div

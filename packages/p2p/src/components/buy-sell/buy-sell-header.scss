@@ -67,7 +67,7 @@
 
         @include mobile {
             display: grid;
-            grid-template-columns: auto 1fr 40px 40px;
+            grid-template-columns: auto 40px 40px;
             column-gap: 1rem;
             border-top: 1px solid var(--general-section-1);
             padding: 1.6rem;
@@ -84,6 +84,12 @@
             @include mobile {
                 justify-self: center;
                 margin-left: 0;
+            }
+        }
+
+        &--selector {
+            @include mobile {
+                grid-template-columns: auto 1fr 40px 40px;
             }
         }
     }

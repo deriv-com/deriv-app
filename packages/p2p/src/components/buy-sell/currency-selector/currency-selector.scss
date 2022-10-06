@@ -16,6 +16,7 @@
 
         @include mobile {
             box-shadow: none;
+            height: 100%;
             max-height: calc(100% - 11.8rem);
             overflow: auto;
             transition: unset;
@@ -35,7 +36,7 @@
             }
 
             &--not-found {
-                background-color: var(--general-main-1);
+                background: none;
                 word-break: break-word;
 
                 @include mobile {

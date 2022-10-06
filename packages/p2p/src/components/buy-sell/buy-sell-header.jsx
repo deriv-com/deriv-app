@@ -91,7 +91,11 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                         />
                     </ToggleContainer>
                 </AnimationWrapper>
-                <div className='buy-sell__header-row'>
+                <div
+                    className={classNames('buy-sell__header-row', {
+                        'buy-sell__header-row--selector': is_currency_selector_visible,
+                    })}
+                >
                     {is_currency_selector_visible && <CurrencyDropdown />}
                     <SearchBox
                         onClear={onClear}

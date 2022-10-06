@@ -59,7 +59,11 @@ describe('<OnRamp />', () => {
     };
 
     it('should render <Loading /> component', () => {
-        render(<OnRamp {...props} is_switching />);
+        const { rerender } = render(<OnRamp {...props} is_loading />);
+
+        expect(screen.getByText('Loading')).toBeInTheDocument();
+
+        rerender(<OnRamp {...props} is_switching />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });

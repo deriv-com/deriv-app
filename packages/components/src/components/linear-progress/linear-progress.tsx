@@ -8,6 +8,6 @@ type TLinearProgress = {
 
 export const LinearProgress = ({ progress, className }: TLinearProgress) => (
     <div className={classNames('dc-linear-progress', className)}>
-        <div className={classNames('dc-linear-progress__bar')} style={{ width: `${progress}%` }} />
+        <div className='dc-linear-progress__bar' style={{ width: `${progress}%` }} />
     </div>
 );

@@ -110,16 +110,6 @@ const AccountTransferNote = ({
 
     return (
         <div className='account-transfer-form__notes'>
-            <DesktopWrapper>
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    className='cashier__header account-transfer-form__notes-header'
-                >
-                    <Localize i18n_default_text='Notes' />
-                </Text>
-            </DesktopWrapper>
             <AccountTransferBullet>
                 {is_dxtrade_allowed ? (
                     <Localize

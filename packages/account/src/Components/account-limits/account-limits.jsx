@@ -10,7 +10,7 @@ import AccountLimitsArticle from './account-limits-article.jsx';
 import AccountLimitsContext from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info.jsx';
 import AccountLimitsFooter from './account-limits-footer.jsx';
-import AccountLimitsOverlay from './account-limits-overlay.jsx';
+import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell.jsx';
 import AccountLimitsTableHeader from './account-limits-table-header.jsx';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row.jsx';

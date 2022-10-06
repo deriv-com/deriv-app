@@ -351,9 +351,9 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
-
     fetchStatesList: PropTypes.func,
     fetchFinancialAssessment: PropTypes.func,
+    getChangeableFields: PropTypes.func,
     onClose: PropTypes.func,
     setLoading: PropTypes.func,
     setIsRiskWarningVisible: PropTypes.func,
@@ -381,4 +381,5 @@ export default connect(({ client, notifications, ui }) => ({
     refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
+    getChangeableFields: client.getChangeableFields,
 }))(AccountWizard);

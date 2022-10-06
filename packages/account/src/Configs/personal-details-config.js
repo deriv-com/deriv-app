@@ -1,12 +1,13 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
+const personal_details_config = ({ residence_list, account_settings, is_appstore, getChangeableFields }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
 
-    const disabled_items = account_settings.immutable_fields;
+    const changeable_fields = getChangeableFields();
+    const disabled_items = Object.keys(account_settings).filter(field => !changeable_fields.includes(field));
 
     // minimum characters required is 9 numbers (excluding +- signs or space)
     const min_phone_number = 9;
@@ -156,11 +157,16 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
 };
 
 const personalDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence_list, account_settings },
+    { upgrade_info, real_account_signup_target, residence_list, account_settings, getChangeableFields },
     PersonalDetails,
     is_appstore = false
 ) => {
-    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
+    const [config, disabled_items] = personal_details_config({
+        residence_list,
+        account_settings,
+        is_appstore,
+        getChangeableFields,
+    });
     return {
         header: {
             active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),

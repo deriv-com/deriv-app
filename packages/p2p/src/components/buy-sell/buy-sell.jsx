@@ -46,7 +46,7 @@ const BuySell = () => {
     return (
         <div className='buy-sell'>
             <FilterModal />
-            <BuySellHeader table_type={buy_sell_store.table_type} setTableType={buy_sell_store.setTableType} />
+            <BuySellHeader table_type={buy_sell_store.table_type} />
             <BuySellTable
                 key={buy_sell_store.table_type}
                 is_buy={buy_sell_store.table_type === buy_sell.BUY}

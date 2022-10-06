@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, getIdentityStatusInfo } from '@deriv/shared';
+import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
@@ -42,7 +42,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     account_status: GetAccountStatus;
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
-    needs_poi_for_vanuatu: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
@@ -55,13 +54,15 @@ type TItemsState = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    const { refreshNotifications, authentication_status, fetchStatesList } = props;
+    const { account_status, authentication_status, fetchStatesList, refreshNotifications } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
     const height = 'auto';
     let is_mounted = React.useRef(true).current;
-    const { need_poi_for_vanuatu } = getIdentityStatusInfo(props.account_status);
+
+    const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(account_status);
+
     const poi_config: TItemsState = {
         header: {
             active_title: localize('Complete your proof of identity'),
@@ -102,9 +103,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         if (props.jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
             return true;
         }
-        return !(
-            authentication_status.identity_status === 'pending' || authentication_status.identity_status === 'verified'
-        );
+        return need_poi_for_bvi_labuan_maltainvest;
     };
     const should_show_poa = !(
         authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'

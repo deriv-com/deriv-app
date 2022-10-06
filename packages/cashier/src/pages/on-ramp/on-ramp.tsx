@@ -98,7 +98,7 @@ const OnRamp = ({
 
     React.useEffect(() => {
         onMountOnramp();
-        if (typeof setSideNotes === 'function' && !is_switching) {
+        if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
 
@@ -115,7 +115,7 @@ const OnRamp = ({
             value: menu_option.path,
         }));
 
-    if (is_switching) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
+    if (is_switching || is_loading) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
     if (is_deposit_locked || is_cashier_locked) {
         return <CashierLocked />;

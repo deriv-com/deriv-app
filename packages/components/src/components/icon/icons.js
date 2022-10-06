@@ -1,6 +1,7 @@
 // auto-generated file. DO NOT MODIFY.
 
 import './appstore/ic-appstore-add-rounded.svg';
+import './appstore/ic-appstore-add-square.svg';
 import './appstore/ic-appstore-add.svg';
 import './appstore/ic-appstore-app-card-default-background-small.svg';
 import './appstore/ic-appstore-app-card-default-background.svg';
@@ -12,11 +13,9 @@ import './appstore/ic-appstore-checked.svg';
 import './appstore/ic-appstore-circle.svg';
 import './appstore/ic-appstore-close-dark.svg';
 import './appstore/ic-appstore-close-light.svg';
-import './appstore/ic-appstore-derived.svg';
-import './appstore/ic-appstore-derivx.svg';
+import './appstore/ic-appstore-deriv-logo.svg';
 import './appstore/ic-appstore-ellipse.svg';
 import './appstore/ic-appstore-error.svg';
-import './appstore/ic-appstore-financial.svg';
 import './appstore/ic-appstore-home-dark.svg';
 import './appstore/ic-appstore-home.svg';
 import './appstore/ic-appstore-information.svg';
@@ -25,7 +24,6 @@ import './appstore/ic-appstore-linked-wallets.svg';
 import './appstore/ic-appstore-menu-homepage.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
-import './appstore/ic-appstore-options.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';
 import './appstore/ic-appstore-success.svg';
 import './appstore/ic-appstore-trading-hub-onboarding-dark.svg';

@@ -83,7 +83,7 @@ export default connect(({ chart_store, common, ui }: RootStore) => ({
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
         language: common.current_language.toLowerCase(),
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
-        theme: 'light',
+        theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
     last_contract: {
         is_digit_contract: false,

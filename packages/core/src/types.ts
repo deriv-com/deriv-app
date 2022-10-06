@@ -44,6 +44,7 @@ interface TOverrideClientStore extends TClientStore {
     landing_company_shortcode: string;
     setVerificationCode: (code: string, action: string) => void;
     authentication_status: { document_status: string; identity_status: string };
+    email: string;
 }
 
 interface TOverrideCommonStore extends Omit<TCommonStore, 'error'> {

@@ -60,7 +60,10 @@ jest.mock('../cfd-password-modal.tsx', () => props => props.is_cfd_password_moda
 jest.mock('../cfd-top-up-demo-modal', () => props => props.is_top_up_virtual_open ? 'CFDTopUpDemoModal' : '');
 jest.mock('../cfd-personal-details-modal', () => () => 'CFDPersonalDetailsModal');
 jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' : '');
-jest.mock('../jurisdiction-modal', () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : '');
+jest.mock(
+    '../jurisdiction-modal/jurisdiction-modal',
+    () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : ''
+);
 
 describe('<CFDDashboard />', () => {
     const props: Partial<TCFDDashboardProps> = {
@@ -317,7 +320,7 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
         expect(screen.getByText(real_tab_name)).toBeInTheDocument();
         expect(screen.getByText(demo_tab_name)).toBeInTheDocument();
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
+        expect(screen.getByText('Derived')).toBeInTheDocument();
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: compare_accounts_button_label })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: dmt5_download_header })).toBeInTheDocument();

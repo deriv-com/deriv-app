@@ -122,9 +122,7 @@ const OrderDetails = observer(() => {
                 <RatingModal
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
-                    is_user_rated_previously={
-                        is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
-                    }
+                    is_user_recommended_previously={is_recommended_by_user}
                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                     onClickDone={() => {
                         order_store.setOrderRating(id);
@@ -138,9 +136,6 @@ const OrderDetails = observer(() => {
                         order_store.setIsRatingModalOpen(false);
                     }}
                     onClickStar={order_store.handleRating}
-                    previous_recommendation={
-                        is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
-                    }
                     rating_value={order_store.rating_value}
                 />
             )}
@@ -324,7 +319,7 @@ const OrderDetails = observer(() => {
                                 <RatingModal
                                     is_buy_order_for_user={is_buy_order_for_user}
                                     is_rating_modal_open={order_store.is_rating_modal_open}
-                                    is_user_rated_previously={is_recommended_by_user}
+                                    is_user_recommended_previously={is_recommended_by_user}
                                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                                     onClickDone={() => {
                                         order_store.setOrderRating(id);
@@ -338,7 +333,6 @@ const OrderDetails = observer(() => {
                                         order_store.setIsRatingModalOpen(false);
                                     }}
                                     onClickStar={order_store.handleRating}
-                                    previous_recommendation={is_recommended_by_user}
                                     rating_value={order_store.rating_value}
                                 />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />

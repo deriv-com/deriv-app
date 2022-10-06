@@ -71,15 +71,14 @@ const RouteWithSubRoutes = ({
                 result = <Redirect to={shared_routes.root} />;
             }
         } else {
-            const default_subroute = routes.find(r => r.default) ?? {};
-            const has_default_subroute = !isEmptyObject(default_subroute);
+            const default_subroute = routes.find(r => r.default);
             const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
             const is_valid_route = validateRoute(pathname);
             const should_redirect = !Component404;
 
             result = (
                 <React.Fragment>
-                    {has_default_subroute && pathname === path && <Redirect to={(default_subroute as TRoute)?.path} />}
+                    {default_subroute && pathname === path && <Redirect to={default_subroute.path} />}
                     {is_valid_route ? (
                         <Component {...props} routes={routes} />
                     ) : (

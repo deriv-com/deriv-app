@@ -125,7 +125,7 @@ export default class BuySellStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get sort_list() {
         return [
-            { text: localize('Exchange rate'), value: 'rate' },
+            { text: localize('Exchange rate (Default)'), value: 'rate' },
             { text: localize('User rating'), value: 'rating' },
         ];
     }

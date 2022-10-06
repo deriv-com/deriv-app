@@ -376,6 +376,8 @@ export default class GeneralStore extends BaseStore {
     accountSwitcherListener() {
         const { iframe, payment_agent, withdraw } = this.root_store.modules.cashier;
 
+        clearInterval(withdraw.verification.resend_interval);
+        clearInterval(payment_agent.verification.resend_interval);
         withdraw.verification.clearVerification();
         payment_agent.verification.clearVerification();
         iframe.clearIframe();

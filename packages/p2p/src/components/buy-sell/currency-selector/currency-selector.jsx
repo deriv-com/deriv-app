@@ -7,7 +7,9 @@ import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 
 const CurrencySelector = ({ className, default_value, list, onSelect }) => {
-    const filtered_currency_list = list.filter(item => item.is_default || item.has_adverts);
+    const [filtered_currency_list, setFilteredCurrencyList] = React.useState(
+        list.filter(item => item.is_default || item.has_adverts)
+    );
 
     return (
         <Formik enableReinitialize initialValues={{ currency: '' }}>
@@ -20,10 +22,9 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                             className={classNames('currency-selector', className)}
                             data-lpignore='true'
                             historyValue={default_value}
-                            has_updating_list={false}
                             is_list_visible
                             leading_icon={<Icon className='currency-selector__search-icon' icon='IcSearch' />}
-                            list_height={isMobile() ? '100%' : '240px'}
+                            list_height={isMobile() ? '100%' : '288px'}
                             list_items={filtered_currency_list}
                             not_found_text={
                                 list.filter(
@@ -46,6 +47,9 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                                         icon='IcCloseCircle'
                                         onClick={() => {
                                             setFieldValue('currency', '');
+                                            setFilteredCurrencyList(
+                                                list.filter(item => item.is_default || item.has_adverts)
+                                            );
                                         }}
                                     />
                                 ) : (

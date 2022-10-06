@@ -13,19 +13,21 @@
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         margin-top: 0;
+        padding: 0.8rem;
 
         @include mobile {
             box-shadow: none;
             height: 100%;
             max-height: calc(100% - 11.8rem);
             overflow: auto;
+            padding: 0;
             transition: unset;
         }
 
         &__item {
             border-radius: 4px;
             padding: 0.8rem 1.6rem;
-            margin: 0.8rem;
+            min-height: 36px;
 
             @include mobile {
                 margin: 0.8rem 1.6rem;

@@ -66,9 +66,11 @@ const Autocomplete = React.memo(props => {
 
     React.useEffect(() => {
         if (has_updating_list) {
-            setFilteredItems(list_items);
+            const new_filtered_items = is_list_visible ? getFilteredItems(value, list_items) : list_items;
+
+            setFilteredItems(new_filtered_items);
             if (historyValue) {
-                const index = filtered_items.findIndex(object => {
+                const index = new_filtered_items.findIndex(object => {
                     return object.text === historyValue;
                 });
                 setInputValue(historyValue);
@@ -205,7 +207,9 @@ const Autocomplete = React.memo(props => {
         e.preventDefault();
         hideDropdownList();
 
-        setFilteredItems(props.list_items);
+        const new_filtered_items = is_list_visible ? getFilteredItems(value, list_items) : list_items;
+
+        setFilteredItems(new_filtered_items);
 
         if (input_value === '' && typeof props.onItemSelection === 'function') {
             props.onItemSelection({

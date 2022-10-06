@@ -21,6 +21,7 @@ export default class GeneralStore extends BaseStore {
     @observable is_blocked = false;
     @observable is_block_unblock_user_loading = false;
     @observable is_block_user_modal_open = false;
+    @observable is_high_risk = false;
     @observable is_listed = false;
     @observable is_loading = false;
     @observable is_p2p_blocked_for_pa = false;
@@ -266,6 +267,7 @@ export default class GeneralStore extends BaseStore {
     onMount() {
         this.setIsLoading(true);
         this.setIsBlocked(false);
+        this.setIsHighRisk(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
         this.setIsP2pBlockedForPa(false);
 
@@ -289,10 +291,12 @@ export default class GeneralStore extends BaseStore {
             const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
 
             if (error) {
+                this.isHighRisk(false);
                 this.setIsHighRiskFullyAuthedWithoutFa(false);
                 this.setIsBlocked(false);
                 this.setIsP2pBlockedForPa(false);
             } else if (get_account_status.risk_classification === 'high') {
+                this.setIsHighRisk(true);
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
 
                 const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
@@ -463,6 +467,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
         this.is_block_unblock_user_loading = is_block_unblock_user_loading;
+    }
+
+    @action.bound
+    setIsHighRisk(is_high_risk) {
+        this.is_high_risk = is_high_risk;
     }
 
     @action.bound

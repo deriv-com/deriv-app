@@ -29,6 +29,9 @@ import DemoDark from 'Assets/svgs/wallet/demo-dark.svg';
 import DemoLight from 'Assets/svgs/wallet/demo-light.svg';
 import DerivP2pDark from 'Assets/svgs/wallet/deriv-p2p-dark.svg';
 import DerivP2pLight from 'Assets/svgs/wallet/deriv-p2p-light.svg';
+import DerivLogo from 'Assets/svgs/wallet/ic-appstore-deriv-logo.svg';
+import Derived from 'Assets/svgs/wallet/ic-appstore-derived.svg';
+import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
 import DinersClubDark from 'Assets/svgs/wallet/diners-club-dark.svg';
 import DinersClubLight from 'Assets/svgs/wallet/diners-club-light.svg';
 import EthereumDark from 'Assets/svgs/wallet/ethereum-dark.svg';
@@ -37,6 +40,7 @@ import EurDark from 'Assets/svgs/wallet/eur-dark.svg';
 import EurLight from 'Assets/svgs/wallet/eur-light.svg';
 import FasapayDark from 'Assets/svgs/wallet/fasapay-dark.svg';
 import FasapayLight from 'Assets/svgs/wallet/fasapay-light.svg';
+import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
 import GbpDark from 'Assets/svgs/wallet/gbp-dark.svg';
 import GbpLight from 'Assets/svgs/wallet/gbp-light.svg';
 import Help2payDark from 'Assets/svgs/wallet/help2pay-dark.svg';
@@ -59,6 +63,7 @@ import NganluongDark from 'Assets/svgs/wallet/nganluong-dark.svg';
 import NganluongLight from 'Assets/svgs/wallet/nganluong-light.svg';
 import OnlinenairaDark from 'Assets/svgs/wallet/onlinenaira-dark.svg';
 import OnlinenairaLight from 'Assets/svgs/wallet/onlinenaira-light.svg';
+import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
 import OxxoDark from 'Assets/svgs/wallet/oxxo-dark.svg';
 import OxxoLight from 'Assets/svgs/wallet/oxxo-light.svg';
 import PayLivreDark from 'Assets/svgs/wallet/pay-livre-dark.svg';
@@ -99,14 +104,13 @@ import CurrencyUSD from 'Assets/svgs/wallet/currency-usd.svg';
 import Demo from 'Assets/svgs/wallet/ic-brand-demo.svg';
 import DropDown from 'Assets/svgs/wallet/drop-down.svg';
 import DerivGo from 'Assets/svgs/wallet/ic-brand-derivgo.svg';
+import DerivGoBlack from 'Assets/svgs/wallet/ic-appstore-derivgo-black.svg';
 import BinaryBot from 'Assets/svgs/wallet/ic-brand-binarybot.svg';
 import DBot from 'Assets/svgs/wallet/ic-brand-dbot.svg';
+import BinaryBotBlue from 'Assets/svgs/wallet/ic-appstore-binarybot-blue.svg';
 import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
-import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
-import Derived from 'Assets/svgs/wallet/ic-appstore-derived.svg';
-import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
-import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
+import SmartTraderBlue from 'Assets/svgs/wallet/ic-appstore-smarttrader-blue.svg';
 
 const Icons = {
     '1foryouDark': OneforyouDark,
@@ -139,6 +143,9 @@ const Icons = {
     DemoLight,
     DerivP2pDark,
     DerivP2pLight,
+    DerivLogo,
+    Derived,
+    DerivX,
     DinersClubDark,
     DinersClubLight,
     EthereumDark,
@@ -147,6 +154,7 @@ const Icons = {
     EurLight,
     FasapayDark,
     FasapayLight,
+    Financial,
     GbpDark,
     GbpLight,
     Help2payDark,
@@ -169,6 +177,7 @@ const Icons = {
     NganluongLight,
     OnlinenairaDark,
     OnlinenairaLight,
+    Options,
     OxxoDark,
     OxxoLight,
     PayLivreDark,
@@ -209,14 +218,13 @@ const Icons = {
     Demo,
     DropDown,
     DerivGo,
+    DerivGoBlack,
     BinaryBot,
     DBot,
+    BinaryBotBlue,
     DTrader,
     SmartTrader,
-    Derived,
-    Financial,
-    DerivX,
-    Options,
+    SmartTraderBlue,
 };
 
 const WalletIcon = ({

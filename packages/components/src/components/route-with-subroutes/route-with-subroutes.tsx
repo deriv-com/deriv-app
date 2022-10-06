@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Redirect, RedirectProps, Route, RouteComponentProps, RouteProps } from 'react-router-dom';
 import {
@@ -13,7 +12,7 @@ import {
 
 type TRoute = RouteProps & { default: boolean };
 
-type TRoutesWithSubroutes = {
+type TRoutesWithSubRoutesProps = {
     component: React.ElementType | typeof Redirect;
     exact?: boolean;
     getTitle?: () => string;
@@ -39,7 +38,7 @@ const RouteWithSubRoutes = ({
     language,
     Component404,
     should_redirect_login,
-}: TRoutesWithSubroutes) => {
+}: TRoutesWithSubRoutesProps) => {
     const validateRoute = (pathname: string) => {
         if (pathname === '') return true;
 
@@ -59,6 +58,7 @@ const RouteWithSubRoutes = ({
 
             // This if clause has been added just to remove '/index' from url in localhost env.
             if (path === shared_routes.index) {
+                /* eslint-disable react/prop-types */
                 const { location } = props;
                 redirect_to = location.pathname.toLowerCase().replace(path, '');
             }
@@ -71,7 +71,7 @@ const RouteWithSubRoutes = ({
                 result = <Redirect to={shared_routes.root} />;
             }
         } else {
-            const default_subroute = routes ? routes.find(r => r.default) : {};
+            const default_subroute = routes.find(r => r.default) ?? {};
             const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
             const is_valid_route = validateRoute(pathname);

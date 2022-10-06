@@ -383,6 +383,10 @@ export default class GeneralStore extends BaseStore {
         iframe.clearIframe();
 
         this.payment_agent = payment_agent;
+        if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
+            payment_agent.setActiveTab(1);
+        }
+
         this.is_populating_values = false;
 
         this.onRemount();

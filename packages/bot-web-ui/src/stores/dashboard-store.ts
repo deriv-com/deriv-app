@@ -9,7 +9,7 @@ export interface IDashboardStore {
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
     onCloseDialog: () => void;
-    showVideoDialog: (url: string, component: HTMLVideoElement, type?: string) => boolean;
+    showVideoDialog: (url: string, component: HTMLVideoElement) => boolean;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -43,8 +43,8 @@ export default class DashboardStore implements IDashboardStore {
     }
 
     @action.bound
-    showVideoDialog(url: string, component: HTMLVideoElement, type?: string): boolean {
-        if (url) {
+    showVideoDialog(type: string, component: HTMLVideoElement): boolean {
+        if (type === 'DBotVideo') {
             this.dialog_options = {
                 message: component,
             };

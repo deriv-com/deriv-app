@@ -2,15 +2,9 @@
 @import './dialog.scss';
 
 .tutorials-wrap {
-    &__header {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin-bottom: 2.4rem;
-    }
-
     &__group {
         display: flex;
-
+        margin-top: 2.4rem;
         &__cards {
             display: flex;
             text-align: center;
@@ -30,18 +24,14 @@
         height: 16rem;
         width: 28rem;
 
-        &--button-group {
+        &__button-group {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 20rem;
             height: 7rem;
-            border-radius: 10px;
-
-            &--play {
-                cursor: pointer;
-                filter: invert(1);
-            }
+            border-radius: 1rem;
+            cursor: pointer;
         }
     }
 }

@@ -9,7 +9,7 @@ type TGuideContent = {
     faq_search_value: string;
     is_dialog_open: boolean;
     onOkButtonClick: () => void;
-    showVideoDialog: (type: string, component: HTMLVideoElement, url?: string) => void;
+    showVideoDialog: (type: string, component: HTMLElement) => void;
 };
 
 type TContentArray = {
@@ -24,7 +24,7 @@ const contentArray: TContentArray[] = [
         id: 1,
         type: 'DBotVideo',
         content: localize('DBot -- your automated trading partner'),
-        url: 'https://www.youtube.com/watch?v=tvBiEIq3G7k',
+        url: 'https://www.youtube.com/embed/Bb0HnaYNUx4',
     },
     {
         id: 2,
@@ -40,21 +40,23 @@ const GuideContent = ({
     onOkButtonClick,
     showVideoDialog,
 }: TGuideContent) => {
-    const [finalContentArray, setfinalContentArray] = React.useState<TContentArray[]>(contentArray);
+    const [finalContentArray, setFinalContentArray] = React.useState<TContentArray[]>(contentArray);
 
     React.useEffect(() => {
-        if (faq_search_value && faq_search_value.length) {
+        if (faq_search_value) {
             const filteredArray = contentArray.filter(data => {
                 return data.content.toLowerCase().includes(faq_search_value);
             });
-            return setfinalContentArray(filteredArray);
+            return setFinalContentArray(filteredArray);
         }
-        return setfinalContentArray(contentArray);
+        return setFinalContentArray(contentArray);
     }, [faq_search_value]);
 
     return (
         <div className='tutorials-wrap'>
-            <h1 className='tutorials-wrap__header'>Guides</h1>
+            <Text align='center' weight='bold' color='prominent' line_height='s'>
+                Guides
+            </Text>
             <div className='tutorials-wrap__group'>
                 {finalContentArray.length > 0 ? (
                     finalContentArray.map(items => {
@@ -71,8 +73,15 @@ const GuideContent = ({
                                             onClick={() => {
                                                 showVideoDialog(
                                                     type,
-                                                    <video src={url} width='100%' height='100%' controls />,
-                                                    url
+                                                    <React.Fragment>
+                                                        <iframe
+                                                            width='100%'
+                                                            height='100%'
+                                                            src={url}
+                                                            frameBorder='0'
+                                                            allowFullScreen
+                                                        />
+                                                    </React.Fragment>
                                                 );
                                             }}
                                         />

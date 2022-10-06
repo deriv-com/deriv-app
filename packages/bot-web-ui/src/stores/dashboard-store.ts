@@ -12,7 +12,7 @@ export interface IDashboardStore {
     showVideoDialog: (url: string, component: HTMLVideoElement, type?: string) => boolean;
 }
 
-export default class DashboardStore {
+export default class DashboardStore implements IDashboardStore {
     root_store: RootStore;
 
     constructor(root_store: RootStore) {

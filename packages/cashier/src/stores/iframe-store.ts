@@ -60,7 +60,7 @@ export default class IframeStore {
     }
 
     @action.bound
-    setTimeoutCashierUrl(is_withdrawal) : void{
+    setTimeoutCashierUrl(is_withdrawal?: boolean): void {
         this.clearTimeoutCashierUrl();
         if (is_withdrawal) {
             this.timeout_session = setTimeout(() => {

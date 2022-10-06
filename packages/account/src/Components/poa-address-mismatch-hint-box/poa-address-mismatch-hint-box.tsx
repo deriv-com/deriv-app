@@ -4,15 +4,15 @@ import { Localize } from '@deriv/translations';
 import './poa-address-mismatch-hint-box.scss';
 
 const POAAddressMismatchHintBox = () => {
-    const myRef = React.useRef<HTMLDivElement | null>(null);
+    const ref = React.useRef<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
         // To make scrolling work on mobile we need to add a delay.
-        setTimeout(() => myRef?.current?.scrollIntoView(), 0);
+        setTimeout(() => ref?.current?.scrollIntoView(), 0);
     }, []);
 
     return (
-        <div className='poa-address-mismatch-hint-box--wrapper' ref={myRef}>
+        <div className='poa-address-mismatch-hint-box--wrapper' ref={ref}>
             <HintBox
                 icon='IcAlertWarning'
                 message={

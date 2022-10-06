@@ -21,7 +21,7 @@ describe('<PersonalDetailsForm />', () => {
     const history = createBrowserHistory();
 
     it('should_render_successfully', async () => {
-        window.HTMLElement.prototype.scrollIntoView = function () {};
+        window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
         const promise = Promise.resolve();
         const fetchResidenceList = jest.fn(() => promise);

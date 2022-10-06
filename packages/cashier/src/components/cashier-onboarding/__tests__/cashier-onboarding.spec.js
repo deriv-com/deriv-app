@@ -31,7 +31,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should show the proper messages when <CashierOnboarding /> is rendered with fiat account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         render(
             <CashierOnboarding
                 {...props}
@@ -67,7 +67,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should show the proper message when <CashierOnboarding /> is rendered with crypto account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }];
+        props.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
         render(
             <CashierOnboarding
                 {...props}
@@ -83,7 +83,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his fiat account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         const { container } = render(<CashierOnboarding {...props} currency='USD' />);
 
         const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
@@ -98,7 +98,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his crypto account, not having the fiat account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }];
+        props.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
         const { container } = render(
             <CashierOnboarding {...props} currency='BTC' available_crypto_currencies={['BTC', 'ETH']} />
         );
@@ -115,7 +115,10 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his crypto account, having the fiat account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }, { is_crypto: false }];
+        props.accounts = {
+            CR90000001: { is_virtual: 0, currency: 'USD' },
+            CR90000002: { is_virtual: 0, currency: 'BTC' },
+        };
         const { container } = render(
             <CashierOnboarding {...props} currency='BTC' available_crypto_currencies={['BTC', 'ETH']} />
         );
@@ -132,7 +135,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit cryptocurrencies" section from his fiat account, not having the crypto account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         const { container } = render(<CashierOnboarding {...props} currency='USD' />);
 
         const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
@@ -147,7 +150,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit cryptocurrencies" section from his crypto account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }];
+        props.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
         const { container } = render(
             <CashierOnboarding {...props} available_crypto_currencies={['BTC', 'ETH']} currency='BTC' />
         );
@@ -165,7 +168,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Buy cryptocurrencies via fiat onramp" section from his fiat account, not having the crypto account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         const { container } = render(<CashierOnboarding {...props} currency='USD' />);
 
         const node_list = container.querySelectorAll('.cashier-onboarding-detail__div');
@@ -180,7 +183,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Buy cryptocurrencies" section from his crypto account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }];
+        props.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
         const { container } = render(
             <CashierOnboarding {...props} available_crypto_currencies={['BTC', 'ETH']} currency='BTC' />
         );
@@ -198,7 +201,10 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit via payment agents" section', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
+        props.accounts = {
+            CR90000001: { is_virtual: 0, currency: 'USD' },
+            CR90000002: { is_virtual: 0, currency: 'BTC' },
+        };
         const { container } = render(
             <CashierOnboarding {...props} currency='USD' is_payment_agent_visible_in_onboarding />
         );
@@ -219,7 +225,10 @@ describe('<CashierOnboarding />', () => {
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his fiat account', () => {
         const props = mockProps();
         const history = createBrowserHistory();
-        props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
+        props.accounts = {
+            CR90000001: { is_virtual: 0, currency: 'USD' },
+            CR90000002: { is_virtual: 0, currency: 'BTC' },
+        };
         const { container } = render(
             <Router history={history}>
                 <CashierOnboarding {...props} currency='USD' show_p2p_in_cashier_onboarding />
@@ -240,7 +249,10 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his crypto account, already having the fiat account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
+        props.accounts = {
+            CR90000001: { is_virtual: 0, currency: 'USD' },
+            CR90000002: { is_virtual: 0, currency: 'BTC' },
+        };
         const { container } = render(
             <CashierOnboarding
                 {...props}
@@ -264,7 +276,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his crypto account, not having the fiat account', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: true }];
+        props.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
         const { container } = render(
             <CashierOnboarding
                 {...props}
@@ -288,7 +300,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should show the "Learn more about payment methods" message in Mobile mode', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         render(<CashierOnboarding {...props} is_mobile />);
 
         expect(screen.getByText('Learn more about payment methods')).toBeInTheDocument();
@@ -296,7 +308,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should trigger onClick callback when the user clicks "Learn more about payment methods" message in Mobile mode', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         window.open = jest.fn();
         const { container } = render(<CashierOnboarding {...props} is_mobile />);
         const link = container.querySelector('.cashier-onboarding-header-learn-more');
@@ -307,7 +319,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should not show "Choose a way to fund your account" message if is_switching is true', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         render(<CashierOnboarding {...props} is_switching />);
 
         expect(screen.queryByText('Choose a way to fund your account')).not.toBeInTheDocument();
@@ -315,7 +327,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should not show "Choose a way to fund your account" message if accounts_list is an empty array', () => {
         const props = mockProps();
-        props.accounts_list = [];
+        props.accounts = [];
         render(<CashierOnboarding {...props} />);
 
         expect(screen.queryByText('Choose a way to fund your account')).not.toBeInTheDocument();
@@ -323,7 +335,7 @@ describe('<CashierOnboarding />', () => {
 
     it('should not show "Choose a way to fund your account" message if is_landing_company_loaded is false', () => {
         const props = mockProps();
-        props.accounts_list = [{ is_crypto: false }];
+        props.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
         render(<CashierOnboarding {...props} is_landing_company_loaded={false} />);
 
         expect(screen.queryByText('Choose a way to fund your account')).not.toBeInTheDocument();
@@ -332,7 +344,10 @@ describe('<CashierOnboarding />', () => {
     it('should redirect to "routes.trade" when the component will unmount', () => {
         const props = mockProps();
         const history = createBrowserHistory();
-        props.accounts_list = [{ is_crypto: false }, { is_crypto: true }];
+        props.accounts = {
+            CR90000001: { is_virtual: 0, currency: 'USD' },
+            CR90000002: { is_virtual: 0, currency: 'BTC' },
+        };
         props.has_set_currency = false;
         const { unmount } = render(
             <Router history={history}>

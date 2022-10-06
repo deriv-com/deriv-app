@@ -110,6 +110,7 @@ const OrderDetails = observer(() => {
     const display_payment_amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
+    const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
 
     const is_recommended_by_user =
         general_store.client?.loginid === client_details?.loginid
@@ -237,7 +238,7 @@ const OrderDetails = observer(() => {
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
+                                    value={`${rate_amount} ${local_currency}`}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>

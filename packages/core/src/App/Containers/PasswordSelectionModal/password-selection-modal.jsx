@@ -76,7 +76,7 @@ const PasswordSelectionModal = ({
                         type='button'
                         onClick={() => isModalVisible(false)}
                     />
-                    <div className='account-signup__error-wrapper--createnewaccbtn'>
+                    <div>
                         <Button
                             large
                             primary

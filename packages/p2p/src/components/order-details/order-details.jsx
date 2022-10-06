@@ -44,7 +44,7 @@ const OrderDetails = observer(() => {
         is_completed_order,
         is_pending_order,
         is_reviewable,
-        is_user_rated_previously,
+        is_user_recommended_previously,
         labels,
         local_currency,
         other_user_details,
@@ -110,6 +110,7 @@ const OrderDetails = observer(() => {
     const display_payment_amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
+    const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
 
     return (
         <OrderDetailsWrapper page_title={page_title}>
@@ -117,7 +118,7 @@ const OrderDetails = observer(() => {
                 <RatingModal
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
-                    is_user_rated_previously={is_user_rated_previously}
+                    is_user_recommended_previously={is_user_recommended_previously}
                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                     onClickDone={() => {
                         order_store.setOrderRating(id);
@@ -233,7 +234,7 @@ const OrderDetails = observer(() => {
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
+                                    value={`${rate_amount} ${local_currency}`}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -315,7 +316,7 @@ const OrderDetails = observer(() => {
                                 <RatingModal
                                     is_buy_order_for_user={is_buy_order_for_user}
                                     is_rating_modal_open={order_store.is_rating_modal_open}
-                                    is_user_rated_previously={is_user_rated_previously}
+                                    is_user_recommended_previously={is_user_recommended_previously}
                                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                                     onClickDone={() => {
                                         order_store.setOrderRating(id);

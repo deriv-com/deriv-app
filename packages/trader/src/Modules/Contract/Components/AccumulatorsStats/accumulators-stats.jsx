@@ -84,7 +84,7 @@ const AccumulatorsStats = ({ break_out_history, is_expandable = true, stay_in_hi
                     ))}
                 </div>
                 <Text size={history_text_size} className='accumulators-stats__history'>
-                    {isDesktop() && !is_collapsed ? (
+                    {!is_collapsed ? (
                         <div className='accumulators-stats__history-heading'>{localize('Number of ticks')}</div>
                     ) : (
                         rows[0]?.map((el, i) => <TicksHistoryCounter key={i} value={el} has_progress_dots={i === 0} />)

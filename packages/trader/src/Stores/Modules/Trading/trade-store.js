@@ -939,7 +939,7 @@ export default class TradeStore extends BaseStore {
         // maryia: temporary dummy data for accumulators
         const dummy_response = getDummyProposalResponseForACCU(Date.now());
         let proposal_response;
-        if (this.root_store.modules.trade.is_accumulator) {
+        if (this.is_accumulator) {
             proposal_response = dummy_response;
         } else {
             proposal_response = response;
@@ -971,7 +971,6 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
-
         if (this.is_accumulator && this.proposal_info && (this.proposal_info.ACCU || this.proposal_info.DECCU)) {
             const {
                 tick_count,
@@ -980,6 +979,7 @@ export default class TradeStore extends BaseStore {
                 max_payout,
                 high_barrier,
                 low_barrier,
+                spot_time,
             } = this.proposal_info.ACCU;
             if (this.proposal_info.DECCU) {
                 this.break_out_history = getUpdatedTicksHistoryStats(
@@ -988,6 +988,7 @@ export default class TradeStore extends BaseStore {
                 );
             } else
                 this.break_out_history = getUpdatedTicksHistoryStats(this.break_out_history, dummy_break_out_history);
+            this.root_store.contract_trade.current_spot_time = spot_time;
             this.stay_in_history = getUpdatedTicksHistoryStats(this.stay_in_history, stay_in_history);
             this.tick_size_barrier = tick_size_barrier;
             this.max_ticks_number = tick_count;

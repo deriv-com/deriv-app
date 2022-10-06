@@ -17,6 +17,7 @@ export default class ContractTradeStore extends BaseStore {
     @observable.shallow contracts = [];
     contracts_map = {};
     @observable has_error = false;
+    @observable current_spot_time = null;
     @observable error_message = '';
 
     // Chart specific observables
@@ -94,12 +95,27 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get markers_array() {
-        const markers = this.applicable_contracts()
+        let markers = [];
+        const {
+            barrier_1,
+            barrier_2,
+            contract_type: trade_type,
+        } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
+        }
+        if (trade_type === 'accumulator' && this.last_contract.contract_info?.status !== 'open') {
+            markers.push({
+                type: 'TickContract',
+                contract_info: { is_accumulators_trade_without_contract: true },
+                key: 'accumulators_barriers_without_contract',
+                price_array: [barrier_1, barrier_2],
+                epoch_array: [this.current_spot_time, this.current_spot_time],
+            });
         }
         return markers;
     }

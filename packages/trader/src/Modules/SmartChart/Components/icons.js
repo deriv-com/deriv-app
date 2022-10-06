@@ -59,3 +59,17 @@ export const END = parse_svg(`
 <path fill-rule="evenodd" clip-rule="evenodd" d="M2,0 L2,1 L19,1 L19,12 L2,12 L2,20 L1,20 L1,0 L2,0 Z M18,8 L15,8 L15,11 L18,11 L18,8 Z M12,8 L9,8 L9,11 L12,11 L12,8 Z M6,8 L3,8 L3,11 L6,11 L6,8 Z M15,5 L12,5 L12,8 L15,8 L15,5 Z M9,5 L6,5 L6,8 L9,8 L9,5 Z M6,2 L3,2 L3,5 L6,5 L6,2 Z M18,2 L15,2 L15,5 L18,5 L18,2 Z M12,2 L9,2 L9,5 L12,5 L12,2 Z" fill="#333333"/>
 </svg>
 `);
+
+export const WON_TOOLTIP = parse_svg(`
+<svg width="168" height="58" viewBox="0 0 168 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 33v-8l-4 4 4 4Z" fill="#4BB4B3" fill-opacity=".72" />
+<path fill-rule="evenodd" clip-rule="evenodd" fill="#4BB4B3" fill-opacity=".72" d="M8 0h156s4 0 4 4v50s0 4 -4 4h-156s-4 0 -4 -4v-50s0 -4 4 -4" />
+</svg>
+`);
+
+export const LOST_TOOLTIP = parse_svg(`
+<svg width="168" height="58" viewBox="0 0 168 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 33v-8l-4 4 4 4Z" fill="#EC3F3F" fill-opacity=".72" />
+<path fill-rule="evenodd" clip-rule="evenodd" fill="#EC3F3F" fill-opacity=".72" d="M8 0h156s4 0 4 4v50s0 4 -4 4h-156s-4 0 -4 -4v-50s0 -4 4 -4" />
+</svg>
+`);

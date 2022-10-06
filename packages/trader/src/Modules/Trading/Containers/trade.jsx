@@ -276,7 +276,7 @@ const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }
         );
     });
 
-const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
+const ChartMarkers = connect(({ ui, client, contract_trade, modules }) => ({
     markers_array: contract_trade.markers_array,
     is_digit_contract: contract_trade.is_digit_contract,
     granularity: contract_trade.granularity,

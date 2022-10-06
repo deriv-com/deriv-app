@@ -12,6 +12,7 @@
     margin: 0 2.5em 0 1em;
     background-color: var(--general-section-1);
     border-radius: $BORDER_RADIUS * 2;
+    width: 73.6rem;
 
     @include mobile {
         position: absolute;
@@ -34,7 +35,7 @@
     &__container--collapsed {
         display: flex;
         align-items: center;
-        width: 73.6rem;
+        width: 100%;
         height: 4.8rem;
         position: relative;
         padding: 1.3rem 0.8rem;
@@ -132,7 +133,8 @@
             }
         }
         &-heading {
-            margin-left: 46.5rem;
+            position: absolute;
+            right: 3.2rem;
         }
         &--expanded {
             display: flex;

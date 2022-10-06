@@ -73,13 +73,7 @@ export const ChartTopWidgets = connect(({ modules, ui }) => ({
 
 export const ChartBottomWidgets = ({ digits, tick, show_accumulators_stats }) => (
     <BottomWidgets
-        Widget={
-            show_accumulators_stats ? (
-                <AccumulatorsStats />
-            ) : (
-                <BottomWidgets Widget={<DigitsWidget digits={digits} tick={tick} />} />
-            )
-        }
+        Widget={show_accumulators_stats ? <AccumulatorsStats /> : <DigitsWidget digits={digits} tick={tick} />}
     />
 );
 

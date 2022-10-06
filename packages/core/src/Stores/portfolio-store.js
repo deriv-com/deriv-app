@@ -37,7 +37,7 @@ export default class PortfolioStore extends BaseStore {
     // barriers
     @observable barriers = [];
     @observable main_barrier = null;
-    @observable contract_type = 'accumulator'; // maryia: temporary value
+    @observable contract_type = '';
 
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 

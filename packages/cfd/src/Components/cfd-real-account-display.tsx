@@ -49,7 +49,7 @@ type TCFDRealAccountDisplayProps = {
     ) => void;
     platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<string, TCurrentList>;
@@ -111,7 +111,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) => {
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
             return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
                 category: account.account_type as keyof TOpenAccountTransferMeta,

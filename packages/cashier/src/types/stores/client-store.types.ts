@@ -3,6 +3,7 @@ import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
+
 export type TClientStore = {
     accounts: { [k: string]: TAccount };
     account_limits: {
@@ -32,7 +33,6 @@ export type TClientStore = {
     is_logging_in: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
-    is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
@@ -41,7 +41,6 @@ export type TClientStore = {
         decimal_places?: number;
     };
     loginid?: string;
-    mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
     standpoint: {
         iom: string;
@@ -57,14 +56,10 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     mt5_login_list: DetailsOfEachMT5Loginid[];
     is_authentication_needed: boolean;
-    is_tnc_needed: boolean;
-    is_financial_account: boolean;
-    is_financial_information_incomplete: boolean;
-    is_trading_experience_incomplete: boolean;
-    is_eu: boolean;
     authentication_status: TAuthenticationStatus;
 };

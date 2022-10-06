@@ -31,6 +31,10 @@
 
         @include mobile {
             height: 4rem;
+
+            &:focus {
+                border-color: var(--border-normal);
+            }
         }
     }
 }

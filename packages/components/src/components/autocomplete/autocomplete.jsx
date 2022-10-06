@@ -66,7 +66,7 @@ const Autocomplete = React.memo(props => {
 
     React.useEffect(() => {
         if (has_updating_list) {
-            const new_filtered_items = is_list_visible ? getFilteredItems(value, list_items) : list_items;
+            const new_filtered_items = is_list_visible ? getFilteredItems(value.toLowerCase(), list_items) : list_items;
 
             setFilteredItems(new_filtered_items);
             if (historyValue) {
@@ -207,7 +207,9 @@ const Autocomplete = React.memo(props => {
         e.preventDefault();
         hideDropdownList();
 
-        const new_filtered_items = is_list_visible ? getFilteredItems(value, list_items) : list_items;
+        const new_filtered_items = is_list_visible
+            ? getFilteredItems(value.toLowerCase(), list_items, should_filter_by_char)
+            : list_items;
 
         setFilteredItems(new_filtered_items);
 

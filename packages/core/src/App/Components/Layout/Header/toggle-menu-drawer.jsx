@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
-import { getPlatformSettings, routes, PlatformContext } from '@deriv/shared';
+import { routes, PlatformContext } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -93,7 +93,6 @@ const ToggleMenuDrawer = React.forwardRef(
             is_account_transfer_visible,
             is_virtual,
             logoutClient,
-            platform_header,
             platform_switcher,
             should_allow_authentication,
             title,
@@ -340,7 +339,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
                                         {getLanguageRoutes()}
-                                        {platform_header !== getPlatformSettings('dbot').name && (
+                                        {
                                             <MobileDrawer.Item
                                                 className='header__menu-mobile-theme'
                                                 onClick={e => {
@@ -360,7 +359,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     />
                                                 </div>
                                             </MobileDrawer.Item>
-                                        )}
+                                        }
 
                                         {secondary_routes_config.map(route_config =>
                                             getRoutesWithSubMenu(route_config)

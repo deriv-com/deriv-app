@@ -9,7 +9,7 @@ export type TTutorialItem = {
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
-export const FAQ_QUESTIONS: TTutorialItem[] = [
+export const faq_questions: TTutorialItem[] = [
     {
         title: localize('What is DBot?'),
         description: [

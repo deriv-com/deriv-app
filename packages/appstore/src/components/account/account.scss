@@ -8,6 +8,7 @@
     width: 24rem;
     height: 7.2rem;
     border-radius: 0.6rem 0.6rem 0 0;
+    cursor: pointer;
     @include mobile {
         gap: 0.4rem;
         isolation: isolate;
@@ -67,6 +68,7 @@
 }
 .account-container-active {
     background: $color-grey-2;
+    cursor: auto;
 }
 .account-container-modal {
     width: 100%;

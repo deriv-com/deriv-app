@@ -40,12 +40,13 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         should_show_server_name,
         resetVirtualBalance,
         has_any_real_account,
+        loginid,
+        switchAccount,
     } = client;
     const sortedAccountList = React.useMemo(
         () => getSortedAccountList(account_list, accounts).filter(account => !account.is_virtual),
         [account_list, accounts]
     );
-    const [isActiveId, setIsActiveId] = React.useState(sortedAccountList[0].loginid);
     const toggleAccountsDialog = ui.toggleAccountsDialog;
     const resetBalance = async () => {
         closeAccountsDialog();
@@ -58,8 +59,14 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
     const onClickDeposit = () => {
         props.history.push(routes.cashier_deposit);
     };
-    const switchAccount = () => {
+    const openSwitchAccountModal = () => {
         setIsModalOpen(true);
+    };
+    const doSwitch = async (loginid_selected: React.SetStateAction<string>) => {
+        setIsModalOpen(false);
+        closeAccountsDialog();
+        if (loginid === loginid_selected) return;
+        await switchAccount(loginid_selected);
     };
     return (
         <div className={`options-container${!has_any_real_account ? '-app-launcher' : ''}`}>
@@ -129,7 +136,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                           shortcode={shortcode}
                                           should_show_server_name={should_show_server_name}
                                           redirectAccount={() =>
-                                              isMobile ? setIsActiveId(account.loginid) : switchAccount
+                                              account.is_disabled ? undefined : () => doSwitch(account.loginid)
                                           }
                                           onClickResetVirtualBalance={resetBalance}
                                           selected_loginid={account.loginid}
@@ -141,7 +148,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                   ))
                             : sortedAccountList.map(account =>
                                   isMobile() ? (
-                                      account.loginid === isActiveId && (
+                                      account.loginid === loginid && (
                                           <OptionsAccount
                                               key={account.loginid}
                                               balance={accounts[account.loginid].balance}
@@ -163,15 +170,14 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                               is_dark_mode_on={is_dark_mode_on}
                                               shortcode={shortcode}
                                               should_show_server_name={should_show_server_name}
-                                              redirectAccount={() => setIsActiveId(account.loginid)}
                                               onClickResetVirtualBalance={resetBalance}
                                               selected_loginid={account.loginid}
                                               history={props.history}
                                               location={props.location}
                                               match={props.match}
-                                              activeAccount={isActiveId}
+                                              activeAccount={loginid}
                                               onClickDeposit={onClickDeposit}
-                                              switchAccountModal={switchAccount}
+                                              switchAccountModal={openSwitchAccountModal}
                                           />
                                       )
                                   ) : (
@@ -196,15 +202,16 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                           is_dark_mode_on={is_dark_mode_on}
                                           shortcode={shortcode}
                                           should_show_server_name={should_show_server_name}
-                                          redirectAccount={() => setIsActiveId(account.loginid)}
+                                          redirectAccount={() => {
+                                              return !account.is_disabled && doSwitch(account.loginid);
+                                          }}
                                           onClickResetVirtualBalance={resetBalance}
-                                          selected_loginid={account.loginid}
+                                          selected_loginid={loginid}
                                           history={props.history}
                                           location={props.location}
                                           match={props.match}
-                                          activeAccount={isActiveId}
+                                          activeAccount={loginid}
                                           onClickDeposit={onClickDeposit}
-                                          switchAccountModal={switchAccount}
                                       />
                                   )
                               )}
@@ -288,17 +295,16 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                         shortcode={shortcode}
                         should_show_server_name={should_show_server_name}
                         redirectAccount={() => {
-                            setIsActiveId(account.loginid);
-                            setIsModalOpen(false);
+                            return !account.is_disabled && doSwitch(account.loginid);
                         }}
                         onClickResetVirtualBalance={resetBalance}
                         selected_loginid={account.loginid}
                         history={props.history}
                         location={props.location}
                         match={props.match}
-                        activeAccount={isActiveId}
+                        activeAccount={loginid}
                         onClickDeposit={onClickDeposit}
-                        switchAccountModal={switchAccount}
+                        switchAccountModal={openSwitchAccountModal}
                         isModal={true}
                     />
                 ))}

@@ -53,7 +53,7 @@ type TOptionsAccountprops = RouteComponentProps & {
     should_show_server_name?: string;
     onClickResetVirtualBalance: () => void;
     selected_loginid?: string;
-    redirectAccount: () => void;
+    redirectAccount?: () => void;
     activeAccount?: string;
     onClickDeposit?: () => void;
     switchAccountModal?: () => void;
@@ -181,6 +181,7 @@ const OptionsAccount = ({
     balance,
     currency,
     display_type,
+    has_balance,
     has_reset_balance,
     is_disabled,
     is_virtual,
@@ -209,7 +210,7 @@ const OptionsAccount = ({
                 'account-container-disabled': activeAccount !== loginid_text,
                 'account-container-modal': isModal,
             })}
-            onClick={redirectAccount}
+            onClick={activeAccount !== loginid_text ? redirectAccount : undefined}
         >
             <div className='account-container__icon'>
                 <Icon
@@ -288,9 +289,11 @@ const OptionsAccount = ({
                             {localize('Reset')}
                         </Button>
                     ) : (
-                        <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
-                            {localize('Deposit')}
-                        </Button>
+                        has_balance && (
+                            <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
+                                {localize('Deposit')}
+                            </Button>
+                        )
                     )}
                 </div>
             )}

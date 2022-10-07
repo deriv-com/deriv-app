@@ -1,8 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
-const ReadMore = ({ className, collapse_length, expand_text, openDialog, show_dialog, text }) => {
+type TReadMore = {
+    className?: string;
+    collapse_length: number;
+    expand_text: string;
+    openDialog: () => void;
+    show_dialog?: boolean;
+    text: string;
+};
+
+const ReadMore = ({ className, collapse_length, expand_text, openDialog, show_dialog, text }: TReadMore) => {
     const [content, updateContent] = React.useState('');
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
@@ -40,15 +48,6 @@ const ReadMore = ({ className, collapse_length, expand_text, openDialog, show_di
             )}
         </React.Fragment>
     );
-};
-ReadMore.propTypes = {
-    className: PropTypes.string,
-    collapse_length: PropTypes.number,
-    collapse_text: PropTypes.string,
-    expand_text: PropTypes.string,
-    openDialog: PropTypes.func,
-    show_dialog: PropTypes.bool,
-    text: PropTypes.string,
 };
 
 export default ReadMore;

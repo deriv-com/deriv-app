@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
@@ -34,12 +33,6 @@ const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }: TAccount
             {renderExtraInfo && renderExtraInfo()}
         </th>
     );
-};
-
-AccountLimitsTableHeader.propTypes = {
-    align: PropTypes.oneOf(['right', 'left']),
-    children: PropTypes.any,
-    renderExtraInfo: PropTypes.func,
 };
 
 export default AccountLimitsTableHeader;

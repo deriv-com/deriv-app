@@ -12,7 +12,7 @@ import {
     ThemedScrollbars,
     useSafeState,
 } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { reaction } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
@@ -89,8 +89,8 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
     return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
 };
 
-const MarketRateChangeErrorModal = ({ is_open, closeModal }) => (
-    <Modal is_open={is_open} small className='rate-changed-modal'>
+const MarketRateChangeErrorModal = ({ is_open, closeModal, setShouldShowPopup }) => (
+    <Modal is_open={is_open} small className='rate-changed-modal' onExited={() => setShouldShowPopup(true)}>
         <Modal.Body>
             <Text
                 as='p'
@@ -124,7 +124,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
     const formik_ref = React.useRef();
-    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 1050;
+    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 1000;
 
     React.useEffect(() => {
         const disposer = reaction(
@@ -140,8 +140,12 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     }, []);
 
     const onSubmitWhenRateChanged = () => {
-        setShouldShowPopup(false);
-        setTimeout(() => setShowMarketRateChangeErrorModal(true), my_profile_store.MODAL_TRANSITION_DURATION);
+        if (isDesktop()) {
+            setShouldShowPopup(false);
+            setTimeout(() => setShowMarketRateChangeErrorModal(true), my_profile_store.MODAL_TRANSITION_DURATION);
+        } else {
+            setShowMarketRateChangeErrorModal(true);
+        }
     };
 
     const BuySellFormError = () => (
@@ -228,12 +232,8 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         <React.Fragment>
             <MarketRateChangeErrorModal
                 is_open={show_market_rate_change_error_modal}
-                closeModal={() => {
-                    if (isDesktop()) {
-                        setTimeout(() => setShouldShowPopup(true), my_profile_store.MODAL_TRANSITION_DURATION);
-                    }
-                    setShowMarketRateChangeErrorModal(false);
-                }}
+                closeModal={() => setShowMarketRateChangeErrorModal(false)}
+                setShouldShowPopup={setShouldShowPopup}
             />
             <MobileWrapper>
                 <MobileFullPageModal
@@ -251,7 +251,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={!has_rate_changed_recently ? submitForm.current : onSubmitWhenRateChanged}
                             />
                         )
                     }
